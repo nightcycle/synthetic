@@ -4,9 +4,9 @@ local packages = synthetic.Parent
 local fusion = require(packages:WaitForChild('fusion'))
 local maidConstructor = require(packages:WaitForChild('maid'))
 
-local quark = synthetic:WaitForChild("Quark")
-local paddingConstructor = require(quark:WaitForChild("Padding"))
-local cornerConstructor = require(quark:WaitForChild("Corner"))
+local Component = synthetic:WaitForChild("Component")
+local paddingConstructor = require(Component:WaitForChild("Padding"))
+local cornerConstructor = require(Component:WaitForChild("Corner"))
 
 local enums = synthetic:WaitForChild("Enums")
 
@@ -37,20 +37,6 @@ function constructor.new()
 		local elevation = props.Elevation:get()
 		return elevation*10
 	end)
-	local alignmentData = fusion.Computed(function()
-		local props = properties:get()
-		local alignment = props.Alignment:get()
-		return UIAlignment[alignment]
-	end)
-
-	local props = properties:get()
-	if props then
-		local alignment = alignmentData:get()
-		if alignment then
-			props.OpenPosition:set(alignment.Positions.Open)
-			props.ClosePosition:set(alignment.Positions.Closed)
-		end
-	end
 
 	local inst = fusion.New "Frame" {
 		Name = "Card",

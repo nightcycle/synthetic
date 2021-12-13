@@ -4,7 +4,8 @@ local packages = synthetic.Parent
 local fusion = require(packages:WaitForChild('fusion'))
 local maidConstructor = require(packages:WaitForChild('maid'))
 
-local quark = synthetic:WaitForChild("Quark")
+local Component = synthetic:WaitForChild("Component")
+local styleConstructor = require(Component:WaitForChild("Style"))
 
 local enums = synthetic:WaitForChild("Enums")
 
@@ -36,11 +37,15 @@ function constructor.new()
 		return elevation*10
 	end)
 	local inst = fusion.New "TextButton" {
-		TextLabel = "",
+		Text = "",
 		ZIndex = ZIndex,
 		Name = "Button",
 		Parent = game.Players.LocalPlayer:WaitForChild("PlayerGui"),
 	}
+
+	local styleComponent = styleConstructor.new()
+	styleComponent:SetAttribute("TextClass", "Button")
+	styleComponent.Parent = inst
 
 	local maid = maidConstructor.new()
 	maid.deathSignal = inst.AncestryChanged:Connect(function()

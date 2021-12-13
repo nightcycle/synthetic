@@ -4,7 +4,7 @@ local packages = synthetic.Parent
 local fusion = require(packages:WaitForChild('fusion'))
 local maidConstructor = require(packages:WaitForChild('maid'))
 
-local quark = synthetic:WaitForChild("Quark")
+local Component = synthetic:WaitForChild("Component")
 
 local enums = synthetic:WaitForChild("Enums")
 

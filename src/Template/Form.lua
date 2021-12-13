@@ -6,7 +6,7 @@ local maidConstructor = require(packages:WaitForChild('maid'))
 local filterConstructor = require(packages:WaitForChild("filter"))
 -- local attributerConstructor = require(packages:WaitForChild("attribute"))
 
-local quark = synthetic:WaitForChild("Quark")
+local Component = synthetic:WaitForChild("Component")
 local atom = synthetic:WaitForChild("Atom")
 local molecule = synthetic:WaitForChild("Molecule")
 local organism = synthetic:WaitForChild("Organism")

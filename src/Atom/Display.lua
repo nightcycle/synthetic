@@ -4,10 +4,10 @@ local packages = synthetic.Parent
 local fusion = require(packages:WaitForChild('fusion'))
 local maidConstructor = require(packages:WaitForChild('maid'))
 
-local quark = synthetic:WaitForChild("Quark")
-local paddingConstructor = require(quark:WaitForChild("Padding"))
-local cornerConstructor = require(quark:WaitForChild("Corner"))
-local listConstructor = require(quark:WaitForChild("ListLayout"))
+local Component = synthetic:WaitForChild("Component")
+local paddingConstructor = require(Component:WaitForChild("Padding"))
+local cornerConstructor = require(Component:WaitForChild("Corner"))
+local listConstructor = require(Component:WaitForChild("ListLayout"))
 
 local enums = synthetic:WaitForChild("Enums")
 local UIDisplay = require(enums:WaitForChild("UIDisplay"))

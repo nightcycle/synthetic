@@ -6,13 +6,13 @@ local maidConstructor = require(packages:WaitForChild('maid'))
 local filterConstructor = require(packages:WaitForChild("filter"))
 -- local attributerConstructor = require(packages:WaitForChild("attribute"))
 
-local quark = synthetic:WaitForChild("Quark")
+local Component = synthetic:WaitForChild("Component")
 local atom = synthetic:WaitForChild("Atom")
 local cardConstructor = require(atom:WaitForChild("Card"))
 local buttonConstructor = require(atom:WaitForChild("Button"))
-local paddingConstructor = require(quark:WaitForChild("Padding"))
-local cornerConstructor = require(quark:WaitForChild("Corner"))
-local listConstructor = require(quark:WaitForChild("ListLayout"))
+local paddingConstructor = require(Component:WaitForChild("Padding"))
+local cornerConstructor = require(Component:WaitForChild("Corner"))
+local listConstructor = require(Component:WaitForChild("ListLayout"))
 
 local enums = synthetic:WaitForChild("Enums")
 

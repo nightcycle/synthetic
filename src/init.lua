@@ -11,7 +11,7 @@ return {
 		local const = constructors[key]
 		if not const then error("No constructor found for "..tostring(key)) end
 		local inst = const.new()
-		if parent then inst.Parent = parent end
+		if parent then print("Setting parent") inst.Parent = parent end
 		return inst
 	end
 }
