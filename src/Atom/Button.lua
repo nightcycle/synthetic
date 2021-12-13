@@ -6,6 +6,9 @@ local maidConstructor = require(packages:WaitForChild('maid'))
 
 local Component = synthetic:WaitForChild("Component")
 local styleConstructor = require(Component:WaitForChild("Style"))
+local elevationConstructor = require(Component:WaitForChild("Elevation"))
+local lightingConstructor = require(Component:WaitForChild("Lighting"))
+local inputEffectConstructor = require(Component:WaitForChild("InputEffect"))
 
 local enums = synthetic:WaitForChild("Enums")
 
@@ -39,6 +42,7 @@ function constructor.new()
 	local inst = fusion.New "TextButton" {
 		Text = "",
 		ZIndex = ZIndex,
+		AutoButtonColor = true,
 		Name = "Button",
 		Parent = game.Players.LocalPlayer:WaitForChild("PlayerGui"),
 	}
@@ -46,6 +50,15 @@ function constructor.new()
 	local styleComponent = styleConstructor.new()
 	styleComponent:SetAttribute("TextClass", "Button")
 	styleComponent.Parent = inst
+
+	local elevationComponent = elevationConstructor.new()
+	elevationComponent.Parent = inst
+
+	local lightingComponent = lightingConstructor.new()
+	lightingComponent.Parent = inst
+
+	local inputEffectComponent = inputEffectConstructor.new()
+	inputEffectComponent.Parent = inst
 
 	local maid = maidConstructor.new()
 	maid.deathSignal = inst.AncestryChanged:Connect(function()

@@ -5,28 +5,59 @@ local fusion = require(packages:WaitForChild('fusion'))
 local maidConstructor = require(packages:WaitForChild('maid'))
 local attributerConstructor = require(packages:WaitForChild('attributer'))
 
-function update(parent: Instance)
-	if not parent or not parent:IsA("GuiObject") then return end
 
-	parent:SetAttribute("StartStyleConfig", true)
+local elevationToValueGain = {
+	[0] = 0,
+	[1] = 0.05,
+	[2] = 0.07,
+	[3] = 0.08,
+	[4] = 0.09,
+	[5] = 0.11,
+	[6] = 0.12,
+	[7] = 0.14,
+	[8] = 0.15,
+	[9] = 0.16,
+}
+
+
+local maxShadowDistance = 7
+local minShadowDistance = 1
+local minTransparency = 0.1
+local maxTransparency = 0.1
+
+function setParent(parent: Instance)
+	if not parent or not parent:IsA("GuiObject") then return end
+	task.delay(1, function()
+		parent:SetAttribute("SIFXC_Size", parent.Size)
+	end)
+	parent:SetAttribute("StartInputFXConfig", true)
 end
 
 function resetParent(parent: Instance, maid)
-	local isViable = parent:GetAttribute("StartStyleConfig")
+	local isViable = parent:GetAttribute("StartInputFXConfig")
 	if not isViable then return end
-	parent:SetAttribute("StartStyleConfig", false)
+	parent:SetAttribute("StartInputFXConfig", false)
 	if not parent or not parent:IsA("GuiObject") then return end
-
-	parent:SetAttribute("StartStyleConfig", nil)
+	parent:SetAttribute("SIFXC_Size", parent.Size)
+	parent.Size = parent:GetAttribute("SIFXC_Size")
+	parent:SetAttribute("StartInputFXConfig", nil)
+	parent:SetAttribute("StartInputFXConfig", nil)
 	maid:DoCleaning()
 end
 
-function tweenCompat(state, maid, tweenInfo, func)
-	local stateTween = fusion.Tween(state, tweenInfo) --newTweenInfo())
-	local stateTweenCompat = fusion.Compat(stateTween)
-	maid:GiveTask(stateTweenCompat:onChange(func))
-	return stateTween
+local ed = Enum.EasingDirection
+local es = Enum.EasingStyle
+function newTweenInfo(params)  --default is a nice smooth transition
+	params = params or {}
+	local duration = params.Duration or 0.4
+	local easingStyle = params.EasingStyle or es.Quad
+	local easingDirection = params.EasingDirection or ed.InOut
+	local repeatCount = params.RepeatCount or 0
+	local reverses = params.Reverses or false
+	local delayTime = params.DelayTime or 0
+	return TweenInfo.new(duration, easingStyle, easingDirection, repeatCount, reverses, delayTime)
 end
+
 
 local constructor = {}
 
@@ -38,10 +69,13 @@ function constructor.new()
 	local currentParent
 
 	--set control states
+	local sizeBump = fusion.State(5)
+	local elevationBump = fusion.State(1)
 
 	--create inst
 	local inst = fusion.New "Configuration" {
-		Name = "Component"
+		Name = script.Name,
+		Parent = game.Players.LocalPlayer:WaitForChild("PlayerGui"),
 	}
 
 	--bind to attributes
@@ -55,24 +89,45 @@ function constructor.new()
 			end
 		end))
 	end
+	bindAttributeToState("SizeBump", sizeBump)
+	bindAttributeToState("ElevationBump", elevationBump)
 
-	--solve for goals
-
+	local isSelected = fusion.State(false)
+	local size = fusion.Computed(function()
+		if currentParent and currentParent:IsA("GuiObject") then
+			local absSize = currentParent.AbsoluteSize
+			local size = currentParent.Size
+			local b = sizeBump:get() or 0
+			if isSelected:get() == true then
+				currentParent:SetAttribute("ElevationIncrease", elevationBump:get())
+				return UDim2.new(size.X.Scale, size.X.Offset+b, size.Y.Scale, size.Y.Offset+b)
+			else
+				currentParent:SetAttribute("ElevationIncrease", 1)
+				return currentParent:GetAttribute("SIFXC_Size") or UDim2.fromOffset(0,0)
+			end
+		else
+			return UDim2.fromScale(1,1)
+		end
+	end)
 
 	--connect goals to currents & parent with tweenCompat
-
-	local function fireUpdate()
-		update(currentParent)
-	end
-
 	maid:GiveTask(inst)
-
 	maid:GiveTask(inst.AncestryChanged:Connect(function()
 		if inst:IsDescendantOf(game.Players.LocalPlayer:WaitForChild("PlayerGui")) == false then
 			maid:Destroy()
 		elseif inst.Parent ~= nil or currentParent ~= nil then
 			currentParent = inst.Parent
-			fireUpdate()
+			if currentParent:IsA("GuiObject") then
+				setParent(currentParent)
+				parentMaid:GiveTask(currentParent.InputBegan:Connect(function()
+					isSelected:set(true)
+					currentParent.Size = size:get()
+				end))
+				parentMaid:GiveTask(currentParent.InputEnded:Connect(function()
+					isSelected:set(false)
+					currentParent.Size = size:get()
+				end))
+			end
 		else
 			resetParent(currentParent, parentMaid)
 			currentParent = nil

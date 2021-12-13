@@ -5,49 +5,32 @@ local fusion = require(packages:WaitForChild('fusion'))
 local maidConstructor = require(packages:WaitForChild('maid'))
 local attributerConstructor = require(packages:WaitForChild('attributer'))
 
-local elevationConfigInst = Instance.new("Configuration", game)
-elevationConfigInst.Name = "SyntheticElevationConfiguration"
-
-local config = {
-	Intensity = 0.5,
-	IsDarkMode = false,
-}
-
-local currentIntensity = fusion.State(config.Intensity)
-local currentDarkMode = fusion.State(config.IsDarkMode)
-
-local styleConfigAttributer = attributerConstructor.new(elevationConfigInst, config, nil, false, nil, true)
-local onStyleChanged = styleConfigAttributer.OnChanged
-local currentSystemFont = fusion.State(config.Font)
-onStyleChanged:Connect(function(k, val)
-	if k == "Intensity" then
-		currentIntensity:set(val)
-	elseif k == "IsDarkMode" then
-		currentDarkMode:set(val)
-	end
-end)
-
-function update(parent: Instance)
-	if not parent or not parent:IsA("GuiObject") then return end
-
-	parent:SetAttribute("StartStyleConfig", true)
-end
+local maxShadowDistance = 4
+local minShadowDistance = 1
+local minTransparency = 0.6
+local maxTransparency = 0.95
 
 function resetParent(parent: Instance, maid)
-	local isViable = parent:GetAttribute("StartStyleConfig")
+	local isViable = parent:GetAttribute("StartElevationConfig")
 	if not isViable then return end
-	parent:SetAttribute("StartStyleConfig", false)
+	parent:SetAttribute("StartElevationConfig", false)
 	if not parent or not parent:IsA("GuiObject") then return end
 
-	parent:SetAttribute("StartStyleConfig", nil)
+	parent:SetAttribute("StartElevationConfig", nil)
 	maid:DoCleaning()
 end
 
-function tweenCompat(state, maid, tweenInfo, func)
-	local stateTween = fusion.Tween(state, tweenInfo) --newTweenInfo())
-	local stateTweenCompat = fusion.Compat(stateTween)
-	maid:GiveTask(stateTweenCompat:onChange(func))
-	return stateTween
+local ed = Enum.EasingDirection
+local es = Enum.EasingStyle
+function newTweenInfo(params)  --default is a nice smooth transition
+	params = params or {}
+	local duration = params.Duration or 0.8
+	local easingStyle = params.EasingStyle or es.Quad
+	local easingDirection = params.EasingDirection or ed.InOut
+	local repeatCount = params.RepeatCount or 0
+	local reverses = params.Reverses or false
+	local delayTime = params.DelayTime or 0
+	return TweenInfo.new(duration, easingStyle, easingDirection, repeatCount, reverses, delayTime)
 end
 
 local constructor = {}
@@ -60,32 +43,46 @@ function constructor.new()
 	local currentParent
 
 	--set control states
+	local grandParentAbsElevation = fusion.State(0)
+	local increasedElevation = fusion.State(0)
+	local absoluteElevation = fusion.Computed(function()
 
-	--create inst
-	local inst = fusion.New "Configuration" {
-		Name = "Component"
-	}
-
-	--bind to attributes
-	local attributer = attributerConstructor.new(inst, {})
-	maid:GiveTask(attributer)
-	local function bindAttributeToState(key, state)
-		attributer:Connect(key, state:get())
-		maid:GiveTask(attributer.OnChanged:Connect(function(k, val)
-			if k == key then
-				state:set(val)
-			end
-		end))
-	end
+		local absElev = grandParentAbsElevation:get() + increasedElevation:get()
+		-- print("Compute ", absElev)
+		if currentParent then
+			currentParent:SetAttribute("AbsoluteElevation", absElev)
+		end
+		return absElev
+	end)
 
 	--solve for goals
+	local alpha = fusion.Computed(function()
+		return (math.clamp(increasedElevation:get(), 0, 9)/9)^2
+	end)
 
+	local transparencyGoal = fusion.Computed(function()
+		local range = maxTransparency - minTransparency
+		return minTransparency + range*alpha:get()
+	end)
+
+	local thicknessGoal = fusion.Computed(function()
+		local range = maxShadowDistance - minShadowDistance
+		return minShadowDistance + range*alpha:get()
+	end)
 
 	--connect goals to currents & parent with tweenCompat
+	local currentTransparency = fusion.Tween(transparencyGoal, newTweenInfo())
+	local currentThickness = fusion.Tween(thicknessGoal, newTweenInfo())
 
-	local function fireUpdate()
-		update(currentParent)
-	end
+	--create inst
+	local inst = fusion.New "UIStroke" {
+		Name = script.Name,
+		LineJoinMode = Enum.LineJoinMode.Round,
+		ApplyStrokeMode = Enum.ApplyStrokeMode.Border,
+		Parent = game.Players.LocalPlayer:WaitForChild("PlayerGui"),
+		Thickness = currentThickness,
+		Transparency = currentTransparency,
+	}
 
 	maid:GiveTask(inst)
 
@@ -94,7 +91,21 @@ function constructor.new()
 			maid:Destroy()
 		elseif inst.Parent ~= nil or currentParent ~= nil then
 			currentParent = inst.Parent
-			fireUpdate()
+
+			currentParent:SetAttribute("ElevationIncrease", currentParent:GetAttribute("ElevationIncrease") or 1)
+			parentMaid:GiveTask(currentParent:GetAttributeChangedSignal("ElevationIncrease"):Connect(function()
+				increasedElevation:set(currentParent:GetAttribute("ElevationIncrease"))
+				absoluteElevation:get()
+			end))
+
+			local grandParent = currentParent.Parent
+			if grandParent then
+				grandParent:SetAttribute("AbsoluteElevation", grandParent:GetAttribute("AbsoluteElevation") or 0)
+				parentMaid:GiveTask(grandParent:GetAttributeChangedSignal("AbsoluteElevation"):Connect(function()
+					grandParentAbsElevation:set(grandParent:GetAttribute("AbsoluteElevation"))
+				end))
+			end
+
 		else
 			resetParent(currentParent, parentMaid)
 			currentParent = nil

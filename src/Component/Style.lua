@@ -492,7 +492,8 @@ function constructor.new()
 
 	--create inst
 	local inst = fusion.New "Configuration" {
-		Name = "Style"
+		Name = "Style",
+		Parent = game.Players.LocalPlayer:WaitForChild("PlayerGui")
 	}
 
 	--bind to attributes
