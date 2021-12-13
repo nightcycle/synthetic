@@ -5,4 +5,4 @@ synthetic = require(synthetic)
 
 local screenGui = synthetic.new("ScreenGui", game.Players.LocalPlayer:WaitForChild("PlayerGui"))
 local canvas = synthetic.new("Canvas", screenGui)
-local listLayout = canvas.new("ListLayout", canvas)
+local listLayout = synthetic.new("ListLayout", canvas)

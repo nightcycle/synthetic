@@ -9,7 +9,6 @@ local paddingConstructor = require(quark:WaitForChild("Padding"))
 local cornerConstructor = require(quark:WaitForChild("Corner"))
 
 local enums = synthetic:WaitForChild("Enums")
-local UIAlignment = require(enums:WaitForChild("UIAlignment"))
 
 local constructor = {}
 

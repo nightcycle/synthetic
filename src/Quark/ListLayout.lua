@@ -5,7 +5,6 @@ local fusion = require(packages:WaitForChild('fusion'))
 local maidConstructor = require(packages:WaitForChild('maid'))
 
 local enums = synthetic:WaitForChild("Enums")
-local UIAlignment = require(enums:WaitForChild("UIAlignment"))
 
 local constructor = {}
 
@@ -21,28 +20,10 @@ function update(properties, key, val)
 end
 
 function constructor.new()
-	local properties = fusion.State({
-		Alignment = fusion.State(UIAlignment.Center)
-	})
+	local properties = fusion.State({})
 
 	local listLayout = fusion.New "UIListLayout" {
 		FillDirection = Enum.FillDirection.Vertical,
-		HorizontalAlignment = fusion.Computed(function()
-			local current = index(properties,"Alignment")
-			if current then
-				return current.Horizontal
-			else
-				return Enum.HorizontalAlignment.Center
-			end
-		end),
-		VerticalAlignment = fusion.Computed(function()
-			local current = index(properties,"Alignment")
-			if current then
-				return current.Vertical
-			else
-				return Enum.VerticalAlignment.Center
-			end
-		end),
 		SortOrder = Enum.SortOrder.LayoutOrder,
 		Padding = UDim.new(0, 5),
 		Parent = game.Players.LocalPlayer:WaitForChild("PlayerGui"),

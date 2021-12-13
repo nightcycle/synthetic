@@ -5,7 +5,6 @@ local fusion = require(packages:WaitForChild('fusion'))
 local maidConstructor = require(packages:WaitForChild('maid'))
 
 local enums = synthetic:WaitForChild("Enums")
-local UIAlignment = require(enums:WaitForChild("UIAlignment"))
 
 local constructor = {}
 

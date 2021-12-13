@@ -7,7 +7,6 @@ local maidConstructor = require(packages:WaitForChild('maid'))
 local quark = synthetic:WaitForChild("Quark")
 
 local enums = synthetic:WaitForChild("Enums")
-local UIAlignment = require(enums:WaitForChild("UIAlignment"))
 
 local constructor = {}
 

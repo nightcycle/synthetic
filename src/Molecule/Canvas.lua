@@ -4,15 +4,16 @@ local packages = synthetic.Parent
 local fusion = require(packages:WaitForChild('fusion'))
 local maidConstructor = require(packages:WaitForChild('maid'))
 local filterConstructor = require(packages:WaitForChild("filter"))
-local attributerConstructor = require(packages:WaitForChild("attribute"))
+-- local attributerConstructor = require(packages:WaitForChild("attribute"))
 
 local quark = synthetic:WaitForChild("Quark")
 local atom = synthetic:WaitForChild("Atom")
 local paddingConstructor = require(quark:WaitForChild("Padding"))
 local cornerConstructor = require(quark:WaitForChild("Corner"))
+local displayConstructor = require(atom:WaitForChild("Display"))
 
 local enums = synthetic:WaitForChild("Enums")
-local UIAlignment = require(enums:WaitForChild("UIAlignment"))
+local UIDisplay = require(enums:WaitForChild("UIDisplay"))
 
 local constructor = {}
 
@@ -57,20 +58,6 @@ function constructor.new()
 		return elevation*10
 	end)
 
-	local alignmentData = fusion.Computed(function()
-		local props = properties:get()
-		local alignment = props.Alignment:get()
-		return UIAlignment[alignment]
-	end)
-	local props = properties:get()
-	if props then
-		local alignment = alignmentData:get()
-		if alignment then
-			props.OpenPosition:set(alignment.Positions.Open)
-			props.ClosePosition:set(alignment.Positions.Closed)
-		end
-	end
-
 	local frame = fusion.New "Frame" {
 		Name = "Canvas",
 		ZIndex = ZIndex,
@@ -92,12 +79,12 @@ function constructor.new()
 			newTweenInfo()
 		),
 		AnchorPoint = fusion.Computed(function()
-			local alignment = alignmentData:get()
-			if alignment then
-				return alignment.Anchor
-			else
+			-- local alignment = alignmentData:get()
+			-- if alignment then
+			-- 	return alignment.Anchor
+			-- else
 				return Vector2.new(0.5,0.5)
-			end
+			-- end
 		end),
 		Parent = game.Players.LocalPlayer:WaitForChild("PlayerGui"),
 	}
@@ -111,7 +98,7 @@ function constructor.new()
 		Parent = frame,
 	}
 
-	local exitButton = fusion.New "Button" {
+	local exitButton = fusion.New "TextButton" {
 		Name = "ExitButton",
 		Parent = frame,
 		Visible = properties:get().ExitButtonEnabled,
@@ -123,15 +110,13 @@ function constructor.new()
 	exitButton:SetAttribute("RestSize", buttonSize)
 	exitButton:SetAttribute("FocusSize", math.round(buttonSize*1.2))
 
-	local exitIcon = fusion.New "Display" {
-		Parent = exitButton,
-		BackgroundTransparency = 1,
-		BackgroundColor3 = Color3.new(1,0,0),
-	}
+	local exitIcon = displayConstructor.new()
+	exitIcon.Parent = exitButton
+	exitIcon.BackgroundTransparency = 1
+	exitIcon.BackgroundColor3 = Color3.new(1,0,0)
 
 	exitIcon.Size = UDim2.fromScale(1,1)
-	exitIcon = enums:Get("UIDisplay").Text
-	exitIcon:SetAttribute("Media", enums:Get("UIDisplay").Text)
+	exitIcon:SetAttribute("Media", UIDisplay.Text)
 	exitIcon:SetAttribute("Text", "X")
 	exitIcon:SetAttribute("Color", Color3.new(1,1,1))
 

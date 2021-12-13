@@ -10,7 +10,7 @@ local cornerConstructor = require(quark:WaitForChild("Corner"))
 local listConstructor = require(quark:WaitForChild("ListLayout"))
 
 local enums = synthetic:WaitForChild("Enums")
-local UIAlignment = require(enums:WaitForChild("UIAlignment"))
+local UIDisplay = require(enums:WaitForChild("UIDisplay"))
 
 local constructor = {}
 
@@ -29,6 +29,7 @@ end
 
 function index(properties, key)
 	local props = properties:get()
+	if not props[key] then return end
 	return props[key]:get()
 end
 
@@ -42,9 +43,8 @@ function constructor.new()
 	local isFocused = fusion.State(false)
 
 	local properties = fusion.State({
-		Media = fusion.State(enums:Get("UIDisplay").Text),
+		Media = fusion.State(UIDisplay.Text),
 		Text = fusion.State(""),
-		Alignment = fusion.State(enums:Get("UIAlignment").Center),
 		Elevation = fusion.State(1),
 		Color = fusion.State(Color3.new(1,1,1)),
 		FocusNormal = fusion.State(Vector3.new(0,0,1)),
@@ -63,18 +63,12 @@ function constructor.new()
 		return elevation*10
 	end)
 
-	local alignmentData = fusion.Computed(function()
-		local props = properties:get()
-		local alignment = props.Alignment:get()
-		return UIAlignment[alignment]
-	end)
-
 	local inst = fusion.New "Frame" {
 		Name = "Display",
-		[fusion.Event "InputChanged"] = function()
+		[fusion.OnEvent "InputChanged"] = function()
 			isFocused:set(true)
 		end,
-		[fusion.Event "InputEnded"] = function()
+		[fusion.OnEvent "InputEnded"] = function()
 			isFocused:set(false)
 		end,
 		Parent = game.Players.LocalPlayer:WaitForChild("PlayerGui"),
@@ -101,24 +95,21 @@ function constructor.new()
 
 		local textMedia
 		local visualMedia
-		local alignment = alignmentData:get()
-		if index(properties,"Media") == enums:Get("UIDisplay").Text then
+		if index(properties,"Media") == UIDisplay.Text then
 			textMedia = fusion.New "TextLabel" {
 				Name = "Label",
 				Text = text,
 				BackgroundTransparency = 1,
 				TextSize = 14,
 				Font = Enum.Font.GothamSemibold,
-				TextXAlignment = Enum.TextXAlignment[alignment.Horizontal.Name],
-				TextYAlignment = Enum.TextYAlignment[alignment.VerticalAlignment.Name],
-				TextColor3 = properties:get("Color"),
+				-- TextColor3 = properties:get("Color"),
 				LayoutOrder = 2,
 				ZIndex = ZIndex,
 				TextTransparency = properties:get("Elevation"),
 				Parent = inst
 			}
 		end
-		if index(properties,"Media") == enums:Get("UIDisplay").Icon then
+		if index(properties,"Media") == UIDisplay.Icon then
 			visualMedia = fusion.New "ImageLabel" {
 				Name = "Media",
 				BackgroundTransparency = 1,
@@ -132,7 +123,7 @@ function constructor.new()
 				Size = UDim2.fromScale(1,1),
 				Parent = inst
 			}
-		elseif index(properties,"Media") == enums:Get("UIDisplay").Image then
+		elseif index(properties,"Media") == UIDisplay.Image then
 			visualMedia = fusion.New "ImageLabel" {
 				Name = "Media",
 				BackgroundTransparency = 1,
@@ -143,7 +134,7 @@ function constructor.new()
 				Size = UDim2.fromScale(1,1),
 				Parent = inst
 			}
-		elseif index(properties,"Media") == enums:Get("UIDisplay").Viewport then
+		elseif index(properties,"Media") == UIDisplay.Viewport then
 			-- CF
 			local cf = fusion.Computed(function()
 				local cOrigin

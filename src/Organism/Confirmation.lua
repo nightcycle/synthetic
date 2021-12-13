@@ -11,7 +11,6 @@ local atom = synthetic:WaitForChild("Atom")
 local molecule = synthetic:WaitForChild("Molecule")
 
 local enums = synthetic:WaitForChild("Enums")
-local UIAlignment = require(enums:WaitForChild("UIAlignment"))
 
 local constructor = {}
 
