@@ -14,8 +14,6 @@ local paddingConstructor = require(Component:WaitForChild("Padding"))
 local cornerConstructor = require(Component:WaitForChild("Corner"))
 local listConstructor = require(Component:WaitForChild("ListLayout"))
 
-local enums = synthetic:WaitForChild("Enums")
-
 local textService = game:GetService("TextService")
 local runService = game:GetService("RunService")
 
@@ -34,25 +32,12 @@ function newTweenInfo(params)
 	return TweenInfo.new(duration, easingStyle, easingDirection, repeatCount, reverses, delayTime)
 end
 
-function index(properties, key)
-	local props = properties:get()
-	return props[key]:get()
-end
-
-function update(properties, key, val)
-	local props = properties:get()
-	props[key]:set(val)
-	properties:set(props)
-end
-
-function constructor.new()
+function constructor.new(config)
 	local properties = fusion.State({
 		MinimumLabel = fusion.State("L"),
 		MinimumValue = fusion.State(0),
 		MaximumLabel = fusion.State("R"),
 		MaximumValue = fusion.State(1),
-		Font = fusion.State("Gotham"),
-		FontSize = fusion.State(8),
 		LineWidth = fusion.State(5),
 		Value = fusion.State(0.5),
 	})
@@ -175,8 +160,8 @@ function constructor.new()
 
 
 	maid.deathSignal = inst.AncestryChanged:Connect(function()
-		if not inst:IsAncestorOf(game.Players.LocalPlayer) then
-			maid:DoCleaning()
+		if not inst:IsDescendantOf(game.Players.LocalPlayer) then
+			maid:Destroy()
 		end
 	end)
 

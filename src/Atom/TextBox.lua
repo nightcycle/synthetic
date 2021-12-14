@@ -4,65 +4,53 @@ local packages = synthetic.Parent
 local fusion = require(packages:WaitForChild('fusion'))
 local maidConstructor = require(packages:WaitForChild('maid'))
 local filterConstructor = require(packages:WaitForChild("filter"))
+local attributerConstructor = require(packages:WaitForChild("attributer"))
 
 local Component = synthetic:WaitForChild("Component")
 
-local enums = synthetic:WaitForChild("Enums")
-
 local constructor = {}
 
-function index(properties, key)
-	local props = properties:get()
-	return props[key]:get()
-end
+function constructor.new(config)
+	local maid = maidConstructor.new()
 
-function update(properties, key, val)
-	local props = properties:get()
-	props[key]:set(val)
-	properties:set(props)
-end
+	local Input = fusion.State(config.Input or "")
 
-function constructor.new()
-
-	local properties = fusion.State({
-		Elevation = fusion.State(1),
-		Input = fusion.State(""),
-	})
 	local filter = filterConstructor.new(game.Players.LocalPlayer)
 
 	local text = fusion.Computed(function()
-		local input = index(properties, "Input")
-		return filter:Get(input)
-	end)
-
-	local ZIndex = fusion.Computed(function()
-		local props = properties:get()
-		local elevation = props.Elevation:get()
-		return elevation*10
+		return filter:Get(Input:get())
 	end)
 
 	local inst
 	inst = fusion.New "TextBox" {
 		Name = "TextBox",
 		Text = text,
-		ZIndex = ZIndex,
+		PlaceholderText = "Input Text Here",
 		[fusion.OnEvent "FocusLost"] = function()
-			update(properties, "Input", inst.Text)
+			Input:set(inst.Text)
 		end
 	}
+	maid:GiveTask(inst)
+
+	--bind to attributes
+	local attributer = attributerConstructor.new(inst, {})
+	maid:GiveTask(attributer)
+	local function bindAttributeToState(key, state)
+		attributer:Connect(key, state:get())
+		maid:GiveTask(attributer.OnChanged:Connect(function(k, val)
+			if k == key then
+				state:set(val)
+			end
+		end))
+	end
+	bindAttributeToState("Input", Input)
+
 	local maid = maidConstructor.new()
 	maid.deathSignal = inst.AncestryChanged:Connect(function()
-		if not inst:IsAncestorOf(game.Players.LocalPlayer) then
-			maid:DoCleaning()
+		if not inst:IsDescendantOf(game.Players.LocalPlayer) then
+			maid:Destroy()
 		end
 	end)
-	for k, state in pairs(properties:get()) do
-		inst:SetAttribute(k, state:get())
-		maid[k] = inst:GetAttributeChangedSignal(k):Connect(function()
-			local val = inst:GetAttribute(k)
-			update(properties,k, val)
-		end)
-	end
 
 	return inst
 end

@@ -5,6 +5,7 @@ local fusion = require(packages:WaitForChild('fusion'))
 local maidConstructor = require(packages:WaitForChild('maid'))
 local attributerConstructor = require(packages:WaitForChild('attributer'))
 
+local runService = game:GetService("RunService")
 
 local elevationToValueGain = {
 	[0] = 0,
@@ -61,7 +62,7 @@ end
 
 local constructor = {}
 
-function constructor.new()
+function constructor.new(config)
 	local maid = maidConstructor.new()
 	local parentMaid = maidConstructor.new()
 	maid:GiveTask(parentMaid)
@@ -69,13 +70,14 @@ function constructor.new()
 	local currentParent
 
 	--set control states
-	local sizeBump = fusion.State(5)
-	local elevationBump = fusion.State(1)
+	local startSize = fusion.State(config.StartSize or UDim2.fromScale(0,0))
+	local sizeBump = fusion.State(config.SizeBump or UDim.new(0,10))
+	local elevationBump = fusion.State(config.ElevationBump or 1)
 
 	--create inst
 	local inst = fusion.New "Configuration" {
 		Name = script.Name,
-		Parent = game.Players.LocalPlayer:WaitForChild("PlayerGui"),
+		Parent = config.Parent or game.Players.LocalPlayer:WaitForChild("PlayerGui"),
 	}
 
 	--bind to attributes
@@ -89,26 +91,43 @@ function constructor.new()
 			end
 		end))
 	end
+
+	bindAttributeToState("StartSize", startSize)
 	bindAttributeToState("SizeBump", sizeBump)
 	bindAttributeToState("ElevationBump", elevationBump)
 
 	local isSelected = fusion.State(false)
 	local size = fusion.Computed(function()
-		if currentParent and currentParent:IsA("GuiObject") then
+		if currentParent ~= nil and currentParent:IsA("GuiObject") then
 			local absSize = currentParent.AbsoluteSize
 			local size = currentParent.Size
-			local b = sizeBump:get() or 0
+			local b = sizeBump:get() or UDim.new(0,0)
 			if isSelected:get() == true then
 				currentParent:SetAttribute("ElevationIncrease", elevationBump:get())
-				return UDim2.new(size.X.Scale, size.X.Offset+b, size.Y.Scale, size.Y.Offset+b)
+				return UDim2.new(
+					size.X.Scale+b.Scale,
+					size.X.Offset+b.Offset,
+					size.Y.Scale+b.Scale,
+					size.Y.Offset+b.Offset
+				)
 			else
 				currentParent:SetAttribute("ElevationIncrease", 1)
-				return currentParent:GetAttribute("SIFXC_Size") or UDim2.fromOffset(0,0)
+				return startSize:get()
 			end
 		else
-			return UDim2.fromScale(1,1)
+			return startSize:get()
 		end
 	end)
+
+	local currentSizeTween = fusion.Tween(size, newTweenInfo())
+	local sizeTweenCompat = fusion.Compat(currentSizeTween)
+
+	maid:GiveTask(sizeTweenCompat:onChange(function()
+		print("Update")
+		if currentParent ~= nil and currentParent:IsA("GuiObject") then
+			currentParent.Size = currentSizeTween:get()
+		end
+	end))
 
 	--connect goals to currents & parent with tweenCompat
 	maid:GiveTask(inst)
@@ -121,11 +140,11 @@ function constructor.new()
 				setParent(currentParent)
 				parentMaid:GiveTask(currentParent.InputBegan:Connect(function()
 					isSelected:set(true)
-					currentParent.Size = size:get()
+					-- currentParent.Size = size:get()
 				end))
 				parentMaid:GiveTask(currentParent.InputEnded:Connect(function()
 					isSelected:set(false)
-					currentParent.Size = size:get()
+					-- currentParent.Size = size:get()
 				end))
 			end
 		else

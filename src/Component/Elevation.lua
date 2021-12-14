@@ -35,7 +35,7 @@ end
 
 local constructor = {}
 
-function constructor.new()
+function constructor.new(config)
 	local maid = maidConstructor.new()
 	local parentMaid = maidConstructor.new()
 	maid:GiveTask(parentMaid)
@@ -79,7 +79,7 @@ function constructor.new()
 		Name = script.Name,
 		LineJoinMode = Enum.LineJoinMode.Round,
 		ApplyStrokeMode = Enum.ApplyStrokeMode.Border,
-		Parent = game.Players.LocalPlayer:WaitForChild("PlayerGui"),
+		Parent = config.Parent or game.Players.LocalPlayer:WaitForChild("PlayerGui"),
 		Thickness = currentThickness,
 		Transparency = currentTransparency,
 	}

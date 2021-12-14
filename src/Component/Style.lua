@@ -479,7 +479,7 @@ function tweenCompat(state, maid, tweenInfo, func)
 	return stateTween
 end
 
-function constructor.new()
+function constructor.new(config)
 	local maid = maidConstructor.new()
 	local parentMaid = maidConstructor.new()
 	maid:GiveTask(parentMaid)
@@ -487,13 +487,13 @@ function constructor.new()
 	local currentParent
 
 	--set control states
-	local category = fusion.State("Primary")
-	local textClass = fusion.State("Body")
+	local category = fusion.State(config.Category or "Primary")
+	local textClass = fusion.State(config.TextClass or "Body")
 
 	--create inst
 	local inst = fusion.New "Configuration" {
 		Name = "Style",
-		Parent = game.Players.LocalPlayer:WaitForChild("PlayerGui")
+		Parent = config.Parent or game.Players.LocalPlayer:WaitForChild("PlayerGui"),
 	}
 
 	--bind to attributes

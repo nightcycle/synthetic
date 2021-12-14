@@ -14,22 +14,9 @@ local paddingConstructor = require(Component:WaitForChild("Padding"))
 local cornerConstructor = require(Component:WaitForChild("Corner"))
 local listConstructor = require(Component:WaitForChild("ListLayout"))
 
-local enums = synthetic:WaitForChild("Enums")
-
 local constructor = {}
 
-function index(properties, key)
-	local props = properties:get()
-	return props[key]:get()
-end
-
-function update(properties, key, val)
-	local props = properties:get()
-	props[key]:set(val)
-	properties:set(props)
-end
-
-function constructor.new()
+function constructor.new(config)
 	local properties = fusion.State({
 		EnabledColor = fusion.State(Color3.fromHex("#1976d2")),
 		DisabledColor = fusion.State(Color3.fromHex("#ff8f00")),
@@ -45,8 +32,8 @@ function constructor.new()
 		inst:SetAttribute("Enabled", index(properties,"Enabled"))
 	end)
 	maid.deathSignal = inst.AncestryChanged:Connect(function()
-		if not inst:IsAncestorOf(game.Players.LocalPlayer) then
-			maid:DoCleaning()
+		if not inst:IsDescendantOf(game.Players.LocalPlayer) then
+			maid:Destroy()
 		end
 	end)
 

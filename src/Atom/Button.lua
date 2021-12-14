@@ -10,41 +10,14 @@ local elevationConstructor = require(Component:WaitForChild("Elevation"))
 local lightingConstructor = require(Component:WaitForChild("Lighting"))
 local inputEffectConstructor = require(Component:WaitForChild("InputEffect"))
 
-local enums = synthetic:WaitForChild("Enums")
-
 local constructor = {}
 
-function index(properties, key)
-	local props = properties:get()
-	return props[key]:get()
-end
-
-function update(properties, key, val)
-	local props = properties:get()
-	props[key]:set(val)
-	properties:set(props)
-end
-
-function constructor.new()
-	local isFocused = fusion.State(false)
-	local debounce = true
-
-	local properties = fusion.State({
-		Elevation = fusion.State(1),
-		RestSize = fusion.State(UDim2.fromScale(1,1)),
-		FocusSize = fusion.State(UDim2.new(1, 5, 1, 5)),
-	})
-	local ZIndex = fusion.Computed(function()
-		local props = properties:get()
-		local elevation = props.Elevation:get()
-		return elevation*10
-	end)
+function constructor.new(config)
 	local inst = fusion.New "TextButton" {
 		Text = "",
-		ZIndex = ZIndex,
 		AutoButtonColor = true,
 		Name = "Button",
-		Parent = game.Players.LocalPlayer:WaitForChild("PlayerGui"),
+		Parent = config.Parent or game.Players.LocalPlayer:WaitForChild("PlayerGui"),
 	}
 
 	local styleComponent = styleConstructor.new()
@@ -62,19 +35,10 @@ function constructor.new()
 
 	local maid = maidConstructor.new()
 	maid.deathSignal = inst.AncestryChanged:Connect(function()
-		if not inst:IsAncestorOf(game.Players.LocalPlayer) then
-			maid:DoCleaning()
+		if not inst:IsDescendantOf(game.Players.LocalPlayer) then
+			maid:Destroy()
 		end
 	end)
-
-	for k, state in pairs(properties:get()) do
-		inst:SetAttribute(k, state:get())
-		maid[k] = inst:GetAttributeChangedSignal(k):Connect(function()
-			local val = inst:GetAttribute(k)
-			-- index(properties,k, val)
-			update(properties, k, val)
-		end)
-	end
 
 	return inst
 end

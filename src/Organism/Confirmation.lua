@@ -10,22 +10,9 @@ local Component = synthetic:WaitForChild("Component")
 local atom = synthetic:WaitForChild("Atom")
 local molecule = synthetic:WaitForChild("Molecule")
 
-local enums = synthetic:WaitForChild("Enums")
-
 local constructor = {}
 
-function index(properties, key)
-	local props = properties:get()
-	return props[key]:get()
-end
-
-function update(properties, key, val)
-	local props = properties:get()
-	props[key]:set(val)
-	properties:set(props)
-end
-
-function constructor.new()
+function constructor.new(config)
 	local properties = fusion.State({
 
 	})
@@ -34,8 +21,8 @@ function constructor.new()
 
 	local maid = maidConstructor.new()
 	maid.deathSignal = inst.AncestryChanged:Connect(function()
-		if not inst:IsAncestorOf(game.Players.LocalPlayer) then
-			maid:DoCleaning()
+		if not inst:IsDescendantOf(game.Players.LocalPlayer) then
+			maid:Destroy()
 		end
 	end)
 	for k, state in pairs(properties:get()) do

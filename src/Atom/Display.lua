@@ -8,9 +8,8 @@ local Component = synthetic:WaitForChild("Component")
 local paddingConstructor = require(Component:WaitForChild("Padding"))
 local cornerConstructor = require(Component:WaitForChild("Corner"))
 local listConstructor = require(Component:WaitForChild("ListLayout"))
-
-local enums = synthetic:WaitForChild("Enums")
-local UIDisplay = require(enums:WaitForChild("UIDisplay"))
+local attributerConstructor = require(packages:WaitForChild('attributer'))
+local styleConstructor = require(Component:WaitForChild("Style"))
 
 local constructor = {}
 
@@ -27,42 +26,32 @@ function newTweenInfo(params)
 	return TweenInfo.new(duration, easingStyle, easingDirection, repeatCount, reverses, delayTime)
 end
 
-function index(properties, key)
-	local props = properties:get()
-	if not props[key] then return end
-	return props[key]:get()
-end
+function constructor.new(config)
+	--public states
+	local Media = fusion.State(config.Media or "Text")
+	local Text = fusion.State(config.Text or "")
+	local Color = fusion.State(config.Color or Color3.new(1,1,1))
 
-function update(properties, key, val)
-	local props = properties:get()
-	props[key]:set(val)
-	properties:set(props)
-end
+	--image specific public states
+	local Image = fusion.State(config.Image or "")
 
-function constructor.new()
+	--icon specific public states
+	local ImageRectOffset = fusion.State(config.ImageRectOffset or Vector2.new(0,0))
+	local ImageRectSize = fusion.State(config.ImageRectSize or Vector2.new(0,0))
+
+	--viewport specific public states
+	local VFFocusNormal = fusion.State(config.VFFocusNormal or Vector3.new(0,0,1))
+	local VFFocusDistance = fusion.State(config.VFFocusDistance or 5)
+	local VFFocusOrigin = fusion.State(config.VFFocusOrigin or Vector3.new(0,0,0))
+	local VFFocusFOV = fusion.State(config.VFFocusFOV or 40)
+	local VFRestNormal = fusion.State(config.VFRestNormal or Vector3.new(0,0,1))
+	local VFRestDistance = fusion.State(config.VFRestDistance or 6)
+	local VFRestOrigin = fusion.State(config.VFRestOrigin or Vector3.new(0,0,0))
+	local VFRestFOV = fusion.State(config.VFRestFOV or 70)
+
+	--private states
 	local isFocused = fusion.State(false)
-
-	local properties = fusion.State({
-		Media = fusion.State(UIDisplay.Text),
-		Text = fusion.State(""),
-		Elevation = fusion.State(1),
-		Color = fusion.State(Color3.new(1,1,1)),
-		FocusNormal = fusion.State(Vector3.new(0,0,1)),
-		FocusDistance = fusion.State(5),
-		FocusOrigin = fusion.State(Vector3.new(0,0,0)),
-		FocusFOV = fusion.State(40),
-		RestNormal = fusion.State(Vector3.new(0,0,1)),
-		RestDistance = fusion.State(6),
-		RestOrigin = fusion.State(Vector3.new(0,0,0)),
-		RestFOV = fusion.State(70),
-	})
-
-	local ZIndex = fusion.Computed(function()
-		local props = properties:get()
-		local elevation = props.Elevation:get()
-		return elevation*10
-	end)
-
+	local maid = maidConstructor.new()
 	local inst = fusion.New "Frame" {
 		Name = "Display",
 		[fusion.OnEvent "InputChanged"] = function()
@@ -71,45 +60,49 @@ function constructor.new()
 		[fusion.OnEvent "InputEnded"] = function()
 			isFocused:set(false)
 		end,
-		Parent = game.Players.LocalPlayer:WaitForChild("PlayerGui"),
+		Parent = config.Parent or game.Players.LocalPlayer:WaitForChild("PlayerGui"),
 	}
+	maid:GiveTask(inst)
 
 	local padding = paddingConstructor.new()
 	padding.Parent = inst
+	maid:GiveTask(padding)
 
 	local listLayout = listConstructor.new()
 	listLayout.Parent = inst
+	maid:GiveTask(listLayout)
 
 	local corner = cornerConstructor.new()
 	corner.Parent = inst
+	maid:GiveTask(corner)
 
-	local maid = maidConstructor.new()
+	local styleComponent = styleConstructor.new()
+	styleComponent.Parent = inst
+	maid:GiveTask(styleComponent)
+
 	local mediaMaid = maidConstructor.new()
 	maid.MediaMaid = mediaMaid
 
 	local displayMedia = fusion.Computed(function()
-		local text = index(properties,"Text") or ""
-		local texture = index(properties,"Image") or ""
-		local imageRectOffset = index(properties,"ImageRectOffset") or Vector2.new(0,0)
-		local imageRectSize = index(properties,"ImageRectSize") or Vector2.new(0,0)
+		mediaMaid:DoCleaning()
+
+		local text = Text:get()
+		local texture = Image:get()
+		local imageRectOffset = ImageRectOffset:get()
+		local imageRectSize = ImageRectSize:get()
 
 		local textMedia
 		local visualMedia
-		if index(properties,"Media") == UIDisplay.Text then
+		if Media:get() == "Text" then
 			textMedia = fusion.New "TextLabel" {
 				Name = "Label",
 				Text = text,
-				BackgroundTransparency = 1,
-				TextSize = 14,
 				Font = Enum.Font.GothamSemibold,
-				-- TextColor3 = properties:get("Color"),
 				LayoutOrder = 2,
-				ZIndex = ZIndex,
-				TextTransparency = properties:get("Elevation"),
 				Parent = inst
 			}
 		end
-		if index(properties,"Media") == UIDisplay.Icon then
+		if Media:get() == "Icon" then
 			visualMedia = fusion.New "ImageLabel" {
 				Name = "Media",
 				BackgroundTransparency = 1,
@@ -117,24 +110,22 @@ function constructor.new()
 				imageRectOffset = imageRectOffset,
 				imageRectSize = imageRectSize,
 				LayoutOrder = 1,
-				ZIndex = ZIndex,
-				ImageColor3 = properties:get("Color"),
+				ImageColor3 = Color:get(),
 				SizeConstraint = Enum.SizeConstraint.RelativeYY,
 				Size = UDim2.fromScale(1,1),
 				Parent = inst
 			}
-		elseif index(properties,"Media") == UIDisplay.Image then
+		elseif Media:get() == "Image" then
 			visualMedia = fusion.New "ImageLabel" {
 				Name = "Media",
 				BackgroundTransparency = 1,
 				Image = texture,
-				ZIndex = ZIndex,
 				LayoutOrder = 1,
 				SizeConstraint = Enum.SizeConstraint.RelativeYY,
 				Size = UDim2.fromScale(1,1),
 				Parent = inst
 			}
-		elseif index(properties,"Media") == UIDisplay.Viewport then
+		elseif Media:get() == "Viewport" then
 			-- CF
 			local cf = fusion.Computed(function()
 				local cOrigin
@@ -142,13 +133,13 @@ function constructor.new()
 				local cDistance
 
 				if isFocused:get() == true then
-					cOrigin = index(properties,"FocusOrigin")
-					cDirection = index(properties,"FocusNormal")
-					cDistance = index(properties,"FocusDistance")
+					cOrigin = VFFocusOrigin:get()
+					cDirection = VFFocusNormal:get()
+					cDistance = VFFocusDistance:get()
 				else
-					cOrigin = index(properties,"RestOrigin")
-					cDirection = index(properties,"RestNormal")
-					cDistance = index(properties,"RestDistance")
+					cOrigin = VFRestOrigin:get()
+					cDirection = VFRestNormal:get()
+					cDistance = VFRestDistance:get()
 				end
 				local offset = cOrigin + (cDirection * cDistance)
 				return CFrame.new(offset, cOrigin)
@@ -158,9 +149,9 @@ function constructor.new()
 			-- FOV
 			local curFOV = fusion.Computed(function()
 				if isFocused:get() == true then
-					return index(properties, "FocusFOV")
+					return VFFocusFOV:get()
 				else
-					return index(properties, "RestFOV")--index(properties,"RestFOV")
+					return VFRestFOV:get()
 				end
 			end)
 			local tweenFOV = fusion.Tween(curFOV, newTweenInfo({es.Back, Duration = 0.25}))
@@ -174,7 +165,6 @@ function constructor.new()
 				Name = "Media",
 				CurrentCamera = camera,
 				BackgroundTransparency = 1,
-				ZIndex = ZIndex,
 				LayoutOrder = 1,
 				SizeConstraint = Enum.SizeConstraint.RelativeYY,
 				Size = UDim2.fromScale(1,1),
@@ -183,23 +173,56 @@ function constructor.new()
 			camera.Parent = visualMedia
 		end
 
+		if textMedia then
+			local textStyleComponent = styleConstructor.new()
+			textStyleComponent.Parent = textMedia
+			mediaMaid:GiveTask(textStyleComponent)
+		end
+		if visualMedia then
+			local visualStyleComponent = styleConstructor.new()
+			visualStyleComponent.Parent = textMedia
+			mediaMaid:GiveTask(visualStyleComponent)
+		end
+
 		mediaMaid.TextMedia = textMedia
 		mediaMaid.VisualMedia = visualMedia
 	end)
 
+
+	--bind to attributes
+	local attributer = attributerConstructor.new(inst, {})
+	maid:GiveTask(attributer)
+	local function bindAttributeToState(key, state)
+		attributer:Connect(key, state:get())
+		maid:GiveTask(attributer.OnChanged:Connect(function(k, val)
+			if k == key then
+				state:set(val)
+			end
+		end))
+	end
+	bindAttributeToState("Media",Media)
+	bindAttributeToState("Text",Text)
+	bindAttributeToState("Color",Color)
+	bindAttributeToState("Image",Image)
+
+	bindAttributeToState("ImageRectOffset",ImageRectOffset)
+	bindAttributeToState("ImageRectSize",ImageRectSize)
+
+	bindAttributeToState("VFFocusNormal",VFFocusNormal)
+	bindAttributeToState("VFFocusDistance",VFFocusDistance)
+	bindAttributeToState("VFFocusOrigin",VFFocusOrigin)
+	bindAttributeToState("VFFocusFOV",VFFocusFOV)
+
+	bindAttributeToState("VFRestNormal",VFRestNormal)
+	bindAttributeToState("VFRestDistance",VFRestDistance)
+	bindAttributeToState("VFRestOrigin",VFRestOrigin)
+	bindAttributeToState("VFRestFOV",VFRestFOV)
+
 	maid.deathSignal = inst.AncestryChanged:Connect(function()
-		if not inst:IsAncestorOf(game.Players.LocalPlayer) then
-			maid:DoCleaning()
+		if not inst:IsDescendantOf(game.Players.LocalPlayer) then
+			maid:Destroy()
 		end
 	end)
-	for k, state in pairs(properties:get()) do
-		inst:SetAttribute(k, state:get())
-		maid[k] = inst:GetAttributeChangedSignal(k):Connect(function()
-			local val = inst:GetAttribute(k)
-			-- index(properties,k, val)
-			update(properties, k, val)
-		end)
-	end
 
 	return inst
 end

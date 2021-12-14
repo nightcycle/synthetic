@@ -51,7 +51,7 @@ end
 
 local constructor = {}
 
-function constructor.new()
+function constructor.new(config)
 	local maid = maidConstructor.new()
 	local parentMaid = maidConstructor.new()
 	maid:GiveTask(parentMaid)
@@ -91,7 +91,7 @@ function constructor.new()
 	--create inst
 	local inst = fusion.New "UIGradient" {
 		Name = script.Name,
-		Parent = game.Players.LocalPlayer:WaitForChild("PlayerGui"),
+		Parent = config.Parent or game.Players.LocalPlayer:WaitForChild("PlayerGui"),
 		Transparency = fusion.Tween(goalTransparencySequence, newTweenInfo()),
 		-- Color = fusion.Tween(goalColorSequence, newTweenInfo())
 	}

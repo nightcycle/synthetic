@@ -3,52 +3,39 @@ local synthetic = script.Parent.Parent
 local packages = synthetic.Parent
 local fusion = require(packages:WaitForChild('fusion'))
 local maidConstructor = require(packages:WaitForChild('maid'))
-local filterConstructor = require(packages:WaitForChild("filter"))
--- local attributerConstructor = require(packages:WaitForChild("attribute"))
-
-local Component = synthetic:WaitForChild("Component")
-local atom = synthetic:WaitForChild("Atom")
-local molecule = synthetic:WaitForChild("Molecule")
-
-local enums = synthetic:WaitForChild("Enums")
+local attributerConstructor = require(packages:WaitForChild("attributer"))
 
 local constructor = {}
 
-function index(properties, key)
-	local props = properties:get()
-	return props[key]:get()
-end
-
-function update(properties, key, val)
-	local props = properties:get()
-	props[key]:set(val)
-	properties:set(props)
-end
-
-function constructor.new()
-	local properties = fusion.State({
-		CornerRadius = fusion.State(UDim.new(0, 5))
-	})
-
-	local UICorner = fusion.New "UICorner" {
-		CornerRadius = index(properties, "CornerRadius"),
-	}
-
+function constructor.new(config)
 	local maid = maidConstructor.new()
-	maid.deathSignal = UICorner.AncestryChanged:Connect(function()
-		if not UICorner:IsAncestorOf(game.Players.LocalPlayer) then
-			maid:DoCleaning()
+
+	local radius = fusion.State(config.Radius or UDim.new(0, 5))
+	local inst = fusion.New "UICorner" {
+		CornerRadius = radius,
+	}
+	maid:GiveTask(inst)
+
+	--bind to attributes
+	local attributer = attributerConstructor.new(inst, {})
+	maid:GiveTask(attributer)
+	local function bindAttributeToState(key, state)
+		attributer:Connect(key, state:get())
+		maid:GiveTask(attributer.OnChanged:Connect(function(k, val)
+			if k == key then
+				state:set(val)
+			end
+		end))
+	end
+	bindAttributeToState("Radius", radius)
+
+	maid.deathSignal = inst.AncestryChanged:Connect(function()
+		if not inst:IsDescendantOf(game.Players.LocalPlayer) then
+			maid:Destroy()
 		end
 	end)
 
-	for k, state in pairs(properties:get()) do
-		UICorner:SetAttribute(k, state:get())
-		maid[k] = UICorner:GetAttributeChangedSignal(k):Connect(function()
-			update(properties, k, UICorner:GetAttribute(k))
-		end)
-	end
-
-	return UICorner
+	return inst
 end
 
 return constructor

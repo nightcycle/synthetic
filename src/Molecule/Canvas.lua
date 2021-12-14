@@ -4,16 +4,16 @@ local packages = synthetic.Parent
 local fusion = require(packages:WaitForChild('fusion'))
 local maidConstructor = require(packages:WaitForChild('maid'))
 local filterConstructor = require(packages:WaitForChild("filter"))
--- local attributerConstructor = require(packages:WaitForChild("attribute"))
+local attributerConstructor = require(packages:WaitForChild("attribute"))
 
 local Component = synthetic:WaitForChild("Component")
-local atom = synthetic:WaitForChild("Atom")
 local paddingConstructor = require(Component:WaitForChild("Padding"))
 local cornerConstructor = require(Component:WaitForChild("Corner"))
-local displayConstructor = require(atom:WaitForChild("Display"))
+local styleConstructor = require(Component:WaitForChild("Style"))
 
-local enums = synthetic:WaitForChild("Enums")
-local UIDisplay = require(enums:WaitForChild("UIDisplay"))
+local atom = synthetic:WaitForChild("Atom")
+local displayConstructor = require(atom:WaitForChild("Display"))
+local buttonConstructor = require(atom:WaitForChild("Button"))
 
 local constructor = {}
 
@@ -30,119 +30,129 @@ function newTweenInfo(params)
 	return TweenInfo.new(duration, easingStyle, easingDirection, repeatCount, reverses, delayTime)
 end
 
-function index(properties, key)
-	local props = properties:get()
-	return props[key]:get()
-end
+function constructor.new(config)
+	local maid = maidConstructor.new()
 
-function update(properties, key, val)
-	local props = properties:get()
-	props[key]:set(val)
-	properties:set(props)
-end
-
-function constructor.new()
-	local properties = fusion.State({
-		Open = fusion.State(false),
-		Blur = fusion.State(true),
-		Alignment = fusion.State(1),
-		Elevation = fusion.State(1),
-		OpenPosition = fusion.State(UDim2.fromScale(0.5,0.5)),
-		ClosePosition = fusion.State(UDim2.fromScale(0.5,0.5)),
-		ExitButtonEnabled = fusion.State(true),
-	})
-
-	local ZIndex = fusion.Computed(function()
-		local props = properties:get()
-		local elevation = props.Elevation:get()
-		return elevation*10
-	end)
-
-	local frame = fusion.New "Frame" {
+	local Open = fusion.State(config.Open or false)
+	local OpenPosition = fusion.State(config.OpenPosition or UDim2.fromScale(0.5,0.5))
+	local ClosePosition = fusion.State(config.ClosePosition or UDim2.fromScale(0.5,0.5))
+	local OpenSize = fusion.State(config.OpenSize or UDim2.fromScale(0.5,0.5))
+	local CloseSize = fusion.State(config.CloseSize or UDim2.fromScale(0.5,0.5))
+	local ExitButtonEnabled = fusion.State(config.ExitButtonEnabled or true)
+	local AbsoluteScrollLength = fusion.State(config.AbsoluteScrollLength or 0)
+	local inst = fusion.New "Frame" {
 		Name = "Canvas",
-		ZIndex = ZIndex,
 		Position = fusion.Tween(
 			fusion.Computed(function()
-				local props = properties:get()
-
-				-- local blurFunction = camLibrary:Get("Blur")
-				-- if blurFunction then
-				-- 	blurFunction(props.Blur:get())
-				-- end
-
-				if props.Open:get() == true then
-					return props.OpenPosition:get()
+				if Open:get() == true then
+					return OpenPosition:get()
 				else
-					return props.ClosePosition:get()
+					return ClosePosition:get()
 				end
 			end),
 			newTweenInfo()
 		),
-		AnchorPoint = fusion.Computed(function()
-			-- local alignment = alignmentData:get()
-			-- if alignment then
-			-- 	return alignment.Anchor
-			-- else
-				return Vector2.new(0.5,0.5)
-			-- end
-		end),
-		Parent = game.Players.LocalPlayer:WaitForChild("PlayerGui"),
+		Size = fusion.Tween(
+			fusion.Computed(function()
+				if Open:get() == true then
+					return OpenSize:get()
+				else
+					return CloseSize:get()
+				end
+			end),
+			newTweenInfo()
+		),
+		AnchorPoint = Vector2.new(0.5,0.5),
+		Parent = config.Parent or game.Players.LocalPlayer:WaitForChild("PlayerGui"),
 	}
 
-	local content = fusion.New "Frame" {
+	local frameStyle = styleConstructor.new()
+	frameStyle.Parent = inst
+	frameStyle:SetAttribute("Category", "Background")
+	maid:GiveTask(frameStyle)
+
+	local CanvasSize = fusion.Computed(function()
+		return UDim2.new(0,0,0, AbsoluteScrollLength:get())
+	end)
+
+	local scrollBarThickness = 14
+	local content = fusion.New "ScrollingFrame" {
 		Name = "Content",
 		Size = UDim2.fromScale(1,1),
+		ScrollBarThickness = scrollBarThickness,
+		CanvasSize = CanvasSize,
+		BorderSizePixel = 0,
 		BackgroundTransparency = 1,
-		Position = UDim2.fromScale(1,1),
+		Position = UDim2.fromScale(0.5,0.5),
 		AnchorPoint = Vector2.new(0.5,0.5),
-		Parent = frame,
+		Parent = inst,
 	}
 
-	local exitButton = fusion.New "TextButton" {
-		Name = "ExitButton",
-		Parent = frame,
-		Visible = properties:get().ExitButtonEnabled,
-		AnchorPoint = Vector2.new(0.5,0.5),
-		Position = UDim2.fromScale(1,0),
-	}
+	maid:GiveTask(fusion.New "UIPadding"{
+		PaddingRight = UDim.new(0,scrollBarThickness),
+		Parent = content,
+	})
 
-	local buttonSize = 48
-	exitButton:SetAttribute("RestSize", buttonSize)
-	exitButton:SetAttribute("FocusSize", math.round(buttonSize*1.2))
+	local buttonSize = 24
+	local exitButton = buttonConstructor.new()
+	exitButton.Name = "ExitButton"
+	exitButton.Parent = inst
+	exitButton.AnchorPoint = Vector2.new(0.5,0.5)
+	exitButton.Position = UDim2.fromScale(1,0)
+	exitButton.Text = "X"
+	exitButton.Size = UDim2.fromOffset(buttonSize, buttonSize)
+	maid:GiveTask(exitButton)
+	exitButton:WaitForChild("InputEffect"):SetAttribute("StartSize", UDim2.fromOffset(buttonSize, buttonSize))
 
-	local exitIcon = displayConstructor.new()
-	exitIcon.Parent = exitButton
-	exitIcon.BackgroundTransparency = 1
-	exitIcon.BackgroundColor3 = Color3.new(1,0,0)
-
-	exitIcon.Size = UDim2.fromScale(1,1)
-	exitIcon:SetAttribute("Media", UIDisplay.Text)
-	exitIcon:SetAttribute("Text", "X")
-	exitIcon:SetAttribute("Color", Color3.new(1,1,1))
+	local exitButtonCompat = fusion.Compat(ExitButtonEnabled)
+	maid:GiveTask(exitButtonCompat:onChange(function()
+		exitButton.Visible = ExitButtonEnabled:get()
+	end))
+	maid:GiveTask(exitButton.Activated:Connect(function()
+		Open:set(false)
+	end))
 
 	local corner = cornerConstructor.new()
 	corner:SetAttribute("Corner", math.ceil(buttonSize/2))
 	corner.Parent = exitButton
+	maid:GiveTask(corner)
 
 	local padding = paddingConstructor.new()
 	padding:SetAttribute("Padding", math.ceil(buttonSize/2))
-	padding.Parent = frame
+	padding.Parent = inst
+	maid:GiveTask(padding)
 
-	local maid = maidConstructor.new()
-	maid.deathSignal = frame.AncestryChanged:Connect(function()
-		if not frame:IsAncestorOf(game.Players.LocalPlayer) then
-			maid:DoCleaning()
+	local style = styleConstructor.new()
+	style.Parent = exitButton
+	style:SetAttribute("Category", "Error")
+	style:SetAttribute("TextClass", "Headline")
+
+	--bind to attributes
+	local attributer = attributerConstructor.new(inst, {})
+	maid:GiveTask(attributer)
+	local function bindAttributeToState(key, state)
+		attributer:Connect(key, state:get())
+		maid:GiveTask(attributer.OnChanged:Connect(function(k, val)
+			if k == key then
+				state:set(val)
+			end
+		end))
+	end
+	bindAttributeToState("Open", Open)
+	bindAttributeToState("OpenPosition", OpenPosition)
+	bindAttributeToState("ClosePosition", ClosePosition)
+	bindAttributeToState("OpenSize", OpenSize)
+	bindAttributeToState("CloseSize", CloseSize)
+	bindAttributeToState("ExitButtonEnabled", ExitButtonEnabled)
+	bindAttributeToState("AbsoluteScrollLength", AbsoluteScrollLength)
+
+	maid.deathSignal = inst.AncestryChanged:Connect(function()
+		if not inst:IsDescendantOf(game.Players.LocalPlayer) then
+			maid:Destroy()
 		end
 	end)
-	for k, state in pairs(properties:get()) do
-		frame:SetAttribute(k, state:get())
-		maid[k] = frame:GetAttributeChangedSignal(k):Connect(function()
-			local val = frame:GetAttribute(k)
-			update(properties,k, val)
-		end)
-	end
 
-	return frame
+	return inst
 end
 
 return constructor

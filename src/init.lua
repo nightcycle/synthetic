@@ -6,14 +6,9 @@ for i, module in ipairs(script:GetDescendants()) do
 	end
 end
 
-return {
-	new = function(key, parent)
-		local const = constructors[key]
-		if not const then error("No constructor found for "..tostring(key)) end
-		local inst = const.new()
-		if parent then
-			inst.Parent = parent
-		end
-		return inst
-	end
-}
+return function(key, config)
+	local const = constructors[key]
+	if not const then error("No constructor found for "..tostring(key)) end
+	local inst = const.new(config or {})
+	return inst
+end
