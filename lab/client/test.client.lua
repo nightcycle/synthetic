@@ -3,30 +3,26 @@ synthetic.Parent = game.ReplicatedStorage:WaitForChild("Packages")
 
 synthetic = require(synthetic)
 
-local screenGui = synthetic.new("ScreenGui", {
+local screenGui = synthetic("ScreenGui", {
 	Parent = game.Players.LocalPlayer:WaitForChild("PlayerGui"),
 })
 
-local canvas = synthetic.new("Canvas", {
-	Parent = screenGui
-})
-canvas.Size = UDim2.new(0.5, 0, 0.5, 0)
-canvas.Transparency = 1
-
-local listLayout = synthetic.new("ListLayout", {
-	Parent = canvas
+local canvas = synthetic("Canvas", {
+	Parent = screenGui,
+	Size = UDim2.new(0.5, 0, 0.5, 0),
 })
 
+local listLayout = synthetic("ListLayout", {
+	Parent = canvas:WaitForChild("Content")
+})
 listLayout.HorizontalAlignment = Enum.HorizontalAlignment.Center
 listLayout.VerticalAlignment = Enum.VerticalAlignment.Center
 
-local button = synthetic.new("Button", {
-	Parent = canvas
+local button = synthetic("Button", {
+	Parent = canvas:WaitForChild("Content"),
+	Size = UDim2.fromOffset(100, 50),
 })
-button.Size = UDim2.fromOffset(100, 50)
 button.Text = "Test"
 button:WaitForChild("InputEffect"):SetAttribute("StartSize", UDim2.fromOffset(100, 50))
-print("Adding style component")
 
-print("Done")
 

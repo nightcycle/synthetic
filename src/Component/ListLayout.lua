@@ -7,6 +7,7 @@ local maidConstructor = require(packages:WaitForChild('maid'))
 local constructor = {}
 
 function constructor.new(config)
+	config = config or {}
 	local listLayout = fusion.New "UIListLayout" {
 		FillDirection = Enum.FillDirection.Vertical,
 		SortOrder = Enum.SortOrder.LayoutOrder,

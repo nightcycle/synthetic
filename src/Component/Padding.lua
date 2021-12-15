@@ -8,6 +8,7 @@ local attributerConstructor = require(packages:WaitForChild('attributer'))
 local constructor = {}
 
 function constructor.new(config)
+	config = config or {}
 	local padding = fusion.State(config.Padding or 7)
 	local paddingUdim = fusion.Computed(function()
 		return UDim.new(0, padding)
@@ -39,6 +40,7 @@ function constructor.new(config)
 	maid.deathSignal = inst.AncestryChanged:Connect(function()
 		if not inst:IsDescendantOf(game.Players.LocalPlayer) then
 			maid:Destroy()
+			print("Cleaning up "..tostring(script.Name))
 		end
 	end)
 	return inst

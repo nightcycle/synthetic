@@ -5,6 +5,7 @@ local fusion = require(packages:WaitForChild('fusion'))
 local maidConstructor = require(packages:WaitForChild('maid'))
 
 local Component = synthetic:WaitForChild("Component")
+local cornerConstructor = require(Component:WaitForChild("Corner"))
 local styleConstructor = require(Component:WaitForChild("Style"))
 local elevationConstructor = require(Component:WaitForChild("Elevation"))
 local lightingConstructor = require(Component:WaitForChild("Lighting"))
@@ -13,6 +14,8 @@ local inputEffectConstructor = require(Component:WaitForChild("InputEffect"))
 local constructor = {}
 
 function constructor.new(config)
+	config = config or {}
+	local maid = maidConstructor.new()
 	local inst = fusion.New "TextButton" {
 		Text = "",
 		AutoButtonColor = true,
@@ -25,24 +28,33 @@ function constructor.new(config)
 		Visible = config.Visible or true,
 		Name = config.Name or script.Name,
 	}
+	maid:GiveTask(inst)
+	maid:GiveTask(cornerConstructor.new({
+		Radius = UDim.new(0, 5),
+		Parent = inst
+	}))
+	maid:GiveTask(styleConstructor.new({
+		Category = "Primary",
+		TextClass = "Button",
+		Parent = inst,
+	}))
+	maid:GiveTask(elevationConstructor.new({
+		Parent = inst,
+	}))
+	maid:GiveTask(lightingConstructor.new({
+		Parent = inst,
+	}))
+	maid:GiveTask(inputEffectConstructor.new({
+		StartSize = config.Size or UDim2.fromScale(1,1),
+		SizeBump = UDim.new(0, 10),
+		ElevationBump = 1,
+		Parent = inst,
+	}))
 
-	local styleComponent = styleConstructor.new()
-	styleComponent:SetAttribute("TextClass", "Button")
-	styleComponent.Parent = inst
-
-	local elevationComponent = elevationConstructor.new()
-	elevationComponent.Parent = inst
-
-	local lightingComponent = lightingConstructor.new()
-	lightingComponent.Parent = inst
-
-	local inputEffectComponent = inputEffectConstructor.new()
-	inputEffectComponent.Parent = inst
-
-	local maid = maidConstructor.new()
 	maid.deathSignal = inst.AncestryChanged:Connect(function()
 		if not inst:IsDescendantOf(game.Players.LocalPlayer) then
 			maid:Destroy()
+			print("Cleaning up "..tostring(script.Name))
 		end
 	end)
 

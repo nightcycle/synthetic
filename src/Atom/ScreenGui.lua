@@ -9,6 +9,7 @@ local Component = synthetic:WaitForChild("Component")
 local constructor = {}
 
 function constructor.new(config)
+	config = config or {}
 	local gui = fusion.New "ScreenGui" {
 		Name = "ScreenGui",
 		ResetOnSpawn = false,

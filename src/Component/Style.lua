@@ -480,6 +480,7 @@ function tweenCompat(state, maid, tweenInfo, func)
 end
 
 function constructor.new(config)
+	config = config or {}
 	local maid = maidConstructor.new()
 	local parentMaid = maidConstructor.new()
 	maid:GiveTask(parentMaid)
@@ -503,6 +504,7 @@ function constructor.new(config)
 		attributer:Connect(key, state:get())
 		maid:GiveTask(attributer.OnChanged:Connect(function(k, val)
 			if k == key then
+				print("state changed "..tostring(k))
 				state:set(val)
 			end
 		end))
@@ -558,6 +560,8 @@ function constructor.new(config)
 	maid:GiveTask(inst.AncestryChanged:Connect(function()
 		if inst:IsDescendantOf(game.Players.LocalPlayer:WaitForChild("PlayerGui")) == false then
 			maid:Destroy()
+			print("Cleaning up "..tostring(script.Name))
+			print("Cleaning up "..tostring(script.Name))
 		elseif inst.Parent ~= nil or currentParent ~= nil then
 			currentParent = inst.Parent
 			parentMaid:GiveTask(currentParent:GetPropertyChangedSignal("AbsoluteSize"):Connect(fireUpdate))

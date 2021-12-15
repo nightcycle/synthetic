@@ -4,16 +4,20 @@ local packages = synthetic.Parent
 local fusion = require(packages:WaitForChild('fusion'))
 local maidConstructor = require(packages:WaitForChild('maid'))
 local filterConstructor = require(packages:WaitForChild("filter"))
-local attributerConstructor = require(packages:WaitForChild("attribute"))
+local attributerConstructor = require(packages:WaitForChild("attributer"))
 
 local Component = synthetic:WaitForChild("Component")
 local paddingConstructor = require(Component:WaitForChild("Padding"))
 local cornerConstructor = require(Component:WaitForChild("Corner"))
 local styleConstructor = require(Component:WaitForChild("Style"))
+local elevationConstructor = require(Component:WaitForChild("Elevation"))
+local lightingConstructor = require(Component:WaitForChild("Lighting"))
+local inputEffectConstructor = require(Component:WaitForChild("InputEffect"))
 
 local atom = synthetic:WaitForChild("Atom")
 local displayConstructor = require(atom:WaitForChild("Display"))
 local buttonConstructor = require(atom:WaitForChild("Button"))
+
 
 local constructor = {}
 
@@ -31,6 +35,7 @@ function newTweenInfo(params)
 end
 
 function constructor.new(config)
+	config = config or {}
 	local maid = maidConstructor.new()
 
 	local Open = fusion.State(config.Open or false)
@@ -68,16 +73,25 @@ function constructor.new(config)
 		Visible = config.Visible or true,
 		Name = config.Name or script.Name,
 	}
-
-	local frameStyle = styleConstructor.new()
-	frameStyle.Parent = inst
-	frameStyle:SetAttribute("Category", "Background")
-	maid:GiveTask(frameStyle)
-
+	maid:GiveTask(inst)
+	maid:GiveTask(styleConstructor.new({
+		Category = "Background",
+		Parent = inst,
+	}))
+	maid:GiveTask(elevationConstructor.new({
+		Parent = inst,
+	}))
+	maid:GiveTask(lightingConstructor.new({
+		Parent = inst,
+	}))
+	maid:GiveTask(cornerConstructor.new({
+		Radius = UDim.new(0, 5),
+		Parent = inst
+	}))
 	local CanvasSize = fusion.Computed(function()
 		return UDim2.new(0,0,0, AbsoluteScrollLength:get())
 	end)
-
+	local buttonSize = 24
 	local scrollBarThickness = 14
 	local content = fusion.New "ScrollingFrame" {
 		Name = "Content",
@@ -90,23 +104,36 @@ function constructor.new(config)
 		AnchorPoint = Vector2.new(0.5,0.5),
 		Parent = inst,
 	}
+	maid:GiveTask(cornerConstructor.new({
+		Radius = UDim.new(0, math.ceil(buttonSize/2)),
+		Parent = inst
+	}))
+	maid:GiveTask(paddingConstructor.new({
+		Padding = UDim.new(0, math.ceil(buttonSize/2)),
+		Parent = inst
+	}))
 
 	maid:GiveTask(fusion.New "UIPadding"{
 		PaddingRight = UDim.new(0,scrollBarThickness),
 		Parent = content,
 	})
 
-	local buttonSize = 24
-	local exitButton = buttonConstructor.new()
-	exitButton.Name = "ExitButton"
-	exitButton.Parent = inst
-	exitButton.AnchorPoint = Vector2.new(0.5,0.5)
-	exitButton.Position = UDim2.fromScale(1,0)
-	exitButton.Text = "X"
-	exitButton.Size = UDim2.fromOffset(buttonSize, buttonSize)
-	maid:GiveTask(exitButton)
-	exitButton:WaitForChild("InputEffect"):SetAttribute("StartSize", UDim2.fromOffset(buttonSize, buttonSize))
 
+	local exitButton = buttonConstructor.new({
+		Name = "ExitButton",
+		Parent = inst,
+		AnchorPoint = Vector2.new(0.5,0.5),
+		Position = UDim2.fromScale(1,0),
+		Size = UDim2.fromOffset(buttonSize, buttonSize),
+	})
+	exitButton.Text = "X"
+	maid:GiveTask(exitButton)
+
+	exitButton:WaitForChild("InputEffect"):SetAttribute("StartSize", UDim2.fromOffset(buttonSize, buttonSize))
+	maid:GiveTask(cornerConstructor.new({
+		Radius = UDim.new(0.5, 0),
+		Parent = exitButton
+	}))
 	local exitButtonCompat = fusion.Compat(ExitButtonEnabled)
 	maid:GiveTask(exitButtonCompat:onChange(function()
 		exitButton.Visible = ExitButtonEnabled:get()
@@ -114,21 +141,8 @@ function constructor.new(config)
 	maid:GiveTask(exitButton.Activated:Connect(function()
 		Open:set(false)
 	end))
-
-	local corner = cornerConstructor.new()
-	corner:SetAttribute("Corner", math.ceil(buttonSize/2))
-	corner.Parent = exitButton
-	maid:GiveTask(corner)
-
-	local padding = paddingConstructor.new()
-	padding:SetAttribute("Padding", math.ceil(buttonSize/2))
-	padding.Parent = inst
-	maid:GiveTask(padding)
-
-	local style = styleConstructor.new()
-	style.Parent = exitButton
-	style:SetAttribute("Category", "Error")
-	style:SetAttribute("TextClass", "Headline")
+	exitButton:WaitForChild("Style"):SetAttribute("Category", "Error")
+	exitButton:WaitForChild("Style"):SetAttribute("TextClass", "Caption")
 
 	--bind to attributes
 	local attributer = attributerConstructor.new(inst, {})
@@ -152,6 +166,7 @@ function constructor.new(config)
 	maid.deathSignal = inst.AncestryChanged:Connect(function()
 		if not inst:IsDescendantOf(game.Players.LocalPlayer) then
 			maid:Destroy()
+			print("Cleaning up "..tostring(script.Name))
 		end
 	end)
 

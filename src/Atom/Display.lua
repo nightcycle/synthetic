@@ -27,6 +27,7 @@ function newTweenInfo(params)
 end
 
 function constructor.new(config)
+	config = config or {}
 	--public states
 	local Media = fusion.State(config.Media or "Text")
 	local Text = fusion.State(config.Text or "")
@@ -227,6 +228,7 @@ function constructor.new(config)
 	maid.deathSignal = inst.AncestryChanged:Connect(function()
 		if not inst:IsDescendantOf(game.Players.LocalPlayer) then
 			maid:Destroy()
+			print("Cleaning up "..tostring(script.Name))
 		end
 	end)
 

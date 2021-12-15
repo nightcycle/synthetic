@@ -8,6 +8,7 @@ local attributerConstructor = require(packages:WaitForChild("attributer"))
 local constructor = {}
 
 function constructor.new(config)
+	config = config or {}
 	local maid = maidConstructor.new()
 
 	local radius = fusion.State(config.Radius or UDim.new(0, 5))
@@ -32,6 +33,7 @@ function constructor.new(config)
 	maid.deathSignal = inst.AncestryChanged:Connect(function()
 		if not inst:IsDescendantOf(game.Players.LocalPlayer) then
 			maid:Destroy()
+			print("Cleaning up "..tostring(script.Name))
 		end
 	end)
 

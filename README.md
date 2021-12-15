@@ -125,10 +125,11 @@ Makes parent GuiObject do a small bounce size increase when hovered over by curs
 - __SizeBump__ *(UDim)*: How much the size along both dimensions increases when hovered over
 - __ElevationBump__ *(Number)*: Sets the "ElevationIncrease" attribute when hovered over
 
-Style: Formats parented GuiObject based on SyntheticStyleConfiguration
+### Style:
+Formats parented GuiObject based on SyntheticStyleConfiguration
 #### Properties:
 - __Category__ *(StyleCategory)*: Used to determine the colors applied to the parent GuiObject
-_ __TextClass__ *(TextClass)*: Used to determine text treatment of parent GuiObject
+- __TextClass__ *(TextClass)*: Used to determine text treatment of parent GuiObject
 
 ## Atoms:
 Basic building blocks of UI
@@ -182,8 +183,7 @@ A background used to mount other elements
 ### Slider:
 A basic slider between two numbers
 #### Properties:
-- __MinimumLabel__ *(String)*: Left side label
-- __MaximumLabel__ *(String)*: Right side label
+- __Precision__ *(Number): Separation between notches
 - __MinimumValue__ *(Number)*: Minimum slider value
 - __MaximumValue__ *(Number)*: Maximum slider value
 - __LineWidth__ *(Number)*: Width of slider line
@@ -192,7 +192,12 @@ A basic slider between two numbers
 ### Switch:
 A button which toggles from between and on & off state
 #### Properties:
-- __Value *(Boolean)*: Is the switch on or off
+- __Value__ *(Boolean)*: Is the switch on or off
+- __EnabledText__ *(String)*: Text displayed when switch is on
+- __DisabledText__ *(String)*: Text displayed when switch is off
+#### Events:
+- __OnEnabled__: Fired when enabled
+- __OnDisabled__: Fired when enabled
 
 ### Dropdown:
 A dropdown button that allows users multiple options to select from
