@@ -9,17 +9,15 @@ local constructor = {}
 
 function constructor.new(config)
 	config = config or {}
-	local padding = fusion.State(config.Padding or 7)
-	local paddingUdim = fusion.Computed(function()
-		return UDim.new(0, padding)
-	end)
+	local padding = fusion.State(config.Padding or UDim.new(0,7))
 	local maid = maidConstructor.new()
 
 	local inst = fusion.New "UIPadding" {
-		PaddingBottom = paddingUdim,
-		PaddingTop = paddingUdim,
-		PaddingLeft = paddingUdim,
-		PaddingRight = paddingUdim,
+		Name = script.Name,
+		PaddingBottom = padding,
+		PaddingTop = padding,
+		PaddingLeft = padding,
+		PaddingRight = padding,
 		Parent = config.Parent or game.Players.LocalPlayer:WaitForChild("PlayerGui"),
 	}
 	maid:GiveTask(inst)
@@ -29,6 +27,12 @@ function constructor.new(config)
 	maid:GiveTask(attributer)
 	local function bindAttributeToState(key, state)
 		attributer:Connect(key, state:get())
+		local compat = fusion.Compat(state)
+		maid:GiveTask(compat:onChange(function()
+			if inst:GetAttribute(key) ~= state:get() then
+				inst:SetAttribute(key, state:get())
+			end
+		end))
 		maid:GiveTask(attributer.OnChanged:Connect(function(k, val)
 			if k == key then
 				state:set(val)

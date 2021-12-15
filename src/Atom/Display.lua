@@ -201,6 +201,12 @@ function constructor.new(config)
 	maid:GiveTask(attributer)
 	local function bindAttributeToState(key, state)
 		attributer:Connect(key, state:get())
+		local compat = fusion.Compat(state)
+		maid:GiveTask(compat:onChange(function()
+			if inst:GetAttribute(key) ~= state:get() then
+				inst:SetAttribute(key, state:get())
+			end
+		end))
 		maid:GiveTask(attributer.OnChanged:Connect(function(k, val)
 			if k == key then
 				state:set(val)

@@ -57,6 +57,12 @@ function constructor.new(config)
 	maid:GiveTask(attributer)
 	local function bindAttributeToState(key, state)
 		attributer:Connect(key, state:get())
+		local compat = fusion.Compat(state)
+		maid:GiveTask(compat:onChange(function()
+			if inst:GetAttribute(key) ~= state:get() then
+				inst:SetAttribute(key, state:get())
+			end
+		end))
 		maid:GiveTask(attributer.OnChanged:Connect(function(k, val)
 			if k == key then
 				state:set(val)
@@ -74,20 +80,24 @@ function constructor.new(config)
 	end
 
 	maid:GiveTask(inst)
-
+	local function sPar(par)
+		currentParent = par
+		fireUpdate()
+	end
 	maid:GiveTask(inst.AncestryChanged:Connect(function()
 		if inst:IsDescendantOf(game.Players.LocalPlayer:WaitForChild("PlayerGui")) == false then
 			maid:Destroy()
 			print("Cleaning up "..tostring(script.Name))
 		elseif inst.Parent ~= nil or currentParent ~= nil then
-			currentParent = inst.Parent
-			fireUpdate()
+			sPar(inst.Parent)
 		else
 			resetParent(currentParent, parentMaid)
 			currentParent = nil
 		end
 	end))
-
+	if config.Parent then
+		sPar(config.Parent)
+	end
 	return inst
 end
 

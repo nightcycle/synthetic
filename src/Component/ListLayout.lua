@@ -9,6 +9,7 @@ local constructor = {}
 function constructor.new(config)
 	config = config or {}
 	local listLayout = fusion.New "UIListLayout" {
+		Name = script.Name,
 		FillDirection = Enum.FillDirection.Vertical,
 		SortOrder = Enum.SortOrder.LayoutOrder,
 		Padding = UDim.new(0, 5),

@@ -436,6 +436,11 @@ function update(parent: Instance, backgroundColor, onColor, font, fontSize)
 		parent.TextColor3 = onColor:get()
 		parent.Font = font:get()
 		parent.TextSize = fontSize:get()
+	elseif parent:IsA("ScrollingFrame") then
+		if not parent:GetAttribute("StartStyleConfig") then
+			parent:SetAttribute("SSC_ScrollBarImageColor3", parent.ScrollBarImageColor3)
+		end
+		parent.ScrollBarImageColor3 = colors.Primary:get()
 	end
 	parent:SetAttribute("StartStyleConfig", true)
 end
@@ -467,6 +472,12 @@ function resetParent(parent: Instance, maid)
 
 		parent.TextSize = parent:GetAttribute("SSC_TextSize")
 		parent:SetAttribute("SSC_TextSize", nil)
+	elseif parent:IsA("ScrollingFrame") then
+		if not parent:GetAttribute("StartStyleConfig") then
+			parent:SetAttribute("SSC_ScrollBarImageColor3", parent.ScrollBarImageColor3)
+		end
+		parent.ScrollBarImageColor3 = parent:GetAttribute("SSC_ScrollBarImageColor3")
+		parent:SetAttribute("SSC_ScrollBarImageColor3", nil)
 	end
 	parent:SetAttribute("StartStyleConfig", nil)
 	maid:DoCleaning()
@@ -557,21 +568,26 @@ function constructor.new(config)
 
 	maid:GiveTask(inst)
 
+	local function setParent(par)
+		currentParent = par
+		parentMaid:GiveTask(currentParent:GetPropertyChangedSignal("AbsoluteSize"):Connect(fireUpdate))
+		fireUpdate()
+	end
 	maid:GiveTask(inst.AncestryChanged:Connect(function()
 		if inst:IsDescendantOf(game.Players.LocalPlayer:WaitForChild("PlayerGui")) == false then
 			maid:Destroy()
 			print("Cleaning up "..tostring(script.Name))
 			print("Cleaning up "..tostring(script.Name))
 		elseif inst.Parent ~= nil or currentParent ~= nil then
-			currentParent = inst.Parent
-			parentMaid:GiveTask(currentParent:GetPropertyChangedSignal("AbsoluteSize"):Connect(fireUpdate))
-			fireUpdate()
+			setParent(inst.Parent)
 		else
 			resetParent(currentParent, parentMaid)
 			currentParent = nil
 		end
 	end))
-
+	if config.Parent then
+		setParent(config.Parent)
+	end
 	maid:GiveTask(viewportSizeChangeSignal:Connect(fireUpdate))
 
 	return inst

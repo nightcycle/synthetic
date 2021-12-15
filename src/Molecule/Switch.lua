@@ -55,7 +55,7 @@ function constructor.new(config)
 	maid:GiveTask(onDisabled)
 
 	local changeCompat = fusion.Compat(Value)
-	changeCompat.onChange(function()
+	maid:GiveTask(changeCompat:onChange(function()
 		if Value:get() == true then
 			inst.BackgroundTransparency = 0
 			onEnabled:Fire()
@@ -65,7 +65,7 @@ function constructor.new(config)
 			onDisabled:Fire()
 			inst.Text = currentText:get()
 		end
-	end)
+	end))
 
 	maid.activationSignal = inst.Activated:Connect(function()
 		inst:SetAttribute("Value", not Value:get())
@@ -83,6 +83,12 @@ function constructor.new(config)
 	maid:GiveTask(attributer)
 	local function bindAttributeToState(key, state)
 		attributer:Connect(key, state:get())
+		local compat = fusion.Compat(state)
+		maid:GiveTask(compat:onChange(function()
+			if inst:GetAttribute(key) ~= state:get() then
+				inst:SetAttribute(key, state:get())
+			end
+		end))
 		maid:GiveTask(attributer.OnChanged:Connect(function(k, val)
 			if k == key then
 				state:set(val)

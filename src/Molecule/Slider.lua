@@ -20,6 +20,7 @@ local buttonConstructor = require(atom:WaitForChild("Button"))
 local displayConstructor = require(atom:WaitForChild("Display"))
 
 local textService = game:GetService("TextService")
+local UserInputService = game:GetService("UserInputService")
 local runService = game:GetService("RunService")
 
 local constructor = {}
@@ -38,12 +39,15 @@ function newTweenInfo(params)
 end
 
 function constructor.new(config)
+
 	config = config or {}
+
 	local MinimumValue = fusion.State(config.MinimumValue or 0)
 	local MaximumValue = fusion.State(config.MaximumValue or 1)
 	local Precision = fusion.State(config.Precision or 0.2)
-	local LineWidth = fusion.State(config.Line or 5)
+	local LineThickness = fusion.State(config.Line or 20)
 	local Value = fusion.State(config.Value or 0.5)
+	local LabelWidth = fusion.State(config.LabelWidth or UDim.new(0, 75))
 
 	local absoluteSize = fusion.State(Vector2.new(0,0))
 	local maid = maidConstructor.new()
@@ -66,16 +70,9 @@ function constructor.new(config)
 	maid._list = listConstructor.new({
 		Parent = inst
 	})
+	maid._list.VerticalAlignment = Enum.VerticalAlignment.Center
+	maid._list.HorizontalAlignment = Enum.HorizontalAlignment.Center
 	maid._list.FillDirection = Enum.FillDirection.Horizontal
-
-	local padState = fusion.State(UDim.new(0, 5))
-	maid._padding = paddingConstructor.new({
-		Padding = padState:get(),
-		Parent = inst,
-	})
-	maid._paddingSizeSignal = maid._padding:GetAttributeChangedSignal("Padding"):Connect(function()
-		padState:set(maid._padding:GetAttribute("Padding"))
-	end)
 
 	local minLabel = fusion.Computed(function()
 		return tostring(MinimumValue:get())
@@ -85,28 +82,18 @@ function constructor.new(config)
 	end)
 	local font = fusion.State("Gotham")
 	local fontSize = fusion.State(8)
-	local labelSize = fusion.Computed(function()
-		local minText = minLabel:get()
-		local maxText = maxLabel:get()
-
-		local absoluteSize = absoluteSize:get()
-		local frameSize = Vector2.new(absoluteSize.X - padState:get()*2, absoluteSize.Y)
-
-		local minLength = textService:GetTextSize(minText, fontSize, Enum.Font[font:get()], frameSize)
-		local maxLength = textService:GetTextSize(maxText, fontSize, Enum.Font[font:get()], frameSize)
-
-		return UDim2.new(0, math.max(minLength, maxLength), 1, 0)
-	end)
 
 	local lineSize = fusion.Computed(function()
-		local lineWidth = LineWidth:get()
-		return UDim2.new(1, -labelSize:get().X.Offset*2, 0, lineWidth)
+		local lineThickness = LineThickness:get()
+		return UDim2.new(1, -LabelWidth:get().Offset*2, 0, lineThickness)
 	end)
-
+	local labelSizeU2 = fusion.Computed(function()
+		return UDim2.new(LabelWidth:get(), UDim.new(1,0))
+	end)
 	maid._leftLabel = fusion.New "TextLabel" {
 		Name = "LeftLabel",
 		Text = minLabel,
-		Size = labelSize,
+		Size = labelSizeU2,
 		LayoutOrder = 1,
 		Parent = inst,
 	}
@@ -114,7 +101,7 @@ function constructor.new(config)
 		fontSize:set(maid._leftLabel.TextSize)
 	end))
 	maid:GiveTask(maid._leftLabel:GetPropertyChangedSignal("Font"):Connect(function()
-		font:set(tostring(maid._leftLabel.Font))
+		font:set(maid._leftLabel.Font.Name)
 	end))
 	maid:GiveTask(styleConstructor.new({
 		Parent = maid._leftLabel,
@@ -125,7 +112,7 @@ function constructor.new(config)
 	maid._rightLabel = fusion.New "TextLabel" {
 		Name = "RightLabel",
 		Text = maxLabel,
-		Size = labelSize,
+		Size = labelSizeU2,
 		LayoutOrder = 3,
 		Parent = inst,
 	}
@@ -133,7 +120,7 @@ function constructor.new(config)
 		fontSize:set(maid._leftLabel.TextSize)
 	end))
 	maid:GiveTask(maid._rightLabel:GetPropertyChangedSignal("Font"):Connect(function()
-		font:set(tostring(maid._leftLabel.Font))
+		font:set(maid._leftLabel.Font.Name)
 	end))
 	maid:GiveTask(styleConstructor.new({
 		Parent = maid._rightLabel,
@@ -152,46 +139,63 @@ function constructor.new(config)
 		Radius = UDim.new(0, 5),
 		Parent = line,
 	}))
+	maid:GiveTask(styleConstructor.new({
+		Parent = line,
+		Category = "Secondary",
+		TextClass = "Caption",
+	}))
 
 	local button = buttonConstructor.new({
 		Size = UDim2.fromOffset(55, 55),
 		SizeConstraint = Enum.SizeConstraint.RelativeYY,
 		Parent = line,
 	})
+
 	button.Modal = false
 	maid:GiveTask(button)
-	maid:GiveTask(cornerConstructor.new({
-		Radius = UDim.new(1, 0),
-		Parent = button,
-	}))
+	button:WaitForChild("Corner"):SetAttribute("Radius", UDim.new(1,0))
 
 	-- https://devforum.roblox.com/t/how-to-make-an-ui-dragger-for-in-game-settings/1014787/4
 	local IsDragging = false
 	local inputPosition = Vector2.new(0,0)
+	local holdTrackerMaid = maidConstructor.new()
+
+	local onSet = fusion.New "BindableEvent" {
+		Name = "OnSet",
+		Parent = inst
+	}
+
+	maid:GiveTask(holdTrackerMaid)
 	maid._sliderInputBegan = button.InputBegan:Connect(function()
-		IsDragging = true
-	end)
-	maid._sliderInputEnded = button.InputEnded:Connect(function()
-		IsDragging = false
-	end)
-	maid._sliderInputChanged = button.InputChanged:Connect(function(inputObj)
-		inputPosition = Vector2.new(inputObj.Position.X, inputObj.Position.Y)
+		if IsDragging == false and UserInputService:IsMouseButtonPressed(Enum.UserInputType.MouseButton1) then
+			IsDragging = true
+			holdTrackerMaid:GiveTask(runService.RenderStepped:Connect(function()
+				local startX = line.AbsolutePosition.X
+				local finishX = line.AbsolutePosition.X + line.AbsoluteSize.X
+				local rangeX = finishX - startX
+				local alpha = math.clamp((inputPosition.X-startX)/rangeX, 0, 1)
+				local minValue = MinimumValue:get()
+				local maxValue = MaximumValue:get()
+				local range = maxValue - minValue
+				local offsetVal = math.round(range*alpha/Precision:get())*Precision:get()
+				alpha = offsetVal/range
+				local linePadding = 0.5*button.AbsoluteSize.X/line.AbsoluteSize.X
+				alpha = math.clamp(alpha, linePadding, 1-linePadding)
+				button.Position = UDim2.new(alpha, 0, 0.5, 0)
+				Value:set(minValue + offsetVal)
+
+				if not UserInputService:IsMouseButtonPressed(Enum.UserInputType.MouseButton1) then
+					holdTrackerMaid:DoCleaning()
+					IsDragging = false
+					onSet:Fire(Value:get())
+				end
+				inputPosition = UserInputService:GetMouseLocation()
+			end))
+		end
 	end)
 	maid._renderStepped = runService.RenderStepped:Connect(function()
 		if IsDragging then
-			local buffer = labelSize:get().X.Offset
-			local startX = line.AbsolutePosition.X + buffer
-			local finishX = line.AbsoluteSize.X-buffer
-			local rangeX = finishX - startX
-			local alpha = math.clamp((inputPosition.X - buffer*2)/rangeX, 0, 1)
 
-			button.Position = UDim2.new(alpha, 0, 0.5, 0)
-
-			local minValue = MinimumValue:get()
-			local maxValue = MaximumValue:get()
-			local range = maxValue - minValue
-
-			Value:set(minValue + alpha * range)
 		end
 	end)
 
@@ -200,6 +204,12 @@ function constructor.new(config)
 	maid:GiveTask(attributer)
 	local function bindAttributeToState(key, state)
 		attributer:Connect(key, state:get())
+		local compat = fusion.Compat(state)
+		maid:GiveTask(compat:onChange(function()
+			if inst:GetAttribute(key) ~= state:get() then
+				inst:SetAttribute(key, state:get())
+			end
+		end))
 		maid:GiveTask(attributer.OnChanged:Connect(function(k, val)
 			if k == key then
 				state:set(val)
@@ -211,7 +221,8 @@ function constructor.new(config)
 	bindAttributeToState("MinimumValue", MinimumValue)
 	bindAttributeToState("MaximumValue", MaximumValue)
 	bindAttributeToState("Precision", Precision)
-	bindAttributeToState("LineWidth", LineWidth)
+	bindAttributeToState("LineThickness", LineThickness)
+	bindAttributeToState("LabelWidth", LabelWidth)
 
 	maid.deathSignal = inst.AncestryChanged:Connect(function()
 		if not inst:IsDescendantOf(game.Players.LocalPlayer) then

@@ -84,8 +84,19 @@ function constructor.new(config)
 	--bind to attributes
 	local attributer = attributerConstructor.new(inst, {})
 	maid:GiveTask(attributer)
-	local function bindAttributeToState(key, state)
-		attributer:Connect(key, state:get())
+	local function bindAttributeToState(key, state, constructor)
+		if not constructor then
+			constructor = function(v)
+				return v
+			end
+		end
+		attributer:Connect(key, constructor(state:get()))
+		local compat = fusion.Compat(state)
+		maid:GiveTask(compat:onChange(function()
+			if inst:GetAttribute(key) ~= state:get() then
+				inst:SetAttribute(key, constructor(state:get()))
+			end
+		end))
 		maid:GiveTask(attributer.OnChanged:Connect(function(k, val)
 			if k == key then
 				state:set(val)
@@ -93,8 +104,8 @@ function constructor.new(config)
 		end))
 	end
 
-	bindAttributeToState("StartSize", startSize)
-	bindAttributeToState("SizeBump", sizeBump)
+	bindAttributeToState("StartSize", startSize, UDim2.new)
+	bindAttributeToState("SizeBump", sizeBump, UDim.new)
 	bindAttributeToState("ElevationBump", elevationBump)
 
 	local isSelected = fusion.State(false)
@@ -132,29 +143,34 @@ function constructor.new(config)
 
 	--connect goals to currents & parent with tweenCompat
 	maid:GiveTask(inst)
+	local function sPar(par)
+		currentParent = par
+		if currentParent:IsA("GuiObject") then
+			setParent(currentParent)
+			parentMaid:GiveTask(currentParent.InputBegan:Connect(function()
+				isSelected:set(true)
+				-- currentParent.Size = size:get()
+			end))
+			parentMaid:GiveTask(currentParent.InputEnded:Connect(function()
+				isSelected:set(false)
+				-- currentParent.Size = size:get()
+			end))
+		end
+	end
 	maid:GiveTask(inst.AncestryChanged:Connect(function()
 		if inst:IsDescendantOf(game.Players.LocalPlayer:WaitForChild("PlayerGui")) == false then
 			maid:Destroy()
 			print("Cleaning up "..tostring(script.Name))
 		elseif inst.Parent ~= nil or currentParent ~= nil then
-			currentParent = inst.Parent
-			if currentParent:IsA("GuiObject") then
-				setParent(currentParent)
-				parentMaid:GiveTask(currentParent.InputBegan:Connect(function()
-					isSelected:set(true)
-					-- currentParent.Size = size:get()
-				end))
-				parentMaid:GiveTask(currentParent.InputEnded:Connect(function()
-					isSelected:set(false)
-					-- currentParent.Size = size:get()
-				end))
-			end
+			sPar(inst.Parent)
 		else
 			resetParent(currentParent, parentMaid)
 			currentParent = nil
 		end
 	end))
-
+	if config.Parent then
+		sPar(config.Parent)
+	end
 	return inst
 end
 

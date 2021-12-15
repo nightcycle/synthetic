@@ -5,25 +5,25 @@ local fusion = require(packages:WaitForChild('fusion'))
 local maidConstructor = require(packages:WaitForChild('maid'))
 local attributerConstructor = require(packages:WaitForChild('attributer'))
 
-
+local multiplier = 2.5
 local elevationToValueGain = {
-	[0] = 0,
-	[1] = 0.05,
-	[2] = 0.07,
-	[3] = 0.08,
-	[4] = 0.09,
-	[5] = 0.11,
-	[6] = 0.12,
-	[7] = 0.14,
-	[8] = 0.15,
-	[9] = 0.16,
+	[0] = 0*multiplier,
+	[1] = 0.05*multiplier,
+	[2] = 0.07*multiplier,
+	[3] = 0.08*multiplier,
+	[4] = 0.09*multiplier,
+	[5] = 0.11*multiplier,
+	[6] = 0.12*multiplier,
+	[7] = 0.14*multiplier,
+	[8] = 0.15*multiplier,
+	[9] = 0.16*multiplier,
 }
 
 
 local maxShadowDistance = 7
 local minShadowDistance = 1
-local minTransparency = 0.1
-local maxTransparency = 0.1
+local minTransparency = 0.2
+local maxTransparency = 0.7
 
 function resetParent(parent: Instance, maid)
 	local isViable = parent:GetAttribute("StartLightConfig")
@@ -70,7 +70,7 @@ function constructor.new(config)
 		local minVal = elevationToValueGain[math.floor(currentValue)]
 		local maxVal = elevationToValueGain[math.ceil(currentValue)]
 		local range = maxVal - minVal
-		local avgValue = minVal + range*alpha
+		local avgValue = maxVal - range*alpha
 		return avgValue
 	end)
 
@@ -85,36 +85,54 @@ function constructor.new(config)
 	-- 	return ColorSequence.new(color, finalColor)
 	-- end)
 
-	local goalTransparencySequence = fusion.Computed(function()
-		return NumberSequence.new(0.16, 0.16-lightValue:get())
+	-- local goalTransparencySequence = fusion.Computed(function()
+	-- 	return NumberSequence.new(0.16, 0.16-lightValue:get())
+	-- end)
+	local inst
+	local goalColorSequence = fusion.Computed(function()
+		local minVal = 1-0.16
+		local val = minVal+lightValue:get()
+		if inst then
+			inst:SetAttribute("_val", val)
+		end
+		local highVal = math.clamp(val,0,1)
+		local lowVal = math.clamp(val-0.03, 0, 1)
+		local highCol = Color3.new(highVal,highVal,highVal)
+		local lowCol = Color3.new(lowVal,lowVal,lowVal)
+		return ColorSequence.new(highCol, lowCol)
 	end)
 
 	--create inst
-	local inst = fusion.New "UIGradient" {
+	inst = fusion.New "UIGradient" {
 		Name = script.Name,
 		Parent = config.Parent or game.Players.LocalPlayer:WaitForChild("PlayerGui"),
-		Transparency = fusion.Tween(goalTransparencySequence, newTweenInfo()),
-		-- Color = fusion.Tween(goalColorSequence, newTweenInfo())
+		-- Transparency = fusion.Tween(goalTransparencySequence, newTweenInfo()),
+		Color = fusion.Tween(goalColorSequence, newTweenInfo())
 	}
 
 	--connect goals to currents & parent with tweenCompat
 	maid:GiveTask(inst)
+	local function setParent(par)
+		currentParent = inst.Parent
+		parentMaid:GiveTask(currentParent:GetAttributeChangedSignal("AbsoluteElevation"):Connect(function()
+			netElevation:set(currentParent:GetAttribute("AbsoluteElevation"))
+		end))
+	end
 	maid:GiveTask(inst.AncestryChanged:Connect(function()
 		if inst:IsDescendantOf(game.Players.LocalPlayer:WaitForChild("PlayerGui")) == false then
 			maid:Destroy()
 			print("Cleaning up "..tostring(script.Name))
 		elseif inst.Parent ~= nil or currentParent ~= nil then
-			currentParent = inst.Parent
-			parentMaid:GiveTask(currentParent:GetAttributeChangedSignal("AbsoluteElevation"):Connect(function()
-				netElevation:set(currentParent:GetAttribute("AbsoluteElevation"))
-			end))
+			setParent(inst.Parent)
 		else
 			resetParent(currentParent, parentMaid)
 			netElevation:set(0)
 			currentParent = nil
 		end
 	end))
-
+	if config.Parent then
+		setParent(config.Parent)
+	end
 	return inst
 end
 

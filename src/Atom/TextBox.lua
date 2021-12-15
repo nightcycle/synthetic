@@ -29,8 +29,11 @@ function constructor.new(config)
 	local inst
 	inst = fusion.New "TextBox" {
 		Text = text,
+		TextXAlignment = Enum.TextXAlignment.Left,
+		TextYAlignment = Enum.TextYAlignment.Center,
 		PlaceholderText = "Input Text Here",
 		[fusion.OnEvent "FocusLost"] = function()
+			-- inst:SetAttribute("Input", inst.Text)
 			Input:set(inst.Text)
 		end,
 		Size = config.Size or UDim2.fromScale(1,1),
@@ -40,11 +43,12 @@ function constructor.new(config)
 		SizeConstraint = config.SizeConstraint or Enum.SizeConstraint.RelativeXY,
 		Visible = config.Visible or true,
 		Name = config.Name or script.Name,
+		Parent = config.Parent or game.Players.LocalPlayer:WaitForChild("PlayerGui"),
 	}
 	maid:GiveTask(inst)
 	maid:GiveTask(styleConstructor.new({
 		Category = "Primary",
-		TextClass = "Button",
+		TextClass = "Body",
 		Parent = inst,
 	}))
 	maid:GiveTask(elevationConstructor.new({
@@ -65,6 +69,12 @@ function constructor.new(config)
 	maid:GiveTask(attributer)
 	local function bindAttributeToState(key, state)
 		attributer:Connect(key, state:get())
+		local compat = fusion.Compat(state)
+		maid:GiveTask(compat:onChange(function()
+			if inst:GetAttribute(key) ~= state:get() then
+				inst:SetAttribute(key, state:get())
+			end
+		end))
 		maid:GiveTask(attributer.OnChanged:Connect(function(k, val)
 			if k == key then
 				state:set(val)

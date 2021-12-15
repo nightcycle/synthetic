@@ -39,7 +39,7 @@ When constructing a new element you can pass a table of optional GuiObject prope
 ## PropertyTypes:
 Synthetic uses various non native data formats, below is a comprehensive list.
 
-### ColorName*(String)*:
+### ColorName *(String)*:
 The vertical axis of the graph shown at https://material.io/resources/color
 
 ### Shade *(Number)*:
@@ -178,16 +178,18 @@ A background used to mount other elements
 - __OpenSize__ *(UDim2)*: Size when open
 - __CloseSize__ *(UDim2)*: Size when closed
 - __ExitButtonEnabled__ *(Boolean)*: Whether there's an exit button in the upper right corner
-- __AbsoluteScrollLength__ *(Number)*: The size of the scrollable canvas used to display elements
 
 ### Slider:
 A basic slider between two numbers
 #### Properties:
-- __Precision__ *(Number): Separation between notches
+- __Precision__ *(Number)*: Separation between notches
 - __MinimumValue__ *(Number)*: Minimum slider value
 - __MaximumValue__ *(Number)*: Maximum slider value
 - __LineWidth__ *(Number)*: Width of slider line
+- __LabelWidth__ *(UDim)*: Width of labels at sides of slider
 - __Value__ *(Number)*: Current value on slider
+#### Events:
+- __OnSet__ *(value)*: Fired when slider is released
 
 ### Switch:
 A button which toggles from between and on & off state
@@ -203,13 +205,13 @@ A button which toggles from between and on & off state
 A dropdown button that allows users multiple options to select from
 #### Properties:
 - __Value__ *(String)*: The text currently filling the dropdown
-- __EntryN__ *(String)*: Nth text entry to choose from
 #### Functions:
-- __SetEntry__ *(String)*: Adds entry
-- __DestroyEntry__ *(String)*: Removes entry
-- __ClearAllEntries__ *()*: Removes all entries
+- __SetOptions__ *(String array)*: Adds options
+- __SetOption__ *(String)*: Adds option
+- __RemoveOption__ *(Index)*: Removes option at index
+- __ClearAllOptions__ *()*: Removes all options
 #### Events:
-- __Selected__: Fired when an entry is selected
+- __OnSelected__: Fired when an entry is selected
 
 ## Organisms:
 Organisms are composed of molecules & atoms, and typically have more
