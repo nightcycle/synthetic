@@ -103,33 +103,20 @@ Like Roblox UIComponenets, Synthetic Components have no visual of their own, use
 A simple port of the Roblox UICorner
 #### Properties:
 - __Radius__ *(UDim)*: The radius of the UICorner circle
-#### Functions:
-#### Events:
 
 ### ListLayout:
 A simple port of the Roblox UIListLayout configured for vertical centered lists
-#### Properties:
-#### Functions:
-#### Events:
 
 ### Padding:
 A simple port of Roblox UIPadding with a single padding variable
 #### Properties:
 - __Padding__ *(UDim)*: How much padding to apply to each side
-#### Functions:
-#### Events:
 
 ### Elevation:
 Applies basic dropshadow using UIStroke using parent "ElevationIncrease" attribute
-#### Properties:
-#### Functions:
-#### Events:
 
 ### Lighting:
 Makes button brighter as "AbsoluteElvation" increases, works best with Elevation component
-#### Properties:
-#### Functions:
-#### Events:
 
 ### InputEffect:
 Makes parent GuiObject do a small bounce size increase when hovered over by cursor
@@ -137,30 +124,20 @@ Makes parent GuiObject do a small bounce size increase when hovered over by curs
 - __StartSize__ *(UDim2)*: The size to return to when not hovered over
 - __SizeBump__ *(UDim)*: How much the size along both dimensions increases when hovered over
 - __ElevationBump__ *(Number)*: Sets the "ElevationIncrease" attribute when hovered over
-#### Functions:
-#### Events:
 
 Style: Formats parented GuiObject based on SyntheticStyleConfiguration
 #### Properties:
 - __Category__ *(StyleCategory)*: Used to determine the colors applied to the parent GuiObject
 _ __TextClass__ *(TextClass)*: Used to determine text treatment of parent GuiObject
-#### Functions:
-#### Events:
 
 ## Atoms:
 Basic building blocks of UI
 
 ### Button:
 A simple button
-#### Properties:
-#### Functions:
-#### Events:
 
 ### Card:
 A portable frame used to display information in a panel
-#### Properties:
-#### Functions:
-#### Events:
 
 ### Display:
 A dynamic element used to display various media
@@ -179,21 +156,14 @@ A dynamic element used to display various media
 - __VFRestDistance__ *(Number)*: Distance of camera when not activated
 - __VFRestOrigin__ *(Vector3)*: Point camera orbits around and is facing when not activated
 - __VFRestFOV__ *(Number)*: Field of view on camera when not activated
-#### Functions:
-#### Events:
 
 ### ScreenGui:
 A simple port of the Roblox ScreenGui instance
-#### Properties:
-#### Functions:
-#### Events:
 
 ### TextBox:
 A way for a player to provide text input
 #### Properties:
 - __Input__ *(String)*: The text currented inputted
-#### Functions:
-#### Events:
 
 ## Molecules:
 More advanced elements created out of atoms
@@ -208,8 +178,6 @@ A background used to mount other elements
 - __CloseSize__ *(UDim2)*: Size when closed
 - __ExitButtonEnabled__ *(Boolean)*: Whether there's an exit button in the upper right corner
 - __AbsoluteScrollLength__ *(Number)*: The size of the scrollable canvas used to display elements
-#### Functions:
-#### Events:
 
 ### Slider:
 A basic slider between two numbers
@@ -220,15 +188,11 @@ A basic slider between two numbers
 - __MaximumValue__ *(Number)*: Maximum slider value
 - __LineWidth__ *(Number)*: Width of slider line
 - __Value__ *(Number)*: Current value on slider
-#### Functions:
-#### Events:
 
 ### Switch:
 A button which toggles from between and on & off state
 #### Properties:
 - __Value *(Boolean)*: Is the switch on or off
-#### Functions:
-#### Events:
 
 ### Dropdown:
 A dropdown button that allows users multiple options to select from
@@ -242,7 +206,7 @@ A dropdown button that allows users multiple options to select from
 #### Events:
 - __Selected__: Fired when an entry is selected
 
-## Organism:
+## Organisms:
 Organisms are composed of molecules & atoms, and typically have more
 ### Prompt:
 A prompt that you can trigger to appear for certain decision
