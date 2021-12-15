@@ -33,19 +33,28 @@ function newTweenInfo(params)
 end
 
 function constructor.new(config)
-	local properties = fusion.State({
-		MinimumLabel = fusion.State("L"),
-		MinimumValue = fusion.State(0),
-		MaximumLabel = fusion.State("R"),
-		MaximumValue = fusion.State(1),
-		LineWidth = fusion.State(5),
-		Value = fusion.State(0.5),
-	})
-
-	local inst = cardConstructor.new()
-	inst.Name = "Slider"
+	local MinimumLabel = fusion.State(config.MinimumLabel or "L")
+	local MinimumValue = fusion.State(config.MinimumValue or 0)
+	local MaximumLabel = fusion.State(config.MaximumLabel or "R")
+	local MaximumValue = fusion.State(config.MaximumValue or 1)
+	local LineWidth = fusion.State(config.Line or 5)
+	local Value = fusion.State(config.Value or 0.5)
 
 	local absoluteSize = fusion.State(Vector2.new(0,0))
+
+	local inst = cardConstructor.new({
+		Parent = config.Parent or game.Players.LocalPlayer:WaitForChild("PlayerGui"),
+		Size = config.Size or UDim2.fromScale(1,1),
+		Position = config.Position or UDim2.fromScale(0.5,0.5),
+		AnchorPoint = config.AnchorPoint or Vector2.new(0.5,0.5),
+		LayoutOrder = config.LayoutOrder or 0,
+		SizeConstraint = config.SizeConstraint or Enum.SizeConstraint.RelativeXY,
+		Visible = config.Visible or true,
+		Name = config.Name or script.Name,
+	})
+	inst.Name = "Slider"
+
+
 
 	local maid = maidConstructor.new()
 	maid._resizeSignal = inst:GetPropertyChangedSignal("AbsoluteSize"):Connect(function()

@@ -53,7 +53,6 @@ function constructor.new(config)
 	local isFocused = fusion.State(false)
 	local maid = maidConstructor.new()
 	local inst = fusion.New "Frame" {
-		Name = "Display",
 		[fusion.OnEvent "InputChanged"] = function()
 			isFocused:set(true)
 		end,
@@ -61,6 +60,13 @@ function constructor.new(config)
 			isFocused:set(false)
 		end,
 		Parent = config.Parent or game.Players.LocalPlayer:WaitForChild("PlayerGui"),
+		Size = config.Size or UDim2.fromScale(1,1),
+		Position = config.Position or UDim2.fromScale(0.5,0.5),
+		AnchorPoint = config.AnchorPoint or Vector2.new(0.5,0.5),
+		LayoutOrder = config.LayoutOrder or 0,
+		SizeConstraint = config.SizeConstraint or Enum.SizeConstraint.RelativeXY,
+		Visible = config.Visible or true,
+		Name = config.Name or script.Name,
 	}
 	maid:GiveTask(inst)
 

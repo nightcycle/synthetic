@@ -14,9 +14,14 @@ local constructor = {}
 function constructor.new(config)
 	local maid = maidConstructor.new()
 	local inst = fusion.New "Frame" {
-		Name = "Card",
-		AnchorPoint = Vector2.new(0.5,0.5),
 		Parent = config.Parent or game.Players.LocalPlayer:WaitForChild("PlayerGui"),
+		Size = config.Size or UDim2.fromScale(1,1),
+		Position = config.Position or UDim2.fromScale(0.5,0.5),
+		AnchorPoint = config.AnchorPoint or Vector2.new(0.5,0.5),
+		LayoutOrder = config.LayoutOrder or 0,
+		SizeConstraint = config.SizeConstraint or Enum.SizeConstraint.RelativeXY,
+		Visible = config.Visible or true,
+		Name = config.Name or script.Name,
 	}
 	maid:GiveTask(inst)
 

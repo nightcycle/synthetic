@@ -23,12 +23,18 @@ function constructor.new(config)
 
 	local inst
 	inst = fusion.New "TextBox" {
-		Name = "TextBox",
 		Text = text,
 		PlaceholderText = "Input Text Here",
 		[fusion.OnEvent "FocusLost"] = function()
 			Input:set(inst.Text)
-		end
+		end,
+		Size = config.Size or UDim2.fromScale(1,1),
+		Position = config.Position or UDim2.fromScale(0.5,0.5),
+		AnchorPoint = config.AnchorPoint or Vector2.new(0.5,0.5),
+		LayoutOrder = config.LayoutOrder or 0,
+		SizeConstraint = config.SizeConstraint or Enum.SizeConstraint.RelativeXY,
+		Visible = config.Visible or true,
+		Name = config.Name or script.Name,
 	}
 	maid:GiveTask(inst)
 

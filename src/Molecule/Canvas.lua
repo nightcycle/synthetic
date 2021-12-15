@@ -34,14 +34,13 @@ function constructor.new(config)
 	local maid = maidConstructor.new()
 
 	local Open = fusion.State(config.Open or false)
-	local OpenPosition = fusion.State(config.OpenPosition or UDim2.fromScale(0.5,0.5))
-	local ClosePosition = fusion.State(config.ClosePosition or UDim2.fromScale(0.5,0.5))
-	local OpenSize = fusion.State(config.OpenSize or UDim2.fromScale(0.5,0.5))
-	local CloseSize = fusion.State(config.CloseSize or UDim2.fromScale(0.5,0.5))
+	local OpenPosition = fusion.State(config.OpenPosition or config.Position or UDim2.fromScale(0.5,0.5))
+	local ClosePosition = fusion.State(config.ClosePosition or config.Position or UDim2.fromScale(0.5,0.5))
+	local OpenSize = fusion.State(config.OpenSize or config.Size or UDim2.fromScale(0.5,0.5))
+	local CloseSize = fusion.State(config.CloseSize or config.Size or UDim2.fromScale(0.5,0.5))
 	local ExitButtonEnabled = fusion.State(config.ExitButtonEnabled or true)
 	local AbsoluteScrollLength = fusion.State(config.AbsoluteScrollLength or 0)
 	local inst = fusion.New "Frame" {
-		Name = "Canvas",
 		Position = fusion.Tween(
 			fusion.Computed(function()
 				if Open:get() == true then
@@ -62,8 +61,12 @@ function constructor.new(config)
 			end),
 			newTweenInfo()
 		),
-		AnchorPoint = Vector2.new(0.5,0.5),
 		Parent = config.Parent or game.Players.LocalPlayer:WaitForChild("PlayerGui"),
+		AnchorPoint = config.AnchorPoint or Vector2.new(0.5,0.5),
+		LayoutOrder = config.LayoutOrder or 0,
+		SizeConstraint = config.SizeConstraint or Enum.SizeConstraint.RelativeXY,
+		Visible = config.Visible or true,
+		Name = config.Name or script.Name,
 	}
 
 	local frameStyle = styleConstructor.new()
