@@ -22,6 +22,7 @@ listLayout.VerticalAlignment = Enum.VerticalAlignment.Center
 local button = synthetic("Button", {
 	Parent = canvas:WaitForChild("Content"),
 	Size = UDim2.fromOffset(100, 50),
+	AnchorPoint = Vector2.new(0.5,1),
 })
 button.Text = "Test"
 button:WaitForChild("InputEffect"):SetAttribute("StartSize", UDim2.fromOffset(100, 50))

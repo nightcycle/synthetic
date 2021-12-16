@@ -1,15 +1,7 @@
-local synthetic = script.Parent.Parent
-
-local packages = synthetic.Parent
+local packages = script.Parent.Parent.Parent
+local synthetic = require(script.Parent.Parent)
 local fusion = require(packages:WaitForChild('fusion'))
 local maidConstructor = require(packages:WaitForChild('maid'))
-
-local Component = synthetic:WaitForChild("Component")
-local paddingConstructor = require(Component:WaitForChild("Padding"))
-local cornerConstructor = require(Component:WaitForChild("Corner"))
-local listConstructor = require(Component:WaitForChild("ListLayout"))
-local attributerConstructor = require(packages:WaitForChild('attributer'))
-local styleConstructor = require(Component:WaitForChild("Style"))
 
 local constructor = {}
 
@@ -71,19 +63,19 @@ function constructor.new(config)
 	}
 	maid:GiveTask(inst)
 
-	local padding = paddingConstructor.new()
+	local padding = synthetic("Padding")
 	padding.Parent = inst
 	maid:GiveTask(padding)
 
-	local listLayout = listConstructor.new()
+	local listLayout = synthetic("ListLayout")
 	listLayout.Parent = inst
 	maid:GiveTask(listLayout)
 
-	local corner = cornerConstructor.new()
+	local corner = synthetic("Corner")
 	corner.Parent = inst
 	maid:GiveTask(corner)
 
-	local styleComponent = styleConstructor.new()
+	local styleComponent = synthetic("Style")
 	styleComponent.Parent = inst
 	maid:GiveTask(styleComponent)
 
@@ -181,12 +173,12 @@ function constructor.new(config)
 		end
 
 		if textMedia then
-			local textStyleComponent = styleConstructor.new()
+			local textStyleComponent = synthetic("Style")
 			textStyleComponent.Parent = textMedia
 			mediaMaid:GiveTask(textStyleComponent)
 		end
 		if visualMedia then
-			local visualStyleComponent = styleConstructor.new()
+			local visualStyleComponent = synthetic("Style")
 			visualStyleComponent.Parent = textMedia
 			mediaMaid:GiveTask(visualStyleComponent)
 		end
@@ -231,14 +223,7 @@ function constructor.new(config)
 	bindAttributeToState("VFRestOrigin",VFRestOrigin)
 	bindAttributeToState("VFRestFOV",VFRestFOV)
 
-	maid.deathSignal = inst.AncestryChanged:Connect(function()
-		if not inst:IsDescendantOf(game.Players.LocalPlayer) then
-			maid:Destroy()
-			print("Cleaning up "..tostring(script.Name))
-		end
-	end)
-
-	return inst
+	return inst, maid
 end
 
 return constructor

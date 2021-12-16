@@ -1,6 +1,5 @@
-local synthetic = script.Parent.Parent
-
-local packages = synthetic.Parent
+local packages = script.Parent.Parent.Parent
+local synthetic = require(script.Parent.Parent)
 local fusion = require(packages:WaitForChild('fusion'))
 local maidConstructor = require(packages:WaitForChild('maid'))
 local attributerConstructor = require(packages:WaitForChild("attributer"))
@@ -10,17 +9,6 @@ local dropdownRegistry = Instance.new("Folder", game)
 dropdownRegistry.Name = "DropdownRegistry"
 dropdownRegistry:SetAttribute("Selected", 0)
 dropdownRegistry:SetAttribute("Index", 0)
-
-local Component = synthetic:WaitForChild("Component")
-local styleConstructor = require(Component:WaitForChild("Style"))
-local elevationConstructor = require(Component:WaitForChild("Elevation"))
-local lightingConstructor = require(Component:WaitForChild("Lighting"))
-local inputEffectConstructor = require(Component:WaitForChild("InputEffect"))
-local paddingConstructor = require(Component:WaitForChild("Padding"))
-local listLayoutConstructor = require(Component:WaitForChild("ListLayout"))
-
-local atom = synthetic:WaitForChild("Atom")
-local buttonConstructor = require(atom:WaitForChild("Button"))
 
 local ed = Enum.EasingDirection
 local es = Enum.EasingStyle
@@ -49,7 +37,7 @@ function constructor.new(config)
 	config = config or {}
 	local Value = fusion.State("")
 	local maid = maidConstructor.new()
-	local inst = buttonConstructor.new({
+	local inst = synthetic("Button",{
 		Parent = config.Parent or game.Players.LocalPlayer:WaitForChild("PlayerGui"),
 		Size = config.Size or UDim2.fromScale(1,1),
 		Position = config.Position or UDim2.fromScale(0.5,0.5),
@@ -69,8 +57,8 @@ function constructor.new(config)
 	maid:GiveTask(textUpdater:onChange(function()
 		inst.Text = tostring(Value:get())
 	end))
-
-	inst:WaitForChild("Style"):SetAttribute("Category", "Surface")
+	inst:WaitForChild("InputEffect"):SetAttribute("InputStyleCategory", "Primary")
+	inst:WaitForChild("Style"):SetAttribute("StyleCategory", "Surface")
 	inst:WaitForChild("Style"):SetAttribute("TextClass", "Body")
 
 	local open = fusion.State(false)
@@ -107,30 +95,30 @@ function constructor.new(config)
 		Parent = inst,
 		Size = frameSize,
 		AnchorPoint = Vector2.new(0, 0),
-		Position = UDim2.new(0,0),
+		Position = UDim2.fromScale(0,1),
 		Visible = true,
 		ClipsDescendants = true,
 	}
-	maid:GiveTask(paddingConstructor.new({
+	maid:GiveTask(synthetic("Padding",{
 		Parent = frame,
 		Padding = UDim.new(0,framePadding),
 	}))
-	maid._listLayout = listLayoutConstructor.new({
+	maid._listLayout = synthetic("ListLayout",{
 		Parent = frame,
 	})
 	maid._listLayout.Padding = UDim.new(0,buffer)
 	maid._listLayout.HorizontalAlignment = Enum.HorizontalAlignment.Center
 	maid._listLayout.VerticalAlignment = Enum.VerticalAlignment.Center
 
-	maid:GiveTask(styleConstructor.new({
-		Category = "Background",
+	maid:GiveTask(synthetic("Style",{
+		StyleCategory = "Background",
 		TextClass = "Body",
 		Parent = frame,
 	}))
-	maid._elevation = elevationConstructor.new({
+	maid._elevation = synthetic("Elevation",{
 		Parent = frame,
 	})
-	maid:GiveTask(lightingConstructor.new({
+	maid:GiveTask(synthetic("Lighting",{
 		Parent = frame,
 	}))
 	local openUpdate = fusion.Compat(open)
@@ -148,7 +136,13 @@ function constructor.new(config)
 		table.insert(current, text)
 		optionList:set(current)
 	end)
-
+	local function updateFrameElevation()
+		local parAbsElev = inst:GetAttribute("AbsoluteElevation") or 0
+		local delta = frame:GetAttribute("ElevationIncrease") or 0
+		frame:SetAttribute("AbsoluteElevation", parAbsElev+delta)
+	end
+	maid:GiveTask(inst:GetAttributeChangedSignal("AbsoluteElevation"):Connect(updateFrameElevation))
+	maid:GiveTask(inst:GetAttributeChangedSignal("AbsoluteElevation"):Connect(updateFrameElevation))
 	local SetOptions = fusion.New "BindableEvent" {
 		Parent = inst,
 		Name = "SetOptions",
@@ -182,27 +176,36 @@ function constructor.new(config)
 		local optionMaid = maidConstructor.new()
 		maid:GiveTask(optionMaid)
 
-		local button = buttonConstructor.new({
+		local button = synthetic("Button",{
 			Name = "Option",
 			Size = buttonSize,
 			LayoutOrder = index,
 			Parent = frame,
 		})
 		button.Text = value
-		button:WaitForChild("Style"):SetAttribute("Category", "Surface")
+		button:WaitForChild("Style"):SetAttribute("StyleCategory", "Surface")
 		button:WaitForChild("Style"):SetAttribute("TextClass", "Body")
+		button:WaitForChild("InputEffect"):SetAttribute("StartSize", buttonSize:get())
+		button:WaitForChild("InputEffect"):SetAttribute("InputSizeBump", UDim.new(0,0))
 		optionMaid:GiveTask(button.Activated:Connect(function()
 			open:set(false)
+			inst:WaitForChild("InputEffect"):SetAttribute("InputSizeBump", UDim.new(0,3))
 			dropdownRegistry:SetAttribute("Selected", id)
 			Value:set(value)
 			OnSelected:Fire(value)
 		end))
-
+		local function updateButtonElevation()
+			local parAbsElev = frame:GetAttribute("AbsoluteElevation") or 0
+			local delta = button:GetAttribute("ElevationIncrease") or 0
+			button:SetAttribute("AbsoluteElevation", parAbsElev+delta)
+		end
+		optionMaid:GiveTask(frame:GetAttributeChangedSignal("AbsoluteElevation"):Connect(updateButtonElevation))
+		optionMaid:GiveTask(frame:GetAttributeChangedSignal("AbsoluteElevation"):Connect(updateButtonElevation))
 		optionMaid:GiveTask(button)
 		optionMaid:GiveTask(inst.AncestryChanged:Connect(function()
-			if not inst:IsDescendantOf(game.Players.LocalPlayer) then
-				maid:Destroy()
-				print("Cleaning up "..tostring(script.Name))
+			if not button:IsDescendantOf(game.Players.LocalPlayer) then
+				optionMaid:Destroy()
+				-- print("Cleaning up "..tostring(script.Name))
 			end
 		end))
 		return optionMaid
@@ -214,8 +217,10 @@ function constructor.new(config)
 		if dropdownRegistry:GetAttribute("Selected") ~= 0 then return end
 		dropdownRegistry:SetAttribute("Selected", id)
 		open:set(true)
+		inst:WaitForChild("InputEffect"):SetAttribute("InputSizeBump", UDim.new(0,0))
 		clickMaid:GiveTask(frame.InputEnded:Connect(function()
 			open:set(false)
+			inst:WaitForChild("InputEffect"):SetAttribute("InputSizeBump", UDim.new(0,3))
 			dropdownRegistry:SetAttribute("Selected", 0)
 		end))
 		local closed = fusion.Compat(open)
@@ -245,17 +250,15 @@ function constructor.new(config)
 	end
 	bindAttributeToState("Value", Value)
 
-	maid.deathSignal = inst.AncestryChanged:Connect(function()
-		if not inst:IsDescendantOf(game.Players.LocalPlayer) then
+	maid:GiveTask({
+		Destroy = function(s)
 			if open:get() == true or dropdownRegistry:GetAttribute("Selected") == id then
 				dropdownRegistry:SetAttribute("Selected", 0)
 			end
-			maid:Destroy()
-			print("Cleaning up "..tostring(script.Name))
 		end
-	end)
+	})
 
-	return inst
+	return inst, maid
 end
 
 return constructor

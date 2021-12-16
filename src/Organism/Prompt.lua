@@ -1,26 +1,15 @@
-local synthetic = script.Parent.Parent
-
-local packages = synthetic.Parent
+local packages = script.Parent.Parent.Parent
+local synthetic = require(script.Parent.Parent)
 local fusion = require(packages:WaitForChild('fusion'))
 local maidConstructor = require(packages:WaitForChild('maid'))
 local attributerConstructor = require(packages:WaitForChild("attributer"))
-
-local Component = synthetic:WaitForChild("Component")
-local styleConstructor = require(Component:WaitForChild("Style"))
-local elevationConstructor = require(Component:WaitForChild("Elevation"))
-local lightingConstructor = require(Component:WaitForChild("Lighting"))
-local inputEffectConstructor = require(Component:WaitForChild("InputEffect"))
-
-local atom = synthetic:WaitForChild("Atom")
-local molecule = synthetic:WaitForChild("Molecule")
-local canvasConstructor = require(molecule:WaitForChild("Canvas"))
 
 local constructor = {}
 
 function constructor.new(config)
 	config = config or {}
 	local maid = maidConstructor.new()
-	local inst = canvasConstructor.new({
+	local inst = synthetic("Canvas",{
 		Parent = config.Parent or game.Players.LocalPlayer:WaitForChild("PlayerGui"),
 		Size = config.Size or UDim2.fromScale(1,1),
 		Position = config.Position or UDim2.fromScale(0.5,0.5),
@@ -31,21 +20,22 @@ function constructor.new(config)
 		Name = config.Name or script.Name,
 	})
 	maid:GiveTask(inst)
-	maid:GiveTask(styleConstructor.new({
-		Category = "Surface",
+	maid:GiveTask(synthetic("Style",{
+		StyleCategory = "Surface",
 		TextClass = "Body",
 		Parent = inst,
 	}))
-	maid:GiveTask(elevationConstructor.new({
+	maid:GiveTask(synthetic("Elevation",{
 		Parent = inst,
 	}))
-	maid:GiveTask(lightingConstructor.new({
+	maid:GiveTask(synthetic("Lighting",{
 		Parent = inst,
 	}))
-	maid:GiveTask(inputEffectConstructor.new({
+	maid:GiveTask(synthetic("InputEffect",{
 		StartSize = config.Size or UDim2.fromScale(1,1),
-		SizeBump = UDim.new(0, 10),
-		ElevationBump = 1,
+		InputSizeBump = UDim.new(0, 10),
+		InputElevationBump = 1,
+		StartElevation = 1,
 		Parent = inst,
 	}))
 
@@ -66,16 +56,8 @@ function constructor.new(config)
 			end
 		end))
 	end
-	-- bindAttributeToState("Value", Value)
 
-	maid.deathSignal = inst.AncestryChanged:Connect(function()
-		if not inst:IsDescendantOf(game.Players.LocalPlayer) then
-			maid:Destroy()
-			print("Cleaning up "..tostring(script.Name))
-		end
-	end)
-
-	return inst
+	return inst, maid
 end
 
 return constructor

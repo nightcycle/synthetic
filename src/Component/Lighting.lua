@@ -1,6 +1,5 @@
-local synthetic = script.Parent.Parent
-
-local packages = synthetic.Parent
+local packages = script.Parent.Parent.Parent
+local synthetic = require(script.Parent.Parent)
 local fusion = require(packages:WaitForChild('fusion'))
 local maidConstructor = require(packages:WaitForChild('maid'))
 local attributerConstructor = require(packages:WaitForChild('attributer'))
@@ -114,11 +113,16 @@ function constructor.new(config)
 	maid:GiveTask(inst)
 	local function setParent(par)
 		currentParent = inst.Parent
+		if currentParent == nil then return end
+		netElevation:set((currentParent:GetAttribute("AbsoluteElevation") or 0)+(currentParent:GetAttribute("ElevationIncrease") or 0))
 		parentMaid:GiveTask(currentParent:GetAttributeChangedSignal("AbsoluteElevation"):Connect(function()
-			netElevation:set(currentParent:GetAttribute("AbsoluteElevation"))
+			if not inst:IsDescendantOf(game.Players.LocalPlayer) then return end
+			if not currentParent then return end
+			netElevation:set((currentParent:GetAttribute("AbsoluteElevation") or 0)+(currentParent:GetAttribute("ElevationIncrease") or 0))
 		end))
 	end
 	maid:GiveTask(inst.AncestryChanged:Connect(function()
+		if not inst:IsDescendantOf(game.Players.LocalPlayer) then return end
 		if inst:IsDescendantOf(game.Players.LocalPlayer:WaitForChild("PlayerGui")) == false then
 			maid:Destroy()
 			print("Cleaning up "..tostring(script.Name))
@@ -133,7 +137,7 @@ function constructor.new(config)
 	if config.Parent then
 		setParent(config.Parent)
 	end
-	return inst
+	return inst, maid
 end
 
 return constructor

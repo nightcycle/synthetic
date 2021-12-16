@@ -1,6 +1,5 @@
-local synthetic = script.Parent.Parent
-
-local packages = synthetic.Parent
+local packages = script.Parent.Parent.Parent
+local synthetic = require(script.Parent.Parent)
 local fusion = require(packages:WaitForChild('fusion'))
 local maidConstructor = require(packages:WaitForChild('maid'))
 
@@ -18,13 +17,8 @@ function constructor.new(config)
 
 	local maid = maidConstructor.new()
 	maid:GiveTask(listLayout)
-	maid.deathSignal = listLayout.AncestryChanged:Connect(function()
-		if not listLayout:IsDescendantOf(game.Players.LocalPlayer) then
-			maid:DoCleaning()
-		end
-	end)
 
-	return listLayout
+	return listLayout, maid
 end
 
 return constructor

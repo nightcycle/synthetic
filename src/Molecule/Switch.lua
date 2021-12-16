@@ -1,15 +1,8 @@
-local synthetic = script.Parent.Parent
-
-local packages = synthetic.Parent
+local packages = script.Parent.Parent.Parent
+local synthetic = require(script.Parent.Parent)
 local fusion = require(packages:WaitForChild('fusion'))
 local maidConstructor = require(packages:WaitForChild('maid'))
 local attributerConstructor = require(packages:WaitForChild("attributer"))
-
-local Component = synthetic:WaitForChild("Component")
-
-
-local atom = synthetic:WaitForChild("Atom")
-local buttonConstructor = require(atom:WaitForChild("Button"))
 
 local constructor = {}
 
@@ -28,7 +21,7 @@ function constructor.new(config)
 	end)
 
 	local maid = maidConstructor.new()
-	local inst = buttonConstructor.new({
+	local inst = synthetic("Button",{
 		Parent = config.Parent or game.Players.LocalPlayer:WaitForChild("PlayerGui"),
 		Size = config.Size or UDim2.fromScale(1,1),
 		Position = config.Position or UDim2.fromScale(0.5,0.5),
@@ -71,13 +64,6 @@ function constructor.new(config)
 		inst:SetAttribute("Value", not Value:get())
 	end)
 
-	maid.deathSignal = inst.AncestryChanged:Connect(function()
-		if not inst:IsDescendantOf(game.Players.LocalPlayer) then
-			maid:Destroy()
-			print("Cleaning up "..tostring(script.Name))
-		end
-	end)
-
 	--bind to attributes
 	local attributer = attributerConstructor.new(inst, {})
 	maid:GiveTask(attributer)
@@ -98,7 +84,7 @@ function constructor.new(config)
 
 	bindAttributeToState("Value", Value)
 
-	return inst
+	return inst, maid
 end
 
 return constructor

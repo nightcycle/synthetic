@@ -1,26 +1,11 @@
-local synthetic = script.Parent.Parent
-
-local packages = synthetic.Parent
+local packages = script.Parent.Parent.Parent
+local synthetic = require(script.Parent.Parent)
 local fusion = require(packages:WaitForChild('fusion'))
 local maidConstructor = require(packages:WaitForChild('maid'))
 local filterConstructor = require(packages:WaitForChild("filter"))
 local attributerConstructor = require(packages:WaitForChild("attributer"))
 
-local Component = synthetic:WaitForChild("Component")
-local paddingConstructor = require(Component:WaitForChild("Padding"))
-local cornerConstructor = require(Component:WaitForChild("Corner"))
-local listConstructor = require(Component:WaitForChild("ListLayout"))
-local styleConstructor = require(Component:WaitForChild("Style"))
-local elevationConstructor = require(Component:WaitForChild("Elevation"))
-local lightingConstructor = require(Component:WaitForChild("Lighting"))
-
-local atom = synthetic:WaitForChild("Atom")
-local cardConstructor = require(atom:WaitForChild("Card"))
-local buttonConstructor = require(atom:WaitForChild("Button"))
-local displayConstructor = require(atom:WaitForChild("Display"))
-
-local textService = game:GetService("TextService")
-local UserInputService = game:GetService("UserInputService")
+local userInputService = game:GetService("UserInputService")
 local runService = game:GetService("RunService")
 
 local constructor = {}
@@ -52,7 +37,7 @@ function constructor.new(config)
 	local absoluteSize = fusion.State(Vector2.new(0,0))
 	local maid = maidConstructor.new()
 
-	local inst = cardConstructor.new({
+	local inst = synthetic("Card",{
 		Parent = config.Parent or game.Players.LocalPlayer:WaitForChild("PlayerGui"),
 		Size = config.Size or UDim2.fromScale(1,1),
 		Position = config.Position or UDim2.fromScale(0.5,0.5),
@@ -67,7 +52,7 @@ function constructor.new(config)
 		absoluteSize:set(inst.AbsoluteSize)
 	end)
 
-	maid._list = listConstructor.new({
+	maid._list = synthetic("ListLayout",{
 		Parent = inst
 	})
 	maid._list.VerticalAlignment = Enum.VerticalAlignment.Center
@@ -103,9 +88,9 @@ function constructor.new(config)
 	maid:GiveTask(maid._leftLabel:GetPropertyChangedSignal("Font"):Connect(function()
 		font:set(maid._leftLabel.Font.Name)
 	end))
-	maid:GiveTask(styleConstructor.new({
+	maid:GiveTask(synthetic("Style",{
 		Parent = maid._leftLabel,
-		Category = "Surface",
+		StyleCategory = "Surface",
 		TextClass = "Caption",
 	}))
 
@@ -122,9 +107,9 @@ function constructor.new(config)
 	maid:GiveTask(maid._rightLabel:GetPropertyChangedSignal("Font"):Connect(function()
 		font:set(maid._leftLabel.Font.Name)
 	end))
-	maid:GiveTask(styleConstructor.new({
+	maid:GiveTask(synthetic("Style",{
 		Parent = maid._rightLabel,
-		Category = "Surface",
+		StyleCategory = "Surface",
 		TextClass = "Caption",
 	}))
 
@@ -135,17 +120,17 @@ function constructor.new(config)
 		Parent = inst,
 	}
 	maid:GiveTask(line)
-	maid:GiveTask(cornerConstructor.new({
+	maid:GiveTask(synthetic("Corner",{
 		Radius = UDim.new(0, 5),
 		Parent = line,
 	}))
-	maid:GiveTask(styleConstructor.new({
+	maid:GiveTask(synthetic("Style",{
 		Parent = line,
-		Category = "Secondary",
+		StyleCategory = "Secondary",
 		TextClass = "Caption",
 	}))
 
-	local button = buttonConstructor.new({
+	local button = synthetic("Button",{
 		Size = UDim2.fromOffset(55, 55),
 		SizeConstraint = Enum.SizeConstraint.RelativeYY,
 		Parent = line,
@@ -167,7 +152,7 @@ function constructor.new(config)
 
 	maid:GiveTask(holdTrackerMaid)
 	maid._sliderInputBegan = button.InputBegan:Connect(function()
-		if IsDragging == false and UserInputService:IsMouseButtonPressed(Enum.UserInputType.MouseButton1) then
+		if IsDragging == false and userInputService:IsMouseButtonPressed(Enum.UserInputType.MouseButton1) then
 			IsDragging = true
 			holdTrackerMaid:GiveTask(runService.RenderStepped:Connect(function()
 				local startX = line.AbsolutePosition.X
@@ -184,12 +169,12 @@ function constructor.new(config)
 				button.Position = UDim2.new(alpha, 0, 0.5, 0)
 				Value:set(minValue + offsetVal)
 
-				if not UserInputService:IsMouseButtonPressed(Enum.UserInputType.MouseButton1) then
+				if not userInputService:IsMouseButtonPressed(Enum.UserInputType.MouseButton1) then
 					holdTrackerMaid:DoCleaning()
 					IsDragging = false
 					onSet:Fire(Value:get())
 				end
-				inputPosition = UserInputService:GetMouseLocation()
+				inputPosition = userInputService:GetMouseLocation()
 			end))
 		end
 	end)
@@ -224,14 +209,7 @@ function constructor.new(config)
 	bindAttributeToState("LineThickness", LineThickness)
 	bindAttributeToState("LabelWidth", LabelWidth)
 
-	maid.deathSignal = inst.AncestryChanged:Connect(function()
-		if not inst:IsDescendantOf(game.Players.LocalPlayer) then
-			maid:Destroy()
-			print("Cleaning up "..tostring(script.Name))
-		end
-	end)
-
-	return inst
+	return inst, maid
 end
 
 return constructor

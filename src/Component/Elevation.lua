@@ -1,8 +1,8 @@
-local synthetic = script.Parent.Parent
-
-local packages = synthetic.Parent
+local packages = script.Parent.Parent.Parent
+local synthetic = require(script.Parent.Parent)
 local fusion = require(packages:WaitForChild('fusion'))
 local maidConstructor = require(packages:WaitForChild('maid'))
+
 local attributerConstructor = require(packages:WaitForChild('attributer'))
 
 local maxShadowDistance = 4
@@ -44,18 +44,12 @@ function constructor.new(config)
 	local currentParent
 
 	--set control states
-	local grandParentAbsElevation = fusion.State(0)
+	-- local grandParentAbsElevation = fusion.State(0)
 	local increasedElevation = fusion.State(0)
 
-	local absoluteElevation = fusion.Computed(function()
-		local absElev = grandParentAbsElevation:get() + increasedElevation:get()
-		-- print("Compute ", absElev)
-		if currentParent then
-			currentParent:SetAttribute("AbsoluteElevation", absElev)
-		end
-		return absElev
-	end)
+	local absoluteElevation = fusion.State(0)
 	local absElevationCompat = fusion.Compat(absoluteElevation)
+
 	--solve for goals
 	local alpha = fusion.Computed(function()
 		return (math.clamp(increasedElevation:get(), 0, 9)/9)^2
@@ -88,25 +82,19 @@ function constructor.new(config)
 	maid:GiveTask(inst)
 	local function setParent(par)
 		currentParent = par
-
-		currentParent:SetAttribute("ElevationIncrease", currentParent:GetAttribute("ElevationIncrease") or 1)
 		parentMaid:GiveTask(currentParent:GetAttributeChangedSignal("ElevationIncrease"):Connect(function()
-			increasedElevation:set(currentParent:GetAttribute("ElevationIncrease"))
-			absoluteElevation:get()
+			if not inst:IsDescendantOf(game.Players.LocalPlayer) then return end
+			if not currentParent then return end
+			increasedElevation:set(currentParent:GetAttribute("ElevationIncrease") or 0)
 		end))
-		currentParent:SetAttribute("AbsoluteElevation", absoluteElevation:get())
-		parentMaid:GiveTask(absElevationCompat:onChange(function()
-			currentParent:SetAttribute("AbsoluteElevation", absoluteElevation:get())
+		parentMaid:GiveTask(currentParent:GetAttributeChangedSignal("AbsoluteElevation"):Connect(function()
+			if not inst:IsDescendantOf(game.Players.LocalPlayer) then return end
+			if not currentParent then return end
+			absoluteElevation:set(currentParent:GetAttribute("AbsoluteElevation") or 0)
 		end))
-		local grandParent = currentParent.Parent
-		if grandParent then
-			grandParent:SetAttribute("AbsoluteElevation", grandParent:GetAttribute("AbsoluteElevation") or 0)
-			parentMaid:GiveTask(grandParent:GetAttributeChangedSignal("AbsoluteElevation"):Connect(function()
-				grandParentAbsElevation:set(grandParent:GetAttribute("AbsoluteElevation"))
-			end))
-		end
 	end
 	maid:GiveTask(inst.AncestryChanged:Connect(function()
+		if not inst:IsDescendantOf(game.Players.LocalPlayer) then return end
 		if inst:IsDescendantOf(game.Players.LocalPlayer:WaitForChild("PlayerGui")) == false then
 			maid:Destroy()
 			print("Cleaning up "..tostring(script.Name))
@@ -120,7 +108,7 @@ function constructor.new(config)
 	if config.Parent then
 		setParent(config.Parent)
 	end
-	return inst
+	return inst, maid
 end
 
 return constructor

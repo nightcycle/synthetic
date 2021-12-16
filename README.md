@@ -25,6 +25,10 @@ Unlike most UI libraries, Synthetic also needs to be required by the server - th
 	<!* server *>
 	local Synthetic = require*(Insert_Path_To_Module_Here)*
 
+Every attribute is connected to some internal state, with the exception of any with an _ in the front, those are used mostly for internal calculations and passages of state between objects. Eventually I'll probably replace them with a bindable function, but for now they stay.
+
+The Synthetic library constructor also endows each element it creates with self-cleaning functionality, as well as tracks things like relative and absolute elevation - a metric used for various style components.
+
 ## Constructor Configuration
 When constructing a new element you can pass a table of optional GuiObject properties. Alongside these global properties, you can also include any element unique attributes as well. Non GuiObject elements like components and ScreenGuis may not work.
 
@@ -122,13 +126,16 @@ Makes button brighter as "AbsoluteElvation" increases, works best with Elevation
 Makes parent GuiObject do a small bounce size increase when hovered over by cursor
 #### Properties:
 - __StartSize__ *(UDim2)*: The size to return to when not hovered over
-- __SizeBump__ *(UDim)*: How much the size along both dimensions increases when hovered over
-- __ElevationBump__ *(Number)*: Sets the "ElevationIncrease" attribute when hovered over
+- __StartStyleCategory__ *(StyleCategory)*: Default parent StyleCategory if relevant
+- __StartElevation__ *(Number)*: Default elevation bump
+- __InputSizeBump__ *(UDim)*: How much the size along both dimensions increases when hovered over
+- __InputElevationBump__ *(Number)*: Sets the "ElevationIncrease" attribute when hovered over
+- __InputStyleCategory__ *(StyleCategory)*: Overwrites parent StyleCategory if relevant
 
 ### Style:
 Formats parented GuiObject based on SyntheticStyleConfiguration
 #### Properties:
-- __Category__ *(StyleCategory)*: Used to determine the colors applied to the parent GuiObject
+- __StyleCategory__ *(StyleCategory)*: Used to determine the colors applied to the parent GuiObject
 - __TextClass__ *(TextClass)*: Used to determine text treatment of parent GuiObject
 
 ## Atoms:

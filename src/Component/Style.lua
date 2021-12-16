@@ -1,6 +1,5 @@
-local synthetic = script.Parent.Parent
-
-local packages = synthetic.Parent
+local packages = script.Parent.Parent.Parent
+local synthetic = require(script.Parent.Parent)
 local fusion = require(packages:WaitForChild('fusion'))
 local maidConstructor = require(packages:WaitForChild('maid'))
 local attributerConstructor = require(packages:WaitForChild('attributer'))
@@ -499,7 +498,7 @@ function constructor.new(config)
 	local currentParent
 
 	--set control states
-	local category = fusion.State(config.Category or "Primary")
+	local category = fusion.State(config.StyleCategory or "Primary")
 	local textClass = fusion.State(config.TextClass or "Body")
 
 	--create inst
@@ -515,12 +514,11 @@ function constructor.new(config)
 		attributer:Connect(key, state:get())
 		maid:GiveTask(attributer.OnChanged:Connect(function(k, val)
 			if k == key then
-				print("state changed "..tostring(k))
 				state:set(val)
 			end
 		end))
 	end
-	bindAttributeToState("Category", category)
+	bindAttributeToState("StyleCategory", category)
 	bindAttributeToState("TextClass", textClass)
 
 	--solve background color
@@ -560,6 +558,7 @@ function constructor.new(config)
 	local currentOnColor = goalOnColor
 	local currentFontSize = goalFontSize
 	local function fireUpdate()
+		if not inst:IsDescendantOf(game.Players.LocalPlayer) then return end
 		update(currentParent, currentBackgroundColor, currentOnColor, goalFont, currentFontSize)
 	end
 	currentBackgroundColor = tweenCompat(goalBackgroundColor, maid, newTweenInfo(), fireUpdate)
@@ -574,11 +573,8 @@ function constructor.new(config)
 		fireUpdate()
 	end
 	maid:GiveTask(inst.AncestryChanged:Connect(function()
-		if inst:IsDescendantOf(game.Players.LocalPlayer:WaitForChild("PlayerGui")) == false then
-			maid:Destroy()
-			print("Cleaning up "..tostring(script.Name))
-			print("Cleaning up "..tostring(script.Name))
-		elseif inst.Parent ~= nil or currentParent ~= nil then
+		if not inst:IsDescendantOf(game.Players.LocalPlayer) then return end
+		if inst.Parent ~= nil or currentParent ~= nil then
 			setParent(inst.Parent)
 		else
 			resetParent(currentParent, parentMaid)
@@ -590,7 +586,7 @@ function constructor.new(config)
 	end
 	maid:GiveTask(viewportSizeChangeSignal:Connect(fireUpdate))
 
-	return inst
+	return inst, maid
 end
 
 return constructor

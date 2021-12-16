@@ -1,10 +1,7 @@
-local synthetic = script.Parent.Parent
-
-local packages = synthetic.Parent
+local packages = script.Parent.Parent.Parent
+local synthetic = require(script.Parent.Parent)
 local fusion = require(packages:WaitForChild('fusion'))
 local maidConstructor = require(packages:WaitForChild('maid'))
-
-local Component = synthetic:WaitForChild("Component")
 
 local constructor = {}
 
@@ -16,7 +13,9 @@ function constructor.new(config)
 		ZIndexBehavior = Enum.ZIndexBehavior.Sibling,
 		Parent = config.Parent or game.Players.LocalPlayer:WaitForChild("PlayerGui"),
 	}
-	return gui
+	local maid = maidConstructor.new()
+	maid:GiveTask(gui)
+	return gui, maid
 end
 
 return constructor

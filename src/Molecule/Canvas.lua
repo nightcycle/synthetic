@@ -1,23 +1,9 @@
-local synthetic = script.Parent.Parent
-
-local packages = synthetic.Parent
+local packages = script.Parent.Parent.Parent
+local synthetic = require(script.Parent.Parent)
 local fusion = require(packages:WaitForChild('fusion'))
 local maidConstructor = require(packages:WaitForChild('maid'))
 local filterConstructor = require(packages:WaitForChild("filter"))
 local attributerConstructor = require(packages:WaitForChild("attributer"))
-
-local Component = synthetic:WaitForChild("Component")
-local paddingConstructor = require(Component:WaitForChild("Padding"))
-local cornerConstructor = require(Component:WaitForChild("Corner"))
-local styleConstructor = require(Component:WaitForChild("Style"))
-local elevationConstructor = require(Component:WaitForChild("Elevation"))
-local lightingConstructor = require(Component:WaitForChild("Lighting"))
-local inputEffectConstructor = require(Component:WaitForChild("InputEffect"))
-
-local atom = synthetic:WaitForChild("Atom")
-local displayConstructor = require(atom:WaitForChild("Display"))
-local buttonConstructor = require(atom:WaitForChild("Button"))
-
 
 local constructor = {}
 
@@ -74,22 +60,22 @@ function constructor.new(config)
 		Name = config.Name or script.Name,
 	}
 	maid:GiveTask(inst)
-	maid:GiveTask(styleConstructor.new({
-		Category = "Background",
+	maid:GiveTask(synthetic("Style",{
+		StyleCategory = "Background",
 		Parent = inst,
 	}))
-	maid:GiveTask(elevationConstructor.new({
+	maid:GiveTask(synthetic("Elevation",{
 		Parent = inst,
 	}))
-	maid:GiveTask(lightingConstructor.new({
+	maid:GiveTask(synthetic("Lighting",{
 		Parent = inst,
 	}))
-	maid:GiveTask(cornerConstructor.new({
+	maid:GiveTask(synthetic("Corner",{
 		Radius = UDim.new(0, 5),
 		Parent = inst
 	}))
 	local buttonSize = 24
-	maid._instPadding = paddingConstructor.new({
+	maid._instPadding = synthetic("Padding",{
 		Padding = UDim.new(0, math.ceil(buttonSize/2)),
 		Parent = inst
 	})
@@ -109,8 +95,8 @@ function constructor.new(config)
 		AnchorPoint = Vector2.new(0.5,0.5),
 		Parent = inst,
 	}
-	maid:GiveTask(styleConstructor.new({
-		Category = "Background",
+	maid:GiveTask(synthetic("Style",{
+		StyleCategory = "Background",
 		Parent = content,
 	}))
 	maid:GiveTask(content:GetPropertyChangedSignal("AbsoluteCanvasSize"):Connect(function()
@@ -133,7 +119,7 @@ function constructor.new(config)
 		Parent = content,
 	}
 
-	local exitButton = buttonConstructor.new({
+	local exitButton = synthetic("Button",{
 		Name = "ExitButton",
 		Parent = inst,
 		AnchorPoint = Vector2.new(0.5,0.5),
@@ -161,7 +147,7 @@ function constructor.new(config)
 	maid:GiveTask(exitButton.Activated:Connect(function()
 		Open:set(false)
 	end))
-	exitButton:WaitForChild("Style"):SetAttribute("Category", "Error")
+	exitButton:WaitForChild("Style"):SetAttribute("StyleCategory", "Error")
 	exitButton:WaitForChild("Style"):SetAttribute("TextClass", "Caption")
 
 	--bind to attributes
@@ -189,14 +175,7 @@ function constructor.new(config)
 	bindAttributeToState("ExitButtonEnabled", ExitButtonEnabled)
 	-- bindAttributeToState("AbsoluteScrollLength", AbsoluteScrollLength)
 
-	maid.deathSignal = inst.AncestryChanged:Connect(function()
-		if not inst:IsDescendantOf(game.Players.LocalPlayer) then
-			maid:Destroy()
-			print("Cleaning up "..tostring(script.Name))
-		end
-	end)
-
-	return inst
+	return inst, maid
 end
 
 return constructor

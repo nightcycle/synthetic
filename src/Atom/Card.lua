@@ -1,17 +1,7 @@
-local synthetic = script.Parent.Parent
-
-local packages = synthetic.Parent
+local packages = script.Parent.Parent.Parent
+local synthetic = require(script.Parent.Parent)
 local fusion = require(packages:WaitForChild('fusion'))
 local maidConstructor = require(packages:WaitForChild('maid'))
-
-local Component = synthetic:WaitForChild("Component")
-local paddingConstructor = require(Component:WaitForChild("Padding"))
-local cornerConstructor = require(Component:WaitForChild("Corner"))
-local styleConstructor = require(Component:WaitForChild("Style"))
-local elevationConstructor = require(Component:WaitForChild("Elevation"))
-local lightingConstructor = require(Component:WaitForChild("Lighting"))
-local inputEffectConstructor = require(Component:WaitForChild("InputEffect"))
-
 
 local constructor = {}
 
@@ -30,39 +20,33 @@ function constructor.new(config)
 	}
 	maid:GiveTask(inst)
 
-	maid:GiveTask(styleConstructor.new({
-		Category = "Surface",
+	maid:GiveTask(synthetic("Style",{
+		StyleCategory = "Surface",
 		TextClass = "Body",
 		Parent = inst,
 	}))
-	maid:GiveTask(elevationConstructor.new({
+	maid:GiveTask(synthetic("Elevation",{
 		Parent = inst,
 	}))
-	maid:GiveTask(lightingConstructor.new({
+	maid:GiveTask(synthetic("Lighting",{
 		Parent = inst,
 	}))
-	maid:GiveTask(inputEffectConstructor.new({
-		StartSize = config.Size or UDim2.fromScale(1,1),
-		SizeBump = UDim.new(0, 10),
-		ElevationBump = 1,
-		Parent = inst,
-	}))
-	maid:GiveTask(paddingConstructor.new({
+	-- maid:GiveTask(synthetic("InputEffect",{
+	-- 	StartSize = config.Size or UDim2.fromScale(1,1),
+	-- 	InputSizeBump = UDim.new(0, 10),
+	-- 	InputElevationBump = 1,
+	-- 	StartElevation = 1,
+	-- 	Parent = inst,
+	-- }))
+	maid:GiveTask(synthetic("Padding",{
 		Parent = inst
 	}))
-	maid:GiveTask(cornerConstructor.new({
+	maid:GiveTask(synthetic("Corner",{
 		Parent = inst,
 		Radius = UDim.new(0,5),
 	}))
 
-	maid.deathSignal = inst.AncestryChanged:Connect(function()
-		if not inst:IsDescendantOf(game.Players.LocalPlayer) then
-			maid:Destroy()
-			print("Cleaning up "..tostring(script.Name))
-		end
-	end)
-
-	return inst
+	return inst, maid
 end
 
 return constructor

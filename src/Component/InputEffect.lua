@@ -1,6 +1,5 @@
-local synthetic = script.Parent.Parent
-
-local packages = synthetic.Parent
+local packages = script.Parent.Parent.Parent
+local synthetic = require(script.Parent.Parent)
 local fusion = require(packages:WaitForChild('fusion'))
 local maidConstructor = require(packages:WaitForChild('maid'))
 local attributerConstructor = require(packages:WaitForChild('attributer'))
@@ -20,7 +19,6 @@ local elevationToValueGain = {
 	[9] = 0.16,
 }
 
-
 local maxShadowDistance = 7
 local minShadowDistance = 1
 local minTransparency = 0.1
@@ -30,6 +28,9 @@ function setParent(parent: Instance)
 	if not parent or not parent:IsA("GuiObject") then return end
 	task.delay(1, function()
 		parent:SetAttribute("SIFXC_Size", parent.Size)
+		if parent:FindFirstChild("Style") then
+			parent:SetAttribute("SIFXC_Style", parent:WaitForChild("Style"):GetAttribute("StyleCategory"))
+		end
 	end)
 	parent:SetAttribute("StartInputFXConfig", true)
 end
@@ -39,8 +40,15 @@ function resetParent(parent: Instance, maid)
 	if not isViable then return end
 	parent:SetAttribute("StartInputFXConfig", false)
 	if not parent or not parent:IsA("GuiObject") then return end
+
 	parent:SetAttribute("SIFXC_Size", parent.Size)
 	parent.Size = parent:GetAttribute("SIFXC_Size")
+
+	if parent:FindFirstChild("Style") and parent:GetAttribute("SIFXC_Style") then
+		parent:WaitForChild("Style"):SetAttribute("StyleCategory", parent:GetAttribute("SIFXC_Style"))
+		parent:SetAttribute("SIFXC_Style", nil)
+	end
+
 	parent:SetAttribute("StartInputFXConfig", nil)
 	parent:SetAttribute("StartInputFXConfig", nil)
 	maid:DoCleaning()
@@ -71,9 +79,12 @@ function constructor.new(config)
 	local currentParent
 
 	--set control states
-	local startSize = fusion.State(config.StartSize or UDim2.fromScale(0,0))
-	local sizeBump = fusion.State(config.SizeBump or UDim.new(0,10))
-	local elevationBump = fusion.State(config.ElevationBump or 1)
+	local StartSize = fusion.State(config.StartSize or UDim2.fromScale(0,0))
+	local StartStyleCategory = fusion.State(config.StartStyleCategory or "Surface")
+	local StartElevation = fusion.State(config.StartElevation or 1)
+	local InputSizeBump = fusion.State(config.InputSizeBump or UDim.new(0,4))
+	local InputElevationBump = fusion.State(config.InputElevationBump or 4)
+	local InputStyleCategory = fusion.State(config.InputStyleCategory or "Primary")
 
 	--create inst
 	local inst = fusion.New "Configuration" {
@@ -84,17 +95,12 @@ function constructor.new(config)
 	--bind to attributes
 	local attributer = attributerConstructor.new(inst, {})
 	maid:GiveTask(attributer)
-	local function bindAttributeToState(key, state, constructor)
-		if not constructor then
-			constructor = function(v)
-				return v
-			end
-		end
-		attributer:Connect(key, constructor(state:get()))
+	local function bindAttributeToState(key, state)
+		attributer:Connect(key, state:get())
 		local compat = fusion.Compat(state)
 		maid:GiveTask(compat:onChange(function()
 			if inst:GetAttribute(key) ~= state:get() then
-				inst:SetAttribute(key, constructor(state:get()))
+				inst:SetAttribute(key, state:get())
 			end
 		end))
 		maid:GiveTask(attributer.OnChanged:Connect(function(k, val)
@@ -104,18 +110,21 @@ function constructor.new(config)
 		end))
 	end
 
-	bindAttributeToState("StartSize", startSize, UDim2.new)
-	bindAttributeToState("SizeBump", sizeBump, UDim.new)
-	bindAttributeToState("ElevationBump", elevationBump)
+	bindAttributeToState("StartElevation", StartElevation)
+	bindAttributeToState("StartSize", StartSize)
+	bindAttributeToState("StartStyleCategory", StartStyleCategory)
+	bindAttributeToState("InputSizeBump", InputSizeBump)
+	bindAttributeToState("InputElevationBump", InputElevationBump)
+	bindAttributeToState("InputStyleCategory", InputStyleCategory)
 
 	local isSelected = fusion.State(false)
-	local size = fusion.Computed(function()
+	local function getSize()
 		if currentParent ~= nil and currentParent:IsA("GuiObject") then
 			local absSize = currentParent.AbsoluteSize
-			local size = currentParent.Size
-			local b = sizeBump:get() or UDim.new(0,0)
+			local size = StartSize:get()
+			local b = InputSizeBump:get() or UDim.new(0,0)
 			if isSelected:get() == true then
-				currentParent:SetAttribute("ElevationIncrease", elevationBump:get())
+
 				return UDim2.new(
 					size.X.Scale+b.Scale,
 					size.X.Offset+b.Offset,
@@ -123,19 +132,17 @@ function constructor.new(config)
 					size.Y.Offset+b.Offset
 				)
 			else
-				currentParent:SetAttribute("ElevationIncrease", 1)
-				return startSize:get()
+				return StartSize:get()
 			end
 		else
-			return startSize:get()
+			return StartSize:get()
 		end
-	end)
-
+	end
+	local size = fusion.Computed(getSize)
 	local currentSizeTween = fusion.Tween(size, newTweenInfo())
 	local sizeTweenCompat = fusion.Compat(currentSizeTween)
 
 	maid:GiveTask(sizeTweenCompat:onChange(function()
-		print("Update")
 		if currentParent ~= nil and currentParent:IsA("GuiObject") then
 			currentParent.Size = currentSizeTween:get()
 		end
@@ -145,23 +152,35 @@ function constructor.new(config)
 	maid:GiveTask(inst)
 	local function sPar(par)
 		currentParent = par
+		if currentParent == nil then return end
 		if currentParent:IsA("GuiObject") then
 			setParent(currentParent)
 			parentMaid:GiveTask(currentParent.InputBegan:Connect(function()
+				if not inst:IsDescendantOf(game.Players.LocalPlayer) then return end
 				isSelected:set(true)
-				-- currentParent.Size = size:get()
+				currentParent.Size = getSize()
+				print("Setting")
+				if currentParent:FindFirstChild("Style") then
+					local cat = InputStyleCategory:get()
+					print(cat)
+					currentParent:WaitForChild("Style"):SetAttribute("StyleCategory", cat)
+				end
+				currentParent:SetAttribute("ElevationIncrease", StartElevation:get() + InputElevationBump:get())
 			end))
 			parentMaid:GiveTask(currentParent.InputEnded:Connect(function()
+				if not inst:IsDescendantOf(game.Players.LocalPlayer) then return end
 				isSelected:set(false)
-				-- currentParent.Size = size:get()
+				currentParent.Size = getSize()
+				if currentParent:FindFirstChild("Style") then
+					currentParent:WaitForChild("Style"):SetAttribute("StyleCategory", StartStyleCategory:get())
+				end
+				currentParent:SetAttribute("ElevationIncrease", StartElevation:get())
 			end))
 		end
 	end
 	maid:GiveTask(inst.AncestryChanged:Connect(function()
-		if inst:IsDescendantOf(game.Players.LocalPlayer:WaitForChild("PlayerGui")) == false then
-			maid:Destroy()
-			print("Cleaning up "..tostring(script.Name))
-		elseif inst.Parent ~= nil or currentParent ~= nil then
+		if not inst:IsDescendantOf(game.Players.LocalPlayer) then return end
+		if inst.Parent ~= nil or currentParent ~= nil then
 			sPar(inst.Parent)
 		else
 			resetParent(currentParent, parentMaid)
@@ -171,7 +190,7 @@ function constructor.new(config)
 	if config.Parent then
 		sPar(config.Parent)
 	end
-	return inst
+	return inst, maid
 end
 
 return constructor

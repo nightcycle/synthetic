@@ -1,15 +1,7 @@
-local synthetic = script.Parent.Parent
-
-local packages = synthetic.Parent
+local packages = script.Parent.Parent.Parent
+local synthetic = require(script.Parent.Parent)
 local fusion = require(packages:WaitForChild('fusion'))
 local maidConstructor = require(packages:WaitForChild('maid'))
-
-local Component = synthetic:WaitForChild("Component")
-local cornerConstructor = require(Component:WaitForChild("Corner"))
-local styleConstructor = require(Component:WaitForChild("Style"))
-local elevationConstructor = require(Component:WaitForChild("Elevation"))
-local lightingConstructor = require(Component:WaitForChild("Lighting"))
-local inputEffectConstructor = require(Component:WaitForChild("InputEffect"))
 
 local constructor = {}
 
@@ -18,7 +10,7 @@ function constructor.new(config)
 	local maid = maidConstructor.new()
 	local inst = fusion.New "TextButton" {
 		Text = "",
-		AutoButtonColor = true,
+		AutoButtonColor = false,
 		Parent = config.Parent or game.Players.LocalPlayer:WaitForChild("PlayerGui"),
 		Size = config.Size or UDim2.fromScale(1,1),
 		Position = config.Position or UDim2.fromScale(0.5,0.5),
@@ -29,36 +21,32 @@ function constructor.new(config)
 		Name = config.Name or script.Name,
 	}
 	maid:GiveTask(inst)
-	maid:GiveTask(cornerConstructor.new({
+	maid:GiveTask(synthetic("Corner",{
 		Radius = UDim.new(0, 5),
 		Parent = inst
 	}))
-	maid:GiveTask(styleConstructor.new({
-		Category = "Primary",
+	maid:GiveTask(synthetic("Style",{
+		StyleCategory = "Primary",
 		TextClass = "Button",
 		Parent = inst,
 	}))
-	maid:GiveTask(elevationConstructor.new({
+	maid:GiveTask(synthetic("Elevation",{
 		Parent = inst,
 	}))
-	maid:GiveTask(lightingConstructor.new({
+	maid:GiveTask(synthetic("Lighting",{
 		Parent = inst,
 	}))
-	maid:GiveTask(inputEffectConstructor.new({
+	maid:GiveTask(synthetic("InputEffect",{
 		StartSize = config.Size or UDim2.fromScale(1,1),
-		SizeBump = UDim.new(0, 10),
-		ElevationBump = 1,
+		InputSizeBump = UDim.new(0, 10),
+		StartElevation = 1,
+		InputElevationBump = 1,
+		StartStyleCategory = "Surface",
+		InputStyleCategory = "Secondary",
 		Parent = inst,
 	}))
 
-	maid.deathSignal = inst.AncestryChanged:Connect(function()
-		if not inst:IsDescendantOf(game.Players.LocalPlayer) then
-			maid:Destroy()
-			print("Cleaning up "..tostring(script.Name))
-		end
-	end)
-
-	return inst
+	return inst, maid
 end
 
 return constructor
