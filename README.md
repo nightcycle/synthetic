@@ -226,42 +226,23 @@ Organisms are composed of molecules & atoms, and typically have more
 A prompt that you can trigger to appear for certain decision
 #### Properties:
 - __Text__ *(String)*: Provides context for prompt
-- __Button1__ *(String)*: The text in the first button
-- __Button2__ *(String)*: The text in the second button
+- __ConfirmLabel__ *(String)*: The text in the first button
+- __DenyLabel__ *(String)*: The text in the second button
 #### Functions:
 - __Fire__ *()*: Reveals prompt
 #### Events:
 - __OnDecision__ *()*: Fired when user selects an option
 
-### Form:
-A series of prompts the user must complete before firing completed signal
-#### Properties:
-- __AllComplete__ *(Boolean)*: Whether all rows are complete
-- __CompleteN__ *(Boolean)*: Whether the Nth row is complete
-- __PromptN__ *(String)*: The Nth text prompt used to provide context
-- __FormatN__ *(EntryFormat)*: The Nth type of input accepted
-- __ValueN__ *(EntryFormat)*: The Nth current value held in input zone
-#### Functions:
-- __SetRow__ *(prompt, format, value)*: Adds new row to form
-- __DestroyRow__ *(Number)*: Removes row at index from form
-- __GetRow__ *()*: Returns an array of row info objects
-- __ClearAllRows__ *()*: Destroys all rows
-#### Events:
-- OnComplete: When all forms have been provided an acceptable answer
-- OnRowComplete: When a specific entry has its value changed
-
-# Further Development
-This library will get expanded as I use it in more of my own projects, though long term I hope to add a bit more front-facing polish
+## Known Issues
+- Working with components under other elements can feel cumbersome.
+- The various style components are a bit janky.
+- Currently you can't use fusion states as parameters for elements.
+- Tweening just does not work and I don't know why.
 
 ## Long Term Goals
-- Port this .md file to an actual wiki with demo gifs, if you want to do this for me please reach out.
-- Create a plugin which allows users to manually create the UI in studio
+- Improve component visuals
+- Find a quicker way to export
 - Create a comprehensive port of the Material Components listed here: https://material.io/components
-- Create an SVG import tool using 3D parts, allowing for their display in a viewport frame
-- Port Figma UI to Studio
 
-## Reasons I probably won't achieve those long term goals
-- They interest me, which means they're probably outta scope
-- Frankly I'm capable enough to make most of the UI I need without them
-- I have to pay bills, and these free libraries usually don't earn much money
-- If you disagree with that last remark, you may prove me wrong at https://www.patreon.com/nightcycle
+## Enjoy!
+If you felt this library helped you out, any contributions to [my patreon](https://www.patreon.com/nightcycle) are appreciated! Thanks!

@@ -276,11 +276,11 @@ local validTextSizes = {
 		Minimum = 24,
 	},
 	Button = {
-		Maximum = 36,
+		Maximum = 24,
 		Minimum = 18,
 	},
 	Body = {
-		Maximum = 24,
+		Maximum = 20,
 		Minimum = 12,
 	},
 	Caption = {
@@ -306,19 +306,19 @@ local config = {
 
 	--the color displayed most frequently
 	Primary_Color = "Blue",
-	Primary_Shade = 500,
+	Primary_Shade = 700,
 
 	--provides more ways to accent and distinguish your product
-	Secondary_Color = "Orange",
-	Secondary_Shade = 200,
+	Secondary_Color = "Yellow",
+	Secondary_Shade = 900,
 
 	--affect surfaces of Components, such as cards, sheets, and menus
 	Surface_Color = "Grey",
-	Surface_Shade = 50,
+	Surface_Shade = 700,
 
 	-- appears behind scrollable content
 	Background_Color = "Grey",
-	Background_Shade = 50,
+	Background_Shade = 800,
 
 	-- indicates errors in Components, such as invalid text in a text field
 	Error_Color = "Red",

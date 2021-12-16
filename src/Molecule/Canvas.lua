@@ -29,7 +29,10 @@ function constructor.new(config)
 	local ClosePosition = fusion.State(config.ClosePosition or config.Position or UDim2.fromScale(1.5,0.5))
 	local OpenSize = fusion.State(config.OpenSize or config.Size or UDim2.fromScale(0.5,0.5))
 	local CloseSize = fusion.State(config.CloseSize or config.Size or UDim2.fromScale(0.5,0.5))
-	local ExitButtonEnabled = fusion.State(config.ExitButtonEnabled or true)
+	local ExitButtonEnabled = fusion.State(true)
+	if config.ExitButtonEnabled ~= nil then
+		ExitButtonEnabled = fusion.State(config.ExitButtonEnabled)
+	end
 	-- local AbsoluteScrollLength = fusion.State(config.AbsoluteScrollLength or 0)
 	local inst = fusion.New "Frame" {
 		Position = fusion.Tween(
@@ -90,6 +93,7 @@ function constructor.new(config)
 		CanvasSize = UDim2.new(0,0),
 		BorderSizePixel = 0,
 		BackgroundTransparency = 1,
+		ScrollingDirection = Enum.ScrollingDirection.Y,
 		AutomaticCanvasSize = Enum.AutomaticSize.Y,
 		Position = UDim2.fromScale(0.5,0.5),
 		AnchorPoint = Vector2.new(0.5,0.5),
@@ -126,7 +130,7 @@ function constructor.new(config)
 		Position = UDim2.new(1, -currentScrollBarThickness:get()/2 + buttonSize/2, 0, -buttonSize/2),
 		Size = UDim2.fromOffset(buttonSize, buttonSize),
 	})
-
+	exitButton.Visible = ExitButtonEnabled:get()
 	local scrollBarUpdate = fusion.Compat(currentScrollBarThickness)
 	maid:GiveTask(scrollBarUpdate:onChange(function()
 		maid._contentPadding.PaddingRight = UDim.new(0, currentScrollBarThickness:get() + basePadding)

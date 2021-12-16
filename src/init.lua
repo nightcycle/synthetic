@@ -21,6 +21,7 @@ function updateElevation(inst)
 end
 
 return function(key, config)
+	config = config or {}
 	if state == "New" then
 		init()
 	elseif state == "Initializing" then
@@ -44,7 +45,7 @@ return function(key, config)
 
 	maid.deathSignal = inst.AncestryChanged:Connect(function()
 		if not inst:IsDescendantOf(game.Players.LocalPlayer) then
-			print("Cleaning up "..tostring(key))
+			-- print("Cleaning up "..tostring(key))
 			for i, desc in ipairs(inst:GetDescendants()) do
 				desc:Destroy()
 			end

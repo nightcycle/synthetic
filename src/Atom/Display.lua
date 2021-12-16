@@ -2,6 +2,7 @@ local packages = script.Parent.Parent.Parent
 local synthetic = require(script.Parent.Parent)
 local fusion = require(packages:WaitForChild('fusion'))
 local maidConstructor = require(packages:WaitForChild('maid'))
+local attributerConstructor = require(packages:WaitForChild("attributer"))
 
 local constructor = {}
 
@@ -98,22 +99,28 @@ function constructor.new(config)
 				Text = text,
 				Font = Enum.Font.GothamSemibold,
 				LayoutOrder = 2,
-				Parent = inst
+				Size = UDim2.fromScale(0,0),
+				AnchorPoint = Vector2.new(0.5,0.5),
+				Parent = inst,
+				AutomaticSize = Enum.AutomaticSize.XY,
 			}
+			textMedia.BackgroundTransparency = 1
 		end
 		if Media:get() == "Icon" then
 			visualMedia = fusion.New "ImageLabel" {
 				Name = "Media",
 				BackgroundTransparency = 1,
 				Image = texture,
-				imageRectOffset = imageRectOffset,
-				imageRectSize = imageRectSize,
+				ImageRectOffset = imageRectOffset,
+				ImageRectSize = imageRectSize,
 				LayoutOrder = 1,
 				ImageColor3 = Color:get(),
 				SizeConstraint = Enum.SizeConstraint.RelativeYY,
-				Size = UDim2.fromScale(1,1),
+				Size = UDim2.fromScale(0,0),
+				AutomaticSize = Enum.AutomaticSize.XY,
 				Parent = inst
 			}
+			visualMedia.BackgroundTransparency = 1
 		elseif Media:get() == "Image" then
 			visualMedia = fusion.New "ImageLabel" {
 				Name = "Media",
@@ -121,9 +128,11 @@ function constructor.new(config)
 				Image = texture,
 				LayoutOrder = 1,
 				SizeConstraint = Enum.SizeConstraint.RelativeYY,
-				Size = UDim2.fromScale(1,1),
+				Size = UDim2.fromScale(0,0),
+				AutomaticSize = Enum.AutomaticSize.XY,
 				Parent = inst
 			}
+			visualMedia.BackgroundTransparency = 1
 		elseif Media:get() == "Viewport" then
 			-- CF
 			local cf = fusion.Computed(function()
@@ -166,9 +175,11 @@ function constructor.new(config)
 				BackgroundTransparency = 1,
 				LayoutOrder = 1,
 				SizeConstraint = Enum.SizeConstraint.RelativeYY,
-				Size = UDim2.fromScale(1,1),
+				AutomaticSize = Enum.AutomaticSize.XY,
+				Size = UDim2.fromScale(0,0),
 				Parent = inst
 			}
+			visualMedia.BackgroundTransparency = 1
 			camera.Parent = visualMedia
 		end
 

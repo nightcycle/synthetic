@@ -159,10 +159,8 @@ function constructor.new(config)
 				if not inst:IsDescendantOf(game.Players.LocalPlayer) then return end
 				isSelected:set(true)
 				currentParent.Size = getSize()
-				print("Setting")
 				if currentParent:FindFirstChild("Style") then
 					local cat = InputStyleCategory:get()
-					print(cat)
 					currentParent:WaitForChild("Style"):SetAttribute("StyleCategory", cat)
 				end
 				currentParent:SetAttribute("ElevationIncrease", StartElevation:get() + InputElevationBump:get())
