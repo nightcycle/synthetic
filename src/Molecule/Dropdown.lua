@@ -37,16 +37,17 @@ function constructor.new(config)
 	config = config or {}
 	local Value = fusion.State("")
 	local maid = maidConstructor.new()
-	local inst = synthetic("Button",{
-		Parent = config.Parent or game.Players.LocalPlayer:WaitForChild("PlayerGui"),
-		Size = config.Size or UDim2.fromScale(1,1),
-		Position = config.Position or UDim2.fromScale(0.5,0.5),
-		AnchorPoint = config.AnchorPoint or Vector2.new(0.5,0.5),
-		LayoutOrder = config.LayoutOrder or 0,
-		SizeConstraint = config.SizeConstraint or Enum.SizeConstraint.RelativeXY,
-		Visible = config.Visible or true,
-		Name = config.Name or script.Name,
-	})
+
+	config.Parent = config.Parent or game.Players.LocalPlayer:WaitForChild("PlayerGui")
+	config.Size = config.Size or UDim2.fromScale(1,1)
+	config.Position = config.Position or UDim2.fromScale(0.5,0.5)
+	config.AnchorPoint = config.AnchorPoint or Vector2.new(0.5,0.5)
+	config.LayoutOrder = config.LayoutOrder or 0
+	config.SizeConstraint = config.SizeConstraint or Enum.SizeConstraint.RelativeXY
+	config.Visible = config.Visible or true
+	config.Name = config.Name or script.Name
+
+	local inst = synthetic("Button", config)
 
 	local id = dropdownRegistry:GetAttribute("Index")
 	dropdownRegistry:SetAttribute("Index", id+1)

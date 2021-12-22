@@ -78,6 +78,9 @@ function constructor.new(config)
 
 	local currentParent
 
+	config.Name = config.Name or script.Name
+	config.Parent = config.Parent or game.Players.LocalPlayer:WaitForChild("PlayerGui")
+
 	--set control states
 	local StartSize = fusion.State(config.StartSize or UDim2.fromScale(0,0))
 	local StartStyleCategory = fusion.State(config.StartStyleCategory or "Surface")
@@ -87,10 +90,7 @@ function constructor.new(config)
 	local InputStyleCategory = fusion.State(config.InputStyleCategory or "Primary")
 
 	--create inst
-	local inst = fusion.New "Configuration" {
-		Name = script.Name,
-		Parent = config.Parent or game.Players.LocalPlayer:WaitForChild("PlayerGui"),
-	}
+	local inst = fusion.New "Configuration" (config)
 
 	--bind to attributes
 	local attributer = attributerConstructor.new(inst, {})

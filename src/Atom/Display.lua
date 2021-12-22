@@ -21,6 +21,24 @@ end
 
 function constructor.new(config)
 	config = config or {}
+
+	config.Parent = config.Parent or game.Players.LocalPlayer:WaitForChild("PlayerGui")
+	config.Size = config.Size or UDim2.fromScale(1,1)
+	config.Position = config.Position or UDim2.fromScale(0.5,0.5)
+	config.AnchorPoint = config.AnchorPoint or Vector2.new(0.5,0.5)
+	config.LayoutOrder = config.LayoutOrder or 0
+	config.SizeConstraint = config.SizeConstraint or Enum.SizeConstraint.RelativeXY
+	config.Visible = config.Visible or true
+	config.Name = config.Name or script.Name
+
+	local isFocused = fusion.State(false)
+	config[fusion.OnEvent "InputChanged"] = function()
+		isFocused:set(true)
+	end
+	config[fusion.OnEvent "InputEnded"] = function()
+		isFocused:set(false)
+	end
+
 	--public states
 	local Media = fusion.State(config.Media or "Text")
 	local Text = fusion.State(config.Text or "")
@@ -44,24 +62,9 @@ function constructor.new(config)
 	local VFRestFOV = fusion.State(config.VFRestFOV or 70)
 
 	--private states
-	local isFocused = fusion.State(false)
+
 	local maid = maidConstructor.new()
-	local inst = fusion.New "Frame" {
-		[fusion.OnEvent "InputChanged"] = function()
-			isFocused:set(true)
-		end,
-		[fusion.OnEvent "InputEnded"] = function()
-			isFocused:set(false)
-		end,
-		Parent = config.Parent or game.Players.LocalPlayer:WaitForChild("PlayerGui"),
-		Size = config.Size or UDim2.fromScale(1,1),
-		Position = config.Position or UDim2.fromScale(0.5,0.5),
-		AnchorPoint = config.AnchorPoint or Vector2.new(0.5,0.5),
-		LayoutOrder = config.LayoutOrder or 0,
-		SizeConstraint = config.SizeConstraint or Enum.SizeConstraint.RelativeXY,
-		Visible = config.Visible or true,
-		Name = config.Name or script.Name,
-	}
+	local inst = fusion.New "Frame" (config)
 	maid:GiveTask(inst)
 
 	local padding = synthetic("Padding")

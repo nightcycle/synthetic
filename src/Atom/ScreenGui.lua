@@ -7,12 +7,12 @@ local constructor = {}
 
 function constructor.new(config)
 	config = config or {}
-	local gui = fusion.New "ScreenGui" {
-		Name = "ScreenGui",
-		ResetOnSpawn = false,
-		ZIndexBehavior = Enum.ZIndexBehavior.Sibling,
-		Parent = config.Parent or game.Players.LocalPlayer:WaitForChild("PlayerGui"),
-	}
+	config.Name = config.Name or "ScreenGui"
+	config.ResetOnSpawn = config.ResetOnSpawn or false
+	config.ZIndexBehavior = config.ZIndexBehavior or Enum.ZIndexBehavior.Sibling
+	config.Parent = config.Parent or game.Players.LocalPlayer:WaitForChild("PlayerGui")
+
+	local gui = fusion.New "ScreenGui" (config)
 	local maid = maidConstructor.new()
 	maid:GiveTask(gui)
 	return gui, maid

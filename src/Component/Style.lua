@@ -502,10 +502,9 @@ function constructor.new(config)
 	local textClass = fusion.State(config.TextClass or "Body")
 
 	--create inst
-	local inst = fusion.New "Configuration" {
-		Name = "Style",
-		Parent = config.Parent or game.Players.LocalPlayer:WaitForChild("PlayerGui"),
-	}
+	config.Name = config.Name or "Style"
+	config.Parent = config.Parent or game.Players.LocalPlayer:WaitForChild("PlayerGui")
+	local inst = fusion.New "Configuration" (config)
 
 	--bind to attributes
 	local attributer = attributerConstructor.new(inst, {})

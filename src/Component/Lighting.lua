@@ -102,12 +102,10 @@ function constructor.new(config)
 	end)
 
 	--create inst
-	inst = fusion.New "UIGradient" {
-		Name = script.Name,
-		Parent = config.Parent or game.Players.LocalPlayer:WaitForChild("PlayerGui"),
-		-- Transparency = fusion.Tween(goalTransparencySequence, newTweenInfo()),
-		Color = fusion.Tween(goalColorSequence, newTweenInfo())
-	}
+	config.Parent = config.Parent or game.Players.LocalPlayer:WaitForChild("PlayerGui")
+	config.Name = config.Name or script.Name
+	config.Color = config.Color or fusion.Tween(goalColorSequence, newTweenInfo())
+	inst = fusion.New "UIGradient" (config)
 
 	--connect goals to currents & parent with tweenCompat
 	maid:GiveTask(inst)

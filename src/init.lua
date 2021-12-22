@@ -31,12 +31,6 @@ return function(key, config)
 	local const = constructors[key]
 	if not const then error("No constructor found for "..tostring(key)) end
 
-	for k, v in pairs(config) do
-		if type(v) == "table" and v.get then
-			config[k] = v:get()
-		end
-	end
-
 	local inst, maid = const.new(config or {})
 
 	inst:SetAttribute("ElevationIncrease", 1)

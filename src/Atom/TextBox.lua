@@ -18,26 +18,25 @@ function constructor.new(config)
 	local text = fusion.Computed(function()
 		return filter:Get(Input:get())
 	end)
-
 	local inst
-	inst = fusion.New "TextBox" {
-		Text = text,
-		TextXAlignment = Enum.TextXAlignment.Left,
-		TextYAlignment = Enum.TextYAlignment.Center,
-		PlaceholderText = "Input Text Here",
-		[fusion.OnEvent "FocusLost"] = function()
-			-- inst:SetAttribute("Input", inst.Text)
-			Input:set(inst.Text)
-		end,
-		Size = config.Size or UDim2.fromScale(1,1),
-		Position = config.Position or UDim2.fromScale(0.5,0.5),
-		AnchorPoint = config.AnchorPoint or Vector2.new(0.5,0.5),
-		LayoutOrder = config.LayoutOrder or 0,
-		SizeConstraint = config.SizeConstraint or Enum.SizeConstraint.RelativeXY,
-		Visible = config.Visible or true,
-		Name = config.Name or script.Name,
-		Parent = config.Parent or game.Players.LocalPlayer:WaitForChild("PlayerGui"),
-	}
+
+	config.Parent = config.Parent or game.Players.LocalPlayer:WaitForChild("PlayerGui")
+	config.Size = config.Size or UDim2.fromScale(1,1)
+	config.Position = config.Position or UDim2.fromScale(0.5,0.5)
+	config.AnchorPoint = config.AnchorPoint or Vector2.new(0.5,0.5)
+	config.LayoutOrder = config.LayoutOrder or 0
+	config.SizeConstraint = config.SizeConstraint or Enum.SizeConstraint.RelativeXY
+	config.Visible = config.Visible or true
+	config.Name = config.Name or script.Name
+	config.Text = config.Text or ""
+	config.TextXAlignment = config.TextXAlignment or Enum.TextXAlignment.Left
+	config.TextYAlignment = config.TextYAlignment or Enum.TextYAlignment.Center
+	config.PlaceholderText = config.PlaceholderText or "Input Text Here"
+	config[fusion.OnEvent "FocusLost"] = function()
+		Input:set(inst.Text)
+	end
+
+	inst = fusion.New "TextBox" (config)
 	maid:GiveTask(inst)
 	maid:GiveTask(synthetic("Style",{
 		StyleCategory = "Primary",

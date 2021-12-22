@@ -11,14 +11,14 @@ function constructor.new(config)
 	local padding = fusion.State(config.Padding or UDim.new(0,7))
 	local maid = maidConstructor.new()
 
-	local inst = fusion.New "UIPadding" {
-		Name = script.Name,
-		PaddingBottom = padding,
-		PaddingTop = padding,
-		PaddingLeft = padding,
-		PaddingRight = padding,
-		Parent = config.Parent or game.Players.LocalPlayer:WaitForChild("PlayerGui"),
-	}
+	config.Name = config.Name or script.Name
+	config.PaddingBottom = config.PaddingBottom or padding
+	config.PaddingTop = config.PaddingTop or padding
+	config.PaddingLeft = config.PaddingLeft or padding
+	config.PaddingRight = config.PaddingRight or padding
+	config.Parent = config.Parent or game.Players.LocalPlayer:WaitForChild("PlayerGui")
+
+	local inst = fusion.New "UIPadding" (config)
 	maid:GiveTask(inst)
 
 	--bind to attributes

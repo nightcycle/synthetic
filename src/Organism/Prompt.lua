@@ -14,18 +14,18 @@ function constructor.new(config)
 	local DenyLabel = fusion.State(config.DenyLabel or "Deny")
 
 	local maid = maidConstructor.new()
-	local inst = synthetic("Canvas",{
-		Parent = config.Parent or game.Players.LocalPlayer:WaitForChild("PlayerGui"),
-		Size = config.Size or UDim2.fromOffset(0, 0),
-		Position = config.Position or UDim2.fromScale(0.5,0.5),
-		AnchorPoint = config.AnchorPoint or Vector2.new(0.5,0.5),
-		LayoutOrder = config.LayoutOrder or 0,
-		SizeConstraint = config.SizeConstraint or Enum.SizeConstraint.RelativeXY,
-		Visible = config.Visible or true,
-		Name = config.Name or script.Name,
-		ExitButtonEnabled = false,
-		ClosePosition = UDim2.fromScale(1.5,0.5)
-	})
+	config.Parent = config.Parent or game.Players.LocalPlayer:WaitForChild("PlayerGui")
+	config.Size = config.Size or UDim2.fromScale(1,1)
+	config.Position = config.Position or UDim2.fromScale(0.5,0.5)
+	config.AnchorPoint = config.AnchorPoint or Vector2.new(0.5,0.5)
+	config.LayoutOrder = config.LayoutOrder or 0
+	config.SizeConstraint = config.SizeConstraint or Enum.SizeConstraint.RelativeXY
+	config.Visible = config.Visible or true
+	config.Name = config.Name or script.Name
+	config.ExitButtonEnabled = config.ExitButtonEnabled or false
+	config.ClosePosition = config.ClosePosition or UDim2.fromScale(1.5, 0.5)
+
+	local inst = synthetic("Canvas",config)
 	inst.AutomaticSize = Enum.AutomaticSize.XY
 	inst:WaitForChild("Content").Size = UDim2.fromScale(0,0)
 	inst:WaitForChild("Content").AutomaticSize = Enum.AutomaticSize.XY

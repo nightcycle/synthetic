@@ -34,34 +34,37 @@ function constructor.new(config)
 		ExitButtonEnabled = fusion.State(config.ExitButtonEnabled)
 	end
 	-- local AbsoluteScrollLength = fusion.State(config.AbsoluteScrollLength or 0)
-	local inst = fusion.New "Frame" {
-		Position = fusion.Tween(
-			fusion.Computed(function()
-				if Open:get() == true then
-					return OpenPosition:get()
-				else
-					return ClosePosition:get()
-				end
-			end),
-			newTweenInfo()
-		),
-		Size = fusion.Tween(
-			fusion.Computed(function()
-				if Open:get() == true then
-					return OpenSize:get()
-				else
-					return CloseSize:get()
-				end
-			end),
-			newTweenInfo()
-		),
-		Parent = config.Parent or game.Players.LocalPlayer:WaitForChild("PlayerGui"),
-		AnchorPoint = config.AnchorPoint or Vector2.new(0.5,0.5),
-		LayoutOrder = config.LayoutOrder or 0,
-		SizeConstraint = config.SizeConstraint or Enum.SizeConstraint.RelativeXY,
-		Visible = config.Visible or true,
-		Name = config.Name or script.Name,
-	}
+	config.Position = config.Position or fusion.Tween(
+		fusion.Computed(function()
+			if Open:get() == true then
+				return OpenPosition:get()
+			else
+				return ClosePosition:get()
+			end
+		end),
+		newTweenInfo()
+	)
+	config.Size = config.Size or fusion.Tween(
+		fusion.Computed(function()
+			if Open:get() == true then
+				return OpenSize:get()
+			else
+				return CloseSize:get()
+			end
+		end),
+		newTweenInfo()
+	)
+	config.Parent = config.Parent or game.Players.LocalPlayer:WaitForChild("PlayerGui")
+	config.Size = config.Size or UDim2.fromScale(1,1)
+	config.Position = config.Position or UDim2.fromScale(0.5,0.5)
+	config.AnchorPoint = config.AnchorPoint or Vector2.new(0.5,0.5)
+	config.LayoutOrder = config.LayoutOrder or 0
+	config.SizeConstraint = config.SizeConstraint or Enum.SizeConstraint.RelativeXY
+	config.Visible = config.Visible or true
+	config.Name = config.Name or script.Name
+
+	local inst = fusion.New "Frame" (config)
+
 	maid:GiveTask(inst)
 	maid:GiveTask(synthetic("Style",{
 		StyleCategory = "Background",

@@ -11,11 +11,10 @@ function constructor.new(config)
 	local maid = maidConstructor.new()
 
 	local radius = fusion.State(config.Radius or UDim.new(0, 5))
-	local inst = fusion.New "UICorner" {
-		Name = script.Name,
-		CornerRadius = radius,
-		Parent = config.Parent or game.Players.LocalPlayer:WaitForChild("PlayerGui"),
-	}
+	config.Parent = config.Parent or game.Players.LocalPlayer:WaitForChild("PlayerGui")
+	config.Name = config.Name or script.Name
+	config.CornerRadius = config.CornerRadius or radius
+	local inst = fusion.New "UICorner" (config)
 	maid:GiveTask(inst)
 
 	--bind to attributes

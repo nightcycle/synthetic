@@ -7,14 +7,14 @@ local constructor = {}
 
 function constructor.new(config)
 	config = config or {}
-	local listLayout = fusion.New "UIListLayout" {
-		Name = script.Name,
-		FillDirection = Enum.FillDirection.Vertical,
-		SortOrder = Enum.SortOrder.LayoutOrder,
-		Padding = UDim.new(0, 5),
-		Parent = config.Parent or game.Players.LocalPlayer:WaitForChild("PlayerGui"),
-	}
 
+	config.Name = config.Name or script.Name
+	config.FillDirection = config.FillDirection or Enum.FillDirection.Vertical
+	config.SortOrder = config.SortOrder or Enum.SortOrder.LayoutOrder
+	config.Padding = config.Padding or UDim.new(0, 5)
+	config.Parent = config.Parent or game.Players.LocalPlayer:WaitForChild("PlayerGui")
+
+	local listLayout = fusion.New "UIListLayout" (config)
 	local maid = maidConstructor.new()
 	maid:GiveTask(listLayout)
 

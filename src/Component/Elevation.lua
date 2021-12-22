@@ -70,14 +70,14 @@ function constructor.new(config)
 	local currentThickness = fusion.Tween(thicknessGoal, newTweenInfo())
 
 	--create inst
-	local inst = fusion.New "UIStroke" {
-		Name = script.Name,
-		LineJoinMode = Enum.LineJoinMode.Round,
-		ApplyStrokeMode = Enum.ApplyStrokeMode.Border,
-		Parent = config.Parent or game.Players.LocalPlayer:WaitForChild("PlayerGui"),
-		Thickness = currentThickness,
-		Transparency = currentTransparency,
-	}
+	config.Name = config.Name or script.Name
+	config.LineJoinMode = config.LineJoinMode or Enum.LineJoinMode.Round
+	config.ApplyStrokeMode = config.ApplyStrokeMode or Enum.ApplyStrokeMode.Border
+	config.Parent = config.Parent or game.Players.LocalPlayer:WaitForChild("PlayerGui")
+	config.Thickness = config.Thickness or currentThickness
+	config.Transparency = config.Transparency or currentTransparency
+
+	local inst = fusion.New "UIStroke" (config)
 
 	maid:GiveTask(inst)
 	local function setParent(par)
