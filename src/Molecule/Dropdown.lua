@@ -59,8 +59,8 @@ function constructor.new(config)
 		inst.Text = tostring(Value:get())
 	end))
 	inst:WaitForChild("InputEffect"):SetAttribute("InputStyleCategory", "Primary")
-	inst:WaitForChild("Style"):SetAttribute("StyleCategory", "Surface")
-	inst:WaitForChild("Style"):SetAttribute("TextClass", "Body")
+	inst:WaitForChild("Theme"):SetAttribute("ThemeCategory", "Surface")
+	inst:WaitForChild("Theme"):SetAttribute("TextClass", "Body")
 
 	local open = fusion.State(false)
 
@@ -111,15 +111,15 @@ function constructor.new(config)
 	maid._listLayout.HorizontalAlignment = Enum.HorizontalAlignment.Center
 	maid._listLayout.VerticalAlignment = Enum.VerticalAlignment.Center
 
-	maid:GiveTask(synthetic("Style",{
-		StyleCategory = "Background",
+	maid:GiveTask(synthetic("Theme",{
+		ThemeCategory = "Background",
 		TextClass = "Body",
 		Parent = frame,
 	}))
 	maid._elevation = synthetic("Elevation",{
 		Parent = frame,
 	})
-	maid:GiveTask(synthetic("Lighting",{
+	maid:GiveTask(synthetic("Dropshadow",{
 		Parent = frame,
 	}))
 	local openUpdate = fusion.Compat(open)
@@ -184,8 +184,8 @@ function constructor.new(config)
 			Parent = frame,
 		})
 		button.Text = value
-		button:WaitForChild("Style"):SetAttribute("StyleCategory", "Surface")
-		button:WaitForChild("Style"):SetAttribute("TextClass", "Body")
+		button:WaitForChild("Theme"):SetAttribute("ThemeCategory", "Surface")
+		button:WaitForChild("Theme"):SetAttribute("TextClass", "Body")
 		button:WaitForChild("InputEffect"):SetAttribute("StartSize", buttonSize:get())
 		button:WaitForChild("InputEffect"):SetAttribute("InputSizeBump", UDim.new(0,0))
 		optionMaid:GiveTask(button.Activated:Connect(function()

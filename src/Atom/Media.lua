@@ -79,7 +79,7 @@ function constructor.new(config)
 	corner.Parent = inst
 	maid:GiveTask(corner)
 
-	local styleComponent = synthetic("Style")
+	local styleComponent = synthetic("Theme")
 	styleComponent.Parent = inst
 	maid:GiveTask(styleComponent)
 
@@ -187,12 +187,12 @@ function constructor.new(config)
 		end
 
 		if textMedia then
-			local textStyleComponent = synthetic("Style")
+			local textStyleComponent = synthetic("Theme")
 			textStyleComponent.Parent = textMedia
 			mediaMaid:GiveTask(textStyleComponent)
 		end
 		if visualMedia then
-			local visualStyleComponent = synthetic("Style")
+			local visualStyleComponent = synthetic("Theme")
 			visualStyleComponent.Parent = textMedia
 			mediaMaid:GiveTask(visualStyleComponent)
 		end

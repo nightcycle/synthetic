@@ -26,15 +26,15 @@ function constructor.new(config)
 		Radius = UDim.new(0, 5),
 		Parent = inst
 	}))
-	maid:GiveTask(synthetic("Style",{
-		StyleCategory = "Primary",
+	maid:GiveTask(synthetic("Theme",{
+		ThemeCategory = "Primary",
 		TextClass = "Button",
 		Parent = inst,
 	}))
 	maid:GiveTask(synthetic("Elevation",{
 		Parent = inst,
 	}))
-	maid:GiveTask(synthetic("Lighting",{
+	maid:GiveTask(synthetic("Dropshadow",{
 		Parent = inst,
 	}))
 	maid:GiveTask(synthetic("InputEffect",{

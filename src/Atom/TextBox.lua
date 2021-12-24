@@ -38,15 +38,15 @@ function constructor.new(config)
 
 	inst = fusion.New "TextBox" (config)
 	maid:GiveTask(inst)
-	maid:GiveTask(synthetic("Style",{
-		StyleCategory = "Primary",
+	maid:GiveTask(synthetic("Theme",{
+		ThemeCategory = "Primary",
 		TextClass = "Body",
 		Parent = inst,
 	}))
 	maid:GiveTask(synthetic("Elevation",{
 		Parent = inst,
 	}))
-	maid:GiveTask(synthetic("Lighting",{
+	maid:GiveTask(synthetic("Dropshadow",{
 		Parent = inst,
 	}))
 	maid:GiveTask(synthetic("InputEffect",{

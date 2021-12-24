@@ -66,14 +66,14 @@ function constructor.new(config)
 	local inst = fusion.New "Frame" (config)
 
 	maid:GiveTask(inst)
-	maid:GiveTask(synthetic("Style",{
-		StyleCategory = "Background",
+	maid:GiveTask(synthetic("Theme",{
+		ThemeCategory = "Background",
 		Parent = inst,
 	}))
 	maid:GiveTask(synthetic("Elevation",{
 		Parent = inst,
 	}))
-	maid:GiveTask(synthetic("Lighting",{
+	maid:GiveTask(synthetic("Dropshadow",{
 		Parent = inst,
 	}))
 	maid:GiveTask(synthetic("Corner",{
@@ -102,8 +102,8 @@ function constructor.new(config)
 		AnchorPoint = Vector2.new(0.5,0.5),
 		Parent = inst,
 	}
-	maid:GiveTask(synthetic("Style",{
-		StyleCategory = "Background",
+	maid:GiveTask(synthetic("Theme",{
+		ThemeCategory = "Background",
 		Parent = content,
 	}))
 	maid:GiveTask(content:GetPropertyChangedSignal("AbsoluteCanvasSize"):Connect(function()
@@ -154,8 +154,8 @@ function constructor.new(config)
 	maid:GiveTask(exitButton.Activated:Connect(function()
 		Open:set(false)
 	end))
-	exitButton:WaitForChild("Style"):SetAttribute("StyleCategory", "Error")
-	exitButton:WaitForChild("Style"):SetAttribute("TextClass", "Caption")
+	exitButton:WaitForChild("Theme"):SetAttribute("ThemeCategory", "Error")
+	exitButton:WaitForChild("Theme"):SetAttribute("TextClass", "Caption")
 
 	--bind to attributes
 	local attributer = attributerConstructor.new(inst, {})

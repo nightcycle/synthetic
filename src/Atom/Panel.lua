@@ -22,15 +22,15 @@ function constructor.new(config)
 
 	maid:GiveTask(inst)
 
-	maid:GiveTask(synthetic("Style",{
-		StyleCategory = "Surface",
+	maid:GiveTask(synthetic("Theme",{
+		ThemeCategory = "Surface",
 		TextClass = "Body",
 		Parent = inst,
 	}))
 	maid:GiveTask(synthetic("Elevation",{
 		Parent = inst,
 	}))
-	maid:GiveTask(synthetic("Lighting",{
+	maid:GiveTask(synthetic("Dropshadow",{
 		Parent = inst,
 	}))
 	-- maid:GiveTask(synthetic("InputEffect",{

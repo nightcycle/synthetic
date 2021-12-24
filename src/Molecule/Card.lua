@@ -9,27 +9,28 @@ function constructor.new(config)
 	config = config or {}
 	local maid = maidConstructor.new()
 
-	local importedConfig = fusion.New 'Card' {
+	local importedConfig = {
 		AnchorPoint = Vector2.new(0.5, 0.5),
 		SizeConstraint = Enum.SizeConstraint.RelativeXX,
-		AutomaticSize = Enum.AutomaticSize.XY,
+		Size = UDim2.new(0.5,0,0,0),
+		AutomaticSize = Enum.AutomaticSize.Y,
 		Name = 'Card',
-		Position = UDim2.new(0.5,0,0.48,0),
+		Position = UDim2.new(0.5,0,0.5,0),
 		BackgroundColor3 = Color3.new(1, 1, 1),
 		[fusion.Children] = {
 			fusion.New 'UICorner' {
 				CornerRadius = UDim.new(0,6),
 			},
-			fusion.New 'Header' {
+			fusion.New 'Frame' {
 				Size = UDim2.new(1,0,0,12),
-				AutomaticSize = Enum.AutomaticSize.XY,
+				AutomaticSize = Enum.AutomaticSize.Y,
 				Name = 'Header',
 				BorderSizePixel = 0,
 				Transparency = 1,
 				BackgroundTransparency = 1,
 				BackgroundColor3 = Color3.new(0, 1, 1),
 				[fusion.Children] = {
-					fusion.New 'Icon' {
+					fusion.New 'Frame' {
 						SizeConstraint = Enum.SizeConstraint.RelativeYY,
 						Size = UDim2.new(0,0,1,4),
 						AutomaticSize = Enum.AutomaticSize.X,
@@ -70,7 +71,7 @@ function constructor.new(config)
 							},
 						},
 					},
-					fusion.New 'Info' {
+					fusion.New 'Frame' {
 						Size = UDim2.new(0,0,1,4),
 						AutomaticSize = Enum.AutomaticSize.X,
 						Name = 'Info',
@@ -83,11 +84,11 @@ function constructor.new(config)
 								SortOrder = Enum.SortOrder.LayoutOrder,
 								Padding = UDim.new(0,4),
 							},
-							fusion.New 'Title' {
+							fusion.New 'TextLabel' {
 								BorderSizePixel = 0,
 								Transparency = 1,
 								BackgroundColor3 = Color3.new(1, 1, 1),
-								TextTransparency = 0.1,
+								TextTransparency = 0.10000000149012,
 								AutomaticSize = Enum.AutomaticSize.XY,
 								TextColor3 = Color3.new(0, 0, 0),
 								Text = 'Test Title',
@@ -96,11 +97,11 @@ function constructor.new(config)
 								Name = 'Title',
 								TextSize = 20,
 							},
-							fusion.New 'Subtitle' {
+							fusion.New 'TextLabel' {
 								BorderSizePixel = 0,
 								Transparency = 1,
 								BackgroundColor3 = Color3.new(1, 1, 1),
-								TextTransparency = 0.4,
+								TextTransparency = 0.40000000596046,
 								AutomaticSize = Enum.AutomaticSize.XY,
 								TextColor3 = Color3.new(0, 0, 0),
 								BackgroundTransparency = 1,
@@ -133,21 +134,23 @@ function constructor.new(config)
 				SortOrder = Enum.SortOrder.LayoutOrder,
 				HorizontalAlignment = Enum.HorizontalAlignment.Center,
 			},
-			fusion.New 'Media' {
+			fusion.New 'Frame' {
 				LayoutOrder = 2,
 				Size = UDim2.new(1,0,0,0),
 				ClipsDescendants = true,
 				AutomaticSize = Enum.AutomaticSize.Y,
 				Name = 'Media',
 				BorderSizePixel = 0,
-				Position = UDim2.new(-0,0,0.174,0),
+				Position = UDim2.new(-0.126,0,0.428,0),
 				BackgroundColor3 = Color3.new(0.6, 1, 0),
 				[fusion.Children] = {
 					fusion.New 'ImageLabel' {
 						AnchorPoint = Vector2.new(0.5, 0.5),
 						Image = 'rbxasset://textures/ui/GuiImagePlaceholder.png',
+						AutomaticSize = Enum.AutomaticSize.X,
 						ScaleType = Enum.ScaleType.Crop,
-						Size = UDim2.new(0,300,0,175),
+						Size = UDim2.new(1,0,1,0),
+						BorderSizePixel = 0,
 						Position = UDim2.new(0.5,0,0.5,0),
 						BackgroundColor3 = Color3.new(1, 1, 1),
 					},
@@ -158,27 +161,27 @@ function constructor.new(config)
 					},
 				},
 			},
-			fusion.New 'Interactions' {
+			fusion.New 'Frame' {
 				LayoutOrder = 3,
 				Size = UDim2.new(1,0,0,0),
-				AutomaticSize = Enum.AutomaticSize.XY,
+				AutomaticSize = Enum.AutomaticSize.Y,
 				Name = 'Interactions',
 				Transparency = 1,
 				Position = UDim2.new(0,0,0.694,0),
 				BackgroundTransparency = 1,
 				BackgroundColor3 = Color3.new(0.666667, 0, 1),
 				[fusion.Children] = {
-					fusion.New 'Buttons' {
+					fusion.New 'Frame' {
 						LayoutOrder = 2,
 						Size = UDim2.new(1,0,0,0),
-						AutomaticSize = Enum.AutomaticSize.XY,
+						AutomaticSize = Enum.AutomaticSize.Y,
 						Name = 'Buttons',
 						BorderSizePixel = 0,
 						Transparency = 1,
 						BackgroundTransparency = 1,
 						BackgroundColor3 = Color3.new(0, 1, 0),
 						[fusion.Children] = {
-							fusion.New 'Actions' {
+							fusion.New 'Frame' {
 								AnchorPoint = Vector2.new(0, 0.5),
 								AutomaticSize = Enum.AutomaticSize.XY,
 								Name = 'Actions',
@@ -187,7 +190,7 @@ function constructor.new(config)
 								BackgroundTransparency = 1,
 								BackgroundColor3 = Color3.new(1, 1, 1),
 								[fusion.Children] = {
-									fusion.New 'ActionButton1' {
+									fusion.New 'TextButton' {
 										Transparency = 1,
 										BackgroundColor3 = Color3.new(1, 1, 1),
 										BackgroundTransparency = 1,
@@ -206,7 +209,7 @@ function constructor.new(config)
 									},
 									fusion.New 'UIPadding' {
 									},
-									fusion.New 'ActionButton2' {
+									fusion.New 'TextButton' {
 										LayoutOrder = 1,
 										Transparency = 1,
 										BackgroundColor3 = Color3.new(1, 1, 1),
@@ -220,7 +223,7 @@ function constructor.new(config)
 									},
 								},
 							},
-							fusion.New 'Icons' {
+							fusion.New 'Frame' {
 								AnchorPoint = Vector2.new(1, 0.5),
 								AutomaticSize = Enum.AutomaticSize.XY,
 								Name = 'Icons',
@@ -308,8 +311,8 @@ function constructor.new(config)
 
 	maid:GiveTask(inst)
 
-	maid:GiveTask(synthetic "Style" {
-		StyleCategory = "Surface",
+	maid:GiveTask(synthetic "Theme" {
+		ThemeCategory = "Surface",
 		TextClass = "Body",
 		Parent = inst,
 	})

@@ -88,9 +88,9 @@ function constructor.new(config)
 	maid:GiveTask(maid._leftLabel:GetPropertyChangedSignal("Font"):Connect(function()
 		font:set(maid._leftLabel.Font.Name)
 	end))
-	maid:GiveTask(synthetic("Style",{
+	maid:GiveTask(synthetic("Theme",{
 		Parent = maid._leftLabel,
-		StyleCategory = "Surface",
+		ThemeCategory = "Surface",
 		TextClass = "Caption",
 	}))
 
@@ -107,9 +107,9 @@ function constructor.new(config)
 	maid:GiveTask(maid._rightLabel:GetPropertyChangedSignal("Font"):Connect(function()
 		font:set(maid._leftLabel.Font.Name)
 	end))
-	maid:GiveTask(synthetic("Style",{
+	maid:GiveTask(synthetic("Theme",{
 		Parent = maid._rightLabel,
-		StyleCategory = "Surface",
+		ThemeCategory = "Surface",
 		TextClass = "Caption",
 	}))
 
@@ -124,9 +124,9 @@ function constructor.new(config)
 		Radius = UDim.new(0, 5),
 		Parent = line,
 	}))
-	maid:GiveTask(synthetic("Style",{
+	maid:GiveTask(synthetic("Theme",{
 		Parent = line,
-		StyleCategory = "Secondary",
+		ThemeCategory = "Secondary",
 		TextClass = "Caption",
 	}))
 

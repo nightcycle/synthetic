@@ -498,11 +498,11 @@ function constructor.new(config)
 	local currentParent
 
 	--set control states
-	local category = fusion.State(config.StyleCategory or "Primary")
+	local category = fusion.State(config.ThemeCategory or "Primary")
 	local textClass = fusion.State(config.TextClass or "Body")
 
 	--create inst
-	config.Name = config.Name or "Style"
+	config.Name = config.Name or "Theme"
 	config.Parent = config.Parent or game.Players.LocalPlayer:WaitForChild("PlayerGui")
 	local inst = fusion.New "Configuration" (config)
 
@@ -517,7 +517,7 @@ function constructor.new(config)
 			end
 		end))
 	end
-	bindAttributeToState("StyleCategory", category)
+	bindAttributeToState("ThemeCategory", category)
 	bindAttributeToState("TextClass", textClass)
 
 	--solve background color
