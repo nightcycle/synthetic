@@ -1,15 +1,16 @@
 local packages = script.Parent.Parent.Parent
-local synthetic = require(script.Parent.Parent)
+local synthetic
 local fusion = require(packages:WaitForChild('fusion'))
 local maidConstructor = require(packages:WaitForChild('maid'))
+local util = require(script.Parent.Parent:WaitForChild("Util"))
+local theme = require(script.Parent.Parent:WaitForChild("Theme"))
 
 local constructor = {}
 
-function constructor.new(config)
-	config = config or {}
+function constructor.new(params)
+	synthetic = synthetic or require(script.Parent.Parent)
 	local maid = maidConstructor.new()
-
-	local importedConfig = {
+	local config = {
 		AnchorPoint = Vector2.new(0.5, 0.5),
 		SizeConstraint = Enum.SizeConstraint.RelativeXX,
 		Size = UDim2.new(0.5,0,0,0),
@@ -305,9 +306,8 @@ function constructor.new(config)
 			},
 		},
 	}
-
-	for k, v in pairs(config) do importedConfig[k] = v end
-	local inst = fusion.New "Frame"(importedConfig)
+	util.mergeConfig(config, params)
+	local inst = fusion.New "Frame"(config)
 
 	maid:GiveTask(inst)
 

@@ -1,31 +1,20 @@
 local packages = script.Parent.Parent.Parent
-local synthetic = require(script.Parent.Parent)
+local synthetic
 local fusion = require(packages:WaitForChild('fusion'))
 local maidConstructor = require(packages:WaitForChild('maid'))
 local filterConstructor = require(packages:WaitForChild("filter"))
 local util = require(script.Parent.Parent:WaitForChild("Util"))
+local theme = require(script.Parent.Parent:WaitForChild("Theme"))
 
 local userInputService = game:GetService("UserInputService")
 local runService = game:GetService("RunService")
 
 local constructor = {}
 
-local ed = Enum.EasingDirection
-local es = Enum.EasingStyle
-function newTweenInfo(params)
-	params = params or {}
-	local duration = params.Duration or 0.5
-	local easingStyle = params.EasingStyle or es.Quint
-	local easingDirection = params.EasingDirection or ed.InOut
-	local repeatCount = params.RepeatCount or 0
-	local reverses = params.Reverses or false
-	local delayTime = params.DelayTime or 0
-	return TweenInfo.new(duration, easingStyle, easingDirection, repeatCount, reverses, delayTime)
-end
-
-function constructor.new(config)
-
-	config = config or {}
+function constructor.new(params)
+	local maid = maidConstructor.new()
+	local config = {}
+	util.mergeConfig(config, params)
 
 	local MinimumValue = fusion.State(config.MinimumValue or 0)
 	local MaximumValue = fusion.State(config.MaximumValue or 1)
@@ -37,16 +26,7 @@ function constructor.new(config)
 	local absoluteSize = fusion.State(Vector2.new(0,0))
 	local maid = maidConstructor.new()
 
-	config.Parent = config.Parent or game.Players.LocalPlayer:WaitForChild("PlayerGui")
-	config.Size = config.Size or UDim2.fromScale(1,1)
-	config.Position = config.Position or UDim2.fromScale(0.5,0.5)
-	config.AnchorPoint = config.AnchorPoint or Vector2.new(0.5,0.5)
-	config.LayoutOrder = config.LayoutOrder or 0
-	config.SizeConstraint = config.SizeConstraint or Enum.SizeConstraint.RelativeXY
-	config.Visible = config.Visible or true
-	config.Name = config.Name or script.Name
-
-	local inst = synthetic("Card",config)
+	local inst = fusion "Frame" (config)
 	maid:GiveTask(inst)
 	maid._resizeSignal = inst:GetPropertyChangedSignal("AbsoluteSize"):Connect(function()
 		absoluteSize:set(inst.AbsoluteSize)
@@ -185,12 +165,12 @@ function constructor.new(config)
 	end)
 
 	--bind to attributes
-	util.SetPublicState("Value", Value, inst, maid)
-	util.SetPublicState("MinimumValue", MinimumValue, inst, maid)
-	util.SetPublicState("MaximumValue", MaximumValue, inst, maid)
-	util.SetPublicState("Precision", Precision, inst, maid)
-	util.SetPublicState("LineThickness", LineThickness, inst, maid)
-	util.SetPublicState("LabelWidth", LabelWidth, inst, maid)
+	util.setPublicState("Value", Value, inst, maid)
+	util.setPublicState("MinimumValue", MinimumValue, inst, maid)
+	util.setPublicState("MaximumValue", MaximumValue, inst, maid)
+	util.setPublicState("Precision", Precision, inst, maid)
+	util.setPublicState("LineThickness", LineThickness, inst, maid)
+	util.setPublicState("LabelWidth", LabelWidth, inst, maid)
 
 	util.init(inst, maid)
 	return inst

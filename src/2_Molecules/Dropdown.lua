@@ -1,8 +1,9 @@
 local packages = script.Parent.Parent.Parent
-local synthetic = require(script.Parent.Parent)
+local synthetic
 local fusion = require(packages:WaitForChild('fusion'))
 local maidConstructor = require(packages:WaitForChild('maid'))
 local util = require(script.Parent.Parent:WaitForChild("Util"))
+local theme = require(script.Parent.Parent:WaitForChild("Theme"))
 
 --used to make sure two prompts are never opened at the same time
 local dropdownRegistry = Instance.new("Folder", game)
@@ -12,16 +13,6 @@ dropdownRegistry:SetAttribute("Index", 0)
 
 local ed = Enum.EasingDirection
 local es = Enum.EasingStyle
-function newTweenInfo(params)
-	params = params or {}
-	local duration = params.Duration or 0.5
-	local easingStyle = params.EasingStyle or es.Quint
-	local easingDirection = params.EasingDirection or ed.InOut
-	local repeatCount = params.RepeatCount or 0
-	local reverses = params.Reverses or false
-	local delayTime = params.DelayTime or 0
-	return TweenInfo.new(duration, easingStyle, easingDirection, repeatCount, reverses, delayTime)
-end
 
 local constructor = {}
 
@@ -33,19 +24,12 @@ function removeOption(inst, index)
 
 end
 
-function constructor.new(config)
-	config = config or {}
-	local Value = fusion.State("")
+function constructor.new(params)
 	local maid = maidConstructor.new()
+	local config = {}
+	util.mergeConfig(config, params)
 
-	config.Parent = config.Parent or game.Players.LocalPlayer:WaitForChild("PlayerGui")
-	config.Size = config.Size or UDim2.fromScale(1,1)
-	config.Position = config.Position or UDim2.fromScale(0.5,0.5)
-	config.AnchorPoint = config.AnchorPoint or Vector2.new(0.5,0.5)
-	config.LayoutOrder = config.LayoutOrder or 0
-	config.SizeConstraint = config.SizeConstraint or Enum.SizeConstraint.RelativeXY
-	config.Visible = config.Visible or true
-	config.Name = config.Name or script.Name
+	local Value = fusion.State("")
 
 	local inst = synthetic("Button", config)
 
@@ -88,7 +72,7 @@ function constructor.new(config)
 		local buttonSlot = buffer+buttonHeight:get()
 		local offset = -alpha*framePadding*2
 		return UDim2.new(1, 0, 0, math.max(0, alpha*options*buttonSlot-offset))
-	end), newTweenInfo())
+	end), util.newTweenInfo())
 	local buttonSize = fusion.Computed(function()
 		return UDim2.new(1, 0, 0, buttonHeight:get())
 	end)
@@ -233,7 +217,7 @@ function constructor.new(config)
 	end))
 
 	--bind to attributes
-	util.SetPublicState("Value", Value, inst, maid)
+	util.setPublicState("Value", Value, inst, maid)
 
 	maid:GiveTask({
 		Destroy = function(s)

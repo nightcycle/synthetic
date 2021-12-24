@@ -1,13 +1,27 @@
 local packages = script.Parent.Parent.Parent
-local synthetic = require(script.Parent.Parent)
+local synthetic
 local fusion = require(packages:WaitForChild('fusion'))
 local maidConstructor = require(packages:WaitForChild('maid'))
+local filterConstructor = require(packages:WaitForChild("filter"))
+local util = require(script.Parent.Parent:WaitForChild("Util"))
+local theme = require(script.Parent.Parent:WaitForChild("Theme"))
 
 local constructor = {}
 
-function constructor.new(config)
-	config = config or {}
+function constructor.new(params)
+	synthetic = synthetic or require(script.Parent.Parent)
 	local maid = maidConstructor.new()
+	local config = {}
+	util.mergeConfig(config, params)
+
+	local Input = fusion.State(config.Input or "")
+
+	local filter = filterConstructor.new(game.Players.LocalPlayer)
+
+	local text = fusion.Computed(function()
+		return filter:Get(Input:get())
+	end)
+	local inst
 
 	config.Parent = config.Parent or game.Players.LocalPlayer:WaitForChild("PlayerGui")
 	config.Size = config.Size or UDim2.fromScale(1,1)
@@ -18,17 +32,18 @@ function constructor.new(config)
 	config.Visible = config.Visible or true
 	config.Name = config.Name or script.Name
 	config.Text = config.Text or ""
-	config.AutoButtonColor = config.AutoButtonColor or false
+	config.TextXAlignment = config.TextXAlignment or Enum.TextXAlignment.Left
+	config.TextYAlignment = config.TextYAlignment or Enum.TextYAlignment.Center
+	config.PlaceholderText = config.PlaceholderText or "Input Text Here"
+	config[fusion.OnEvent "FocusLost"] = function()
+		Input:set(inst.Text)
+	end
 
-	local inst = fusion.New "TextButton" (config)
+	inst = fusion.New "TextBox" (config)
 	maid:GiveTask(inst)
-	maid:GiveTask(synthetic("Corner",{
-		Radius = UDim.new(0, 5),
-		Parent = inst
-	}))
 	maid:GiveTask(synthetic("Theme",{
 		ThemeCategory = "Primary",
-		TextClass = "Button",
+		TextClass = "Body",
 		Parent = inst,
 	}))
 	maid:GiveTask(synthetic("Elevation",{
@@ -40,13 +55,13 @@ function constructor.new(config)
 	maid:GiveTask(synthetic("InputEffect",{
 		StartSize = config.Size or UDim2.fromScale(1,1),
 		InputSizeBump = UDim.new(0, 10),
-		StartElevation = 1,
 		InputElevationBump = 1,
-		StartStyleCategory = "Surface",
-		InputStyleCategory = "Secondary",
+		StartElevation = 1,
 		Parent = inst,
 	}))
 
+	--bind to attributes
+	util.setPublicState("Input", Input, inst, maid)
 	util.init(inst, maid)
 	return inst
 end

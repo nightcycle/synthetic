@@ -1,28 +1,18 @@
 local packages = script.Parent.Parent.Parent
-local synthetic = require(script.Parent.Parent)
+local synthetic
 local fusion = require(packages:WaitForChild('fusion'))
 local maidConstructor = require(packages:WaitForChild('maid'))
 local filterConstructor = require(packages:WaitForChild("filter"))
 local util = require(script.Parent.Parent:WaitForChild("Util"))
+local theme = require(script.Parent.Parent:WaitForChild("Theme"))
 
 local constructor = {}
 
-local ed = Enum.EasingDirection
-local es = Enum.EasingStyle
-function newTweenInfo(params)
-	params = params or {}
-	local duration = params.Duration or 0.5
-	local easingStyle = params.EasingStyle or es.Quint
-	local easingDirection = params.EasingDirection or ed.InOut
-	local repeatCount = params.RepeatCount or 0
-	local reverses = params.Reverses or false
-	local delayTime = params.DelayTime or 0
-	return TweenInfo.new(duration, easingStyle, easingDirection, repeatCount, reverses, delayTime)
-end
-
-function constructor.new(config)
-	config = config or {}
+function constructor.new(params)
+	synthetic = synthetic or require(script.Parent.Parent)
 	local maid = maidConstructor.new()
+	local config = {}
+	util.mergeConfig(config, params)
 
 	local Open = fusion.State(config.Open or true)
 	local OpenPosition = fusion.State(config.OpenPosition or config.Position or UDim2.fromScale(0.5,0.5))
@@ -30,6 +20,7 @@ function constructor.new(config)
 	local OpenSize = fusion.State(config.OpenSize or config.Size or UDim2.fromScale(0.5,0.5))
 	local CloseSize = fusion.State(config.CloseSize or config.Size or UDim2.fromScale(0.5,0.5))
 	local ExitButtonEnabled = fusion.State(true)
+
 	if config.ExitButtonEnabled ~= nil then
 		ExitButtonEnabled = fusion.State(config.ExitButtonEnabled)
 	end
@@ -42,7 +33,7 @@ function constructor.new(config)
 				return ClosePosition:get()
 			end
 		end),
-		newTweenInfo()
+		util.newTweenInfo()
 	)
 	config.Size = config.Size or fusion.Tween(
 		fusion.Computed(function()
@@ -52,7 +43,7 @@ function constructor.new(config)
 				return CloseSize:get()
 			end
 		end),
-		newTweenInfo()
+		util.newTweenInfo()
 	)
 	config.Parent = config.Parent or game.Players.LocalPlayer:WaitForChild("PlayerGui")
 	config.Size = config.Size or UDim2.fromScale(1,1)
@@ -158,12 +149,12 @@ function constructor.new(config)
 	exitButton:WaitForChild("Theme"):SetAttribute("TextClass", "Caption")
 
 	--bind to attributes
-	util.SetPublicState("Open", Open, inst, maid)
-	util.SetPublicState("OpenPosition", OpenPosition, inst, maid)
-	util.SetPublicState("ClosePosition", ClosePosition, inst, maid)
-	util.SetPublicState("OpenSize", OpenSize, inst, maid)
-	util.SetPublicState("CloseSize", CloseSize, inst, maid)
-	util.SetPublicState("ExitButtonEnabled", ExitButtonEnabled, inst, maid)
+	util.setPublicState("Open", Open, inst, maid)
+	util.setPublicState("OpenPosition", OpenPosition, inst, maid)
+	util.setPublicState("ClosePosition", ClosePosition, inst, maid)
+	util.setPublicState("OpenSize", OpenSize, inst, maid)
+	util.setPublicState("CloseSize", CloseSize, inst, maid)
+	util.setPublicState("ExitButtonEnabled", ExitButtonEnabled, inst, maid)
 
 	util.init(inst, maid)
 	return inst

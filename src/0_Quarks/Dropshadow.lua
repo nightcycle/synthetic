@@ -1,8 +1,8 @@
 local packages = script.Parent.Parent.Parent
-local synthetic = require(script.Parent.Parent)
 local fusion = require(packages:WaitForChild('fusion'))
 local maidConstructor = require(packages:WaitForChild('maid'))
 local util = require(script.Parent.Parent:WaitForChild("Util"))
+local theme = require(script.Parent.Parent:WaitForChild("Theme"))
 
 local multiplier = 2.5
 local elevationToValueGain = {
@@ -18,12 +18,6 @@ local elevationToValueGain = {
 	[9] = 0.16*multiplier,
 }
 
-
-local maxShadowDistance = 7
-local minShadowDistance = 1
-local minTransparency = 0.2
-local maxTransparency = 0.7
-
 function resetParent(parent: Instance, maid)
 	local isViable = parent:GetAttribute("StartLightConfig")
 	if not isViable then return end
@@ -34,24 +28,36 @@ function resetParent(parent: Instance, maid)
 	maid:DoCleaning()
 end
 
-local ed = Enum.EasingDirection
-local es = Enum.EasingStyle
-function newTweenInfo(params)  --default is a nice smooth transition
-	params = params or {}
-	local duration = params.Duration or 0.4
-	local easingStyle = params.EasingStyle or es.Quad
-	local easingDirection = params.EasingDirection or ed.InOut
-	local repeatCount = params.RepeatCount or 0
-	local reverses = params.Reverses or false
-	local delayTime = params.DelayTime or 0
-	return TweenInfo.new(duration, easingStyle, easingDirection, repeatCount, reverses, delayTime)
-end
-
-
 local constructor = {}
 
-function constructor.new(config)
-	config = config or {}
+function constructor.new(params)
+	local config = {
+		ImageColor3 = Color3.new(1, 0, 0),
+		BackgroundTransparency = 1,
+		AnchorPoint = Vector2.new(0.5, 0.5),
+		Image = 'rbxassetid://8322594959',
+		SliceCenter = Rect.new(imageSize*0.5, imageSize*0.5, imageSize*0.5, imageSize*0.5),
+		ScaleType = Enum.ScaleType.Slice,
+		Size = Size,
+		Transparency = 1,
+		Name = 'Shadow',
+		Position = UDim2.new(0.5,0,0.5,0),
+		SliceScale = SliceScale,
+		ImageTransparency = 0.7,
+		BackgroundColor3 = Color3.new(1, 0, 0),
+		[fusion.Children] = {
+			fusion.New 'UIGradient' {
+				Rotation = 90,
+				Transparency = transparencyGradient,
+				Color = ColorSequence.new({
+					ColorSequenceKeypoint.new(0, Color3.new(1, 1, 1)),
+					ColorSequenceKeypoint.new(1, Color3.new(1, 1, 1)),
+				}),
+			},
+		},
+	}
+	util.mergeConfig(config, params)
+
 	local maid = maidConstructor.new()
 	local parentMaid = maidConstructor.new()
 	maid:GiveTask(parentMaid)
@@ -124,44 +130,13 @@ function constructor.new(config)
 	end)
 
 	--create inst
-	config.Parent = config.Parent or game.Players.LocalPlayer:WaitForChild("PlayerGui")
-	config.Name = config.Name or script.Name
-
-	local importedConfig = {
-		ImageColor3 = Color3.new(1, 0, 0),
-		BackgroundTransparency = 1,
-		AnchorPoint = Vector2.new(0.5, 0.5),
-		Image = 'rbxassetid://8322594959',
-		SliceCenter = Rect.new(imageSize*0.5, imageSize*0.5, imageSize*0.5, imageSize*0.5),
-		ScaleType = Enum.ScaleType.Slice,
-		Size = Size,
-		Transparency = 1,
-		Name = 'Shadow',
-		Position = UDim2.new(0.5,0,0.5,0),
-		SliceScale = SliceScale,
-		ImageTransparency = 0.7,
-		BackgroundColor3 = Color3.new(1, 0, 0),
-		[fusion.Children] = {
-			fusion.New 'UIGradient' {
-				Rotation = 90,
-				Transparency = transparencyGradient,
-				Color = ColorSequence.new({
-					ColorSequenceKeypoint.new(0, Color3.new(1, 1, 1)),
-					ColorSequenceKeypoint.new(1, Color3.new(1, 1, 1)),
-				}),
-			},
-		},
-	}
-
-
-	for k, v in pairs(config) do importedConfig[k] = v end
-	local inst = fusion.New 'Shadow' (importedConfig)
+	local inst = fusion.New 'Shadow' (config)
+	maid:GiveTask(inst)
 
 	--bind to attributes
-	util.SetPublicState("Weight", Weight, inst, maid)
+	util.setPublicState("Weight", Weight, inst, maid)
 
 	--connect goals to currents & parent with tweenCompat
-	maid:GiveTask(inst)
 	local function setParent(par)
 		currentParent = inst.Parent
 		if currentParent == nil then return end

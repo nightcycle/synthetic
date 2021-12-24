@@ -1,5 +1,3 @@
-local synthetic = script
-local initializingState = "New"
 local constructors = {}
 
 for i, module in ipairs(script:GetDescendants()) do

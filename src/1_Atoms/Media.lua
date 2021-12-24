@@ -1,35 +1,18 @@
 local packages = script.Parent.Parent.Parent
-local synthetic = require(script.Parent.Parent)
+local synthetic
 local fusion = require(packages:WaitForChild('fusion'))
 local maidConstructor = require(packages:WaitForChild('maid'))
 local util = require(script.Parent.Parent:WaitForChild("Util"))
+local theme = require(script.Parent.Parent:WaitForChild("Theme"))
 
 local constructor = {}
 
-local ed = Enum.EasingDirection
-local es = Enum.EasingStyle
-function newTweenInfo(params)
-	params = params or {}
-	local duration = params.Duration or 0.5
-	local easingStyle = params.EasingStyle or es.Quint
-	local easingDirection = params.EasingDirection or ed.InOut
-	local repeatCount = params.RepeatCount or 0
-	local reverses = params.Reverses or false
-	local delayTime = params.DelayTime or 0
-	return TweenInfo.new(duration, easingStyle, easingDirection, repeatCount, reverses, delayTime)
-end
-
-function constructor.new(config)
-	config = config or {}
-
-	config.Parent = config.Parent or game.Players.LocalPlayer:WaitForChild("PlayerGui")
-	config.Size = config.Size or UDim2.fromScale(1,1)
-	config.Position = config.Position or UDim2.fromScale(0.5,0.5)
-	config.AnchorPoint = config.AnchorPoint or Vector2.new(0.5,0.5)
-	config.LayoutOrder = config.LayoutOrder or 0
-	config.SizeConstraint = config.SizeConstraint or Enum.SizeConstraint.RelativeXY
-	config.Visible = config.Visible or true
-	config.Name = config.Name or script.Name
+function constructor.new(params)
+	local maid = maidConstructor.new()
+	local config = {
+		Parent = game.Players.LocalPlayer:WaitForChild("PlayerGui")
+	}
+	util.mergeConfig(config, params)
 
 	local isFocused = fusion.State(false)
 	config[fusion.OnEvent "InputChanged"] = function()
@@ -62,7 +45,6 @@ function constructor.new(config)
 	local VFRestFOV = fusion.State(config.VFRestFOV or 70)
 
 	--private states
-
 	local maid = maidConstructor.new()
 	local inst = fusion.New "Frame" (config)
 	maid:GiveTask(inst)
@@ -155,7 +137,7 @@ function constructor.new(config)
 				local offset = cOrigin + (cDirection * cDistance)
 				return CFrame.new(offset, cOrigin)
 			end)
-			local tweenCF = fusion.Tween(cf, newTweenInfo())
+			local tweenCF = fusion.Tween(cf, util.newTweenInfo())
 
 			-- FOV
 			local curFOV = fusion.Computed(function()
@@ -165,7 +147,7 @@ function constructor.new(config)
 					return VFRestFOV:get()
 				end
 			end)
-			local tweenFOV = fusion.Tween(curFOV, newTweenInfo({es.Back, Duration = 0.25}))
+			local tweenFOV = fusion.Tween(curFOV, util.newTweenInfo({Enum.EasingStyle.Back, Duration = 0.25}))
 
 			local camera = fusion.New "Camera" {
 				CFrame = tweenCF,
@@ -203,23 +185,23 @@ function constructor.new(config)
 
 
 	--bind to attributes
-	util.SetPublicState("Media",Media, inst, maid)
-	util.SetPublicState("Text",Text, inst, maid)
-	util.SetPublicState("Color",Color, inst, maid)
-	util.SetPublicState("Image",Image, inst, maid)
+	util.setPublicState("Media",Media, inst, maid)
+	util.setPublicState("Text",Text, inst, maid)
+	util.setPublicState("Color",Color, inst, maid)
+	util.setPublicState("Image",Image, inst, maid)
 
-	util.SetPublicState("ImageRectOffset",ImageRectOffset, inst, maid)
-	util.SetPublicState("ImageRectSize",ImageRectSize, inst, maid)
+	util.setPublicState("ImageRectOffset",ImageRectOffset, inst, maid)
+	util.setPublicState("ImageRectSize",ImageRectSize, inst, maid)
 
-	util.SetPublicState("VFFocusNormal",VFFocusNormal, inst, maid)
-	util.SetPublicState("VFFocusDistance",VFFocusDistance, inst, maid)
-	util.SetPublicState("VFFocusOrigin",VFFocusOrigin, inst, maid)
-	util.SetPublicState("VFFocusFOV",VFFocusFOV, inst, maid)
+	util.setPublicState("VFFocusNormal",VFFocusNormal, inst, maid)
+	util.setPublicState("VFFocusDistance",VFFocusDistance, inst, maid)
+	util.setPublicState("VFFocusOrigin",VFFocusOrigin, inst, maid)
+	util.setPublicState("VFFocusFOV",VFFocusFOV, inst, maid)
 
-	util.SetPublicState("VFRestNormal",VFRestNormal, inst, maid)
-	util.SetPublicState("VFRestDistance",VFRestDistance, inst, maid)
-	util.SetPublicState("VFRestOrigin",VFRestOrigin, inst, maid)
-	util.SetPublicState("VFRestFOV",VFRestFOV, inst, maid)
+	util.setPublicState("VFRestNormal",VFRestNormal, inst, maid)
+	util.setPublicState("VFRestDistance",VFRestDistance, inst, maid)
+	util.setPublicState("VFRestOrigin",VFRestOrigin, inst, maid)
+	util.setPublicState("VFRestFOV",VFRestFOV, inst, maid)
 
 	util.init(inst, maid)
 	return inst
