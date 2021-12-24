@@ -77,51 +77,6 @@ function constructor.new(config)
 		Parent = inst
 	}
 
-	local confirmButton = synthetic("Button", {
-		Parent = buttonCard,
-		Size = UDim2.fromOffset(125, buttonHeight),
-		Position = UDim2.fromScale(0, 0.5),
-		AnchorPoint = Vector2.new(0, 0.5),
-	})
-	maid:GiveTask(confirmButton)
-	confirmButton.LayoutOrder = 1
-	confirmButton:WaitForChild("Style"):SetAttribute("StyleCategory", "Primary")
-	confirmButton:WaitForChild("InputEffect"):SetAttribute("InputSizeBump", UDim.new(0,0))
-	confirmButton:WaitForChild("InputEffect"):SetAttribute("InputStyleCategory", "Secondary")
-	confirmButton:WaitForChild("InputEffect"):SetAttribute("StartStyleCategory", "Primary")
-	local confirmCompat = fusion.Compat(ConfirmLabel)
-	confirmButton.Text = ConfirmLabel:get()
-	maid:GiveTask(confirmCompat:onChange(function()
-		confirmButton.Text = ConfirmLabel:get()
-	end))
-	maid:GiveTask(confirmButton.Activated:Connect(function()
-		print("Click1")
-		inst:SetAttribute("Open", false)
-		OnDecision:Fire(true)
-	end))
-
-	local denyButton = synthetic("Button", {
-		Parent = buttonCard,
-		Size = UDim2.fromOffset(125, buttonHeight),
-		Position = UDim2.fromScale(1, 0.5),
-		AnchorPoint = Vector2.new(1, 0.5),
-	})
-	maid:GiveTask(denyButton)
-	denyButton:WaitForChild("Style"):SetAttribute("StyleCategory", "Error")
-	denyButton:WaitForChild("InputEffect"):SetAttribute("InputSizeBump", UDim.new(0,0))
-	denyButton:WaitForChild("InputEffect"):SetAttribute("InputStyleCategory", "Secondary")
-	denyButton:WaitForChild("InputEffect"):SetAttribute("StartStyleCategory", "Error")
-	denyButton.Text = DenyLabel:get()
-	local denyCompat = fusion.Compat(DenyLabel)
-	maid:GiveTask(denyCompat:onChange(function()
-		denyButton.Text = DenyLabel:get()
-	end))
-	maid:GiveTask(denyButton.Activated:Connect(function()
-		print("Click2")
-		inst:SetAttribute("Open", false)
-		OnDecision:Fire(false)
-	end))
-
 	--bind to attributes
 	local attributer = attributerConstructor.new(inst, {})
 	maid:GiveTask(attributer)

@@ -32,14 +32,13 @@ return function(key, config)
 	if not const then error("No constructor found for "..tostring(key)) end
 
 	local inst, maid = const.new(config or {})
-
+	inst:SetAttribute("SynthClass", key)
 	inst:SetAttribute("ElevationIncrease", 1)
 	inst:SetAttribute("AbsoluteElevation", 0)
 	updateElevation(inst)
 
 	maid.deathSignal = inst.AncestryChanged:Connect(function()
 		if not inst:IsDescendantOf(game.Players.LocalPlayer) then
-			-- print("Cleaning up "..tostring(key))
 			for i, desc in ipairs(inst:GetDescendants()) do
 				desc:Destroy()
 			end

@@ -52,7 +52,7 @@ function constructor.new(config)
 
 	--solve for goals
 	local alpha = fusion.Computed(function()
-		return (math.clamp(increasedElevation:get(), 0, 9)/9)^2
+		return (math.clamp(increasedElevation:get(), 0, 9)/9)
 	end)
 
 	local transparencyGoal = fusion.Computed(function()
