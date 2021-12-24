@@ -7,6 +7,18 @@ local screenGui = synthetic("ScreenGui", {
 	Parent = game.Players.LocalPlayer:WaitForChild("PlayerGui"),
 })
 
-synthetic("Prompt", {
+synthetic "Button" {
 	Parent = screenGui
-})
+}
+synthetic "Canvas" {
+	Parent = screenGui
+}
+synthetic "Media" {
+	Parent = screenGui
+}
+synthetic "Panel" {
+	Parent = screenGui
+}
+synthetic "Panel" {
+	Parent = screenGui
+}

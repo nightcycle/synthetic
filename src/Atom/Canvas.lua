@@ -3,7 +3,7 @@ local synthetic = require(script.Parent.Parent)
 local fusion = require(packages:WaitForChild('fusion'))
 local maidConstructor = require(packages:WaitForChild('maid'))
 local filterConstructor = require(packages:WaitForChild("filter"))
-local attributerConstructor = require(packages:WaitForChild("attributer"))
+local util = require(script.Parent.Parent:WaitForChild("Util"))
 
 local constructor = {}
 
@@ -158,29 +158,12 @@ function constructor.new(config)
 	exitButton:WaitForChild("Theme"):SetAttribute("TextClass", "Caption")
 
 	--bind to attributes
-	local attributer = attributerConstructor.new(inst, {})
-	maid:GiveTask(attributer)
-	local function bindAttributeToState(key, state)
-		attributer:Connect(key, state:get())
-		local compat = fusion.Compat(state)
-		maid:GiveTask(compat:onChange(function()
-			if inst:GetAttribute(key) ~= state:get() then
-				inst:SetAttribute(key, state:get())
-			end
-		end))
-		maid:GiveTask(attributer.OnChanged:Connect(function(k, val)
-			if k == key then
-				state:set(val)
-			end
-		end))
-	end
-	bindAttributeToState("Open", Open)
-	bindAttributeToState("OpenPosition", OpenPosition)
-	bindAttributeToState("ClosePosition", ClosePosition)
-	bindAttributeToState("OpenSize", OpenSize)
-	bindAttributeToState("CloseSize", CloseSize)
-	bindAttributeToState("ExitButtonEnabled", ExitButtonEnabled)
-	-- bindAttributeToState("AbsoluteScrollLength", AbsoluteScrollLength)
+	util.SetPublicState("Open", Open, inst, maid)
+	util.SetPublicState("OpenPosition", OpenPosition, inst, maid)
+	util.SetPublicState("ClosePosition", ClosePosition, inst, maid)
+	util.SetPublicState("OpenSize", OpenSize, inst, maid)
+	util.SetPublicState("CloseSize", CloseSize, inst, maid)
+	util.SetPublicState("ExitButtonEnabled", ExitButtonEnabled, inst, maid)
 
 	return inst, maid
 end

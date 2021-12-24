@@ -3,7 +3,7 @@ local synthetic = require(script.Parent.Parent)
 local fusion = require(packages:WaitForChild('fusion'))
 local maidConstructor = require(packages:WaitForChild('maid'))
 local filterConstructor = require(packages:WaitForChild("filter"))
-local attributerConstructor = require(packages:WaitForChild("attributer"))
+local util = require(script.Parent.Parent:WaitForChild("Util"))
 
 local userInputService = game:GetService("UserInputService")
 local runService = game:GetService("RunService")
@@ -185,29 +185,12 @@ function constructor.new(config)
 	end)
 
 	--bind to attributes
-	local attributer = attributerConstructor.new(inst, {})
-	maid:GiveTask(attributer)
-	local function bindAttributeToState(key, state)
-		attributer:Connect(key, state:get())
-		local compat = fusion.Compat(state)
-		maid:GiveTask(compat:onChange(function()
-			if inst:GetAttribute(key) ~= state:get() then
-				inst:SetAttribute(key, state:get())
-			end
-		end))
-		maid:GiveTask(attributer.OnChanged:Connect(function(k, val)
-			if k == key then
-				state:set(val)
-			end
-		end))
-	end
-
-	bindAttributeToState("Value", Value)
-	bindAttributeToState("MinimumValue", MinimumValue)
-	bindAttributeToState("MaximumValue", MaximumValue)
-	bindAttributeToState("Precision", Precision)
-	bindAttributeToState("LineThickness", LineThickness)
-	bindAttributeToState("LabelWidth", LabelWidth)
+	util.SetPublicState("Value", Value, inst, maid)
+	util.SetPublicState("MinimumValue", MinimumValue, inst, maid)
+	util.SetPublicState("MaximumValue", MaximumValue, inst, maid)
+	util.SetPublicState("Precision", Precision, inst, maid)
+	util.SetPublicState("LineThickness", LineThickness, inst, maid)
+	util.SetPublicState("LabelWidth", LabelWidth, inst, maid)
 
 	return inst, maid
 end

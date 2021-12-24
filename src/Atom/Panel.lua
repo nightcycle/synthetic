@@ -33,20 +33,6 @@ function constructor.new(config)
 	maid:GiveTask(synthetic("Dropshadow",{
 		Parent = inst,
 	}))
-	-- maid:GiveTask(synthetic("InputEffect",{
-	-- 	StartSize = config.Size or UDim2.fromScale(1,1),
-	-- 	InputSizeBump = UDim.new(0, 10),
-	-- 	InputElevationBump = 1,
-	-- 	StartElevation = 1,
-	-- 	Parent = inst,
-	-- }))
-	maid:GiveTask(synthetic("Padding",{
-		Parent = inst
-	}))
-	maid:GiveTask(synthetic("Corner",{
-		Parent = inst,
-		Radius = UDim.new(0,5),
-	}))
 
 	return inst, maid
 end

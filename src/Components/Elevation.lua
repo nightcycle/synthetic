@@ -3,7 +3,7 @@ local synthetic = require(script.Parent.Parent)
 local fusion = require(packages:WaitForChild('fusion'))
 local maidConstructor = require(packages:WaitForChild('maid'))
 
-local attributerConstructor = require(packages:WaitForChild('attributer'))
+local util = require(script.Parent.Parent:WaitForChild("Util"))
 
 local maxShadowDistance = 4
 local minShadowDistance = 1

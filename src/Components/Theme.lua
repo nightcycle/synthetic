@@ -2,7 +2,7 @@ local packages = script.Parent.Parent.Parent
 local synthetic = require(script.Parent.Parent)
 local fusion = require(packages:WaitForChild('fusion'))
 local maidConstructor = require(packages:WaitForChild('maid'))
-local attributerConstructor = require(packages:WaitForChild('attributer'))
+local util = require(script.Parent.Parent:WaitForChild("Util"))
 
 local camera = game.Workspace.CurrentCamera
 local viewportSizeY = fusion.State(camera.ViewportSize.Y)
@@ -507,18 +507,8 @@ function constructor.new(config)
 	local inst = fusion.New "Configuration" (config)
 
 	--bind to attributes
-	local attributer = attributerConstructor.new(inst, {})
-	maid:GiveTask(attributer)
-	local function bindAttributeToState(key, state)
-		attributer:Connect(key, state:get())
-		maid:GiveTask(attributer.OnChanged:Connect(function(k, val)
-			if k == key then
-				state:set(val)
-			end
-		end))
-	end
-	bindAttributeToState("ThemeCategory", category)
-	bindAttributeToState("TextClass", textClass)
+	util.SetPublicState("ThemeCategory", category, inst, maid)
+	util.SetPublicState("TextClass", textClass, inst, maid)
 
 	--solve background color
 	local goalBackgroundColor = fusion.Computed(function()

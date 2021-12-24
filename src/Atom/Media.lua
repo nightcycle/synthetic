@@ -2,7 +2,7 @@ local packages = script.Parent.Parent.Parent
 local synthetic = require(script.Parent.Parent)
 local fusion = require(packages:WaitForChild('fusion'))
 local maidConstructor = require(packages:WaitForChild('maid'))
-local attributerConstructor = require(packages:WaitForChild("attributer"))
+local util = require(script.Parent.Parent:WaitForChild("Util"))
 
 local constructor = {}
 
@@ -203,39 +203,23 @@ function constructor.new(config)
 
 
 	--bind to attributes
-	local attributer = attributerConstructor.new(inst, {})
-	maid:GiveTask(attributer)
-	local function bindAttributeToState(key, state)
-		attributer:Connect(key, state:get())
-		local compat = fusion.Compat(state)
-		maid:GiveTask(compat:onChange(function()
-			if inst:GetAttribute(key) ~= state:get() then
-				inst:SetAttribute(key, state:get())
-			end
-		end))
-		maid:GiveTask(attributer.OnChanged:Connect(function(k, val)
-			if k == key then
-				state:set(val)
-			end
-		end))
-	end
-	bindAttributeToState("Media",Media)
-	bindAttributeToState("Text",Text)
-	bindAttributeToState("Color",Color)
-	bindAttributeToState("Image",Image)
+	util.SetPublicState("Media",Media, inst, maid)
+	util.SetPublicState("Text",Text, inst, maid)
+	util.SetPublicState("Color",Color, inst, maid)
+	util.SetPublicState("Image",Image, inst, maid)
 
-	bindAttributeToState("ImageRectOffset",ImageRectOffset)
-	bindAttributeToState("ImageRectSize",ImageRectSize)
+	util.SetPublicState("ImageRectOffset",ImageRectOffset, inst, maid)
+	util.SetPublicState("ImageRectSize",ImageRectSize, inst, maid)
 
-	bindAttributeToState("VFFocusNormal",VFFocusNormal)
-	bindAttributeToState("VFFocusDistance",VFFocusDistance)
-	bindAttributeToState("VFFocusOrigin",VFFocusOrigin)
-	bindAttributeToState("VFFocusFOV",VFFocusFOV)
+	util.SetPublicState("VFFocusNormal",VFFocusNormal, inst, maid)
+	util.SetPublicState("VFFocusDistance",VFFocusDistance, inst, maid)
+	util.SetPublicState("VFFocusOrigin",VFFocusOrigin, inst, maid)
+	util.SetPublicState("VFFocusFOV",VFFocusFOV, inst, maid)
 
-	bindAttributeToState("VFRestNormal",VFRestNormal)
-	bindAttributeToState("VFRestDistance",VFRestDistance)
-	bindAttributeToState("VFRestOrigin",VFRestOrigin)
-	bindAttributeToState("VFRestFOV",VFRestFOV)
+	util.SetPublicState("VFRestNormal",VFRestNormal, inst, maid)
+	util.SetPublicState("VFRestDistance",VFRestDistance, inst, maid)
+	util.SetPublicState("VFRestOrigin",VFRestOrigin, inst, maid)
+	util.SetPublicState("VFRestFOV",VFRestFOV, inst, maid)
 
 	return inst, maid
 end
