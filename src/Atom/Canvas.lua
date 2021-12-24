@@ -165,7 +165,8 @@ function constructor.new(config)
 	util.SetPublicState("CloseSize", CloseSize, inst, maid)
 	util.SetPublicState("ExitButtonEnabled", ExitButtonEnabled, inst, maid)
 
-	return inst, maid
+	util.init(inst, maid)
+	return inst
 end
 
 return constructor

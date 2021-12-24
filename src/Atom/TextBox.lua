@@ -59,7 +59,8 @@ function constructor.new(config)
 
 	--bind to attributes
 	util.SetPublicState("Input", Input, inst, maid)
-	return inst, maid
+	util.init(inst, maid)
+	return inst
 end
 
 return constructor

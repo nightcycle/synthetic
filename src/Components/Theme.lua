@@ -574,8 +574,8 @@ function constructor.new(config)
 		setParent(config.Parent)
 	end
 	maid:GiveTask(viewportSizeChangeSignal:Connect(fireUpdate))
-
-	return inst, maid
+	util.init(inst, maid)
+	return inst
 end
 
 return constructor

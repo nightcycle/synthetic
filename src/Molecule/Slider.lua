@@ -192,7 +192,8 @@ function constructor.new(config)
 	util.SetPublicState("LineThickness", LineThickness, inst, maid)
 	util.SetPublicState("LabelWidth", LabelWidth, inst, maid)
 
-	return inst, maid
+	util.init(inst, maid)
+	return inst
 end
 
 return constructor

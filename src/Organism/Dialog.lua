@@ -81,7 +81,8 @@ function constructor.new(config)
 	util.SetPublicState("ConfirmLabel", ConfirmLabel, inst, maid)
 	util.SetPublicState("DenyLabel", DenyLabel, inst, maid)
 
-	return inst, maid
+	util.init(inst, maid)
+	return inst
 end
 
 return constructor

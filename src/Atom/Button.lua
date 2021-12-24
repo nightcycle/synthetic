@@ -47,7 +47,8 @@ function constructor.new(config)
 		Parent = inst,
 	}))
 
-	return inst, maid
+	util.init(inst, maid)
+	return inst
 end
 
 return constructor

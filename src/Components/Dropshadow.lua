@@ -210,7 +210,8 @@ function constructor.new(config)
 	if config.Parent then
 		setParent(config.Parent)
 	end
-	return inst, maid
+	util.init(inst, maid)
+	return inst
 end
 
 return constructor

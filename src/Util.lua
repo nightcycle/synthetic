@@ -3,6 +3,16 @@ local attributerConstructor = require(packages:WaitForChild("attributer"))
 local fusion = require(packages:WaitForChild('fusion'))
 local maidConstructor = require(packages:WaitForChild('maid'))
 
+
+function updateElevation(inst)
+	local newParent = inst.Parent
+	if newParent:IsA("GuiObject") then
+		local parentAbsElevation = newParent:GetAttribute("AbsoluteElevation") or 0
+		inst:SetAttribute("AbsoluteElevation", parentAbsElevation + inst:GetAttribute("ElevationIncrease"))
+	end
+end
+
+
 return {
 	SetPublicState = function(key, state, inst, maid)
 		--bind to attributes
@@ -23,5 +33,22 @@ return {
 			end))
 		end
 		bindAttributeToState(key, state)
-	end
+	end,
+
+	Init = function(key, inst, maid)
+		inst:SetAttribute("SynthClass", key)
+		inst:SetAttribute("ElevationIncrease", 1)
+		inst:SetAttribute("AbsoluteElevation", 0)
+
+		maid.deathSignal = inst.AncestryChanged:Connect(function()
+			if not inst:IsDescendantOf(game.Players.LocalPlayer) then
+				for i, desc in ipairs(inst:GetDescendants()) do
+					desc:Destroy()
+				end
+				maid:Destroy()
+			else
+				updateElevation(inst)
+			end
+		end)
+	end,
 }

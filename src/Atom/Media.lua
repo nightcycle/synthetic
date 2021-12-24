@@ -221,7 +221,8 @@ function constructor.new(config)
 	util.SetPublicState("VFRestOrigin",VFRestOrigin, inst, maid)
 	util.SetPublicState("VFRestFOV",VFRestFOV, inst, maid)
 
-	return inst, maid
+	util.init(inst, maid)
+	return inst
 end
 
 return constructor
