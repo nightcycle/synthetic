@@ -9,22 +9,15 @@ local constructor = {}
 function constructor.new(params)
 	synthetic = synthetic or require(script.Parent.Parent)
 	local maid = maidConstructor.new()
-	local config = {
-		Parent = game.Players.LocalPlayer:WaitForChild("PlayerGui")
-	}
+
+	local config = {}
+
 	util.mergeConfig(config, params)
+
 	local inst = fusion.New "TextButton" (config)
 	maid:GiveTask(inst)
-
-	fusion "Corner" {
-		Radius = UDim.new(0, 5),
-		Parent = inst
-	}
-	synthetic "Dropshadow" {
-		Parent = inst,
-	}
-
 	util.init(inst, maid)
+
 	return inst
 end
 

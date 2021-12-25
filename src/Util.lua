@@ -1,6 +1,7 @@
 local packages = script.Parent.Parent
 local attributerConstructor = require(packages:WaitForChild("attributer"))
 local fusion = require(packages:WaitForChild('fusion'))
+local signalConstructor = require(packages:WaitForChild("signal"))
 
 local ed = Enum.EasingDirection
 local es = Enum.EasingStyle
@@ -16,7 +17,7 @@ end
 return {
 	setPublicState = function(key, state, inst, maid)
 		--bind to attributes
-		local attributer = maid._attributer or attributerConstructor.new(inst, {})
+		local attributer = maid._attributer
 		maid._attributer = attributer
 		local function bindAttributeToState(key, state)
 			attributer:Connect(key, state:get())
@@ -33,6 +34,50 @@ return {
 			end))
 		end
 		bindAttributeToState(key, state)
+	end,
+
+	wrap = function(inst, maid, properties, key)
+		local self = {
+			Instance = inst,
+			SynthClass = key
+		}
+
+		local signals = {}
+
+		for k, v in pairs(properties) do self[k] = v end
+
+		maid._attributer = attributerConstructor.new(inst, self, properties, false, nil, true))
+		function self:Destroy()
+			maid:Destroy()
+		end
+
+		function self:GetPropertyChangedSignal(k)
+			return signals[k]
+		end
+
+		function self:GetAttributeChangedSignal(k)
+			return signals[k]
+		end
+
+		for i, bindable in ipairs(inst:GetChidren()) do
+			if bindable:IsA("BindableFunction") or bindable:IsA("BindableEvent") then
+				if string.sub(bindable.Name, 1, 2) == "On" then
+					local signal = signalConstructor.new()
+					self[bindable.Name] = signal
+					signals[bindable.Name] = signal
+					maid:GiveTask(signal)
+					maid:GiveTask(bindable.Event:Connect(function(...)
+						signal:Fire(...)
+					end))
+				else
+					self[bindable.Name] = function(s, ...)
+						return bindable:Fire(...)
+					end
+				end
+			end
+		end
+
+		return self
 	end,
 
 	init = function(key, inst, maid)
@@ -63,10 +108,10 @@ return {
 		return TweenInfo.new(duration, easingStyle, easingDirection, repeatCount, reverses, delayTime)
 	end,
 
-	mergeConfig = function(baseConfig, changes, ignore)
-		ignore = ignore or {}
+	mergeConfig = function(baseConfig, changes, whiteList)
+		if not whiteList then whiteList = changes end
 		for k, v in ipairs(baseConfig) do
-			if ignore[k] ~= true then
+			if whiteList[k] ~= nil then
 				baseConfig[k] = changes[k] or baseConfig[k]
 			end
 		end

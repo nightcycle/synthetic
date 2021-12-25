@@ -31,53 +31,16 @@ end
 local constructor = {}
 
 function constructor.new(params)
-	local config = {
-		ImageColor3 = Color3.new(1, 0, 0),
-		BackgroundTransparency = 1,
-		AnchorPoint = Vector2.new(0.5, 0.5),
-		Image = 'rbxassetid://8322594959',
-		SliceCenter = Rect.new(imageSize*0.5, imageSize*0.5, imageSize*0.5, imageSize*0.5),
-		ScaleType = Enum.ScaleType.Slice,
-		Size = Size,
-		Transparency = 1,
-		Name = 'Shadow',
-		Position = UDim2.new(0.5,0,0.5,0),
-		SliceScale = SliceScale,
-		ImageTransparency = 0.7,
-		BackgroundColor3 = Color3.new(1, 0, 0),
-		[fusion.Children] = {
-			fusion.New 'UIGradient' {
-				Rotation = 90,
-				Transparency = transparencyGradient,
-				Color = ColorSequence.new({
-					ColorSequenceKeypoint.new(0, Color3.new(1, 1, 1)),
-					ColorSequenceKeypoint.new(1, Color3.new(1, 1, 1)),
-				}),
-			},
-		},
-	}
-	util.mergeConfig(config, params)
 
 	local maid = maidConstructor.new()
 	local parentMaid = maidConstructor.new()
 	maid:GiveTask(parentMaid)
 
 	local currentParent
-	local Weight = fusion.State(config.Weight or 1)
-	config.Weight = nil
+	local Weight = fusion.State(params.Weight or 1)
 
-	--set control states
-	local netElevation = fusion.State(0)
-	config.BackgroundTransparency = 1
-	config.ImageTransparency = fusion.Computed(function()
-		local currentValue = math.clamp(netElevation:get(), 0, 9)
-		local alpha = currentValue - math.floor(currentValue)
-		local minVal = elevationToValueGain[math.floor(currentValue)]
-		local maxVal = elevationToValueGain[math.ceil(currentValue)]
-		local range = maxVal - minVal
-		local avgValue = maxVal - range*alpha
-		return avgValue
-	end)
+	local imageSize = 64
+	local rimWidth = 16
 
 	local parentSize = fusion.State(Vector2.new(0,0))
 	local cornerRadius = fusion.State(0)
@@ -93,9 +56,6 @@ function constructor.new(params)
 		cornerRadius:set(math.min(maxRadius, math.round(minLength*0.5)))
 	end
 
-	local imageSize = 64
-	local rimWidth = 16
-
 	local absoluteSize = fusion.Computed(function()
 		local minSize = parentSize:get()
 		local minRadius = cornerRadius:get()
@@ -103,22 +63,6 @@ function constructor.new(params)
 		local x = minSize.X + minRadius
 		local y = minSize.Y + minRadius
 		return Vector2.new(x, y)
-	end)
-
-	local Size = fusion.Computed(function()
-		local xy = absoluteSize:get()
-		return UDim2.fromOffset(xy.X, xy.Y)
-	end)
-	config.Size = nil
-
-	local transparencyGradient = fusion.Computed(function()
-		local weight = Weight:get()
-		return NumberSequence.new({
-			NumberSequenceKeypoint.new(0, weight*0.49726778268814),
-			NumberSequenceKeypoint.new(0.5, weight*0.50819671154022),
-			NumberSequenceKeypoint.new(0.70131582021713, weight*0.18579238653183),
-			NumberSequenceKeypoint.new(1, weight*0),
-		})
 	end)
 
 	local SliceScale = fusion.Computed(function()
@@ -129,8 +73,61 @@ function constructor.new(params)
 		return cornerOuterOffset/maxLength
 	end)
 
+	local config = {
+		ImageColor3 = Color3.new(1, 0, 0),
+		BackgroundTransparency = 1,
+		AnchorPoint = Vector2.new(0.5, 0.5),
+		Image = 'rbxassetid://8322594959',
+		SliceCenter = Rect.new(imageSize*0.5, imageSize*0.5, imageSize*0.5, imageSize*0.5),
+		ScaleType = Enum.ScaleType.Slice,
+		Size = fusion.Computed(function()
+			local xy = absoluteSize:get()
+			return UDim2.fromOffset(xy.X, xy.Y)
+		end),
+		Transparency = 1,
+		Name = 'Shadow',
+		Position = UDim2.new(0.5,0,0.5,0),
+		SliceScale = SliceScale,
+		ImageTransparency = 0.7,
+		BackgroundColor3 = Color3.new(1, 0, 0),
+		[fusion.Children] = {
+			fusion.New 'UIGradient' {
+				Rotation = 90,
+				Transparency = fusion.Computed(function()
+					local weight = Weight:get()
+					return NumberSequence.new({
+						NumberSequenceKeypoint.new(0, weight*0.49726778268814),
+						NumberSequenceKeypoint.new(0.5, weight*0.50819671154022),
+						NumberSequenceKeypoint.new(0.70131582021713, weight*0.18579238653183),
+						NumberSequenceKeypoint.new(1, weight*0),
+					})
+				end),
+				Color = ColorSequence.new({
+					ColorSequenceKeypoint.new(0, Color3.new(1, 1, 1)),
+					ColorSequenceKeypoint.new(1, Color3.new(1, 1, 1)),
+				}),
+			},
+		},
+	}
+	util.mergeConfig(config, params, {
+		Parent = true,
+	})
+
+	--set control states
+	local netElevation = fusion.State(0)
+	config.BackgroundTransparency = 1
+	config.ImageTransparency = fusion.Computed(function()
+		local currentValue = math.clamp(netElevation:get(), 0, 9)
+		local alpha = currentValue - math.floor(currentValue)
+		local minVal = elevationToValueGain[math.floor(currentValue)]
+		local maxVal = elevationToValueGain[math.ceil(currentValue)]
+		local range = maxVal - minVal
+		local avgValue = maxVal - range*alpha
+		return avgValue
+	end)
+
 	--create inst
-	local inst = fusion.New 'Shadow' (config)
+	local inst = fusion.New 'ImageLabel' (config)
 	maid:GiveTask(inst)
 
 	--bind to attributes

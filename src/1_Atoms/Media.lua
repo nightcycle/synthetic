@@ -9,9 +9,7 @@ local constructor = {}
 
 function constructor.new(params)
 	local maid = maidConstructor.new()
-	local config = {
-		Parent = game.Players.LocalPlayer:WaitForChild("PlayerGui")
-	}
+	local config = {}
 	util.mergeConfig(config, params)
 
 	local isFocused = fusion.State(false)
