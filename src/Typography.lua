@@ -8,6 +8,7 @@ local enums = require(script.Parent:WaitForChild("Enums"))
 
 local viewportSizeChangeSignal = camera:GetPropertyChangedSignal("ViewportSize")
 viewportSizeChangeSignal:Connect(function()
+	-- print("Size changhes")
 	viewportSizeY:set(camera.ViewportSize.Y)
 end)
 
@@ -33,29 +34,29 @@ local fontConfigs = {
 	},
 }
 
-local maxVertResolution = 1080
-local minVertResolution = 320
+local maxVertResolution = 1200
+local minVertResolution = 300
 
 local textConfigs = {
 	[enums.Typography.Headline]= {
-		Maximum = 120,
-		Minimum = 60,
+		Maximum = 32,
+		Minimum = 22,
 	},
 	[enums.Typography.Subtitle] = {
-		Maximum = 48,
-		Minimum = 24,
+		Maximum = 20,
+		Minimum = 16,
 	},
 	[enums.Typography.Button] = {
-		Maximum = 24,
-		Minimum = 18,
-	},
-	[enums.Typography.Body] = {
-		Maximum = 20,
+		Maximum = 16,
 		Minimum = 12,
 	},
-	[enums.Typography.Caption] = {
-		Maximum = 20,
+	[enums.Typography.Body] = {
+		Maximum = 14,
 		Minimum = 10,
+	},
+	[enums.Typography.Caption] = {
+		Maximum = 9,
+		Minimum = 6,
 	},
 }
 
@@ -63,38 +64,77 @@ local SystemFont = fusion.State("Gotham")
 
 util.setPublicState("SystemFont", SystemFont, styleConfigInst, maid)
 
-local typography = {}
+local TextSizes = fusion.State({})
+local Fonts = fusion.State({})
+local Paddings = fusion.State({})
+
+local dependents = {}
 
 for textKey, textConfig in pairs(textConfigs) do
-	typography[textKey] = {
-		TextSize = fusion.Computed(function()
-			local vertResolution = math.clamp(game.Workspace.CurrentCamera.ViewportSize.Y, minVertResolution, maxVertResolution)
-			local alpha = vertResolution/(maxVertResolution-minVertResolution)
+	local TextSize = fusion.Computed(function()
+		local viewportSizeY = viewportSizeY:get()
 
-			local min = textConfig.Minimum
-			local max = textConfig.Maximum
+		local vertResolution = math.clamp(viewportSizeY, minVertResolution, maxVertResolution)
+		local alpha = vertResolution/(maxVertResolution-minVertResolution)
 
-			return math.round(alpha*(max-min) + min)
-		end),
-		Font = fusion.Computed(function()
-			local currentFontGroup = enums.SystemFont[SystemFont:get()]
-			return fontConfigs[currentFontGroup][textKey]
-		end)
-	}
+		local min = textConfig.Minimum
+		local max = textConfig.Maximum
+
+		local value = math.round(alpha*(max-min) + min)
+		local newTable = TextSizes:get()
+		newTable[textKey] = value
+		-- TextSizes[textKey] = value
+		return value
+	end)
+	local Font = fusion.Computed(function()
+		local currentFontGroup = enums.SystemFont[SystemFont:get()]
+		local value = fontConfigs[currentFontGroup][textKey]
+		local newTable = Fonts:get()
+		newTable[textKey] = value
+		Fonts:set(newTable)
+		-- Fonts[textKey] = value
+		return value
+	end)
+	local Padding = fusion.Computed(function()
+		local textSize = TextSizes:get()[textKey]
+		local textSize = math.floor(textSize*0.5)
+		local value = UDim.new(0, textSize)
+		local newTable = Paddings:get()
+		newTable[textKey] = value
+		Paddings:set(newTable)
+		-- Paddings[textKey] = value
+		return value
+	end)
+	table.insert(dependents, TextSize)
+	table.insert(dependents, Font)
+	table.insert(dependents, Padding)
 end
 
-local util
-util = {
-	getFont = function(textTheme: number)
-		local typeset = typography[textTheme] or typography[enums.Typography.Body]
-		return typeset.Font:get()
+local util = {
+	getFontState = function(typographyState)
+		return fusion.Computed(function()
+			for i=1, #dependents do dependents[i]:get() end
+			local typo = enums.Typography[typographyState:get()]
+			local fonts = Fonts:get()
+			return fonts[typo]
+		end)
 	end,
-	getTextSize = function(textTheme: number)
-		local typeset = typography[textTheme] or typography[enums.Typography.Body]
-		return typeset.TextSize:get()
+	getTextSizeState = function(typographyState)
+		return fusion.Computed(function()
+			for i=1, #dependents do dependents[i]:get() end
+			local typo = enums.Typography[typographyState:get()]
+			local textSizes = TextSizes:get()
+			return textSizes[typo]
+		end)
 	end,
-	getPadding = function(textTheme: number)
-		return math.floor(util.getTextSize(textTheme)*0.5)
+	getPaddingState = function(typographyState)
+		return fusion.Computed(function()
+			for i=1, #dependents do dependents[i]:get() end
+			local typo = enums.Typography[typographyState:get()]
+			local paddings = Paddings:get()
+			print(paddings[typo])
+			return paddings[typo]
+		end)
 	end,
 }
 

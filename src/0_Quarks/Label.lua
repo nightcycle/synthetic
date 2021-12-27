@@ -24,22 +24,14 @@ function constructor.new(params)
 	local ImageRectOffset = util.import(params.ImageRectOffset) or fusion.State(Vector2.new(0, 0))
 
 	--properties
-	local _Padding = fusion.Computed(function()
-		local typeEnum = enums.Typography[Typography:get()]
-		return UDim.new(0, math.ceil(0.5*typography.getPadding(typeEnum)))
-	end)
-	local _TextSize = fusion.Computed(function()
-		local typeEnum = enums.Typography[Typography:get()]
-		return typography.getTextSize(typeEnum)
-	end)
+	local _Padding = typography.getPaddingState(Typography)
+	local _TextSize = typography.getTextSizeState(Typography)
 	local _IconSize = fusion.Computed(function()
 		local textSize = _TextSize:get()
 		return UDim2.fromOffset(textSize, textSize)
 	end)
-	local _Font = fusion.Computed(function()
-		local typeEnum = enums.Typography[Typography:get()]
-		return typography.getFont(typeEnum)
-	end)
+	local _Font = typography.getFontState(Typography)
+
 	local config = {
 		AutomaticSize = Enum.AutomaticSize.XY,
 		BackgroundTransparency = 1,

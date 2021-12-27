@@ -274,7 +274,7 @@ util.setPublicState("SurfaceShade", SurfaceShade, styleConfigInst, maid)
 util.setPublicState("BackgroundShade", BackgroundShade, styleConfigInst, maid)
 util.setPublicState("ErrorShade", ErrorShade, styleConfigInst, maid)
 
-local colors = {--On refers to the color of overlaid text & iconography
+local colors = fusion.State({--On refers to the color of overlaid text & iconography
 	[enums.Theme.Primary] = fusion.Computed(function()
 		local col = Primary:get()
 		local shade = PrimaryShade:get()
@@ -330,22 +330,30 @@ local colors = {--On refers to the color of overlaid text & iconography
 		return base
 	end),
 	[enums.Theme.Unknown] = fusion.State(Color3.new(0,0,0)),
-}
+})
 
 local util
 util = {
-	getColor = function(theme: number)
-		return (colors[theme] or colors.Error):get()
+	getColorState = function(themeState)
+		return fusion.Computed(function()
+			local cols = colors:get()
+			local themeEnum = enums.Theme[themeState:get()]
+			return (cols[themeEnum] or cols[enums.Theme.Error]):get()
+		end)
 	end,
-	getTextColor = function(theme: number)
-		local color = (colors[theme] or colors.Error):get()
-		local h,s,v = color:ToHSV()
+	getTextColorState = function(themeState)
+		return fusion.Computed(function()
+			local cols = colors:get()
+			local themeEnum = enums.Theme[themeState:get()]
+			local color = (cols[themeEnum] or cols[enums.Theme.Error]):get()
+			local h,s,v = color:ToHSV()
 
-		if v > 0.5 then
-			return Color3.fromHSV(0, 0, 0.95)
-		else
-			return Color3.fromHSV(0, 0, 0.05)
-		end
+			if v > 0.5 then
+				return Color3.fromHSV(0, 0, 0.95)
+			else
+				return Color3.fromHSV(0, 0, 0.05)
+			end
+		end)
 	end,
 }
 

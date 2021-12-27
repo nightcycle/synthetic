@@ -49,15 +49,10 @@ function constructor.new(params)
 	--misc style
 	local _Highlighted = fusion.State(false)
 	local _Clicked = fusion.State(false)
-	local _Font = fusion.Computed(function()
-		local typeEnum = enums.Typography[Typography:get()]
-		return typography.getFont(typeEnum)
-	end)
+	local _Font = typography.getTextSizeState(Typography)
 
 	--colors
-	local _MainColor = fusion.Computed(function()
-		return theme.getColor(enums.Theme[Theme:get()])
-	end)
+	local _MainColor = theme.getColorState(Theme)
 	local RecolorWeight = 0.8
 	local _MainHighlightColor = fusion.Computed(function()
 		local h,s,v = _MainColor:get():ToHSV()
@@ -77,9 +72,7 @@ function constructor.new(params)
 		end
 	end)
 
-	local _DetailColor = fusion.Computed(function()
-		return theme.getTextColor(enums.Theme[Theme:get()])
-	end)
+	local _DetailColor = theme.getTextColorState(Theme)
 	local _DetailHighlightColor = fusion.Computed(function()
 		local h,s,v = _DetailColor:get():ToHSV()
 		return Color3.fromHSV(h,s,1 - (1-v)*0.9)
@@ -125,27 +118,9 @@ function constructor.new(params)
 		end
 	end)
 
-
-
 	--sizes
-	local _Padding = fusion.Computed(function()
-		local typeEnum = enums.Typography[Typography:get()]
-		return UDim.new(0, typography.getPadding(typeEnum))
-	end)
-	local _TextSize = fusion.Computed(function()
-		local typeEnum = enums.Typography[Typography:get()]
-		return typography.getTextSize(typeEnum)
-	end)
-
-
-
-	-- local _ShadowWeight = fusion.Computed(function()
-	-- 	if _Highlighted:get() then
-	-- 		return 1
-	-- 	else
-	-- 		return 0.2
-	-- 	end
-	-- end)
+	local _Padding = typography.getPaddingState(Typography)
+	local _TextSize = typography.getTextSizeState(Typography)
 
 	local maid = maidConstructor.new()
 
@@ -154,7 +129,7 @@ function constructor.new(params)
 		BackgroundTransparency = util.tween(_BackgroundTransparency),
 		TextSize = util.tween(_TextSize),
 		TextColor3 = util.tween(_TextColor),
-		Font = util.tween(_Font),
+		Font = _Font,
 		AutomaticSize = Enum.AutomaticSize.XY,
 		AutoButtonColor = false,
 		[fusion.Children] = {
@@ -177,9 +152,6 @@ function constructor.new(params)
 				PaddingLeft = _Padding,
 				PaddingRight = _Padding,
 			},
-			-- synthetic.New 'Dropshadow' {
-			-- 	Weight = util.tween(_ShadowWeight),
-			-- },
 			synthetic.New 'Label' {
 				Typography = Typography,
 				Text = Text,
