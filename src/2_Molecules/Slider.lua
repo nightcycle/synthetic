@@ -5,6 +5,8 @@ local maidConstructor = require(packages:WaitForChild('maid'))
 local filterConstructor = require(packages:WaitForChild("filter"))
 local util = require(script.Parent.Parent:WaitForChild("Util"))
 local theme = require(script.Parent.Parent:WaitForChild("Theme"))
+local typography = require(script.Parent.Parent:WaitForChild("Typography"))
+local enums = require(script.Parent.Parent:WaitForChild("Enums"))
 
 local userInputService = game:GetService("UserInputService")
 local runService = game:GetService("RunService")
@@ -172,7 +174,7 @@ function constructor.new(params)
 	util.setPublicState("LineThickness", LineThickness, inst, maid)
 	util.setPublicState("LabelWidth", LabelWidth, inst, maid)
 
-	util.init(inst, maid)
+	util.init(script.Name, inst, maid)
 	return inst
 end
 

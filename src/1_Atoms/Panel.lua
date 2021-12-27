@@ -4,6 +4,8 @@ local fusion = require(packages:WaitForChild('fusion'))
 local maidConstructor = require(packages:WaitForChild('maid'))
 local util = require(script.Parent.Parent:WaitForChild("Util"))
 local theme = require(script.Parent.Parent:WaitForChild("Theme"))
+local typography = require(script.Parent.Parent:WaitForChild("Typography"))
+local enums = require(script.Parent.Parent:WaitForChild("Enums"))
 
 local constructor = {}
 
@@ -27,7 +29,7 @@ function constructor.new(params)
 		Parent = inst,
 	}))
 
-	util.init(inst, maid)
+	util.init(script.Name, inst, maid)
 	return inst
 end
 

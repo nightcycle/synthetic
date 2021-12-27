@@ -5,5 +5,7 @@ for i, module in ipairs(script:GetDescendants()) do
 		constructors[module.Name] = require(module).new
 	end
 end
-
-return constructors
+-- print(constructors)
+return {New = function(key)
+	return constructors[key]
+end}

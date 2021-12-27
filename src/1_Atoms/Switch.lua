@@ -19,7 +19,7 @@ function constructor.new(params)
 
 	local inst = fusion.New '' (config)
 	maid:GiveTask(inst)
-	util.init(inst, maid)
+	util.init(script.Name, inst, maid)
 
 	return inst
 end
