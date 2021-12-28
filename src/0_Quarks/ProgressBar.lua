@@ -10,75 +10,76 @@ local effects = require(script.Parent.Parent:WaitForChild("Effects"))
 
 local constructor = {}
 
-function lerpColor(c1State, c2State, alpha)
-	local leftColor = c1State:get()
-	local rightColor = c2State:get()
-	local alphaVal = alpha:get()
-	local h1,s1,v1 = leftColor:get():ToHSV()
-	local h2,s2,v2 = rightColor:get():ToHSV()
-	local function lerp(n1, n2, a)
-		local dif = n2-n1
-		return n1 + dif*a
-	end
-	local h = lerp(h1, h2, alphaVal)
-	local s = lerp(s1, s2, alphaVal)
-	local v = lerp(v1, v2, alphaVal)
-	return Color3.fromHSV(h,s,v)
-end
-
 function constructor.new(params)
 	synthetic = synthetic or require(script.Parent.Parent)
 	local maid = maidConstructor.new()
 
 	--public states
-	local LeftColor = util.import(params.LeftColor) or fusion.State("Primary")
-	local RightColor = util.import(params.RightColor) or fusion.State("Background")
+	local LeftColor = util.import(params.LeftColor) or fusion.State(theme.getColorState(fusion.State("Primary")))
+	local RightColor = util.import(params.RightColor) or fusion.State(theme.getColorState(fusion.State("Background")))
 	local Precision = util.import(params.Precision) or fusion.State(0.2)
-	local Alpha = util.import(params.Fill) or fusion.State(0)
-	local KnobEnabled = util.import(params.ButtonEnabled) or fusion.State(false)
+	local Alpha = util.import(params.Alpha) or fusion.State(0)
+	local KnobEnabled = util.import(params.KnobEnabled) or fusion.State(false)
 	local Padding = util.import(params.Padding) or fusion.State(UDim.new(0, 6))
 	local Value = fusion.Computed(function() --read only
 		return Precision:get() * math.round(Alpha:get()/Precision:get())
 	end)
 
 	--misc style
-	local _Highlighted = fusion.State(false)
-	local _Clicked = fusion.State(false)
+	-- local _Highlighted = fusion.State(false)
+	-- local _Clicked = fusion.State(false)
 
-	local _Typography = fusion.State("Body")
-	local _ButtonLeftColor = theme.getColorState(fusion.State("Surface"))
-	local _ButtonRightColor = theme.getColorState(fusion.State("Surface"))
+	-- local _Typography = fusion.State("Body")
 	local _ButtonColor = fusion.Computed(function()
-		return lerpColor(_ButtonLeftColor, _ButtonRightColor, Value)
+		local leftColor = RightColor:get()
+		local rightColor = LeftColor:get()
+		local alphaVal = Alpha:get()
+		local h1,s1,v1 = leftColor:ToHSV()
+		local h2,s2,v2 = rightColor:ToHSV()
+		local function lerp(n1, n2, a)
+			local dif = n2-n1
+			return n1 + dif*a
+		end
+		local h = lerp(h1, h2, alphaVal)
+		local s = lerp(s1, s2, alphaVal)
+		local v = lerp(v1, v2, alphaVal)
+		return Color3.fromHSV(h,s,v)
 	end)
 	local _BarColor = fusion.Computed(function()
-		return ColorSequence.new({
-			ColorSequenceKeypoint.new(0, LeftColor:get()),
-			ColorSequenceKeypoint.new(Value:get(), LeftColor:get()),
-			ColorSequenceKeypoint.new(Value:get()+0.001, RightColor:get()),
-			ColorSequenceKeypoint.new(1, RightColor:get()),
-		})
+		local function lowerBrightness(col)
+			local h,s,v = col:ToHSV()
+			return Color3.fromHSV(h,s*0.45,0.75)
+		end
+		local leftCol = lowerBrightness(LeftColor:get())
+		local rightCol = lowerBrightness(RightColor:get())
+		local val = math.clamp(Value:get(), 0.01, 0.98)
+		return ColorSequence.new{
+			ColorSequenceKeypoint.new(0, leftCol),
+			ColorSequenceKeypoint.new(val, leftCol),
+			ColorSequenceKeypoint.new(val+0.01, rightCol),
+			ColorSequenceKeypoint.new(1, rightCol),
+		}
 	end)
 	local _Position = fusion.Computed(function()
 		return UDim2.fromScale(Value:get(), 0.5)
 	end)
 	local _AnchorPoint = fusion.Computed(function()
-		return UDim2.fromScale(Value:get(), 0.5)
+		return Vector2.new(Value:get(), 0.5)
 	end)
 	local _BarSize = fusion.Computed(function()
-		return UDim2.new(1, -Padding.Offset*2, 1, -Padding.Offset*2)
+		return UDim2.new(1, -Padding:get().Offset*2, 1, -Padding:get().Offset*2)
 	end)
 	local config = {
 		Name = script.Name,
 		BackgroundColor3 = Color3.new(1, 1, 1),
 		BackgroundTransparency = 1,
-		[fusion.OnEvent "InputBegan"] = function()
-			_Highlighted:set(true)
-		end,
-		[fusion.OnEvent "InputEnded"] = function()
-			_Highlighted:set(false)
-			_Clicked:set(false)
-		end,
+		-- [fusion.OnEvent "InputBegan"] = function()
+		-- 	_Highlighted:set(true)
+		-- end,
+		-- [fusion.OnEvent "InputEnded"] = function()
+		-- 	_Highlighted:set(false)
+		-- 	_Clicked:set(false)
+		-- end,
 		[fusion.Children] = {
 			fusion.New "Frame" {
 				Name = "Knob",

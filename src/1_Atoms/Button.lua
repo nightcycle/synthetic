@@ -52,13 +52,8 @@ function constructor.new(params)
 	local _Clicked = fusion.State(false)
 
 	--colors
-	local _MainColor, _DetailColor = util.getInteractionColorStates(
-		_Clicked,
-		_Highlighted,
-		theme.getColorState(Theme),
-		theme.getTextColorState(Theme)
-	)
-
+	local _MainColor = util.getInteractionColor(_Clicked, _Highlighted, theme.getColorState(Theme))
+	local _DetailColor = util.getInteractionColor(_Clicked, _Highlighted, theme.getTextColorState(Theme))
 	local _BackgroundColor = fusion.Computed(function()
 		return _MainColor:get()
 	end)
@@ -131,6 +126,7 @@ function constructor.new(params)
 			_Clicked:set(false)
 		end,
 		[fusion.OnEvent "MouseButton1Down"] = function()
+			effects.clickSound(0.75)
 			_Clicked:set(true)
 		end,
 		[fusion.OnEvent "MouseButton1Up"] = function()

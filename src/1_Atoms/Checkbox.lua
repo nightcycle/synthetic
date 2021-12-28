@@ -33,12 +33,8 @@ function constructor.new(params)
 
 	--colors
 	--colors
-	local _BackgroundColor, _IconColor = util.getInteractionColorStates(
-		_Clicked,
-		_Highlighted,
-		theme.getColorState(Theme),
-		theme.getTextColorState(Theme)
-	)
+	local _BackgroundColor = util.getInteractionColor(_Clicked, _Highlighted, theme.getColorState(Theme))
+	local _IconColor = util.getInteractionColor(_Clicked, _Highlighted, theme.getTextColorState(Theme))
 	local _StrokeColor = fusion.Computed(function()
 		if Selected:get() then
 			return _BackgroundColor:get()
@@ -89,6 +85,7 @@ function constructor.new(params)
 		},
 		[fusion.OnEvent "Activated"] = function()
 			Selected:set(not Selected:get())
+			effects.clickSound(0.7)
 		end,
 		[fusion.OnEvent "InputBegan"] = function()
 			_Highlighted:set(true)

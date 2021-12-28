@@ -32,15 +32,11 @@ function constructor.new(params)
 	end)
 
 	--colors
-	local _BackgroundColor, _IconColor = util.getInteractionColorStates(
-		_Clicked,
-		_Highlighted,
-		theme.getColorState(Theme),
-		theme.getTextColorState(Theme)
-	)
+	local _MainColor = util.getInteractionColor(_Clicked, _Highlighted, theme.getColorState(Theme))
+	-- local _DetailColor = util.getInteractionColor(_Clicked, _Highlighted, theme.getTextColorState(Theme))
 	local _StrokeColor = fusion.Computed(function()
 		if Selected:get() then
-			return _BackgroundColor:get()
+			return _MainColor:get()
 		else
 			return Color3.new(0.5,0.5,0.5)
 		end
@@ -63,7 +59,7 @@ function constructor.new(params)
 
 	local config = {
 		AnchorPoint = Vector2.new(0.5, 0.5),
-		BackgroundColor3 = util.tween(_BackgroundColor),
+		BackgroundColor3 = util.tween(_MainColor),
 		BackgroundTransparency = 1,
 		Size = _Size,
 		Text = "",
@@ -80,7 +76,7 @@ function constructor.new(params)
 				AnchorPoint = Vector2.new(0.5,0.5),
 				Position = UDim2.fromScale(0.5,0.5),
 				BackgroundTransparency = util.tween(_FillTransparency),
-				BackgroundColor3 = util.tween(_BackgroundColor),
+				BackgroundColor3 = util.tween(_MainColor),
 				Size = util.tween(_InnerSize),
 				[fusion.Children] = {
 					fusion.New "UICorner" {
@@ -91,6 +87,7 @@ function constructor.new(params)
 		},
 		[fusion.OnEvent "Activated"] = function()
 			Selected:set(not Selected:get())
+			effects.clickSound(0.5)
 		end,
 		[fusion.OnEvent "InputBegan"] = function()
 			_Highlighted:set(true)

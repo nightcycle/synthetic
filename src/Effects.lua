@@ -14,13 +14,13 @@ local fxHolder = fusion.New "ScreenGui" {
 }
 
 return {
-	ripple = function(position, size, color)
-		local currentSize = fusion.State(size)
-		local currentTransparency = fusion.State(0)
-		local duration = 0.7
+	ripple = function(position, color)
+		local currentSize = fusion.State(UDim2.fromOffset(10,10))
+		local currentTransparency = fusion.State(0.2)
+		local duration = 0.9
 		local tweenParams = {
 			Duration = duration,
-			EasingStyle = Enum.EasingStyle.Quint,
+			EasingStyle = Enum.EasingStyle.Cubic,
 			EasingDirection = Enum.EasingDirection.Out,
 		}
 		local TweenSize = util.tween(currentSize, tweenParams)
@@ -28,13 +28,19 @@ return {
 		local element = fusion.New "Frame" {
 			Name = "Ripple",
 			Parent = fxHolder,
+			AnchorPoint = Vector2.new(0.5,0.5),
 			Size = TweenSize,
 			BackgroundColor3 = color,
 			BackgroundTransparency = TweenTransparency,
 			Position = position,
+			[fusion.Children] = {
+				fusion.New "UICorner" {
+					CornerRadius = UDim.new(0.5,0),
+				}
+			}
 		}
 		task.delay(0, function()
-			currentSize:set(size)
+			currentSize:set(UDim2.fromOffset(60,60))
 			currentTransparency:set(1)
 			task.wait(duration)
 			element:Destroy()
@@ -44,8 +50,8 @@ return {
 	clickSound = function(pitch)
 		pitch = pitch or 1
 		local soundInst = Instance.new("Sound", fxHolder)
-		soundInst.SoundId = "rbxassetid://179235828"
-		soundInst.Volume = 0.3
+		soundInst.SoundId = "rbxassetid://421058925"
+		soundInst.Volume = 0.1
 		soundInst.Pitch = pitch
 		soundInst.PlayOnRemove = true
 		soundInst:Destroy()

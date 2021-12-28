@@ -1,3 +1,4 @@
+local runService = game:GetService("RunService")
 local packages = script.Parent.Parent.Parent
 local synthetic
 local fusion = require(packages:WaitForChild('fusion'))
@@ -21,43 +22,43 @@ function constructor.new(params)
 	--misc style
 	local _Highlighted = fusion.State(false)
 	local _Clicked = fusion.State(false)
-	local _Value = fusion.Computed(function()
-		if Selected:get() then
+	local _Alpha = fusion.Computed(function()
+		if Selected:get() == true then
 			return 1
 		else
 			return 0
-		end
-	end)
-
-	--transparency
-	local _FillTransparency = fusion.Computed(function()
-		if Selected:get() then
-			return 0
-		else
-			return 1
 		end
 	end)
 
 	--colors
-	local _BackgroundColor, _IconColor = util.getInteractionColorStates(
-		_Clicked,
-		_Highlighted,
-		theme.getColorState(Theme),
-		theme.getTextColorState(Theme)
-	)
-	local _StrokeColor = fusion.Computed(function()
-		if Selected:get() then
-			return _BackgroundColor:get()
-		else
-			return Color3.new(0.5,0.5,0.5)
-		end
-	end)
-
+	local _Typography = fusion.State("Body")
+	local _TextSize = typography.getTextSizeState(_Typography)
+	local _Padding = typography.getPaddingState(_Typography)
+	local _MainColor = util.getInteractionColor(_Clicked, _Highlighted, theme.getColorState(Theme))
+	local _BackgroundColor = util.getInteractionColor(_Clicked, _Highlighted, theme.getColorState(fusion.State("Background")))
 	--sizes
 	local maid = maidConstructor.new()
-
+	local inst
 	local config = {
-		[fusion.OnEvent "Activated"] = function()
+		[fusion.OnEvent "Activated"] = function(x,y)
+			local absPos = Vector2.new(x,y)
+			local knob = inst:FindFirstChild("Knob")
+			local knobColor = fusion.State(knob.BackgroundColor3)
+			local function getPos()
+				local v2 = knob.AbsolutePosition + knob.AbsoluteSize*0.5
+				return UDim2.fromOffset(v2.X, v2.Y)
+			end
+			local position = fusion.State(getPos())
+			effects.ripple(position, knobColor)
+			effects.clickSound()
+			local rippleMaid = maidConstructor.new()
+			rippleMaid:GiveTask(runService.RenderStepped:Connect(function(delta)
+				position:set(getPos())
+				knobColor:set(knob.BackgroundColor3)
+			end))
+			task.delay(1, function()
+				rippleMaid:Destroy()
+			end)
 			Selected:set(not Selected:get())
 		end,
 		[fusion.OnEvent "InputBegan"] = function()
@@ -67,13 +68,16 @@ function constructor.new(params)
 			_Highlighted:set(false)
 			_Clicked:set(false)
 		end,
-		LeftColor = nil,
-		RightColor = nil,
-		Precision = nil,
-		Alpha = nil,
-		KnobEnabled = nil,
-		Padding = nil,
-		Value = nil,
+		Size = fusion.Computed(function()
+			local height = _TextSize:get() + _Padding:get().Offset*2
+			return UDim2.fromOffset(height*2, height)
+		end),
+		LeftColor = _MainColor,
+		RightColor = _BackgroundColor,
+		Precision = 0.01,
+		Alpha = _Alpha,
+		KnobEnabled = true,
+		Padding = _Padding,
 	}
 	util.mergeConfig(config, params, nil, {
 		Selected = true,
@@ -81,7 +85,7 @@ function constructor.new(params)
 		Color = true,
 	})
 
-	local inst = synthetic.New "ProgressBar" (config)
+	inst = synthetic.New "ProgressBar" (config)
 
 	util.setPublicState("Theme", Theme, inst, maid)
 	util.setPublicState("Color", Color, inst, maid)

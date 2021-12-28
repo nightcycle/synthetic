@@ -41,19 +41,15 @@ return {
 		end
 	end,
 
-	getInteractionColorStates = function(_Clicked, _Highlighted, _MainColor, _DetailColor)
-			--misc style
-		local _Highlighted = fusion.State(false)
-		local _Clicked = fusion.State(false)
-
+	getInteractionColor = function(_Clicked, _Highlighted, _Color)
 		--colors
 		local RecolorWeight = 0.8
 		local _MainHighlightColor = fusion.Computed(function()
-			local h,s,v = _MainColor:get():ToHSV()
+			local h,s,v = _Color:get():ToHSV()
 			return Color3.fromHSV(h,s*RecolorWeight,1 - (1-v)*RecolorWeight)
 		end)
 		local _MainShadowColor = fusion.Computed(function()
-			local h,s,v = _MainColor:get():ToHSV()
+			local h,s,v = _Color:get():ToHSV()
 			return Color3.fromHSV(h,s,v*RecolorWeight)
 		end)
 		local _DynamicMainColor = fusion.Computed(function()
@@ -62,28 +58,10 @@ return {
 			elseif _Highlighted:get() then
 				return _MainHighlightColor:get()
 			else
-				return _MainColor:get()
+				return _Color:get()
 			end
 		end)
-
-		local _DetailHighlightColor = fusion.Computed(function()
-			local h,s,v = _DetailColor:get():ToHSV()
-			return Color3.fromHSV(h,s,1 - (1-v)*0.9)
-		end)
-		local _DetailShadowColor = fusion.Computed(function()
-			local h,s,v = _DetailColor:get():ToHSV()
-			return Color3.fromHSV(h,s,v*0.9)
-		end)
-		local _DynamicDetailColor = fusion.Computed(function()
-			if _Clicked:get() then
-				return _DetailShadowColor:get()
-			elseif _Highlighted:get() then
-				return _DetailHighlightColor:get()
-			else
-				return _DetailColor:get()
-			end
-		end)
-		return _DynamicMainColor, _DynamicDetailColor
+		return _DynamicMainColor
 	end,
 
 	init = function(key, inst, maid)
@@ -123,11 +101,10 @@ return {
 	mergeConfig = function(baseConfig, changes, whiteList, blackList)
 		if not whiteList then whiteList = changes end
 		for k, v in pairs(changes) do
-			if whiteList[k] ~= nil and baseConfig[k] == nil and blackList[k] == nil then
+			if whiteList[k] ~= nil and blackList[k] == nil then
 				baseConfig[k] = changes[k] or baseConfig[k]
 			end
 		end
-		baseConfig.Name = changes.Name or baseConfig.Name
 		return baseConfig
 	end
 }
