@@ -4,7 +4,7 @@ local synthetic
 local fusion = require(packages:WaitForChild('fusion'))
 local maidConstructor = require(packages:WaitForChild('maid'))
 local util = require(script.Parent.Parent:WaitForChild("Util"))
-local typography = require(script.Parent.Parent:WaitForChild("Typography"))
+local typography = require(packages:WaitForChild('typography'))
 local enums = require(script.Parent.Parent:WaitForChild("Enums"))
 local effects = require(script.Parent.Parent:WaitForChild("Effects"))
 
@@ -19,15 +19,20 @@ function constructor.new(params)
 	local Color = util.import(params.Color) or fusion.State(Color3.new(0.5,0,1))
 	local BackgroundColor = util.import(params.BackgroundColor) or fusion.State(Color3.new(0.5,0.5,0.5))
 	local Selected = util.import(params.Selected) or fusion.State(false)
+	local Typography = util.import(params.Typography) or typography.new(Enum.Font.SourceSans, 10, 14)
 
 	--influencers
 	local _Hovered = fusion.State(false)
 	local _Clicked = fusion.State(false)
-	local _Typography = fusion.State("Body")
 
 	--properties
-	local _TextSize = typography.getTextSizeState(_Typography)
-	local _Padding = typography.getPaddingState(_Typography)
+	local _Padding = fusion.Computed(function()
+		return Typography:get().Padding
+	end)
+	local _TextSize = fusion.Computed(function()
+		return Typography:get().TextSize
+	end)
+
 
 	--preparing config
 	local config = {

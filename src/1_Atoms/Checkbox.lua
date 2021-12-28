@@ -1,9 +1,9 @@
 local packages = script.Parent.Parent.Parent
 local synthetic
 local fusion = require(packages:WaitForChild('fusion'))
+local typography = require(packages:WaitForChild('typography'))
 local maidConstructor = require(packages:WaitForChild('maid'))
 local util = require(script.Parent.Parent:WaitForChild("Util"))
-local typography = require(script.Parent.Parent:WaitForChild("Typography"))
 local enums = require(script.Parent.Parent:WaitForChild("Enums"))
 local effects = require(script.Parent.Parent:WaitForChild("Effects"))
 
@@ -17,11 +17,12 @@ function constructor.new(params)
 	local Color = util.import(params.Color) or fusion.State(Color3.new(0.5,0,1))
 	local TextColor = util.import(params.TextColor) or fusion.State(Color3.new(0.2,0.2,0.2))
 	local Selected = util.import(params.Selected) or fusion.State(false)
+	local Typography = util.import(params.Typography) or typography.new(Enum.Font.SourceSans, 10, 14)
 
 	--influencers
 	local _Hovered = fusion.State(false)
 	local _Clicked = fusion.State(false)
-	local _Typography = fusion.State("Body")
+
 
 	--properties
 	local _FillTransparency = fusion.Computed(function()
@@ -32,10 +33,15 @@ function constructor.new(params)
 		end
 	end)
 	local _BackgroundColor = util.getInteractionColor(_Clicked, _Hovered, Color)
-	local _Padding = typography.getPaddingState(_Typography)
-	local _TextSize = typography.getTextSizeState(_Typography)
+	local _Padding = fusion.Computed(function()
+		return Typography:get().Padding
+	end)
+	local _TextSize = fusion.Computed(function()
+		return Typography:get().TextSize
+	end)
 
 	--preparing config
+	local inst
 	local config = {
 		Name = script.Name,
 		AnchorPoint = Vector2.new(0.5, 0.5),
@@ -77,6 +83,7 @@ function constructor.new(params)
 		},
 		[fusion.OnEvent "Activated"] = function()
 			Selected:set(not Selected:get())
+			effects.ripple(fusion.State(inst.Position), _BackgroundColor)
 			effects.clickSound(0.7)
 		end,
 		[fusion.OnEvent "InputBegan"] = function()
@@ -99,11 +106,12 @@ function constructor.new(params)
 		Color = true,
 	})
 
-	local inst = fusion.New "ImageButton" (config)
+	inst = fusion.New "ImageButton" (config)
 
 	util.setPublicState("Color", Color, inst, maid)
 	util.setPublicState("TextColor", TextColor, inst, maid)
 	util.setPublicState("Selected", Selected, inst, maid)
+	util.setPublicState("Typography", Typography, inst, maid)
 
 	maid:GiveTask(inst)
 	util.init(script.Name, inst, maid)

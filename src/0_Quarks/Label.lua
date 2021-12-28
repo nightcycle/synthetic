@@ -1,9 +1,8 @@
 local synthetic
-
 local packages = script.Parent.Parent.Parent
 local fusion = require(packages:WaitForChild('fusion'))
+local typography = require(packages:WaitForChild('typography'))
 local maidConstructor = require(packages:WaitForChild('maid'))
-
 local util = require(script.Parent.Parent:WaitForChild('Util'))
 local typography = require(script.Parent.Parent:WaitForChild('Typography'))
 local enums = require(script.Parent.Parent:WaitForChild('Enums'))
@@ -15,7 +14,7 @@ function constructor.new(params)
 	local maid = maidConstructor.new()
 
 	--public states
-	local Typography = util.import(params.Typography) or fusion.State("Body")
+	local Typography = util.import(params.Typography) or typography.new(Enum.Font.SourceSans, 10, 14)
 	local Text = util.import(params.Text) or fusion.State("")
 	local Color = util.import(params.Color) or fusion.State(Color3.new(1,1,1))
 	local Image = util.import(params.Image) or fusion.State("rbxassetid://3926305904")

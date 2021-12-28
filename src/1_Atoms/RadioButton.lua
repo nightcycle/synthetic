@@ -3,7 +3,7 @@ local synthetic
 local fusion = require(packages:WaitForChild('fusion'))
 local maidConstructor = require(packages:WaitForChild('maid'))
 local util = require(script.Parent.Parent:WaitForChild("Util"))
-local typography = require(script.Parent.Parent:WaitForChild("Typography"))
+local typography = require(packages:WaitForChild('typography'))
 local enums = require(script.Parent.Parent:WaitForChild("Enums"))
 local effects = require(script.Parent.Parent:WaitForChild("Effects"))
 
@@ -16,17 +16,21 @@ function constructor.new(params)
 	--public states
 	local Color = util.import(params.Color) or fusion.State(Color3.new(1,1,1))
 	local Selected = util.import(params.Selected) or fusion.State(false)
+	local Typography = util.import(params.Typography) or typography.new(Enum.Font.SourceSans, 10, 14)
 
 	--influencers
 	local _Hovered = fusion.State(false)
 	local _Clicked = fusion.State(false)
-	local _Typography = fusion.State("Body")
+
 
 	--properties
 	local _MainColor = util.getInteractionColor(_Clicked, _Hovered, Color)
-	local _TextSize = typography.getTextSizeState(_Typography)
+	local _TextSize = fusion.Computed(function()
+		return Typography:get().TextSize
+	end)
 
 	--preparing config
+	local inst
 	local config = {
 		Name = script.Name,
 		AnchorPoint = Vector2.new(0.5, 0.5),
@@ -76,6 +80,7 @@ function constructor.new(params)
 		},
 		[fusion.OnEvent "Activated"] = function()
 			Selected:set(not Selected:get())
+			effects.ripple(fusion.State(inst.Position), _MainColor)
 			effects.clickSound(0.5)
 		end,
 		[fusion.OnEvent "InputBegan"] = function()
@@ -98,10 +103,11 @@ function constructor.new(params)
 		Color = true,
 	})
 
-	local inst = fusion.New "TextButton" (config)
+	inst = fusion.New "TextButton" (config)
 
 	util.setPublicState("Color", Color, inst, maid)
 	util.setPublicState("Selected", Selected, inst, maid)
+	util.setPublicState("Typography", Typography, inst, maid)
 
 	maid:GiveTask(inst)
 	util.init(script.Name, inst, maid)

@@ -1,10 +1,10 @@
 local packages = script.Parent.Parent.Parent
 local synthetic
 local fusion = require(packages:WaitForChild('fusion'))
+local typography = require(packages:WaitForChild('typography'))
 local maidConstructor = require(packages:WaitForChild('maid'))
 local filterConstructor = require(packages:WaitForChild("filter"))
 local util = require(script.Parent.Parent:WaitForChild("Util"))
-local typography = require(script.Parent.Parent:WaitForChild("Typography"))
 local enums = require(script.Parent.Parent:WaitForChild("Enums"))
 
 local userInputService = game:GetService("UserInputService")
@@ -25,6 +25,7 @@ function constructor.new(params)
 	local MaximumValue = fusion.State(config.MaximumValue or 1)
 	local Precision = fusion.State(config.Precision or 0.2)
 	local Value = fusion.State(config.Value or 0.5)
+	local Typography = util.import(params.Typography) or typography.new(Enum.Font.SourceSans, 10, 14)
 
 	--read only public states
 	local Alpha = fusion.State(0.5)
@@ -45,10 +46,12 @@ function constructor.new(params)
 	--influencers
 	local _Hovered = fusion.State(false)
 	local _Clicked = fusion.State(false)
-	local _Typography = fusion.State("Body")
+
 
 	--properties
-	local _Padding = typography.getPaddingState(_Typography)
+	local _Padding = fusion.Computed(function()
+		return Typography:get().Padding
+	end)
 
 	--Slider update variables
 	local IsDragging = false

@@ -1,3 +1,4 @@
+
 local fusion = require(game.ReplicatedStorage:WaitForChild("Packages"):WaitForChild('fusion'))
 local synthetic = game.Players.LocalPlayer:WaitForChild("PlayerScripts"):WaitForChild("synthetic")
 synthetic.Parent = game.ReplicatedStorage:WaitForChild("Packages")
@@ -11,6 +12,7 @@ local screenGui = fusion.New "ScreenGui" {
 		synthetic.New "Switch" {
 			Position = UDim2.fromScale(0.5,0.5),
 			AnchorPoint = Vector2.new(0.5,0.5),
+			Typography = ty
 		},
 	}
 }

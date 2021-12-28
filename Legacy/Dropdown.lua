@@ -3,7 +3,7 @@ local synthetic
 local fusion = require(packages:WaitForChild('fusion'))
 local maidConstructor = require(packages:WaitForChild('maid'))
 local util = require(script.Parent.Parent:WaitForChild("Util"))
-local typography = require(script.Parent.Parent:WaitForChild("Typography"))
+
 local enums = require(script.Parent.Parent:WaitForChild("Enums"))
 
 --used to make sure two prompts are never opened at the same time
