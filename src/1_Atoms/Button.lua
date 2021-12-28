@@ -6,6 +6,7 @@ local util = require(script.Parent.Parent:WaitForChild("Util"))
 local theme = require(script.Parent.Parent:WaitForChild("Theme"))
 local typography = require(script.Parent.Parent:WaitForChild("Typography"))
 local enums = require(script.Parent.Parent:WaitForChild("Enums"))
+local effects = require(script.Parent.Parent:WaitForChild("Effects"))
 
 local constructor = {}
 
@@ -46,81 +47,42 @@ function constructor.new(params)
 		end
 	end)
 
-	--misc style
+	--influencers
 	local _Highlighted = fusion.State(false)
 	local _Clicked = fusion.State(false)
-	local _Font = typography.getTextSizeState(Typography)
 
 	--colors
-	local _MainColor = theme.getColorState(Theme)
-	local RecolorWeight = 0.8
-	local _MainHighlightColor = fusion.Computed(function()
-		local h,s,v = _MainColor:get():ToHSV()
-		return Color3.fromHSV(h,s*RecolorWeight,1 - (1-v)*RecolorWeight)
-	end)
-	local _MainShadowColor = fusion.Computed(function()
-		local h,s,v = _MainColor:get():ToHSV()
-		return Color3.fromHSV(h,s,v*RecolorWeight)
-	end)
-	local _DynamicMainColor = fusion.Computed(function()
-		if _Clicked:get() then
-			return _MainShadowColor:get()
-		elseif _Highlighted:get() then
-			return _MainHighlightColor:get()
-		else
-			return _MainColor:get()
-		end
+	local _MainColor, _DetailColor = util.getInteractionColorStates(
+		_Clicked,
+		_Highlighted,
+		theme.getColorState(Theme),
+		theme.getTextColorState(Theme)
+	)
+
+	local _BackgroundColor = fusion.Computed(function()
+		return _MainColor:get()
 	end)
 
-	local _DetailColor = theme.getTextColorState(Theme)
-	local _DetailHighlightColor = fusion.Computed(function()
-		local h,s,v = _DetailColor:get():ToHSV()
-		return Color3.fromHSV(h,s,1 - (1-v)*0.9)
+	local _StrokeColor = fusion.Computed(function()
+		return _MainColor:get()
 	end)
-	local _DetailShadowColor = fusion.Computed(function()
-		local h,s,v = _DetailColor:get():ToHSV()
-		return Color3.fromHSV(h,s,v*0.9)
-	end)
-	local _DynamicDetailColor = fusion.Computed(function()
-		if _Clicked:get() then
-			return _DetailShadowColor:get()
-		elseif _Highlighted:get() then
-			return _DetailHighlightColor:get()
+
+	local _TextColor = fusion.Computed(function()
+		if enums.ButtonVariant[Variant:get()] == enums.ButtonVariant.Outlined then
+			return _MainColor:get()
+		elseif enums.ButtonVariant[Variant:get()] == enums.ButtonVariant.Filled then
+			return _DetailColor:get()
+		elseif enums.ButtonVariant[Variant:get()] == enums.ButtonVariant.Text then
+			return _MainColor:get()
 		else
 			return _DetailColor:get()
 		end
 	end)
 
-	local _BackgroundColor = fusion.Computed(function()
-		return _DynamicMainColor:get()
-	end)
-
-	local _StrokeColor = fusion.Computed(function()
-		return _DynamicMainColor:get()
-	end)
-	local _TextColor = fusion.Computed(function()
-		if enums.ButtonVariant[Variant:get()] == enums.ButtonVariant.Outlined then
-
-			return _DynamicMainColor:get()
-
-		elseif enums.ButtonVariant[Variant:get()] == enums.ButtonVariant.Filled then
-
-			return _DynamicDetailColor:get()
-
-		elseif enums.ButtonVariant[Variant:get()] == enums.ButtonVariant.Text then
-
-			return _DynamicMainColor:get()
-
-		else
-
-			return _DynamicDetailColor:get()
-
-		end
-	end)
-
-	--sizes
-	local _Padding = typography.getPaddingState(Typography)
+	--fill
+	local _Font = typography.getTextSizeState(Typography)
 	local _TextSize = typography.getTextSizeState(Typography)
+	local _Padding = typography.getPaddingState(Typography)
 
 	local maid = maidConstructor.new()
 

@@ -102,7 +102,6 @@ for textKey, textConfig in pairs(textConfigs) do
 		local newTable = Paddings:get()
 		newTable[textKey] = value
 		Paddings:set(newTable)
-		-- Paddings[textKey] = value
 		return value
 	end)
 	table.insert(dependents, TextSize)
@@ -132,7 +131,6 @@ local util = {
 			for i=1, #dependents do dependents[i]:get() end
 			local typo = enums.Typography[typographyState:get()]
 			local paddings = Paddings:get()
-			print(paddings[typo])
 			return paddings[typo]
 		end)
 	end,

@@ -6,6 +6,7 @@ local util = require(script.Parent.Parent:WaitForChild("Util"))
 local theme = require(script.Parent.Parent:WaitForChild("Theme"))
 local typography = require(script.Parent.Parent:WaitForChild("Typography"))
 local enums = require(script.Parent.Parent:WaitForChild("Enums"))
+local effects = require(script.Parent.Parent:WaitForChild("Effects"))
 
 local constructor = {}
 
@@ -31,39 +32,13 @@ function constructor.new(params)
 	end)
 
 	--colors
-	local _MainColor = theme.getColorState(Theme)
-	local RecolorWeight = 0.8
-	local _MainHighlightColor = fusion.Computed(function()
-		local h,s,v = _MainColor:get():ToHSV()
-		return Color3.fromHSV(h,s*RecolorWeight,1 - (1-v)*RecolorWeight)
-	end)
-	local _MainShadowColor = fusion.Computed(function()
-		local h,s,v = _MainColor:get():ToHSV()
-		return Color3.fromHSV(h,s,v*RecolorWeight)
-	end)
-	local _DetailColor = theme.getTextColorState(Theme)
-	local _DetailHighlightColor = fusion.Computed(function()
-		local h,s,v = _DetailColor:get():ToHSV()
-		return Color3.fromHSV(h,s,1 - (1-v)*0.9)
-	end)
-	local _DetailShadowColor = fusion.Computed(function()
-		local h,s,v = _DetailColor:get():ToHSV()
-		return Color3.fromHSV(h,s,v*0.9)
-	end)
-	local _BackgroundColor = fusion.Computed(function()
-		if _Highlighted:get() then
-			return _MainHighlightColor:get()
-		else
-			return _MainColor:get()
-		end
-	end)
-	local _IconColor = fusion.Computed(function()
-		if _Highlighted:get() then
-			return _DetailHighlightColor:get()
-		else
-			return _DetailColor:get()
-		end
-	end)
+	--colors
+	local _BackgroundColor, _IconColor = util.getInteractionColorStates(
+		_Clicked,
+		_Highlighted,
+		theme.getColorState(Theme),
+		theme.getTextColorState(Theme)
+	)
 	local _StrokeColor = fusion.Computed(function()
 		if Selected:get() then
 			return _BackgroundColor:get()
