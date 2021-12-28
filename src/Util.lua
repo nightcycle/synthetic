@@ -41,7 +41,7 @@ return {
 		end
 	end,
 
-	getInteractionColor = function(_Clicked, _Highlighted, _Color)
+	getInteractionColor = function(_Clicked, _Hovered, _Color)
 		--colors
 		local RecolorWeight = 0.8
 		local _MainHighlightColor = fusion.Computed(function()
@@ -55,7 +55,7 @@ return {
 		local _DynamicMainColor = fusion.Computed(function()
 			if _Clicked:get() then
 				return _MainShadowColor:get()
-			elseif _Highlighted:get() then
+			elseif _Hovered:get() then
 				return _MainHighlightColor:get()
 			else
 				return _Color:get()

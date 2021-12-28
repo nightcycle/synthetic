@@ -12,87 +12,77 @@ local constructor = {}
 
 function constructor.new(params)
 	synthetic = synthetic or require(script.Parent.Parent)
+	local maid = maidConstructor.new()
 
 	--public states
 	local Variant = util.import(params.Variant) or fusion.State("Filled")
-	local Theme = util.import(params.Theme) or fusion.State("Primary")
 	local Typography = util.import(params.Typography) or fusion.State("Button")
 	local Text = util.import(params.Text) or fusion.State("")
-	local Color = util.import(params.Color) or fusion.State(Color3.new(1,1,1))
+	local Color = util.import(params.Color) or fusion.State(Color3.new(0.5,0,1))
+	local TextColor = util.import(params.TextColor) or fusion.State(Color3.new(0.2,0.2,0.2))
 	local Image = util.import(params.Icon) or fusion.State("rbxassetid://3926305904")
 	local ImageRectSize = util.import(params.ImageRectSize) or fusion.State(Vector2.new(0,0))
 	local ImageRectOffset = util.import(params.ImageRectOffset) or fusion.State(Vector2.new(0, 0))
 
-	--transparency
-	local _StrokeTransparency = fusion.Computed(function()
-		if enums.ButtonVariant[Variant:get()] == enums.ButtonVariant.Outlined then
-			return 0
-		elseif enums.ButtonVariant[Variant:get()] == enums.ButtonVariant.Filled then
-			return 1
-		elseif enums.ButtonVariant[Variant:get()] == enums.ButtonVariant.Text then
-			return 1
-		else
-			return 0
-		end
-	end)
-	local _BackgroundTransparency = fusion.Computed(function()
-		if enums.ButtonVariant[Variant:get()] == enums.ButtonVariant.Outlined then
-			return 1
-		elseif enums.ButtonVariant[Variant:get()] == enums.ButtonVariant.Filled then
-			return 0
-		elseif enums.ButtonVariant[Variant:get()] == enums.ButtonVariant.Text then
-			return 1
-		else
-			return 0
-		end
-	end)
-
 	--influencers
-	local _Highlighted = fusion.State(false)
+	local _Hovered = fusion.State(false)
 	local _Clicked = fusion.State(false)
 
-	--colors
-	local _MainColor = util.getInteractionColor(_Clicked, _Highlighted, theme.getColorState(Theme))
-	local _DetailColor = util.getInteractionColor(_Clicked, _Highlighted, theme.getTextColorState(Theme))
-	local _BackgroundColor = fusion.Computed(function()
-		return _MainColor:get()
-	end)
-
-	local _StrokeColor = fusion.Computed(function()
-		return _MainColor:get()
-	end)
-
+	--properties
+	local _MainColor = util.getInteractionColor(_Clicked, _Hovered, Color)
+	local _DetailColor = util.getInteractionColor(_Clicked, _Hovered, TextColor)
 	local _TextColor = fusion.Computed(function()
-		if enums.ButtonVariant[Variant:get()] == enums.ButtonVariant.Outlined then
+		if enums.Variant[Variant:get()] == enums.Variant.Outlined then
 			return _MainColor:get()
-		elseif enums.ButtonVariant[Variant:get()] == enums.ButtonVariant.Filled then
+		elseif enums.Variant[Variant:get()] == enums.Variant.Filled then
 			return _DetailColor:get()
-		elseif enums.ButtonVariant[Variant:get()] == enums.ButtonVariant.Text then
+		elseif enums.Variant[Variant:get()] == enums.Variant.Text then
 			return _MainColor:get()
 		else
 			return _DetailColor:get()
 		end
 	end)
-
-	--fill
-	local _Font = typography.getTextSizeState(Typography)
 	local _TextSize = typography.getTextSizeState(Typography)
 	local _Padding = typography.getPaddingState(Typography)
 
-	local maid = maidConstructor.new()
-
+	--preparing config
 	local config = {
-		BackgroundColor3 = util.tween(_BackgroundColor),
-		BackgroundTransparency = util.tween(_BackgroundTransparency),
+		Name = script.Name,
+		BackgroundColor3 = util.tween(fusion.Computed(function()
+			return _MainColor:get()
+		end)),
+		BackgroundTransparency = util.tween(fusion.Computed(function()
+			if enums.Variant[Variant:get()] == enums.Variant.Outlined then
+				return 1
+			elseif enums.Variant[Variant:get()] == enums.Variant.Filled then
+				return 0
+			elseif enums.Variant[Variant:get()] == enums.Variant.Text then
+				return 1
+			else
+				return 0
+			end
+		end)),
 		TextSize = util.tween(_TextSize),
 		TextColor3 = util.tween(_TextColor),
-		Font = _Font,
+		Font = typography.getTextSizeState(Typography),
 		AutomaticSize = Enum.AutomaticSize.XY,
 		AutoButtonColor = false,
 		[fusion.Children] = {
 			fusion.New 'UIStroke' {
-				Color = util.tween(_StrokeColor),
-				Transparency = util.tween(_StrokeTransparency),
+				Color = util.tween(fusion.Computed(function()
+					return _MainColor:get()
+				end)),
+				Transparency = util.tween(fusion.Computed(function()
+					if enums.Variant[Variant:get()] == enums.Variant.Outlined then
+						return 0
+					elseif enums.Variant[Variant:get()] == enums.Variant.Filled then
+						return 1
+					elseif enums.Variant[Variant:get()] == enums.Variant.Text then
+						return 1
+					else
+						return 0
+					end
+				end)),
 				ApplyStrokeMode = Enum.ApplyStrokeMode.Border,
 				Thickness = 2,
 			},
@@ -119,10 +109,10 @@ function constructor.new(params)
 			}
 		},
 		[fusion.OnEvent "InputBegan"] = function()
-			_Highlighted:set(true)
+			_Hovered:set(true)
 		end,
 		[fusion.OnEvent "InputEnded"] = function()
-			_Highlighted:set(false)
+			_Hovered:set(false)
 			_Clicked:set(false)
 		end,
 		[fusion.OnEvent "MouseButton1Down"] = function()
@@ -147,10 +137,10 @@ function constructor.new(params)
 	local inst = fusion.New "TextButton" (config)
 
 	util.setPublicState("Variant", Variant, inst, maid)
-	util.setPublicState("Theme", Theme, inst, maid)
 	util.setPublicState("Typography", Typography, inst, maid)
 
 	util.setPublicState("Color", Color, inst, maid)
+	util.setPublicState("TextColor", TextColor, inst, maid)
 	util.setPublicState("Text", Text, inst, maid)
 
 	util.setPublicState("Image", Image, inst, maid)

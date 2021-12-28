@@ -27,8 +27,6 @@ Unlike most UI libraries, Synthetic also needs to be required by the server - th
 
 Every attribute is connected to some internal state, with the exception of any with an _ in the front, those are used mostly for internal calculations and passages of state between objects. Eventually I'll probably replace them with a bindable function, but for now they stay.
 
-The Synthetic library constructor also endows each element it creates with self-cleaning functionality, as well as tracks things like relative and absolute elevation - a metric used for various theme components.
-
 ## Configuration:
 Configuration instances set under the game / datamodel. These can't be manually constructed with Synthetic. Upon Synthetic first init though it will be added to the game.
 

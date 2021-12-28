@@ -19,11 +19,11 @@ local config = {
 		Body = 4,
 		Caption = 5,
 	},
-	ButtonVariant = {
+	Variant = {
 		Unknown = 0,
 		Filled = 1,
 		Outlined = 2,
-		Text = 3,
+		Text = 3, --doesn't always get used
 	},
 	SystemFont = {
 		Unknown = 0,

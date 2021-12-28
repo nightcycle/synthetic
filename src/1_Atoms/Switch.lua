@@ -4,7 +4,6 @@ local synthetic
 local fusion = require(packages:WaitForChild('fusion'))
 local maidConstructor = require(packages:WaitForChild('maid'))
 local util = require(script.Parent.Parent:WaitForChild("Util"))
-local theme = require(script.Parent.Parent:WaitForChild("Theme"))
 local typography = require(script.Parent.Parent:WaitForChild("Typography"))
 local enums = require(script.Parent.Parent:WaitForChild("Enums"))
 local effects = require(script.Parent.Parent:WaitForChild("Effects"))
@@ -13,33 +12,26 @@ local constructor = {}
 
 function constructor.new(params)
 	synthetic = synthetic or require(script.Parent.Parent)
-
-	--public states
-	local Theme = util.import(params.Theme) or fusion.State("Primary")
-	local Color = util.import(params.Color) or fusion.State(Color3.new(1,1,1))
-	local Selected = util.import(params.Selected) or fusion.State(false)
-
-	--misc style
-	local _Highlighted = fusion.State(false)
-	local _Clicked = fusion.State(false)
-	local _Alpha = fusion.Computed(function()
-		if Selected:get() == true then
-			return 1
-		else
-			return 0
-		end
-	end)
-
-	--colors
-	local _Typography = fusion.State("Body")
-	local _TextSize = typography.getTextSizeState(_Typography)
-	local _Padding = typography.getPaddingState(_Typography)
-	local _MainColor = util.getInteractionColor(_Clicked, _Highlighted, theme.getColorState(Theme))
-	local _BackgroundColor = util.getInteractionColor(_Clicked, _Highlighted, theme.getColorState(fusion.State("Background")))
-	--sizes
 	local maid = maidConstructor.new()
 	local inst
+
+	--public states
+	local Color = util.import(params.Color) or fusion.State(Color3.new(0.5,0,1))
+	local BackgroundColor = util.import(params.BackgroundColor) or fusion.State(Color3.new(0.5,0.5,0.5))
+	local Selected = util.import(params.Selected) or fusion.State(false)
+
+	--influencers
+	local _Hovered = fusion.State(false)
+	local _Clicked = fusion.State(false)
+	local _Typography = fusion.State("Body")
+
+	--properties
+	local _TextSize = typography.getTextSizeState(_Typography)
+	local _Padding = typography.getPaddingState(_Typography)
+
+	--preparing config
 	local config = {
+		Name = script.Name,
 		[fusion.OnEvent "Activated"] = function(x,y)
 			local absPos = Vector2.new(x,y)
 			local knob = inst:FindFirstChild("Knob")
@@ -62,20 +54,26 @@ function constructor.new(params)
 			Selected:set(not Selected:get())
 		end,
 		[fusion.OnEvent "InputBegan"] = function()
-			_Highlighted:set(true)
+			_Hovered:set(true)
 		end,
 		[fusion.OnEvent "InputEnded"] = function()
-			_Highlighted:set(false)
+			_Hovered:set(false)
 			_Clicked:set(false)
 		end,
 		Size = fusion.Computed(function()
 			local height = _TextSize:get() + _Padding:get().Offset*2
 			return UDim2.fromOffset(height*2, height)
 		end),
-		LeftColor = _MainColor,
-		RightColor = _BackgroundColor,
+		LeftColor = util.getInteractionColor(_Clicked, _Hovered, Color),
+		RightColor = util.getInteractionColor(_Clicked, _Hovered, BackgroundColor),
 		Precision = 0.01,
-		Alpha = _Alpha,
+		Alpha = fusion.Computed(function()
+			if Selected:get() == true then
+				return 1
+			else
+				return 0
+			end
+		end),
 		KnobEnabled = true,
 		Padding = _Padding,
 	}
@@ -87,8 +85,8 @@ function constructor.new(params)
 
 	inst = synthetic.New "ProgressBar" (config)
 
-	util.setPublicState("Theme", Theme, inst, maid)
 	util.setPublicState("Color", Color, inst, maid)
+	util.setPublicState("BackgroundColor", BackgroundColor, inst, maid)
 	util.setPublicState("Selected", Selected, inst, maid)
 
 	maid:GiveTask(inst)

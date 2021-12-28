@@ -5,7 +5,6 @@ local fusion = require(packages:WaitForChild('fusion'))
 local maidConstructor = require(packages:WaitForChild('maid'))
 
 local util = require(script.Parent.Parent:WaitForChild('Util'))
-local theme = require(script.Parent.Parent:WaitForChild('Theme'))
 local typography = require(script.Parent.Parent:WaitForChild('Typography'))
 local enums = require(script.Parent.Parent:WaitForChild('Enums'))
 
@@ -24,15 +23,11 @@ function constructor.new(params)
 	local ImageRectOffset = util.import(params.ImageRectOffset) or fusion.State(Vector2.new(0, 0))
 
 	--properties
-	local _Padding = typography.getPaddingState(Typography)
 	local _TextSize = typography.getTextSizeState(Typography)
-	local _IconSize = fusion.Computed(function()
-		local textSize = _TextSize:get()
-		return UDim2.fromOffset(textSize, textSize)
-	end)
-	local _Font = typography.getFontState(Typography)
 
+	--preparing config
 	local config = {
+		Name = script.Name,
 		AutomaticSize = Enum.AutomaticSize.XY,
 		BackgroundTransparency = 1,
 		BackgroundColor3 = Color3.new(1, 1, 1),
@@ -43,21 +38,24 @@ function constructor.new(params)
 				TextColor3 = util.tween(Color),
 				Text = Text,
 				BackgroundTransparency = 1,
-				Font = _Font,
+				Font = typography.getFontState(Typography),
 				TextSize = util.tween(_TextSize),
 			},
 			fusion.New 'UIListLayout' {
 				VerticalAlignment = Enum.VerticalAlignment.Center,
 				SortOrder = Enum.SortOrder.LayoutOrder,
 				HorizontalAlignment = Enum.HorizontalAlignment.Center,
-				Padding = _Padding,
+				Padding = typography.getPaddingState(Typography),
 				FillDirection = Enum.FillDirection.Horizontal,
 			},
 			fusion.New 'ImageButton' {
 				BackgroundTransparency = 1,
 				Image = Image,
 				ImageRectSize = ImageRectSize,
-				Size = util.tween(_IconSize),
+				Size = util.tween(fusion.Computed(function()
+					local textSize = _TextSize:get()
+					return UDim2.fromOffset(textSize, textSize)
+				end)),
 				ImageColor3 = util.tween(Color),
 				ImageRectOffset = ImageRectOffset,
 				Name = 'Icon',
