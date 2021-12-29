@@ -19,6 +19,9 @@ function constructor.new(params)
 		Alpha = util.import(params.Alpha) or fusion.State(0),
 		KnobEnabled = util.import(params.KnobEnabled) or fusion.State(false),
 		Padding = util.import(params.Padding) or fusion.State(UDim.new(0, 6)),
+		SynthClass = fusion.Computed(function()
+			return script.Name
+		end),
 	}
 
 	--read only states

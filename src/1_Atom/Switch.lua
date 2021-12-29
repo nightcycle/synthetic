@@ -20,6 +20,9 @@ function constructor.new(params)
 		BackgroundColor = util.import(params.BackgroundColor) or fusion.State(Color3.new(0.5,0.5,0.5)),
 		Selected = util.import(params.Selected) or fusion.State(false),
 		Typography = util.import(params.Typography) or typographyConstructor.new(Enum.Font.SourceSans, 10, 14),
+		SynthClass = fusion.Computed(function()
+			return script.Name
+		end),
 	}
 
 	--influencers

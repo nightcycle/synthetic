@@ -17,6 +17,9 @@ function constructor.new(params)
 		Color = util.import(params.Color) or fusion.State(Color3.new(0.5,0,1)),
 		TextColor = util.import(params.TextColor) or fusion.State(Color3.new(0.2,0.2,0.2)),
 		Selected = util.import(params.Selected) or fusion.State(false),
+		SynthClass = fusion.Computed(function()
+			return script.Name
+		end),
 		Typography = util.import(params.Typography) or typographyConstructor.new(Enum.Font.SourceSans, 10, 14),
 	}
 

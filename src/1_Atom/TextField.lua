@@ -1,11 +1,11 @@
 local packages = script.Parent.Parent.Parent
 local synthetic
 local fusion = require(packages:WaitForChild('fusion'))
-local typographyConstructor = require(packages:WaitForChild('typography'))
 local maidConstructor = require(packages:WaitForChild('maid'))
+local filterConstructor = require(packages:WaitForChild("filter"))
 local util = require(script.Parent.Parent:WaitForChild("Util"))
+local typographyConstructor = require(packages:WaitForChild('typography'))
 local enums = require(script.Parent.Parent:WaitForChild("Enums"))
-local effects = require(script.Parent.Parent:WaitForChild("Effects"))
 
 local constructor = {}
 
@@ -15,20 +15,30 @@ function constructor.new(params)
 	--public states
 	local public = {
 		Variant = util.import(params.Variant) or fusion.State("Filled"),
+		Value = fusion.State(params.Value or ""),
+		Label = fusion.State(params.Label or ""),
+		Prefix = fusion.State(params.Prefix or ""),
+		Suffix = fusion.State(params.Suffix or ""),
+		Color = fusion.State(params.Suffix or Color3.new(0.5,0,1)),
+		TextColor = fusion.State(params.Suffix or Color3.new(0.5,0.5,0.5)),
 		Typography = util.import(params.Typography) or typographyConstructor.new(Enum.Font.SourceSans, 10, 14),
-		Text = util.import(params.Text) or fusion.State(""),
-		Color = util.import(params.Color) or fusion.State(Color3.new(0.5,0,1)),
-		TextColor = util.import(params.TextColor) or fusion.State(Color3.new(0.2,0.2,0.2)),
-		Image = util.import(params.Icon) or fusion.State("rbxassetid://3926305904"),
-		ImageRectSize = util.import(params.ImageRectSize) or fusion.State(Vector2.new(0,0)),
-		ImageRectOffset = util.import(params.ImageRectOffset) or fusion.State(Vector2.new(0, 0)),
+		SynthClass = fusion.Computed(function()
+			return script.Name
+		end),
 	}
-
 	--influencers
-	local _Hovered = fusion.State(false)
 	local _Clicked = fusion.State(false)
+	local _Focused = fusion.State(false)
+	local _Hovered = fusion.State(false)
 
 	--properties
+	local _Padding = fusion.Computed(function()
+		return public.Typography:get().Padding
+	end)
+	local _TextSize = fusion.Computed(function()
+		return public.Typography:get().TextSize
+	end)
+	local filter = filterConstructor.new(game.Players.LocalPlayer)
 	local _MainColor = util.getInteractionColor(_Clicked, _Hovered, public.Color)
 	local _DetailColor = util.getInteractionColor(_Clicked, _Hovered, public.TextColor)
 	local _TextColor = fusion.Computed(function()
@@ -42,15 +52,9 @@ function constructor.new(params)
 			return _DetailColor:get()
 		end
 	end)
-	local _Padding = fusion.Computed(function()
-		return public.Typography:get().Padding
-	end)
-	local _TextSize = fusion.Computed(function()
-		return public.Typography:get().TextSize
-	end)
 
-	--preparing config
-	return util.set(fusion.New "TextButton", public, params, {
+	--constructor
+	return util.set(fusion.New "TextBox", public, params, {
 		Name = script.Name,
 		BackgroundColor3 = util.tween(fusion.Computed(function()
 			return _MainColor:get()
@@ -58,19 +62,10 @@ function constructor.new(params)
 		BackgroundTransparency = util.tween(fusion.Computed(function()
 			if enums.Variant[public.Variant:get()] == enums.Variant.Outlined then
 				return 1
-			elseif enums.Variant[public.Variant:get()] == enums.Variant.Filled then
-				return 0
-			elseif enums.Variant[public.Variant:get()] == enums.Variant.Text then
-				return 1
 			else
 				return 0
 			end
 		end)),
-		TextSize = util.tween(_TextSize),
-		TextColor3 = util.tween(_TextColor),
-		Font = typographyConstructor.getTextSizeState(public.Typography),
-		AutomaticSize = Enum.AutomaticSize.XY,
-		AutoButtonColor = false,
 		[fusion.Children] = {
 			fusion.New 'UIStroke' {
 				Color = util.tween(fusion.Computed(function()
@@ -103,29 +98,7 @@ function constructor.new(params)
 				PaddingLeft = _Padding,
 				PaddingRight = _Padding,
 			},
-			synthetic.New 'Label' {
-				Typography = public.Typography,
-				Text = public.Text,
-				Color = _TextColor,
-				Image = public.Image,
-				ImageRectSize = public.ImageRectSize,
-				ImageRectOffset = public.ImageRectOffset,
-			}
 		},
-		[fusion.OnEvent "InputBegan"] = function()
-			_Hovered:set(true)
-		end,
-		[fusion.OnEvent "InputEnded"] = function()
-			_Hovered:set(false)
-			_Clicked:set(false)
-		end,
-		[fusion.OnEvent "MouseButton1Down"] = function()
-			effects.clickSound(0.75)
-			_Clicked:set(true)
-		end,
-		[fusion.OnEvent "MouseButton1Up"] = function()
-			_Clicked:set(false)
-		end,
 	})
 end
 

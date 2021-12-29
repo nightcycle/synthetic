@@ -25,19 +25,68 @@ function mergeConfig(baseConfig, changes, whiteList, blackList)
 end
 
 function setPublicState(key, state, inst, maid)
+	local readOnly = state.set == nil
+	if readOnly then key = "_"..key end
+	if type(state:get()) == "table" then
+		for k, v in pairs(state:get()) do
+			local vState = fusion.State(v)
+			if not readOnly then
+				local vCompute = fusion.Computed(function()
+					return state:get()[k]
+				end)
+				local function updateParentState()
+					local newTabl = state:get()
+					newTabl[k] = vState:get()
+					state:set(newTabl)
+				end
+				maid:GiveTask(fusion.Compat(vState):onChange(updateParentState))
+				maid:GiveTask(fusion.Compat(vCompute):onChange(updateParentState))
+			end
+			setPublicState(key.."_"..k, vState, inst, maid)
+		end
+		return
+	end
 	--bind to attributes
 	maid._attributer = maid._attributer or attributerConstructor.new(inst, {}, {})
 
-	maid._attributer:Connect(key, state:get())
+	local isEnum = typeof(state:get()) == "EnumItem"
+	local enumType
+	local val = state:get()
+	if isEnum then
+		enumType = tostring(state:get().EnumType)
+		val = val.Name
+	end
+
+	maid._attributer:Connect(key, val)
 	local compat = fusion.Compat(state)
-	maid:GiveTask(compat:onChange(function()
-		if inst:GetAttribute(key) ~= state:get() then
-			inst:SetAttribute(key, state:get())
+
+	local function setAttribute(v)
+		if isEnum then
+			v = v or state:get().Name
+			if inst:GetAttribute(key) ~= state:get() then
+				inst:SetAttribute(key, v)
+			end
+		else
+			v = v or state:get()
+			if inst:GetAttribute(key) ~= state:get() then
+				inst:SetAttribute(key, state:get())
+			end
 		end
-	end))
+	end
+
+	maid:GiveTask(compat:onChange(setAttribute))
 	maid:GiveTask(maid._attributer.OnChanged:Connect(function(k, val)
 		if k == key and val ~= state:get() then
-			state:set(val)
+			if not readOnly then
+				if isEnum then
+					local enum = Enum[enumType][val]
+					state:set(enum)
+				else
+					state:set(val)
+				end
+			else
+				setAttribute()
+			end
 		end
 	end))
 end
@@ -80,8 +129,7 @@ return {
 		if not maid then
 			maid = maidConstructor.new()
 		end
-		print(debug.traceback(2))
-		local className = config.Name or "UnknownClass"
+
 		mergeConfig(config, params, nil, publicStates)
 
 		local inst = constructor(config)
@@ -91,7 +139,6 @@ return {
 			setPublicState(k, v, inst, maid)
 		end
 
-		inst:SetAttribute("SynthClass", className)
 		local wasEverDescendeded = inst:IsDescendantOf(game.Players.LocalPlayer)
 		maid.deathSignal = inst.AncestryChanged:Connect(function()
 			if wasEverDescendeded == false then
@@ -106,7 +153,6 @@ return {
 					desc:Destroy()
 				end
 				maid:Destroy()
-				print("Destroy : "..tostring(className))
 			else
 				updateElevation(inst)
 			end

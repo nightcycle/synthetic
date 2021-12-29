@@ -19,6 +19,9 @@ function constructor.new(params)
 		Image = util.import(params.Image) or fusion.State("rbxassetid://3926305904"),
 		ImageRectSize = util.import(params.ImageRectSize) or fusion.State(Vector2.new(0,0)),
 		ImageRectOffset = util.import(params.ImageRectOffset) or fusion.State(Vector2.new(0, 0)),
+		SynthClass = fusion.Computed(function()
+			return script.Name
+		end),
 	}
 
 	--properties

@@ -25,6 +25,9 @@ function constructor.new(params)
 		Precision = fusion.State(params.Precision or 0.2),
 		Value = fusion.State(params.Value or 0.5),
 		Typography = util.import(params.Typography) or typographyConstructor.new(Enum.Font.SourceSans, 10, 14),
+		SynthClass = fusion.Computed(function()
+			return script.Name
+		end),
 	}
 
 	--read only public states
