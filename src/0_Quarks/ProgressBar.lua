@@ -10,23 +10,24 @@ local constructor = {}
 
 function constructor.new(params)
 	synthetic = synthetic or require(script.Parent.Parent)
-	local maid = maidConstructor.new()
 
 	--public states
-	local LeftColor = util.import(params.LeftColor) or fusion.State(Color3.new(0.5,0,1))
-	local RightColor = util.import(params.RightColor) or fusion.State(Color3.new(0.5,0.5,0.5))
-	local Precision = util.import(params.Precision) or fusion.State(0.2)
-	local Alpha = util.import(params.Alpha) or fusion.State(0)
-	local KnobEnabled = util.import(params.KnobEnabled) or fusion.State(false)
-	local Padding = util.import(params.Padding) or fusion.State(UDim.new(0, 6))
+	local public = {
+		LeftColor = util.import(params.LeftColor) or fusion.State(Color3.new(0.5,0,1)),
+		RightColor = util.import(params.RightColor) or fusion.State(Color3.new(0.5,0.5,0.5)),
+		Precision = util.import(params.Precision) or fusion.State(0.2),
+		Alpha = util.import(params.Alpha) or fusion.State(0),
+		KnobEnabled = util.import(params.KnobEnabled) or fusion.State(false),
+		Padding = util.import(params.Padding) or fusion.State(UDim.new(0, 6)),
+	}
 
 	--read only states
-	local Value = fusion.Computed(function()
-		return Precision:get() * math.round(Alpha:get()/Precision:get())
+	public.Value = fusion.Computed(function()
+		return public.Precision:get() * math.round(public.Alpha:get()/public.Precision:get())
 	end)
 
-	--preparing config
-	local config = {
+	--construct
+	return util.set(fusion.New "TextButton", public, params, {
 		Name = script.Name,
 		BackgroundColor3 = Color3.new(1, 1, 1),
 		BackgroundTransparency = 1,
@@ -34,12 +35,12 @@ function constructor.new(params)
 			fusion.New "Frame" {
 				Name = "Knob",
 				AnchorPoint = util.tween(fusion.Computed(function()
-					return Vector2.new(Value:get(), 0.5)
+					return Vector2.new(public.Value:get(), 0.5)
 				end)),
 				BackgroundColor3 = util.tween(fusion.Computed(function()
-					local leftColor = RightColor:get()
-					local rightColor = LeftColor:get()
-					local alphaVal = Alpha:get()
+					local leftColor = public.RightColor:get()
+					local rightColor = public.LeftColor:get()
+					local alphaVal = public.Alpha:get()
 					local h1,s1,v1 = leftColor:ToHSV()
 					local h2,s2,v2 = rightColor:ToHSV()
 					local function lerp(n1, n2, a)
@@ -52,12 +53,12 @@ function constructor.new(params)
 					return Color3.fromHSV(h,s,v)
 				end)),
 				Position = util.tween(fusion.Computed(function()
-					return UDim2.fromScale(Value:get(), 0.5)
+					return UDim2.fromScale(public.Value:get(), 0.5)
 				end)),
 				Size = UDim2.fromScale(1,1),
 				SizeConstraint = Enum.SizeConstraint.RelativeYY,
 				ZIndex = 2,
-				Visible = KnobEnabled,
+				Visible = public.KnobEnabled,
 				[fusion.Children] = {
 					fusion.New "UICorner" {
 						CornerRadius = UDim.new(0.5, 0)
@@ -75,7 +76,7 @@ function constructor.new(params)
 				BorderSizePixel = 0,
 				Position = UDim2.fromScale(0.5, 0.5),
 				Size = fusion.Computed(function()
-					return UDim2.new(1, -Padding:get().Offset*2, 1, -Padding:get().Offset*2)
+					return UDim2.new(1, -public.Padding:get().Offset*2, 1, -public.Padding:get().Offset*2)
 				end),
 				[fusion.Children] = {
 					fusion.New "UICorner" {
@@ -91,9 +92,9 @@ function constructor.new(params)
 								local h,s,v = col:ToHSV()
 								return Color3.fromHSV(h,s*0.45,0.75)
 							end
-							local leftCol = lowerBrightness(LeftColor:get())
-							local rightCol = lowerBrightness(RightColor:get())
-							local val = math.clamp(Value:get(), 0.01, 0.98)
+							local leftCol = lowerBrightness(public.LeftColor:get())
+							local rightCol = lowerBrightness(public.RightColor:get())
+							local val = math.clamp(public.Value:get(), 0.01, 0.98)
 							return ColorSequence.new{
 								ColorSequenceKeypoint.new(0, leftCol),
 								ColorSequenceKeypoint.new(val, leftCol),
@@ -105,32 +106,7 @@ function constructor.new(params)
 				}
 			}
 		}
-	}
-
-	util.mergeConfig(config, params, nil, {
-		LeftColor = true,
-		RightColor = true,
-		Precision = true,
-		Alpha = true,
-		KnobEnabled = true,
-		Padding = true,
-		Value = true,
 	})
-
-	local inst = fusion.New 'TextButton' (config)
-	maid:GiveTask(inst)
-
-	util.setPublicState("LeftColor", LeftColor, inst, maid)
-	util.setPublicState("RightColor", RightColor, inst, maid)
-	util.setPublicState("Precision", Precision, inst, maid)
-	util.setPublicState("Alpha", Alpha, inst, maid)
-	util.setPublicState("KnobEnabled", KnobEnabled, inst, maid)
-	util.setPublicState("Padding", Padding, inst, maid)
-	util.setPublicState("Value", Value, inst, maid)
-
-	util.init(script.Name, inst, maid)
-
-	return inst
 end
 
 return constructor

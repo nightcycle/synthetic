@@ -2,6 +2,7 @@ local packages = script.Parent.Parent
 local attributerConstructor = require(packages:WaitForChild("attributer"))
 local fusion = require(packages:WaitForChild('fusion'))
 local signalConstructor = require(packages:WaitForChild("signal"))
+local maidConstructor = require(packages:WaitForChild("maid"))
 local ed = Enum.EasingDirection
 local es = Enum.EasingStyle
 
@@ -13,25 +14,36 @@ function updateElevation(inst)
 	end
 end
 
+function mergeConfig(baseConfig, changes, whiteList, blackList)
+	if not whiteList then whiteList = changes end
+	for k, v in pairs(changes) do
+		if whiteList[k] ~= nil and blackList[k] == nil then
+			baseConfig[k] = changes[k] or baseConfig[k]
+		end
+	end
+	return baseConfig
+end
+
+function setPublicState(key, state, inst, maid)
+	--bind to attributes
+	maid._attributer = maid._attributer or attributerConstructor.new(inst, {}, {})
+
+	maid._attributer:Connect(key, state:get())
+	local compat = fusion.Compat(state)
+	maid:GiveTask(compat:onChange(function()
+		if inst:GetAttribute(key) ~= state:get() then
+			inst:SetAttribute(key, state:get())
+		end
+	end))
+	maid:GiveTask(maid._attributer.OnChanged:Connect(function(k, val)
+		if k == key and val ~= state:get() then
+			state:set(val)
+		end
+	end))
+end
+
 return {
-	setPublicState = function(key, state, inst, maid)
-		--bind to attributes
-		maid._attributer = maid._attributer or attributerConstructor.new(inst, {}, {})
-
-		maid._attributer:Connect(key, state:get())
-		local compat = fusion.Compat(state)
-		maid:GiveTask(compat:onChange(function()
-			if inst:GetAttribute(key) ~= state:get() then
-				inst:SetAttribute(key, state:get())
-			end
-		end))
-		maid:GiveTask(maid._attributer.OnChanged:Connect(function(k, val)
-			if k == key and val ~= state:get() then
-				state:set(val)
-			end
-		end))
-
-	end,
+	setPublicState = setPublicState,
 
 	import = function(stateOrVal)
 		if type(stateOrVal) == "table" or stateOrVal == nil then
@@ -64,8 +76,22 @@ return {
 		return _DynamicMainColor
 	end,
 
-	init = function(key, inst, maid)
-		inst:SetAttribute("SynthClass", key)
+	set = function(constructor, publicStates, params, config, maid)
+		if not maid then
+			maid = maidConstructor.new()
+		end
+		print(debug.traceback(2))
+		local className = config.Name or "UnknownClass"
+		mergeConfig(config, params, nil, publicStates)
+
+		local inst = constructor(config)
+		maid:GiveTask(inst)
+
+		for k, v in pairs(publicStates) do
+			setPublicState(k, v, inst, maid)
+		end
+
+		inst:SetAttribute("SynthClass", className)
 		local wasEverDescendeded = inst:IsDescendantOf(game.Players.LocalPlayer)
 		maid.deathSignal = inst.AncestryChanged:Connect(function()
 			if wasEverDescendeded == false then
@@ -80,11 +106,12 @@ return {
 					desc:Destroy()
 				end
 				maid:Destroy()
-				print("Destroy : "..tostring(key))
+				print("Destroy : "..tostring(className))
 			else
 				updateElevation(inst)
 			end
 		end)
+		return inst
 	end,
 
 	tween = function(state, params)
@@ -98,13 +125,5 @@ return {
 		return fusion.Tween(state, TweenInfo.new(duration, easingStyle, easingDirection, repeatCount, reverses, delayTime))
 	end,
 
-	mergeConfig = function(baseConfig, changes, whiteList, blackList)
-		if not whiteList then whiteList = changes end
-		for k, v in pairs(changes) do
-			if whiteList[k] ~= nil and blackList[k] == nil then
-				baseConfig[k] = changes[k] or baseConfig[k]
-			end
-		end
-		return baseConfig
-	end
+	mergeConfig = mergeConfig
 }

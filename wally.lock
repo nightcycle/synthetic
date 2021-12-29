@@ -25,11 +25,11 @@ dependencies = [["maid", "quenty/maid@2.0.1-canary.140ed9d6.1"]]
 [[package]]
 name = "nightcycle/synthetic"
 version = "2.0.0"
-dependencies = [["attributer", "nightcycle/attributer@1.0.4"], ["filter", "nightcycle/filter@1.0.2"], ["fusion", "elttob/fusion@0.1.1-beta"], ["maid", "quenty/maid@2.0.1-canary.140ed9d6.1"], ["signal", "quenty/signal@2.0.0-canary.140ed9d6.2"], ["typography", "nightcycle/typography@1.0.0"]]
+dependencies = [["attributer", "nightcycle/attributer@1.0.4"], ["filter", "nightcycle/filter@1.0.2"], ["fusion", "elttob/fusion@0.1.1-beta"], ["maid", "quenty/maid@2.0.1-canary.140ed9d6.1"], ["signal", "quenty/signal@2.0.0-canary.140ed9d6.2"], ["typography", "nightcycle/typography@1.0.2"]]
 
 [[package]]
 name = "nightcycle/typography"
-version = "1.0.0"
+version = "1.0.2"
 dependencies = [["fusion", "elttob/fusion@0.1.1-beta"]]
 
 [[package]]

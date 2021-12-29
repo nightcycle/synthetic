@@ -228,7 +228,7 @@ function constructor.new(params)
 		end
 	})
 
-	util.init(script.Name, inst, maid)
+	util.set(script.Name, inst, maid)
 	return inst
 end
 

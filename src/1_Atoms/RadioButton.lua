@@ -3,7 +3,7 @@ local synthetic
 local fusion = require(packages:WaitForChild('fusion'))
 local maidConstructor = require(packages:WaitForChild('maid'))
 local util = require(script.Parent.Parent:WaitForChild("Util"))
-local typography = require(packages:WaitForChild('typography'))
+local typographyConstructor = require(packages:WaitForChild('typography'))
 local enums = require(script.Parent.Parent:WaitForChild("Enums"))
 local effects = require(script.Parent.Parent:WaitForChild("Effects"))
 
@@ -11,27 +11,27 @@ local constructor = {}
 
 function constructor.new(params)
 	synthetic = synthetic or require(script.Parent.Parent)
-	local maid = maidConstructor.new()
 
 	--public states
-	local Color = util.import(params.Color) or fusion.State(Color3.new(1,1,1))
-	local Selected = util.import(params.Selected) or fusion.State(false)
-	local Typography = util.import(params.Typography) or typography.new(Enum.Font.SourceSans, 10, 14)
+	local public = {
+		Color = util.import(params.Color) or fusion.State(Color3.new(1,1,1)),
+		Selected = util.import(params.Selected) or fusion.State(false),
+		Typography = util.import(params.Typography) or typographyConstructor.new(Enum.Font.SourceSans, 10, 14),
+	}
 
 	--influencers
 	local _Hovered = fusion.State(false)
 	local _Clicked = fusion.State(false)
 
-
 	--properties
-	local _MainColor = util.getInteractionColor(_Clicked, _Hovered, Color)
+	local _MainColor = util.getInteractionColor(_Clicked, _Hovered, public.Color)
 	local _TextSize = fusion.Computed(function()
-		return Typography:get().TextSize
+		return public.Typography:get().TextSize
 	end)
 
 	--preparing config
 	local inst
-	local config = {
+	inst = util.set(fusion.New "ImageButton", public, params, {
 		Name = script.Name,
 		AnchorPoint = Vector2.new(0.5, 0.5),
 		BackgroundColor3 = util.tween(_MainColor),
@@ -48,7 +48,7 @@ function constructor.new(params)
 			fusion.New "UIStroke" {
 				ApplyStrokeMode = Enum.ApplyStrokeMode.Border,
 				Color = util.tween(fusion.Computed(function()
-					if Selected:get() then
+					if public.Selected:get() then
 						return _MainColor:get()
 					else
 						return Color3.new(0.5,0.5,0.5)
@@ -60,7 +60,7 @@ function constructor.new(params)
 				AnchorPoint = Vector2.new(0.5,0.5),
 				Position = UDim2.fromScale(0.5,0.5),
 				BackgroundTransparency = util.tween(fusion.Computed(function()
-					if Selected:get() then
+					if public.Selected:get() then
 						return 0
 					else
 						return 1
@@ -79,7 +79,7 @@ function constructor.new(params)
 			}
 		},
 		[fusion.OnEvent "Activated"] = function()
-			Selected:set(not Selected:get())
+			public.Selected:set(not public.Selected:get())
 			effects.ripple(fusion.State(inst.Position), _MainColor)
 			effects.clickSound(0.5)
 		end,
@@ -96,21 +96,7 @@ function constructor.new(params)
 		[fusion.OnEvent "MouseButton1Up"] = function()
 			_Clicked:set(false)
 		end,
-	}
-	util.mergeConfig(config, params, nil, {
-		Selected = true,
-		Theme = true,
-		Color = true,
 	})
-
-	inst = fusion.New "TextButton" (config)
-
-	util.setPublicState("Color", Color, inst, maid)
-	util.setPublicState("Selected", Selected, inst, maid)
-	util.setPublicState("Typography", Typography, inst, maid)
-
-	maid:GiveTask(inst)
-	util.init(script.Name, inst, maid)
 
 	return inst
 end

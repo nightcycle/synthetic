@@ -317,7 +317,7 @@ function constructor.new(params)
 		Parent = inst,
 	})
 
-	util.init(script.Name, inst, maid)
+	util.set(script.Name, inst, maid)
 	return inst
 end
 
