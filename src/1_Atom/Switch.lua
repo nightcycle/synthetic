@@ -43,18 +43,22 @@ function constructor.new(params)
 			local absPos = Vector2.new(x,y)
 			local knob = inst:FindFirstChild("Knob")
 			local knobColor = fusion.State(knob.BackgroundColor3)
+
 			local function getPos()
 				local v2 = knob.AbsolutePosition + knob.AbsoluteSize*0.5
 				return UDim2.fromOffset(v2.X, v2.Y)
 			end
+
 			local position = fusion.State(getPos())
 			effects.ripple(position, knobColor)
 			effects.sound("ui_tap-variant-01")
+
 			local rippleMaid = maidConstructor.new()
 			rippleMaid:GiveTask(runService.RenderStepped:Connect(function(delta)
 				position:set(getPos())
 				knobColor:set(knob.BackgroundColor3)
 			end))
+
 			task.delay(1, function()
 				rippleMaid:Destroy()
 			end)
@@ -71,9 +75,9 @@ function constructor.new(params)
 			local height = _TextSize:get() + _Padding:get().Offset*2
 			return UDim2.fromOffset(height*2, height)
 		end),
-		LeftColor = util.getInteractionColor(_Clicked, _Hovered, public.Color),
-		RightColor = util.getInteractionColor(_Clicked, _Hovered, public.BackgroundColor),
-		Precision = 0.01,
+		Color = util.getInteractionColor(_Clicked, _Hovered, public.Color),
+		BackgroundColor = util.getInteractionColor(_Clicked, _Hovered, public.BackgroundColor),
+		Notches = 100,
 		Alpha = fusion.Computed(function()
 			if public.Selected:get() == true then
 				return 1

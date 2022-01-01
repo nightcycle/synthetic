@@ -112,6 +112,7 @@ function constructor.new(params)
 			_Clicked:set(false)
 		end,
 	})
+	print("Inst done! ", tostring(inst))
 	return inst
 end
 

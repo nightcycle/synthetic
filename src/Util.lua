@@ -118,20 +118,21 @@ return {
 	end,
 
 	set = function(constructor, publicStates, params, config, maid)
+		-- print("1")
 		if not maid then
 			maid = maidConstructor.new()
 		end
 		params.SynthClass = nil
 		params.Name = params.Name or publicStates.SynthClass:get()
 		mergeConfig(config, params, nil, publicStates)
-
+		-- print("2")
 		local inst = constructor(config)
 		maid:GiveTask(inst)
-
+		-- print("3")
 		for k, v in pairs(publicStates) do
 			setPublicState(k, v, inst, maid)
 		end
-
+		-- print("4")
 		local wasEverDescendeded = inst:IsDescendantOf(game.Players.LocalPlayer)
 		maid.deathSignal = inst.AncestryChanged:Connect(function()
 			if wasEverDescendeded == false then
@@ -148,6 +149,7 @@ return {
 				maid:Destroy()
 			end
 		end)
+		-- print("5")
 		return inst
 	end,
 

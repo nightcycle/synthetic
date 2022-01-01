@@ -7,7 +7,12 @@ for i, module in ipairs(script:GetDescendants()) do
 	end
 end
 
-local constructors = {}
+local constructors = {
+	effects = require(script:WaitForChild("Effects")),
+	enums = require(script:WaitForChild("Enums")),
+	util = require(script:WaitForChild("Util")),
+}
+
 return {New = function(key)
 	if not constructors[key] and constructorModules[key] then
 		constructors[key] = require(constructorModules[key]).new
