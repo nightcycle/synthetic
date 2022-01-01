@@ -1,5 +1,5 @@
 local packages = script.Parent.Parent.Parent
-local synthetic
+local synthetic = require(script.Parent.Parent)
 local fusion = require(packages:WaitForChild('fusion'))
 local maidConstructor = require(packages:WaitForChild('maid'))
 local util = require(script.Parent.Parent:WaitForChild("Util"))
@@ -10,11 +10,12 @@ local effects = require(script.Parent.Parent:WaitForChild("Effects"))
 local constructor = {}
 
 function constructor.new(params)
-	synthetic = synthetic or require(script.Parent.Parent)
+
 
 	--public states
 	local public = {
-		Color = util.import(params.Color) or fusion.State(Color3.new(1,1,1)),
+		LineColor = util.import(params.LineColor) or fusion.State(Color3.new(0.5,0.5,0.5)),
+		Color = util.import(params.Color) or fusion.State(Color3.new(0.5,0,1)),
 		Selected = util.import(params.Selected) or fusion.State(false),
 		Typography = util.import(params.Typography) or typographyConstructor.new(Enum.Font.SourceSans, 10, 14),
 		SynthClass = fusion.Computed(function()
@@ -28,16 +29,24 @@ function constructor.new(params)
 
 	--properties
 	local _MainColor = util.getInteractionColor(_Clicked, _Hovered, public.Color)
+	local _LineColor = util.getInteractionColor(_Clicked, _Hovered, public.LineColor)
 	local _TextSize = fusion.Computed(function()
 		return public.Typography:get().TextSize
 	end)
 
 	--preparing config
 	local inst
-	inst = util.set(fusion.New "ImageButton", public, params, {
-		Name = script.Name,
+	inst = util.set(fusion.New "TextButton", public, params, {
 		AnchorPoint = Vector2.new(0.5, 0.5),
-		BackgroundColor3 = util.tween(_MainColor),
+		BackgroundColor3 = util.tween(fusion.Computed(function()
+			local enabColor = _MainColor:get()
+			local disabledColor = _LineColor:get()
+			if public.Selected:get() then
+				return enabColor
+			else
+				return disabledColor
+			end
+		end)),
 		BackgroundTransparency = 1,
 		Size = fusion.Computed(function()
 			local dim = _TextSize:get()
@@ -54,7 +63,7 @@ function constructor.new(params)
 					if public.Selected:get() then
 						return _MainColor:get()
 					else
-						return Color3.new(0.5,0.5,0.5)
+						return _LineColor:get()
 					end
 				end)),
 				Thickness = 2,
@@ -83,8 +92,9 @@ function constructor.new(params)
 		},
 		[fusion.OnEvent "Activated"] = function()
 			public.Selected:set(not public.Selected:get())
-			effects.ripple(fusion.State(inst.Position), _MainColor)
-			effects.clickSound(0.5)
+			local pos = inst.AbsolutePosition + inst.AbsoluteSize * 0.5
+			effects.ripple(fusion.State(UDim2.fromOffset(pos.X, pos.Y)), _MainColor)
+			effects.sound("ui_tap-variant-01")
 		end,
 		[fusion.OnEvent "InputBegan"] = function()
 			_Hovered:set(true)

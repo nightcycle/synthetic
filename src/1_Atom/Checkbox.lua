@@ -1,5 +1,5 @@
 local packages = script.Parent.Parent.Parent
-local synthetic
+local synthetic = require(script.Parent.Parent)
 local fusion = require(packages:WaitForChild('fusion'))
 local typographyConstructor = require(packages:WaitForChild('typography'))
 local maidConstructor = require(packages:WaitForChild('maid'))
@@ -10,12 +10,13 @@ local effects = require(script.Parent.Parent:WaitForChild("Effects"))
 local constructor = {}
 
 function constructor.new(params)
-	synthetic = synthetic or require(script.Parent.Parent)
+
 
 	--public states
 	local public = {
-		Color = util.import(params.Color) or fusion.State(Color3.new(0.5,0,1)),
-		TextColor = util.import(params.TextColor) or fusion.State(Color3.new(0.2,0.2,0.2)),
+		BackgroundColor = util.import(params.BackgroundColor) or fusion.State(Color3.new(0.5,0.5,0.5)),
+		Color = util.import(params.Color)  or fusion.State(Color3.new(0.5,0,1)),
+		LineColor = util.import(params.LineColor) or fusion.State(Color3.new(0.2,0.2,0.2)),
 		Selected = util.import(params.Selected) or fusion.State(false),
 		SynthClass = fusion.Computed(function()
 			return script.Name
@@ -35,21 +36,27 @@ function constructor.new(params)
 			return 1
 		end
 	end)
-	local _BackgroundColor = util.getInteractionColor(_Clicked, _Hovered, public.Color)
+	local _LineColor = util.getInteractionColor(_Clicked, _Hovered, public.LineColor)
 	local _Padding = fusion.Computed(function()
 		return public.Typography:get().Padding
 	end)
 	local _TextSize = fusion.Computed(function()
-		return public.Typography:get().TextSize
+		return public.Typography:get().TextSize * 0.5
 	end)
 
 	--preparing config
 	local inst
-
 	inst = util.set(fusion.New "ImageButton", public, params, {
-		Name = script.Name,
 		AnchorPoint = Vector2.new(0.5, 0.5),
-		BackgroundColor3 = util.tween(_BackgroundColor),
+		BackgroundColor3 = util.tween(fusion.Computed(function()
+			local enabColor = public.Color:get()
+			local disabledColor = _LineColor:get()
+			if public.Selected:get() then
+				return enabColor
+			else
+				return disabledColor
+			end
+		end)),
 		BackgroundTransparency = util.tween(_FillTransparency),
 		Size = fusion.Computed(function()
 			local dim = _TextSize:get()
@@ -57,7 +64,7 @@ function constructor.new(params)
 		end),
 		AutomaticSize = Enum.AutomaticSize.XY,
 		Image = "rbxassetid://3926305904",
-		ImageColor3 = util.tween(util.getInteractionColor(_Clicked, _Hovered, public.TextColor)),
+		ImageColor3 = util.tween(util.getInteractionColor(_Clicked, _Hovered, public.LineColor)),
 		ImageRectOffset = Vector2.new(644, 204),
 		ImageRectSize = Vector2.new(36, 36),
 		ImageTransparency = util.tween(_FillTransparency),
@@ -77,9 +84,9 @@ function constructor.new(params)
 				ApplyStrokeMode = Enum.ApplyStrokeMode.Border,
 				Color = util.tween(fusion.Computed(function()
 					if public.Selected:get() then
-						return _BackgroundColor:get()
+						return public.Color:get()
 					else
-						return Color3.new(0.5,0.5,0.5)
+						return public.BackgroundColor:get()
 					end
 				end)),
 				Thickness = 2,
@@ -87,8 +94,9 @@ function constructor.new(params)
 		},
 		[fusion.OnEvent "Activated"] = function()
 			public.Selected:set(not public.Selected:get())
-			effects.ripple(fusion.State(inst.AbsolutePosition), _BackgroundColor)
-			effects.clickSound(0.7)
+			local pos = inst.AbsolutePosition + inst.AbsoluteSize * 0.5
+			effects.ripple(fusion.State(UDim2.fromOffset(pos.X, pos.Y)), public.Color)
+			effects.sound("ui_tap-variant-01")
 		end,
 		[fusion.OnEvent "InputBegan"] = function()
 			_Hovered:set(true)

@@ -1,5 +1,5 @@
 local packages = script.Parent.Parent.Parent
-local synthetic
+local synthetic = require(script.Parent.Parent)
 local fusion = require(packages:WaitForChild('fusion'))
 local maidConstructor = require(packages:WaitForChild('maid'))
 local util = require(script.Parent.Parent:WaitForChild("Util"))
@@ -9,7 +9,7 @@ local effects = require(script.Parent.Parent:WaitForChild("Effects"))
 local constructor = {}
 
 function constructor.new(params)
-	synthetic = synthetic or require(script.Parent.Parent)
+
 
 	--public states
 	local public = {
@@ -31,7 +31,6 @@ function constructor.new(params)
 
 	--construct
 	return util.set(fusion.New "TextButton", public, params, {
-		Name = script.Name,
 		BackgroundColor3 = Color3.new(1, 1, 1),
 		BackgroundTransparency = 1,
 		[fusion.Children] = {
@@ -93,7 +92,7 @@ function constructor.new(params)
 						Color = util.tween(fusion.Computed(function()
 							local function lowerBrightness(col)
 								local h,s,v = col:ToHSV()
-								return Color3.fromHSV(h,s*0.45,0.75)
+								return Color3.fromHSV(h,s*0.7,v)
 							end
 							local leftCol = lowerBrightness(public.LeftColor:get())
 							local rightCol = lowerBrightness(public.RightColor:get())

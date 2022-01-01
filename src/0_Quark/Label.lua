@@ -1,4 +1,4 @@
-local synthetic
+local synthetic = require(script.Parent.Parent)
 local packages = script.Parent.Parent.Parent
 local fusion = require(packages:WaitForChild('fusion'))
 local typographyConstructor = require(packages:WaitForChild('typography'))
@@ -9,7 +9,7 @@ local enums = require(script.Parent.Parent:WaitForChild('Enums'))
 local constructor = {}
 
 function constructor.new(params)
-	synthetic = synthetic or require(script.Parent.Parent)
+
 
 	--public states
 	local public = {
@@ -24,12 +24,24 @@ function constructor.new(params)
 		end),
 	}
 
+	--read only public states
+	public.IconEnabled = fusion.Computed(function()
+		local image = public.Image:get()
+		if image == "" then
+			return false
+		else
+			return true
+		end
+	end)
+
 	--properties
-	local _TextSize = typographyConstructor.getTextSizeState(public.Typography)
+	local _TextSize = fusion.Computed(function()
+		return public.Typography:get().TextSize
+	end)
+
 
 	--construct
 	return util.set(fusion.New "Frame", public, params, {
-		Name = script.Name,
 		AutomaticSize = Enum.AutomaticSize.XY,
 		BackgroundTransparency = 1,
 		BackgroundColor3 = Color3.new(1, 1, 1),
@@ -40,14 +52,19 @@ function constructor.new(params)
 				TextColor3 = util.tween(public.Color),
 				Text = public.Text,
 				BackgroundTransparency = 1,
-				Font = typographyConstructor.getFontState(public.Typography),
+				Font = fusion.Computed(function()
+					return public.Typography:get().Font
+				end)
+			,
 				TextSize = util.tween(_TextSize),
 			},
 			fusion.New 'UIListLayout' {
 				VerticalAlignment = Enum.VerticalAlignment.Center,
 				SortOrder = Enum.SortOrder.LayoutOrder,
 				HorizontalAlignment = Enum.HorizontalAlignment.Center,
-				Padding = typographyConstructor.getPaddingState(public.Typography),
+				Padding = fusion.Computed(function()
+					return public.Typography:get().Padding
+				end),
 				FillDirection = Enum.FillDirection.Horizontal,
 			},
 			fusion.New 'ImageButton' {
@@ -58,6 +75,7 @@ function constructor.new(params)
 					local textSize = _TextSize:get()
 					return UDim2.fromOffset(textSize, textSize)
 				end)),
+				Visible = public.IconEnabled,
 				ImageColor3 = util.tween(public.Color),
 				ImageRectOffset = public.ImageRectOffset,
 				Name = 'Icon',

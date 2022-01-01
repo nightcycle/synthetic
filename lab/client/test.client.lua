@@ -5,9 +5,12 @@ local synthetic = game.Players.LocalPlayer:WaitForChild("PlayerScripts"):WaitFor
 synthetic.Parent = packages
 synthetic = require(synthetic)
 
-local headerType = typographyConstructor.new(Enum.Font.SourceSans, 10, 15)
-local buttonType = typographyConstructor.new(Enum.Font.SourceSans, 10, 15)
-local bodyType = typographyConstructor.new(Enum.Font.SourceSans, 10, 15)
+local color = Color3.fromHSV(0.6,0.6,0.7)
+local lineColor = Color3.fromHSV(1, 0, 0.2)
+local surfaceColor = Color3.fromHSV(1, 0, 0.7)
+local headerType = typographyConstructor.new(Enum.Font.GothamBlack, 15, 20)
+local buttonType = typographyConstructor.new(Enum.Font.GothamBold, 12, 17)
+local bodyType = typographyConstructor.new(Enum.Font.Gotham, 10, 15)
 
 local screenGui = fusion.New "ScreenGui" {
 	Parent = game.Players.LocalPlayer:WaitForChild("PlayerGui"),
@@ -15,11 +18,40 @@ local screenGui = fusion.New "ScreenGui" {
 	[fusion.Children] = {
 		fusion.New "UIListLayout" {
 			FillDirection = Enum.FillDirection.Vertical,
+			HorizontalAlignment = Enum.HorizontalAlignment.Center,
+			Padding = UDim.new(0, 10)
+		},
+		synthetic.New "Button" {
+			Typography = buttonType,
+			Text = "TEST",
+			BackgroundColor = color,
+			LineColor = lineColor,
+		},
+		synthetic.New "Checkbox" {
+			Typography = buttonType,
+			LineColor = lineColor,
+			BackgroundColor = surfaceColor,
+			Color = color,
+		},
+		synthetic.New "RadioButton" {
+			Typography = buttonType,
+			Color = color,
+			LineColor = surfaceColor,
+		},
+		synthetic.New "Slider" {
+			Typography = buttonType,
+			Color = color,
+			BackgroundColor = surfaceColor,
 		},
 		synthetic.New "Switch" {
-			Position = UDim2.fromScale(0.5,0.5),
-			AnchorPoint = Vector2.new(0.5,0.5),
 			Typography = buttonType,
+			Color = color,
+			BackgroundColor = surfaceColor,
+		},
+		synthetic.New "TextField" {
+			Typography = buttonType,
+			LineColor = lineColor,
+			BackgroundColor = surfaceColor,
 		},
 	}
 }

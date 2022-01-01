@@ -1,5 +1,5 @@
 local packages = script.Parent.Parent.Parent
-local synthetic
+local synthetic = require(script.Parent.Parent)
 local fusion = require(packages:WaitForChild('fusion'))
 local typographyConstructor = require(packages:WaitForChild('typography'))
 local maidConstructor = require(packages:WaitForChild('maid'))
@@ -57,7 +57,6 @@ function constructor.new(params)
 
 	--preparing config
 	inst = util.set(synthetic.New "ProgressBar", public, params, {
-		Name = script.Name,
 		LeftColor = public.Color,
 		RightColor = public.BackgroundColor,
 		Precision = public.Precision,

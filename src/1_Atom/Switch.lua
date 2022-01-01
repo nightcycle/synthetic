@@ -1,6 +1,6 @@
 local runService = game:GetService("RunService")
 local packages = script.Parent.Parent.Parent
-local synthetic
+local synthetic = require(script.Parent.Parent)
 local fusion = require(packages:WaitForChild('fusion'))
 local maidConstructor = require(packages:WaitForChild('maid'))
 local util = require(script.Parent.Parent:WaitForChild("Util"))
@@ -11,7 +11,7 @@ local effects = require(script.Parent.Parent:WaitForChild("Effects"))
 local constructor = {}
 
 function constructor.new(params)
-	synthetic = synthetic or require(script.Parent.Parent)
+
 	local inst
 
 	--public states
@@ -39,7 +39,6 @@ function constructor.new(params)
 
 	--constructor
 	inst = util.set(synthetic.New "ProgressBar", public, params, {
-		Name = script.Name,
 		[fusion.OnEvent "Activated"] = function(x,y)
 			local absPos = Vector2.new(x,y)
 			local knob = inst:FindFirstChild("Knob")
@@ -50,7 +49,7 @@ function constructor.new(params)
 			end
 			local position = fusion.State(getPos())
 			effects.ripple(position, knobColor)
-			effects.clickSound()
+			effects.sound("ui_tap-variant-01")
 			local rippleMaid = maidConstructor.new()
 			rippleMaid:GiveTask(runService.RenderStepped:Connect(function(delta)
 				position:set(getPos())

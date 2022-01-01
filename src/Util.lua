@@ -6,14 +6,6 @@ local maidConstructor = require(packages:WaitForChild("maid"))
 local ed = Enum.EasingDirection
 local es = Enum.EasingStyle
 
-function updateElevation(inst)
-	local newParent = inst.Parent
-	if newParent:IsA("GuiObject") then
-		local parentAbsElevation = newParent:GetAttribute("AbsoluteElevation") or 0
-		inst:SetAttribute("AbsoluteElevation", parentAbsElevation + inst:GetAttribute("ElevationIncrease"))
-	end
-end
-
 function mergeConfig(baseConfig, changes, whiteList, blackList)
 	if not whiteList then whiteList = changes end
 	for k, v in pairs(changes) do
@@ -129,7 +121,8 @@ return {
 		if not maid then
 			maid = maidConstructor.new()
 		end
-
+		params.SynthClass = nil
+		params.Name = params.Name or publicStates.SynthClass:get()
 		mergeConfig(config, params, nil, publicStates)
 
 		local inst = constructor(config)
@@ -153,8 +146,6 @@ return {
 					desc:Destroy()
 				end
 				maid:Destroy()
-			else
-				updateElevation(inst)
 			end
 		end)
 		return inst

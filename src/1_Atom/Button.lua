@@ -1,5 +1,5 @@
 local packages = script.Parent.Parent.Parent
-local synthetic
+local synthetic = require(script.Parent.Parent)
 local fusion = require(packages:WaitForChild('fusion'))
 local typographyConstructor = require(packages:WaitForChild('typography'))
 local maidConstructor = require(packages:WaitForChild('maid'))
@@ -10,16 +10,16 @@ local effects = require(script.Parent.Parent:WaitForChild("Effects"))
 local constructor = {}
 
 function constructor.new(params)
-	synthetic = synthetic or require(script.Parent.Parent)
+	local inst
 
 	--public states
 	local public = {
 		Variant = util.import(params.Variant) or fusion.State("Filled"),
 		Typography = util.import(params.Typography) or typographyConstructor.new(Enum.Font.SourceSans, 10, 14),
 		Text = util.import(params.Text) or fusion.State(""),
-		Color = util.import(params.Color) or fusion.State(Color3.new(0.5,0,1)),
-		TextColor = util.import(params.TextColor) or fusion.State(Color3.new(0.2,0.2,0.2)),
-		Image = util.import(params.Icon) or fusion.State("rbxassetid://3926305904"),
+		BackgroundColor = util.import(params.BackgroundColor) or fusion.State(Color3.new(0.5,0,1)),
+		LineColor = util.import(params.LineColor) or fusion.State(Color3.new(0.2,0.2,0.2)),
+		Image = util.import(params.Icon) or fusion.State(""),
 		ImageRectSize = util.import(params.ImageRectSize) or fusion.State(Vector2.new(0,0)),
 		ImageRectOffset = util.import(params.ImageRectOffset) or fusion.State(Vector2.new(0, 0)),
 		SynthClass = fusion.Computed(function()
@@ -32,9 +32,9 @@ function constructor.new(params)
 	local _Clicked = fusion.State(false)
 
 	--properties
-	local _MainColor = util.getInteractionColor(_Clicked, _Hovered, public.Color)
-	local _DetailColor = util.getInteractionColor(_Clicked, _Hovered, public.TextColor)
-	local _TextColor = fusion.Computed(function()
+	local _MainColor = util.getInteractionColor(_Clicked, _Hovered, public.BackgroundColor)
+	local _DetailColor = util.getInteractionColor(_Clicked, _Hovered, public.LineColor)
+	local _LineColor = fusion.Computed(function()
 		if enums.Variant[public.Variant:get()] == enums.Variant.Outlined then
 			return _MainColor:get()
 		elseif enums.Variant[public.Variant:get()] == enums.Variant.Filled then
@@ -48,16 +48,10 @@ function constructor.new(params)
 	local _Padding = fusion.Computed(function()
 		return public.Typography:get().Padding
 	end)
-	local _TextSize = fusion.Computed(function()
-		return public.Typography:get().TextSize
-	end)
 
 	--preparing config
-	return util.set(fusion.New "TextButton", public, params, {
-		Name = script.Name,
-		BackgroundColor3 = util.tween(fusion.Computed(function()
-			return _MainColor:get()
-		end)),
+	inst = util.set(fusion.New "TextButton", public, params, {
+		BackgroundColor3 = Color3.new(1,1,1),
 		BackgroundTransparency = util.tween(fusion.Computed(function()
 			if enums.Variant[public.Variant:get()] == enums.Variant.Outlined then
 				return 1
@@ -69,16 +63,18 @@ function constructor.new(params)
 				return 0
 			end
 		end)),
-		TextSize = util.tween(_TextSize),
-		TextColor3 = util.tween(_TextColor),
-		Font = typographyConstructor.getTextSizeState(public.Typography),
+		TextSize = util.tween(fusion.Computed(function()
+			return public.Typography:get().TextSize
+		end)),
+		TextColor3 = util.tween(_LineColor),
+		Font = fusion.Computed(function()
+			return public.Typography:get().Font
+		end),
 		AutomaticSize = Enum.AutomaticSize.XY,
 		AutoButtonColor = false,
 		[fusion.Children] = {
 			fusion.New 'UIStroke' {
-				Color = util.tween(fusion.Computed(function()
-					return _MainColor:get()
-				end)),
+				Color = util.tween(_MainColor),
 				Transparency = util.tween(fusion.Computed(function()
 					if enums.Variant[public.Variant:get()] == enums.Variant.Outlined then
 						return 0
@@ -109,11 +105,14 @@ function constructor.new(params)
 			synthetic.New 'Label' {
 				Typography = public.Typography,
 				Text = public.Text,
-				Color = _TextColor,
+				Color = _LineColor,
 				Image = public.Image,
 				ImageRectSize = public.ImageRectSize,
 				ImageRectOffset = public.ImageRectOffset,
-			}
+			},
+			synthetic.New 'GradientRipple' {
+				Color = public.BackgroundColor,
+			},
 		},
 		[fusion.OnEvent "InputBegan"] = function()
 			_Hovered:set(true)
@@ -122,14 +121,19 @@ function constructor.new(params)
 			_Hovered:set(false)
 			_Clicked:set(false)
 		end,
-		[fusion.OnEvent "MouseButton1Down"] = function()
-			effects.clickSound(0.75)
+		[fusion.OnEvent "MouseButton1Down"] = function(x, y)
+			effects.sound("ui_tap-variant-01")
+			if inst:FindFirstChild("GradientRipple") then
+				local ripple = inst:FindFirstChild("GradientRipple")
+				ripple.Effect:Fire(Vector2.new(x,y))
+			end
 			_Clicked:set(true)
 		end,
 		[fusion.OnEvent "MouseButton1Up"] = function()
 			_Clicked:set(false)
 		end,
 	})
+	return inst
 end
 
 return constructor

@@ -1,5 +1,5 @@
 local packages = script.Parent.Parent.Parent
-local synthetic
+local synthetic = require(script.Parent.Parent)
 local fusion = require(packages:WaitForChild('fusion'))
 local maidConstructor = require(packages:WaitForChild('maid'))
 local filterConstructor = require(packages:WaitForChild("filter"))
@@ -10,7 +10,7 @@ local enums = require(script.Parent.Parent:WaitForChild("Enums"))
 local constructor = {}
 
 function constructor.new(params)
-	synthetic = synthetic or require(script.Parent.Parent)
+
 
 	--public states
 	local public = {
@@ -19,8 +19,8 @@ function constructor.new(params)
 		Label = fusion.State(params.Label or ""),
 		Prefix = fusion.State(params.Prefix or ""),
 		Suffix = fusion.State(params.Suffix or ""),
-		Color = fusion.State(params.Suffix or Color3.new(0.5,0,1)),
-		TextColor = fusion.State(params.Suffix or Color3.new(0.5,0.5,0.5)),
+		BackgroundColor = fusion.State(params.BackgroundColor or Color3.new(0.5,0,1)),
+		LineColor = fusion.State(params.LineColor or Color3.new(0.5,0.5,0.5)),
 		Typography = util.import(params.Typography) or typographyConstructor.new(Enum.Font.SourceSans, 10, 14),
 		SynthClass = fusion.Computed(function()
 			return script.Name
@@ -39,9 +39,9 @@ function constructor.new(params)
 		return public.Typography:get().TextSize
 	end)
 	local filter = filterConstructor.new(game.Players.LocalPlayer)
-	local _MainColor = util.getInteractionColor(_Clicked, _Hovered, public.Color)
-	local _DetailColor = util.getInteractionColor(_Clicked, _Hovered, public.TextColor)
-	local _TextColor = fusion.Computed(function()
+	local _MainColor = util.getInteractionColor(_Clicked, _Hovered, public.BackgroundColor)
+	local _DetailColor = util.getInteractionColor(_Clicked, _Hovered, public.LineColor)
+	local _LineColor = fusion.Computed(function()
 		if enums.Variant[public.Variant:get()] == enums.Variant.Outlined then
 			return _MainColor:get()
 		elseif enums.Variant[public.Variant:get()] == enums.Variant.Filled then
@@ -55,7 +55,6 @@ function constructor.new(params)
 
 	--constructor
 	return util.set(fusion.New "TextBox", public, params, {
-		Name = script.Name,
 		BackgroundColor3 = util.tween(fusion.Computed(function()
 			return _MainColor:get()
 		end)),
