@@ -78,7 +78,9 @@ function constructor.new(params)
 				PaddingTop = _Padding
 			},
 			fusion.New "UICorner" {
-				CornerRadius = _Padding
+				CornerRadius = util.tween(fusion.Computed(function()
+					return UDim.new(0, _Padding:get().Offset*0.5)
+				end)),
 			},
 			fusion.New "UIStroke" {
 				ApplyStrokeMode = Enum.ApplyStrokeMode.Border,

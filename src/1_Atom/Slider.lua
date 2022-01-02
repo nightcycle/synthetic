@@ -85,7 +85,7 @@ function constructor.new(params)
 	local _MutedColor = fusion.Computed(function()
 		local h,s,v = public.Color:get():ToHSV()
 
-		return Color3.fromHSV(h,s*0.3,v)
+		return Color3.fromHSV(h,s*0.4,v)
 	end)
 	local _SliderPadding = fusion.Computed(function()
 		local typography = public.Typography:get()

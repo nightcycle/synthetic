@@ -5,12 +5,12 @@ local synthetic = game.Players.LocalPlayer:WaitForChild("PlayerScripts"):WaitFor
 synthetic.Parent = packages
 synthetic = require(synthetic)
 
-local color = Color3.fromHSV(0.55,1,1)
+local color = Color3.fromHSV(0.7,0.7,1)
 local lineColor = Color3.fromHSV(1, 0, 0.2)
-local surfaceColor = Color3.fromHSV(1, 0, 0.7)
-local headerType = typographyConstructor.new(Enum.Font.GothamBlack, 15, 20)
-local buttonType = typographyConstructor.new(Enum.Font.GothamBold, 12, 17)
-local bodyType = typographyConstructor.new(Enum.Font.Gotham, 10, 15)
+local surfaceColor = Color3.fromHSV(1, 0, 0.9)
+local headerType = typographyConstructor.new(Enum.Font.GothamBlack, 17, 24)
+local buttonType = typographyConstructor.new(Enum.Font.GothamBold, 15, 17)
+local bodyType = typographyConstructor.new(Enum.Font.Gotham, 12, 15)
 
 local screenGui = fusion.New "ScreenGui" {
 	Parent = game.Players.LocalPlayer:WaitForChild("PlayerGui"),

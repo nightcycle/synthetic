@@ -90,7 +90,9 @@ function constructor.new(params)
 				Thickness = 2,
 			},
 			fusion.New 'UICorner' {
-				CornerRadius = util.tween(_Padding),
+				CornerRadius = util.tween(fusion.Computed(function()
+					return UDim.new(0, _Padding:get().Offset*0.5)
+				end)),
 			},
 			fusion.New 'UIListLayout' {
 				HorizontalAlignment = Enum.HorizontalAlignment.Center,

@@ -95,7 +95,7 @@ function constructor.new(params)
 					},
 					fusion.New "UIStroke" {
 						ApplyStrokeMode = Enum.ApplyStrokeMode.Border,
-						Transparency = 0.5
+						Transparency = 0.8,
 					}
 				}
 			},
@@ -114,7 +114,7 @@ function constructor.new(params)
 					},
 					fusion.New "UIStroke" {
 						ApplyStrokeMode = Enum.ApplyStrokeMode.Border,
-						Transparency = 0.5
+						Transparency = 1,
 					},
 					fusion.New "UIGradient" {
 						Color = util.tween(fusion.Computed(function()

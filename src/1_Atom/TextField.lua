@@ -10,15 +10,6 @@ local enums = require(script.Parent.Parent:WaitForChild("Enums"))
 
 local constructor = {}
 
-local states = {
-	Unknown = 0,
-	Inactive = 1,
-	Activated = 2,
-	Hover = 3,
-	Focused = 3,
-	Disabled = 3,
-}
-
 function constructor.new(params)
 	local maid = maidConstructor.new()
 	--public states
@@ -27,17 +18,18 @@ function constructor.new(params)
 
 		Typography = util.import(params.Typography) or typographyConstructor.new(Enum.Font.SourceSans, 10, 14),
 		Input = util.import(params.Input) or fusion.State(""),
-
-		Label = util.import(params.Label) or fusion.State("Label"),
-		Prefix = util.import(params.Prefix) or fusion.State("$"),
-		Suffix = util.import(params.Suffix) or fusion.State("@gmail.com"),
+		Context = util.import(params.Context) or fusion.State(""),
+		Error = util.import(params.Error) or fusion.State(""),
+		Label = util.import(params.Label) or fusion.State("Topic"),
+		Prefix = util.import(params.Prefix) or fusion.State(""),
+		Suffix = util.import(params.Suffix) or fusion.State(""),
 
 		LeadingIconImage = util.import(params.LeadingIconImage) or fusion.State("rbxassetid://3926305904"),
-		LeadingIconRectOffset = util.import(params.LeadingIconRectOffset) or fusion.State(Vector2.new(964, 84)),
+		LeadingIconRectOffset = util.import(params.LeadingIconRectOffset) or fusion.State(Vector2.new(724, 964)),
 		LeadingIconRectSize = util.import(params.LeadingIconRectSize) or fusion.State(Vector2.new(36,36)),
 
-		TrailingIconImage = util.import(params.TrailingIconImage) or fusion.State("rbxassetid://3926305904"),
-		TrailingIconRectOffset = util.import(params.TrailingIconRectOffset) or fusion.State(Vector2.new(964, 84)),
+		TrailingIconImage = util.import(params.TrailingIconImage) or fusion.State("rbxassetid://3926307971"),
+		TrailingIconRectOffset = util.import(params.TrailingIconRectOffset) or fusion.State(Vector2.new(44, 524)),
 		TrailingIconRectSize = util.import(params.TrailingIconRectSize) or fusion.State(Vector2.new(36,36)),
 
 		CharacterLimit = util.import(params.CharacterLimit) or fusion.State(params.CharacterLimit or 20),
@@ -47,13 +39,49 @@ function constructor.new(params)
 		LineColor = util.import(params.LineColor) or fusion.State(Color3.new(0.2,0.2,0.2)),
 		TextColor = util.import(params.TextColor) or fusion.State(Color3.new(0.2,0.2,0.2)),
 		ErrorColor = util.import(params.ErrorColor) or fusion.State(Color3.new(1,0,0)),
+		LeadingIconColor = util.import(params.LeadingIconColor) or fusion.State(Color3.new(0.2,0.2,0.2)),
+		TrailingIconColor = util.import(params.TrailingIconColor) or fusion.State(Color3.new(0.2,0.2,0.2)),
+
+		MinimumTextWidth = util.import(params.MinimumWidth) or fusion.State(30),
+		MaximumTextWidth = util.import(params.MinimumWidth) or fusion.State(175),
+
+		CensorText = util.import(params.CensorText) or fusion.State(true),
+		FilterNumber = util.import(params.FilterNumber) or fusion.State(false),
+		FilterLetter = util.import(params.FilterLetter) or fusion.State(false),
+		FilterSpacing = util.import(params.FilterSpacing) or fusion.State(false),
+		FilterDuplicateSpacing = util.import(params.FilterDuplicateSpacing) or fusion.State(true),
+		FilterSymbols = util.import(params.FilterSymbols) or fusion.State(false),
+		FilterMaxLength = util.import(params.FilterMaxLength) or fusion.State(10000),
+		ForceUpper = util.import(params.ForceUpper) or fusion.State(false),
+		ForceLower = util.import(params.ForceLower) or fusion.State(false),
+		ForceFirstUpper = util.import(params.ForceFirstUpper) or fusion.State(false),
 
 		SynthClass = fusion.Computed(function()
 			return script.Name
-		end),
-
-		Value = fusion.State(""),
+		end)
 	}
+
+	--read only properties & foundational variables
+	local filter = filterConstructor.new(game.Players.LocalPlayer)
+	maid:GiveTask(filter)
+	local _FilteredText = fusion.Computed(function()
+		filter.Configuration.Number = public.FilterNumber:get()
+		filter.Configuration.Letter = public.FilterLetter:get()
+		filter.Configuration.Spacing = public.FilterSpacing:get()
+		filter.Configuration.DuplicateSpacing = public.FilterDuplicateSpacing:get()
+		filter.Configuration.Symbols = public.FilterSymbols:get()
+		filter.Configuration.Roblox = public.CensorText:get()
+		filter.Configuration.MaxLength = public.FilterMaxLength:get()
+		filter.Configuration.ForceUpper = public.ForceUpper:get()
+		filter.Configuration.ForceLower = public.ForceLower:get()
+		filter.Configuration.ForceFirstUpper = public.ForceFirstUpper:get()
+		return filter:Get(public.Input:get())
+	end)
+
+	public.Value = fusion.Computed(function()
+		return script.Name
+	end)
+
 	--influencers
 	local _Focused = fusion.State(false)
 	local _Hovered = fusion.State(false)
@@ -65,8 +93,10 @@ function constructor.new(params)
 	local _TextSize = fusion.Computed(function()
 		return public.Typography:get().TextSize
 	end)
-	local filter = filterConstructor.new(game.Players.LocalPlayer)
-	maid:GiveTask(filter)
+	local _LabelTextSize = fusion.Computed(function()
+		return _TextSize:get()*0.7
+	end)
+
 	local _BackgroundColor = util.getInteractionColor(_Focused, _Hovered, public.BackgroundColor)
 	local _Color = util.getInteractionColor(_Focused, _Hovered, public.Color)
 	local _CursorPosition = fusion.State(1)
@@ -112,14 +142,25 @@ function constructor.new(params)
 
 		end,
 		[fusion.OnEvent "FocusLost"] = function()
+
 			_Focused:set(false)
-			public.Value:set(filter:Get(public.Input:get()))
+
+			local filteredText = _FilteredText:get()
+			public.Input:set(filteredText)
 		end,
 		[fusion.OnChange "Text"] = function()
 			public.Input:set(content.Text)
 		end,
 
 		[fusion.Children] = {
+			fusion.New 'UISizeConstraint' {
+				MaxSize = fusion.Computed(function()
+					return Vector2.new(public.MaximumTextWidth:get(), math.huge)
+				end),
+				MinSize = fusion.Computed(function()
+					return Vector2.new(public.MinimumTextWidth:get(), 0)
+				end),
+			},
 			fusion.New 'UIListLayout' {
 				HorizontalAlignment = Enum.HorizontalAlignment.Left,
 				VerticalAlignment = Enum.VerticalAlignment.Center,
@@ -129,6 +170,7 @@ function constructor.new(params)
 				TextYAlignment = Enum.TextYAlignment.Center,
 				AutomaticSize = Enum.AutomaticSize.XY,
 				BackgroundTransparency = 1,
+				TextTruncate = Enum.TextTruncate.AtEnd,
 				Text = fusion.Computed(function()
 					local input = public.Input:get()
 					local filled = _Filled:get()
@@ -177,6 +219,9 @@ function constructor.new(params)
 			Image = public[key.."IconImage"],
 			ImageRectOffset = public[key.."IconRectOffset"],
 			ImageRectSize = public[key.."IconRectSize"],
+			Visible = fusion.Computed(function()
+				return public[key.."IconImage"]:get() ~= ""
+			end),
 			LayoutOrder = layoutOrder,
 		}
 	end
@@ -187,6 +232,9 @@ function constructor.new(params)
 			AutomaticSize = Enum.AutomaticSize.X,
 			TextTransparency = 0.5,
 			Text = public[key],
+			Visible = fusion.Computed(function()
+				return public[key]:get() ~= ""
+			end),
 			LayoutOrder = layoutOrder,
 		}
 	end
@@ -203,11 +251,37 @@ function constructor.new(params)
 				VerticalAlignment = Enum.VerticalAlignment.Top,
 				SortOrder = Enum.SortOrder.LayoutOrder,
 				Padding = fusion.Computed(function()
-					return UDim.new(0,_Padding:get().Offset*0.5)
+					return UDim.new(0,_Padding:get().Offset*0.25)
 				end),
 			},
 			fusion.New 'TextLabel' {
 				Name = "UpperLabel",
+				Text = public.Label,
+				TextSize = fusion.Computed(function()
+					return _LabelTextSize:get()
+				end),
+				Size = fusion.Computed(function()
+					return UDim2.fromOffset(0, _LabelTextSize:get())
+				end),
+				AutomaticSize = Enum.AutomaticSize.X,
+				TextXAlignment = Enum.TextXAlignment.Left,
+				TextYAlignment = Enum.TextYAlignment.Bottom,
+				TextColor3 = util.tween(fusion.Computed(function()
+					local focusedColor = public.Color:get()
+					local textColor = public.TextColor:get()
+					if _Focused:get() then
+						return focusedColor
+					else
+						return textColor
+					end
+				end)),
+				TextTransparency = util.tween(fusion.Computed(function()
+					if _Filled:get() then
+						return 0
+					else
+						return 1
+					end
+				end)),
 				LayoutOrder = 1,
 				BackgroundTransparency = 1,
 			},
@@ -273,7 +347,12 @@ function constructor.new(params)
 						Rotation = 90,
 						Color = fusion.Computed(function()
 							local c1 = _BackgroundColor:get()
-							local c2 = _Color:get()
+							local color = _Color:get()
+							local lineColor = public.LineColor:get()
+							local c2 = lineColor
+							if _Focused:get() then
+								c2 = color
+							end
 							local lineAlpha = 1/_TextSize:get()
 							return ColorSequence.new({
 								ColorSequenceKeypoint.new(0, c1),
@@ -321,6 +400,43 @@ function constructor.new(params)
 			},
 			fusion.New 'TextLabel' {
 				Name = "ContextLabel",
+				Text = fusion.Computed(function()
+					local errorTxt = public.Error:get()
+					local contextTxt = public.Context:get()
+					if errorTxt ~= "" then
+						return errorTxt
+					else
+						return contextTxt
+					end
+				end),
+				TextSize = fusion.Computed(function()
+					return _LabelTextSize:get()
+				end),
+				Size = fusion.Computed(function()
+					return UDim2.fromOffset(0, _LabelTextSize:get())
+				end),
+				AutomaticSize = Enum.AutomaticSize.X,
+				TextXAlignment = Enum.TextXAlignment.Left,
+				TextYAlignment = Enum.TextYAlignment.Top,
+				TextColor3 = util.tween(fusion.Computed(function()
+					local errorColor = public.ErrorColor:get()
+					local textColor = public.TextColor:get()
+					if public.Error:get() == "" then
+						return textColor
+					else
+						return errorColor
+					end
+				end)),
+				TextTransparency = util.tween(fusion.Computed(function()
+					local errorTxt = public.Error:get()
+					local contextTxt = public.Context:get()
+
+					if errorTxt ~= "" or contextTxt ~= "" then
+						return 0
+					else
+						return 1
+					end
+				end)),
 				LayoutOrder = 3,
 				BackgroundTransparency = 1,
 			},
