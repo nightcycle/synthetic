@@ -17,6 +17,7 @@ function constructor.new(params)
 		Variant = util.import(params.Variant) or fusion.State("Filled"),
 		Typography = util.import(params.Typography) or typographyConstructor.new(Enum.Font.SourceSans, 10, 14),
 		Text = util.import(params.Text) or fusion.State(""),
+		Tooltip = util.import(params.Tooltip) or fusion.State(""),
 		BackgroundColor = util.import(params.BackgroundColor) or fusion.State(Color3.new(0.5,0,1)),
 		LineColor = util.import(params.LineColor) or fusion.State(Color3.new(0.2,0.2,0.2)),
 		Image = util.import(params.Icon) or fusion.State(""),

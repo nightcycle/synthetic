@@ -26,6 +26,7 @@ local screenGui = fusion.New "ScreenGui" {
 			Text = "TEST",
 			BackgroundColor = color,
 			LineColor = lineColor,
+			Tooltip = "Omg what a useful tip",
 		},
 		synthetic.New "Checkbox" {
 			Typography = buttonType,

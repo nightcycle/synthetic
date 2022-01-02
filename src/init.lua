@@ -13,9 +13,14 @@ local constructors = {
 	util = require(script:WaitForChild("Util")),
 }
 
-return {New = function(key)
-	if not constructors[key] and constructorModules[key] then
-		constructors[key] = require(constructorModules[key]).new
-	end
-	return constructors[key]
-end}
+return {
+	New = function(key)
+		if not constructors[key] and constructorModules[key] then
+			constructors[key] = require(constructorModules[key]).new
+		end
+		return constructors[key]
+	end,
+	Set = function(key, constructor) --in case you wanna add your own
+		constructors[key] = constructor
+	end,
+}

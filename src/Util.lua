@@ -93,6 +93,7 @@ end
 return {
 	setPublicState = setPublicState,
 
+
 	import = function(stateOrVal)
 		if type(stateOrVal) == "table" or stateOrVal == nil then
 			return stateOrVal

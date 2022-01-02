@@ -30,7 +30,6 @@ function constructor.new(params)
 
 	--construct
 	return util.set(fusion.New "Frame", public, params, {
-		Name = "Ripple",
 		AnchorPoint = Vector2.new(0.5,0.5),
 		Size = util.tween(fusion.Computed(function()
 			return UDim2.new(public.Size:get(), public.Size:get())

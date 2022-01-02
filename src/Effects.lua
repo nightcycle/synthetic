@@ -13,6 +13,12 @@ local fxHolder = fusion.New "ScreenGui" {
 	DisplayOrder = math.huge,
 }
 
+local cam = game.Workspace.CurrentCamera
+local screenSize = fusion.State(cam.ViewportSize)
+cam:GetPropertyChangedSignal("ViewportSize"):Connect(function()
+	screenSize:set(cam.ViewportSize)
+end)
+
 local sounds = {
 	["alarm_gentle"] = "rbxassetid://8419004462",
 	["alert_error-01"] = "rbxassetid://8418989416",
@@ -81,5 +87,67 @@ return {
 		soundInst.Volume = 0.5
 		soundInst.PlayOnRemove = true
 		soundInst:Destroy()
+	end,
+
+	tip = function(
+		maid:table,
+		tipParams: table,
+		hostAbsPositionState: Vector2,
+		hostAbsSizeState: Vector2,
+		preferredDirection: Vector2
+	)
+		tipParams.AnchorPoint = fusion.Computed(function()
+			local dir = Vector2.new(1,1) - preferredDirection:get()
+			local xWeight = math.abs(dir.X - 0.5)*2
+			local yWeight = math.abs(dir.X- 0.5)*2
+			if yWeight >= 1 or xWeight >= 1 then
+				return Vector2.new(dir.X, dir.Y)
+			else
+				return Vector2.new(math.round(dir.X), math.round(dir.Y))
+			end
+		end)
+		tipParams.Position = fusion.Computed(function()
+			--generate first potential point
+			local anchorPoint = tipParams.AnchorPoint:get()
+			local antiAnchor = Vector2.new(1,1)-anchorPoint
+			local position = hostAbsPositionState:get()
+			local size = hostAbsSizeState:get()
+			local offset = antiAnchor*Vector2.new(5,5)
+			local point = position + antiAnchor*size + offset
+
+			--check to make sure it fits, nudging when necessary
+			local screenBounds = screenSize:get()
+			if point.X < 0 then point += Vector2.new(-point.X, 0) end
+			if point.Y < 0 then point += Vector2.new(0, -point.Y) end
+			if point.X > screenBounds.X then point -= Vector2.new(screenBounds.X-point.X, 0) end
+			if point.Y > screenBounds.Y then point -= Vector2.new(0, screenBounds.Y-point.Y) end
+
+			--check again for max distance point, nudging when necessary
+			local maxPoint = point + (size*antiAnchor)
+			if maxPoint.X < 0 then
+				local fix = Vector2.new(-maxPoint.X, 0)
+				point += fix
+				maxPoint += fix
+			end
+			if maxPoint.Y < 0 then
+				local fix = Vector2.new(0, -maxPoint.Y)
+				point += fix
+				maxPoint += fix
+			end
+			if maxPoint.X > screenBounds.X then
+				local fix = Vector2.new(screenBounds.X-maxPoint.X, 0)
+				point -= fix
+				maxPoint -= fix
+			end
+			if maxPoint.Y > screenBounds.Y then
+				local fix = Vector2.new(screenBounds.Y-maxPoint.Y, 0)
+				point -= fix
+				maxPoint -= fix
+			end
+			return UDim2.fromOffset(point.X, point.Y)
+		end)
+
+		local tipInst = require(script.Parent:FindFirstChild("Bubble", true)).new "Tooltip" (tipParams)
+		maid:GiveTask(tipInst)
 	end,
 }

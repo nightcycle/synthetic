@@ -24,11 +24,11 @@ function constructor.new(params)
 		Prefix = util.import(params.Prefix) or fusion.State(""),
 		Suffix = util.import(params.Suffix) or fusion.State(""),
 
-		LeadingIconImage = util.import(params.LeadingIconImage) or fusion.State("rbxassetid://3926305904"),
+		LeadingIconImage = util.import(params.LeadingIconImage) or fusion.State(""),
 		LeadingIconRectOffset = util.import(params.LeadingIconRectOffset) or fusion.State(Vector2.new(724, 964)),
 		LeadingIconRectSize = util.import(params.LeadingIconRectSize) or fusion.State(Vector2.new(36,36)),
 
-		TrailingIconImage = util.import(params.TrailingIconImage) or fusion.State("rbxassetid://3926307971"),
+		TrailingIconImage = util.import(params.TrailingIconImage) or fusion.State(""),
 		TrailingIconRectOffset = util.import(params.TrailingIconRectOffset) or fusion.State(Vector2.new(44, 524)),
 		TrailingIconRectSize = util.import(params.TrailingIconRectSize) or fusion.State(Vector2.new(36,36)),
 
@@ -122,7 +122,9 @@ function constructor.new(params)
 
 		return false
 	end)
-
+	local _Font = fusion.Computed(function()
+		return public.Typography:get().Font
+	end)
 	content = fusion.New 'TextBox' {
 		Name = "Content",
 		BackgroundTransparency = 1,
@@ -130,6 +132,7 @@ function constructor.new(params)
 		Size = UDim2.fromScale(0,0),
 		AutomaticSize = Enum.AutomaticSize.XY,
 		BorderSizePixel = 0,
+		Font = _Font,
 		TextTransparency = 1,
 		[fusion.OnChange "CursorPosition"] = function()
 			_CursorPosition:set(content.CursorPosition)
@@ -168,6 +171,7 @@ function constructor.new(params)
 			fusion.New 'TextLabel' {
 				TextXAlignment = Enum.TextXAlignment.Left,
 				TextYAlignment = Enum.TextYAlignment.Center,
+				Font = _Font,
 				AutomaticSize = Enum.AutomaticSize.XY,
 				BackgroundTransparency = 1,
 				TextTruncate = Enum.TextTruncate.AtEnd,
@@ -214,8 +218,9 @@ function constructor.new(params)
 				local ts = _TextSize:get()
 				return UDim2.fromOffset(ts,ts)
 			end),
+			Tooltip = util.import(params.Tooltip) or fusion.State(""),
 			BackgroundTransparency = 1,
-			ImageColor3 = public.TextColor,
+			ImageColor3 = public[key.."IconColor"],
 			Image = public[key.."IconImage"],
 			ImageRectOffset = public[key.."IconRectOffset"],
 			ImageRectSize = public[key.."IconRectSize"],
@@ -257,6 +262,7 @@ function constructor.new(params)
 			fusion.New 'TextLabel' {
 				Name = "UpperLabel",
 				Text = public.Label,
+				Font = _Font,
 				TextSize = fusion.Computed(function()
 					return _LabelTextSize:get()
 				end),
@@ -289,6 +295,7 @@ function constructor.new(params)
 				BackgroundColor3 = Color3.new(1,1,1),
 				TextColor3 = util.tween(public.TextColor),
 				TextSize = _TextSize,
+				Font = _Font,
 				AutomaticSize = Enum.AutomaticSize.XY,
 				Size = UDim2.fromScale(0,0),
 				TextTransparency = 1,
@@ -418,6 +425,7 @@ function constructor.new(params)
 				AutomaticSize = Enum.AutomaticSize.X,
 				TextXAlignment = Enum.TextXAlignment.Left,
 				TextYAlignment = Enum.TextYAlignment.Top,
+				Font = _Font,
 				TextColor3 = util.tween(fusion.Computed(function()
 					local errorColor = public.ErrorColor:get()
 					local textColor = public.TextColor:get()
