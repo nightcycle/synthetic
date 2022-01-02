@@ -10,8 +10,6 @@ local enums = require(script.Parent.Parent:WaitForChild("Enums"))
 local constructor = {}
 
 function constructor.new(params)
-
-
 	--public states
 	local public = {
 		Variant = util.import(params.Variant) or fusion.State("Filled"),

@@ -5,7 +5,7 @@ local synthetic = game.Players.LocalPlayer:WaitForChild("PlayerScripts"):WaitFor
 synthetic.Parent = packages
 synthetic = require(synthetic)
 
-local color = Color3.fromHSV(0.95,0.9,0.8)
+local color = Color3.fromHSV(0.55,1,1)
 local lineColor = Color3.fromHSV(1, 0, 0.2)
 local surfaceColor = Color3.fromHSV(1, 0, 0.7)
 local headerType = typographyConstructor.new(Enum.Font.GothamBlack, 15, 20)
