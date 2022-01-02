@@ -31,7 +31,8 @@ function constructor.new(params)
 
 	--properties
 	local _Padding = fusion.Computed(function()
-		return public.Typography:get().Padding
+		local pad = public.Typography:get().Padding
+		return UDim.new(pad.Scale, pad.Offset*0.5)
 	end)
 	local _TextSize = fusion.Computed(function()
 		return public.Typography:get().TextSize
@@ -73,7 +74,7 @@ function constructor.new(params)
 		end,
 		Size = fusion.Computed(function()
 			local height = _TextSize:get() + _Padding:get().Offset*2
-			return UDim2.fromOffset(height*2, height)
+			return UDim2.fromOffset(height*1.85, height)
 		end),
 		Color = util.getInteractionColor(_Clicked, _Hovered, public.Color),
 		BackgroundColor = util.getInteractionColor(_Clicked, _Hovered, public.BackgroundColor),
@@ -86,6 +87,7 @@ function constructor.new(params)
 			end
 		end),
 		KnobEnabled = true,
+		BarPadding = _Padding,
 		Padding = _Padding,
 	})
 

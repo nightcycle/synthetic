@@ -43,7 +43,7 @@ local screenGui = fusion.New "ScreenGui" {
 			Color = color,
 			MinimumValue = fusion.State(0),
 			MaximumValue = fusion.State(100),
-			Notches = fusion.State(10),
+			Notches = fusion.State(5),
 			Value = fusion.State(50),
 		},
 		synthetic.New "Switch" {
@@ -53,7 +53,8 @@ local screenGui = fusion.New "ScreenGui" {
 		},
 		synthetic.New "TextField" {
 			Typography = buttonType,
-			LineColor = lineColor,
+			Color = color,
+			TextColor = lineColor,
 			BackgroundColor = surfaceColor,
 		},
 	}

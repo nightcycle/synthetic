@@ -1,3 +1,4 @@
+local runService = game:GetService("RunService")
 local packages = script.Parent.Parent.Parent
 local synthetic = require(script.Parent.Parent)
 local fusion = require(packages:WaitForChild('fusion'))
@@ -9,23 +10,51 @@ local enums = require(script.Parent.Parent:WaitForChild("Enums"))
 
 local constructor = {}
 
+local states = {
+	Unknown = 0,
+	Inactive = 1,
+	Activated = 2,
+	Hover = 3,
+	Focused = 3,
+	Disabled = 3,
+}
+
 function constructor.new(params)
+	local maid = maidConstructor.new()
 	--public states
 	local public = {
 		Variant = util.import(params.Variant) or fusion.State("Filled"),
-		Value = fusion.State(params.Value or ""),
-		Label = fusion.State(params.Label or ""),
-		Prefix = fusion.State(params.Prefix or ""),
-		Suffix = fusion.State(params.Suffix or ""),
-		BackgroundColor = fusion.State(params.BackgroundColor or Color3.new(0.5,0,1)),
-		LineColor = fusion.State(params.LineColor or Color3.new(0.5,0.5,0.5)),
+
 		Typography = util.import(params.Typography) or typographyConstructor.new(Enum.Font.SourceSans, 10, 14),
+		Input = util.import(params.Input) or fusion.State(""),
+
+		Label = util.import(params.Label) or fusion.State("Label"),
+		Prefix = util.import(params.Prefix) or fusion.State("$"),
+		Suffix = util.import(params.Suffix) or fusion.State("@gmail.com"),
+
+		LeadingIconImage = util.import(params.LeadingIconImage) or fusion.State("rbxassetid://3926305904"),
+		LeadingIconRectOffset = util.import(params.LeadingIconRectOffset) or fusion.State(Vector2.new(964, 84)),
+		LeadingIconRectSize = util.import(params.LeadingIconRectSize) or fusion.State(Vector2.new(36,36)),
+
+		TrailingIconImage = util.import(params.TrailingIconImage) or fusion.State("rbxassetid://3926305904"),
+		TrailingIconRectOffset = util.import(params.TrailingIconRectOffset) or fusion.State(Vector2.new(964, 84)),
+		TrailingIconRectSize = util.import(params.TrailingIconRectSize) or fusion.State(Vector2.new(36,36)),
+
+		CharacterLimit = util.import(params.CharacterLimit) or fusion.State(params.CharacterLimit or 20),
+
+		BackgroundColor = util.import(params.BackgroundColor) or fusion.State(params.BackgroundColor or Color3.new(0.8,0.8,0.8)),
+		Color = util.import(params.Color) or fusion.State(Color3.new(0.5,0,1)),
+		LineColor = util.import(params.LineColor) or fusion.State(Color3.new(0.2,0.2,0.2)),
+		TextColor = util.import(params.TextColor) or fusion.State(Color3.new(0.2,0.2,0.2)),
+		ErrorColor = util.import(params.ErrorColor) or fusion.State(Color3.new(1,0,0)),
+
 		SynthClass = fusion.Computed(function()
 			return script.Name
 		end),
+
+		Value = fusion.State(""),
 	}
 	--influencers
-	local _Clicked = fusion.State(false)
 	local _Focused = fusion.State(false)
 	local _Hovered = fusion.State(false)
 
@@ -37,66 +66,267 @@ function constructor.new(params)
 		return public.Typography:get().TextSize
 	end)
 	local filter = filterConstructor.new(game.Players.LocalPlayer)
-	local _MainColor = util.getInteractionColor(_Clicked, _Hovered, public.BackgroundColor)
-	local _DetailColor = util.getInteractionColor(_Clicked, _Hovered, public.LineColor)
-	local _LineColor = fusion.Computed(function()
-		if enums.Variant[public.Variant:get()] == enums.Variant.Outlined then
-			return _MainColor:get()
-		elseif enums.Variant[public.Variant:get()] == enums.Variant.Filled then
-			return _DetailColor:get()
-		elseif enums.Variant[public.Variant:get()] == enums.Variant.Text then
-			return _MainColor:get()
+	maid:GiveTask(filter)
+	local _BackgroundColor = util.getInteractionColor(_Focused, _Hovered, public.BackgroundColor)
+	local _Color = util.getInteractionColor(_Focused, _Hovered, public.Color)
+	local _CursorPosition = fusion.State(1)
+	local _Cursor = fusion.State(" ")
+
+	maid:GiveTask(runService.RenderStepped:Connect(function()
+		if math.round(tick())%2 == 0 then
+			_Cursor:set(" ")
 		else
-			return _DetailColor:get()
+			_Cursor:set("|")
 		end
+	end))
+
+	local inst
+	local content
+
+	local _Filled = fusion.Computed(function()
+		local focused = _Focused:get()
+		local input = public.Input:get()
+
+		if focused == true then return true end
+		if string.len(input) > 0 then return true end
+
+		return false
 	end)
 
-	--constructor
-	return util.set(fusion.New "TextBox", public, params, {
-		BackgroundColor3 = util.tween(fusion.Computed(function()
-			return _MainColor:get()
-		end)),
-		BackgroundTransparency = util.tween(fusion.Computed(function()
-			if enums.Variant[public.Variant:get()] == enums.Variant.Outlined then
-				return 1
-			else
-				return 0
-			end
-		end)),
+	content = fusion.New 'TextBox' {
+		Name = "Content",
+		BackgroundTransparency = 1,
+		LayoutOrder = 3,
+		Size = UDim2.fromScale(0,0),
+		AutomaticSize = Enum.AutomaticSize.XY,
+		BorderSizePixel = 0,
+		TextTransparency = 1,
+		[fusion.OnChange "CursorPosition"] = function()
+			_CursorPosition:set(content.CursorPosition)
+		end,
+		[fusion.OnEvent "Focused"] = function()
+			_Focused:set(true)
+
+			content.Text = ""
+			public.Input:set("")
+
+		end,
+		[fusion.OnEvent "FocusLost"] = function()
+			_Focused:set(false)
+			public.Value:set(filter:Get(public.Input:get()))
+		end,
+		[fusion.OnChange "Text"] = function()
+			public.Input:set(content.Text)
+		end,
+
 		[fusion.Children] = {
-			fusion.New 'UIStroke' {
-				Color = util.tween(fusion.Computed(function()
-					return _MainColor:get()
-				end)),
-				Transparency = util.tween(fusion.Computed(function()
-					if enums.Variant[public.Variant:get()] == enums.Variant.Outlined then
+			fusion.New 'UIListLayout' {
+				HorizontalAlignment = Enum.HorizontalAlignment.Left,
+				VerticalAlignment = Enum.VerticalAlignment.Center,
+			},
+			fusion.New 'TextLabel' {
+				TextXAlignment = Enum.TextXAlignment.Left,
+				TextYAlignment = Enum.TextYAlignment.Center,
+				AutomaticSize = Enum.AutomaticSize.XY,
+				BackgroundTransparency = 1,
+				Text = fusion.Computed(function()
+					local input = public.Input:get()
+					local filled = _Filled:get()
+					local focused = _Focused:get()
+					local placeholder = public.Label:get()
+					local cursLoc = _CursorPosition:get()
+					local cursor = _Cursor:get()
+					if filled then
+						if focused then
+							local firstHalf = string.sub(input, 1, cursLoc)
+							local secondHalf = string.sub(input, cursLoc+1, string.len(input))
+							if cursLoc-1 == string.len(input) then
+								input = firstHalf..cursor
+							else
+								input = firstHalf..cursor..secondHalf
+							end
+							return input
+						else
+							return input
+						end
+					else
+						return placeholder
+					end
+				end),
+				TextTransparency = fusion.Computed(function()
+					local filled = _Filled:get()
+					if filled then
 						return 0
-					elseif enums.Variant[public.Variant:get()] == enums.Variant.Filled then
-						return 1
-					elseif enums.Variant[public.Variant:get()] == enums.Variant.Text then
+					else
+						return 0.5
+					end
+				end),
+			}
+		},
+	}
+
+	local function constructIcon(key, layoutOrder)
+		return fusion.New 'ImageButton' {
+			Name = key.."Icon",
+			Size = fusion.Computed(function()
+				local ts = _TextSize:get()
+				return UDim2.fromOffset(ts,ts)
+			end),
+			BackgroundTransparency = 1,
+			ImageColor3 = public.TextColor,
+			Image = public[key.."IconImage"],
+			ImageRectOffset = public[key.."IconRectOffset"],
+			ImageRectSize = public[key.."IconRectSize"],
+			LayoutOrder = layoutOrder,
+		}
+	end
+	local function constructLabel(key, layoutOrder)
+		return fusion.New 'TextLabel' {
+			Name = key,
+			Size = UDim2.fromOffset(0,0),
+			AutomaticSize = Enum.AutomaticSize.X,
+			TextTransparency = 0.5,
+			Text = public[key],
+			LayoutOrder = layoutOrder,
+		}
+	end
+
+	--constructor
+	inst = util.set(fusion.New "Frame", public, params, {
+		BackgroundTransparency = 1,
+		AutomaticSize = Enum.AutomaticSize.XY,
+		Size = UDim2.fromScale(0,0),
+		[fusion.Children] = {
+			fusion.New 'UIListLayout' {
+				FillDirection = Enum.FillDirection.Vertical,
+				HorizontalAlignment = Enum.HorizontalAlignment.Left,
+				VerticalAlignment = Enum.VerticalAlignment.Top,
+				SortOrder = Enum.SortOrder.LayoutOrder,
+				Padding = fusion.Computed(function()
+					return UDim.new(0,_Padding:get().Offset*0.5)
+				end),
+			},
+			fusion.New 'TextLabel' {
+				Name = "UpperLabel",
+				LayoutOrder = 1,
+				BackgroundTransparency = 1,
+			},
+			fusion.New 'TextButton' {
+				BackgroundColor3 = Color3.new(1,1,1),
+				TextColor3 = util.tween(public.TextColor),
+				TextSize = _TextSize,
+				AutomaticSize = Enum.AutomaticSize.XY,
+				Size = UDim2.fromScale(0,0),
+				TextTransparency = 1,
+				LayoutOrder = 2,
+				TextXAlignment = Enum.TextXAlignment.Left,
+				ClipsDescendants = true,
+				BackgroundTransparency = util.tween(fusion.Computed(function()
+					if enums.Variant[public.Variant:get()] == enums.Variant.Outlined then
 						return 1
 					else
 						return 0
 					end
 				end)),
-				ApplyStrokeMode = Enum.ApplyStrokeMode.Border,
-				Thickness = 2,
+				[fusion.OnEvent "InputBegan"] = function()
+					_Hovered:set(true)
+				end,
+				[fusion.OnEvent "InputEnded"] = function()
+					_Hovered:set(false)
+				end,
+				[fusion.OnEvent "Activated"] = function()
+					if content:IsFocused() == false then
+						content:CaptureFocus()
+					else
+						content:ReleaseFocus()
+					end
+				end,
+				[fusion.Children] = {
+					content,
+					constructIcon("Leading", 1),
+					constructIcon("Trailing", 5),
+					constructLabel("Prefix", 2),
+					constructLabel("Suffix", 4),
+					fusion.New 'UIStroke' {
+						Color = util.tween(fusion.Computed(function()
+							local lineColor = public.LineColor:get()
+							local color = public.Color:get()
+							if _Focused:get() then
+								return color
+							else
+								return lineColor
+							end
+						end)),
+						Transparency = util.tween(fusion.Computed(function()
+							if enums.Variant[public.Variant:get()] == enums.Variant.Outlined then
+								return 0
+							elseif enums.Variant[public.Variant:get()] == enums.Variant.Filled then
+								return 1
+							else
+								return 0
+							end
+						end)),
+						ApplyStrokeMode = Enum.ApplyStrokeMode.Border,
+						Thickness = 2,
+					},
+					fusion.New 'UIGradient' {
+						Rotation = 90,
+						Color = fusion.Computed(function()
+							local c1 = _BackgroundColor:get()
+							local c2 = _Color:get()
+							local lineAlpha = 1/_TextSize:get()
+							return ColorSequence.new({
+								ColorSequenceKeypoint.new(0, c1),
+								ColorSequenceKeypoint.new(1-lineAlpha, c1),
+								ColorSequenceKeypoint.new(1-lineAlpha+0.01, c2),
+								ColorSequenceKeypoint.new(1, c2),
+							})
+						end)
+					},
+					fusion.New 'UIListLayout' {
+						FillDirection = Enum.FillDirection.Horizontal,
+						HorizontalAlignment = Enum.HorizontalAlignment.Center,
+						VerticalAlignment = Enum.VerticalAlignment.Center,
+						SortOrder = Enum.SortOrder.LayoutOrder,
+						Padding = fusion.Computed(function()
+							return UDim.new(0,_Padding:get().Offset*0.5)
+						end),
+					},
+					fusion.New 'UICorner' {
+						CornerRadius = fusion.Computed(function()
+							return UDim.new(0, _Padding:get().Offset*0.5)
+						end),
+					},
+					fusion.New 'UIPadding' {
+						PaddingBottom = fusion.Computed(function()
+							local padding = _Padding:get()
+							if enums.Variant[public.Variant:get()] == enums.Variant.Outlined then
+								return padding
+							else
+								return UDim.new(0, padding.Offset + 2)
+							end
+						end),
+						PaddingTop = fusion.Computed(function()
+							local padding = _Padding:get()
+							if enums.Variant[public.Variant:get()] == enums.Variant.Outlined then
+								return padding
+							else
+								return UDim.new(0, padding.Offset - 2)
+							end
+						end),
+						PaddingLeft = _Padding,
+						PaddingRight = _Padding,
+					},
+				},
 			},
-			fusion.New 'UICorner' {
-				CornerRadius = util.tween(_Padding),
-			},
-			fusion.New 'UIListLayout' {
-				HorizontalAlignment = Enum.HorizontalAlignment.Center,
-				VerticalAlignment = Enum.VerticalAlignment.Center,
-			},
-			fusion.New 'UIPadding' {
-				PaddingBottom = _Padding,
-				PaddingTop = _Padding,
-				PaddingLeft = _Padding,
-				PaddingRight = _Padding,
+			fusion.New 'TextLabel' {
+				Name = "ContextLabel",
+				LayoutOrder = 3,
+				BackgroundTransparency = 1,
 			},
 		},
-	})
+	}, maid)
+	return inst
 end
 
 return constructor

@@ -9,7 +9,7 @@ local effects = require(script.Parent.Parent:WaitForChild("Effects"))
 local constructor = {}
 
 local moveParams = {
-	Duration = 0.2,
+	Duration = 0.1,
 	EasingStyle = Enum.EasingStyle.Linear,
 	EasingDirection = Enum.EasingDirection.InOut
 }
@@ -22,7 +22,8 @@ function constructor.new(params)
 		Alpha = util.import(params.Alpha) or fusion.State(0),
 		KnobEnabled = util.import(params.KnobEnabled) or fusion.State(false),
 		LockKnobColor = util.import(params.LockKnobColor) or fusion.State(false),
-		Padding = util.import(params.Padding) or fusion.State(UDim.new(0, 6)),
+		BarPadding = util.import(params.BarPadding) or fusion.State(UDim.new(0, 6)),
+		Padding = util.import(params.Padding) or fusion.State(UDim.new(0,8)),
 		Saturation = util.import(params.Saturation) or fusion.State(0.7),
 		SynthClass = fusion.Computed(function()
 			return script.Name
@@ -31,17 +32,26 @@ function constructor.new(params)
 
 	--read only states
 	public.RoundedAlpha = fusion.Computed(function()
-		local precision = 1/public.Notches:get()
+		local precision = 1/(public.Notches:get()-1)
 		return precision * math.round(public.Alpha:get()/precision)
 	end)
 
+	local _barAbsoluteSize = fusion.State(Vector2.new(0,0))
+	local _knobAbsoluteSize = fusion.State(Vector2.new(0,0))
+
 	--construct
-	return util.set(fusion.New "TextButton", public, params, {
+	local inst
+	inst = util.set(fusion.New "TextButton", public, params, {
 		BackgroundColor3 = Color3.new(1, 1, 1),
 		BackgroundTransparency = 1,
+		[fusion.OnChange "AbsoluteSize"] = function()
+			_barAbsoluteSize:set(inst:FindFirstChild("Bar").AbsoluteSize)
+			_knobAbsoluteSize:set(inst:FindFirstChild("Knob").AbsoluteSize)
+		end,
 		[fusion.Children] = {
 			fusion.New "Frame" {
 				Name = "Knob",
+				-- AnchorPoint = Vector2.new(0.5,0.5),
 				AnchorPoint = util.tween(fusion.Computed(function()
 					return Vector2.new(public.RoundedAlpha:get(), 0.5)
 				end), moveParams),
@@ -67,7 +77,13 @@ function constructor.new(params)
 					end
 				end)),
 				Position = util.tween(fusion.Computed(function()
-					return UDim2.fromScale(public.RoundedAlpha:get(), 0.5)
+					local a = public.RoundedAlpha:get()
+					local xWidth = _barAbsoluteSize:get().X
+					local xOffset = xWidth*(a-0.5)
+					local xScale = 0.5
+					local yScale = 0.5
+					local yOffset = 0
+					return UDim2.new(xScale, xOffset, yScale, yOffset)
 				end), moveParams),
 				Size = UDim2.fromScale(1,1),
 				SizeConstraint = Enum.SizeConstraint.RelativeYY,
@@ -90,7 +106,7 @@ function constructor.new(params)
 				BorderSizePixel = 0,
 				Position = UDim2.fromScale(0.5, 0.5),
 				Size = fusion.Computed(function()
-					return UDim2.new(1, -public.Padding:get().Offset*2, 1, -public.Padding:get().Offset*2)
+					return UDim2.new(1, -public.BarPadding:get().Offset*2, 1, -public.BarPadding:get().Offset*2)
 				end),
 				[fusion.Children] = {
 					fusion.New "UICorner" {
@@ -119,9 +135,16 @@ function constructor.new(params)
 						end), moveParams),
 					},
 				}
+			},
+			fusion.New 'UIPadding' {
+				PaddingLeft = public.Padding,
+				PaddingRight = public.Padding,
+				PaddingTop = public.Padding,
+				PaddingBottom = public.Padding,
 			}
 		}
 	})
+	return inst
 end
 
 return constructor

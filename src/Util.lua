@@ -9,8 +9,15 @@ local es = Enum.EasingStyle
 function mergeConfig(baseConfig, changes, whiteList, blackList)
 	if not whiteList then whiteList = changes end
 	for k, v in pairs(changes) do
-		if whiteList[k] ~= nil and blackList[k] == nil then
-			baseConfig[k] = changes[k] or baseConfig[k]
+		if k == fusion.Children then
+			baseConfig[k] = baseConfig[k] or {}
+			for i, val in ipairs(v) do
+				table.insert(baseConfig[k], val)
+			end
+		else
+			if whiteList[k] ~= nil and blackList[k] == nil then
+				baseConfig[k] = changes[k] or baseConfig[k]
+			end
 		end
 	end
 	return baseConfig

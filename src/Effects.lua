@@ -58,34 +58,19 @@ local sounds = {
 
 return {
 	ripple = function(position, color)
-		local currentSize = fusion.State(UDim2.fromOffset(10,10))
+		local currentSize = fusion.State(UDim.new(0,10))
 		local currentTransparency = fusion.State(0.2)
-		local duration = 0.9
-		local tweenParams = {
-			Duration = duration,
-			EasingStyle = Enum.EasingStyle.Cubic,
-			EasingDirection = Enum.EasingDirection.Out,
-		}
-		local TweenSize = util.tween(currentSize, tweenParams)
-		local TweenTransparency = util.tween(currentTransparency, tweenParams)
-		local element = fusion.New "Frame" {
-			Name = "Ripple",
-			Parent = fxHolder,
-			AnchorPoint = Vector2.new(0.5,0.5),
-			Size = TweenSize,
-			BackgroundColor3 = color,
-			BackgroundTransparency = TweenTransparency,
+		local element = require(script.Parent:FindFirstChild("Bubble", true)).new({
+			Size = currentSize,
+			Transparency = currentTransparency,
+			Color = color,
 			Position = position,
-			[fusion.Children] = {
-				fusion.New "UICorner" {
-					CornerRadius = UDim.new(0.5,0),
-				}
-			}
-		}
+			Parent = fxHolder,
+		})
 		task.delay(0, function()
-			currentSize:set(UDim2.fromOffset(60,60))
+			currentSize:set(UDim.new(0,60))
 			currentTransparency:set(1)
-			task.wait(duration)
+			task.wait(0.9)
 			element:Destroy()
 		end)
 	end,

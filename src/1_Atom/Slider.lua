@@ -44,17 +44,37 @@ function constructor.new(params)
 	local _Clicked = fusion.State(false)
 
 	--properties
+	local _BubbleTransparency = fusion.Computed(function()
+		local hovered = _Hovered:get()
+		local clicked = _Clicked:get()
+		if clicked then
+			return 0.6
+		elseif hovered then
+			return 0.9
+		end
+		return 1
+	end)
+	local _BubbleSize = fusion.Computed(function()
+		local hovered = _Hovered:get()
+		local clicked = _Clicked:get()
+		if clicked or hovered then
+			return UDim.new(0, 40)
+		else
+			return UDim.new(0, 0)
+		end
+	end)
 	local _Height = fusion.Computed(function()
 		local typography = public.Typography:get()
 		return typography.TextSize --+ typography.Padding.Offset*2
 	end)
+	local _BubblePosition = fusion.State(UDim2.fromOffset(0,0))
 
 	local function updateBar(cursorPos:Vector2)
 		local typography = public.Typography:get()
 		local pad = typography.Padding.Offset
 
-		local absPos = inst.AbsolutePosition + Vector2.new(0, pad)
-		local absSize = inst.AbsoluteSize - Vector2.new(0, pad*2)
+		local absPos = inst.AbsolutePosition + Vector2.new(pad, pad)
+		local absSize = inst.AbsoluteSize - Vector2.new(pad*2, pad*2)
 		local alpha = (cursorPos.X - absPos.X)/absSize.X
 		local minVal = public.MinimumValue:get()
 		local maxVal = public.MaximumValue:get()
@@ -62,37 +82,16 @@ function constructor.new(params)
 		public.Value:set(alpha*rangeVal + minVal)
 	end
 
-	local function updateRipple(x,y)
-		local absPos = Vector2.new(x,y)
-		local knob = inst:FindFirstChild("Knob")
-		local knobColor = fusion.State(knob.BackgroundColor3)
-
-		local function getPos()
-			local v2 = knob.AbsolutePosition + knob.AbsoluteSize*0.5
-			return UDim2.fromOffset(v2.X, v2.Y)
-		end
-
-		local position = fusion.State(getPos())
-		effects.ripple(position, knobColor)
-		effects.sound("ui_tap-variant-01")
-
-		local rippleMaid = maidConstructor.new()
-		rippleMaid:GiveTask(runService.RenderStepped:Connect(function(delta)
-			position:set(getPos())
-			knobColor:set(knob.BackgroundColor3)
-		end))
-
-		task.delay(1, function()
-			rippleMaid:Destroy()
-		end)
-	end
-
 	local _MutedColor = fusion.Computed(function()
 		local h,s,v = public.Color:get():ToHSV()
 
-		return Color3.fromHSV(h,s*0.6,v)
+		return Color3.fromHSV(h,s*0.3,v)
 	end)
-
+	local _SliderPadding = fusion.Computed(function()
+		local typography = public.Typography:get()
+		local pad = typography.Padding.Offset
+		return UDim.new(0, pad)
+	end)
 	--preparing config
 	inst = util.set(synthetic.New "ProgressBar", public, params, {
 		BackgroundColor = _MutedColor,
@@ -103,6 +102,10 @@ function constructor.new(params)
 		LockKnobColor = false,
 		Saturation = 1,
 		Padding = fusion.Computed(function()
+			local pad = public.Typography:get().Padding
+			return UDim.new(pad.Scale, pad.Offset)
+		end),
+		BarPadding = fusion.Computed(function()
 			local typography = public.Typography:get()
 			local pad = typography.Padding.Offset*2
 			return UDim.new(0, (-pad + 2*_Height:get())*0.325)
@@ -115,34 +118,33 @@ function constructor.new(params)
 			return UDim2.fromOffset(7*height, height+pad*2)
 		end),
 		[fusion.OnEvent "InputChanged"] = function(inputObj)
+			_Hovered:set(true)
 			if not _Clicked:get() then return end
 			local cursorPos = inputObj.Position
 			updateBar(Vector2.new(cursorPos.X, cursorPos.Y))
 		end,
 		[fusion.OnEvent "MouseButton1Down"] = function(x,y)
 			_Clicked:set(true)
+			effects.sound("ui_tap-variant-01")
+
 			updateBar(Vector2.new(x,y))
-			updateRipple(x,y)
 		end,
 		[fusion.OnEvent "MouseButton1Up"] = function()
 			_Clicked:set(false)
+			maid.rippleMaid = nil
 		end,
 		[fusion.OnEvent "InputEnded"] = function()
 			_Clicked:set(false)
+			_Hovered:set(false)
 		end,
 	}, maid)
-	fusion.New "UIPadding" {
-		PaddingTop = fusion.Computed(function()
-			local typography = public.Typography:get()
-			local pad = typography.Padding.Offset
-			return UDim.new(0, pad)
-		end),
-		PaddingBottom = fusion.Computed(function()
-			local typography = public.Typography:get()
-			local pad = typography.Padding.Offset
-			return UDim.new(0, pad)
-		end),
-		Parent = inst,
+	local knob = inst:FindFirstChild("Knob")
+	local bubble = synthetic.New "Bubble" {
+		Position = UDim2.fromScale(0.5,0.5),
+		Size = _BubbleSize,
+		Transparency = _BubbleTransparency,
+		Color = public.Color,
+		Parent = knob,
 	}
 	return inst
 end
