@@ -96,7 +96,13 @@ local screenGui = fusion.New "ScreenGui" {
 			BackgroundColor = surfaceColor,
 			TextColor = lineColor,
 			Width = UDim.new(0,300),
-		}
+		},
+		synthetic.New "Dropdown" {
+			Typography = buttonType,
+			Label = "Bobby Tables",
+			BackgroundColor = surfaceColor,
+			TextColor = lineColor,
+		},
 	}
 }
 

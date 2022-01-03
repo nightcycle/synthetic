@@ -50,6 +50,9 @@ function constructor.new(params)
 			return UDim2.new(width, height)
 		end)),
 		[fusion.Children] = {
+			fusion.New "UIListLayout" {
+				SortOrder = Enum.SortOrder.LayoutOrder
+			},
 			fusion.New "Frame" {
 				Name = "Header",
 				AutomaticSize = Enum.AutomaticSize.Y,
@@ -101,14 +104,12 @@ function constructor.new(params)
 					},
 				},
 			},
-			fusion.New "UIListLayout" {
-				SortOrder = Enum.SortOrder.LayoutOrder
-			},
 			fusion.New "Frame" {
 				Name = "Body",
 				BackgroundColor3 = Color3.new(1, 1, 1),
 				BackgroundTransparency = 1,
 				BorderSizePixel = 0,
+				LayoutOrder = 2,
 				ClipsDescendants = true,
 				Size = util.tween(fusion.Computed(function()
 					local padSize = _Padding:get().Offset

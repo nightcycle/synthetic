@@ -89,19 +89,25 @@ return {
 		soundInst:Destroy()
 	end,
 
-	tip = function(
-		maid:table,
-		tipParams: table,
-		hostAbsPositionState: table,
-		hostAbsSizeState: table,
-		preferredDirection: table
-	)
+	menu = function(maid, menuParams, hostSizeState, hostPositionState)
+		menuParams.Parent = fxHolder
+		menuParams.Position = fusion.Computed(function()
+			local pos = hostPositionState:get()
+			local size = hostSizeState:get()
+			return UDim2.fromOffset(pos.X, pos.Y + size.Y)
+		end)
+		local inst = require(script.Parent:FindFirstChild("Tooltip", true)).new(menuParams)
+		maid:GiveTask(inst)
+		return inst
+	end,
+
+	tip = function(maid, tipParams, hostAbsPositionState, hostAbsSizeState, preferredDirection)
 		tipParams.AnchorPoint = fusion.Computed(function()
 			local dir = Vector2.new(1,1) - preferredDirection:get()
-			print("Pref: ", dir)
+			-- print("Pref: ", dir)
 			local xWeight = math.abs(dir.X - 0.5)*2
 			local yWeight = math.abs(dir.Y- 0.5)*2
-			print('Anchor', dir, xWeight, yWeight)
+			-- print('Anchor', dir, xWeight, yWeight)
 			if yWeight >= 1 or xWeight >= 1 then
 				return Vector2.new(dir.X, dir.Y)
 			else

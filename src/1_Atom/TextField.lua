@@ -56,6 +56,8 @@ function constructor.new(params)
 		ForceLower = util.import(params.ForceLower) or fusion.State(false),
 		ForceFirstUpper = util.import(params.ForceFirstUpper) or fusion.State(false),
 
+		Enabled = util.import(params.Enabled) or fusion.State(true),
+
 		SynthClass = fusion.Computed(function()
 			return script.Name
 		end)
@@ -65,6 +67,8 @@ function constructor.new(params)
 	local filter = filterConstructor.new(game.Players.LocalPlayer)
 	maid:GiveTask(filter)
 	local _FilteredText = fusion.Computed(function()
+		local input = public.Input:get()
+
 		filter.Configuration.Number = public.FilterNumber:get()
 		filter.Configuration.Letter = public.FilterLetter:get()
 		filter.Configuration.Spacing = public.FilterSpacing:get()
@@ -75,7 +79,7 @@ function constructor.new(params)
 		filter.Configuration.ForceUpper = public.ForceUpper:get()
 		filter.Configuration.ForceLower = public.ForceLower:get()
 		filter.Configuration.ForceFirstUpper = public.ForceFirstUpper:get()
-		return filter:Get(public.Input:get())
+		return filter:Get(input)
 	end)
 
 	public.Value = fusion.Computed(function()
@@ -103,7 +107,7 @@ function constructor.new(params)
 	local _Cursor = fusion.State(" ")
 
 	maid:GiveTask(runService.RenderStepped:Connect(function()
-		if math.round(tick())%2 == 0 then
+		if not public.Enabled:get() or math.round(tick())%2 == 0 then
 			_Cursor:set(" ")
 		else
 			_Cursor:set("|")
@@ -131,6 +135,9 @@ function constructor.new(params)
 		LayoutOrder = 3,
 		Size = UDim2.fromScale(0,0),
 		AutomaticSize = Enum.AutomaticSize.XY,
+		TextEditable = public.Enabled,
+		Active = public.Enabled,
+		Selectable = false,
 		BorderSizePixel = 0,
 		Font = _Font,
 		TextTransparency = 1,
@@ -138,6 +145,7 @@ function constructor.new(params)
 			_CursorPosition:set(content.CursorPosition)
 		end,
 		[fusion.OnEvent "Focused"] = function()
+			if not public.Enabled:get() then content:ReleaseFocus() return end
 			_Focused:set(true)
 
 			content.Text = ""
@@ -145,7 +153,7 @@ function constructor.new(params)
 
 		end,
 		[fusion.OnEvent "FocusLost"] = function()
-
+			if not public.Enabled:get() then return end
 			_Focused:set(false)
 
 			local filteredText = _FilteredText:get()
@@ -272,9 +280,12 @@ function constructor.new(params)
 				TextXAlignment = Enum.TextXAlignment.Left,
 				TextYAlignment = Enum.TextYAlignment.Bottom,
 				TextColor3 = util.tween(fusion.Computed(function()
+
 					local focusedColor = public.Color:get()
 					local textColor = public.TextColor:get()
-					if _Focused:get() then
+					local focused = _Focused:get()
+
+					if focused then
 						return focusedColor
 					else
 						return textColor
@@ -315,6 +326,9 @@ function constructor.new(params)
 					_Hovered:set(false)
 				end,
 				[fusion.OnEvent "Activated"] = function()
+					local enabled = public.Enabled:get()
+					if not enabled then return end
+					print("E: ", enabled)
 					if content:IsFocused() == false then
 						content:CaptureFocus()
 					else
