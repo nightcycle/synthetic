@@ -20,7 +20,7 @@ function constructor.new(params)
 		Input = util.import(params.Input) or fusion.State(""),
 		Context = util.import(params.Context) or fusion.State(""),
 		Error = util.import(params.Error) or fusion.State(""),
-		Label = util.import(params.Label) or fusion.State("Topic"),
+		Label = util.import(params.Label) or fusion.State(""),
 		Prefix = util.import(params.Prefix) or fusion.State(""),
 		Suffix = util.import(params.Suffix) or fusion.State(""),
 
@@ -218,7 +218,6 @@ function constructor.new(params)
 				local ts = _TextSize:get()
 				return UDim2.fromOffset(ts,ts)
 			end),
-			Tooltip = util.import(params.Tooltip) or fusion.State(""),
 			BackgroundTransparency = 1,
 			ImageColor3 = public[key.."IconColor"],
 			Image = public[key.."IconImage"],

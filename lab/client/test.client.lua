@@ -1,3 +1,4 @@
+local runService = game:GetService("RunService")
 local packages = game.ReplicatedStorage:WaitForChild("Packages")
 local typographyConstructor = require(packages:WaitForChild('typography'))
 local fusion = require(packages:WaitForChild('fusion'))
@@ -12,6 +13,33 @@ local headerType = typographyConstructor.new(Enum.Font.GothamBlack, 17, 24)
 local buttonType = typographyConstructor.new(Enum.Font.GothamBold, 15, 17)
 local bodyType = typographyConstructor.new(Enum.Font.Gotham, 12, 15)
 
+local character = game.Players.LocalPlayer.Character or game.Players.LocalPlayer.CharacterAdded:Wait()
+local camCF = fusion.State(CFrame.new(0,0,0))
+
+runService.RenderStepped:Connect(function(delta)
+	camCF:set(game.Workspace.CurrentCamera.CFrame)
+end)
+
+local display = synthetic.New "Display" {
+	-- CameraCFrame = camCF,
+	CameraPosition = fusion.Computed(function()
+		return camCF:get().p
+	end),
+	CameraXVector = fusion.Computed(function()
+		return camCF:get().XVector
+	end),
+	CameraYVector = fusion.Computed(function()
+		return camCF:get().YVector
+	end),
+	CameraZVector = fusion.Computed(function()
+		return camCF:get().ZVector
+	end),
+	FOV = 60,
+	Size = UDim2.fromOffset(70,70),
+}
+
+display.InsertHumanoid:Invoke(character, 30)
+display.InsertModel:Invoke(game.Workspace:WaitForChild("FireEngine"), 30)
 local screenGui = fusion.New "ScreenGui" {
 	Parent = game.Players.LocalPlayer:WaitForChild("PlayerGui"),
 	Name = "TestGui",
@@ -19,14 +47,16 @@ local screenGui = fusion.New "ScreenGui" {
 		fusion.New "UIListLayout" {
 			FillDirection = Enum.FillDirection.Vertical,
 			HorizontalAlignment = Enum.HorizontalAlignment.Center,
-			Padding = UDim.new(0, 10)
+			Padding = UDim.new(0, 10),
+			SortOrder = Enum.SortOrder.LayoutOrder,
 		},
 		synthetic.New "Button" {
 			Typography = buttonType,
 			Text = "TEST",
 			BackgroundColor = color,
 			LineColor = lineColor,
-			Tooltip = "Omg what a useful tip",
+			LayoutOrder = 4,
+			-- Tooltip = "Omg what a useful tip",
 		},
 		synthetic.New "Checkbox" {
 			Typography = buttonType,
@@ -58,6 +88,7 @@ local screenGui = fusion.New "ScreenGui" {
 			TextColor = lineColor,
 			BackgroundColor = surfaceColor,
 		},
+		display,
 	}
 }
 

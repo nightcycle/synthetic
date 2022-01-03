@@ -18,8 +18,10 @@ function constructor.new(params)
 		Typography = util.import(params.Typography) or typographyConstructor.new(Enum.Font.SourceSans, 10, 14),
 		Text = util.import(params.Text) or fusion.State(""),
 		Tooltip = util.import(params.Tooltip) or fusion.State(""),
+		TooltipDirection = util.import(params.TooltipDirection) or fusion.State(Vector2.new(0.5,0)),
 		BackgroundColor = util.import(params.BackgroundColor) or fusion.State(Color3.new(0.5,0,1)),
 		LineColor = util.import(params.LineColor) or fusion.State(Color3.new(0.2,0.2,0.2)),
+		TextColor = util.import(params.TextColor) or fusion.State(Color3.new(0.2,0.2,0.2)),
 		Image = util.import(params.Icon) or fusion.State(""),
 		ImageRectSize = util.import(params.ImageRectSize) or fusion.State(Vector2.new(0,0)),
 		ImageRectOffset = util.import(params.ImageRectOffset) or fusion.State(Vector2.new(0, 0)),
@@ -49,9 +51,26 @@ function constructor.new(params)
 	local _Padding = fusion.Computed(function()
 		return public.Typography:get().Padding
 	end)
-
+	local absPosition = fusion.State(Vector2.new(0,0))
+	local absSize = fusion.State(Vector2.new(0,0))
+	local tipEnabled = fusion.State(false)
+	local maid = maidConstructor.new()
+	effects.tip(maid, {
+		Text = public.Tooltip,
+		Visible = fusion.Computed(function()
+			local tipEnabled = tipEnabled:get()
+			local txt = public.Tooltip:get()
+			return tipEnabled and txt ~= ""
+		end),
+	}, absPosition, absSize, public.TooltipDirection)
 	--preparing config
 	inst = util.set(fusion.New "TextButton", public, params, {
+		[fusion.OnChange("AbsoluteSize")] = function()
+			absSize:set(inst.AbsoluteSize)
+		end,
+		[fusion.OnChange("AbsolutePosition")] = function()
+			absPosition:set(inst.AbsolutePosition)
+		end,
 		BackgroundColor3 = Color3.new(1,1,1),
 		BackgroundTransparency = util.tween(fusion.Computed(function()
 			if enums.Variant[public.Variant:get()] == enums.Variant.Outlined then
@@ -67,7 +86,7 @@ function constructor.new(params)
 		TextSize = util.tween(fusion.Computed(function()
 			return public.Typography:get().TextSize
 		end)),
-		TextColor3 = util.tween(_LineColor),
+		TextColor3 = util.tween(public.TextColor),
 		Font = fusion.Computed(function()
 			return public.Typography:get().Font
 		end),
@@ -117,10 +136,12 @@ function constructor.new(params)
 				Color = public.BackgroundColor,
 			},
 		},
-		[fusion.OnEvent "InputBegan"] = function()
+		[fusion.OnEvent "InputBegan"] = function(inputObj)
 			_Hovered:set(true)
+			tipEnabled:set(true)
 		end,
-		[fusion.OnEvent "InputEnded"] = function()
+		[fusion.OnEvent "InputEnded"] = function(inputObj)
+			tipEnabled:set(false)
 			_Hovered:set(false)
 			_Clicked:set(false)
 		end,
@@ -135,7 +156,7 @@ function constructor.new(params)
 		[fusion.OnEvent "MouseButton1Up"] = function()
 			_Clicked:set(false)
 		end,
-	})
+	}, maid)
 	return inst
 end
 

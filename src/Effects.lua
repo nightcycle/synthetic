@@ -92,14 +92,16 @@ return {
 	tip = function(
 		maid:table,
 		tipParams: table,
-		hostAbsPositionState: Vector2,
-		hostAbsSizeState: Vector2,
-		preferredDirection: Vector2
+		hostAbsPositionState: table,
+		hostAbsSizeState: table,
+		preferredDirection: table
 	)
 		tipParams.AnchorPoint = fusion.Computed(function()
 			local dir = Vector2.new(1,1) - preferredDirection:get()
+			print("Pref: ", dir)
 			local xWeight = math.abs(dir.X - 0.5)*2
-			local yWeight = math.abs(dir.X- 0.5)*2
+			local yWeight = math.abs(dir.Y- 0.5)*2
+			print('Anchor', dir, xWeight, yWeight)
 			if yWeight >= 1 or xWeight >= 1 then
 				return Vector2.new(dir.X, dir.Y)
 			else
@@ -112,7 +114,10 @@ return {
 			local antiAnchor = Vector2.new(1,1)-anchorPoint
 			local position = hostAbsPositionState:get()
 			local size = hostAbsSizeState:get()
-			local offset = antiAnchor*Vector2.new(5,5)
+			local x = (antiAnchor.X-0.5)*2
+			local y = (antiAnchor.Y-0.5)*2
+			local offset = Vector2.new(x,y)*Vector2.new(4,4)
+			print(x, y, offset)
 			local point = position + antiAnchor*size + offset
 
 			--check to make sure it fits, nudging when necessary
@@ -146,8 +151,9 @@ return {
 			end
 			return UDim2.fromOffset(point.X, point.Y)
 		end)
+		tipParams.Parent = fxHolder
 
-		local tipInst = require(script.Parent:FindFirstChild("Bubble", true)).new "Tooltip" (tipParams)
+		local tipInst = require(script.Parent:FindFirstChild("Tooltip", true)).new(tipParams)
 		maid:GiveTask(tipInst)
 	end,
 }

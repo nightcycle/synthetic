@@ -16,8 +16,8 @@ function constructor.new(params)
 	local public = {
 		Typography = util.import(params.Typography) or typographyConstructor.new(Enum.Font.SourceSans, 10, 14),
 		Text = util.import(params.Text) or fusion.State(""),
-		BackgroundColor = util.import(params.BackgroundColor) or fusion.State(Color3.new(0.5,0,1)),
-		TextColor = util.import(params.TextColor) or fusion.State(Color3.new(1,1,1)),
+		BackgroundColor = util.import(params.BackgroundColor) or fusion.State(Color3.fromRGB(35,47,52)),
+		TextColor = util.import(params.TextColor) or fusion.State(Color3.fromHex("#FFFFFF")),
 		Position = util.import(params.Position) or fusion.State(UDim2.new(0.5,0.5)),
 		SynthClass = fusion.Computed(function()
 			return script.Name
