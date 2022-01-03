@@ -23,20 +23,30 @@ function constructor.new(params)
 		MinimumValue = util.import(params.MinimumValue) or fusion.State(0),
 		MaximumValue = util.import(params.MaximumValue) or fusion.State(1),
 		Notches = util.import(params.Notches) or fusion.State(5),
-		Value = util.import(params.Value) or fusion.State(0.5),
+		Input = util.import(params.Input) or fusion.Input(0.5),
+		ValueTextEnabled = util.import(params.ValueTextEnabled) or fusion.State(false),
 		Typography = util.import(params.Typography) or typographyConstructor.new(Enum.Font.SourceSans, 10, 14),
 		SynthClass = fusion.Computed(function()
 			return script.Name
 		end),
+
 	}
 
 	--read only public states
 	public.Alpha = fusion.Computed(function()
 		local minVal = public.MinimumValue:get()
 		local maxVal = public.MaximumValue:get()
-		local val = public.Value:get()
+		local val = public.Input:get()
 		local rangeVal = maxVal - minVal
 		return (val-minVal)/rangeVal
+	end)
+	local _DisplayAlpha = fusion.State(public.Alpha:get())
+	public.Value = fusion.Computed(function()
+		local minVal = public.MinimumValue:get()
+		local maxVal = public.MaximumValue:get()
+		local rangeVal = maxVal - minVal
+		local a = _DisplayAlpha:get()
+		return minVal + rangeVal*a
 	end)
 
 	--influencers
@@ -67,7 +77,7 @@ function constructor.new(params)
 		local typography = public.Typography:get()
 		return typography.TextSize --+ typography.Padding.Offset*2
 	end)
-	local _BubblePosition = fusion.State(UDim2.fromOffset(0,0))
+	-- local _BubblePosition = fusion.State(UDim2.fromOffset(0,0))
 
 	local function updateBar(cursorPos:Vector2)
 		local typography = public.Typography:get()
@@ -79,7 +89,7 @@ function constructor.new(params)
 		local minVal = public.MinimumValue:get()
 		local maxVal = public.MaximumValue:get()
 		local rangeVal = maxVal - minVal
-		public.Value:set(alpha*rangeVal + minVal)
+		public.Input:set(alpha*rangeVal + minVal)
 	end
 
 	local _MutedColor = fusion.Computed(function()
@@ -87,11 +97,12 @@ function constructor.new(params)
 
 		return Color3.fromHSV(h,s*0.4,v)
 	end)
-	local _SliderPadding = fusion.Computed(function()
-		local typography = public.Typography:get()
-		local pad = typography.Padding.Offset
-		return UDim.new(0, pad)
-	end)
+	-- local _SliderPadding = fusion.Computed(function()
+	-- 	local typography = public.Typography:get()
+	-- 	local pad = typography.Padding.Offset
+	-- 	return UDim.new(0, pad)
+	-- end)
+	local _TipEnabled = fusion.State(false)
 	--preparing config
 	inst = util.set(synthetic.New "ProgressBar", public, params, {
 		BackgroundColor = _MutedColor,
@@ -125,27 +136,50 @@ function constructor.new(params)
 		end,
 		[fusion.OnEvent "MouseButton1Down"] = function(x,y)
 			_Clicked:set(true)
+			_TipEnabled:set(true)
 			effects.sound("ui_tap-variant-01")
 
 			updateBar(Vector2.new(x,y))
 		end,
 		[fusion.OnEvent "MouseButton1Up"] = function()
 			_Clicked:set(false)
+			_TipEnabled:set(false)
 			maid.rippleMaid = nil
 		end,
 		[fusion.OnEvent "InputEnded"] = function()
 			_Clicked:set(false)
 			_Hovered:set(false)
+			_TipEnabled:set(false)
 		end,
 	}, maid)
 	local knob = inst:FindFirstChild("Knob")
-	local bubble = synthetic.New "Bubble" {
+	local onChange = inst:FindFirstChild("OnChange")
+	--tooltip stuff
+	local _AbsPosition = fusion.State(Vector2.new(0,0))
+	local _AbsSize = fusion.State(Vector2.new(0,0))
+
+
+	maid:GiveTask(onChange.Event:Connect(function(val)
+		_DisplayAlpha:set(val)
+	end))
+
+	maid:GiveTask(knob:GetPropertyChangedSignal("AbsolutePosition"):Connect(function()
+		_AbsPosition:set(knob.AbsolutePosition)
+	end))
+	maid:GiveTask(knob:GetPropertyChangedSignal("AbsoluteSize"):Connect(function()
+		_AbsSize:set(knob.AbsoluteSize)
+	end))
+	effects.tip(maid, {
+		Text = public.Value,
+		Visible = _TipEnabled,
+	}, _AbsPosition, _AbsSize, fusion.State(Vector2.new(0.5,0)))
+	maid:GiveTask(synthetic.New "Bubble" {
 		Position = UDim2.fromScale(0.5,0.5),
 		Size = _BubbleSize,
 		Transparency = _BubbleTransparency,
 		Color = public.Color,
 		Parent = knob,
-	}
+	})
 	return inst
 end
 

@@ -11,6 +11,11 @@ local config = {
 		Background = 8,
 		Error = 9,
 	},
+	DividerDirection = {
+		Unknown = 0,
+		Vertical = 1,
+		Horizontal = 2,
+	},
 	Typography = {
 		Unknown = 0,
 		Headline = 1,

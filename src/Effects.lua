@@ -10,7 +10,7 @@ local fxHolder = fusion.New "ScreenGui" {
 	Parent = player:WaitForChild("PlayerGui"),
 	ResetOnSpawn = false,
 	Name = "Effects",
-	DisplayOrder = math.huge,
+	DisplayOrder = 1000,
 }
 
 local cam = game.Workspace.CurrentCamera
@@ -117,7 +117,6 @@ return {
 			local x = (antiAnchor.X-0.5)*2
 			local y = (antiAnchor.Y-0.5)*2
 			local offset = Vector2.new(x,y)*Vector2.new(4,4)
-			print(x, y, offset)
 			local point = position + antiAnchor*size + offset
 
 			--check to make sure it fits, nudging when necessary

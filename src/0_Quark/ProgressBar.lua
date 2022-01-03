@@ -41,6 +41,7 @@ function constructor.new(params)
 
 	--construct
 	local inst
+	local maid = maidConstructor.new()
 	inst = util.set(fusion.New "TextButton", public, params, {
 		BackgroundColor3 = Color3.new(1, 1, 1),
 		BackgroundTransparency = 1,
@@ -49,6 +50,9 @@ function constructor.new(params)
 			_knobAbsoluteSize:set(inst:FindFirstChild("Knob").AbsoluteSize)
 		end,
 		[fusion.Children] = {
+			fusion.New "BindableEvent" {
+				Name = "OnChange",
+			},
 			fusion.New "Frame" {
 				Name = "Knob",
 				-- AnchorPoint = Vector2.new(0.5,0.5),
@@ -143,7 +147,10 @@ function constructor.new(params)
 				PaddingBottom = public.Padding,
 			}
 		}
-	})
+	}, maid)
+	maid:GiveTask(fusion.Compat(public.RoundedAlpha):onChange(function()
+		inst:FindFirstChild("OnChange"):Fire(public.RoundedAlpha:get())
+	end))
 	return inst
 end
 

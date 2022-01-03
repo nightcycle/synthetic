@@ -11,7 +11,7 @@ local constructor = {}
 
 function constructor.new(params)
 	local inst
-
+	local maid = maidConstructor.new()
 	--public states
 	local public = {
 		Variant = util.import(params.Variant) or fusion.State("Filled"),
@@ -51,25 +51,27 @@ function constructor.new(params)
 	local _Padding = fusion.Computed(function()
 		return public.Typography:get().Padding
 	end)
-	local absPosition = fusion.State(Vector2.new(0,0))
-	local absSize = fusion.State(Vector2.new(0,0))
-	local tipEnabled = fusion.State(false)
-	local maid = maidConstructor.new()
+
+	--tooltip stuff
+	local _AbsPosition = fusion.State(Vector2.new(0,0))
+	local _AbsSize = fusion.State(Vector2.new(0,0))
+	local _TipEnabled = fusion.State(false)
 	effects.tip(maid, {
 		Text = public.Tooltip,
 		Visible = fusion.Computed(function()
-			local tipEnabled = tipEnabled:get()
+			local tipEnabled = _TipEnabled:get()
 			local txt = public.Tooltip:get()
 			return tipEnabled and txt ~= ""
 		end),
-	}, absPosition, absSize, public.TooltipDirection)
+	}, _AbsPosition, _AbsSize, public.TooltipDirection)
+
 	--preparing config
 	inst = util.set(fusion.New "TextButton", public, params, {
 		[fusion.OnChange("AbsoluteSize")] = function()
-			absSize:set(inst.AbsoluteSize)
+			_AbsSize:set(inst.AbsoluteSize)
 		end,
 		[fusion.OnChange("AbsolutePosition")] = function()
-			absPosition:set(inst.AbsolutePosition)
+			_AbsPosition:set(inst.AbsolutePosition)
 		end,
 		BackgroundColor3 = Color3.new(1,1,1),
 		BackgroundTransparency = util.tween(fusion.Computed(function()
@@ -138,10 +140,10 @@ function constructor.new(params)
 		},
 		[fusion.OnEvent "InputBegan"] = function(inputObj)
 			_Hovered:set(true)
-			tipEnabled:set(true)
+			_TipEnabled:set(true)
 		end,
 		[fusion.OnEvent "InputEnded"] = function(inputObj)
-			tipEnabled:set(false)
+			_TipEnabled:set(false)
 			_Hovered:set(false)
 			_Clicked:set(false)
 		end,

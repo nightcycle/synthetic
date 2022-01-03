@@ -18,12 +18,26 @@ function constructor.new(params)
 	local public = {
 		Color = util.import(params.Color) or fusion.State(Color3.new(0.5,0,1)),
 		BackgroundColor = util.import(params.BackgroundColor) or fusion.State(Color3.new(0.5,0.5,0.5)),
-		Selected = util.import(params.Selected) or fusion.State(false),
+		Input = util.import(params.Input) or fusion.State(false),
 		Typography = util.import(params.Typography) or typographyConstructor.new(Enum.Font.SourceSans, 10, 14),
 		SynthClass = fusion.Computed(function()
 			return script.Name
 		end),
 	}
+	local _Alpha = fusion.Computed(function()
+		if public.Input:get() == true then
+			return 1
+		else
+			return 0
+		end
+	end)
+	public.Value = fusion.Computed(function()
+		if _Alpha:get() == 1 then
+			return true
+		else
+			return false
+		end
+	end)
 
 	--influencers
 	local _Hovered = fusion.State(false)
@@ -41,7 +55,7 @@ function constructor.new(params)
 	--constructor
 	inst = util.set(synthetic.New "ProgressBar", public, params, {
 		[fusion.OnEvent "Activated"] = function(x,y)
-			local absPos = Vector2.new(x,y)
+			-- local absPos = Vector2.new(x,y)
 			local knob = inst:FindFirstChild("Knob")
 			local knobColor = fusion.State(knob.BackgroundColor3)
 
@@ -63,7 +77,7 @@ function constructor.new(params)
 			task.delay(1, function()
 				rippleMaid:Destroy()
 			end)
-			public.Selected:set(not public.Selected:get())
+			public.Input:set(not public.Input:get())
 		end,
 		[fusion.OnEvent "InputBegan"] = function()
 			_Hovered:set(true)
@@ -79,13 +93,7 @@ function constructor.new(params)
 		Color = util.getInteractionColor(_Clicked, _Hovered, public.Color),
 		BackgroundColor = util.getInteractionColor(_Clicked, _Hovered, public.BackgroundColor),
 		Notches = 100,
-		Alpha = fusion.Computed(function()
-			if public.Selected:get() == true then
-				return 1
-			else
-				return 0
-			end
-		end),
+		Alpha = _Alpha,
 		KnobEnabled = true,
 		BarPadding = _Padding,
 		Padding = _Padding,

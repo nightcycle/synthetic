@@ -34,7 +34,7 @@ local display = synthetic.New "Display" {
 	CameraZVector = fusion.Computed(function()
 		return camCF:get().ZVector
 	end),
-	FOV = 60,
+	FOV = 30,
 	Size = UDim2.fromOffset(70,70),
 }
 
@@ -56,7 +56,7 @@ local screenGui = fusion.New "ScreenGui" {
 			BackgroundColor = color,
 			LineColor = lineColor,
 			LayoutOrder = 4,
-			-- Tooltip = "Omg what a useful tip",
+			Tooltip = "Omg what a useful tip",
 		},
 		synthetic.New "Checkbox" {
 			Typography = buttonType,
@@ -75,7 +75,7 @@ local screenGui = fusion.New "ScreenGui" {
 			MinimumValue = fusion.State(0),
 			MaximumValue = fusion.State(100),
 			Notches = fusion.State(5),
-			Value = fusion.State(50),
+			Input = fusion.State(50),
 		},
 		synthetic.New "Switch" {
 			Typography = buttonType,
@@ -87,8 +87,16 @@ local screenGui = fusion.New "ScreenGui" {
 			Color = color,
 			TextColor = lineColor,
 			BackgroundColor = surfaceColor,
+			Label = "Topic",
 		},
 		display,
+		synthetic.New "ExpansionPanel" {
+			Typography = buttonType,
+			Text = "Hmm",
+			BackgroundColor = surfaceColor,
+			TextColor = lineColor,
+			Width = UDim.new(0,300),
+		}
 	}
 }
 

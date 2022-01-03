@@ -16,7 +16,7 @@ function constructor.new(params)
 	local public = {
 		LineColor = util.import(params.LineColor) or fusion.State(Color3.new(0.5,0.5,0.5)),
 		Color = util.import(params.Color) or fusion.State(Color3.new(0.5,0,1)),
-		Selected = util.import(params.Selected) or fusion.State(false),
+		Input = util.import(params.Input) or fusion.State(false),
 		Typography = util.import(params.Typography) or typographyConstructor.new(Enum.Font.SourceSans, 10, 14),
 		SynthClass = fusion.Computed(function()
 			return script.Name
@@ -41,7 +41,7 @@ function constructor.new(params)
 		BackgroundColor3 = util.tween(fusion.Computed(function()
 			local enabColor = _MainColor:get()
 			local disabledColor = _LineColor:get()
-			if public.Selected:get() then
+			if public.Input:get() then
 				return enabColor
 			else
 				return disabledColor
@@ -60,7 +60,7 @@ function constructor.new(params)
 			fusion.New "UIStroke" {
 				ApplyStrokeMode = Enum.ApplyStrokeMode.Border,
 				Color = util.tween(fusion.Computed(function()
-					if public.Selected:get() then
+					if public.Input:get() then
 						return _MainColor:get()
 					else
 						return _LineColor:get()
@@ -72,7 +72,7 @@ function constructor.new(params)
 				AnchorPoint = Vector2.new(0.5,0.5),
 				Position = UDim2.fromScale(0.5,0.5),
 				BackgroundTransparency = util.tween(fusion.Computed(function()
-					if public.Selected:get() then
+					if public.Input:get() then
 						return 0
 					else
 						return 1
@@ -91,7 +91,7 @@ function constructor.new(params)
 			}
 		},
 		[fusion.OnEvent "Activated"] = function()
-			public.Selected:set(not public.Selected:get())
+			public.Input:set(not public.Input:get())
 			local pos = inst.AbsolutePosition + inst.AbsoluteSize * 0.5
 			effects.ripple(fusion.State(UDim2.fromOffset(pos.X, pos.Y)), _MainColor)
 			effects.sound("ui_tap-variant-01")
