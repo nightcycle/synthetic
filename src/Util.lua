@@ -26,7 +26,7 @@ end
 function setPublicState(key, state, inst, maid)
 	local readOnly = state.set == nil
 	if readOnly then key = "_"..key end
-	if type(state:get()) == "table" then
+	if type(state:get()) == "table" and state.get then
 		for k, v in pairs(state:get()) do
 			local vState = fusion.State(v)
 			if not readOnly then
@@ -95,7 +95,7 @@ return {
 
 
 	import = function(stateOrVal)
-		if type(stateOrVal) == "table" or stateOrVal == nil then
+		if (type(stateOrVal) == "table" and stateOrVal.get) or stateOrVal == nil then
 			return stateOrVal
 		else
 			return fusion.State(stateOrVal)

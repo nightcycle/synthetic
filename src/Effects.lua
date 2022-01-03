@@ -96,7 +96,7 @@ return {
 			local size = hostSizeState:get()
 			return UDim2.fromOffset(pos.X, pos.Y + size.Y)
 		end)
-		local inst = require(script.Parent:FindFirstChild("Tooltip", true)).new(menuParams)
+		local inst = require(script.Parent:FindFirstChild("Menu", true)).new(menuParams)
 		maid:GiveTask(inst)
 		return inst
 	end,

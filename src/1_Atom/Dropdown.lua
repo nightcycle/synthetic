@@ -5,14 +5,18 @@ local typographyConstructor = require(packages:WaitForChild('typography'))
 local maidConstructor = require(packages:WaitForChild('maid'))
 local util = require(script.Parent.Parent:WaitForChild('Util'))
 local enums = require(script.Parent.Parent:WaitForChild('Enums'))
+local effects = require(script.Parent.Parent:WaitForChild("Effects"))
 
 local constructor = {}
 
 function constructor.new(params)
 	local maid = maidConstructor.new()
-
+	local menuMaid = maidConstructor.new()
+	maid:GiveTask(menuMaid)
 	--public states
 	local public = {
+		Variant = util.import(params.Variant) or fusion.State("Filled"),
+
 		Typography = util.import(params.Typography) or typographyConstructor.new(Enum.Font.SourceSans, 10, 14),
 		Input = util.import(params.Input) or fusion.State(""),
 		Context = util.import(params.Context) or fusion.State(""),
@@ -25,17 +29,31 @@ function constructor.new(params)
 		TextColor = util.import(params.TextColor) or fusion.State(Color3.new(0.2,0.2,0.2)),
 		ErrorColor = util.import(params.ErrorColor) or fusion.State(Color3.new(1,0,0)),
 
+		Width = util.import(params.Width) or fusion.State(UDim.new(1, 0)),
+
+		Options = util.import(params.Options) or fusion.State({}),
+
 		Open = util.import(params.Open) or fusion.State(false),
 		SynthClass = fusion.Computed(function()
 			return script.Name
 		end),
 	}
+	public.Value = fusion.Computed(function()
+		return public.Input:get()
+	end)
 
 	--influencers
 	local _Focused = fusion.State(false)
 	local _Hovered = fusion.State(false)
 
 	--properties
+	maid:GiveTask(fusion.Compat(_Focused):onChange(function()
+		if _Focused:get() == false then
+			task.delay(0.6, function()
+				menuMaid:DoCleaning()
+			end)
+		end
+	end))
 	local _Padding = fusion.Computed(function()
 		return public.Typography:get().Padding
 	end)
@@ -48,13 +66,62 @@ function constructor.new(params)
 	local _Font = fusion.Computed(function()
 		return public.Typography:get().Font
 	end)
+	local _BackgroundColor = util.getInteractionColor(fusion.State(false), _Hovered, public.BackgroundColor)
+	local _Color = util.getInteractionColor(_Focused, _Hovered, public.Color)
+	local _TextColor = util.getInteractionColor(_Focused, _Hovered, public.TextColor)
+	local _DetailColor = util.getInteractionColor(_Focused, _Hovered, public.LineColor)
+	local _LineColor = fusion.Computed(function()
+		if enums.Variant[public.Variant:get()] == enums.Variant.Outlined then
+			return _BackgroundColor:get()
+		elseif enums.Variant[public.Variant:get()] == enums.Variant.Filled then
+			return _DetailColor:get()
+		else
+			return _DetailColor:get()
+		end
+	end)
+
+	local _LabelSize = fusion.Computed(function()
+		return UDim2.new(public.Width:get(), UDim.new(0,0))
+	end)
 
 	--construct
+	local _AbsoluteSize = fusion.State(Vector2.new(0,0))
+	local _AbsolutePosition = fusion.State(Vector2.new(0,0))
 	local inst
-	inst = util.set(synthetic.New "Frame", public, params, {
+	inst = util.set(fusion.New "TextButton", public, params, {
 		BackgroundTransparency = 1,
 		AutomaticSize = Enum.AutomaticSize.XY,
 		Size = UDim2.fromScale(0,0),
+		TextTransparency = 1,
+		[fusion.OnEvent "InputBegan"] = function()
+			_Hovered:set(true)
+		end,
+		[fusion.OnEvent "InputEnded"] = function()
+			_Hovered:set(false)
+		end,
+		[fusion.OnEvent "Activated"] = function()
+			_Focused:set(not _Focused:get())
+			effects.sound("ui_tap-variant-01")
+			local menu = effects.menu(maid, {
+				Typography = public.Typography,
+				BackgroundColor = public.BackgroundColor,
+				TextColor = public.TextColor,
+				Width = public.Width,
+				Input = public.Value,
+				Options = public.Options,
+			}, _AbsoluteSize, _AbsolutePosition)
+			menuMaid:GiveTask(menu)
+			menuMaid:GiveTask(menu:WaitForChild("OnSelect").Event:Connect(function(val)
+				if val ~= nil then
+					public.Input:set(val)
+				end
+				_Focused:set(false)
+				task.delay(0.6, function()
+					menuMaid:DoCleaning()
+				end)
+
+			end))
+		end,
 		[fusion.Children] = {
 			fusion.New 'UIListLayout' {
 				FillDirection = Enum.FillDirection.Vertical,
@@ -91,7 +158,10 @@ function constructor.new(params)
 					end
 				end)),
 				TextTransparency = util.tween(fusion.Computed(function()
-					if _Filled:get() then
+					local label = public.Label:get()
+					local isFocused = _Focused:get()
+					local input = public.Input:get()
+					if input ~= "" or isFocused == true then
 						return 0
 					else
 						return 1
@@ -102,14 +172,30 @@ function constructor.new(params)
 			},
 			synthetic.New 'Label' {
 				BackgroundColor3 = Color3.new(1,1,1),
-				TextColor3 = util.tween(public.TextColor),
-				TextSize = _TextSize,
-				Font = _Font,
+				Typography = public.Typography,
 				AutomaticSize = Enum.AutomaticSize.XY,
 				Size = UDim2.fromScale(0,0),
-				TextTransparency = 1,
+				Image = "rbxassetid://3926307971",
+				Color = _TextColor,
+				ImageRectOffset = fusion.Computed(function()
+					if _Focused:get() then
+						return Vector2.new(164, 482)
+					else
+						return Vector2.new(324, 524)
+					end
+				end),
+				ImageRectSize = Vector2.new(36,36),
+				Text = fusion.Computed(function()
+					local label = public.Label:get()
+					local isFocused = _Focused:get()
+					local input = public.Input:get()
+					if input == "" and isFocused == false then
+						return label
+					else
+						return input
+					end
+				end),
 				LayoutOrder = 2,
-				TextXAlignment = Enum.TextXAlignment.Left,
 				ClipsDescendants = true,
 				BackgroundTransparency = util.tween(fusion.Computed(function()
 					if enums.Variant[public.Variant:get()] == enums.Variant.Outlined then
@@ -118,15 +204,6 @@ function constructor.new(params)
 						return 0
 					end
 				end)),
-				[fusion.OnEvent "InputBegan"] = function()
-					_Hovered:set(true)
-				end,
-				[fusion.OnEvent "InputEnded"] = function()
-					_Hovered:set(false)
-				end,
-				[fusion.OnEvent "Activated"] = function()
-
-				end,
 				[fusion.Children] = {
 					fusion.New 'UIStroke' {
 						Color = util.tween(fusion.Computed(function()
@@ -169,15 +246,15 @@ function constructor.new(params)
 							})
 						end)
 					},
-					fusion.New 'UIListLayout' {
-						FillDirection = Enum.FillDirection.Horizontal,
-						HorizontalAlignment = Enum.HorizontalAlignment.Center,
-						VerticalAlignment = Enum.VerticalAlignment.Center,
-						SortOrder = Enum.SortOrder.LayoutOrder,
-						Padding = fusion.Computed(function()
-							return UDim.new(0,_Padding:get().Offset*0.5)
-						end),
-					},
+					-- fusion.New 'UIListLayout' {
+					-- 	FillDirection = Enum.FillDirection.Horizontal,
+					-- 	HorizontalAlignment = Enum.HorizontalAlignment.Center,
+					-- 	VerticalAlignment = Enum.VerticalAlignment.Center,
+					-- 	SortOrder = Enum.SortOrder.LayoutOrder,
+					-- 	Padding = fusion.Computed(function()
+					-- 		return UDim.new(0,_Padding:get().Offset*0.5)
+					-- 	end),
+					-- },
 					fusion.New 'UICorner' {
 						CornerRadius = fusion.Computed(function()
 							return UDim.new(0, _Padding:get().Offset*0.5)
@@ -250,6 +327,30 @@ function constructor.new(params)
 			},
 		},
 	}, maid)
+	local label = inst:WaitForChild("Label")
+	_AbsoluteSize:set(label.AbsoluteSize)
+	maid:GiveTask(label:GetPropertyChangedSignal("AbsoluteSize"):Connect(function()
+		_AbsoluteSize:set(label.AbsoluteSize)
+	end))
+	_AbsolutePosition:set(label.AbsolutePosition)
+	maid:GiveTask(label:GetPropertyChangedSignal("AbsolutePosition"):Connect(function()
+		_AbsolutePosition:set(label.AbsolutePosition+Vector2.new(0,1))
+	end))
+
+	local textLabel = label:WaitForChild("TextLabel")
+	textLabel.LayoutOrder = 1
+
+	local icon = label:WaitForChild("Icon")
+	icon.LayoutOrder = 2
+
+	local listLayout = label:WaitForChild("UIListLayout")
+	listLayout.HorizontalAlignment = Enum.HorizontalAlignment.Right
+
+	label.Size = _LabelSize:get()
+
+	maid:GiveTask(fusion.Compat(_LabelSize):onChange(function()
+		label.Size = _LabelSize:get()
+	end))
 
 	return inst
 end

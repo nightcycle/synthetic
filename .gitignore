@@ -1,5 +1,6 @@
 src_old
 .vscode
+wally.lock
 package-lock.json
 Packages
 .gitconfig

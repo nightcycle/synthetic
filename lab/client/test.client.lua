@@ -91,17 +91,19 @@ local screenGui = fusion.New "ScreenGui" {
 		},
 		display,
 		synthetic.New "ExpansionPanel" {
-			Typography = buttonType,
+			Typography = bodyType,
 			Text = "Hmm",
 			BackgroundColor = surfaceColor,
 			TextColor = lineColor,
 			Width = UDim.new(0,300),
 		},
 		synthetic.New "Dropdown" {
-			Typography = buttonType,
+			Typography = bodyType,
 			Label = "Bobby Tables",
 			BackgroundColor = surfaceColor,
+			Options = {"Borby", "Kibby", "Corn Boi"},
 			TextColor = lineColor,
+			Width = UDim.new(0, 120),
 		},
 	}
 }
