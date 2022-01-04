@@ -1,7 +1,9 @@
 local packages = script.Parent.Parent
 local attributerConstructor = require(packages:WaitForChild("attributer"))
-local fusion = require(packages:WaitForChild('fusion'))
+local util
+local f
 local signalConstructor = require(packages:WaitForChild("signal"))
+local typographyConstructor = require(packages:WaitForChild("typography"))
 local maidConstructor = require(packages:WaitForChild("maid"))
 local ed = Enum.EasingDirection
 local es = Enum.EasingStyle
@@ -9,7 +11,7 @@ local es = Enum.EasingStyle
 function mergeConfig(baseConfig, changes, whiteList, blackList)
 	if not whiteList then whiteList = changes end
 	for k, v in pairs(changes) do
-		if k == fusion.Children then
+		if k == f.c then
 			baseConfig[k] = baseConfig[k] or {}
 			for i, val in ipairs(v) do
 				table.insert(baseConfig[k], val)
@@ -28,9 +30,9 @@ function setPublicState(key, state, inst, maid)
 	if readOnly then key = "_"..key end
 	if type(state:get()) == "table" and state.get then
 		for k, v in pairs(state:get()) do
-			local vState = fusion.State(v)
+			local vState = f.v(v)
 			if not readOnly then
-				local vCompute = fusion.Computed(function()
+				local vCompute = f.get(function()
 					return state:get()[k]
 				end)
 				local function updateParentState()
@@ -38,8 +40,8 @@ function setPublicState(key, state, inst, maid)
 					newTabl[k] = vState:get()
 					state:set(newTabl)
 				end
-				maid:GiveTask(fusion.Compat(vState):onChange(updateParentState))
-				maid:GiveTask(fusion.Compat(vCompute):onChange(updateParentState))
+				maid:GiveTask(f.step(vState):onChange(updateParentState))
+				maid:GiveTask(f.step(vCompute):onChange(updateParentState))
 			end
 			setPublicState(key.."_"..k, vState, inst, maid)
 		end
@@ -57,7 +59,7 @@ function setPublicState(key, state, inst, maid)
 	end
 
 	maid._attributer:Connect(key, val)
-	local compat = fusion.Compat(state)
+	local compat = f.step(state)
 
 	local function setAttribute(v)
 		if isEnum then
@@ -90,30 +92,33 @@ function setPublicState(key, state, inst, maid)
 	end))
 end
 
-return {
+util = {
 	setPublicState = setPublicState,
 
+	newTypography = function(font, minTextSize, maxTextSize)
+		return typographyConstructor.new(font, minTextSize, maxTextSize)
+	end,
 
 	import = function(stateOrVal)
 		if (type(stateOrVal) == "table" and stateOrVal.get) or stateOrVal == nil then
 			return stateOrVal
 		else
-			return fusion.State(stateOrVal)
+			return f.v(stateOrVal)
 		end
 	end,
 
 	getInteractionColor = function(_Clicked, _Hovered, _Color)
 		--colors
 		local RecolorWeight = 0.8
-		local _MainHighlightColor = fusion.Computed(function()
+		local _MainHighlightColor = f.get(function()
 			local h,s,v = _Color:get():ToHSV()
 			return Color3.fromHSV(h,s*RecolorWeight,1 - (1-v)*RecolorWeight)
 		end)
-		local _MainShadowColor = fusion.Computed(function()
+		local _MainShadowColor = f.get(function()
 			local h,s,v = _Color:get():ToHSV()
 			return Color3.fromHSV(h,s,v*RecolorWeight)
 		end)
-		local _DynamicMainColor = fusion.Computed(function()
+		local _DynamicMainColor = f.get(function()
 			if _Clicked:get() then
 				return _MainShadowColor:get()
 			elseif _Hovered:get() then
@@ -125,13 +130,53 @@ return {
 		return _DynamicMainColor
 	end,
 
+	initFusion = function(fusionLibrary)
+		fusionLibrary.new = fusionLibrary.New
+
+		fusionLibrary.c = fusionLibrary.Children
+
+		fusionLibrary.e = fusionLibrary.OnEvent
+
+		fusionLibrary.dt = fusionLibrary.OnChange
+
+		fusionLibrary.v = fusionLibrary.State
+		fusionLibrary.Value = fusionLibrary.v
+
+		fusionLibrary.get = fusionLibrary.Computed
+
+		fusionLibrary.gets = fusionLibrary.ComputedPairs
+
+		fusionLibrary.step = fusionLibrary.Compat
+		fusionLibrary.Observer = fusionLibrary.step
+
+		fusionLibrary.t = fusionLibrary.Tween
+
+		fusionLibrary.s = fusionLibrary.Spring
+		return fusionLibrary
+	end,
+
+	getTypographyStates = function(typographyState)
+		local _Padding = f.get(function()
+			return typographyState:get().Padding
+		end)
+		local _TextSize = f.get(function()
+			return typographyState:get().TextSize
+		end)
+		local _Font = f.get(function()
+
+		end)
+		return _Padding, _TextSize, _Font
+	end,
+
+	cornerRadius = UDim.new(0, 5),
+
 	set = function(constructor, publicStates, params, config, maid)
 		-- print("1")
 		if not maid then
 			maid = maidConstructor.new()
 		end
-		params.SynthClass = nil
-		params.Name = params.Name or publicStates.SynthClass:get()
+		params.SynthClassName = nil
+		params.Name = params.Name or publicStates.SynthClassName:get()
 		mergeConfig(config, params, nil, publicStates)
 		-- print(config)
 		-- print("2")
@@ -170,8 +215,11 @@ return {
 		local repeatCount = params.RepeatCount or 1
 		local reverses = params.Reverses or false
 		local delayTime = params.DelayTime or 0
-		return fusion.Tween(state, TweenInfo.new(duration, easingStyle, easingDirection, repeatCount, reverses, delayTime))
+		return f.t(state, TweenInfo.new(duration, easingStyle, easingDirection, repeatCount, reverses, delayTime))
 	end,
 
 	mergeConfig = mergeConfig
 }
+
+f = util.initFusion(require(packages:WaitForChild('fusion')))
+return util

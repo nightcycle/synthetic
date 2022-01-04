@@ -1,8 +1,8 @@
 local packages = script.Parent.Parent.Parent
 local synthetic = require(script.Parent.Parent)
-local fusion = require(packages:WaitForChild('fusion'))
-local maidConstructor = require(packages:WaitForChild('maid'))
 local util = require(script.Parent.Parent:WaitForChild("Util"))
+local f = util.initFusion(require(packages:WaitForChild('fusion')))
+local maidConstructor = require(packages:WaitForChild('maid'))
 local enums = require(script.Parent.Parent:WaitForChild("Enums"))
 local effects = require(script.Parent.Parent:WaitForChild("Effects"))
 
@@ -16,50 +16,50 @@ local moveParams = {
 function constructor.new(params)
 	--public states
 	local public = {
-		Color = util.import(params.Color) or fusion.State(Color3.new(0.5,0,1)),
-		BackgroundColor = util.import(params.BackgroundColor) or fusion.State(Color3.new(0.5,0.5,0.5)),
-		Notches = util.import(params.Precision) or fusion.State(5),
-		Alpha = util.import(params.Alpha) or fusion.State(0),
-		KnobEnabled = util.import(params.KnobEnabled) or fusion.State(false),
-		LockKnobColor = util.import(params.LockKnobColor) or fusion.State(false),
-		BarPadding = util.import(params.BarPadding) or fusion.State(UDim.new(0, 6)),
-		Padding = util.import(params.Padding) or fusion.State(UDim.new(0,8)),
-		Saturation = util.import(params.Saturation) or fusion.State(0.7),
-		SynthClass = fusion.Computed(function()
+		Color = util.import(params.Color) or f.v(Color3.new(0.5,0,1)),
+		BackgroundColor = util.import(params.BackgroundColor) or f.v(Color3.new(0.5,0.5,0.5)),
+		Notches = util.import(params.Precision) or f.v(5),
+		Alpha = util.import(params.Alpha) or f.v(0),
+		KnobEnabled = util.import(params.KnobEnabled) or f.v(false),
+		LockKnobColor = util.import(params.LockKnobColor) or f.v(false),
+		BarPadding = util.import(params.BarPadding) or f.v(UDim.new(0, 6)),
+		Padding = util.import(params.Padding) or f.v(UDim.new(0,8)),
+		Saturation = util.import(params.Saturation) or f.v(0.7),
+		SynthClassName = f.get(function()
 			return script.Name
 		end),
 	}
 
 	--read only states
-	public.RoundedAlpha = fusion.Computed(function()
+	public.RoundedAlpha = f.get(function()
 		local precision = 1/(public.Notches:get()-1)
 		return precision * math.round(public.Alpha:get()/precision)
 	end)
 
-	local _barAbsoluteSize = fusion.State(Vector2.new(0,0))
-	local _knobAbsoluteSize = fusion.State(Vector2.new(0,0))
+	local _barAbsoluteSize = f.v(Vector2.new(0,0))
+	local _knobAbsoluteSize = f.v(Vector2.new(0,0))
 
 	--construct
 	local inst
 	local maid = maidConstructor.new()
-	inst = util.set(fusion.New "TextButton", public, params, {
+	inst = util.set(f.new "TextButton", public, params, {
 		BackgroundColor3 = Color3.new(1, 1, 1),
 		BackgroundTransparency = 1,
-		[fusion.OnChange "AbsoluteSize"] = function()
+		[f.dt "AbsoluteSize"] = function()
 			_barAbsoluteSize:set(inst:FindFirstChild("Bar").AbsoluteSize)
 			_knobAbsoluteSize:set(inst:FindFirstChild("Knob").AbsoluteSize)
 		end,
-		[fusion.Children] = {
-			fusion.New "BindableEvent" {
+		[f.c] = {
+			f.new "BindableEvent" {
 				Name = "OnChange",
 			},
-			fusion.New "Frame" {
+			f.new "Frame" {
 				Name = "Knob",
 				-- AnchorPoint = Vector2.new(0.5,0.5),
-				AnchorPoint = util.tween(fusion.Computed(function()
+				AnchorPoint = util.tween(f.get(function()
 					return Vector2.new(public.RoundedAlpha:get(), 0.5)
 				end), moveParams),
-				BackgroundColor3 = util.tween(fusion.Computed(function()
+				BackgroundColor3 = util.tween(f.get(function()
 					local recolorEnabled = public.LockKnobColor:get()
 					local leftColor = public.BackgroundColor:get()
 					local rightColor = public.Color:get()
@@ -80,7 +80,7 @@ function constructor.new(params)
 						return rightColor
 					end
 				end)),
-				Position = util.tween(fusion.Computed(function()
+				Position = util.tween(f.get(function()
 					local a = public.RoundedAlpha:get()
 					local xWidth = _barAbsoluteSize:get().X
 					local xOffset = xWidth*(a-0.5)
@@ -93,35 +93,35 @@ function constructor.new(params)
 				SizeConstraint = Enum.SizeConstraint.RelativeYY,
 				ZIndex = 2,
 				Visible = public.KnobEnabled,
-				[fusion.Children] = {
-					fusion.New "UICorner" {
+				[f.c] = {
+					f.new "UICorner" {
 						CornerRadius = UDim.new(0.5, 0)
 					},
-					fusion.New "UIStroke" {
+					f.new "UIStroke" {
 						ApplyStrokeMode = Enum.ApplyStrokeMode.Border,
 						Transparency = 0.8,
 					}
 				}
 			},
-			fusion.New "Frame" {
+			f.new "Frame" {
 				Name = "Bar",
 				AnchorPoint = Vector2.new(0.5, 0.5),
 				BackgroundColor3 = Color3.new(1, 1, 1),
 				BorderSizePixel = 0,
 				Position = UDim2.fromScale(0.5, 0.5),
-				Size = fusion.Computed(function()
+				Size = f.get(function()
 					return UDim2.new(1, -public.BarPadding:get().Offset*2, 1, -public.BarPadding:get().Offset*2)
 				end),
-				[fusion.Children] = {
-					fusion.New "UICorner" {
+				[f.c] = {
+					f.new "UICorner" {
 						CornerRadius = UDim.new(0.5, 0)
 					},
-					fusion.New "UIStroke" {
+					f.new "UIStroke" {
 						ApplyStrokeMode = Enum.ApplyStrokeMode.Border,
 						Transparency = 1,
 					},
-					fusion.New "UIGradient" {
-						Color = util.tween(fusion.Computed(function()
+					f.new "UIGradient" {
+						Color = util.tween(f.get(function()
 							local sat = public.Saturation:get()
 							local function lowerBrightness(col)
 								local h,s,v = col:ToHSV()
@@ -140,7 +140,7 @@ function constructor.new(params)
 					},
 				}
 			},
-			fusion.New 'UIPadding' {
+			f.new 'UIPadding' {
 				PaddingLeft = public.Padding,
 				PaddingRight = public.Padding,
 				PaddingTop = public.Padding,
@@ -148,7 +148,7 @@ function constructor.new(params)
 			}
 		}
 	}, maid)
-	maid:GiveTask(fusion.Compat(public.RoundedAlpha):onChange(function()
+	maid:GiveTask(f.step(public.RoundedAlpha):onChange(function()
 		inst:FindFirstChild("OnChange"):Fire(public.RoundedAlpha:get())
 	end))
 	return inst

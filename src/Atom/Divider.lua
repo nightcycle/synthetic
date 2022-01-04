@@ -1,9 +1,9 @@
 local packages = script.Parent.Parent.Parent
 local synthetic = require(script.Parent.Parent)
-local fusion = require(packages:WaitForChild('fusion'))
+local util = require(script.Parent.Parent:WaitForChild("Util"))
+local f = util.initFusion(require(packages:WaitForChild('fusion')))
 local maidConstructor = require(packages:WaitForChild('maid'))
 local typographyConstructor = require(packages:WaitForChild('typography'))
-local util = require(script.Parent.Parent:WaitForChild("Util"))
 local enums = require(script.Parent.Parent:WaitForChild("Enums"))
 local effects = require(script.Parent.Parent:WaitForChild("Effects"))
 
@@ -14,20 +14,19 @@ function constructor.new(params)
 
 	--public states
 	local public = {
-		Color = util.import(params.TextColor) or fusion.State(Color3.new(0.2,0.2,0.2)),
+		Color = util.import(params.TextColor) or f.v(Color3.new(0.2,0.2,0.2)),
 		Typography = util.import(params.Typography) or typographyConstructor.new(Enum.Font.SourceSans, 10, 14),
-		Direction = util.import(params.Direction) or fusion.State("Horizontal"),
-		SynthClass = fusion.Computed(function()
+		Direction = util.import(params.Direction) or f.v("Horizontal"),
+		SynthClassName = f.get(function()
 			return script.Name
 		end),
 	}
-	local _Padding = fusion.Computed(function()
-		return public.Typography:get().Padding
-	end)
+	local _Padding, _TextSize, _Font = util.getTypographyStates(public.Typography)
+
 	--construct
-	return util.set(fusion.New "Frame", public, params, {
+	return util.set(f.new "Frame", public, params, {
 		BackgroundTransparency = 1,
-		Size = fusion.Computed(function()
+		Size = f.get(function()
 			if enums.DividerDirection[public.Direction:get()] == enums.DividerDirection.Horizontal then
 				return UDim2.fromScale(1,0)
 			else
@@ -35,37 +34,37 @@ function constructor.new(params)
 			end
 		end),
 		BorderSizePixel = 0,
-		AutomaticSize = fusion.Computed(function()
+		AutomaticSize = f.get(function()
 			if enums.DividerDirection[public.Direction:get()] == enums.DividerDirection.Horizontal then
 				return Enum.AutomaticSize.Y
 			else
 				return Enum.AutomaticSize.X
 			end
 		end),
-		[fusion.Children] = {
-			fusion.New 'UIPadding' {
-				PaddingBottom = fusion.Computed(function()
+		[f.c] = {
+			f.new 'UIPadding' {
+				PaddingBottom = f.get(function()
 					if enums.DividerDirection[public.Direction:get()] == enums.DividerDirection.Horizontal then
 						return _Padding:get()
 					else
 						return UDim.new(0,0)
 					end
 				end),
-				PaddingTop = fusion.Computed(function()
+				PaddingTop = f.get(function()
 					if enums.DividerDirection[public.Direction:get()] == enums.DividerDirection.Horizontal then
 						return _Padding:get()
 					else
 						return UDim.new(0,0)
 					end
 				end),
-				PaddingLeft = fusion.Computed(function()
+				PaddingLeft = f.get(function()
 					if enums.DividerDirection[public.Direction:get()] == enums.DividerDirection.Horizontal then
 						return UDim.new(0,0)
 					else
 						return _Padding:get()
 					end
 				end),
-				PaddingRight = fusion.Computed(function()
+				PaddingRight = f.get(function()
 					if enums.DividerDirection[public.Direction:get()] == enums.DividerDirection.Horizontal then
 						return UDim.new(0,0)
 					else
@@ -73,11 +72,11 @@ function constructor.new(params)
 					end
 				end),
 			},
-			fusion.New 'Frame' {
+			f.new 'Frame' {
 				Name = "Bar",
 				BackgroundColor3 = public.Color,
 				BackgroundTransparency = 0.8,
-				Size = fusion.Computed(function()
+				Size = f.get(function()
 					if enums.DividerDirection[public.Direction:get()] == enums.DividerDirection.Horizontal then
 						return UDim2.new(1, 0, 0, 1)
 					else

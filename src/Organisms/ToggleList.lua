@@ -1,9 +1,9 @@
 local synthetic = require(script.Parent.Parent)
 local packages = script.Parent.Parent.Parent
-local fusion = require(packages:WaitForChild('fusion'))
+local util = require(script.Parent.Parent:WaitForChild("Util"))
+local f = util.initFusion(require(packages:WaitForChild('fusion')))
 local typographyConstructor = require(packages:WaitForChild('typography'))
 local maidConstructor = require(packages:WaitForChild('maid'))
-local util = require(script.Parent.Parent:WaitForChild('Util'))
 local enums = require(script.Parent.Parent:WaitForChild('Enums'))
 
 local constructor = {}
@@ -16,57 +16,49 @@ function constructor.new(params)
 		HeaderTypography = util.import(params.HeaderTypography) or typographyConstructor.new(Enum.Font.SourceSans, 10, 14),
 		BodyTypography = util.import(params.BodyTypography) or typographyConstructor.new(Enum.Font.SourceSans, 10, 14),
 
-		HeaderText = util.import(params.HeaderText) or fusion.State(""),
+		HeaderText = util.import(params.HeaderText) or f.v(""),
 
-		Options = util.import(params.Options) or fusion.State({}),
+		Options = util.import(params.Options) or f.v({}),
 
-		Color = util.import(params.Color) or fusion.State(Color3.new(1,1,1)),
-		TextColor = util.import(params.TextColor) or fusion.State(Color3.new(1,1,1)),
-		Variant = util.import(params.Variant) or fusion.State("Switch"),
-		BackgroundColor = util.import(params.BackgroundColor) or fusion.State(Color3.new(1,1,1)),
-		Width = util.import(params.Width) or fusion.State(UDim.new(1,0)),
-		Input = util.import(params.Input) or fusion.State(""),
-		SynthClass = fusion.Computed(function()
+		Color = util.import(params.Color) or f.v(Color3.new(1,1,1)),
+		TextColor = util.import(params.TextColor) or f.v(Color3.new(1,1,1)),
+		Variant = util.import(params.Variant) or f.v("Switch"),
+		BackgroundColor = util.import(params.BackgroundColor) or f.v(Color3.new(1,1,1)),
+		Width = util.import(params.Width) or f.v(UDim.new(1,0)),
+		Input = util.import(params.Input) or f.v(""),
+		SynthClassName = f.get(function()
 			return script.Name
 		end),
 	}
-	public.Value = fusion.Computed(function()
+	public.Value = f.get(function()
 		return public.Input:get()
 	end)
 
 	--properties
-	local _Padding = fusion.Computed(function()
-		return public.BodyTypography:get().Padding
-	end)
-	local _TextSize = fusion.Computed(function()
-		return public.HeaderTypography:get().TextSize
-	end)
-	local _Font = fusion.Computed(function()
-		return public.HeaderTypography:get().Font
-	end)
+	local _Padding, _TextSize, _Font = util.getTypographyStates(public.Typography)
 
 	--construct
 	local inst
-	inst = util.set(fusion.New "Frame", public, params, {
+	inst = util.set(f.new "Frame", public, params, {
 		AutomaticSize = Enum.AutomaticSize.Y,
-		Size = fusion.Computed(function()
+		Size = f.get(function()
 			return UDim2.new(public.Width:get(), UDim.new(0,0))
 		end),
 		BackgroundTransparency = 1,
-		[fusion.Children] = {
-			fusion.New "UIListLayout" {
+		[f.c] = {
+			f.new "UIListLayout" {
 				SortOrder = Enum.SortOrder.LayoutOrder,
 				HorizontalAlignment = Enum.HorizontalAlignment.Right,
 				Padding = _Padding,
 			},
-			fusion.New 'TextLabel' {
+			f.new 'TextLabel' {
 				Name = "Header",
 				LayoutOrder = 1,
 				TextXAlignment = Enum.TextXAlignment.Left,
 				TextYAlignment = Enum.TextYAlignment.Center,
 				TextSize = _TextSize,
 				TextWrapped = false,
-				Visible = fusion.Computed(function()
+				Visible = f.get(function()
 					return not (public.HeaderText:get() == "")
 				end),
 				Font = _Font,
@@ -75,8 +67,8 @@ function constructor.new(params)
 				TextTruncate = Enum.TextTruncate.AtEnd,
 				Text = public.HeaderText,
 				Size = UDim2.fromScale(1, 0),
-				[fusion.Children] = {
-					fusion.New 'UIPadding' {
+				[f.c] = {
+					f.new 'UIPadding' {
 						PaddingBottom = _Padding,
 						PaddingTop = UDim.new(0,0),
 						PaddingLeft = UDim.new(0,0),
@@ -86,13 +78,13 @@ function constructor.new(params)
 			},
 		},
 	}, maid)
-	fusion.ComputedPairs(public.Options, function(key, _Input)
+	f.gets(public.Options, function(key, _Input)
 		local optionMaid = maidConstructor.new()
 		local var = public.Variant:get()
 		maid:GiveTask(optionMaid)
 
-		local _ButtonHovered = fusion.State(false)
-		local _ButtonClicked = fusion.State(false)
+		local _ButtonHovered = f.v(false)
+		local _ButtonClicked = f.v(false)
 
 		local prompt = synthetic.New "TextPrompt" {
 			Name = key,
@@ -111,7 +103,7 @@ function constructor.new(params)
 			LayoutOrder = 10,
 			Position = UDim2.fromScale(1, 0.5),
 			AnchorPoint = Vector2.new(1,0.5),
-			Input = fusion.Computed(function()
+			Input = f.get(function()
 				local curVal = _Input:get()
 				local variant = public.Variant:get()
 				local listInput = public.Input:get()
@@ -128,7 +120,7 @@ function constructor.new(params)
 			Parent = prompt:WaitForChild("Content"),
 		}
 
-		-- fusion.Computed(function()
+		-- f.get(function()
 		local button
 		local newConfig = {}
 		for k, v in pairs(toggleConfig) do
@@ -142,7 +134,7 @@ function constructor.new(params)
 		elseif var == "RadioButton" then
 			newConfig.Color = public.Color
 			newConfig.LineColor = public.LineColor
-			newConfig[fusion.OnEvent "Activated"] = function()
+			newConfig[f.e "Activated"] = function()
 				public.Input:set(key)
 				-- for k, v in pairs(public.Options:get()) do
 				-- 	if k ~= key then

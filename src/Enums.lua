@@ -1,21 +1,26 @@
+--- @interface SynthEnums
+--- @within Synthetic
+---	.DividerDirection {SynthEnum}
+---	.Typography {SynthEnum}
+---	.Variant {SynthEnum}
+---	.SystemFont {SynthEnum}
+---	.ColorPallete {SynthEnum}
+--- .ColorShade {SynthEnum}
+---
+--- A set of enums used throughout code
+
 local config = {
-	Theme = {
-		Unknown = 0,
-		Primary = 1,
-		PrimaryDark = 2,
-		PrimaryLight = 3,
-		Secondary = 4,
-		SecondaryDark = 5,
-		SecondaryLight = 6,
-		Surface = 7,
-		Background = 8,
-		Error = 9,
-	},
+	--- @type DividerDirection SynthEnum
+	--- @within Synthetic
+	--- used to determine what direction the divider is located
 	DividerDirection = {
 		Unknown = 0,
 		Vertical = 1,
 		Horizontal = 2,
 	},
+	--- @type Typography SynthEnum
+	--- @within Synthetic
+	--- used to determine the font, text size constraints, and padding
 	Typography = {
 		Unknown = 0,
 		Headline = 1,

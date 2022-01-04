@@ -1,12 +1,18 @@
 
+
 local packages = script.Parent.Parent
-local fusion = require(packages:WaitForChild('fusion'))
 local util = require(script.Parent:WaitForChild("Util"))
+local f = util.initFusion(require(packages:WaitForChild('fusion')))
 local maidConstructor = require(packages:WaitForChild("maid"))
 local enums = require(script.Parent:WaitForChild("Enums"))
 
-local player = game.Players.LocalPlayer
-local fxHolder = fusion.New "ScreenGui" {
+local runService = game:GetService("RunService")
+local player
+if runService:IsClient() then
+	player  = game.Players.LocalPlayer
+end
+
+local fxHolder = f.new "ScreenGui" {
 	Parent = player:WaitForChild("PlayerGui"),
 	ResetOnSpawn = false,
 	Name = "Effects",
@@ -14,7 +20,7 @@ local fxHolder = fusion.New "ScreenGui" {
 }
 
 local cam = game.Workspace.CurrentCamera
-local screenSize = fusion.State(cam.ViewportSize)
+local screenSize = f.v(cam.ViewportSize)
 cam:GetPropertyChangedSignal("ViewportSize"):Connect(function()
 	screenSize:set(cam.ViewportSize)
 end)
@@ -64,8 +70,8 @@ local sounds = {
 
 return {
 	ripple = function(position, color)
-		local currentSize = fusion.State(UDim.new(0,10))
-		local currentTransparency = fusion.State(0.2)
+		local currentSize = f.v(UDim.new(0,10))
+		local currentTransparency = f.v(0.2)
 		local element = require(script.Parent:FindFirstChild("Bubble", true)).new({
 			Size = currentSize,
 			Transparency = currentTransparency,
@@ -91,7 +97,7 @@ return {
 
 	menu = function(maid, menuParams, hostSizeState, hostPositionState)
 		menuParams.Parent = fxHolder
-		menuParams.Position = fusion.Computed(function()
+		menuParams.Position = f.get(function()
 			local pos = hostPositionState:get()
 			local size = hostSizeState:get()
 			return UDim2.fromOffset(pos.X, pos.Y + size.Y)
@@ -102,7 +108,7 @@ return {
 	end,
 
 	tip = function(maid, tipParams, hostAbsPositionState, hostAbsSizeState, preferredDirection)
-		tipParams.AnchorPoint = fusion.Computed(function()
+		tipParams.AnchorPoint = f.get(function()
 			local dir = Vector2.new(1,1) - preferredDirection:get()
 			-- print("Pref: ", dir)
 			local xWeight = math.abs(dir.X - 0.5)*2
@@ -114,7 +120,7 @@ return {
 				return Vector2.new(math.round(dir.X), math.round(dir.Y))
 			end
 		end)
-		tipParams.Position = fusion.Computed(function()
+		tipParams.Position = f.get(function()
 			--generate first potential point
 			local anchorPoint = tipParams.AnchorPoint:get()
 			local antiAnchor = Vector2.new(1,1)-anchorPoint

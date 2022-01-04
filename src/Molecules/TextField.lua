@@ -1,10 +1,10 @@
 local runService = game:GetService("RunService")
 local packages = script.Parent.Parent.Parent
 local synthetic = require(script.Parent.Parent)
-local fusion = require(packages:WaitForChild('fusion'))
+local util = require(script.Parent.Parent:WaitForChild("Util"))
+local f = util.initFusion(require(packages:WaitForChild('fusion')))
 local maidConstructor = require(packages:WaitForChild('maid'))
 local filterConstructor = require(packages:WaitForChild("filter"))
-local util = require(script.Parent.Parent:WaitForChild("Util"))
 local typographyConstructor = require(packages:WaitForChild('typography'))
 local enums = require(script.Parent.Parent:WaitForChild("Enums"))
 
@@ -14,51 +14,51 @@ function constructor.new(params)
 	local maid = maidConstructor.new()
 	--public states
 	local public = {
-		Variant = util.import(params.Variant) or fusion.State("Filled"),
+		Variant = util.import(params.Variant) or f.v("Filled"),
 
 		Typography = util.import(params.Typography) or typographyConstructor.new(Enum.Font.SourceSans, 10, 14),
-		Input = util.import(params.Input) or fusion.State(""),
-		Context = util.import(params.Context) or fusion.State(""),
-		Error = util.import(params.Error) or fusion.State(""),
-		Label = util.import(params.Label) or fusion.State(""),
-		Prefix = util.import(params.Prefix) or fusion.State(""),
-		Suffix = util.import(params.Suffix) or fusion.State(""),
+		Input = util.import(params.Input) or f.v(""),
+		Context = util.import(params.Context) or f.v(""),
+		Error = util.import(params.Error) or f.v(""),
+		Label = util.import(params.Label) or f.v(""),
+		Prefix = util.import(params.Prefix) or f.v(""),
+		Suffix = util.import(params.Suffix) or f.v(""),
 
-		LeadingIconImage = util.import(params.LeadingIconImage) or fusion.State(""),
-		LeadingIconRectOffset = util.import(params.LeadingIconRectOffset) or fusion.State(Vector2.new(724, 964)),
-		LeadingIconRectSize = util.import(params.LeadingIconRectSize) or fusion.State(Vector2.new(36,36)),
+		LeadingIconImage = util.import(params.LeadingIconImage) or f.v(""),
+		LeadingIconRectOffset = util.import(params.LeadingIconRectOffset) or f.v(Vector2.new(724, 964)),
+		LeadingIconRectSize = util.import(params.LeadingIconRectSize) or f.v(Vector2.new(36,36)),
 
-		TrailingIconImage = util.import(params.TrailingIconImage) or fusion.State(""),
-		TrailingIconRectOffset = util.import(params.TrailingIconRectOffset) or fusion.State(Vector2.new(44, 524)),
-		TrailingIconRectSize = util.import(params.TrailingIconRectSize) or fusion.State(Vector2.new(36,36)),
+		TrailingIconImage = util.import(params.TrailingIconImage) or f.v(""),
+		TrailingIconRectOffset = util.import(params.TrailingIconRectOffset) or f.v(Vector2.new(44, 524)),
+		TrailingIconRectSize = util.import(params.TrailingIconRectSize) or f.v(Vector2.new(36,36)),
 
-		CharacterLimit = util.import(params.CharacterLimit) or fusion.State(params.CharacterLimit or 20),
+		CharacterLimit = util.import(params.CharacterLimit) or f.v(params.CharacterLimit or 20),
 
-		BackgroundColor = util.import(params.BackgroundColor) or fusion.State(params.BackgroundColor or Color3.new(0.8,0.8,0.8)),
-		Color = util.import(params.Color) or fusion.State(Color3.new(0.5,0,1)),
-		LineColor = util.import(params.LineColor) or fusion.State(Color3.new(0.2,0.2,0.2)),
-		TextColor = util.import(params.TextColor) or fusion.State(Color3.new(0.2,0.2,0.2)),
-		ErrorColor = util.import(params.ErrorColor) or fusion.State(Color3.new(1,0,0)),
-		LeadingIconColor = util.import(params.LeadingIconColor) or fusion.State(Color3.new(0.2,0.2,0.2)),
-		TrailingIconColor = util.import(params.TrailingIconColor) or fusion.State(Color3.new(0.2,0.2,0.2)),
+		BackgroundColor = util.import(params.BackgroundColor) or f.v(params.BackgroundColor or Color3.new(0.8,0.8,0.8)),
+		Color = util.import(params.Color) or f.v(Color3.new(0.5,0,1)),
+		LineColor = util.import(params.LineColor) or f.v(Color3.new(0.2,0.2,0.2)),
+		TextColor = util.import(params.TextColor) or f.v(Color3.new(0.2,0.2,0.2)),
+		ErrorColor = util.import(params.ErrorColor) or f.v(Color3.new(1,0,0)),
+		LeadingIconColor = util.import(params.LeadingIconColor) or f.v(Color3.new(0.2,0.2,0.2)),
+		TrailingIconColor = util.import(params.TrailingIconColor) or f.v(Color3.new(0.2,0.2,0.2)),
 
-		MinimumTextWidth = util.import(params.MinimumWidth) or fusion.State(30),
-		MaximumTextWidth = util.import(params.MinimumWidth) or fusion.State(175),
+		MinimumTextWidth = util.import(params.MinimumWidth) or f.v(30),
+		MaximumTextWidth = util.import(params.MinimumWidth) or f.v(175),
 
-		CensorText = util.import(params.CensorText) or fusion.State(true),
-		FilterNumber = util.import(params.FilterNumber) or fusion.State(false),
-		FilterLetter = util.import(params.FilterLetter) or fusion.State(false),
-		FilterSpacing = util.import(params.FilterSpacing) or fusion.State(false),
-		FilterDuplicateSpacing = util.import(params.FilterDuplicateSpacing) or fusion.State(true),
-		FilterSymbols = util.import(params.FilterSymbols) or fusion.State(false),
-		FilterMaxLength = util.import(params.FilterMaxLength) or fusion.State(10000),
-		ForceUpper = util.import(params.ForceUpper) or fusion.State(false),
-		ForceLower = util.import(params.ForceLower) or fusion.State(false),
-		ForceFirstUpper = util.import(params.ForceFirstUpper) or fusion.State(false),
+		CensorText = util.import(params.CensorText) or f.v(true),
+		FilterNumber = util.import(params.FilterNumber) or f.v(false),
+		FilterLetter = util.import(params.FilterLetter) or f.v(false),
+		FilterSpacing = util.import(params.FilterSpacing) or f.v(false),
+		FilterDuplicateSpacing = util.import(params.FilterDuplicateSpacing) or f.v(true),
+		FilterSymbols = util.import(params.FilterSymbols) or f.v(false),
+		FilterMaxLength = util.import(params.FilterMaxLength) or f.v(10000),
+		ForceUpper = util.import(params.ForceUpper) or f.v(false),
+		ForceLower = util.import(params.ForceLower) or f.v(false),
+		ForceFirstUpper = util.import(params.ForceFirstUpper) or f.v(false),
 
-		Enabled = util.import(params.Enabled) or fusion.State(true),
+		Enabled = util.import(params.Enabled) or f.v(true),
 
-		SynthClass = fusion.Computed(function()
+		SynthClassName = f.get(function()
 			return script.Name
 		end)
 	}
@@ -66,7 +66,7 @@ function constructor.new(params)
 	--read only properties & foundational variables
 	local filter = filterConstructor.new(game.Players.LocalPlayer)
 	maid:GiveTask(filter)
-	local _FilteredText = fusion.Computed(function()
+	local _FilteredText = f.get(function()
 		local input = public.Input:get()
 
 		filter.Configuration.Number = public.FilterNumber:get()
@@ -82,29 +82,24 @@ function constructor.new(params)
 		return filter:Get(input)
 	end)
 
-	public.Value = fusion.Computed(function()
+	public.Value = f.get(function()
 		return script.Name
 	end)
 
 	--influencers
-	local _Focused = fusion.State(false)
-	local _Hovered = fusion.State(false)
+	local _Focused = f.v(false)
+	local _Hovered = f.v(false)
 
 	--properties
-	local _Padding = fusion.Computed(function()
-		return public.Typography:get().Padding
-	end)
-	local _TextSize = fusion.Computed(function()
-		return public.Typography:get().TextSize
-	end)
-	local _LabelTextSize = fusion.Computed(function()
+	local _Padding, _TextSize, _Font = util.getTypographyStates(public.Typography)
+	local _LabelTextSize = f.get(function()
 		return _TextSize:get()*0.7
 	end)
 
 	local _BackgroundColor = util.getInteractionColor(_Focused, _Hovered, public.BackgroundColor)
 	local _Color = util.getInteractionColor(_Focused, _Hovered, public.Color)
-	local _CursorPosition = fusion.State(1)
-	local _Cursor = fusion.State(" ")
+	local _CursorPosition = f.v(1)
+	local _Cursor = f.v(" ")
 
 	maid:GiveTask(runService.RenderStepped:Connect(function()
 		if not public.Enabled:get() or math.round(tick())%2 == 0 then
@@ -117,7 +112,7 @@ function constructor.new(params)
 	local inst
 	local content
 
-	local _Filled = fusion.Computed(function()
+	local _Filled = f.get(function()
 		local focused = _Focused:get()
 		local input = public.Input:get()
 
@@ -126,10 +121,7 @@ function constructor.new(params)
 
 		return false
 	end)
-	local _Font = fusion.Computed(function()
-		return public.Typography:get().Font
-	end)
-	content = fusion.New 'TextBox' {
+	content = f.new 'TextBox' {
 		Name = "Content",
 		BackgroundTransparency = 1,
 		LayoutOrder = 3,
@@ -141,10 +133,10 @@ function constructor.new(params)
 		BorderSizePixel = 0,
 		Font = _Font,
 		TextTransparency = 1,
-		[fusion.OnChange "CursorPosition"] = function()
+		[f.dt "CursorPosition"] = function()
 			_CursorPosition:set(content.CursorPosition)
 		end,
-		[fusion.OnEvent "Focused"] = function()
+		[f.e "Focused"] = function()
 			if not public.Enabled:get() then content:ReleaseFocus() return end
 			_Focused:set(true)
 
@@ -152,38 +144,38 @@ function constructor.new(params)
 			public.Input:set("")
 
 		end,
-		[fusion.OnEvent "FocusLost"] = function()
+		[f.e "FocusLost"] = function()
 			if not public.Enabled:get() then return end
 			_Focused:set(false)
 
 			local filteredText = _FilteredText:get()
 			public.Input:set(filteredText)
 		end,
-		[fusion.OnChange "Text"] = function()
+		[f.dt "Text"] = function()
 			public.Input:set(content.Text)
 		end,
 
-		[fusion.Children] = {
-			fusion.New 'UISizeConstraint' {
-				MaxSize = fusion.Computed(function()
+		[f.c] = {
+			f.new 'UISizeConstraint' {
+				MaxSize = f.get(function()
 					return Vector2.new(public.MaximumTextWidth:get(), math.huge)
 				end),
-				MinSize = fusion.Computed(function()
+				MinSize = f.get(function()
 					return Vector2.new(public.MinimumTextWidth:get(), 0)
 				end),
 			},
-			fusion.New 'UIListLayout' {
+			f.new 'UIListLayout' {
 				HorizontalAlignment = Enum.HorizontalAlignment.Left,
 				VerticalAlignment = Enum.VerticalAlignment.Center,
 			},
-			fusion.New 'TextLabel' {
+			f.new 'TextLabel' {
 				TextXAlignment = Enum.TextXAlignment.Left,
 				TextYAlignment = Enum.TextYAlignment.Center,
 				Font = _Font,
 				AutomaticSize = Enum.AutomaticSize.XY,
 				BackgroundTransparency = 1,
 				TextTruncate = Enum.TextTruncate.AtEnd,
-				Text = fusion.Computed(function()
+				Text = f.get(function()
 					local input = public.Input:get()
 					local filled = _Filled:get()
 					local focused = _Focused:get()
@@ -207,7 +199,7 @@ function constructor.new(params)
 						return placeholder
 					end
 				end),
-				TextTransparency = fusion.Computed(function()
+				TextTransparency = f.get(function()
 					local filled = _Filled:get()
 					if filled then
 						return 0
@@ -220,9 +212,9 @@ function constructor.new(params)
 	}
 
 	local function constructIcon(key, layoutOrder)
-		return fusion.New 'ImageButton' {
+		return f.new 'ImageButton' {
 			Name = key.."Icon",
-			Size = fusion.Computed(function()
+			Size = f.get(function()
 				local ts = _TextSize:get()
 				return UDim2.fromOffset(ts,ts)
 			end),
@@ -231,20 +223,20 @@ function constructor.new(params)
 			Image = public[key.."IconImage"],
 			ImageRectOffset = public[key.."IconRectOffset"],
 			ImageRectSize = public[key.."IconRectSize"],
-			Visible = fusion.Computed(function()
+			Visible = f.get(function()
 				return public[key.."IconImage"]:get() ~= ""
 			end),
 			LayoutOrder = layoutOrder,
 		}
 	end
 	local function constructLabel(key, layoutOrder)
-		return fusion.New 'TextLabel' {
+		return f.new 'TextLabel' {
 			Name = key,
 			Size = UDim2.fromOffset(0,0),
 			AutomaticSize = Enum.AutomaticSize.X,
 			TextTransparency = 0.5,
 			Text = public[key],
-			Visible = fusion.Computed(function()
+			Visible = f.get(function()
 				return public[key]:get() ~= ""
 			end),
 			LayoutOrder = layoutOrder,
@@ -252,34 +244,34 @@ function constructor.new(params)
 	end
 
 	--constructor
-	inst = util.set(fusion.New "Frame", public, params, {
+	inst = util.set(f.new "Frame", public, params, {
 		BackgroundTransparency = 1,
 		AutomaticSize = Enum.AutomaticSize.XY,
 		Size = UDim2.fromScale(0,0),
-		[fusion.Children] = {
-			fusion.New 'UIListLayout' {
+		[f.c] = {
+			f.new 'UIListLayout' {
 				FillDirection = Enum.FillDirection.Vertical,
 				HorizontalAlignment = Enum.HorizontalAlignment.Left,
 				VerticalAlignment = Enum.VerticalAlignment.Top,
 				SortOrder = Enum.SortOrder.LayoutOrder,
-				Padding = fusion.Computed(function()
+				Padding = f.get(function()
 					return UDim.new(0,_Padding:get().Offset*0.25)
 				end),
 			},
-			fusion.New 'TextLabel' {
+			f.new 'TextLabel' {
 				Name = "UpperLabel",
 				Text = public.Label,
 				Font = _Font,
-				TextSize = fusion.Computed(function()
+				TextSize = f.get(function()
 					return _LabelTextSize:get()
 				end),
-				Size = fusion.Computed(function()
+				Size = f.get(function()
 					return UDim2.fromOffset(0, _LabelTextSize:get())
 				end),
 				AutomaticSize = Enum.AutomaticSize.X,
 				TextXAlignment = Enum.TextXAlignment.Left,
 				TextYAlignment = Enum.TextYAlignment.Bottom,
-				TextColor3 = util.tween(fusion.Computed(function()
+				TextColor3 = util.tween(f.get(function()
 
 					local focusedColor = public.Color:get()
 					local textColor = public.TextColor:get()
@@ -291,7 +283,7 @@ function constructor.new(params)
 						return textColor
 					end
 				end)),
-				TextTransparency = util.tween(fusion.Computed(function()
+				TextTransparency = util.tween(f.get(function()
 					if _Filled:get() then
 						return 0
 					else
@@ -301,7 +293,7 @@ function constructor.new(params)
 				LayoutOrder = 1,
 				BackgroundTransparency = 1,
 			},
-			fusion.New 'TextButton' {
+			f.new 'TextButton' {
 				BackgroundColor3 = Color3.new(1,1,1),
 				TextColor3 = util.tween(public.TextColor),
 				TextSize = _TextSize,
@@ -312,20 +304,20 @@ function constructor.new(params)
 				LayoutOrder = 2,
 				TextXAlignment = Enum.TextXAlignment.Left,
 				ClipsDescendants = true,
-				BackgroundTransparency = util.tween(fusion.Computed(function()
+				BackgroundTransparency = util.tween(f.get(function()
 					if enums.Variant[public.Variant:get()] == enums.Variant.Outlined then
 						return 1
 					else
 						return 0
 					end
 				end)),
-				[fusion.OnEvent "InputBegan"] = function()
+				[f.e "InputBegan"] = function()
 					_Hovered:set(true)
 				end,
-				[fusion.OnEvent "InputEnded"] = function()
+				[f.e "InputEnded"] = function()
 					_Hovered:set(false)
 				end,
-				[fusion.OnEvent "Activated"] = function()
+				[f.e "Activated"] = function()
 					local enabled = public.Enabled:get()
 					if not enabled then return end
 					print("E: ", enabled)
@@ -335,14 +327,14 @@ function constructor.new(params)
 						content:ReleaseFocus()
 					end
 				end,
-				[fusion.Children] = {
+				[f.c] = {
 					content,
 					constructIcon("Leading", 1),
 					constructIcon("Trailing", 5),
 					constructLabel("Prefix", 2),
 					constructLabel("Suffix", 4),
-					fusion.New 'UIStroke' {
-						Color = util.tween(fusion.Computed(function()
+					f.new 'UIStroke' {
+						Color = util.tween(f.get(function()
 							local lineColor = public.LineColor:get()
 							local color = public.Color:get()
 							if _Focused:get() then
@@ -351,7 +343,7 @@ function constructor.new(params)
 								return lineColor
 							end
 						end)),
-						Transparency = util.tween(fusion.Computed(function()
+						Transparency = util.tween(f.get(function()
 							if enums.Variant[public.Variant:get()] == enums.Variant.Outlined then
 								return 0
 							elseif enums.Variant[public.Variant:get()] == enums.Variant.Filled then
@@ -363,9 +355,9 @@ function constructor.new(params)
 						ApplyStrokeMode = Enum.ApplyStrokeMode.Border,
 						Thickness = 2,
 					},
-					fusion.New 'UIGradient' {
+					f.new 'UIGradient' {
 						Rotation = 90,
-						Color = fusion.Computed(function()
+						Color = f.get(function()
 							local c1 = _BackgroundColor:get()
 							local color = _Color:get()
 							local lineColor = public.LineColor:get()
@@ -382,22 +374,20 @@ function constructor.new(params)
 							})
 						end)
 					},
-					fusion.New 'UIListLayout' {
+					f.new 'UIListLayout' {
 						FillDirection = Enum.FillDirection.Horizontal,
 						HorizontalAlignment = Enum.HorizontalAlignment.Center,
 						VerticalAlignment = Enum.VerticalAlignment.Center,
 						SortOrder = Enum.SortOrder.LayoutOrder,
-						Padding = fusion.Computed(function()
+						Padding = f.get(function()
 							return UDim.new(0,_Padding:get().Offset*0.5)
 						end),
 					},
-					fusion.New 'UICorner' {
-						CornerRadius = fusion.Computed(function()
-							return UDim.new(0, _Padding:get().Offset*0.5)
-						end),
+					f.new 'UICorner' {
+						CornerRadius = util.cornerRadius,
 					},
-					fusion.New 'UIPadding' {
-						PaddingBottom = fusion.Computed(function()
+					f.new 'UIPadding' {
+						PaddingBottom = f.get(function()
 							local padding = _Padding:get()
 							if enums.Variant[public.Variant:get()] == enums.Variant.Outlined then
 								return padding
@@ -405,7 +395,7 @@ function constructor.new(params)
 								return UDim.new(0, padding.Offset + 2)
 							end
 						end),
-						PaddingTop = fusion.Computed(function()
+						PaddingTop = f.get(function()
 							local padding = _Padding:get()
 							if enums.Variant[public.Variant:get()] == enums.Variant.Outlined then
 								return padding
@@ -418,9 +408,9 @@ function constructor.new(params)
 					},
 				},
 			},
-			fusion.New 'TextLabel' {
+			f.new 'TextLabel' {
 				Name = "ContextLabel",
-				Text = fusion.Computed(function()
+				Text = f.get(function()
 					local errorTxt = public.Error:get()
 					local contextTxt = public.Context:get()
 					if errorTxt ~= "" then
@@ -429,17 +419,17 @@ function constructor.new(params)
 						return contextTxt
 					end
 				end),
-				TextSize = fusion.Computed(function()
+				TextSize = f.get(function()
 					return _LabelTextSize:get()
 				end),
-				Size = fusion.Computed(function()
+				Size = f.get(function()
 					return UDim2.fromOffset(0, _LabelTextSize:get())
 				end),
 				AutomaticSize = Enum.AutomaticSize.X,
 				TextXAlignment = Enum.TextXAlignment.Left,
 				TextYAlignment = Enum.TextYAlignment.Top,
 				Font = _Font,
-				TextColor3 = util.tween(fusion.Computed(function()
+				TextColor3 = util.tween(f.get(function()
 					local errorColor = public.ErrorColor:get()
 					local textColor = public.TextColor:get()
 					if public.Error:get() == "" then
@@ -448,7 +438,7 @@ function constructor.new(params)
 						return errorColor
 					end
 				end)),
-				TextTransparency = util.tween(fusion.Computed(function()
+				TextTransparency = util.tween(f.get(function()
 					local errorTxt = public.Error:get()
 					local contextTxt = public.Context:get()
 

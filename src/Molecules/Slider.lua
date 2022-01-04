@@ -1,10 +1,10 @@
 local packages = script.Parent.Parent.Parent
 local synthetic = require(script.Parent.Parent)
-local fusion = require(packages:WaitForChild('fusion'))
+local util = require(script.Parent.Parent:WaitForChild("Util"))
+local f = util.initFusion(require(packages:WaitForChild('fusion')))
 local typographyConstructor = require(packages:WaitForChild('typography'))
 local maidConstructor = require(packages:WaitForChild('maid'))
 local filterConstructor = require(packages:WaitForChild("filter"))
-local util = require(script.Parent.Parent:WaitForChild("Util"))
 local enums = require(script.Parent.Parent:WaitForChild("Enums"))
 local effects = require(script.Parent.Parent:WaitForChild("Effects"))
 
@@ -19,29 +19,28 @@ function constructor.new(params)
 
 	--public states
 	local public = {
-		Color = util.import(params.Color) or fusion.State(params.Color or Color3.new(0.5, 0, 1)),
-		MinimumValue = util.import(params.MinimumValue) or fusion.State(0),
-		MaximumValue = util.import(params.MaximumValue) or fusion.State(1),
-		Notches = util.import(params.Notches) or fusion.State(5),
-		Input = util.import(params.Input) or fusion.Input(0.5),
-		ValueTextEnabled = util.import(params.ValueTextEnabled) or fusion.State(false),
+		Color = util.import(params.Color) or f.v(params.Color or Color3.new(0.5, 0, 1)),
+		MinimumValue = util.import(params.MinimumValue) or f.v(0),
+		MaximumValue = util.import(params.MaximumValue) or f.v(1),
+		Notches = util.import(params.Notches) or f.v(5),
+		Input = util.import(params.Input) or f.Input(0.5),
+		ValueTextEnabled = util.import(params.ValueTextEnabled) or f.v(false),
 		Typography = util.import(params.Typography) or typographyConstructor.new(Enum.Font.SourceSans, 10, 14),
-		SynthClass = fusion.Computed(function()
+		SynthClassName = f.get(function()
 			return script.Name
 		end),
-
 	}
 
 	--read only public states
-	public.Alpha = fusion.Computed(function()
+	public.Alpha = f.get(function()
 		local minVal = public.MinimumValue:get()
 		local maxVal = public.MaximumValue:get()
 		local val = public.Input:get()
 		local rangeVal = maxVal - minVal
 		return (val-minVal)/rangeVal
 	end)
-	local _DisplayAlpha = fusion.State(public.Alpha:get())
-	public.Value = fusion.Computed(function()
+	local _DisplayAlpha = f.v(public.Alpha:get())
+	public.Value = f.get(function()
 		local minVal = public.MinimumValue:get()
 		local maxVal = public.MaximumValue:get()
 		local rangeVal = maxVal - minVal
@@ -50,11 +49,11 @@ function constructor.new(params)
 	end)
 
 	--influencers
-	local _Hovered = fusion.State(false)
-	local _Clicked = fusion.State(false)
+	local _Hovered = f.v(false)
+	local _Clicked = f.v(false)
 
 	--properties
-	local _BubbleTransparency = fusion.Computed(function()
+	local _BubbleTransparency = f.get(function()
 		local hovered = _Hovered:get()
 		local clicked = _Clicked:get()
 		if clicked then
@@ -64,7 +63,7 @@ function constructor.new(params)
 		end
 		return 1
 	end)
-	local _BubbleSize = fusion.Computed(function()
+	local _BubbleSize = f.get(function()
 		local hovered = _Hovered:get()
 		local clicked = _Clicked:get()
 		if clicked or hovered then
@@ -73,11 +72,11 @@ function constructor.new(params)
 			return UDim.new(0, 0)
 		end
 	end)
-	local _Height = fusion.Computed(function()
+	local _Height = f.get(function()
 		local typography = public.Typography:get()
 		return typography.TextSize --+ typography.Padding.Offset*2
 	end)
-	-- local _BubblePosition = fusion.State(UDim2.fromOffset(0,0))
+	-- local _BubblePosition = f.v(UDim2.fromOffset(0,0))
 
 	local function updateBar(cursorPos:Vector2)
 		local typography = public.Typography:get()
@@ -92,17 +91,13 @@ function constructor.new(params)
 		public.Input:set(alpha*rangeVal + minVal)
 	end
 
-	local _MutedColor = fusion.Computed(function()
+	local _MutedColor = f.get(function()
 		local h,s,v = public.Color:get():ToHSV()
 
 		return Color3.fromHSV(h,s*0.4,v)
 	end)
-	-- local _SliderPadding = fusion.Computed(function()
-	-- 	local typography = public.Typography:get()
-	-- 	local pad = typography.Padding.Offset
-	-- 	return UDim.new(0, pad)
-	-- end)
-	local _TipEnabled = fusion.State(false)
+
+	local _TipEnabled = f.v(false)
 	--preparing config
 	inst = util.set(synthetic.New "ProgressBar", public, params, {
 		BackgroundColor = _MutedColor,
@@ -112,41 +107,41 @@ function constructor.new(params)
 		KnobEnabled = true,
 		LockKnobColor = false,
 		Saturation = 1,
-		Padding = fusion.Computed(function()
+		Padding = f.get(function()
 			local pad = public.Typography:get().Padding
 			return UDim.new(pad.Scale, pad.Offset)
 		end),
-		BarPadding = fusion.Computed(function()
+		BarPadding = f.get(function()
 			local typography = public.Typography:get()
 			local pad = typography.Padding.Offset*2
 			return UDim.new(0, (-pad + 2*_Height:get())*0.325)
 		end),
 		SizeConstraint = Enum.SizeConstraint.RelativeXX,
-		Size = fusion.Computed(function()
+		Size = f.get(function()
 			local height = _Height:get()
 			local typography = public.Typography:get()
 			local pad = typography.Padding.Offset
 			return UDim2.fromOffset(7*height, height+pad*2)
 		end),
-		[fusion.OnEvent "InputChanged"] = function(inputObj)
+		[f.e "InputChanged"] = function(inputObj)
 			_Hovered:set(true)
 			if not _Clicked:get() then return end
 			local cursorPos = inputObj.Position
 			updateBar(Vector2.new(cursorPos.X, cursorPos.Y))
 		end,
-		[fusion.OnEvent "MouseButton1Down"] = function(x,y)
+		[f.e "MouseButton1Down"] = function(x,y)
 			_Clicked:set(true)
 			_TipEnabled:set(true)
 			effects.sound("ui_tap-variant-01")
 
 			updateBar(Vector2.new(x,y))
 		end,
-		[fusion.OnEvent "MouseButton1Up"] = function()
+		[f.e "MouseButton1Up"] = function()
 			_Clicked:set(false)
 			_TipEnabled:set(false)
 			maid.rippleMaid = nil
 		end,
-		[fusion.OnEvent "InputEnded"] = function()
+		[f.e "InputEnded"] = function()
 			_Clicked:set(false)
 			_Hovered:set(false)
 			_TipEnabled:set(false)
@@ -155,8 +150,8 @@ function constructor.new(params)
 	local knob = inst:FindFirstChild("Knob")
 	local onChange = inst:FindFirstChild("OnChange")
 	--tooltip stuff
-	local _AbsPosition = fusion.State(Vector2.new(0,0))
-	local _AbsSize = fusion.State(Vector2.new(0,0))
+	local _AbsPosition = f.v(Vector2.new(0,0))
+	local _AbsSize = f.v(Vector2.new(0,0))
 
 
 	maid:GiveTask(onChange.Event:Connect(function(val)
@@ -172,7 +167,7 @@ function constructor.new(params)
 	effects.tip(maid, {
 		Text = public.Value,
 		Visible = _TipEnabled,
-	}, _AbsPosition, _AbsSize, fusion.State(Vector2.new(0.5,0)))
+	}, _AbsPosition, _AbsSize, f.v(Vector2.new(0.5,0)))
 	maid:GiveTask(synthetic.New "Bubble" {
 		Position = UDim2.fromScale(0.5,0.5),
 		Size = _BubbleSize,

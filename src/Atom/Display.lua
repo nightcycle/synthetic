@@ -1,10 +1,10 @@
 local packages = script.Parent.Parent.Parent
 local synthetic = require(script.Parent.Parent)
-local fusion = require(packages:WaitForChild('fusion'))
+local util = require(script.Parent.Parent:WaitForChild("Util"))
+local f = util.initFusion(require(packages:WaitForChild('fusion')))
 local maidConstructor = require(packages:WaitForChild('maid'))
 local typographyConstructor = require(packages:WaitForChild('typography'))
 local viewport = require(packages:WaitForChild("viewport"))
-local util = require(script.Parent.Parent:WaitForChild("Util"))
 local enums = require(script.Parent.Parent:WaitForChild("Enums"))
 local effects = require(script.Parent.Parent:WaitForChild("Effects"))
 
@@ -14,15 +14,15 @@ function constructor.new(params)
 
 	--public states
 	local public = {
-		CameraPosition = util.import(params.CameraPosition) or fusion.State(Vector3.new(0,0,0)),
-		CameraXVector = util.import(params.CameraXVector) or fusion.State(Vector3.new(1,0,0)),
-		CameraYVector = util.import(params.CameraYVector) or fusion.State(Vector3.new(0,1,0)),
-		CameraZVector = util.import(params.CameraZVector) or fusion.State(Vector3.new(0,0,1)),
-		LightDirection = util.import(params.LightDirection) or fusion.State(Vector3.new(-1,-1,-1)),
-		LightColor = util.import(params.LightColor) or fusion.State(Color3.fromRGB(140,140,140)),
-		Ambient = util.import(params.Ambient) or fusion.State(Color3.fromRGB(255,255,255)),
-		FOV = util.import(params.FOV) or fusion.State(70),
-		SynthClass = fusion.Computed(function()
+		CameraPosition = util.import(params.CameraPosition) or f.v(Vector3.new(0,0,0)),
+		CameraXVector = util.import(params.CameraXVector) or f.v(Vector3.new(1,0,0)),
+		CameraYVector = util.import(params.CameraYVector) or f.v(Vector3.new(0,1,0)),
+		CameraZVector = util.import(params.CameraZVector) or f.v(Vector3.new(0,0,1)),
+		LightDirection = util.import(params.LightDirection) or f.v(Vector3.new(-1,-1,-1)),
+		LightColor = util.import(params.LightColor) or f.v(Color3.fromRGB(140,140,140)),
+		Ambient = util.import(params.Ambient) or f.v(Color3.fromRGB(255,255,255)),
+		FOV = util.import(params.FOV) or f.v(70),
+		SynthClassName = f.get(function()
 			return script.Name
 		end),
 	}
@@ -30,8 +30,8 @@ function constructor.new(params)
 	--construct
 	local maid = maidConstructor.new()
 	local handler
-	local camera = fusion.New "Camera" {
-		CFrame = util.tween(fusion.Computed(function()
+	local camera = f.new "Camera" {
+		CFrame = util.tween(f.get(function()
 			local p = public.CameraPosition:get()
 			local x = public.CameraXVector:get()
 			local y = public.CameraYVector:get()
@@ -42,32 +42,32 @@ function constructor.new(params)
 	}
 
 	local objects = {}
-	local inst = util.set(fusion.New "ViewportFrame", public, params, {
+	local inst = util.set(f.new "ViewportFrame", public, params, {
 		BackgroundTransparency = 1,
 		LightDirection = util.tween(public.LightDirection),
 		LightColor = util.tween(public.LightColor),
 		Ambient = util.tween(public.Ambient),
-		[fusion.Children] = {
+		[f.c] = {
 			camera,
-			fusion.New "BindableEvent" {
+			f.new "BindableEvent" {
 				Name = "ClearScene",
-				[fusion.OnEvent "Event"] = function()
+				[f.e "Event"] = function()
 					for i, obj in ipairs(objects) do
 						obj:Destroy()
 					end
 					objects = {}
 				end,
 			},
-			fusion.New "BindableEvent" {
+			f.new "BindableEvent" {
 				Name = "HideScene",
-				[fusion.OnEvent "Event"] = function()
+				[f.e "Event"] = function()
 					print(handler)
 					handler:Hide()
 				end,
 			},
-			fusion.New "BindableEvent" {
+			f.new "BindableEvent" {
 				Name = "ShowScene",
-				[fusion.OnEvent "Event"] = function()
+				[f.e "Event"] = function()
 					handler:Show()
 				end,
 			},
@@ -76,7 +76,7 @@ function constructor.new(params)
 	inst.CurrentCamera = camera
 
 
-	-- maid:GiveTask(fusion.Compat(camCF):onChange(function()
+	-- maid:GiveTask(f.step(camCF):onChange(function()
 	-- 	print("Update")
 	-- 	camera.CFrame = getCF()
 	-- end))
