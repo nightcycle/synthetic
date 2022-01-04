@@ -133,6 +133,7 @@ return {
 		params.SynthClass = nil
 		params.Name = params.Name or publicStates.SynthClass:get()
 		mergeConfig(config, params, nil, publicStates)
+		-- print(config)
 		-- print("2")
 		local inst = constructor(config)
 		maid:GiveTask(inst)

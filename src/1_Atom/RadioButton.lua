@@ -91,7 +91,9 @@ function constructor.new(params)
 			}
 		},
 		[fusion.OnEvent "Activated"] = function()
-			public.Input:set(not public.Input:get())
+			if public.Input.set then
+				public.Input:set(not public.Input:get())
+			end
 			local pos = inst.AbsolutePosition + inst.AbsoluteSize * 0.5
 			effects.ripple(fusion.State(UDim2.fromOffset(pos.X, pos.Y)), _MainColor)
 			effects.sound("ui_tap-variant-01")

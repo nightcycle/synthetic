@@ -28,7 +28,7 @@ function constructor.new(params)
 	return util.set(fusion.New "Frame", public, params, {
 		BackgroundTransparency = 1,
 		Size = fusion.Computed(function()
-			if enums.DividerDirection[public.Direction] == enums.DividerDirection.Horizontal then
+			if enums.DividerDirection[public.Direction:get()] == enums.DividerDirection.Horizontal then
 				return UDim2.fromScale(1,0)
 			else
 				return UDim2.fromScale(0,1)
@@ -36,7 +36,7 @@ function constructor.new(params)
 		end),
 		BorderSizePixel = 0,
 		AutomaticSize = fusion.Computed(function()
-			if enums.DividerDirection[public.Direction] == enums.DividerDirection.Horizontal then
+			if enums.DividerDirection[public.Direction:get()] == enums.DividerDirection.Horizontal then
 				return Enum.AutomaticSize.Y
 			else
 				return Enum.AutomaticSize.X
@@ -45,28 +45,28 @@ function constructor.new(params)
 		[fusion.Children] = {
 			fusion.New 'UIPadding' {
 				PaddingBottom = fusion.Computed(function()
-					if enums.DividerDirection[public.Direction] == enums.DividerDirection.Horizontal then
+					if enums.DividerDirection[public.Direction:get()] == enums.DividerDirection.Horizontal then
 						return _Padding:get()
 					else
 						return UDim.new(0,0)
 					end
 				end),
 				PaddingTop = fusion.Computed(function()
-					if enums.DividerDirection[public.Direction] == enums.DividerDirection.Horizontal then
+					if enums.DividerDirection[public.Direction:get()] == enums.DividerDirection.Horizontal then
 						return _Padding:get()
 					else
 						return UDim.new(0,0)
 					end
 				end),
 				PaddingLeft = fusion.Computed(function()
-					if enums.DividerDirection[public.Direction] == enums.DividerDirection.Horizontal then
+					if enums.DividerDirection[public.Direction:get()] == enums.DividerDirection.Horizontal then
 						return UDim.new(0,0)
 					else
 						return _Padding:get()
 					end
 				end),
 				PaddingRight = fusion.Computed(function()
-					if enums.DividerDirection[public.Direction] == enums.DividerDirection.Horizontal then
+					if enums.DividerDirection[public.Direction:get()] == enums.DividerDirection.Horizontal then
 						return UDim.new(0,0)
 					else
 						return _Padding:get()
@@ -74,12 +74,14 @@ function constructor.new(params)
 				end),
 			},
 			fusion.New 'Frame' {
+				Name = "Bar",
 				BackgroundColor3 = public.Color,
+				BackgroundTransparency = 0.8,
 				Size = fusion.Computed(function()
-					if enums.DividerDirection[public.Direction] == enums.DividerDirection.Horizontal then
-						return UDim2.new(1, 0, 0, 2)
+					if enums.DividerDirection[public.Direction:get()] == enums.DividerDirection.Horizontal then
+						return UDim2.new(1, 0, 0, 1)
 					else
-						return UDim2.new(0, 2, 1, 0)
+						return UDim2.new(0, 1, 1, 0)
 					end
 				end),
 				BorderSizePixel = 0,
