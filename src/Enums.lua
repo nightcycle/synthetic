@@ -1,6 +1,5 @@
 local packages = script.Parent.Parent
-local enumerator = require(packages:WaitForChild("enumerator"))
-local enum = enumerator.enumerate
+local enum = require(packages:WaitForChild("enumerator"))
 
 return {
 	enum("DividerDirection", {
