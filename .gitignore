@@ -4,4 +4,5 @@ wally.lock
 package-lock.json
 Packages
 .gitconfig
+build
 out
