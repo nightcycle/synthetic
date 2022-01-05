@@ -1,0 +1,1 @@
+"use strict";(self.webpackChunkdocs=self.webpackChunkdocs||[]).push([[494],{49992:function(e){e.exports=JSON.parse('{"functions":[],"properties":[],"types":[],"name":"Synthetic","desc":"A library used for the construction of Material Design inspired fusion-powered UI Components.","source":{"line":5,"path":"src/init.lua"}}')}}]);
