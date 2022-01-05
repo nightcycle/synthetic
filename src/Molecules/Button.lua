@@ -10,27 +10,8 @@ local enums = require(script.Parent.Parent:WaitForChild("Enums"))
 local effects = require(script.Parent.Parent:WaitForChild("Effects"))
 
 local constructor = {}
---[=[
-	@class Button
-	@within Synthetic
-	@tag Molecule
-	@tag Component
-	A basic [button](https://material.io/components/buttons)
 
-	@interface Constructor
-	@within Button
-	.Variant SynthEnumItem | nil -- The style of construction as detailed [here](https://material.io/components/buttons#anatomy), excluding "Toggle button"
-	.Typography Typography | nil --The Typography to be used for this component
-	.Text string | nil --The Typography to be used for this component
-	.Tooltip string | nil --Text that appears when the cursor hovers over button
-	.TooltipDirection string | nil --What anchor point on the button should be used to display Tooltip
-	.BackgroundColor Color3 | nil --Color used for non-text areas of button
-	.TextColor Color3 | nil --Color used for text
-	.Image URL | nil --Roblox Asset URL used to load in an icon's custom texture
-	.ImageRectSize Vector2 | nil --How big the icon's sprite-sheet cells are
-	.ImageRectOffset Vector2 | nil --What position on a sprite-sheet should an icon be grabbed from
-	.SynthClassName string --Read-Only attribute used to identify what type of component it is
-]=]
+
 type FusionState = typeof(f.v())
 type Typography = typeof(typographyConstructor.new(Enum.Font.Gotham, 1, 2))
 type Public = {
@@ -51,22 +32,82 @@ function constructor.new(params:table | nil)
 	local inst
 	local maid = maidConstructor.new()
 
+	--[=[
+		@class Button
+		@tag Molecule
+		A basic [button](https://material.io/components/buttons)
+	]=]
+
 	--public states
-	local public: Public = {
-		Variant = util.import(params.Variant) or f.v("Filled"),
-		Typography = util.import(params.Typography) or typographyConstructor.new(Enum.Font.SourceSans, 10, 14),
-		Text = util.import(params.Text) or f.v(""),
-		Tooltip = util.import(params.Tooltip) or f.v(""),
-		TooltipDirection = util.import(params.TooltipDirection) or f.v(Vector2.new(0.5,0)),
-		Color = util.import(params.BackgroundColor) or f.v(Color3.new(0.5,0,1)),
-		TextColor = util.import(params.TextColor) or f.v(Color3.new(0.2,0.2,0.2)),
-		Image = util.import(params.Icon) or f.v(""),
-		ImageRectSize = util.import(params.ImageRectSize) or f.v(Vector2.new(0,0)),
-		ImageRectOffset = util.import(params.ImageRectOffset) or f.v(Vector2.new(0, 0)),
-		SynthClassName = f.get(function()
-			return script.Name
-		end),
-	}
+	local public: Public = {}
+	--[=[
+		@prop Variant SynthEnumItem
+		The style of construction as detailed [here](https://material.io/components/buttons#anatomy), excluding "Toggle button"
+		@within Button
+	]=]
+	public.Variant = util.import(params.Variant) or f.v("Filled")
+	--[=[
+		@prop Typography Typography
+		The Typography to be used for this component
+		@within Button
+	]=]
+	public.public.Typography = util.import(params.Typography) or typographyConstructor.new(Enum.Font.SourceSans, 10, 14)
+	--[=[
+		@prop Text string
+		Text that fills the button
+		@within Button
+	]=]
+	public.Text = util.import(params.Text) or f.v("")
+	--[=[
+		@prop Tooltip string
+		Text that appears when the cursor hovers over button
+		@within Button
+	]=]
+	public.Tooltip = util.import(params.Tooltip) or f.v("")
+	--[=[
+		@prop TooltipDirection string
+		What anchor point on the button should be used to display
+		@within Button
+	]=]
+	public.TooltipDirection = util.import(params.TooltipDirection) or f.v(Vector2.new(0.5,0))
+	--[=[
+		@prop Color Color3
+		Color used for non-text areas of button
+		@within Button
+	]=]
+	public.Color = util.import(params.BackgroundColor) or f.v(Color3.new(0.5,0,1))
+	--[=[
+		@prop TextColor Color3
+		Color used for text
+		@within Button
+	]=]
+	public.TextColor = util.import(params.TextColor) or f.v(Color3.new(0.2,0.2,0.2))
+	--[=[
+		@prop Image string
+		Roblox Asset URL used to load in an icon's custom texture
+		@within Button
+	]=]
+	public.Image = util.import(params.Icon) or f.v("")
+	--[=[
+		@prop ImageRectSize Vector2
+		How big the icon's sprite-sheet cells are
+		@within Button
+	]=]
+	public.ImageRectSize = util.import(params.ImageRectSize) or f.v(Vector2.new(0,0))
+	--[=[
+		@prop ImageRectOffset Vector2
+		What position on a sprite-sheet should an icon be grabbed from
+		@within Button
+	]=]
+	public.ImageRectOffset = util.import(params.ImageRectOffset) or f.v(Vector2.new(0, 0))
+	--[=[
+		@prop SynthClassName string
+		Read-Only attribute used to identify what type of component it is
+		@within Button
+	]=]
+	public.SynthClassName = f.get(function()
+		return script.Name
+	end)
 
 	--influencers
 	local _Hovered = f.v(false)

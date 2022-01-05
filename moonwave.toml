@@ -1,4 +1,4 @@
-title = "Synthetic"  # From Git
+title = "synthetic"  # From Git
 gitRepoUrl = "https://github.com/nightcycle/synthetic.git" # From Git
 
 gitSourceBranch = "main"
@@ -8,13 +8,13 @@ classOrder = []
 [docusaurus]
 onBrokenLinks = "throw"
 onBrokenMarkdownLinks = "warn"
-favicon = ""
+favicon = "logo.png"
 
 # From git:
 organizationName = "Nightcycle"
 projectName = "Synthetic"
 url = "https://nightcycle.github.io"
-baseUrl = "/synthetic"
+baseUrl = "/synthetic/"
 tagline = "Material UI inspired elements ported to Fusion!"
 
 [navbar]
