@@ -1,1 +1,0 @@
-"use strict";(self.webpackChunkdocs=self.webpackChunkdocs||[]).push([[298],{75968:function(e){e.exports=JSON.parse('{"functions":[],"properties":[],"types":[],"name":"Label","desc":"The text & icon combo used within the Button component among others\\n\\t","tags":["Component","Atom"],"source":{"line":19,"path":"src/Atom/Label.lua"}}')}}]);
