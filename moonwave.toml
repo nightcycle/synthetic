@@ -1,0 +1,22 @@
+title = "synthetic"  # From Git
+gitRepoUrl = "https://github.com/nightcycle/synthetic" # From Git
+
+gitSourceBranch = "master"
+changelog = true
+classOrder = []
+
+[docusaurus]
+onBrokenLinks = "throw"
+onBrokenMarkdownLinks = "warn"
+favicon = "logo.png"
+
+# From git:
+organizationName = "nightcycle"
+projectName = "synthetic"
+url = "https://AuthorName.github.io"
+baseUrl = "/synthetic/"
+tagline = "A library used for the construction of Material Design inspired Fusion-powered UI Components."
+
+[footer]
+style = "dark"
+copyright = "Copyright © 2021 Nightcycle Studios LLC. Built with Moonwave and Docusaurus"

@@ -1,5 +1,5 @@
 ---
-sidebar_position: 3
+sidebar_position: 2
 ---
 You make something cool and want to share? Great! Saves us all time! If you want to save some time, copy the Template.lua folder at the root of this library!
 
