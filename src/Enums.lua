@@ -2,12 +2,12 @@ local packages = script.Parent.Parent
 local enum = require(packages:WaitForChild("enumerator"))
 
 return {
-	enum("DividerDirection", {
+	DividerDirection = enum("DividerDirection", {
 		Unknown = 0,
 		Vertical = 1,
 		Horizontal = 2,
 	}),
-	enum("Variant", {
+	Variant = enum("Variant", {
 		Unknown = 0,
 		Filled = 1,
 		Outlined = 2,
