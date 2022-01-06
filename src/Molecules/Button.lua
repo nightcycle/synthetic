@@ -51,7 +51,7 @@ function constructor.new(params:table | nil)
 		The Typography to be used for this component
 		@within Button
 	]=]
-	public.public.Typography = util.import(params.Typography) or typographyConstructor.new(Enum.Font.SourceSans, 10, 14)
+	public.Typography = util.import(params.Typography) or typographyConstructor.new(Enum.Font.SourceSans, 10, 14)
 	--[=[
 		@prop Text string
 		Text that fills the button
@@ -75,13 +75,19 @@ function constructor.new(params:table | nil)
 		Color used for non-text areas of button
 		@within Button
 	]=]
-	public.Color = util.import(params.BackgroundColor) or f.v(Color3.new(0.5,0,1))
+	public.BackgroundColor = util.import(params.BackgroundColor) or f.v(Color3.new(0.5,0,1))
 	--[=[
 		@prop TextColor Color3
 		Color used for text
 		@within Button
 	]=]
 	public.TextColor = util.import(params.TextColor) or f.v(Color3.new(0.2,0.2,0.2))
+	--[=[
+		@prop LineColor Color3
+		<Missing Docs> 
+		@within Button
+	]=]
+	public.LineColor = util.import(params.LineColor) or f.v(Color3.new(0.5,0,1))
 	--[=[
 		@prop Image string
 		Roblox Asset URL used to load in an icon's custom texture
@@ -206,7 +212,7 @@ function constructor.new(params:table | nil)
 				ImageRectOffset = public.ImageRectOffset,
 			},
 			synthetic.New 'GradientRipple' {
-				Color = public.BackgroundColor,
+				Color = _MainColor,
 			},
 		},
 		[f.e "InputBegan"] = function(inputObj)

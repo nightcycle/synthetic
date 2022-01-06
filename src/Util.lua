@@ -163,7 +163,7 @@ util = {
 			return typographyState:get().TextSize
 		end)
 		local _Font = f.get(function()
-
+			return typographyState:get().Font
 		end)
 		return _Padding, _TextSize, _Font
 	end,

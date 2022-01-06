@@ -36,7 +36,7 @@ function constructor.new(params)
 
 	--properties
 	local _Padding, _HeaderTextSize, _HeaderFont = util.getTypographyStates(public.HeaderTypography)
-	local _BodyPadding, _BodyTextSize, _BodyFont = util.getTypographyStates(public.Typography)
+	local _BodyPadding, _BodyTextSize, _BodyFont = util.getTypographyStates(public.BodyTypography)
 	local _AbsoluteHeaderSize = f.v(Vector2.new(0,0))
 
 	--construct

@@ -51,61 +51,77 @@ local screenGui = fusion.New "ScreenGui" {
 			Padding = UDim.new(0, 10),
 			SortOrder = Enum.SortOrder.LayoutOrder,
 		},
-		-- synthetic.New "Button" {
-		-- 	Typography = buttonType,
-		-- 	Text = "TEST",
-		-- 	BackgroundColor = color,
-		-- 	LineColor = lineColor,
-		-- 	LayoutOrder = 4,
-		-- 	Tooltip = "Omg what a useful tip",
-		-- },
-		-- synthetic.New "Checkbox" {
-		-- 	Typography = buttonType,
-		-- 	LineColor = lineColor,
-		-- 	BackgroundColor = surfaceColor,
-		-- 	Color = color,
-		-- },
-		-- synthetic.New "RadioButton" {
-		-- 	Typography = buttonType,
-		-- 	Color = color,
-		-- 	LineColor = surfaceColor,
-		-- },
-		-- synthetic.New "Slider" {
-		-- 	Typography = buttonType,
-		-- 	Color = color,
-		-- 	MinimumValue = fusion.State(0),
-		-- 	MaximumValue = fusion.State(100),
-		-- 	Notches = fusion.State(5),
-		-- 	Input = fusion.State(50),
-		-- },
-		-- synthetic.New "Switch" {
-		-- 	Typography = buttonType,
-		-- 	Color = color,
-		-- 	BackgroundColor = surfaceColor,
-		-- },
-		-- synthetic.New "TextField" {
-		-- 	Typography = buttonType,
-		-- 	Color = color,
-		-- 	TextColor = lineColor,
-		-- 	BackgroundColor = surfaceColor,
-		-- 	Label = "Topic",
-		-- },
+		--[[
+		synthetic.New "Button" {
+		 	Typography = buttonType,
+			Text = "TEST",
+			BackgroundColor = color,
+		 	LineColor = lineColor,
+		 	LayoutOrder = 4,
+		 	Tooltip = "Omg what a useful tip",
+		},
+		]]
+		--[[
+		synthetic.New "Checkbox" {
+		 	Typography = buttonType,
+		 	LineColor = lineColor,
+		 	BackgroundColor = surfaceColor,
+		 	Color = color,
+		},
+		]]
+		--[[
+		synthetic.New "RadioButton" {
+		 	Typography = buttonType,
+		 	Color = color,
+		 	LineColor = surfaceColor,
+		},
+		]]
+		--[[
+		synthetic.New "Slider" {
+		 	Typography = buttonType,
+		 	Color = color,
+		 	MinimumValue = fusion.State(0),
+		 	MaximumValue = fusion.State(100),
+		 	Notches = fusion.State(5),
+		 	Input = fusion.State(50),
+		},
+		]]
+		--[[
+		synthetic.New "Switch" {
+		 	Typography = buttonType,
+		 	Color = color,
+		 	BackgroundColor = surfaceColor,
+		},
+		]]
+		--[[
+		synthetic.New "TextField" {
+		 	Typography = buttonType,
+		 	Color = color,
+		 	TextColor = lineColor,
+		 	BackgroundColor = surfaceColor,
+		 	Label = "Topic",
+		},
+		]]
 		-- -- display,
-		-- synthetic.New "ExpansionPanel" {
-		-- 	Typography = bodyType,
-		-- 	Text = "Hmm",
-		-- 	BackgroundColor = surfaceColor,
-		-- 	TextColor = lineColor,
-		-- 	Width = UDim.new(0,300),
-		-- },
-		-- synthetic.New "Dropdown" {
-		-- 	Typography = bodyType,
-		-- 	Label = "Bobby Tables",
-		-- 	BackgroundColor = surfaceColor,
-		-- 	Options = {"Borby", "Kibby", "Corn Boi"},
-		-- 	TextColor = lineColor,
-		-- 	Width = UDim.new(0, 120),
-		-- },
+		--[[
+		synthetic.New "ExpansionPanel" {
+		 	Typography = bodyType,
+		 	Text = "Hmm",
+		 	BackgroundColor = surfaceColor,
+		 	TextColor = lineColor,
+		 	Width = UDim.new(0,300),
+		},
+		]] 
+		--[[
+		synthetic.New "Dropdown" {
+		 	Typography = bodyType,
+		 	Label = "Bobby Tables",
+		 	BackgroundColor = surfaceColor,
+		 	Options = {"Borby", "Kibby", "Corn Boi"},
+		 	TextColor = lineColor,
+		 	Width = UDim.new(0, 120),
+		},
+		]]
 		synthetic.New "ToggleList" {
 			HeaderTypography = subHeadingType,
 			BodyTypography = bodyType,
@@ -123,20 +139,22 @@ local screenGui = fusion.New "ScreenGui" {
 			Color = color,
 			TextColor = lineColor,
 			Width = UDim.new(0,100),
-		}
-		-- synthetic.New "Dialog" {
-		-- 	HeaderTypography = headerType,
-		-- 	BodyTypography = bodyType,
-		-- 	ButtonTypography = buttonType,
+		},
+		--[[
+		synthetic.New "Dialog" {
+		 	HeaderTypography = headerType,
+		 	BodyTypography = bodyType,
+		 	ButtonTypography = buttonType,
 
-		-- 	BackgroundColor = surfaceColor,
-		-- 	Color = color,
-		-- 	TextColor = lineColor,
+		 	BackgroundColor = surfaceColor,
+		 	Color = color,
+		 	TextColor = lineColor,
 
-		-- 	Enabled = true,
+		 	Enabled = true,
 
-		-- 	Size = UDim2.fromOffset(300,300),
-		-- },
+		 	Size = UDim2.fromOffset(300,300),
+		},
+		]]
 	}
 }
 

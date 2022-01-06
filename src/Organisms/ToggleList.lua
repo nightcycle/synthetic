@@ -35,7 +35,7 @@ function constructor.new(params)
 	end)
 
 	--properties
-	local _Padding, _TextSize, _Font = util.getTypographyStates(public.Typography)
+	local _Padding, _TextSize, _Font = util.getTypographyStates(public.HeaderTypography)
 
 	--construct
 	local inst
