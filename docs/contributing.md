@@ -6,8 +6,8 @@ You make something cool and want to share? Great! Saves us all time! If you want
 ## Guidlines
 If you already wrote it and it doesn't match that's fine, I can just add it myself. Ideally though here's how custom components will work
 
-### I Don't Care If the Code is Messy
-I honestly don't care if you're code's messy. Now don't get me wrong, if you can make your code readable and elegant go for it. But if you're worried about sending in some cool component you built just because I'll look down on you for it, don't worry about it. Just don't obfuscate it or anything lol.
+### I Don't Care If the Backend is Messy
+I honestly don't care if your code's messy. Now don't get me wrong, if you can make your code readable and elegant go for it. But if you're worried about sending in some cool component you built just because I'll look down on you for it, don't worry about it. Just don't obfuscate it or anything lol.
 
 ### Label Your GuiObjects
 If you make an element composed of multiple GuiObjects, please give them unique names
