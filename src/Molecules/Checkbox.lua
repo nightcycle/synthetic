@@ -1,7 +1,7 @@
 local packages = script.Parent.Parent.Parent
 local synthetic = require(script.Parent.Parent)
 local util = require(script.Parent.Parent:WaitForChild("Util"))
-local f = util.initFusion(require(packages:WaitForChild('fusion')))
+local fusion = util.initFusion(require(packages:WaitForChild('fusion')))
 local typographyConstructor = require(packages:WaitForChild('typography'))
 local maidConstructor = require(packages:WaitForChild('maid'))
 local enums = require(script.Parent.Parent:WaitForChild("Enums"))
@@ -19,28 +19,28 @@ function constructor.new(params)
 
 	--public states
 	local public = {}
-	public.BackgroundColor = util.import(params.BackgroundColor) or f.v(Color3.new(0.5,0.5,0.5))
+	public.BackgroundColor = util.import(params.BackgroundColor) or fusion.State(Color3.new(0.5,0.5,0.5))
 
 	--[=[
 		@prop Color Color3 | FusionState | nil
 		Color used for fill of checkbox
 		@within Checkbox
 	]=]
-	public.Color = util.import(params.BackgroundColor) or f.v(Color3.new(0.5,0,1))
+	public.Color = util.import(params.BackgroundColor) or fusion.State(Color3.new(0.5,0,1))
 
 	--[=[
 		@prop LineColor Color3 | FusionState | nil
 		Color used for fill of checkbox
 		@within Checkbox
 	]=]
-	public.LineColor = util.import(params.LineColor) or f.v(Color3.new(0.2, 0.2, 0.2))
+	public.LineColor = util.import(params.LineColor) or fusion.State(Color3.new(0.2, 0.2, 0.2))
 
 	--[=[
 		@prop Input bool | FusionState | nil
 		Whether the Checkbox is true or false
 		@within Checkbox
 	]=]
-	public.Input = util.import(params.Input) or f.v(false)
+	public.Input = util.import(params.Input) or fusion.State(false)
 
 	--[=[
 		@prop Typography Typography | FusionState | nil
@@ -55,7 +55,7 @@ function constructor.new(params)
 		@within Checkbox
 		@readonly
 	]=]
-	public.Value = f.get(function()
+	public.Value = fusion.Computed(function()
 		return script.Name
 	end)
 
@@ -65,16 +65,16 @@ function constructor.new(params)
 		@within Checkbox
 		@readonly
 	]=]
-	public.SynthClassName = f.get(function()
+	public.SynthClassName = fusion.Computed(function()
 		return script.Name
 	end)
 
 	--influencers
-	local _Hovered = f.v(false)
-	local _Clicked = f.v(false)
+	local _Hovered = fusion.State(false)
+	local _Clicked = fusion.State(false)
 
 	--properties
-	local _FillTransparency = f.get(function()
+	local _FillTransparency = fusion.Computed(function()
 		if public.Input:get() then
 			return 0
 		else
@@ -83,15 +83,15 @@ function constructor.new(params)
 	end)
 	local _LineColor = util.getInteractionColor(_Clicked, _Hovered, public.LineColor)
 	local _Padding, _TextSize, _Font = util.getTypographyStates(public.Typography)
-	_TextSize = f.get(function()
+	_TextSize = fusion.Computed(function()
 		return public.Typography:get().TextSize * 0.5
 	end)
 
 	--preparing config
 	local inst
-	inst = util.set(f.new "ImageButton", public, params, {
+	inst = util.set(fusion.New "ImageButton", public, params, {
 		AnchorPoint = Vector2.new(0.5, 0.5),
-		BackgroundColor3 = util.tween(f.get(function()
+		BackgroundColor3 = util.tween(fusion.Computed(function()
 			local enabColor = public.Color:get()
 			local disabledColor = _LineColor:get()
 			if public.Input:get() then
@@ -101,7 +101,7 @@ function constructor.new(params)
 			end
 		end)),
 		BackgroundTransparency = util.tween(_FillTransparency),
-		Size = f.get(function()
+		Size = fusion.Computed(function()
 			local dim = _TextSize:get()
 			return UDim2.fromOffset(dim, dim)
 		end),
@@ -113,19 +113,19 @@ function constructor.new(params)
 		ImageTransparency = util.tween(_FillTransparency),
 		ScaleType = Enum.ScaleType.Fit,
 
-		[f.c] = {
-			f.new "UIPadding" {
+		[fusion.OnChange] = {
+			fusion.New "UIPadding" {
 				PaddingBottom = _Padding,
 				PaddingLeft = _Padding,
 				PaddingRight = _Padding,
 				PaddingTop = _Padding
 			},
-			f.new "UICorner" {
+			fusion.New "UICorner" {
 				CornerRadius = util.cornerRadius,
 			},
-			f.new "UIStroke" {
+			fusion.New "UIStroke" {
 				ApplyStrokeMode = Enum.ApplyStrokeMode.Border,
-				Color = util.tween(f.get(function()
+				Color = util.tween(fusion.Computed(function()
 					if public.Input:get() then
 						return public.Color:get()
 					else
@@ -135,23 +135,23 @@ function constructor.new(params)
 				Thickness = 2,
 			}
 		},
-		[f.e "Activated"] = function()
+		[fusion.OnEvent "Activated"] = function()
 			public.Input:set(not public.Input:get())
 			local pos = inst.AbsolutePosition + inst.AbsoluteSize * 0.5
-			effects.ripple(f.v(UDim2.fromOffset(pos.X, pos.Y)), public.Color)
+			effects.ripple(fusion.State(UDim2.fromOffset(pos.X, pos.Y)), public.Color)
 			effects.sound("ui_tap-variant-01")
 		end,
-		[f.e "InputBegan"] = function()
+		[fusion.OnEvent "InputBegan"] = function()
 			_Hovered:set(true)
 		end,
-		[f.e "InputEnded"] = function()
+		[fusion.OnEvent "InputEnded"] = function()
 			_Hovered:set(false)
 			_Clicked:set(false)
 		end,
-		[f.e "MouseButton1Down"] = function()
+		[fusion.OnEvent "MouseButton1Down"] = function()
 			_Clicked:set(true)
 		end,
-		[f.e "MouseButton1Up"] = function()
+		[fusion.OnEvent "MouseButton1Up"] = function()
 			_Clicked:set(false)
 		end,
 	})

@@ -1,7 +1,7 @@
 local packages = script.Parent.Parent
 local attributerConstructor = require(packages:WaitForChild("attributer"))
 local util
-local f
+local fusion = require(packages:WaitForChild('fusion'))
 local signalConstructor = require(packages:WaitForChild("signal"))
 local typographyConstructor = require(packages:WaitForChild("typography"))
 local maidConstructor = require(packages:WaitForChild("maid"))
@@ -11,7 +11,7 @@ local es = Enum.EasingStyle
 function mergeConfig(baseConfig, changes, whiteList, blackList)
 	if not whiteList then whiteList = changes end
 	for k, v in pairs(changes) do
-		if k == f.c then
+		if k == fusion.OnChange then
 			baseConfig[k] = baseConfig[k] or {}
 			for i, val in ipairs(v) do
 				table.insert(baseConfig[k], val)
@@ -27,12 +27,12 @@ end
 
 function setPublicState(key, state, inst, maid)
 	local readOnly = state.set == nil
-	if readOnly then key = "_"..key end
+	-- if readOnly then key = "_"..key end
 	if type(state:get()) == "table" and state.get then
 		for k, v in pairs(state:get()) do
-			local vState = f.v(v)
+			local vState = fusion.State(v)
 			if not readOnly then
-				local vCompute = f.get(function()
+				local vCompute = fusion.Computed(function()
 					return state:get()[k]
 				end)
 				local function updateParentState()
@@ -40,8 +40,8 @@ function setPublicState(key, state, inst, maid)
 					newTabl[k] = vState:get()
 					state:set(newTabl)
 				end
-				maid:GiveTask(f.step(vState):onChange(updateParentState))
-				maid:GiveTask(f.step(vCompute):onChange(updateParentState))
+				maid:GiveTask(fusion.Observer(vState):onChange(updateParentState))
+				maid:GiveTask(fusion.Observer(vCompute):onChange(updateParentState))
 			end
 			setPublicState(key.."_"..k, vState, inst, maid)
 		end
@@ -59,7 +59,7 @@ function setPublicState(key, state, inst, maid)
 	end
 
 	maid._attributer:Connect(key, val)
-	local compat = f.step(state)
+	local compat = fusion.Observer(state)
 
 	local function setAttribute(v)
 		if isEnum then
@@ -127,7 +127,7 @@ util.import = function(stateOrVal)
 	if (type(stateOrVal) == "table" and stateOrVal.get) or stateOrVal == nil then
 		return stateOrVal
 	else
-		return f.v(stateOrVal)
+		return fusion.State(stateOrVal)
 	end
 end
 --[=[
@@ -142,15 +142,15 @@ end
 util.getInteractionColor = function(_Clicked, _Hovered, _Color)
 	--colors
 	local RecolorWeight = 0.8
-	local _MainHighlightColor = f.get(function()
+	local _MainHighlightColor = fusion.Computed(function()
 		local h,s,v = _Color:get():ToHSV()
 		return Color3.fromHSV(h,s*RecolorWeight,1 - (1-v)*RecolorWeight)
 	end)
-	local _MainShadowColor = f.get(function()
+	local _MainShadowColor = fusion.Computed(function()
 		local h,s,v = _Color:get():ToHSV()
 		return Color3.fromHSV(h,s,v*RecolorWeight)
 	end)
-	local _DynamicMainColor = f.get(function()
+	local _DynamicMainColor = fusion.Computed(function()
 		if _Clicked:get() then
 			return _MainShadowColor:get()
 		elseif _Hovered:get() then
@@ -192,6 +192,7 @@ util.initFusion = function(fusionLibrary)
 	fusionLibrary.s = fusionLibrary.Spring
 	return fusionLibrary
 end
+fusion = util.initFusion(fusion)
 
 --[=[
 	@function getTypographyStates
@@ -203,13 +204,13 @@ end
 	@return FusionState --A Font Enum FusionState
 ]=]
 util.getTypographyStates = function(typographyState)
-	local _Padding = f.get(function()
+	local _Padding = fusion.Computed(function()
 		return typographyState:get().Padding
 	end)
-	local _TextSize = f.get(function()
+	local _TextSize = fusion.Computed(function()
 		return typographyState:get().TextSize
 	end)
-	local _Font = f.get(function()
+	local _Font = fusion.Computed(function()
 		return typographyState:get().Font
 	end)
 	return _Padding, _TextSize, _Font
@@ -217,10 +218,10 @@ end
 
 --[=[
 	@prop cornerRadius UDim
-	Where all the get their non circular corner radii
+	Where all the UICorners get their non circular corner radii. Can be set to something else should you like.
 	@within Util
 ]=]
-util.cornerRadius = UDim.new(0, 5)
+util.cornerRadius = fusion.State(UDim.new(0, 5))
 
 --[=[
 	@function set
@@ -286,11 +287,9 @@ util.tween = function(state, params)
 	local repeatCount = params.RepeatCount or 1
 	local reverses = params.Reverses or false
 	local delayTime = params.DelayTime or 0
-	return f.t(state, TweenInfo.new(duration, easingStyle, easingDirection, repeatCount, reverses, delayTime))
+	return fusion.Tween(state, TweenInfo.new(duration, easingStyle, easingDirection, repeatCount, reverses, delayTime))
 end
 
 util.mergeConfig = mergeConfig
 
-
-f = util.initFusion(require(packages:WaitForChild('fusion')))
 return util

@@ -2,7 +2,7 @@
 
 local packages = script.Parent.Parent
 local util = require(script.Parent:WaitForChild("Util"))
-local f = util.initFusion(require(packages:WaitForChild('fusion')))
+local fusion = util.initFusion(require(packages:WaitForChild('fusion')))
 local maidConstructor = require(packages:WaitForChild("maid"))
 local enums = require(script.Parent:WaitForChild("Enums"))
 
@@ -17,7 +17,7 @@ end
 	A list of useful effects, some probably should just be Atom components
 ]=]
 
-local fxHolder = f.new "ScreenGui" {
+local fxHolder = fusion.New "ScreenGui" {
 	Parent = player:WaitForChild("PlayerGui"),
 	ResetOnSpawn = false,
 	Name = "Effects",
@@ -25,7 +25,7 @@ local fxHolder = f.new "ScreenGui" {
 }
 
 local cam = game.Workspace.CurrentCamera
-local screenSize = f.v(cam.ViewportSize)
+local screenSize = fusion.State(cam.ViewportSize)
 cam:GetPropertyChangedSignal("ViewportSize"):Connect(function()
 	screenSize:set(cam.ViewportSize)
 end)
@@ -83,8 +83,8 @@ local effects = {}
 	@param Color FusionState --A Color3 containing FusionState showing the desired ripple color
 ]=]
 ripple = function(position, color)
-	local currentSize = f.v(UDim.new(0,10))
-	local currentTransparency = f.v(0.2)
+	local currentSize = fusion.State(UDim.new(0,10))
+	local currentTransparency = fusion.State(0.2)
 	local element = require(script.Parent:FindFirstChild("Bubble", true)).new({
 		Size = currentSize,
 		Transparency = currentTransparency,
@@ -125,7 +125,7 @@ end
 ]=]
 menu = function(maid, menuParams, hostSizeState, hostPositionState)
 	menuParams.Parent = fxHolder
-	menuParams.Position = f.get(function()
+	menuParams.Position = fusion.Computed(function()
 		local pos = hostPositionState:get()
 		local size = hostSizeState:get()
 		return UDim2.fromOffset(pos.X, pos.Y + size.Y)
@@ -145,7 +145,7 @@ end
 	@param PreferredDirection FusionState --fusionState of the Vector2 of the host's anchor point to be used
 ]=]
 tip = function(maid, tipParams, hostAbsPositionState, hostAbsSizeState, preferredDirection)
-	tipParams.AnchorPoint = f.get(function()
+	tipParams.AnchorPoint = fusion.Computed(function()
 		local dir = Vector2.new(1,1) - preferredDirection:get()
 		-- print("Pref: ", dir)
 		local xWeight = math.abs(dir.X - 0.5)*2
@@ -157,7 +157,7 @@ tip = function(maid, tipParams, hostAbsPositionState, hostAbsSizeState, preferre
 			return Vector2.new(math.round(dir.X), math.round(dir.Y))
 		end
 	end)
-	tipParams.Position = f.get(function()
+	tipParams.Position = fusion.Computed(function()
 		--generate first potential point
 		local anchorPoint = tipParams.AnchorPoint:get()
 		local antiAnchor = Vector2.new(1,1)-anchorPoint

@@ -1,23 +1,22 @@
 local packages = script.Parent.Parent.Parent
 local synthetic = require(script.Parent.Parent)
 local util = require(script.Parent.Parent:WaitForChild("Util"))
-local f = util.initFusion(require(packages:WaitForChild('fusion')))
+local fusion = util.initFusion(require(packages:WaitForChild('fusion')))
 local maidConstructor = require(packages:WaitForChild('maid'))
 local enums = require(script.Parent.Parent:WaitForChild("Enums"))
 local effects = require(script.Parent.Parent:WaitForChild("Effects"))
 
 local constructor = {}
 
-
 function constructor.new(params)
 
 	--public states
 	local public = {
-		Transparency = util.import(params.Transparency) or f.v(0.2),
-		Color = util.import(params.Color) or f.v(Color3.new(0.5,0.5,0.5)),
-		Size = util.import(params.Size) or f.v(UDim.new(0,60)),
-		Position = util.import(params.Position) or f.v(UDim.new(0,60)),
-		SynthClassName = f.get(function()
+		Transparency = util.import(params.Transparency) or fusion.State(0.2),
+		Color = util.import(params.Color) or fusion.State(Color3.new(0.5,0.5,0.5)),
+		Size = util.import(params.Size) or fusion.State(UDim.new(0,60)),
+		Position = util.import(params.Position) or fusion.State(UDim.new(0,60)),
+		SynthClassName = fusion.Computed(function()
 			return script.Name
 		end),
 	}
@@ -29,16 +28,16 @@ function constructor.new(params)
 	}
 
 	--construct
-	return util.set(f.new "Frame", public, params, {
+	return util.set(fusion.New "Frame", public, params, {
 		AnchorPoint = Vector2.new(0.5,0.5),
-		Size = util.tween(f.get(function()
+		Size = util.tween(fusion.Computed(function()
 			return UDim2.new(public.Size:get(), public.Size:get())
 		end), tweenParams),
 		BackgroundColor3 = util.tween(public.Color, tweenParams),
 		BackgroundTransparency = util.tween(public.Transparency, tweenParams),
 		Position = public.Position,
-		[f.c] = {
-			f.new "UICorner" {
+		[fusion.OnChange] = {
+			fusion.New "UICorner" {
 				CornerRadius = UDim.new(0.5,0),
 			}
 		}

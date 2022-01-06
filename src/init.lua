@@ -9,8 +9,8 @@
 ]=]
 
 --[=[
-	@prop Enums {SynthEnum}
-	List of custom enums used in library
+	@prop Enums SynthEnum
+	dictionary of custom enums used in library
 	@within Synthetic
 ]=]
 
@@ -46,7 +46,7 @@ if runService:IsServer() then
 end
 
 local util = require(script:WaitForChild("Util"))
-local f = util.initFusion(require(packages:WaitForChild('fusion')))
+local fusion = util.initFusion(require(packages:WaitForChild('fusion')))
 
 for i, module in ipairs(script:GetDescendants()) do
 	if module:IsA("ModuleScript") and module.Parent ~= script.Parent then
@@ -55,9 +55,9 @@ for i, module in ipairs(script:GetDescendants()) do
 end
 
 local constructors = {}
-local synthetic = f
+local synthetic = fusion
 
-synthetic.classicNew = f.New
+synthetic.classicNew = fusion.New
 synthetic.New = function(key)
 	if constructors[key] then
 		return constructors[key]
@@ -65,7 +65,7 @@ synthetic.New = function(key)
 		constructors[key] = require(constructorModules[key]).new
 		return constructors[key]
 	else
-		return f.classicNew(key)
+		return fusion.OnChangelassicNew(key)
 	end
 end
 synthetic.new = synthetic.New

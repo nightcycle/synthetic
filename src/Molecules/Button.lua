@@ -3,7 +3,7 @@
 local packages = script.Parent.Parent.Parent
 local synthetic = require(script.Parent.Parent)
 local util = require(script.Parent.Parent:WaitForChild("Util"))
-local f = util.initFusion(require(packages:WaitForChild('fusion')))
+local fusion = util.initFusion(require(packages:WaitForChild('fusion')))
 local typographyConstructor = require(packages:WaitForChild('typography'))
 local maidConstructor = require(packages:WaitForChild('maid'))
 local enums = require(script.Parent.Parent:WaitForChild("Enums"))
@@ -11,11 +11,10 @@ local effects = require(script.Parent.Parent:WaitForChild("Effects"))
 
 local constructor = {}
 
-
-type FusionState = typeof(f.v())
+type FusionState = typeof(fusion.State())
 type Typography = typeof(typographyConstructor.new(Enum.Font.Gotham, 1, 2))
 type Public = {
-	Variant: string | FusionState | nil,
+	ButtonVariant: string | FusionState | nil,
 	Typography: Typography | nil,
 	Text: string | FusionState | nil,
 	Tooltip: string | FusionState | nil,
@@ -43,11 +42,11 @@ function constructor.new(params:table | nil)
 	local public: Public = {}
 
 	--[=[
-		@prop Variant SynthEnumItem | FusionState | nil
+		@prop ButtonVariant ButtonVariant | FusionState | nil
 		The style of construction as detailed [here](https://material.io/components/buttons#anatomy), excluding "Toggle button"
 		@within Button
 	]=]
-	public.Variant = util.import(params.Variant) or f.v("Filled")
+	public.ButtonVariant = util.import(params.ButtonVariant) or fusion.State("Filled")
 
 	--[=[
 		@prop Typography Typography | FusionState | nil
@@ -60,56 +59,56 @@ function constructor.new(params:table | nil)
 		Text that fills the button
 		@within Button
 	]=]
-	public.Text = util.import(params.Text) or f.v("")
+	public.Text = util.import(params.Text) or fusion.State("")
 
 	--[=[
 		@prop Tooltip string | FusionState | nil
 		Text that appears when the cursor hovers over button
 		@within Button
 	]=]
-	public.Tooltip = util.import(params.Tooltip) or f.v("")
+	public.Tooltip = util.import(params.Tooltip) or fusion.State("")
 
 	--[=[
 		@prop TooltipDirection string | FusionState | nil
 		What anchor point on the button should be used to display
 		@within Button
 	]=]
-	public.TooltipDirection = util.import(params.TooltipDirection) or f.v(Vector2.new(0.5,0))
+	public.TooltipDirection = util.import(params.TooltipDirection) or fusion.State(Vector2.new(0.5,0))
 
 	--[=[
 		@prop Color Color3 | FusionState | nil
 		Color used for non-text areas of button
 		@within Button
 	]=]
-	public.Color = util.import(params.Color) or f.v(Color3.new(0.5,0,1))
+	public.Color = util.import(params.Color) or fusion.State(Color3.new(0.5,0,1))
 
 	--[=[
 		@prop TextColor Color3 | FusionState | nil
 		Color used for text
 		@within Button
 	]=]
-	public.TextColor = util.import(params.TextColor) or f.v(Color3.new(0.2,0.2,0.2))
+	public.TextColor = util.import(params.TextColor) or fusion.State(Color3.new(0.2,0.2,0.2))
 
 	--[=[
 		@prop Image string | FusionState | nil
 		Roblox Asset URL used to load in an icon's custom texture. If left nil an image won't be created.
 		@within Button
 	]=]
-	public.Image = util.import(params.Icon) or f.v("")
+	public.Image = util.import(params.Icon) or fusion.State("")
 
 	--[=[
 		@prop ImageRectSize Vector2 | FusionState | nil
 		How big the icon's sprite-sheet cells are
 		@within Button
 	]=]
-	public.ImageRectSize = util.import(params.ImageRectSize) or f.v(Vector2.new(0,0))
+	public.ImageRectSize = util.import(params.ImageRectSize) or fusion.State(Vector2.new(0,0))
 
 	--[=[
 		@prop ImageRectOffset Vector2 | FusionState | nil
 		What position on a sprite-sheet should an icon be grabbed from
 		@within Button
 	]=]
-	public.ImageRectOffset = util.import(params.ImageRectOffset) or f.v(Vector2.new(0, 0))
+	public.ImageRectOffset = util.import(params.ImageRectOffset) or fusion.State(Vector2.new(0, 0))
 
 	--[=[
 		@prop SynthClassName string
@@ -118,23 +117,23 @@ function constructor.new(params:table | nil)
 		@readonly
 	]=]
 
-	public.SynthClassName = f.get(function()
+	public.SynthClassName = fusion.Computed(function()
 		return script.Name
 	end)
 
 	--influencers
-	local _Hovered = f.v(false)
-	local _Clicked = f.v(false)
+	local _Hovered = fusion.State(false)
+	local _Clicked = fusion.State(false)
 
 	--properties
 	local _MainColor = util.getInteractionColor(_Clicked, _Hovered, public.BackgroundColor)
 	local _DetailColor = util.getInteractionColor(_Clicked, _Hovered, public.LineColor)
-	local _LineColor = f.get(function()
-		if enums.Variant[public.Variant:get()] == enums.Variant.Outlined then
+	local _TextColor = fusion.Computed(function()
+		if enums.ButtonVariant[public.ButtonVariant:get()] == enums.ButtonVariant.Outlined then
 			return _MainColor:get()
-		elseif enums.Variant[public.Variant:get()] == enums.Variant.Filled then
+		elseif enums.ButtonVariant[public.ButtonVariant:get()] == enums.ButtonVariant.Filled then
 			return _DetailColor:get()
-		elseif enums.Variant[public.Variant:get()] == enums.Variant.Text then
+		elseif enums.ButtonVariant[public.ButtonVariant:get()] == enums.ButtonVariant.Text then
 			return _MainColor:get()
 		else
 			return _DetailColor:get()
@@ -143,12 +142,12 @@ function constructor.new(params:table | nil)
 	local _Padding, _TextSize, _Font = util.getTypographyStates(public.Typography)
 
 	--tooltip stuff
-	local _AbsPosition = f.v(Vector2.new(0,0))
-	local _AbsSize = f.v(Vector2.new(0,0))
-	local _TipEnabled = f.v(false)
+	local _AbsPosition = fusion.State(Vector2.new(0,0))
+	local _AbsSize = fusion.State(Vector2.new(0,0))
+	local _TipEnabled = fusion.State(false)
 	effects.tip(maid, {
 		Text = public.Tooltip,
-		Visible = f.get(function()
+		Visible = fusion.Computed(function()
 			local tipEnabled = _TipEnabled:get()
 			local txt = public.Tooltip:get()
 			return tipEnabled and txt ~= ""
@@ -156,20 +155,20 @@ function constructor.new(params:table | nil)
 	}, _AbsPosition, _AbsSize, public.TooltipDirection)
 
 	--preparing config
-	inst = util.set(f.new "TextButton", public, params, {
-		[f.dt("AbsoluteSize")] = function()
+	inst = util.set(fusion.New "TextButton", public, params, {
+		[fusion.OnChange("AbsoluteSize")] = function()
 			_AbsSize:set(inst.AbsoluteSize)
 		end,
-		[f.dt("AbsolutePosition")] = function()
+		[fusion.OnChange("AbsolutePosition")] = function()
 			_AbsPosition:set(inst.AbsolutePosition)
 		end,
 		BackgroundColor3 = Color3.new(1,1,1),
-		BackgroundTransparency = util.tween(f.get(function()
-			if enums.Variant[public.Variant:get()] == enums.Variant.Outlined then
+		BackgroundTransparency = util.tween(fusion.Computed(function()
+			if enums.ButtonVariant[public.ButtonVariant:get()] == enums.ButtonVariant.Outlined then
 				return 1
-			elseif enums.Variant[public.Variant:get()] == enums.Variant.Filled then
+			elseif enums.ButtonVariant[public.ButtonVariant:get()] == enums.ButtonVariant.Filled then
 				return 0
-			elseif enums.Variant[public.Variant:get()] == enums.Variant.Text then
+			elseif enums.ButtonVariant[public.ButtonVariant:get()] == enums.ButtonVariant.Text then
 				return 1
 			else
 				return 0
@@ -180,15 +179,15 @@ function constructor.new(params:table | nil)
 		Font = _Font,
 		AutomaticSize = Enum.AutomaticSize.XY,
 		AutoButtonColor = false,
-		[f.c] = {
-			f.new 'UIStroke' {
+		[fusion.OnChange] = {
+			fusion.New 'UIStroke' {
 				Color = util.tween(_MainColor),
-				Transparency = util.tween(f.get(function()
-					if enums.Variant[public.Variant:get()] == enums.Variant.Outlined then
+				Transparency = util.tween(fusion.Computed(function()
+					if enums.ButtonVariant[public.ButtonVariant:get()] == enums.ButtonVariant.Outlined then
 						return 0
-					elseif enums.Variant[public.Variant:get()] == enums.Variant.Filled then
+					elseif enums.ButtonVariant[public.ButtonVariant:get()] == enums.ButtonVariant.Filled then
 						return 1
-					elseif enums.Variant[public.Variant:get()] == enums.Variant.Text then
+					elseif enums.ButtonVariant[public.ButtonVariant:get()] == enums.ButtonVariant.Text then
 						return 1
 					else
 						return 0
@@ -197,14 +196,14 @@ function constructor.new(params:table | nil)
 				ApplyStrokeMode = Enum.ApplyStrokeMode.Border,
 				Thickness = 2,
 			},
-			f.new 'UICorner' {
+			fusion.New 'UICorner' {
 				CornerRadius = util.cornerRadius,
 			},
-			f.new 'UIListLayout' {
+			fusion.New 'UIListLayout' {
 				HorizontalAlignment = Enum.HorizontalAlignment.Center,
 				VerticalAlignment = Enum.VerticalAlignment.Center,
 			},
-			f.new 'UIPadding' {
+			fusion.New 'UIPadding' {
 				PaddingBottom = _Padding,
 				PaddingTop = _Padding,
 				PaddingLeft = _Padding,
@@ -213,7 +212,7 @@ function constructor.new(params:table | nil)
 			synthetic.New 'Label' {
 				Typography = public.Typography,
 				Text = public.Text,
-				Color = _LineColor,
+				TextColor = _TextColor,
 				Image = public.Image,
 				ImageRectSize = public.ImageRectSize,
 				ImageRectOffset = public.ImageRectOffset,
@@ -222,16 +221,16 @@ function constructor.new(params:table | nil)
 				Color = _MainColor,
 			},
 		},
-		[f.e "InputBegan"] = function(inputObj)
+		[fusion.OnEvent "InputBegan"] = function(inputObj)
 			_Hovered:set(true)
 			_TipEnabled:set(true)
 		end,
-		[f.e "InputEnded"] = function(inputObj)
+		[fusion.OnEvent "InputEnded"] = function(inputObj)
 			_TipEnabled:set(false)
 			_Hovered:set(false)
 			_Clicked:set(false)
 		end,
-		[f.e "MouseButton1Down"] = function(x, y)
+		[fusion.OnEvent "MouseButton1Down"] = function(x, y)
 			effects.sound("ui_tap-variant-01")
 			if inst:FindFirstChild("GradientRipple") then
 				local ripple = inst:FindFirstChild("GradientRipple")
@@ -239,7 +238,7 @@ function constructor.new(params:table | nil)
 			end
 			_Clicked:set(true)
 		end,
-		[f.e "MouseButton1Up"] = function()
+		[fusion.OnEvent "MouseButton1Up"] = function()
 			_Clicked:set(false)
 		end,
 	}, maid)

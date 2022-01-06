@@ -3,7 +3,7 @@ local runService = game:GetService("RunService")
 local packages = script.Parent.Parent.Parent
 local synthetic = require(script.Parent.Parent)
 local util = require(script.Parent.Parent:WaitForChild("Util"))
-local f = util.initFusion(require(packages:WaitForChild('fusion')))
+local fusion = util.initFusion(require(packages:WaitForChild('fusion')))
 local maidConstructor = require(packages:WaitForChild('maid'))
 local typographyConstructor = require(packages:WaitForChild('typography'))
 local signalConstructor = require(packages:WaitForChild('signal'))
@@ -38,18 +38,18 @@ function constructor.new(params)
 
 	--public states
 	local public = {
-		Color = util.import(params.Color) or f.v(Color3.new(0.5,0,1)),
-		SynthClassName = f.get(function()
+		Color = util.import(params.Color) or fusion.State(Color3.new(0.5,0,1)),
+		SynthClassName = fusion.Computed(function()
 			return script.Name
 		end),
 	}
 
 	--establish basic high level variables
-	local _Parent = f.v(params.Parent)
-	local _State = f.v(states.Default)
+	local _Parent = fusion.State(params.Parent)
+	local _State = fusion.State(states.Default)
 	local factor = 0.825
 
-	local _HighlightColor = f.get(function()
+	local _HighlightColor = fusion.Computed(function()
 		if _State:get() == states.Resetting then
 			return public.Color:get()
 		else
@@ -61,17 +61,17 @@ function constructor.new(params)
 
 	--set up reset sequence
 	local _ResetColor = util.tween(_HighlightColor, resetParams)
-	local _ResetSequence = f.get(function()
+	local _ResetSequence = fusion.Computed(function()
 		return ColorSequence.new(_ResetColor:get())
 	end)
 
 	--set up expand sequence
-	local _StartPosition = f.v(0.5)
-	local _Alpha = f.v(0)
+	local _StartPosition = fusion.State(0.5)
+	local _Alpha = fusion.State(0)
 
-	local _CurrentGoal = f.v(_Alpha)
+	local _CurrentGoal = fusion.State(_Alpha)
 
-	local _ExpandSequence = f.get(function()
+	local _ExpandSequence = fusion.Computed(function()
 
 		local startPos = _StartPosition:get()
 		local currentAlpha = _CurrentGoal:get()
@@ -135,8 +135,8 @@ function constructor.new(params)
 	end))
 
 	--constructor
-	inst = util.set(f.new "UIGradient", public, params, {
-		Color = f.get(function()
+	inst = util.set(fusion.New "UIGradient", public, params, {
+		Color = fusion.Computed(function()
 
 			local defColor = public.Color:get()
 			local expSeq = _ExpandSequence:get()
@@ -151,10 +151,10 @@ function constructor.new(params)
 			end
 
 		end),
-		[f.c] = {
-			f.new "BindableEvent" {
+		[fusion.OnChange] = {
+			fusion.New "BindableEvent" {
 				Name = "Effect",
-				[f.e "Event"] = function(viewport:Vector2)
+				[fusion.OnEvent "Event"] = function(viewport:Vector2)
 					local parent = _Parent:get()
 					if not parent then return end
 
@@ -170,7 +170,7 @@ function constructor.new(params)
 				end,
 			}
 		},
-		[f.e "AncestryChanged"] = function()
+		[fusion.OnEvent "AncestryChanged"] = function()
 			parentMaid:DoCleaning()
 			_Parent:set(inst.Parent)
 		end,

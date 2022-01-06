@@ -111,7 +111,7 @@ local screenGui = fusion.New "ScreenGui" {
 		 	TextColor = lineColor,
 		 	Width = UDim.new(0,300),
 		},
-		]] 
+		]]
 		--[[
 		synthetic.New "Dropdown" {
 		 	Typography = bodyType,
@@ -134,7 +134,7 @@ local screenGui = fusion.New "ScreenGui" {
 				Potato = fusion.State(false),
 			},
 			Input = fusion.State("Apple"),
-			Variant = "RadioButton",
+			ToggleVariant = "RadioButton",
 			BackgroundColor = surfaceColor,
 			Color = color,
 			TextColor = lineColor,

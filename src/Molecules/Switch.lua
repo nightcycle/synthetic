@@ -2,7 +2,7 @@ local runService = game:GetService("RunService")
 local packages = script.Parent.Parent.Parent
 local synthetic = require(script.Parent.Parent)
 local util = require(script.Parent.Parent:WaitForChild("Util"))
-local f = util.initFusion(require(packages:WaitForChild('fusion')))
+local fusion = util.initFusion(require(packages:WaitForChild('fusion')))
 local maidConstructor = require(packages:WaitForChild('maid'))
 local typographyConstructor = require(packages:WaitForChild('typography'))
 local enums = require(script.Parent.Parent:WaitForChild("Enums"))
@@ -13,25 +13,59 @@ local constructor = {}
 function constructor.new(params)
 
 	local inst
+	--[=[
+		@class Switch
+		@tag Component
+		@tag Molecule
+		A basic [switch](https://material.io/components/switches).
+	]=]
 
 	--public states
-	local public = {
-		Color = util.import(params.Color) or f.v(Color3.new(0.5,0,1)),
-		BackgroundColor = util.import(params.BackgroundColor) or f.v(Color3.new(0.5,0.5,0.5)),
-		Input = util.import(params.Input) or f.v(false),
-		Typography = util.import(params.Typography) or typographyConstructor.new(Enum.Font.SourceSans, 10, 14),
-		SynthClassName = f.get(function()
-			return script.Name
-		end),
-	}
-	local _Alpha = f.get(function()
+	local public = {}
+
+	--[=[
+		@prop Color Color3 | FusionState | nil
+		Color used for activated state
+		@within Switch
+	]=]
+	public.Color = util.import(params.Color) or fusion.State(Color3.new(0.5,0,1))
+
+	--[=[
+		@prop BackgroundColor Color3 | FusionState | nil
+		Color used for off state
+		@within Switch
+	]=]
+	public.BackgroundColor = util.import(params.BackgroundColor) or fusion.State(Color3.new(0.5,0.5,0.5))
+
+	--[=[
+		@prop Input bool | FusionState | nil
+		Whether the switch is on or off
+		@within Switch
+	]=]
+	public.Input = util.import(params.Input) or fusion.State(false)
+
+	--[=[
+		@prop Typography Typography | FusionState | nil
+		The Typography to be used for this component
+		@within Switch
+	]=]
+	public.Typography = util.import(params.Typography) or typographyConstructor.new(Enum.Font.SourceSans, 10, 14)
+
+	local _Alpha = fusion.Computed(function()
 		if public.Input:get() == true then
 			return 1
 		else
 			return 0
 		end
 	end)
-	public.Value = f.get(function()
+
+	--[=[
+		@prop Value bool
+		Whether the switch is on or off
+		@within Switch
+		@readonly
+	]=]
+	public.Value = fusion.Computed(function()
 		if _Alpha:get() == 1 then
 			return true
 		else
@@ -39,30 +73,40 @@ function constructor.new(params)
 		end
 	end)
 
+	--[=[
+		@prop SynthClassName string
+		Attribute used to identify what type of component it is
+		@within Switch
+		@readonly
+	]=]
+	public.SynthClassName = fusion.Computed(function()
+		return script.Name
+	end)
+
 	--influencers
-	local _Hovered = f.v(false)
-	local _Clicked = f.v(false)
+	local _Hovered = fusion.State(false)
+	local _Clicked = fusion.State(false)
 
 	--properties
 	local _Padding, _TextSize, _Font = util.getTypographyStates(public.Typography)
-	_Padding = f.get(function()
+	_Padding = fusion.Computed(function()
 		local pad = public.Typography:get().Padding
 		return UDim.new(pad.Scale, pad.Offset*0.5)
 	end)
 
 	--constructor
 	inst = util.set(synthetic.New "ProgressBar", public, params, {
-		[f.e "Activated"] = function(x,y)
+		[fusion.OnEvent "Activated"] = function(x,y)
 			-- local absPos = Vector2.new(x,y)
 			local knob = inst:FindFirstChild("Knob")
-			local knobColor = f.v(knob.BackgroundColor3)
+			local knobColor = fusion.State(knob.BackgroundColor3)
 
 			local function getPos()
 				local v2 = knob.AbsolutePosition + knob.AbsoluteSize*0.5
 				return UDim2.fromOffset(v2.X, v2.Y)
 			end
 
-			local position = f.v(getPos())
+			local position = fusion.State(getPos())
 			effects.ripple(position, knobColor)
 			effects.sound("ui_tap-variant-01")
 
@@ -77,14 +121,14 @@ function constructor.new(params)
 			end)
 			public.Input:set(not public.Input:get())
 		end,
-		[f.e "InputBegan"] = function()
+		[fusion.OnEvent "InputBegan"] = function()
 			_Hovered:set(true)
 		end,
-		[f.e "InputEnded"] = function()
+		[fusion.OnEvent "InputEnded"] = function()
 			_Hovered:set(false)
 			_Clicked:set(false)
 		end,
-		Size = f.get(function()
+		Size = fusion.Computed(function()
 			local height = _TextSize:get() + _Padding:get().Offset*2
 			return UDim2.fromOffset(height*1.85, height)
 		end),

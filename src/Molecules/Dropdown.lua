@@ -1,7 +1,7 @@
 local synthetic = require(script.Parent.Parent)
 local packages = script.Parent.Parent.Parent
 local util = require(script.Parent.Parent:WaitForChild("Util"))
-local f = util.initFusion(require(packages:WaitForChild('fusion')))
+local fusion = util.initFusion(require(packages:WaitForChild('fusion')))
 local typographyConstructor = require(packages:WaitForChild('typography'))
 local maidConstructor = require(packages:WaitForChild('maid'))
 local enums = require(script.Parent.Parent:WaitForChild('Enums'))
@@ -24,11 +24,11 @@ function constructor.new(params)
 	--public states
 	local public = {}
 	--[=[
-		@prop Variant SynthEnumItem | FusionState | nil
+		@prop ButtonVariant ButtonVariant | FusionState | nil
 		The style of construction as detailed [here](https://material.io/components/buttons#anatomy), excluding "Toggle button"
 		@within Dropdown
 	]=]
-	public.Variant = util.import(params.Variant) or f.v("Filled")
+	public.ButtonVariant = util.import(params.ButtonVariant) or fusion.State("Filled")
 
 	--[=[
 		@prop Typography Typography | FusionState | nil
@@ -42,84 +42,84 @@ function constructor.new(params)
 		The value currently filling text field
 		@within Dropdown
 	]=]
-	public.Input = util.import(params.Input) or f.v("")
+	public.Input = util.import(params.Input) or fusion.State("")
 
 	--[=[
 		@prop Context string | FusionState | nil
 		The text that goes below field and can provide extra info
 		@within Dropdown
 	]=]
-	public.Context = util.import(params.Context) or f.v("")
+	public.Context = util.import(params.Context) or fusion.State("")
 
 	--[=[
 		@prop Error string | FusionState | nil
 		The text for any error message below the field
 		@within Dropdown
 	]=]
-	public.Error = util.import(params.Error) or f.v("")
+	public.Error = util.import(params.Error) or fusion.State("")
 
 	--[=[
 		@prop Label string | FusionState | nil
 		The text that fills the blank text field as well as the section above the field when filled
 		@within Dropdown
 	]=]
-	public.Label = util.import(params.Label) or f.v("")
+	public.Label = util.import(params.Label) or fusion.State("")
 
 	--[=[
 		@prop BackgroundColor Color3 | FusionState | nil
 		Color used for background of menu
 		@within Dropdown
 	]=]
-	public.BackgroundColor = util.import(params.BackgroundColor) or f.v(params.BackgroundColor or Color3.new(0.8,0.8,0.8))
+	public.BackgroundColor = util.import(params.BackgroundColor) or fusion.State(params.BackgroundColor or Color3.new(0.8,0.8,0.8))
 
 	--[=[
 		@prop Color Color3 | FusionState | nil
 		Color used to add texture to component
 		@within Dropdown
 	]=]
-	public.Color = util.import(params.Color) or f.v(Color3.new(0.5,0,1))
+	public.Color = util.import(params.Color) or fusion.State(Color3.new(0.5,0,1))
 
 	--[=[
 		@prop LineColor Color3 | FusionState | nil
 		Color used for lines
 		@within Dropdown
 	]=]
-	public.LineColor = util.import(params.LineColor) or f.v(Color3.new(0.2,0.2,0.2))
+	public.LineColor = util.import(params.LineColor) or fusion.State(Color3.new(0.2,0.2,0.2))
 
 	--[=[
 		@prop TextColor Color3 | FusionState | nil
 		Color used for text
 		@within Dropdown
 	]=]
-	public.TextColor = util.import(params.TextColor) or f.v(Color3.new(0.2,0.2,0.2))
+	public.TextColor = util.import(params.TextColor) or fusion.State(Color3.new(0.2,0.2,0.2))
 
 	--[=[
 		@prop ErrorColor Color3 | FusionState | nil
 		Color used for error text
 		@within Dropdown
 	]=]
-	public.ErrorColor = util.import(params.ErrorColor) or f.v(Color3.new(1,0,0))
+	public.ErrorColor = util.import(params.ErrorColor) or fusion.State(Color3.new(1,0,0))
 
 	--[=[
 		@prop Width UDim | FusionState | nil
 		Width of the entire component, as Height is solved using Typography
 		@within Dropdown
 	]=]
-	public.Width = util.import(params.Width) or f.v(UDim.new(1, 0))
+	public.Width = util.import(params.Width) or fusion.State(UDim.new(1, 0))
 
 	--[=[
 		@prop Options {string} | FusionState | nil
 		A list of options that can be selected from
 		@within Dropdown
 	]=]
-	public.Options = util.import(params.Options) or f.v({})
+	public.Options = util.import(params.Options) or fusion.State({})
 
 	--[=[
 		@prop Open bool | FusionState | nil
 		Whether the menu is currently open
 		@within Dropdown
 	]=]
-	public.Open = util.import(params.Open) or f.v(false)
+	public.Open = util.import(params.Open) or fusion.State(false)
 
 	--[=[
 		@prop Value bool
@@ -127,7 +127,7 @@ function constructor.new(params)
 		@within Dropdown
 		@readonly
 	]=]
-	public.Value = f.get(function()
+	public.Value = fusion.Computed(function()
 		return public.Input:get()
 	end)
 
@@ -137,16 +137,16 @@ function constructor.new(params)
 		@within Dropdown
 		@readonly
 	]=]
-	public.SynthClassName = f.get(function()
+	public.SynthClassName = fusion.Computed(function()
 		return script.Name
 	end)
 
 	--influencers
-	local _Focused = f.v(false)
-	local _Hovered = f.v(false)
+	local _Focused = fusion.State(false)
+	local _Hovered = fusion.State(false)
 
 	--properties
-	maid:GiveTask(f.step(_Focused):onChange(function()
+	maid:GiveTask(fusion.Observer(_Focused):onChange(function()
 		if _Focused:get() == false then
 			task.delay(0.6, function()
 				menuMaid:DoCleaning()
@@ -154,43 +154,43 @@ function constructor.new(params)
 		end
 	end))
 	local _Padding, _TextSize, _Font = util.getTypographyStates(public.Typography)
-	local _LabelTextSize = f.get(function()
+	local _LabelTextSize = fusion.Computed(function()
 		return _TextSize:get()*0.7
 	end)
-	local _BackgroundColor = util.getInteractionColor(f.v(false), _Hovered, public.BackgroundColor)
+	local _BackgroundColor = util.getInteractionColor(fusion.State(false), _Hovered, public.BackgroundColor)
 	local _Color = util.getInteractionColor(_Focused, _Hovered, public.Color)
 	local _TextColor = util.getInteractionColor(_Focused, _Hovered, public.TextColor)
 	local _DetailColor = util.getInteractionColor(_Focused, _Hovered, public.LineColor)
-	local _LineColor = f.get(function()
-		if enums.Variant[public.Variant:get()] == enums.Variant.Outlined then
+	local _LineColor = fusion.Computed(function()
+		if enums.ButtonVariant[public.ButtonVariant:get()] == enums.ButtonVariant.Outlined then
 			return _BackgroundColor:get()
-		elseif enums.Variant[public.Variant:get()] == enums.Variant.Filled then
+		elseif enums.ButtonVariant[public.ButtonVariant:get()] == enums.ButtonVariant.Filled then
 			return _DetailColor:get()
 		else
 			return _DetailColor:get()
 		end
 	end)
 
-	local _LabelSize = f.get(function()
+	local _LabelSize = fusion.Computed(function()
 		return UDim2.new(public.Width:get(), UDim.new(0,0))
 	end)
 
 	--construct
-	local _AbsoluteSize = f.v(Vector2.new(0,0))
-	local _AbsolutePosition = f.v(Vector2.new(0,0))
+	local _AbsoluteSize = fusion.State(Vector2.new(0,0))
+	local _AbsolutePosition = fusion.State(Vector2.new(0,0))
 	local inst
-	inst = util.set(f.new "TextButton", public, params, {
+	inst = util.set(fusion.New "TextButton", public, params, {
 		BackgroundTransparency = 1,
 		AutomaticSize = Enum.AutomaticSize.XY,
 		Size = UDim2.fromScale(0,0),
 		TextTransparency = 1,
-		[f.e "InputBegan"] = function()
+		[fusion.OnEvent "InputBegan"] = function()
 			_Hovered:set(true)
 		end,
-		[f.e "InputEnded"] = function()
+		[fusion.OnEvent "InputEnded"] = function()
 			_Hovered:set(false)
 		end,
-		[f.e "Activated"] = function()
+		[fusion.OnEvent "Activated"] = function()
 			_Focused:set(not _Focused:get())
 			effects.sound("ui_tap-variant-01")
 			local menu = effects.menu(maid, {
@@ -213,30 +213,30 @@ function constructor.new(params)
 
 			end))
 		end,
-		[f.c] = {
-			f.new 'UIListLayout' {
+		[fusion.OnChange] = {
+			fusion.New 'UIListLayout' {
 				FillDirection = Enum.FillDirection.Vertical,
 				HorizontalAlignment = Enum.HorizontalAlignment.Left,
 				VerticalAlignment = Enum.VerticalAlignment.Top,
 				SortOrder = Enum.SortOrder.LayoutOrder,
-				Padding = f.get(function()
+				Padding = fusion.Computed(function()
 					return UDim.new(0,_Padding:get().Offset*0.25)
 				end),
 			},
-			f.new 'TextLabel' {
+			fusion.New 'TextLabel' {
 				Name = "UpperLabel",
 				Text = public.Label,
 				Font = _Font,
-				TextSize = f.get(function()
+				TextSize = fusion.Computed(function()
 					return _LabelTextSize:get()
 				end),
-				Size = f.get(function()
+				Size = fusion.Computed(function()
 					return UDim2.fromOffset(0, _LabelTextSize:get())
 				end),
 				AutomaticSize = Enum.AutomaticSize.X,
 				TextXAlignment = Enum.TextXAlignment.Left,
 				TextYAlignment = Enum.TextYAlignment.Bottom,
-				TextColor3 = util.tween(f.get(function()
+				TextColor3 = util.tween(fusion.Computed(function()
 
 					local focusedColor = public.Color:get()
 					local textColor = public.TextColor:get()
@@ -248,7 +248,7 @@ function constructor.new(params)
 						return textColor
 					end
 				end)),
-				TextTransparency = util.tween(f.get(function()
+				TextTransparency = util.tween(fusion.Computed(function()
 					local label = public.Label:get()
 					local isFocused = _Focused:get()
 					local input = public.Input:get()
@@ -268,7 +268,7 @@ function constructor.new(params)
 				Size = UDim2.fromScale(0,0),
 				Image = "rbxassetid://3926307971",
 				Color = _TextColor,
-				ImageRectOffset = f.get(function()
+				ImageRectOffset = fusion.Computed(function()
 					if _Focused:get() then
 						return Vector2.new(164, 482)
 					else
@@ -276,7 +276,7 @@ function constructor.new(params)
 					end
 				end),
 				ImageRectSize = Vector2.new(36,36),
-				Text = f.get(function()
+				Text = fusion.Computed(function()
 					local label = public.Label:get()
 					local isFocused = _Focused:get()
 					local input = public.Input:get()
@@ -288,16 +288,16 @@ function constructor.new(params)
 				end),
 				LayoutOrder = 2,
 				ClipsDescendants = true,
-				BackgroundTransparency = util.tween(f.get(function()
-					if enums.Variant[public.Variant:get()] == enums.Variant.Outlined then
+				BackgroundTransparency = util.tween(fusion.Computed(function()
+					if enums.ButtonVariant[public.ButtonVariant:get()] == enums.ButtonVariant.Outlined then
 						return 1
 					else
 						return 0
 					end
 				end)),
-				[f.c] = {
-					f.new 'UIStroke' {
-						Color = util.tween(f.get(function()
+				[fusion.OnChange] = {
+					fusion.New 'UIStroke' {
+						Color = util.tween(fusion.Computed(function()
 							local lineColor = public.LineColor:get()
 							local color = public.Color:get()
 							if _Focused:get() then
@@ -306,10 +306,10 @@ function constructor.new(params)
 								return lineColor
 							end
 						end)),
-						Transparency = util.tween(f.get(function()
-							if enums.Variant[public.Variant:get()] == enums.Variant.Outlined then
+						Transparency = util.tween(fusion.Computed(function()
+							if enums.ButtonVariant[public.ButtonVariant:get()] == enums.ButtonVariant.Outlined then
 								return 0
-							elseif enums.Variant[public.Variant:get()] == enums.Variant.Filled then
+							elseif enums.ButtonVariant[public.ButtonVariant:get()] == enums.ButtonVariant.Filled then
 								return 1
 							else
 								return 0
@@ -318,9 +318,9 @@ function constructor.new(params)
 						ApplyStrokeMode = Enum.ApplyStrokeMode.Border,
 						Thickness = 2,
 					},
-					f.new 'UIGradient' {
+					fusion.New 'UIGradient' {
 						Rotation = 90,
-						Color = f.get(function()
+						Color = fusion.Computed(function()
 							local c1 = _BackgroundColor:get()
 							local color = _Color:get()
 							local lineColor = public.LineColor:get()
@@ -337,30 +337,30 @@ function constructor.new(params)
 							})
 						end)
 					},
-					-- f.new 'UIListLayout' {
+					-- fusion.New 'UIListLayout' {
 					-- 	FillDirection = Enum.FillDirection.Horizontal,
 					-- 	HorizontalAlignment = Enum.HorizontalAlignment.Center,
 					-- 	VerticalAlignment = Enum.VerticalAlignment.Center,
 					-- 	SortOrder = Enum.SortOrder.LayoutOrder,
-					-- 	Padding = f.get(function()
+					-- 	Padding = fusion.Computed(function()
 					-- 		return UDim.new(0,_Padding:get().Offset*0.5)
 					-- 	end),
 					-- },
-					f.new 'UICorner' {
+					fusion.New 'UICorner' {
 						CornerRadius = util.cornerRadius,
 					},
-					f.new 'UIPadding' {
-						PaddingBottom = f.get(function()
+					fusion.New 'UIPadding' {
+						PaddingBottom = fusion.Computed(function()
 							local padding = _Padding:get()
-							if enums.Variant[public.Variant:get()] == enums.Variant.Outlined then
+							if enums.ButtonVariant[public.ButtonVariant:get()] == enums.ButtonVariant.Outlined then
 								return padding
 							else
 								return UDim.new(0, padding.Offset + 2)
 							end
 						end),
-						PaddingTop = f.get(function()
+						PaddingTop = fusion.Computed(function()
 							local padding = _Padding:get()
-							if enums.Variant[public.Variant:get()] == enums.Variant.Outlined then
+							if enums.ButtonVariant[public.ButtonVariant:get()] == enums.ButtonVariant.Outlined then
 								return padding
 							else
 								return UDim.new(0, padding.Offset - 2)
@@ -371,9 +371,9 @@ function constructor.new(params)
 					},
 				},
 			},
-			f.new 'TextLabel' {
+			fusion.New 'TextLabel' {
 				Name = "ContextLabel",
-				Text = f.get(function()
+				Text = fusion.Computed(function()
 					local errorTxt = public.Error:get()
 					local contextTxt = public.Context:get()
 					if errorTxt ~= "" then
@@ -382,17 +382,17 @@ function constructor.new(params)
 						return contextTxt
 					end
 				end),
-				TextSize = f.get(function()
+				TextSize = fusion.Computed(function()
 					return _LabelTextSize:get()
 				end),
-				Size = f.get(function()
+				Size = fusion.Computed(function()
 					return UDim2.fromOffset(0, _LabelTextSize:get())
 				end),
 				AutomaticSize = Enum.AutomaticSize.X,
 				TextXAlignment = Enum.TextXAlignment.Left,
 				TextYAlignment = Enum.TextYAlignment.Top,
 				Font = _Font,
-				TextColor3 = util.tween(f.get(function()
+				TextColor3 = util.tween(fusion.Computed(function()
 					local errorColor = public.ErrorColor:get()
 					local textColor = public.TextColor:get()
 					if public.Error:get() == "" then
@@ -401,7 +401,7 @@ function constructor.new(params)
 						return errorColor
 					end
 				end)),
-				TextTransparency = util.tween(f.get(function()
+				TextTransparency = util.tween(fusion.Computed(function()
 					local errorTxt = public.Error:get()
 					local contextTxt = public.Context:get()
 
@@ -437,7 +437,7 @@ function constructor.new(params)
 
 	label.Size = _LabelSize:get()
 
-	maid:GiveTask(f.step(_LabelSize):onChange(function()
+	maid:GiveTask(fusion.Observer(_LabelSize):onChange(function()
 		label.Size = _LabelSize:get()
 	end))
 
