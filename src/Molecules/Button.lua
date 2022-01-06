@@ -126,7 +126,7 @@ function constructor.new(params:table | nil)
 	local _Clicked = fusion.State(false)
 
 	--properties
-	local _MainColor = util.getInteractionColor(_Clicked, _Hovered, public.BackgroundColor)
+	local _MainColor = util.getInteractionColor(_Clicked, _Hovered, public.Color)
 	local _DetailColor = util.getInteractionColor(_Clicked, _Hovered, public.LineColor)
 	local _TextColor = fusion.Computed(function()
 		if enums.ButtonVariant[public.ButtonVariant:get()] == enums.ButtonVariant.Outlined then

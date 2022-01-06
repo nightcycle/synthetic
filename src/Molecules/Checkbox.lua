@@ -19,6 +19,12 @@ function constructor.new(params)
 
 	--public states
 	local public = {}
+
+	--[=[
+		@prop BackgroundColor Color3 | FusionState | nil
+		Color used for background
+		@within Checkbox
+	]=]
 	public.BackgroundColor = util.import(params.BackgroundColor) or fusion.State(Color3.new(0.5,0.5,0.5))
 
 	--[=[
