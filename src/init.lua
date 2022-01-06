@@ -1,6 +1,39 @@
 --[=[
 	@class Synthetic
-	A library used for the construction of Material Design inspired fusion-powered UI Components.
+]=]
+--[=[
+	@prop Effects Effects
+	list of useful effects to add interactivity to UI
+	@within Synthetic
+
+]=]
+
+--[=[
+	@prop Enums {SynthEnum}
+	List of custom enums used in library
+	@within Synthetic
+]=]
+
+--[=[
+	@prop Util Util
+	a list of frequently used methods
+	@within Synthetic
+]=]
+
+--[=[
+	@function New
+	Gets relevant constructor
+	@within Synthetic
+	@param key string -- The ClassName of SynthClassName of desired Component
+	@return function --Returns the constructor used to create instance
+]=]
+
+--[=[
+	@function Set
+	Registers custom constructor for future use
+	@within Synthetic
+	@param key string --the key the constructor will be organized under
+	@param constructor function --the constructor to be provided by synthetic.New
 ]=]
 
 local constructorModules = {}
@@ -37,13 +70,15 @@ synthetic.New = function(key)
 end
 synthetic.new = synthetic.New
 
+
 synthetic.Set = function(key, constructor) --in case you wanna add your own
 	constructors[key] = constructor
 end
 synthetic.set = synthetic.Set
 
-synthetic.effects = require(script:WaitForChild("Effects"))
-synthetic.enums = require(script:WaitForChild("Enums"))
-synthetic.util = require(script:WaitForChild("Util"))
+
+synthetic.Effects = require(script:WaitForChild("Effects"))
+synthetic.Enums = require(script:WaitForChild("Enums"))
+synthetic.Util = require(script:WaitForChild("Util"))
 
 return synthetic

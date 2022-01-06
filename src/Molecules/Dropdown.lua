@@ -13,33 +13,132 @@ function constructor.new(params)
 	local maid = maidConstructor.new()
 	local menuMaid = maidConstructor.new()
 	maid:GiveTask(menuMaid)
+
+	--[=[
+		@class Dropdown
+		@tag Component
+		@tag Molecule
+		A basic [dropdown menu](https://material.io/components/menus#dropdown-menu)
+	]=]
+
 	--public states
-	local public = {
-		Variant = util.import(params.Variant) or f.v("Filled"),
+	local public = {}
+	--[=[
+		@prop Variant SynthEnumItem | FusionState | nil
+		The style of construction as detailed [here](https://material.io/components/buttons#anatomy), excluding "Toggle button"
+		@within Dropdown
+	]=]
+	public.Variant = util.import(params.Variant) or f.v("Filled")
 
-		Typography = util.import(params.Typography) or typographyConstructor.new(Enum.Font.SourceSans, 10, 14),
-		Input = util.import(params.Input) or f.v(""),
-		Context = util.import(params.Context) or f.v(""),
-		Error = util.import(params.Error) or f.v(""),
-		Label = util.import(params.Label) or f.v(""),
+	--[=[
+		@prop Typography Typography | FusionState | nil
+		The Typography to be used for this component
+		@within Dropdown
+	]=]
+	public.Typography = util.import(params.Typography) or typographyConstructor.new(Enum.Font.SourceSans, 10, 14)
 
-		BackgroundColor = util.import(params.BackgroundColor) or f.v(params.BackgroundColor or Color3.new(0.8,0.8,0.8)),
-		Color = util.import(params.Color) or f.v(Color3.new(0.5,0,1)),
-		LineColor = util.import(params.LineColor) or f.v(Color3.new(0.2,0.2,0.2)),
-		TextColor = util.import(params.TextColor) or f.v(Color3.new(0.2,0.2,0.2)),
-		ErrorColor = util.import(params.ErrorColor) or f.v(Color3.new(1,0,0)),
+	--[=[
+		@prop Input string | FusionState | nil
+		The value currently filling text field
+		@within Dropdown
+	]=]
+	public.Input = util.import(params.Input) or f.v("")
 
-		Width = util.import(params.Width) or f.v(UDim.new(1, 0)),
+	--[=[
+		@prop Context string | FusionState | nil
+		The text that goes below field and can provide extra info
+		@within Dropdown
+	]=]
+	public.Context = util.import(params.Context) or f.v("")
 
-		Options = util.import(params.Options) or f.v({}),
+	--[=[
+		@prop Error string | FusionState | nil
+		The text for any error message below the field
+		@within Dropdown
+	]=]
+	public.Error = util.import(params.Error) or f.v("")
 
-		Open = util.import(params.Open) or f.v(false),
-		SynthClassName = f.get(function()
-			return script.Name
-		end),
-	}
+	--[=[
+		@prop Label string | FusionState | nil
+		The text that fills the blank text field as well as the section above the field when filled
+		@within Dropdown
+	]=]
+	public.Label = util.import(params.Label) or f.v("")
+
+	--[=[
+		@prop BackgroundColor Color3 | FusionState | nil
+		Color used for background of menu
+		@within Dropdown
+	]=]
+	public.BackgroundColor = util.import(params.BackgroundColor) or f.v(params.BackgroundColor or Color3.new(0.8,0.8,0.8))
+
+	--[=[
+		@prop Color Color3 | FusionState | nil
+		Color used to add texture to component
+		@within Dropdown
+	]=]
+	public.Color = util.import(params.Color) or f.v(Color3.new(0.5,0,1))
+
+	--[=[
+		@prop LineColor Color3 | FusionState | nil
+		Color used for lines
+		@within Dropdown
+	]=]
+	public.LineColor = util.import(params.LineColor) or f.v(Color3.new(0.2,0.2,0.2))
+
+	--[=[
+		@prop TextColor Color3 | FusionState | nil
+		Color used for text
+		@within Dropdown
+	]=]
+	public.TextColor = util.import(params.TextColor) or f.v(Color3.new(0.2,0.2,0.2))
+
+	--[=[
+		@prop ErrorColor Color3 | FusionState | nil
+		Color used for error text
+		@within Dropdown
+	]=]
+	public.ErrorColor = util.import(params.ErrorColor) or f.v(Color3.new(1,0,0))
+
+	--[=[
+		@prop Width UDim | FusionState | nil
+		Width of the entire component, as Height is solved using Typography
+		@within Dropdown
+	]=]
+	public.Width = util.import(params.Width) or f.v(UDim.new(1, 0))
+
+	--[=[
+		@prop Options {string} | FusionState | nil
+		A list of options that can be selected from
+		@within Dropdown
+	]=]
+	public.Options = util.import(params.Options) or f.v({})
+
+	--[=[
+		@prop Open bool | FusionState | nil
+		Whether the menu is currently open
+		@within Dropdown
+	]=]
+	public.Open = util.import(params.Open) or f.v(false)
+
+	--[=[
+		@prop Value bool
+		Attribute used to communicate current value
+		@within Dropdown
+		@readonly
+	]=]
 	public.Value = f.get(function()
 		return public.Input:get()
+	end)
+
+	--[=[
+		@prop SynthClassName string
+		Attribute used to identify what type of component it is
+		@within Dropdown
+		@readonly
+	]=]
+	public.SynthClassName = f.get(function()
+		return script.Name
 	end)
 
 	--influencers

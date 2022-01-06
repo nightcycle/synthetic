@@ -10,17 +10,64 @@ local effects = require(script.Parent.Parent:WaitForChild("Effects"))
 local constructor = {}
 
 function constructor.new(params)
+	--[=[
+		@class Checkbox
+		@tag Component
+		@tag Molecule
+		A basic [checkbox](https://material.io/components/checkboxes)
+	]=]
+
 	--public states
-	local public = {
-		BackgroundColor = util.import(params.BackgroundColor) or f.v(Color3.new(0.5,0.5,0.5)),
-		Color = util.import(params.Color)  or f.v(Color3.new(0.5,0,1)),
-		LineColor = util.import(params.LineColor) or f.v(Color3.new(0.2,0.2,0.2)),
-		Input = util.import(params.Input) or f.v(false),
-		SynthClassName = f.get(function()
-			return script.Name
-		end),
-		Typography = util.import(params.Typography) or typographyConstructor.new(Enum.Font.SourceSans, 10, 14),
-	}
+	local public = {}
+	public.BackgroundColor = util.import(params.BackgroundColor) or f.v(Color3.new(0.5,0.5,0.5))
+
+	--[=[
+		@prop Color Color3 | FusionState | nil
+		Color used for fill of checkbox
+		@within Checkbox
+	]=]
+	public.Color = util.import(params.BackgroundColor) or f.v(Color3.new(0.5,0,1))
+
+	--[=[
+		@prop LineColor Color3 | FusionState | nil
+		Color used for fill of checkbox
+		@within Checkbox
+	]=]
+	public.LineColor = util.import(params.LineColor) or f.v(Color3.new(0.2, 0.2, 0.2))
+
+	--[=[
+		@prop Input bool | FusionState | nil
+		Whether the Checkbox is true or false
+		@within Checkbox
+	]=]
+	public.Input = util.import(params.Input) or f.v(false)
+
+	--[=[
+		@prop Typography Typography | FusionState | nil
+		The Typography to be used for this component
+		@within Checkbox
+	]=]
+	public.public.Typography = util.import(params.Typography) or typographyConstructor.new(Enum.Font.SourceSans, 10, 14)
+
+	--[=[
+		@prop Value bool
+		Attribute used to communicate current value
+		@within Checkbox
+		@readonly
+	]=]
+	public.Value = f.get(function()
+		return script.Name
+	end)
+
+	--[=[
+		@prop SynthClassName string
+		Attribute used to identify what type of component it is
+		@within Checkbox
+		@readonly
+	]=]
+	public.SynthClassName = f.get(function()
+		return script.Name
+	end)
 
 	--influencers
 	local _Hovered = f.v(false)

@@ -12,18 +12,68 @@ local constructor = {}
 
 function constructor.new(params)
 
+	--[=[
+		@class ExpansionPanel
+		@tag Component
+		@tag Molecule
+		A basic [expansion panel](https://material.io/archive/guidelines/components/expansion-panels.html).
+		Parent any relevant UI to the components "Content" frame.
+	]=]
+
 	--public states
-	local public = {
-		Typography = util.import(params.Typography) or typographyConstructor.new(Enum.Font.SourceSans, 10, 14),
-		Text = util.import(params.Text) or f.v(""),
-		BackgroundColor = util.import(params.BackgroundColor) or f.v(Color3.fromRGB(35,47,52)),
-		TextColor = util.import(params.TextColor) or f.v(Color3.fromHex("#FFFFFF")),
-		Width = util.import(params.Width) or f.v(UDim.new(1, 0)),
-		Open = util.import(params.Open) or f.v(false),
-		SynthClassName = f.get(function()
-			return script.Name
-		end),
-	}
+	local public = {}
+
+	--[=[
+		@prop Typography Typography | FusionState | nil
+		The Typography to be used for this component
+		@within ExpansionPanel
+	]=]
+	public.Typography = util.import(params.Typography) or typographyConstructor.new(Enum.Font.SourceSans, 10, 14)
+
+	--[=[
+		@prop Text string | FusionState | nil
+		Text that fills the top of the panel and explains its purpose.
+		@within ExpansionPanel
+	]=]
+	public.Text = util.import(params.Text) or f.v("")
+
+	--[=[
+		@prop BackgroundColor Color3 | FusionState | nil
+		Color used for background of panel
+		@within ExpansionPanel
+	]=]
+	public.BackgroundColor = util.import(params.BackgroundColor) or f.v(Color3.fromRGB(35,47,52))
+
+	--[=[
+		@prop TextColor Color3 | FusionState | nil
+		Color used for text
+		@within ExpansionPanel
+	]=]
+	public.TextColor = util.import(params.TextColor) or f.v(Color3.fromHex("#FFFFFF"))
+
+	--[=[
+		@prop Width UDim | FusionState | nil
+		Width of the entire component, as Height is solved using AutomaticScaling
+		@within ExpansionPanel
+	]=]
+	public.Width = util.import(params.Width) or f.v(UDim.new(1, 0))
+
+	--[=[
+		@prop Open bool | FusionState | nil
+		Whether the panel is currently open
+		@within ExpansionPanel
+	]=]
+	public.Open = util.import(params.Open) or f.v(false)
+
+	--[=[
+		@prop SynthClassName string
+		Attribute used to identify what type of component it is
+		@within ExpansionPanel
+		@readonly
+	]=]
+	public.SynthClassName = f.get(function()
+		return script.Name
+	end)
 
 	local _TextSize = f.get(function()
 		return public.Typography:get().TextSize

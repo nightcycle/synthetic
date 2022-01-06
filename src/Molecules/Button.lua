@@ -34,77 +34,91 @@ function constructor.new(params:table | nil)
 
 	--[=[
 		@class Button
+		@tag Component
 		@tag Molecule
 		A basic [button](https://material.io/components/buttons)
 	]=]
 
 	--public states
 	local public: Public = {}
+
 	--[=[
-		@prop Variant SynthEnumItem
+		@prop Variant SynthEnumItem | FusionState | nil
 		The style of construction as detailed [here](https://material.io/components/buttons#anatomy), excluding "Toggle button"
 		@within Button
 	]=]
 	public.Variant = util.import(params.Variant) or f.v("Filled")
+
 	--[=[
-		@prop Typography Typography
+		@prop Typography Typography | FusionState | nil
 		The Typography to be used for this component
 		@within Button
 	]=]
 	public.public.Typography = util.import(params.Typography) or typographyConstructor.new(Enum.Font.SourceSans, 10, 14)
+
 	--[=[
-		@prop Text string
+		@prop Text string | FusionState | nil
 		Text that fills the button
 		@within Button
 	]=]
 	public.Text = util.import(params.Text) or f.v("")
+
 	--[=[
-		@prop Tooltip string
+		@prop Tooltip string | FusionState | nil
 		Text that appears when the cursor hovers over button
 		@within Button
 	]=]
 	public.Tooltip = util.import(params.Tooltip) or f.v("")
+
 	--[=[
-		@prop TooltipDirection string
+		@prop TooltipDirection string | FusionState | nil
 		What anchor point on the button should be used to display
 		@within Button
 	]=]
 	public.TooltipDirection = util.import(params.TooltipDirection) or f.v(Vector2.new(0.5,0))
+
 	--[=[
-		@prop Color Color3
+		@prop Color Color3 | FusionState | nil
 		Color used for non-text areas of button
 		@within Button
 	]=]
 	public.Color = util.import(params.BackgroundColor) or f.v(Color3.new(0.5,0,1))
+
 	--[=[
-		@prop TextColor Color3
+		@prop TextColor Color3 | FusionState | nil
 		Color used for text
 		@within Button
 	]=]
 	public.TextColor = util.import(params.TextColor) or f.v(Color3.new(0.2,0.2,0.2))
+
 	--[=[
-		@prop Image string
-		Roblox Asset URL used to load in an icon's custom texture
+		@prop Image string | FusionState | nil
+		Roblox Asset URL used to load in an icon's custom texture. If left nil an image won't be created.
 		@within Button
 	]=]
 	public.Image = util.import(params.Icon) or f.v("")
+
 	--[=[
-		@prop ImageRectSize Vector2
+		@prop ImageRectSize Vector2 | FusionState | nil
 		How big the icon's sprite-sheet cells are
 		@within Button
 	]=]
 	public.ImageRectSize = util.import(params.ImageRectSize) or f.v(Vector2.new(0,0))
+
 	--[=[
-		@prop ImageRectOffset Vector2
+		@prop ImageRectOffset Vector2 | FusionState | nil
 		What position on a sprite-sheet should an icon be grabbed from
 		@within Button
 	]=]
 	public.ImageRectOffset = util.import(params.ImageRectOffset) or f.v(Vector2.new(0, 0))
+
 	--[=[
 		@prop SynthClassName string
 		Read-Only attribute used to identify what type of component it is
 		@within Button
+		@readonly
 	]=]
+
 	public.SynthClassName = f.get(function()
 		return script.Name
 	end)

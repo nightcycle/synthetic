@@ -12,6 +12,11 @@ if runService:IsClient() then
 	player  = game.Players.LocalPlayer
 end
 
+--[=[
+	@class Effects
+	A list of useful effects, some probably should just be Atom components
+]=]
+
 local fxHolder = f.new "ScreenGui" {
 	Parent = player:WaitForChild("PlayerGui"),
 	ResetOnSpawn = false,
@@ -68,103 +73,136 @@ local sounds = {
 	["ui_unlock"] = "rbxassetid://8418968416",
 }
 
-return {
-	ripple = function(position, color)
-		local currentSize = f.v(UDim.new(0,10))
-		local currentTransparency = f.v(0.2)
-		local element = require(script.Parent:FindFirstChild("Bubble", true)).new({
-			Size = currentSize,
-			Transparency = currentTransparency,
-			Color = color,
-			Position = position,
-			Parent = fxHolder,
-		})
-		task.delay(0, function()
-			currentSize:set(UDim.new(0,60))
-			currentTransparency:set(1)
-			task.wait(0.9)
-			element:Destroy()
-		end)
-	end,
+local effects = {}
 
-	sound = function(key)
-		local soundInst = Instance.new("Sound", fxHolder)
-		soundInst.SoundId = sounds[key]
-		soundInst.Volume = 0.5
-		soundInst.PlayOnRemove = true
-		soundInst:Destroy()
-	end,
+--[=[
+	@function ripple
+	Plays a ripple effect
+	@within Effects
+	@param Position FusionState --A UDim2 containing FusionState showing the desired target position
+	@param Color FusionState --A Color3 containing FusionState showing the desired ripple color
+]=]
+ripple = function(position, color)
+	local currentSize = f.v(UDim.new(0,10))
+	local currentTransparency = f.v(0.2)
+	local element = require(script.Parent:FindFirstChild("Bubble", true)).new({
+		Size = currentSize,
+		Transparency = currentTransparency,
+		Color = color,
+		Position = position,
+		Parent = fxHolder,
+	})
+	task.delay(0, function()
+		currentSize:set(UDim.new(0,60))
+		currentTransparency:set(1)
+		task.wait(0.9)
+		element:Destroy()
+	end)
+end
 
-	menu = function(maid, menuParams, hostSizeState, hostPositionState)
-		menuParams.Parent = fxHolder
-		menuParams.Position = f.get(function()
-			local pos = hostPositionState:get()
-			local size = hostSizeState:get()
-			return UDim2.fromOffset(pos.X, pos.Y + size.Y)
-		end)
-		local inst = require(script.Parent:FindFirstChild("Menu", true)).new(menuParams)
-		maid:GiveTask(inst)
-		return inst
-	end,
+--[=[
+	@function sound
+	Plays a sound effect
+	@within Effects
+	@param Key SoundKey --creates a new sound based on the filename of the [official material sounds](https://material.io/design/sound/sound-resources.html#).
+]=]
+sound = function(key)
+	local soundInst = Instance.new("Sound", fxHolder)
+	soundInst.SoundId = sounds[key]
+	soundInst.Volume = 0.5
+	soundInst.PlayOnRemove = true
+	soundInst:Destroy()
+end
 
-	tip = function(maid, tipParams, hostAbsPositionState, hostAbsSizeState, preferredDirection)
-		tipParams.AnchorPoint = f.get(function()
-			local dir = Vector2.new(1,1) - preferredDirection:get()
-			-- print("Pref: ", dir)
-			local xWeight = math.abs(dir.X - 0.5)*2
-			local yWeight = math.abs(dir.Y- 0.5)*2
-			-- print('Anchor', dir, xWeight, yWeight)
-			if yWeight >= 1 or xWeight >= 1 then
-				return Vector2.new(dir.X, dir.Y)
-			else
-				return Vector2.new(math.round(dir.X), math.round(dir.Y))
-			end
-		end)
-		tipParams.Position = f.get(function()
-			--generate first potential point
-			local anchorPoint = tipParams.AnchorPoint:get()
-			local antiAnchor = Vector2.new(1,1)-anchorPoint
-			local position = hostAbsPositionState:get()
-			local size = hostAbsSizeState:get()
-			local x = (antiAnchor.X-0.5)*2
-			local y = (antiAnchor.Y-0.5)*2
-			local offset = Vector2.new(x,y)*Vector2.new(4,4)
-			local point = position + antiAnchor*size + offset
+--[=[
+	@function menu
+	Creates and returns a dropdown menu, this honestly should just be a Component
+	@within Effects
+	@param maid Maid --maid that will be called upon menu completion to clean up
+	@param Parameters {any} --miscellaneous menu parameters
+	@param HostSizeState FusionState --fusionState of the Vector2 of the host's absolute size
+	@param HostPositionState FusionState --fusionState of the Vector2 of the host's absolute position
+]=]
+menu = function(maid, menuParams, hostSizeState, hostPositionState)
+	menuParams.Parent = fxHolder
+	menuParams.Position = f.get(function()
+		local pos = hostPositionState:get()
+		local size = hostSizeState:get()
+		return UDim2.fromOffset(pos.X, pos.Y + size.Y)
+	end)
+	local inst = require(script.Parent:FindFirstChild("Menu", true)).new(menuParams)
+	maid:GiveTask(inst)
+	return inst
+end
+--[=[
+	@function tip
+	Creates and places Tooltips.
+	@within Effects
+	@param maid Maid --maid that will be called upon menu completion to clean up
+	@param Parameters {any} --miscellaneous menu parameters
+	@param HostSizeState FusionState --fusionState of the Vector2 of the host's absolute size
+	@param HostPositionState FusionState --fusionState of the Vector2 of the host's absolute position
+	@param PreferredDirection FusionState --fusionState of the Vector2 of the host's anchor point to be used
+]=]
+tip = function(maid, tipParams, hostAbsPositionState, hostAbsSizeState, preferredDirection)
+	tipParams.AnchorPoint = f.get(function()
+		local dir = Vector2.new(1,1) - preferredDirection:get()
+		-- print("Pref: ", dir)
+		local xWeight = math.abs(dir.X - 0.5)*2
+		local yWeight = math.abs(dir.Y- 0.5)*2
+		-- print('Anchor', dir, xWeight, yWeight)
+		if yWeight >= 1 or xWeight >= 1 then
+			return Vector2.new(dir.X, dir.Y)
+		else
+			return Vector2.new(math.round(dir.X), math.round(dir.Y))
+		end
+	end)
+	tipParams.Position = f.get(function()
+		--generate first potential point
+		local anchorPoint = tipParams.AnchorPoint:get()
+		local antiAnchor = Vector2.new(1,1)-anchorPoint
+		local position = hostAbsPositionState:get()
+		local size = hostAbsSizeState:get()
+		local x = (antiAnchor.X-0.5)*2
+		local y = (antiAnchor.Y-0.5)*2
+		local offset = Vector2.new(x,y)*Vector2.new(4,4)
+		local point = position + antiAnchor*size + offset
 
-			--check to make sure it fits, nudging when necessary
-			local screenBounds = screenSize:get()
-			if point.X < 0 then point += Vector2.new(-point.X, 0) end
-			if point.Y < 0 then point += Vector2.new(0, -point.Y) end
-			if point.X > screenBounds.X then point -= Vector2.new(screenBounds.X-point.X, 0) end
-			if point.Y > screenBounds.Y then point -= Vector2.new(0, screenBounds.Y-point.Y) end
+		--check to make sure it fits, nudging when necessary
+		local screenBounds = screenSize:get()
+		if point.X < 0 then point += Vector2.new(-point.X, 0) end
+		if point.Y < 0 then point += Vector2.new(0, -point.Y) end
+		if point.X > screenBounds.X then point -= Vector2.new(screenBounds.X-point.X, 0) end
+		if point.Y > screenBounds.Y then point -= Vector2.new(0, screenBounds.Y-point.Y) end
 
-			--check again for max distance point, nudging when necessary
-			local maxPoint = point + (size*antiAnchor)
-			if maxPoint.X < 0 then
-				local fix = Vector2.new(-maxPoint.X, 0)
-				point += fix
-				maxPoint += fix
-			end
-			if maxPoint.Y < 0 then
-				local fix = Vector2.new(0, -maxPoint.Y)
-				point += fix
-				maxPoint += fix
-			end
-			if maxPoint.X > screenBounds.X then
-				local fix = Vector2.new(screenBounds.X-maxPoint.X, 0)
-				point -= fix
-				maxPoint -= fix
-			end
-			if maxPoint.Y > screenBounds.Y then
-				local fix = Vector2.new(screenBounds.Y-maxPoint.Y, 0)
-				point -= fix
-				maxPoint -= fix
-			end
-			return UDim2.fromOffset(point.X, point.Y)
-		end)
-		tipParams.Parent = fxHolder
+		--check again for max distance point, nudging when necessary
+		local maxPoint = point + (size*antiAnchor)
+		if maxPoint.X < 0 then
+			local fix = Vector2.new(-maxPoint.X, 0)
+			point += fix
+			maxPoint += fix
+		end
+		if maxPoint.Y < 0 then
+			local fix = Vector2.new(0, -maxPoint.Y)
+			point += fix
+			maxPoint += fix
+		end
+		if maxPoint.X > screenBounds.X then
+			local fix = Vector2.new(screenBounds.X-maxPoint.X, 0)
+			point -= fix
+			maxPoint -= fix
+		end
+		if maxPoint.Y > screenBounds.Y then
+			local fix = Vector2.new(screenBounds.Y-maxPoint.Y, 0)
+			point -= fix
+			maxPoint -= fix
+		end
+		return UDim2.fromOffset(point.X, point.Y)
+	end)
+	tipParams.Parent = fxHolder
 
-		local tipInst = require(script.Parent:FindFirstChild("Tooltip", true)).new(tipParams)
-		maid:GiveTask(tipInst)
-	end,
-}
+	local tipInst = require(script.Parent:FindFirstChild("Tooltip", true)).new(tipParams)
+	maid:GiveTask(tipInst)
+end
+
+return effects
