@@ -1,0 +1,305 @@
+<!doctype html>
+<html lang="en" dir="ltr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="generator" content="Docusaurus v2.0.0-beta.9">
+<title data-react-helmet="true">Util | synthetic</title><meta data-react-helmet="true" property="og:title" content="Util | synthetic"><meta data-react-helmet="true" name="twitter:card" content="summary_large_image"><meta data-react-helmet="true" name="description" content="A list of useful functions"><meta data-react-helmet="true" property="og:description" content="A list of useful functions"><meta data-react-helmet="true" property="og:url" content="https://nightcycle.github.io/synthetic/api/Util"><meta data-react-helmet="true" name="docusaurus_locale" content="en"><meta data-react-helmet="true" name="docusaurus_tag" content="default"><link data-react-helmet="true" rel="canonical" href="https://nightcycle.github.io/synthetic/api/Util"><link data-react-helmet="true" rel="alternate" href="https://nightcycle.github.io/synthetic/api/Util" hreflang="en"><link data-react-helmet="true" rel="alternate" href="https://nightcycle.github.io/synthetic/api/Util" hreflang="x-default"><link rel="stylesheet" href="/synthetic/assets/css/styles.57777432.css">
+<link rel="preload" href="/synthetic/assets/js/runtime~main.bbabd946.js" as="script">
+<link rel="preload" href="/synthetic/assets/js/main.9f45947a.js" as="script">
+</head>
+<body>
+<script>!function(){function e(e){document.documentElement.setAttribute("data-theme",e)}var t=function(){var e=null;try{e=localStorage.getItem("theme")}catch(e){}return e}();null!==t?e(t):window.matchMedia("(prefers-color-scheme: dark)").matches?e("dark"):(window.matchMedia("(prefers-color-scheme: light)").matches,e("light"))}()</script><div id="__docusaurus">
+<div><a href="#" class="skipToContent_1oUP">Skip to main content</a></div><nav class="navbar navbar--fixed-top"><div class="navbar__inner"><div class="navbar__items"><button aria-label="Navigation bar toggle" class="navbar__toggle clean-btn" type="button" tabindex="0"><svg width="30" height="30" viewBox="0 0 30 30" aria-hidden="true"><path stroke="currentColor" stroke-linecap="round" stroke-miterlimit="10" stroke-width="2" d="M4 7h22M4 15h22M4 23h22"></path></svg></button><a class="navbar__brand" href="/synthetic/"><b class="navbar__title">synthetic</b></a><a class="navbar__item navbar__link" href="/synthetic/docs/intro">Docs</a><a aria-current="page" class="navbar__item navbar__link navbar__link--active" href="/synthetic/api/">API</a></div><div class="navbar__items navbar__items--right"><a href="https://github.com/nightcycle/synthetic" target="_blank" rel="noopener noreferrer" class="navbar__item navbar__link"><span>GitHub<svg width="13.5" height="13.5" aria-hidden="true" viewBox="0 0 24 24" class="iconExternalLink_3J9K"><path fill="currentColor" d="M21 13v10h-21v-19h12v2h-10v15h17v-8h2zm3-12h-10.988l4.035 4-6.977 7.07 2.828 2.828 6.977-7.07 4.125 4.172v-11z"></path></svg></span></a><div class="toggle_71bT toggle_3Zt9 toggleDisabled_3cF-"><div class="toggleTrack_32Fl" role="button" tabindex="-1"><div class="toggleTrackCheck_3lV7"><span class="toggleIcon_O4iE">🌜</span></div><div class="toggleTrackX_S2yS"><span class="toggleIcon_O4iE">🌞</span></div><div class="toggleTrackThumb_xI_Z"></div></div><input type="checkbox" class="toggleScreenReader_28Tw" aria-label="Switch between dark and light mode"></div><div class="navbar__search"><span aria-label="expand searchbar" role="button" class="search-icon" tabindex="0"></span><input type="search" id="search_input_react" placeholder="Press S to Search..." aria-label="Search" class="navbar__search-input search-bar"></div></div></div><div role="presentation" class="navbar-sidebar__backdrop"></div></nav><div class="main-wrapper docPageContainer_2Kz0"><div class="docPage_1bdk"><div class="docSidebarContainer_1ykS"><div class="sidebar_15mo"><nav class="menu thin-scrollbar menu_Bmed"><ul class="theme-doc-sidebar-menu menu__list"><li class="theme-doc-sidebar-item-link theme-doc-sidebar-item-link-level-1 menu__list-item"><a class="menu__link" href="/synthetic/api/Button">​Button</a></li><li class="theme-doc-sidebar-item-link theme-doc-sidebar-item-link-level-1 menu__list-item"><a class="menu__link" href="/synthetic/api/Checkbox">​Checkbox</a></li><li class="theme-doc-sidebar-item-link theme-doc-sidebar-item-link-level-1 menu__list-item"><a class="menu__link" href="/synthetic/api/Dialog">​Dialog</a></li><li class="theme-doc-sidebar-item-link theme-doc-sidebar-item-link-level-1 menu__list-item"><a class="menu__link" href="/synthetic/api/Display">​Display</a></li><li class="theme-doc-sidebar-item-link theme-doc-sidebar-item-link-level-1 menu__list-item"><a class="menu__link" href="/synthetic/api/Divider">​Divider</a></li><li class="theme-doc-sidebar-item-link theme-doc-sidebar-item-link-level-1 menu__list-item"><a class="menu__link" href="/synthetic/api/Dropdown">​Dropdown</a></li><li class="theme-doc-sidebar-item-link theme-doc-sidebar-item-link-level-1 menu__list-item"><a class="menu__link" href="/synthetic/api/Effects">​Effects</a></li><li class="theme-doc-sidebar-item-link theme-doc-sidebar-item-link-level-1 menu__list-item"><a class="menu__link" href="/synthetic/api/ExpansionPanel">​Expansion​Panel</a></li><li class="theme-doc-sidebar-item-link theme-doc-sidebar-item-link-level-1 menu__list-item"><a class="menu__link" href="/synthetic/api/Label">​Label</a></li><li class="theme-doc-sidebar-item-link theme-doc-sidebar-item-link-level-1 menu__list-item"><a class="menu__link" href="/synthetic/api/Menu">​Menu</a></li><li class="theme-doc-sidebar-item-link theme-doc-sidebar-item-link-level-1 menu__list-item"><a class="menu__link" href="/synthetic/api/ProgressBar">​Progress​Bar</a></li><li class="theme-doc-sidebar-item-link theme-doc-sidebar-item-link-level-1 menu__list-item"><a class="menu__link" href="/synthetic/api/PropertyFrame">​Property​Frame</a></li><li class="theme-doc-sidebar-item-link theme-doc-sidebar-item-link-level-1 menu__list-item"><a class="menu__link" href="/synthetic/api/Slider">​Slider</a></li><li class="theme-doc-sidebar-item-link theme-doc-sidebar-item-link-level-1 menu__list-item"><a class="menu__link" href="/synthetic/api/Switch">​Switch</a></li><li class="theme-doc-sidebar-item-link theme-doc-sidebar-item-link-level-1 menu__list-item"><a class="menu__link" href="/synthetic/api/SynthEnum">​Synth​Enum</a></li><li class="theme-doc-sidebar-item-link theme-doc-sidebar-item-link-level-1 menu__list-item"><a class="menu__link" href="/synthetic/api/Synthetic">​Synthetic</a></li><li class="theme-doc-sidebar-item-link theme-doc-sidebar-item-link-level-1 menu__list-item"><a class="menu__link" href="/synthetic/api/TextField">​Text​Field</a></li><li class="theme-doc-sidebar-item-link theme-doc-sidebar-item-link-level-1 menu__list-item"><a class="menu__link" href="/synthetic/api/ToggleList">​Toggle​List</a></li><li class="theme-doc-sidebar-item-link theme-doc-sidebar-item-link-level-1 menu__list-item"><a class="menu__link menu__link--active" aria-current="page" href="/synthetic/api/Util">​Util</a></li></ul></nav><button type="button" title="Collapse sidebar" aria-label="Collapse sidebar" class="button button--secondary button--outline collapseSidebarButton_1CGd"><svg width="20" height="20" aria-hidden="true" class="collapseSidebarButtonIcon_3E-R"><g fill="#7a7a7a"><path d="M9.992 10.023c0 .2-.062.399-.172.547l-4.996 7.492a.982.982 0 01-.828.454H1c-.55 0-1-.453-1-1 0-.2.059-.403.168-.551l4.629-6.942L.168 3.078A.939.939 0 010 2.528c0-.548.45-.997 1-.997h2.996c.352 0 .649.18.828.45L9.82 9.472c.11.148.172.347.172.55zm0 0"></path><path d="M19.98 10.023c0 .2-.058.399-.168.547l-4.996 7.492a.987.987 0 01-.828.454h-3c-.547 0-.996-.453-.996-1 0-.2.059-.403.168-.551l4.625-6.942-4.625-6.945a.939.939 0 01-.168-.55 1 1 0 01.996-.997h3c.348 0 .649.18.828.45l4.996 7.492c.11.148.168.347.168.55zm0 0"></path></g></svg></button></div></div><main class="docMainContainer_28N5"><div class="container padding-vert--lg"><div class="row"><div class="col docItemCol_3WPG"><div class="docItemContainer_3XDu"><article><div class="member_qHIL markdown"><div class="tocCollapsible_1PrD theme-doc-toc-mobile tocMobile_3ryM"><button type="button" class="clean-btn tocCollapsibleButton_2O1e">On this page</button></div><header><h1 class="docTitle_1ddc" style="text-decoration:none"><span style="display:inline-block">Util</span></h1><div class="luaClassTags_2Zrs"></div><div>
+<p>A list of useful functions</p>
+</div></header><h2 class="anchor anchorWithStickyNavbar_31ik" id="properties">Properties<a aria-hidden="true" class="hash-link" href="#properties" title="Direct link to heading">​</a></h2><div class="divider_3z1R"></div><h3 class="anchor anchorWithStickyNavbar_31ik" id="cornerRadius"><code style="text-decoration:none">cornerRadius</code><a aria-hidden="true" class="hash-link" href="#cornerRadius" title="Direct link to heading">​</a></h3><div class="repositoryDetailsContainer_1UH0"><a class="sourceButton_2aE5" href="https://github.com/nightcycle/synthetic/blob/master/src/Util.lua#L224"><div class="sourceButtonText_monK">&lt;/&gt;</div></a></div><div class="memberString_P8-X"><code>Util<!-- -->.<!-- -->cornerRadius<!-- -->:<!-- --> </code> <code class="blue_2Afy"><a style="text-decoration:underline;color:inherit" href="https://developer.roblox.com/en-us/api-reference/datatype/UDim" target="_blank" rel="noopener noreferrer">UDim<svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" x="0px" y="0px" viewBox="0 0 100 100" width="15" height="15" class="icon outbound" style="color:gray;vertical-align:middle;margin-left:2px"><path fill="currentColor" d="M18.8,85.1h56l0,0c2.2,0,4-1.8,4-4v-32h-8v28h-48v-48h28v-8h-32l0,0c-2.2,0-4,1.8-4,4v56C14.8,83.3,16.6,85.1,18.8,85.1z"></path> <polygon fill="currentColor" points="45.7,48.7 51.3,54.3 77.2,28.5 77.2,37.2 85.2,37.2 85.2,14.9 62.8,14.9 62.8,22.9 71.5,22.9"></polygon></svg></a></code></div><div>
+<p>Where all the UICorners get their non circular corner radii. Can be set to something else should you like.</p>
+</div><h2 class="anchor anchorWithStickyNavbar_31ik" id="functions">Functions<a aria-hidden="true" class="hash-link" href="#functions" title="Direct link to heading">​</a></h2><div class="divider_3z1R"></div><h3 class="anchor anchorWithStickyNavbar_31ik" id="newTypography"><code style="text-decoration:none">newTypography</code><a aria-hidden="true" class="hash-link" href="#newTypography" title="Direct link to heading">​</a></h3><div class="repositoryDetailsContainer_1UH0"><a class="sourceButton_2aE5" href="https://github.com/nightcycle/synthetic/blob/master/src/Util.lua#L115"><div class="sourceButtonText_monK">&lt;/&gt;</div></a></div><div class="memberString_P8-X"><code>Util<!-- -->.</code><code class="green_3LnD">newTypography</code><code>(</code><div class="inset_2cJr"><div><code>font<!-- -->: </code><code class="blue_2Afy"><a style="text-decoration:underline;color:inherit" href="https://developer.roblox.com/en-us/api-reference/datatype/Enum" target="_blank" rel="noopener noreferrer">Enum<svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" x="0px" y="0px" viewBox="0 0 100 100" width="15" height="15" class="icon outbound" style="color:gray;vertical-align:middle;margin-left:2px"><path fill="currentColor" d="M18.8,85.1h56l0,0c2.2,0,4-1.8,4-4v-32h-8v28h-48v-48h28v-8h-32l0,0c-2.2,0-4,1.8-4,4v56C14.8,83.3,16.6,85.1,18.8,85.1z"></path> <polygon fill="currentColor" points="45.7,48.7 51.3,54.3 77.2,28.5 77.2,37.2 85.2,37.2 85.2,14.9 62.8,14.9 62.8,22.9 71.5,22.9"></polygon></svg></a></code><code>,</code><span class="inlineDescription_17uy">-- <span>
+<p>An official Roblox font enum</p>
+</span></span></div><div><code>minTextSize<!-- -->: </code><code class="blue_2Afy">number</code><code>,</code><span class="inlineDescription_17uy">-- <span>
+<p>the minimum height in pixels your text will be</p>
+</span></span></div><div><code>maxTextSize<!-- -->: </code><code class="blue_2Afy">number</code><span class="inlineDescription_17uy">-- <span>
+<p>the maximum height in pixels your text will be</p>
+</span></span></div></div><code>) → </code><code class="blue_2Afy">Typography</code><span class="inlineDescription_17uy">-- <span>
+<p>typography state you can now pass through components</p>
+</span></span></div><div>
+<p>Creates Typography classes for future use</p>
+</div><div class="divider_3z1R"></div><h3 class="anchor anchorWithStickyNavbar_31ik" id="import"><code style="text-decoration:none">import</code><a aria-hidden="true" class="hash-link" href="#import" title="Direct link to heading">​</a></h3><div class="repositoryDetailsContainer_1UH0"><a class="sourceButton_2aE5" href="https://github.com/nightcycle/synthetic/blob/master/src/Util.lua#L126"><div class="sourceButtonText_monK">&lt;/&gt;</div></a></div><div class="memberString_P8-X"><code>Util<!-- -->.</code><code class="green_3LnD">import</code><code>(</code><code>stateOrVal<!-- -->: </code><code class="blue_2Afy">FusionState</code><code class="op_1JtD"> | </code><code class="blue_2Afy">any</code><code>) → </code><code class="blue_2Afy">FusionState</code></div><div>
+<p>Takes a parameter and formats it into a FusionState</p>
+</div><div class="divider_3z1R"></div><h3 class="anchor anchorWithStickyNavbar_31ik" id="getInteractionColor"><code style="text-decoration:none">getInteractionColor</code><a aria-hidden="true" class="hash-link" href="#getInteractionColor" title="Direct link to heading">​</a></h3><div class="repositoryDetailsContainer_1UH0"><a class="sourceButton_2aE5" href="https://github.com/nightcycle/synthetic/blob/master/src/Util.lua#L142"><div class="sourceButtonText_monK">&lt;/&gt;</div></a></div><div class="memberString_P8-X"><code>Util<!-- -->.</code><code class="green_3LnD">getInteractionColor</code><code>(</code><div class="inset_2cJr"><div><code>Clicked<!-- -->: </code><code class="blue_2Afy">FusionState</code><code>,</code><span class="inlineDescription_17uy">-- <span>
+<p>a boolean state that's true when the element is actived</p>
+</span></span></div><div><code>Hovered<!-- -->: </code><code class="blue_2Afy">FusionState</code><code>,</code><span class="inlineDescription_17uy">-- <span>
+<p>a boolean state that's true when the cursor hovers over the element</p>
+</span></span></div><div><code>Color<!-- -->: </code><code class="blue_2Afy">FusionState</code><span class="inlineDescription_17uy">-- <span>
+<p>the base color</p>
+</span></span></div></div><code>) → </code><code class="blue_2Afy">FusionState</code></div><div>
+<p>creates a FusionState that responds to the boolean Clicked and Hovered FusionStates</p>
+</div><div class="divider_3z1R"></div><h3 class="anchor anchorWithStickyNavbar_31ik" id="initFusion"><code style="text-decoration:none">initFusion</code><a aria-hidden="true" class="hash-link" href="#initFusion" title="Direct link to heading">​</a></h3><div class="repositoryDetailsContainer_1UH0"><a class="sourceButton_2aE5" href="https://github.com/nightcycle/synthetic/blob/master/src/Util.lua#L171"><div class="sourceButtonText_monK">&lt;/&gt;</div></a></div><div class="memberString_P8-X"><code>Util<!-- -->.</code><code class="green_3LnD">initFusion</code><code>(</code><div class="inset_2cJr"><div><code>Fusion<!-- -->: </code><code class="blue_2Afy">Fusion</code><span class="inlineDescription_17uy">-- <span>
+<p>a constructed Fusion Library</p>
+</span></span></div></div><code>) → </code><code class="blue_2Afy">FusionState</code></div><div>
+<p>A simple Fusion wrapper that adds some alternate syntax. This is a bad thing I do.</p>
+</div><div class="divider_3z1R"></div><h3 class="anchor anchorWithStickyNavbar_31ik" id="getTypographyStates"><code style="text-decoration:none">getTypographyStates</code><a aria-hidden="true" class="hash-link" href="#getTypographyStates" title="Direct link to heading">​</a></h3><div class="repositoryDetailsContainer_1UH0"><a class="sourceButton_2aE5" href="https://github.com/nightcycle/synthetic/blob/master/src/Util.lua#L206"><div class="sourceButtonText_monK">&lt;/&gt;</div></a></div><div class="memberString_P8-X"><code>Util<!-- -->.</code><code class="green_3LnD">getTypographyStates</code><code>(</code><div class="inset_2cJr"><div><code>Typography<!-- -->: </code><code class="blue_2Afy">Typography</code><span class="inlineDescription_17uy">-- <span>
+<p>a constructed Typography state</p>
+</span></span></div></div><code>) → </code><code>(</code><div class="inset_2cJr"><div><code class="blue_2Afy">FusionState</code><code>,</code><span class="inlineDescription_17uy">-- <span>
+<p>A Padding UDim FusionState</p>
+</span></span></div><div><code class="blue_2Afy">FusionState</code><code>,</code><span class="inlineDescription_17uy">-- <span>
+<p>A TextSize Number FusionState</p>
+</span></span></div><div><code class="blue_2Afy">FusionState</code><span class="inlineDescription_17uy">-- <span>
+<p>A Font Enum FusionState</p>
+</span></span></div></div><code>)</code></div><div>
+<p>Unwraps a Typography class into 3 usable &#x26; reactive property states</p>
+</div><div class="divider_3z1R"></div><h3 class="anchor anchorWithStickyNavbar_31ik" id="set"><code style="text-decoration:none">set</code><a aria-hidden="true" class="hash-link" href="#set" title="Direct link to heading">​</a></h3><div class="repositoryDetailsContainer_1UH0"><a class="sourceButton_2aE5" href="https://github.com/nightcycle/synthetic/blob/master/src/Util.lua#L237"><div class="sourceButtonText_monK">&lt;/&gt;</div></a></div><div class="memberString_P8-X"><code>Util<!-- -->.</code><code class="green_3LnD">set</code><code>(</code><div class="inset_2cJr"><div><code>Constructor<!-- -->: </code><code class="blue_2Afy">function</code><code>,</code><span class="inlineDescription_17uy">-- <span>
+<p>the constructor the Configuration will be passed to</p>
+</span></span></div><div><code>PublicStates<!-- -->: </code><code class="purple__nFc">{</code><code class="blue_2Afy">FusionState</code><code class="purple__nFc">}</code><code>,</code><span class="inlineDescription_17uy">-- <span>
+<p>dictionary of publicly accessible properties represented by FusionStates</p>
+</span></span></div><div><code>Parameters<!-- -->: </code><code class="purple__nFc">{</code><code class="blue_2Afy">any</code><code class="purple__nFc">}</code><code>,</code><span class="inlineDescription_17uy">-- <span>
+<p>dictionary of externally provided values to be baked into Configuration</p>
+</span></span></div><div><code>Configuration<!-- -->: </code><code class="purple__nFc">{</code><code class="blue_2Afy">any</code><code class="purple__nFc">}</code><code>,</code><span class="inlineDescription_17uy">-- <span>
+<p>the final table passed into the constructor</p>
+</span></span></div><div><code>maid<!-- -->: </code><code class="blue_2Afy">Maid</code><code class="op_1JtD"> | </code><code class="blue_2Afy">nil</code><span class="inlineDescription_17uy">-- <span>
+<p>a maid handling the instance if one already exists.</p>
+</span></span></div></div><code>) → </code><code class="blue_2Afy"><a style="text-decoration:underline;color:inherit" href="https://developer.roblox.com/en-us/api-reference/datatype/Instance" target="_blank" rel="noopener noreferrer">Instance<svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" x="0px" y="0px" viewBox="0 0 100 100" width="15" height="15" class="icon outbound" style="color:gray;vertical-align:middle;margin-left:2px"><path fill="currentColor" d="M18.8,85.1h56l0,0c2.2,0,4-1.8,4-4v-32h-8v28h-48v-48h28v-8h-32l0,0c-2.2,0-4,1.8-4,4v56C14.8,83.3,16.6,85.1,18.8,85.1z"></path> <polygon fill="currentColor" points="45.7,48.7 51.3,54.3 77.2,28.5 77.2,37.2 85.2,37.2 85.2,14.9 62.8,14.9 62.8,22.9 71.5,22.9"></polygon></svg></a></code><span class="inlineDescription_17uy">-- <span>
+<p>the constructed instance</p>
+</span></span></div><div>
+<p>Handles the boring work of combining user params with pre-written configs as well as garbage collection.</p>
+</div><div class="divider_3z1R"></div><h3 class="anchor anchorWithStickyNavbar_31ik" id="tween"><code style="text-decoration:none">tween</code><a aria-hidden="true" class="hash-link" href="#tween" title="Direct link to heading">​</a></h3><div class="repositoryDetailsContainer_1UH0"><a class="sourceButton_2aE5" href="https://github.com/nightcycle/synthetic/blob/master/src/Util.lua#L282"><div class="sourceButtonText_monK">&lt;/&gt;</div></a></div><div class="memberString_P8-X"><code>Util<!-- -->.</code><code class="green_3LnD">tween</code><code>(</code><div class="inset_2cJr"><div><code>FusionState<!-- -->: </code><code class="blue_2Afy">FusionState</code><code>,</code><span class="inlineDescription_17uy">-- <span>
+<p>the FusionState to watch</p>
+</span></span></div><div><code>Parameters<!-- -->: </code><code class="blue_2Afy"><a style="text-decoration:underline;color:inherit" href="https://developer.roblox.com/en-us/api-reference/datatype/TweenInfo" target="_blank" rel="noopener noreferrer">TweenInfo<svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" x="0px" y="0px" viewBox="0 0 100 100" width="15" height="15" class="icon outbound" style="color:gray;vertical-align:middle;margin-left:2px"><path fill="currentColor" d="M18.8,85.1h56l0,0c2.2,0,4-1.8,4-4v-32h-8v28h-48v-48h28v-8h-32l0,0c-2.2,0-4,1.8-4,4v56C14.8,83.3,16.6,85.1,18.8,85.1z"></path> <polygon fill="currentColor" points="45.7,48.7 51.3,54.3 77.2,28.5 77.2,37.2 85.2,37.2 85.2,14.9 62.8,14.9 62.8,22.9 71.5,22.9"></polygon></svg></a></code><code class="op_1JtD"> | </code><code class="blue_2Afy">nil</code><span class="inlineDescription_17uy">-- <span>
+<p>a table with keys matching of that of Roblox's TweenParams</p>
+</span></span></div></div><code>) → </code><code class="blue_2Afy">FusionState</code><span class="inlineDescription_17uy">-- <span>
+<p>The resulting tween</p>
+</span></span></div><div>
+<p>A quick tween FusionState constructor.</p>
+</div></div></article></div><details><summary>Show raw api</summary><pre style="max-width:100%;white-space:pre-wrap">{
+    &quot;functions&quot;: [
+        {
+            &quot;name&quot;: &quot;newTypography&quot;,
+            &quot;desc&quot;: &quot;Creates Typography classes for future use&quot;,
+            &quot;params&quot;: [
+                {
+                    &quot;name&quot;: &quot;font&quot;,
+                    &quot;desc&quot;: &quot;An official Roblox font enum&quot;,
+                    &quot;lua_type&quot;: &quot;Enum&quot;
+                },
+                {
+                    &quot;name&quot;: &quot;minTextSize&quot;,
+                    &quot;desc&quot;: &quot;the minimum height in pixels your text will be&quot;,
+                    &quot;lua_type&quot;: &quot;number&quot;
+                },
+                {
+                    &quot;name&quot;: &quot;maxTextSize&quot;,
+                    &quot;desc&quot;: &quot;the maximum height in pixels your text will be&quot;,
+                    &quot;lua_type&quot;: &quot;number&quot;
+                }
+            ],
+            &quot;returns&quot;: [
+                {
+                    &quot;desc&quot;: &quot;typography state you can now pass through components&quot;,
+                    &quot;lua_type&quot;: &quot;Typography&quot;
+                }
+            ],
+            &quot;function_type&quot;: &quot;static&quot;,
+            &quot;source&quot;: {
+                &quot;line&quot;: 115,
+                &quot;path&quot;: &quot;src/Util.lua&quot;
+            }
+        },
+        {
+            &quot;name&quot;: &quot;import&quot;,
+            &quot;desc&quot;: &quot;Takes a parameter and formats it into a FusionState&quot;,
+            &quot;params&quot;: [
+                {
+                    &quot;name&quot;: &quot;stateOrVal&quot;,
+                    &quot;desc&quot;: &quot;&quot;,
+                    &quot;lua_type&quot;: &quot;FusionState | any&quot;
+                }
+            ],
+            &quot;returns&quot;: [
+                {
+                    &quot;desc&quot;: &quot;&quot;,
+                    &quot;lua_type&quot;: &quot;FusionState&quot;
+                }
+            ],
+            &quot;function_type&quot;: &quot;static&quot;,
+            &quot;source&quot;: {
+                &quot;line&quot;: 126,
+                &quot;path&quot;: &quot;src/Util.lua&quot;
+            }
+        },
+        {
+            &quot;name&quot;: &quot;getInteractionColor&quot;,
+            &quot;desc&quot;: &quot;creates a FusionState that responds to the boolean Clicked and Hovered FusionStates&quot;,
+            &quot;params&quot;: [
+                {
+                    &quot;name&quot;: &quot;Clicked&quot;,
+                    &quot;desc&quot;: &quot;a boolean state that&#x27;s true when the element is actived&quot;,
+                    &quot;lua_type&quot;: &quot;FusionState&quot;
+                },
+                {
+                    &quot;name&quot;: &quot;Hovered&quot;,
+                    &quot;desc&quot;: &quot;a boolean state that&#x27;s true when the cursor hovers over the element&quot;,
+                    &quot;lua_type&quot;: &quot;FusionState&quot;
+                },
+                {
+                    &quot;name&quot;: &quot;Color&quot;,
+                    &quot;desc&quot;: &quot;the base color&quot;,
+                    &quot;lua_type&quot;: &quot;FusionState&quot;
+                }
+            ],
+            &quot;returns&quot;: [
+                {
+                    &quot;desc&quot;: &quot;&quot;,
+                    &quot;lua_type&quot;: &quot;FusionState&quot;
+                }
+            ],
+            &quot;function_type&quot;: &quot;static&quot;,
+            &quot;source&quot;: {
+                &quot;line&quot;: 142,
+                &quot;path&quot;: &quot;src/Util.lua&quot;
+            }
+        },
+        {
+            &quot;name&quot;: &quot;initFusion&quot;,
+            &quot;desc&quot;: &quot;A simple Fusion wrapper that adds some alternate syntax. This is a bad thing I do.&quot;,
+            &quot;params&quot;: [
+                {
+                    &quot;name&quot;: &quot;Fusion&quot;,
+                    &quot;desc&quot;: &quot;a constructed Fusion Library&quot;,
+                    &quot;lua_type&quot;: &quot;Fusion&quot;
+                }
+            ],
+            &quot;returns&quot;: [
+                {
+                    &quot;desc&quot;: &quot;&quot;,
+                    &quot;lua_type&quot;: &quot;FusionState&quot;
+                }
+            ],
+            &quot;function_type&quot;: &quot;static&quot;,
+            &quot;source&quot;: {
+                &quot;line&quot;: 171,
+                &quot;path&quot;: &quot;src/Util.lua&quot;
+            }
+        },
+        {
+            &quot;name&quot;: &quot;getTypographyStates&quot;,
+            &quot;desc&quot;: &quot;Unwraps a Typography class into 3 usable &amp; reactive property states&quot;,
+            &quot;params&quot;: [
+                {
+                    &quot;name&quot;: &quot;Typography&quot;,
+                    &quot;desc&quot;: &quot;a constructed Typography state&quot;,
+                    &quot;lua_type&quot;: &quot;Typography&quot;
+                }
+            ],
+            &quot;returns&quot;: [
+                {
+                    &quot;desc&quot;: &quot;A Padding UDim FusionState&quot;,
+                    &quot;lua_type&quot;: &quot;FusionState&quot;
+                },
+                {
+                    &quot;desc&quot;: &quot;A TextSize Number FusionState&quot;,
+                    &quot;lua_type&quot;: &quot;FusionState&quot;
+                },
+                {
+                    &quot;desc&quot;: &quot;A Font Enum FusionState&quot;,
+                    &quot;lua_type&quot;: &quot;FusionState&quot;
+                }
+            ],
+            &quot;function_type&quot;: &quot;static&quot;,
+            &quot;source&quot;: {
+                &quot;line&quot;: 206,
+                &quot;path&quot;: &quot;src/Util.lua&quot;
+            }
+        },
+        {
+            &quot;name&quot;: &quot;set&quot;,
+            &quot;desc&quot;: &quot;Handles the boring work of combining user params with pre-written configs as well as garbage collection.&quot;,
+            &quot;params&quot;: [
+                {
+                    &quot;name&quot;: &quot;Constructor&quot;,
+                    &quot;desc&quot;: &quot;the constructor the Configuration will be passed to&quot;,
+                    &quot;lua_type&quot;: &quot;function&quot;
+                },
+                {
+                    &quot;name&quot;: &quot;PublicStates&quot;,
+                    &quot;desc&quot;: &quot;dictionary of publicly accessible properties represented by FusionStates&quot;,
+                    &quot;lua_type&quot;: &quot;{FusionState}&quot;
+                },
+                {
+                    &quot;name&quot;: &quot;Parameters&quot;,
+                    &quot;desc&quot;: &quot;dictionary of externally provided values to be baked into Configuration&quot;,
+                    &quot;lua_type&quot;: &quot;{any}&quot;
+                },
+                {
+                    &quot;name&quot;: &quot;Configuration&quot;,
+                    &quot;desc&quot;: &quot;the final table passed into the constructor&quot;,
+                    &quot;lua_type&quot;: &quot;{any}&quot;
+                },
+                {
+                    &quot;name&quot;: &quot;maid&quot;,
+                    &quot;desc&quot;: &quot;a maid handling the instance if one already exists.&quot;,
+                    &quot;lua_type&quot;: &quot;Maid | nil&quot;
+                }
+            ],
+            &quot;returns&quot;: [
+                {
+                    &quot;desc&quot;: &quot;the constructed instance&quot;,
+                    &quot;lua_type&quot;: &quot;Instance&quot;
+                }
+            ],
+            &quot;function_type&quot;: &quot;static&quot;,
+            &quot;source&quot;: {
+                &quot;line&quot;: 237,
+                &quot;path&quot;: &quot;src/Util.lua&quot;
+            }
+        },
+        {
+            &quot;name&quot;: &quot;tween&quot;,
+            &quot;desc&quot;: &quot;A quick tween FusionState constructor.&quot;,
+            &quot;params&quot;: [
+                {
+                    &quot;name&quot;: &quot;FusionState&quot;,
+                    &quot;desc&quot;: &quot;the FusionState to watch&quot;,
+                    &quot;lua_type&quot;: &quot;FusionState&quot;
+                },
+                {
+                    &quot;name&quot;: &quot;Parameters&quot;,
+                    &quot;desc&quot;: &quot;a table with keys matching of that of Roblox&#x27;s TweenParams&quot;,
+                    &quot;lua_type&quot;: &quot;TweenInfo | nil&quot;
+                }
+            ],
+            &quot;returns&quot;: [
+                {
+                    &quot;desc&quot;: &quot;The resulting tween&quot;,
+                    &quot;lua_type&quot;: &quot;FusionState&quot;
+                }
+            ],
+            &quot;function_type&quot;: &quot;static&quot;,
+            &quot;source&quot;: {
+                &quot;line&quot;: 282,
+                &quot;path&quot;: &quot;src/Util.lua&quot;
+            }
+        }
+    ],
+    &quot;properties&quot;: [
+        {
+            &quot;name&quot;: &quot;cornerRadius&quot;,
+            &quot;desc&quot;: &quot;Where all the UICorners get their non circular corner radii. Can be set to something else should you like.&quot;,
+            &quot;lua_type&quot;: &quot;UDim&quot;,
+            &quot;source&quot;: {
+                &quot;line&quot;: 224,
+                &quot;path&quot;: &quot;src/Util.lua&quot;
+            }
+        }
+    ],
+    &quot;types&quot;: [],
+    &quot;name&quot;: &quot;Util&quot;,
+    &quot;desc&quot;: &quot;A list of useful functions&quot;,
+    &quot;source&quot;: {
+        &quot;line&quot;: 102,
+        &quot;path&quot;: &quot;src/Util.lua&quot;
+    }
+}</pre></details></div><div class="col col--3"><div class="tableOfContents_35-E thin-scrollbar"><ul class="table-of-contents table-of-contents__left-border"><li><a href="#types" class="table-of-contents__link toc-highlight">Types</a></li><li><a href="#properties" class="table-of-contents__link toc-highlight">Properties</a><ul><li><a href="#cornerRadius" class="table-of-contents__link toc-highlight">cornerRadius</a></li></ul></li><li><a href="#functions" class="table-of-contents__link toc-highlight">Functions</a><ul><li><a href="#getInteractionColor" class="table-of-contents__link toc-highlight">.getInteractionColor</a></li><li><a href="#getTypographyStates" class="table-of-contents__link toc-highlight">.getTypographyStates</a></li><li><a href="#import" class="table-of-contents__link toc-highlight">.import</a></li><li><a href="#initFusion" class="table-of-contents__link toc-highlight">.initFusion</a></li><li><a href="#newTypography" class="table-of-contents__link toc-highlight">.newTypography</a></li><li><a href="#set" class="table-of-contents__link toc-highlight">.set</a></li><li><a href="#tween" class="table-of-contents__link toc-highlight">.tween</a></li></ul></li></ul></div></div></div></div></main></div></div><footer class="footer footer--dark"><div class="container"><div class="footer__bottom text--center"><div class="footer__copyright">Copyright © 2022 nightcycle. Built with Moonwave and Docusaurus.</div></div></div></footer></div>
+<script src="/synthetic/assets/js/runtime~main.bbabd946.js"></script>
+<script src="/synthetic/assets/js/main.9f45947a.js"></script>
+</body>
+</html>

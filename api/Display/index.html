@@ -1,0 +1,275 @@
+<!doctype html>
+<html lang="en" dir="ltr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="generator" content="Docusaurus v2.0.0-beta.9">
+<title data-react-helmet="true">Display | synthetic</title><meta data-react-helmet="true" property="og:title" content="Display | synthetic"><meta data-react-helmet="true" name="twitter:card" content="summary_large_image"><meta data-react-helmet="true" name="description" content="A simple ViewportFrame
+	"><meta data-react-helmet="true" property="og:description" content="A simple ViewportFrame
+	"><meta data-react-helmet="true" property="og:url" content="https://nightcycle.github.io/synthetic/api/Display"><meta data-react-helmet="true" name="docusaurus_locale" content="en"><meta data-react-helmet="true" name="docusaurus_tag" content="default"><link data-react-helmet="true" rel="canonical" href="https://nightcycle.github.io/synthetic/api/Display"><link data-react-helmet="true" rel="alternate" href="https://nightcycle.github.io/synthetic/api/Display" hreflang="en"><link data-react-helmet="true" rel="alternate" href="https://nightcycle.github.io/synthetic/api/Display" hreflang="x-default"><link rel="stylesheet" href="/synthetic/assets/css/styles.57777432.css">
+<link rel="preload" href="/synthetic/assets/js/runtime~main.bbabd946.js" as="script">
+<link rel="preload" href="/synthetic/assets/js/main.9f45947a.js" as="script">
+</head>
+<body>
+<script>!function(){function e(e){document.documentElement.setAttribute("data-theme",e)}var t=function(){var e=null;try{e=localStorage.getItem("theme")}catch(e){}return e}();null!==t?e(t):window.matchMedia("(prefers-color-scheme: dark)").matches?e("dark"):(window.matchMedia("(prefers-color-scheme: light)").matches,e("light"))}()</script><div id="__docusaurus">
+<div><a href="#" class="skipToContent_1oUP">Skip to main content</a></div><nav class="navbar navbar--fixed-top"><div class="navbar__inner"><div class="navbar__items"><button aria-label="Navigation bar toggle" class="navbar__toggle clean-btn" type="button" tabindex="0"><svg width="30" height="30" viewBox="0 0 30 30" aria-hidden="true"><path stroke="currentColor" stroke-linecap="round" stroke-miterlimit="10" stroke-width="2" d="M4 7h22M4 15h22M4 23h22"></path></svg></button><a class="navbar__brand" href="/synthetic/"><b class="navbar__title">synthetic</b></a><a class="navbar__item navbar__link" href="/synthetic/docs/intro">Docs</a><a aria-current="page" class="navbar__item navbar__link navbar__link--active" href="/synthetic/api/">API</a></div><div class="navbar__items navbar__items--right"><a href="https://github.com/nightcycle/synthetic" target="_blank" rel="noopener noreferrer" class="navbar__item navbar__link"><span>GitHub<svg width="13.5" height="13.5" aria-hidden="true" viewBox="0 0 24 24" class="iconExternalLink_3J9K"><path fill="currentColor" d="M21 13v10h-21v-19h12v2h-10v15h17v-8h2zm3-12h-10.988l4.035 4-6.977 7.07 2.828 2.828 6.977-7.07 4.125 4.172v-11z"></path></svg></span></a><div class="toggle_71bT toggle_3Zt9 toggleDisabled_3cF-"><div class="toggleTrack_32Fl" role="button" tabindex="-1"><div class="toggleTrackCheck_3lV7"><span class="toggleIcon_O4iE">🌜</span></div><div class="toggleTrackX_S2yS"><span class="toggleIcon_O4iE">🌞</span></div><div class="toggleTrackThumb_xI_Z"></div></div><input type="checkbox" class="toggleScreenReader_28Tw" aria-label="Switch between dark and light mode"></div><div class="navbar__search"><span aria-label="expand searchbar" role="button" class="search-icon" tabindex="0"></span><input type="search" id="search_input_react" placeholder="Press S to Search..." aria-label="Search" class="navbar__search-input search-bar"></div></div></div><div role="presentation" class="navbar-sidebar__backdrop"></div></nav><div class="main-wrapper docPageContainer_2Kz0"><div class="docPage_1bdk"><div class="docSidebarContainer_1ykS"><div class="sidebar_15mo"><nav class="menu thin-scrollbar menu_Bmed"><ul class="theme-doc-sidebar-menu menu__list"><li class="theme-doc-sidebar-item-link theme-doc-sidebar-item-link-level-1 menu__list-item"><a class="menu__link" href="/synthetic/api/Button">​Button</a></li><li class="theme-doc-sidebar-item-link theme-doc-sidebar-item-link-level-1 menu__list-item"><a class="menu__link" href="/synthetic/api/Checkbox">​Checkbox</a></li><li class="theme-doc-sidebar-item-link theme-doc-sidebar-item-link-level-1 menu__list-item"><a class="menu__link" href="/synthetic/api/Dialog">​Dialog</a></li><li class="theme-doc-sidebar-item-link theme-doc-sidebar-item-link-level-1 menu__list-item"><a class="menu__link menu__link--active" aria-current="page" href="/synthetic/api/Display">​Display</a></li><li class="theme-doc-sidebar-item-link theme-doc-sidebar-item-link-level-1 menu__list-item"><a class="menu__link" href="/synthetic/api/Divider">​Divider</a></li><li class="theme-doc-sidebar-item-link theme-doc-sidebar-item-link-level-1 menu__list-item"><a class="menu__link" href="/synthetic/api/Dropdown">​Dropdown</a></li><li class="theme-doc-sidebar-item-link theme-doc-sidebar-item-link-level-1 menu__list-item"><a class="menu__link" href="/synthetic/api/Effects">​Effects</a></li><li class="theme-doc-sidebar-item-link theme-doc-sidebar-item-link-level-1 menu__list-item"><a class="menu__link" href="/synthetic/api/ExpansionPanel">​Expansion​Panel</a></li><li class="theme-doc-sidebar-item-link theme-doc-sidebar-item-link-level-1 menu__list-item"><a class="menu__link" href="/synthetic/api/Label">​Label</a></li><li class="theme-doc-sidebar-item-link theme-doc-sidebar-item-link-level-1 menu__list-item"><a class="menu__link" href="/synthetic/api/Menu">​Menu</a></li><li class="theme-doc-sidebar-item-link theme-doc-sidebar-item-link-level-1 menu__list-item"><a class="menu__link" href="/synthetic/api/ProgressBar">​Progress​Bar</a></li><li class="theme-doc-sidebar-item-link theme-doc-sidebar-item-link-level-1 menu__list-item"><a class="menu__link" href="/synthetic/api/PropertyFrame">​Property​Frame</a></li><li class="theme-doc-sidebar-item-link theme-doc-sidebar-item-link-level-1 menu__list-item"><a class="menu__link" href="/synthetic/api/Slider">​Slider</a></li><li class="theme-doc-sidebar-item-link theme-doc-sidebar-item-link-level-1 menu__list-item"><a class="menu__link" href="/synthetic/api/Switch">​Switch</a></li><li class="theme-doc-sidebar-item-link theme-doc-sidebar-item-link-level-1 menu__list-item"><a class="menu__link" href="/synthetic/api/SynthEnum">​Synth​Enum</a></li><li class="theme-doc-sidebar-item-link theme-doc-sidebar-item-link-level-1 menu__list-item"><a class="menu__link" href="/synthetic/api/Synthetic">​Synthetic</a></li><li class="theme-doc-sidebar-item-link theme-doc-sidebar-item-link-level-1 menu__list-item"><a class="menu__link" href="/synthetic/api/TextField">​Text​Field</a></li><li class="theme-doc-sidebar-item-link theme-doc-sidebar-item-link-level-1 menu__list-item"><a class="menu__link" href="/synthetic/api/ToggleList">​Toggle​List</a></li><li class="theme-doc-sidebar-item-link theme-doc-sidebar-item-link-level-1 menu__list-item"><a class="menu__link" href="/synthetic/api/Util">​Util</a></li></ul></nav><button type="button" title="Collapse sidebar" aria-label="Collapse sidebar" class="button button--secondary button--outline collapseSidebarButton_1CGd"><svg width="20" height="20" aria-hidden="true" class="collapseSidebarButtonIcon_3E-R"><g fill="#7a7a7a"><path d="M9.992 10.023c0 .2-.062.399-.172.547l-4.996 7.492a.982.982 0 01-.828.454H1c-.55 0-1-.453-1-1 0-.2.059-.403.168-.551l4.629-6.942L.168 3.078A.939.939 0 010 2.528c0-.548.45-.997 1-.997h2.996c.352 0 .649.18.828.45L9.82 9.472c.11.148.172.347.172.55zm0 0"></path><path d="M19.98 10.023c0 .2-.058.399-.168.547l-4.996 7.492a.987.987 0 01-.828.454h-3c-.547 0-.996-.453-.996-1 0-.2.059-.403.168-.551l4.625-6.942-4.625-6.945a.939.939 0 01-.168-.55 1 1 0 01.996-.997h3c.348 0 .649.18.828.45l4.996 7.492c.11.148.168.347.168.55zm0 0"></path></g></svg></button></div></div><main class="docMainContainer_28N5"><div class="container padding-vert--lg"><div class="row"><div class="col docItemCol_3WPG"><div class="docItemContainer_3XDu"><article><div class="member_qHIL markdown"><div class="tocCollapsible_1PrD theme-doc-toc-mobile tocMobile_3ryM"><button type="button" class="clean-btn tocCollapsibleButton_2O1e">On this page</button></div><header><h1 class="docTitle_1ddc" style="text-decoration:none"><span style="display:inline-block">Display</span></h1><div class="luaClassTags_2Zrs"><span class="docTag_3qMS" style="border-color:#ff793f;color:#ff793f">Component</span><span class="docTag_3qMS" style="border-color:#218c74;color:#218c74">Atom</span></div><div>
+<p>A simple ViewportFrame</p>
+</div></header><h2 class="anchor anchorWithStickyNavbar_31ik" id="properties">Properties<a aria-hidden="true" class="hash-link" href="#properties" title="Direct link to heading">​</a></h2><div class="divider_3z1R"></div><h3 class="anchor anchorWithStickyNavbar_31ik" id="CameraPosition"><code style="text-decoration:none">CameraPosition</code><a aria-hidden="true" class="hash-link" href="#CameraPosition" title="Direct link to heading">​</a></h3><div class="repositoryDetailsContainer_1UH0"><a class="sourceButton_2aE5" href="https://github.com/nightcycle/synthetic/blob/master/src/Atom/Display.lua#L29"><div class="sourceButtonText_monK">&lt;/&gt;</div></a></div><div class="memberString_P8-X"><code>Display<!-- -->.<!-- -->CameraPosition<!-- -->:<!-- --> </code> <code class="blue_2Afy"><a style="text-decoration:underline;color:inherit" href="https://developer.roblox.com/en-us/api-reference/datatype/Vector3" target="_blank" rel="noopener noreferrer">Vector3<svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" x="0px" y="0px" viewBox="0 0 100 100" width="15" height="15" class="icon outbound" style="color:gray;vertical-align:middle;margin-left:2px"><path fill="currentColor" d="M18.8,85.1h56l0,0c2.2,0,4-1.8,4-4v-32h-8v28h-48v-48h28v-8h-32l0,0c-2.2,0-4,1.8-4,4v56C14.8,83.3,16.6,85.1,18.8,85.1z"></path> <polygon fill="currentColor" points="45.7,48.7 51.3,54.3 77.2,28.5 77.2,37.2 85.2,37.2 85.2,14.9 62.8,14.9 62.8,22.9 71.5,22.9"></polygon></svg></a></code><code class="op_1JtD"> | </code><code class="blue_2Afy">FusionState</code><code class="op_1JtD"> | </code><code class="blue_2Afy">nil</code></div><div>
+<p>The camera position in the ViewportFrame</p>
+</div><div class="divider_3z1R"></div><h3 class="anchor anchorWithStickyNavbar_31ik" id="CameraXVector"><code style="text-decoration:none">CameraXVector</code><a aria-hidden="true" class="hash-link" href="#CameraXVector" title="Direct link to heading">​</a></h3><div class="repositoryDetailsContainer_1UH0"><a class="sourceButton_2aE5" href="https://github.com/nightcycle/synthetic/blob/master/src/Atom/Display.lua#L36"><div class="sourceButtonText_monK">&lt;/&gt;</div></a></div><div class="memberString_P8-X"><code>Display<!-- -->.<!-- -->CameraXVector<!-- -->:<!-- --> </code> <code class="blue_2Afy"><a style="text-decoration:underline;color:inherit" href="https://developer.roblox.com/en-us/api-reference/datatype/Vector3" target="_blank" rel="noopener noreferrer">Vector3<svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" x="0px" y="0px" viewBox="0 0 100 100" width="15" height="15" class="icon outbound" style="color:gray;vertical-align:middle;margin-left:2px"><path fill="currentColor" d="M18.8,85.1h56l0,0c2.2,0,4-1.8,4-4v-32h-8v28h-48v-48h28v-8h-32l0,0c-2.2,0-4,1.8-4,4v56C14.8,83.3,16.6,85.1,18.8,85.1z"></path> <polygon fill="currentColor" points="45.7,48.7 51.3,54.3 77.2,28.5 77.2,37.2 85.2,37.2 85.2,14.9 62.8,14.9 62.8,22.9 71.5,22.9"></polygon></svg></a></code><code class="op_1JtD"> | </code><code class="blue_2Afy">FusionState</code><code class="op_1JtD"> | </code><code class="blue_2Afy">nil</code></div><div>
+<p>The XVector of the camera CFrame</p>
+</div><div class="divider_3z1R"></div><h3 class="anchor anchorWithStickyNavbar_31ik" id="CameraYVector"><code style="text-decoration:none">CameraYVector</code><a aria-hidden="true" class="hash-link" href="#CameraYVector" title="Direct link to heading">​</a></h3><div class="repositoryDetailsContainer_1UH0"><a class="sourceButton_2aE5" href="https://github.com/nightcycle/synthetic/blob/master/src/Atom/Display.lua#L43"><div class="sourceButtonText_monK">&lt;/&gt;</div></a></div><div class="memberString_P8-X"><code>Display<!-- -->.<!-- -->CameraYVector<!-- -->:<!-- --> </code> <code class="blue_2Afy"><a style="text-decoration:underline;color:inherit" href="https://developer.roblox.com/en-us/api-reference/datatype/Vector3" target="_blank" rel="noopener noreferrer">Vector3<svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" x="0px" y="0px" viewBox="0 0 100 100" width="15" height="15" class="icon outbound" style="color:gray;vertical-align:middle;margin-left:2px"><path fill="currentColor" d="M18.8,85.1h56l0,0c2.2,0,4-1.8,4-4v-32h-8v28h-48v-48h28v-8h-32l0,0c-2.2,0-4,1.8-4,4v56C14.8,83.3,16.6,85.1,18.8,85.1z"></path> <polygon fill="currentColor" points="45.7,48.7 51.3,54.3 77.2,28.5 77.2,37.2 85.2,37.2 85.2,14.9 62.8,14.9 62.8,22.9 71.5,22.9"></polygon></svg></a></code><code class="op_1JtD"> | </code><code class="blue_2Afy">FusionState</code><code class="op_1JtD"> | </code><code class="blue_2Afy">nil</code></div><div>
+<p>The YVector of the camera CFrame</p>
+</div><div class="divider_3z1R"></div><h3 class="anchor anchorWithStickyNavbar_31ik" id="CameraZVector"><code style="text-decoration:none">CameraZVector</code><a aria-hidden="true" class="hash-link" href="#CameraZVector" title="Direct link to heading">​</a></h3><div class="repositoryDetailsContainer_1UH0"><a class="sourceButton_2aE5" href="https://github.com/nightcycle/synthetic/blob/master/src/Atom/Display.lua#L50"><div class="sourceButtonText_monK">&lt;/&gt;</div></a></div><div class="memberString_P8-X"><code>Display<!-- -->.<!-- -->CameraZVector<!-- -->:<!-- --> </code> <code class="blue_2Afy"><a style="text-decoration:underline;color:inherit" href="https://developer.roblox.com/en-us/api-reference/datatype/Vector3" target="_blank" rel="noopener noreferrer">Vector3<svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" x="0px" y="0px" viewBox="0 0 100 100" width="15" height="15" class="icon outbound" style="color:gray;vertical-align:middle;margin-left:2px"><path fill="currentColor" d="M18.8,85.1h56l0,0c2.2,0,4-1.8,4-4v-32h-8v28h-48v-48h28v-8h-32l0,0c-2.2,0-4,1.8-4,4v56C14.8,83.3,16.6,85.1,18.8,85.1z"></path> <polygon fill="currentColor" points="45.7,48.7 51.3,54.3 77.2,28.5 77.2,37.2 85.2,37.2 85.2,14.9 62.8,14.9 62.8,22.9 71.5,22.9"></polygon></svg></a></code><code class="op_1JtD"> | </code><code class="blue_2Afy">FusionState</code><code class="op_1JtD"> | </code><code class="blue_2Afy">nil</code></div><div>
+<p>The ZVector of the camera CFrame</p>
+</div><div class="divider_3z1R"></div><h3 class="anchor anchorWithStickyNavbar_31ik" id="CameraZVector"><code style="text-decoration:none">CameraZVector</code><a aria-hidden="true" class="hash-link" href="#CameraZVector" title="Direct link to heading">​</a></h3><div class="repositoryDetailsContainer_1UH0"><a class="sourceButton_2aE5" href="https://github.com/nightcycle/synthetic/blob/master/src/Atom/Display.lua#L57"><div class="sourceButtonText_monK">&lt;/&gt;</div></a></div><div class="memberString_P8-X"><code>Display<!-- -->.<!-- -->CameraZVector<!-- -->:<!-- --> </code> <code class="blue_2Afy"><a style="text-decoration:underline;color:inherit" href="https://developer.roblox.com/en-us/api-reference/datatype/Vector3" target="_blank" rel="noopener noreferrer">Vector3<svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" x="0px" y="0px" viewBox="0 0 100 100" width="15" height="15" class="icon outbound" style="color:gray;vertical-align:middle;margin-left:2px"><path fill="currentColor" d="M18.8,85.1h56l0,0c2.2,0,4-1.8,4-4v-32h-8v28h-48v-48h28v-8h-32l0,0c-2.2,0-4,1.8-4,4v56C14.8,83.3,16.6,85.1,18.8,85.1z"></path> <polygon fill="currentColor" points="45.7,48.7 51.3,54.3 77.2,28.5 77.2,37.2 85.2,37.2 85.2,14.9 62.8,14.9 62.8,22.9 71.5,22.9"></polygon></svg></a></code><code class="op_1JtD"> | </code><code class="blue_2Afy">FusionState</code><code class="op_1JtD"> | </code><code class="blue_2Afy">nil</code></div><div>
+<p>The light direction of the ViewportFrame</p>
+</div><div class="divider_3z1R"></div><h3 class="anchor anchorWithStickyNavbar_31ik" id="LightColor"><code style="text-decoration:none">LightColor</code><a aria-hidden="true" class="hash-link" href="#LightColor" title="Direct link to heading">​</a></h3><div class="repositoryDetailsContainer_1UH0"><a class="sourceButton_2aE5" href="https://github.com/nightcycle/synthetic/blob/master/src/Atom/Display.lua#L64"><div class="sourceButtonText_monK">&lt;/&gt;</div></a></div><div class="memberString_P8-X"><code>Display<!-- -->.<!-- -->LightColor<!-- -->:<!-- --> </code> <code class="blue_2Afy"><a style="text-decoration:underline;color:inherit" href="https://developer.roblox.com/en-us/api-reference/datatype/Color3" target="_blank" rel="noopener noreferrer">Color3<svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" x="0px" y="0px" viewBox="0 0 100 100" width="15" height="15" class="icon outbound" style="color:gray;vertical-align:middle;margin-left:2px"><path fill="currentColor" d="M18.8,85.1h56l0,0c2.2,0,4-1.8,4-4v-32h-8v28h-48v-48h28v-8h-32l0,0c-2.2,0-4,1.8-4,4v56C14.8,83.3,16.6,85.1,18.8,85.1z"></path> <polygon fill="currentColor" points="45.7,48.7 51.3,54.3 77.2,28.5 77.2,37.2 85.2,37.2 85.2,14.9 62.8,14.9 62.8,22.9 71.5,22.9"></polygon></svg></a></code><code class="op_1JtD"> | </code><code class="blue_2Afy">FusionState</code><code class="op_1JtD"> | </code><code class="blue_2Afy">nil</code></div><div>
+<p>The color of the ViewportFrame light</p>
+</div><div class="divider_3z1R"></div><h3 class="anchor anchorWithStickyNavbar_31ik" id="Ambient"><code style="text-decoration:none">Ambient</code><a aria-hidden="true" class="hash-link" href="#Ambient" title="Direct link to heading">​</a></h3><div class="repositoryDetailsContainer_1UH0"><a class="sourceButton_2aE5" href="https://github.com/nightcycle/synthetic/blob/master/src/Atom/Display.lua#L71"><div class="sourceButtonText_monK">&lt;/&gt;</div></a></div><div class="memberString_P8-X"><code>Display<!-- -->.<!-- -->Ambient<!-- -->:<!-- --> </code> <code class="blue_2Afy"><a style="text-decoration:underline;color:inherit" href="https://developer.roblox.com/en-us/api-reference/datatype/Color3" target="_blank" rel="noopener noreferrer">Color3<svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" x="0px" y="0px" viewBox="0 0 100 100" width="15" height="15" class="icon outbound" style="color:gray;vertical-align:middle;margin-left:2px"><path fill="currentColor" d="M18.8,85.1h56l0,0c2.2,0,4-1.8,4-4v-32h-8v28h-48v-48h28v-8h-32l0,0c-2.2,0-4,1.8-4,4v56C14.8,83.3,16.6,85.1,18.8,85.1z"></path> <polygon fill="currentColor" points="45.7,48.7 51.3,54.3 77.2,28.5 77.2,37.2 85.2,37.2 85.2,14.9 62.8,14.9 62.8,22.9 71.5,22.9"></polygon></svg></a></code><code class="op_1JtD"> | </code><code class="blue_2Afy">FusionState</code><code class="op_1JtD"> | </code><code class="blue_2Afy">nil</code></div><div>
+<p>The color of the ViewportFrame ambient</p>
+</div><div class="divider_3z1R"></div><h3 class="anchor anchorWithStickyNavbar_31ik" id="FOV"><code style="text-decoration:none">FOV</code><a aria-hidden="true" class="hash-link" href="#FOV" title="Direct link to heading">​</a></h3><div class="repositoryDetailsContainer_1UH0"><a class="sourceButton_2aE5" href="https://github.com/nightcycle/synthetic/blob/master/src/Atom/Display.lua#L78"><div class="sourceButtonText_monK">&lt;/&gt;</div></a></div><div class="memberString_P8-X"><code>Display<!-- -->.<!-- -->FOV<!-- -->:<!-- --> </code> <code class="blue_2Afy">number</code><code class="op_1JtD"> | </code><code class="blue_2Afy">FusionState</code><code class="op_1JtD"> | </code><code class="blue_2Afy">nil</code></div><div>
+<p>The vertical Field of View for the camera in degrees</p>
+</div><div class="divider_3z1R"></div><h3 class="anchor anchorWithStickyNavbar_31ik" id="SynthClassName"><code style="text-decoration:none">SynthClassName</code><a aria-hidden="true" class="hash-link" href="#SynthClassName" title="Direct link to heading">​</a></h3><span class="badge_3ZFo" style="color:#e74c3c"><span class="badgeTooltip_2qiw">This item is read only and cannot be modified.</span><span class="badgeToolTipTail_2yaQ"><svg xmlns="http://www.w3.org/2000/svg" height="300px" width="300px" fill="#e74c3c" x="0px" y="0px" viewBox="0 0 96 96"><path d="M70.354,15.662h-7.496H25.566c-3.282,0-5.19-0.776-5.728-1.169v-1.456c0.538-0.393,2.445-1.168,5.728-1.168h46.479V8H25.566  c-4.776,0-9.594,1.468-9.594,4.747v61.458C15.972,86.645,20.328,88,37.495,88h42.535V15.662H70.354z"></path></svg> <!-- -->Read Only</span></span><div class="repositoryDetailsContainer_1UH0"><a class="sourceButton_2aE5" href="https://github.com/nightcycle/synthetic/blob/master/src/Atom/Display.lua#L86"><div class="sourceButtonText_monK">&lt;/&gt;</div></a></div><div class="memberString_P8-X"><code>Display<!-- -->.<!-- -->SynthClassName<!-- -->:<!-- --> </code> <code class="blue_2Afy">string</code></div><div>
+<p>Read-Only attribute used to identify what type of component it is</p>
+</div><h2 class="anchor anchorWithStickyNavbar_31ik" id="functions">Functions<a aria-hidden="true" class="hash-link" href="#functions" title="Direct link to heading">​</a></h2><div class="divider_3z1R"></div><h3 class="anchor anchorWithStickyNavbar_31ik" id="ClearScene:Fire"><code style="text-decoration:none">ClearScene:Fire</code><a aria-hidden="true" class="hash-link" href="#ClearScene:Fire" title="Direct link to heading">​</a></h3><div class="repositoryDetailsContainer_1UH0"><a class="sourceButton_2aE5" href="https://github.com/nightcycle/synthetic/blob/master/src/Atom/Display.lua#L109"><div class="sourceButtonText_monK">&lt;/&gt;</div></a></div><div class="memberString_P8-X"><code>Display<!-- -->.</code><code class="green_3LnD">ClearScene:Fire</code><code>(</code><code>) → </code><code>(</code><code>)</code></div><div>
+<p>Removes all added instances from current scene</p>
+</div><div class="divider_3z1R"></div><h3 class="anchor anchorWithStickyNavbar_31ik" id="HideScene:Fire"><code style="text-decoration:none">HideScene:Fire</code><a aria-hidden="true" class="hash-link" href="#HideScene:Fire" title="Direct link to heading">​</a></h3><div class="repositoryDetailsContainer_1UH0"><a class="sourceButton_2aE5" href="https://github.com/nightcycle/synthetic/blob/master/src/Atom/Display.lua#L114"><div class="sourceButtonText_monK">&lt;/&gt;</div></a></div><div class="memberString_P8-X"><code>Display<!-- -->.</code><code class="green_3LnD">HideScene:Fire</code><code>(</code><code>) → </code><code>(</code><code>)</code></div><div>
+<p>Temporarily pauses and hides all instances, good to do for performance when an element is unused</p>
+</div><div class="divider_3z1R"></div><h3 class="anchor anchorWithStickyNavbar_31ik" id="ShowScene:Fire"><code style="text-decoration:none">ShowScene:Fire</code><a aria-hidden="true" class="hash-link" href="#ShowScene:Fire" title="Direct link to heading">​</a></h3><div class="repositoryDetailsContainer_1UH0"><a class="sourceButton_2aE5" href="https://github.com/nightcycle/synthetic/blob/master/src/Atom/Display.lua#L119"><div class="sourceButtonText_monK">&lt;/&gt;</div></a></div><div class="memberString_P8-X"><code>Display<!-- -->.</code><code class="green_3LnD">ShowScene:Fire</code><code>(</code><code>) → </code><code>(</code><code>)</code></div><div>
+<p>Unpauses and reveals all instances, undoes HideScene</p>
+</div><div class="divider_3z1R"></div><h3 class="anchor anchorWithStickyNavbar_31ik" id="InsertHumanoid:Invoke"><code style="text-decoration:none">InsertHumanoid:Invoke</code><a aria-hidden="true" class="hash-link" href="#InsertHumanoid:Invoke" title="Direct link to heading">​</a></h3><div class="repositoryDetailsContainer_1UH0"><a class="sourceButton_2aE5" href="https://github.com/nightcycle/synthetic/blob/master/src/Atom/Display.lua#L198"><div class="sourceButtonText_monK">&lt;/&gt;</div></a></div><div class="memberString_P8-X"><code>Display<!-- -->.</code><code class="green_3LnD">InsertHumanoid:Invoke</code><code>(</code><div class="inset_2cJr"><div><code>CharacterModel<!-- -->: </code><code class="blue_2Afy"><a style="text-decoration:underline;color:inherit" href="https://developer.roblox.com/en-us/api-reference/datatype/Instance" target="_blank" rel="noopener noreferrer">Instance<svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" x="0px" y="0px" viewBox="0 0 100 100" width="15" height="15" class="icon outbound" style="color:gray;vertical-align:middle;margin-left:2px"><path fill="currentColor" d="M18.8,85.1h56l0,0c2.2,0,4-1.8,4-4v-32h-8v28h-48v-48h28v-8h-32l0,0c-2.2,0-4,1.8-4,4v56C14.8,83.3,16.6,85.1,18.8,85.1z"></path> <polygon fill="currentColor" points="45.7,48.7 51.3,54.3 77.2,28.5 77.2,37.2 85.2,37.2 85.2,14.9 62.8,14.9 62.8,22.9 71.5,22.9"></polygon></svg></a></code><code>,</code><span class="inlineDescription_17uy">-- <span>
+<p>the model of the humanoid containing character</p>
+</span></span></div><div><code>FPS<!-- -->: </code><code class="blue_2Afy">number</code><code class="op_1JtD"> | </code><code class="blue_2Afy">nil</code><span class="inlineDescription_17uy">-- <span>
+<p>the rate at which the ViewportFrame will attempt to update character animations</p>
+</span></span></div></div><code>) → </code><code class="blue_2Afy">ViewportFrameController</code></div><div>
+<p>Adds a humanoid character model to the ViewportFrame</p>
+</div><div class="divider_3z1R"></div><h3 class="anchor anchorWithStickyNavbar_31ik" id="InsertBasePart:Invoke"><code style="text-decoration:none">InsertBasePart:Invoke</code><a aria-hidden="true" class="hash-link" href="#InsertBasePart:Invoke" title="Direct link to heading">​</a></h3><div class="repositoryDetailsContainer_1UH0"><a class="sourceButton_2aE5" href="https://github.com/nightcycle/synthetic/blob/master/src/Atom/Display.lua#L215"><div class="sourceButtonText_monK">&lt;/&gt;</div></a></div><div class="memberString_P8-X"><code>Display<!-- -->.</code><code class="green_3LnD">InsertBasePart:Invoke</code><code>(</code><div class="inset_2cJr"><div><code>Part<!-- -->: </code><code class="blue_2Afy"><a style="text-decoration:underline;color:inherit" href="https://developer.roblox.com/en-us/api-reference/datatype/Instance" target="_blank" rel="noopener noreferrer">Instance<svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" x="0px" y="0px" viewBox="0 0 100 100" width="15" height="15" class="icon outbound" style="color:gray;vertical-align:middle;margin-left:2px"><path fill="currentColor" d="M18.8,85.1h56l0,0c2.2,0,4-1.8,4-4v-32h-8v28h-48v-48h28v-8h-32l0,0c-2.2,0-4,1.8-4,4v56C14.8,83.3,16.6,85.1,18.8,85.1z"></path> <polygon fill="currentColor" points="45.7,48.7 51.3,54.3 77.2,28.5 77.2,37.2 85.2,37.2 85.2,14.9 62.8,14.9 62.8,22.9 71.5,22.9"></polygon></svg></a></code><code>,</code><span class="inlineDescription_17uy">-- <span>
+<p>the BasePart instance</p>
+</span></span></div><div><code>FPS<!-- -->: </code><code class="blue_2Afy">number</code><code class="op_1JtD"> | </code><code class="blue_2Afy">nil</code><span class="inlineDescription_17uy">-- <span>
+<p>the rate at which the ViewportFrame will attempt to update the part's location</p>
+</span></span></div></div><code>) → </code><code class="blue_2Afy">ViewportFrameController</code></div><div>
+<p>Adds a BasePart to the ViewportFrame</p>
+</div><div class="divider_3z1R"></div><h3 class="anchor anchorWithStickyNavbar_31ik" id="InsertModel:Invoke"><code style="text-decoration:none">InsertModel:Invoke</code><a aria-hidden="true" class="hash-link" href="#InsertModel:Invoke" title="Direct link to heading">​</a></h3><div class="repositoryDetailsContainer_1UH0"><a class="sourceButton_2aE5" href="https://github.com/nightcycle/synthetic/blob/master/src/Atom/Display.lua#L231"><div class="sourceButtonText_monK">&lt;/&gt;</div></a></div><div class="memberString_P8-X"><code>Display<!-- -->.</code><code class="green_3LnD">InsertModel:Invoke</code><code>(</code><div class="inset_2cJr"><div><code>Model<!-- -->: </code><code class="blue_2Afy"><a style="text-decoration:underline;color:inherit" href="https://developer.roblox.com/en-us/api-reference/class/Model" target="_blank" rel="noopener noreferrer">Model<svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" x="0px" y="0px" viewBox="0 0 100 100" width="15" height="15" class="icon outbound" style="color:gray;vertical-align:middle;margin-left:2px"><path fill="currentColor" d="M18.8,85.1h56l0,0c2.2,0,4-1.8,4-4v-32h-8v28h-48v-48h28v-8h-32l0,0c-2.2,0-4,1.8-4,4v56C14.8,83.3,16.6,85.1,18.8,85.1z"></path> <polygon fill="currentColor" points="45.7,48.7 51.3,54.3 77.2,28.5 77.2,37.2 85.2,37.2 85.2,14.9 62.8,14.9 62.8,22.9 71.5,22.9"></polygon></svg></a></code><code>,</code><span class="inlineDescription_17uy">-- <span>
+<p>the BasePart instance</p>
+</span></span></div><div><code>FPS<!-- -->: </code><code class="blue_2Afy">number</code><code class="op_1JtD"> | </code><code class="blue_2Afy">nil</code><span class="inlineDescription_17uy">-- <span>
+<p>the rate at which the ViewportFrame will attempt to update the model</p>
+</span></span></div></div><code>) → </code><code class="blue_2Afy">ViewportFrameController</code></div><div>
+<p>Adds a Model to the ViewportFrame</p>
+</div></div></article></div><details><summary>Show raw api</summary><pre style="max-width:100%;white-space:pre-wrap">{
+    &quot;functions&quot;: [
+        {
+            &quot;name&quot;: &quot;ClearScene:Fire&quot;,
+            &quot;desc&quot;: &quot;Removes all added instances from current scene\n\t&quot;,
+            &quot;params&quot;: [],
+            &quot;returns&quot;: [],
+            &quot;function_type&quot;: &quot;static&quot;,
+            &quot;source&quot;: {
+                &quot;line&quot;: 109,
+                &quot;path&quot;: &quot;src/Atom/Display.lua&quot;
+            }
+        },
+        {
+            &quot;name&quot;: &quot;HideScene:Fire&quot;,
+            &quot;desc&quot;: &quot;Temporarily pauses and hides all instances, good to do for performance when an element is unused\n\t&quot;,
+            &quot;params&quot;: [],
+            &quot;returns&quot;: [],
+            &quot;function_type&quot;: &quot;static&quot;,
+            &quot;source&quot;: {
+                &quot;line&quot;: 114,
+                &quot;path&quot;: &quot;src/Atom/Display.lua&quot;
+            }
+        },
+        {
+            &quot;name&quot;: &quot;ShowScene:Fire&quot;,
+            &quot;desc&quot;: &quot;Unpauses and reveals all instances, undoes HideScene\n\t&quot;,
+            &quot;params&quot;: [],
+            &quot;returns&quot;: [],
+            &quot;function_type&quot;: &quot;static&quot;,
+            &quot;source&quot;: {
+                &quot;line&quot;: 119,
+                &quot;path&quot;: &quot;src/Atom/Display.lua&quot;
+            }
+        },
+        {
+            &quot;name&quot;: &quot;InsertHumanoid:Invoke&quot;,
+            &quot;desc&quot;: &quot;Adds a humanoid character model to the ViewportFrame\n\t&quot;,
+            &quot;params&quot;: [
+                {
+                    &quot;name&quot;: &quot;CharacterModel&quot;,
+                    &quot;desc&quot;: &quot;the model of the humanoid containing character&quot;,
+                    &quot;lua_type&quot;: &quot;Instance&quot;
+                },
+                {
+                    &quot;name&quot;: &quot;FPS&quot;,
+                    &quot;desc&quot;: &quot;the rate at which the ViewportFrame will attempt to update character animations&quot;,
+                    &quot;lua_type&quot;: &quot;number | nil&quot;
+                }
+            ],
+            &quot;returns&quot;: [
+                {
+                    &quot;desc&quot;: &quot;&quot;,
+                    &quot;lua_type&quot;: &quot;ViewportFrameController&quot;
+                }
+            ],
+            &quot;function_type&quot;: &quot;static&quot;,
+            &quot;source&quot;: {
+                &quot;line&quot;: 198,
+                &quot;path&quot;: &quot;src/Atom/Display.lua&quot;
+            }
+        },
+        {
+            &quot;name&quot;: &quot;InsertBasePart:Invoke&quot;,
+            &quot;desc&quot;: &quot;Adds a BasePart to the ViewportFrame\n\t&quot;,
+            &quot;params&quot;: [
+                {
+                    &quot;name&quot;: &quot;Part&quot;,
+                    &quot;desc&quot;: &quot;the BasePart instance&quot;,
+                    &quot;lua_type&quot;: &quot;Instance&quot;
+                },
+                {
+                    &quot;name&quot;: &quot;FPS&quot;,
+                    &quot;desc&quot;: &quot;the rate at which the ViewportFrame will attempt to update the part&#x27;s location&quot;,
+                    &quot;lua_type&quot;: &quot;number | nil&quot;
+                }
+            ],
+            &quot;returns&quot;: [
+                {
+                    &quot;desc&quot;: &quot;&quot;,
+                    &quot;lua_type&quot;: &quot;ViewportFrameController&quot;
+                }
+            ],
+            &quot;function_type&quot;: &quot;static&quot;,
+            &quot;source&quot;: {
+                &quot;line&quot;: 215,
+                &quot;path&quot;: &quot;src/Atom/Display.lua&quot;
+            }
+        },
+        {
+            &quot;name&quot;: &quot;InsertModel:Invoke&quot;,
+            &quot;desc&quot;: &quot;Adds a Model to the ViewportFrame\n\t&quot;,
+            &quot;params&quot;: [
+                {
+                    &quot;name&quot;: &quot;Model&quot;,
+                    &quot;desc&quot;: &quot;the BasePart instance&quot;,
+                    &quot;lua_type&quot;: &quot;Model&quot;
+                },
+                {
+                    &quot;name&quot;: &quot;FPS&quot;,
+                    &quot;desc&quot;: &quot;the rate at which the ViewportFrame will attempt to update the model&quot;,
+                    &quot;lua_type&quot;: &quot;number | nil&quot;
+                }
+            ],
+            &quot;returns&quot;: [
+                {
+                    &quot;desc&quot;: &quot;&quot;,
+                    &quot;lua_type&quot;: &quot;ViewportFrameController&quot;
+                }
+            ],
+            &quot;function_type&quot;: &quot;static&quot;,
+            &quot;source&quot;: {
+                &quot;line&quot;: 231,
+                &quot;path&quot;: &quot;src/Atom/Display.lua&quot;
+            }
+        }
+    ],
+    &quot;properties&quot;: [
+        {
+            &quot;name&quot;: &quot;CameraPosition&quot;,
+            &quot;desc&quot;: &quot;The camera position in the ViewportFrame\n\t&quot;,
+            &quot;lua_type&quot;: &quot;Vector3 | FusionState | nil&quot;,
+            &quot;source&quot;: {
+                &quot;line&quot;: 29,
+                &quot;path&quot;: &quot;src/Atom/Display.lua&quot;
+            }
+        },
+        {
+            &quot;name&quot;: &quot;CameraXVector&quot;,
+            &quot;desc&quot;: &quot;The XVector of the camera CFrame\n\t&quot;,
+            &quot;lua_type&quot;: &quot;Vector3 | FusionState | nil&quot;,
+            &quot;source&quot;: {
+                &quot;line&quot;: 36,
+                &quot;path&quot;: &quot;src/Atom/Display.lua&quot;
+            }
+        },
+        {
+            &quot;name&quot;: &quot;CameraYVector&quot;,
+            &quot;desc&quot;: &quot;The YVector of the camera CFrame\n\t&quot;,
+            &quot;lua_type&quot;: &quot;Vector3 | FusionState | nil&quot;,
+            &quot;source&quot;: {
+                &quot;line&quot;: 43,
+                &quot;path&quot;: &quot;src/Atom/Display.lua&quot;
+            }
+        },
+        {
+            &quot;name&quot;: &quot;CameraZVector&quot;,
+            &quot;desc&quot;: &quot;The ZVector of the camera CFrame\n\t&quot;,
+            &quot;lua_type&quot;: &quot;Vector3 | FusionState | nil&quot;,
+            &quot;source&quot;: {
+                &quot;line&quot;: 50,
+                &quot;path&quot;: &quot;src/Atom/Display.lua&quot;
+            }
+        },
+        {
+            &quot;name&quot;: &quot;CameraZVector&quot;,
+            &quot;desc&quot;: &quot;The light direction of the ViewportFrame\n\t&quot;,
+            &quot;lua_type&quot;: &quot;Vector3 | FusionState | nil&quot;,
+            &quot;source&quot;: {
+                &quot;line&quot;: 57,
+                &quot;path&quot;: &quot;src/Atom/Display.lua&quot;
+            }
+        },
+        {
+            &quot;name&quot;: &quot;LightColor&quot;,
+            &quot;desc&quot;: &quot;The color of the ViewportFrame light\n\t&quot;,
+            &quot;lua_type&quot;: &quot;Color3 | FusionState | nil&quot;,
+            &quot;source&quot;: {
+                &quot;line&quot;: 64,
+                &quot;path&quot;: &quot;src/Atom/Display.lua&quot;
+            }
+        },
+        {
+            &quot;name&quot;: &quot;Ambient&quot;,
+            &quot;desc&quot;: &quot;The color of the ViewportFrame ambient\n\t&quot;,
+            &quot;lua_type&quot;: &quot;Color3 | FusionState | nil&quot;,
+            &quot;source&quot;: {
+                &quot;line&quot;: 71,
+                &quot;path&quot;: &quot;src/Atom/Display.lua&quot;
+            }
+        },
+        {
+            &quot;name&quot;: &quot;FOV&quot;,
+            &quot;desc&quot;: &quot;The vertical Field of View for the camera in degrees\n\t&quot;,
+            &quot;lua_type&quot;: &quot;number | FusionState | nil&quot;,
+            &quot;source&quot;: {
+                &quot;line&quot;: 78,
+                &quot;path&quot;: &quot;src/Atom/Display.lua&quot;
+            }
+        },
+        {
+            &quot;name&quot;: &quot;SynthClassName&quot;,
+            &quot;desc&quot;: &quot;Read-Only attribute used to identify what type of component it is\n\t&quot;,
+            &quot;lua_type&quot;: &quot;string&quot;,
+            &quot;readonly&quot;: true,
+            &quot;source&quot;: {
+                &quot;line&quot;: 86,
+                &quot;path&quot;: &quot;src/Atom/Display.lua&quot;
+            }
+        }
+    ],
+    &quot;types&quot;: [],
+    &quot;name&quot;: &quot;Display&quot;,
+    &quot;desc&quot;: &quot;A simple ViewportFrame\n\t&quot;,
+    &quot;tags&quot;: [
+        &quot;Component&quot;,
+        &quot;Atom&quot;
+    ],
+    &quot;source&quot;: {
+        &quot;line&quot;: 20,
+        &quot;path&quot;: &quot;src/Atom/Display.lua&quot;
+    }
+}</pre></details></div><div class="col col--3"><div class="tableOfContents_35-E thin-scrollbar"><ul class="table-of-contents table-of-contents__left-border"><li><a href="#types" class="table-of-contents__link toc-highlight">Types</a></li><li><a href="#properties" class="table-of-contents__link toc-highlight">Properties</a><ul><li><a href="#Ambient" class="table-of-contents__link toc-highlight">Ambient</a></li><li><a href="#CameraPosition" class="table-of-contents__link toc-highlight">CameraPosition</a></li><li><a href="#CameraXVector" class="table-of-contents__link toc-highlight">CameraXVector</a></li><li><a href="#CameraYVector" class="table-of-contents__link toc-highlight">CameraYVector</a></li><li><a href="#CameraZVector" class="table-of-contents__link toc-highlight">CameraZVector</a></li><li><a href="#CameraZVector" class="table-of-contents__link toc-highlight">CameraZVector</a></li><li><a href="#FOV" class="table-of-contents__link toc-highlight">FOV</a></li><li><a href="#LightColor" class="table-of-contents__link toc-highlight">LightColor</a></li><li><a href="#SynthClassName" class="table-of-contents__link toc-highlight">SynthClassName</a></li></ul></li><li><a href="#functions" class="table-of-contents__link toc-highlight">Functions</a><ul><li><a href="#ClearScene:Fire" class="table-of-contents__link toc-highlight">.ClearScene:Fire</a></li><li><a href="#HideScene:Fire" class="table-of-contents__link toc-highlight">.HideScene:Fire</a></li><li><a href="#InsertBasePart:Invoke" class="table-of-contents__link toc-highlight">.InsertBasePart:Invoke</a></li><li><a href="#InsertHumanoid:Invoke" class="table-of-contents__link toc-highlight">.InsertHumanoid:Invoke</a></li><li><a href="#InsertModel:Invoke" class="table-of-contents__link toc-highlight">.InsertModel:Invoke</a></li><li><a href="#ShowScene:Fire" class="table-of-contents__link toc-highlight">.ShowScene:Fire</a></li></ul></li></ul></div></div></div></div></main></div></div><footer class="footer footer--dark"><div class="container"><div class="footer__bottom text--center"><div class="footer__copyright">Copyright © 2022 nightcycle. Built with Moonwave and Docusaurus.</div></div></div></footer></div>
+<script src="/synthetic/assets/js/runtime~main.bbabd946.js"></script>
+<script src="/synthetic/assets/js/main.9f45947a.js"></script>
+</body>
+</html>
