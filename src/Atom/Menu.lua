@@ -134,7 +134,7 @@ function constructor.new(params)
 		}
 	}, maid)
 	local contentFrame = frame:WaitForChild("Content")
-	fusion.Computeds(public.Options, function(index, value)
+	fusion.ComputedPairs(public.Options, function(index, value)
 		local optionMaid = maidConstructor.new()
 		maid:GiveTask(optionMaid)
 

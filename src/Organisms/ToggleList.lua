@@ -153,7 +153,7 @@ function constructor.new(params)
 			},
 		},
 	}, maid)
-	fusion.Computeds(public.Options, function(key, _Input)
+	fusion.ComputedPairs(public.Options, function(key, _Input)
 		local optionMaid = maidConstructor.new()
 		local var = public.ToggleVariant:get()
 		maid:GiveTask(optionMaid)
