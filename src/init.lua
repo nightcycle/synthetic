@@ -65,7 +65,7 @@ synthetic.New = function(key)
 		constructors[key] = require(constructorModules[key]).new
 		return constructors[key]
 	else
-		return fusion.OnChangelassicNew(key)
+		return fusion.New(key)
 	end
 end
 synthetic.new = synthetic.New
