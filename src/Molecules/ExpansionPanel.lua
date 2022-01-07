@@ -99,7 +99,7 @@ function constructor.new(params)
 			end
 			return UDim2.new(width, height)
 		end)),
-		[fusion.OnChange] = {
+		[fusion.Children] = {
 			fusion.New "UIListLayout" {
 				SortOrder = Enum.SortOrder.LayoutOrder
 			},
@@ -110,7 +110,7 @@ function constructor.new(params)
 				BackgroundTransparency = 1,
 				BorderSizePixel = 0,
 				Size = UDim2.fromScale(1, 0),
-				[fusion.OnChange] = {
+				[fusion.Children] = {
 					fusion.New "ImageButton" {
 						Name = "keyboard_arrow_down",
 						AnchorPoint = Vector2.new(1, 0.5),
@@ -171,7 +171,7 @@ function constructor.new(params)
 						return UDim2.fromScale(1,0)
 					end
 				end)),
-				[fusion.OnChange] = {
+				[fusion.Children] = {
 					fusion.New "Frame" {
 						Name = "Content",
 						Size = UDim2.fromScale(1,0),

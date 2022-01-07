@@ -41,7 +41,7 @@ function constructor.new(params)
 		Position = public.Position,
 		TextColor3 = util.tween(public.TextColor),
 		Text = public.Text,
-		[fusion.OnChange] = {
+		[fusion.Children] = {
 			fusion.New "UICorner" {
 				CornerRadius = util.cornerRadius,
 			},

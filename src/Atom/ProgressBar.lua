@@ -129,7 +129,7 @@ function constructor.new(params)
 			_barAbsoluteSize:set(inst:FindFirstChild("Bar").AbsoluteSize)
 			_knobAbsoluteSize:set(inst:FindFirstChild("Knob").AbsoluteSize)
 		end,
-		[fusion.OnChange] = {
+		[fusion.Children] = {
 			fusion.New "BindableEvent" {
 				Name = "OnChange",
 			},
@@ -173,7 +173,7 @@ function constructor.new(params)
 				SizeConstraint = Enum.SizeConstraint.RelativeYY,
 				ZIndex = 2,
 				Visible = public.KnobEnabled,
-				[fusion.OnChange] = {
+				[fusion.Children] = {
 					fusion.New "UICorner" {
 						CornerRadius = UDim.new(0.5, 0)
 					},
@@ -192,7 +192,7 @@ function constructor.new(params)
 				Size = fusion.Computed(function()
 					return UDim2.new(1, -public.BarPadding:get().Offset*2, 1, -public.BarPadding:get().Offset*2)
 				end),
-				[fusion.OnChange] = {
+				[fusion.Children] = {
 					fusion.New "UICorner" {
 						CornerRadius = UDim.new(0.5, 0)
 					},

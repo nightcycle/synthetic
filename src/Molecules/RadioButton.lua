@@ -52,7 +52,7 @@ function constructor.new(params)
 			return UDim2.fromOffset(dim, dim)
 		end),
 		Text = "",
-		[fusion.OnChange] = {
+		[fusion.Children] = {
 			fusion.New "UICorner" {
 				CornerRadius = UDim.new(0.5,0),
 			},
@@ -82,7 +82,7 @@ function constructor.new(params)
 					local dim = _TextSize:get() - 4
 					return UDim2.fromOffset(dim, dim)
 				end)),
-				[fusion.OnChange] = {
+				[fusion.Children] = {
 					fusion.New "UICorner" {
 						CornerRadius = UDim.new(0.5,0),
 					},

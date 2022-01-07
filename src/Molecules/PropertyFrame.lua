@@ -83,7 +83,7 @@ function constructor.new(params)
 		AutomaticSize = Enum.AutomaticSize.Y,
 		Size = UDim2.fromScale(1,0),
 		BackgroundTransparency = 1,
-		[fusion.OnChange] = {
+		[fusion.Children] = {
 			fusion.New 'UIListLayout' {
 				VerticalAlignment = Enum.VerticalAlignment.Center,
 				SortOrder = Enum.SortOrder.LayoutOrder,
@@ -97,7 +97,7 @@ function constructor.new(params)
 				BackgroundTransparency = 1,
 				AutomaticSize = Enum.AutomaticSize.Y,
 				Size = UDim2.fromScale(1,0),
-				[fusion.OnChange] = {
+				[fusion.Children] = {
 					fusion.New 'UIPadding' {
 						PaddingBottom = UDim.new(0,0),
 						PaddingTop = UDim.new(0,0),

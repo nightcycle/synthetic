@@ -120,7 +120,7 @@ function constructor.new(params)
 			return UDim2.new(public.Width:get(), UDim.new(0,0))
 		end),
 		BackgroundTransparency = 1,
-		[fusion.OnChange] = {
+		[fusion.Children] = {
 			fusion.New "UIListLayout" {
 				SortOrder = Enum.SortOrder.LayoutOrder,
 				HorizontalAlignment = Enum.HorizontalAlignment.Right,
@@ -142,7 +142,7 @@ function constructor.new(params)
 				TextTruncate = Enum.TextTruncate.AtEnd,
 				Text = public.HeaderText,
 				Size = UDim2.fromScale(1, 0),
-				[fusion.OnChange] = {
+				[fusion.Children] = {
 					fusion.New 'UIPadding' {
 						PaddingBottom = _Padding,
 						PaddingTop = UDim.new(0,0),

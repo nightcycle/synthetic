@@ -72,7 +72,7 @@ function constructor.new(params)
 				return Enum.AutomaticSize.X
 			end
 		end),
-		[fusion.OnChange] = {
+		[fusion.Children] = {
 			fusion.New 'UIPadding' {
 				PaddingBottom = fusion.Computed(function()
 					if enums.DividerDirection[public.Direction:get()] == enums.DividerDirection.Horizontal then

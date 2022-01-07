@@ -355,7 +355,7 @@ function constructor.new(params)
 			public.Input:set(content.Text)
 		end,
 
-		[fusion.OnChange] = {
+		[fusion.Children] = {
 			fusion.New 'UISizeConstraint' {
 				MaxSize = fusion.Computed(function()
 					return Vector2.new(public.MaximumTextWidth:get(), math.huge)
@@ -448,7 +448,7 @@ function constructor.new(params)
 		BackgroundTransparency = 1,
 		AutomaticSize = Enum.AutomaticSize.XY,
 		Size = UDim2.fromScale(0,0),
-		[fusion.OnChange] = {
+		[fusion.Children] = {
 			fusion.New 'UIListLayout' {
 				FillDirection = Enum.FillDirection.Vertical,
 				HorizontalAlignment = Enum.HorizontalAlignment.Left,
@@ -527,7 +527,7 @@ function constructor.new(params)
 						content:ReleaseFocus()
 					end
 				end,
-				[fusion.OnChange] = {
+				[fusion.Children] = {
 					content,
 					constructIcon("Leading", 1),
 					constructIcon("Trailing", 5),

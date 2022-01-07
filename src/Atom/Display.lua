@@ -122,7 +122,7 @@ function constructor.new(params)
 		LightDirection = util.tween(public.LightDirection),
 		LightColor = util.tween(public.LightColor),
 		Ambient = util.tween(public.Ambient),
-		[fusion.OnChange] = {
+		[fusion.Children] = {
 			camera,
 			fusion.New "BindableEvent" {
 				Name = "ClearScene",

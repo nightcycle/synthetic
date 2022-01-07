@@ -97,7 +97,7 @@ function constructor.new(params)
 			-- local pad = _Padding:get().Offset
 			return UDim2.new(public.Width:get(), UDim.new(0, v2.Y))
 		end)),
-		[fusion.OnChange] = {
+		[fusion.Children] = {
 			fusion.New 'BindableEvent' {
 				Name = "OnSelect",
 			},
@@ -112,7 +112,7 @@ function constructor.new(params)
 				BackgroundColor3 = util.tween(public.BackgroundColor),
 				-- Position = public.Position,
 
-				[fusion.OnChange] = {
+				[fusion.Children] = {
 					fusion.New "UICorner" {
 						CornerRadius = util.cornerRadius,
 					},
@@ -182,7 +182,7 @@ function constructor.new(params)
 			[fusion.OnEvent "MouseButton1Up"] = function()
 				_ButtonClicked:set(false)
 			end,
-			[fusion.OnChange] = {
+			[fusion.Children] = {
 				fusion.New 'UIPadding' {
 					PaddingBottom = _Padding,
 					PaddingTop = _Padding,

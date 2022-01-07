@@ -119,7 +119,7 @@ function constructor.new(params)
 		ImageTransparency = util.tween(_FillTransparency),
 		ScaleType = Enum.ScaleType.Fit,
 
-		[fusion.OnChange] = {
+		[fusion.Children] = {
 			fusion.New "UIPadding" {
 				PaddingBottom = _Padding,
 				PaddingLeft = _Padding,

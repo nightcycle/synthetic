@@ -127,7 +127,7 @@ function constructor.new(params)
 				return 1
 			end
 		end)),
-		[fusion.OnChange] = {
+		[fusion.Children] = {
 			fusion.New "BindableEvent" {
 				Name = "OnSelect",
 			},
@@ -138,7 +138,7 @@ function constructor.new(params)
 				BackgroundColor3 = public.BackgroundColor,
 				Position = UDim2.fromScale(0.5, 0.5),
 				Visible = public.Enabled,
-				[fusion.OnChange] = {
+				[fusion.Children] = {
 					fusion.New "TextLabel" {
 						Name = "Header",
 						AutomaticSize = Enum.AutomaticSize.XY,
@@ -182,7 +182,7 @@ function constructor.new(params)
 						TextXAlignment = Enum.TextXAlignment.Left,
 						TextYAlignment = Enum.TextYAlignment.Top,
 
-						[fusion.OnChange] = {
+						[fusion.Children] = {
 							fusion.New "UISizeConstraint" {
 								MaxSize = Vector2.new(200, math.huge)
 							}
@@ -210,7 +210,7 @@ function constructor.new(params)
 						LayoutOrder = 3,
 						Size = UDim2.fromScale(1, 0),
 
-						[fusion.OnChange] = {
+						[fusion.Children] = {
 							fusion.New "UIListLayout" {
 								FillDirection = Enum.FillDirection.Horizontal,
 								HorizontalAlignment = Enum.HorizontalAlignment.Right,

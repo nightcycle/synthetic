@@ -179,7 +179,7 @@ function constructor.new(params:table | nil)
 		Font = _Font,
 		AutomaticSize = Enum.AutomaticSize.XY,
 		AutoButtonColor = false,
-		[fusion.OnChange] = {
+		[fusion.Children] = {
 			fusion.New 'UIStroke' {
 				Color = util.tween(_MainColor),
 				Transparency = util.tween(fusion.Computed(function()

@@ -90,7 +90,7 @@ function constructor.new(params)
 		AutomaticSize = Enum.AutomaticSize.XY,
 		BackgroundTransparency = 1,
 		BackgroundColor3 = Color3.new(1, 1, 1),
-		[fusion.OnChange] = {
+		[fusion.Children] = {
 			fusion.New 'TextLabel' {
 				LayoutOrder = 1000,
 				AutomaticSize = Enum.AutomaticSize.XY,

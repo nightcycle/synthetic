@@ -213,7 +213,7 @@ function constructor.new(params)
 
 			end))
 		end,
-		[fusion.OnChange] = {
+		[fusion.Children] = {
 			fusion.New 'UIListLayout' {
 				FillDirection = Enum.FillDirection.Vertical,
 				HorizontalAlignment = Enum.HorizontalAlignment.Left,
@@ -295,7 +295,7 @@ function constructor.new(params)
 						return 0
 					end
 				end)),
-				[fusion.OnChange] = {
+				[fusion.Children] = {
 					fusion.New 'UIStroke' {
 						Color = util.tween(fusion.Computed(function()
 							local lineColor = public.LineColor:get()

@@ -82,7 +82,7 @@ local effects = {}
 	@param Position FusionState --A UDim2 containing FusionState showing the desired target position
 	@param Color FusionState --A Color3 containing FusionState showing the desired ripple color
 ]=]
-ripple = function(position, color)
+effects.ripple = function(position, color)
 	local currentSize = fusion.State(UDim.new(0,10))
 	local currentTransparency = fusion.State(0.2)
 	local element = require(script.Parent:FindFirstChild("Bubble", true)).new({
@@ -106,7 +106,7 @@ end
 	@within Effects
 	@param Key SoundKey --creates a new sound based on the filename of the [official material sounds](https://material.io/design/sound/sound-resources.html#).
 ]=]
-sound = function(key)
+effects.sound = function(key)
 	local soundInst = Instance.new("Sound", fxHolder)
 	soundInst.SoundId = sounds[key]
 	soundInst.Volume = 0.5
@@ -123,7 +123,7 @@ end
 	@param HostSizeState FusionState --fusionState of the Vector2 of the host's absolute size
 	@param HostPositionState FusionState --fusionState of the Vector2 of the host's absolute position
 ]=]
-menu = function(maid, menuParams, hostSizeState, hostPositionState)
+effects.menu = function(maid, menuParams, hostSizeState, hostPositionState)
 	menuParams.Parent = fxHolder
 	menuParams.Position = fusion.Computed(function()
 		local pos = hostPositionState:get()
@@ -144,7 +144,7 @@ end
 	@param HostPositionState FusionState --fusionState of the Vector2 of the host's absolute position
 	@param PreferredDirection FusionState --fusionState of the Vector2 of the host's anchor point to be used
 ]=]
-tip = function(maid, tipParams, hostAbsPositionState, hostAbsSizeState, preferredDirection)
+effects.tip = function(maid, tipParams, hostAbsPositionState, hostAbsSizeState, preferredDirection)
 	tipParams.AnchorPoint = fusion.Computed(function()
 		local dir = Vector2.new(1,1) - preferredDirection:get()
 		-- print("Pref: ", dir)

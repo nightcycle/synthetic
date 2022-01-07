@@ -151,7 +151,7 @@ function constructor.new(params)
 			end
 
 		end),
-		[fusion.OnChange] = {
+		[fusion.Children] = {
 			fusion.New "BindableEvent" {
 				Name = "Effect",
 				[fusion.OnEvent "Event"] = function(viewport:Vector2)

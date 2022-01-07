@@ -36,7 +36,7 @@ function constructor.new(params)
 		BackgroundColor3 = util.tween(public.Color, tweenParams),
 		BackgroundTransparency = util.tween(public.Transparency, tweenParams),
 		Position = public.Position,
-		[fusion.OnChange] = {
+		[fusion.Children] = {
 			fusion.New "UICorner" {
 				CornerRadius = UDim.new(0.5,0),
 			}
