@@ -47,7 +47,7 @@ function constructor.new(params)
 		Roblox Asset URL used to load in an icon's custom texture. If left nil an image won't be created.
 		@within Label
 	]=]
-	public.Image = util.import(params.Icon) or fusion.State("")
+	public.Image = util.import(params.Image) or fusion.State("")
 
 	--[=[
 		@prop ImageRectSize Vector2 | FusionState | nil
