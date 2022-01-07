@@ -94,7 +94,7 @@ function constructor.new(params)
 			fusion.New 'TextLabel' {
 				LayoutOrder = 1000,
 				AutomaticSize = Enum.AutomaticSize.XY,
-				TextColor3 = util.tween(public.Color),
+				TextColor3 = util.tween(public.TextColor),
 				Text = public.Text,
 				BackgroundTransparency = 1,
 				Font = fusion.Computed(function()
@@ -121,7 +121,7 @@ function constructor.new(params)
 					return UDim2.fromOffset(textSize, textSize)
 				end)),
 				Visible = public.IconEnabled,
-				ImageColor3 = util.tween(public.Color),
+				ImageColor3 = util.tween(public.TextColor),
 				ImageRectOffset = public.ImageRectOffset,
 				Name = 'Icon',
 				Position = UDim2.new(0.5,0,0.5,0),
