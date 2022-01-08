@@ -83,23 +83,31 @@ function constructor.new(params)
 	public.Notches = util.import(params.Notches) or fusion.State(10)
 
 	--[=[
-		@prop Input number | FusionState | nil
-		The point between the max & min values that the slider current represents
+		@prop Alpha number | FusionState | nil
+		The 0-1 value that shows the slider's progress
 		@within ProgressBar
 	]=]
-	public.Input = util.import(params.Input) or fusion.State(0.5)
+	public.Alpha = util.import(params.Alpha) or fusion.State(0.5)
+	local _Alpha = fusion.Computed(function()
+		-- print("In")
+		local val = public.Alpha:get()
+		if type(val) == "boolean" then
+			if val then return 1 else return 0 end
+		else
+			return val
+		end
+	end)
 
 	--[=[
-		@prop Value number
+		@prop RoundedAlpha number
 		The the notch rounded value currently solved for by input
 		@within ProgressBar
 		@readonly
 	]=]
-	public.Value = fusion.Computed(function()
+	public.RoundedAlpha = fusion.Computed(function()
 		local precision = 1/(public.Notches:get()-1)
-		return precision * math.round(public.Input:get()/precision)
+		return precision * math.round(_Alpha:get()/precision)
 	end)
-
 	--[=[
 		@prop SynthClassName string
 		Read-Only attribute used to identify what type of component it is
@@ -137,13 +145,13 @@ function constructor.new(params)
 				Name = "Knob",
 				-- AnchorPoint = Vector2.new(0.5,0.5),
 				AnchorPoint = util.tween(fusion.Computed(function()
-					return Vector2.new(public.Value:get(), 0.5)
+					return Vector2.new(public.RoundedAlpha:get(), 0.5)
 				end), moveParams),
 				BackgroundColor3 = util.tween(fusion.Computed(function()
 					local recolorEnabled = public.LockKnobColor:get()
 					local leftColor = public.BackgroundColor:get()
 					local rightColor = public.Color:get()
-					local alphaVal = public.Value:get()
+					local alphaVal = public.RoundedAlpha:get()
 					if recolorEnabled then
 
 						local h1,s1,v1 = leftColor:ToHSV()
@@ -161,7 +169,7 @@ function constructor.new(params)
 					end
 				end)),
 				Position = util.tween(fusion.Computed(function()
-					local a = public.Value:get()
+					local a = public.RoundedAlpha:get()
 					local xWidth = _barAbsoluteSize:get().X
 					local xOffset = xWidth*(a-0.5)
 					local xScale = 0.5
@@ -198,7 +206,7 @@ function constructor.new(params)
 					},
 					fusion.New "UIStroke" {
 						ApplyStrokeMode = Enum.ApplyStrokeMode.Border,
-						Transparency = 1,
+						Transparency = 0.8,
 					},
 					fusion.New "UIGradient" {
 						Color = util.tween(fusion.Computed(function()
@@ -209,7 +217,7 @@ function constructor.new(params)
 							end
 							local rightCol = lowerBrightness(public.BackgroundColor:get())
 							local leftCol = lowerBrightness(public.Color:get())
-							local val = math.clamp(public.Value:get(), 0.01, 0.98)
+							local val = math.clamp(public.RoundedAlpha:get(), 0.01, 0.98)
 							return ColorSequence.new{
 								ColorSequenceKeypoint.new(0, leftCol),
 								ColorSequenceKeypoint.new(val, leftCol),
@@ -228,8 +236,9 @@ function constructor.new(params)
 			}
 		}
 	}, maid)
-	maid:GiveTask(fusion.Observer(public.Value):onChange(function()
-		inst:FindFirstChild("OnChange"):Fire(public.Value:get())
+	maid:GiveTask(fusion.Observer(public.RoundedAlpha):onChange(function()
+		local val = public.RoundedAlpha:get()
+		inst:FindFirstChild("OnChange"):Fire(val)
 	end))
 	return inst
 end

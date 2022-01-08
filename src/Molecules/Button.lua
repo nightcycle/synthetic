@@ -1,5 +1,3 @@
---!strict
-
 local packages = script.Parent.Parent.Parent
 local synthetic = require(script.Parent.Parent)
 local util = require(script.Parent.Parent:WaitForChild("Util"))
@@ -11,9 +9,9 @@ local effects = require(script.Parent.Parent:WaitForChild("Effects"))
 
 local constructor = {}
 
-type FusionState = typeof(fusion.State())
+type FusionState = typeof(fusion.State()) | typeof(fusion.Computed(function() end))
 type Typography = typeof(typographyConstructor.new(Enum.Font.Gotham, 1, 2))
-type Public = {
+type ButtonParameters = {
 	ButtonVariant: string | FusionState | nil,
 	Typography: Typography | nil,
 	Text: string | FusionState | nil,
@@ -24,10 +22,8 @@ type Public = {
 	Image: string | FusionState | nil,
 	ImageRectSize: Vector2 | FusionState | nil,
 	ImageRectOffset: Vector2 | FusionState | nil,
-	SynthClassName: string | FusionState | nil,
 }
-
-function constructor.new(params:table | nil)
+function constructor.new(params:ButtonParameters | nil)
 	local inst
 	local maid = maidConstructor.new()
 
@@ -39,7 +35,7 @@ function constructor.new(params:table | nil)
 	]=]
 
 	--public states
-	local public: Public = {}
+	local public = {}
 
 	--[=[
 		@prop ButtonVariant ButtonVariant | FusionState | nil
@@ -54,6 +50,7 @@ function constructor.new(params:table | nil)
 		@within Button
 	]=]
 	public.Typography = util.import(params.Typography) or typographyConstructor.new(Enum.Font.SourceSans, 10, 14)
+
 	--[=[
 		@prop Text string | FusionState | nil
 		Text that fills the button
@@ -116,7 +113,6 @@ function constructor.new(params:table | nil)
 		@within Button
 		@readonly
 	]=]
-
 	public.SynthClassName = fusion.Computed(function()
 		return script.Name
 	end)

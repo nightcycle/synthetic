@@ -240,6 +240,13 @@ function constructor.new(params)
 	public.ForceFirstUpper = util.import(params.ForceFirstUpper) or fusion.State(false)
 
 	--[=[
+		@prop Width UDim | FusionState | nil
+		Width of the entire component, as Height is solved using Typography
+		@within Dropdown
+	]=]
+	public.Width = util.import(params.Width) or fusion.State(UDim.new(1, 0))
+
+	--[=[
 		@prop Enabled bool | FusionState | nil
 		Whether it accepts input at this time
 		@within TextField
@@ -258,7 +265,7 @@ function constructor.new(params)
 		filter.Configuration.DuplicateSpacing = public.FilterDuplicateSpacing:get()
 		filter.Configuration.Symbols = public.FilterSymbols:get()
 		filter.Configuration.Roblox = public.CensorText:get()
-		filter.Configuration.MaxLength = public.FilterMaxLength:get()
+		filter.Configuration.MaxLength = public.CharacterLimit:get()
 		filter.Configuration.ForceUpper = public.ForceUpper:get()
 		filter.Configuration.ForceLower = public.ForceLower:get()
 		filter.Configuration.ForceFirstUpper = public.ForceFirstUpper:get()
@@ -325,7 +332,9 @@ function constructor.new(params)
 		Name = "Content",
 		BackgroundTransparency = 1,
 		LayoutOrder = 3,
-		Size = UDim2.fromScale(0,0),
+		Size = fusion.Computed(function()
+			return UDim2.new(public.Width:get(), UDim.new(0,0))
+		end),
 		AutomaticSize = Enum.AutomaticSize.XY,
 		TextEditable = public.Enabled,
 		Active = public.Enabled,
@@ -356,14 +365,6 @@ function constructor.new(params)
 		end,
 
 		[fusion.Children] = {
-			fusion.New 'UISizeConstraint' {
-				MaxSize = fusion.Computed(function()
-					return Vector2.new(public.MaximumTextWidth:get(), math.huge)
-				end),
-				MinSize = fusion.Computed(function()
-					return Vector2.new(public.MinimumTextWidth:get(), 0)
-				end),
-			},
 			fusion.New 'UIListLayout' {
 				HorizontalAlignment = Enum.HorizontalAlignment.Left,
 				VerticalAlignment = Enum.VerticalAlignment.Center,
@@ -576,7 +577,7 @@ function constructor.new(params)
 					},
 					fusion.New 'UIListLayout' {
 						FillDirection = Enum.FillDirection.Horizontal,
-						HorizontalAlignment = Enum.HorizontalAlignment.Center,
+						HorizontalAlignment = Enum.HorizontalAlignment.Left,
 						VerticalAlignment = Enum.VerticalAlignment.Center,
 						SortOrder = Enum.SortOrder.LayoutOrder,
 						Padding = fusion.Computed(function()

@@ -32,7 +32,7 @@ function constructor.new(params)
 		Color used for fill of checkbox
 		@within Checkbox
 	]=]
-	public.Color = util.import(params.BackgroundColor) or fusion.State(Color3.new(0.5,0,1))
+	public.Color = util.import(params.Color) or fusion.State(Color3.new(0.5,0,1))
 
 	--[=[
 		@prop LineColor Color3 | FusionState | nil
@@ -53,7 +53,7 @@ function constructor.new(params)
 		The Typography to be used for this component
 		@within Checkbox
 	]=]
-	public.public.Typography = util.import(params.Typography) or typographyConstructor.new(Enum.Font.SourceSans, 10, 14)
+	public.Typography = util.import(params.Typography) or typographyConstructor.new(Enum.Font.SourceSans, 10, 14)
 
 	--[=[
 		@prop Value bool
@@ -132,10 +132,10 @@ function constructor.new(params)
 			fusion.New "UIStroke" {
 				ApplyStrokeMode = Enum.ApplyStrokeMode.Border,
 				Color = util.tween(fusion.Computed(function()
-					if public.Input:get() then
+					if public.Input:get() == true then
 						return public.Color:get()
 					else
-						return public.BackgroundColor:get()
+						return public.LineColor:get()
 					end
 				end)),
 				Thickness = 2,

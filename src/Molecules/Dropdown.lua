@@ -182,7 +182,6 @@ function constructor.new(params)
 	inst = util.set(fusion.New "TextButton", public, params, {
 		BackgroundTransparency = 1,
 		AutomaticSize = Enum.AutomaticSize.XY,
-		Size = UDim2.fromScale(0,0),
 		TextTransparency = 1,
 		[fusion.OnEvent "InputBegan"] = function()
 			_Hovered:set(true)
@@ -230,10 +229,7 @@ function constructor.new(params)
 				TextSize = fusion.Computed(function()
 					return _LabelTextSize:get()
 				end),
-				Size = fusion.Computed(function()
-					return UDim2.fromOffset(0, _LabelTextSize:get())
-				end),
-				AutomaticSize = Enum.AutomaticSize.X,
+				AutomaticSize = Enum.AutomaticSize.XY,
 				TextXAlignment = Enum.TextXAlignment.Left,
 				TextYAlignment = Enum.TextYAlignment.Bottom,
 				TextColor3 = util.tween(fusion.Computed(function()
@@ -261,30 +257,15 @@ function constructor.new(params)
 				LayoutOrder = 1,
 				BackgroundTransparency = 1,
 			},
-			synthetic.New 'Label' {
+			synthetic.New 'Frame' {
+				Name = "Label",
 				BackgroundColor3 = Color3.new(1,1,1),
-				Typography = public.Typography,
-				AutomaticSize = Enum.AutomaticSize.XY,
-				Size = UDim2.fromScale(0,0),
-				Image = "rbxassetid://3926307971",
-				Color = _TextColor,
-				ImageRectOffset = fusion.Computed(function()
-					if _Focused:get() then
-						return Vector2.new(164, 482)
-					else
-						return Vector2.new(324, 524)
-					end
-				end),
-				ImageRectSize = Vector2.new(36,36),
-				Text = fusion.Computed(function()
-					local label = public.Label:get()
-					local isFocused = _Focused:get()
-					local input = public.Input:get()
-					if input == "" and isFocused == false then
-						return label
-					else
-						return input
-					end
+				Size = fusion.Computed(function()
+					local padding = _Padding:get().Offset
+					local height = UDim.new(0, _LabelTextSize:get()+padding*3)
+					local width = public.Width:get()
+					local size = UDim2.new(width, height)
+					return size
 				end),
 				LayoutOrder = 2,
 				ClipsDescendants = true,
@@ -296,6 +277,40 @@ function constructor.new(params)
 					end
 				end)),
 				[fusion.Children] = {
+					fusion.New "ImageLabel" {
+						ImageRectOffset = fusion.Computed(function()
+							if _Focused:get() then
+								return Vector2.new(164, 482)
+							else
+								return Vector2.new(324, 524)
+							end
+						end),
+						Size = UDim2.fromOffset(20,20),
+						BackgroundTransparency = 1,
+						AnchorPoint = Vector2.new(1, 0.5),
+						Position = UDim2.fromScale(1, 0.5),
+						ImageRectSize = Vector2.new(36,36),
+						Image = "rbxassetid://3926307971",
+						ImageColor3 = _TextColor,
+					},
+					fusion.New "TextLabel" {
+						TextSize = _TextSize,
+						Font = _Font,
+						TextColor3 = _TextColor,
+						AutomaticSize = Enum.AutomaticSize.X,
+						AnchorPoint = Vector2.new(0, 0.5),
+						Position = UDim2.fromScale(0, 0.5),
+						Text = fusion.Computed(function()
+							local label = public.Label:get()
+							local isFocused = _Focused:get()
+							local input = public.Input:get()
+							if input == "" and isFocused == false then
+								return label
+							else
+								return input
+							end
+						end),
+					},
 					fusion.New 'UIStroke' {
 						Color = util.tween(fusion.Computed(function()
 							local lineColor = public.LineColor:get()
@@ -337,15 +352,6 @@ function constructor.new(params)
 							})
 						end)
 					},
-					-- fusion.New 'UIListLayout' {
-					-- 	FillDirection = Enum.FillDirection.Horizontal,
-					-- 	HorizontalAlignment = Enum.HorizontalAlignment.Center,
-					-- 	VerticalAlignment = Enum.VerticalAlignment.Center,
-					-- 	SortOrder = Enum.SortOrder.LayoutOrder,
-					-- 	Padding = fusion.Computed(function()
-					-- 		return UDim.new(0,_Padding:get().Offset*0.5)
-					-- 	end),
-					-- },
 					fusion.New 'UICorner' {
 						CornerRadius = util.cornerRadius,
 					},
@@ -363,7 +369,7 @@ function constructor.new(params)
 							if enums.ButtonVariant[public.ButtonVariant:get()] == enums.ButtonVariant.Outlined then
 								return padding
 							else
-								return UDim.new(0, padding.Offset - 2)
+								return UDim.new(0, padding.Offset + 2)
 							end
 						end),
 						PaddingLeft = _Padding,
@@ -426,20 +432,9 @@ function constructor.new(params)
 		_AbsolutePosition:set(label.AbsolutePosition+Vector2.new(0,1))
 	end))
 
-	local textLabel = label:WaitForChild("TextLabel")
-	textLabel.LayoutOrder = 1
-
-	local icon = label:WaitForChild("Icon")
-	icon.LayoutOrder = 2
-
-	local listLayout = label:WaitForChild("UIListLayout")
-	listLayout.HorizontalAlignment = Enum.HorizontalAlignment.Right
-
-	label.Size = _LabelSize:get()
-
-	maid:GiveTask(fusion.Observer(_LabelSize):onChange(function()
-		label.Size = _LabelSize:get()
-	end))
+	-- maid:GiveTask(fusion.Observer(_LabelSize):onChange(function()
+	-- 	label.Size = _LabelSize:get()
+	-- end))
 
 	return inst
 end

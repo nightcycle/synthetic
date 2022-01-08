@@ -148,7 +148,7 @@ function constructor.new(params)
 						BorderSizePixel = 0,
 						Position = UDim2.fromScale(0, 0.5),
 						Font = Enum.Font.SourceSans,
-						Text = "Text goes here",
+						Text = public.Text,
 						TextColor3 = public.TextColor,
 						TextSize = 14,
 					},

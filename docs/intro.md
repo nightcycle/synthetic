@@ -18,19 +18,13 @@ To construct a Synthetic component you go about it the same was as with Fusion.
 
 	local synthetic = require(modulePath)
 
-	-- More readable, clearly shows how the first function returns a constructor
-	local buttonConstructor = synthetic.New("Button")
-	local button = buttonConstructor({
+	-- Standard style
+	local button1 = synthetic.Button {
 		Text = "Click me!"
-	})
+	}
 
-	-- More compact, easier to nest in a configuration table
-	local button2 = synthetic.New("Button")({
-		Text = "Click me!"
-	})
-
-	-- Most compact: it turns out you don't need parentheses to call a function
-	local button3 = synthetic.New "Button" {
+	-- Fusion style
+	local button2 = synthetic.New "Button" {
 		Text = "Click me!"
 	}
 

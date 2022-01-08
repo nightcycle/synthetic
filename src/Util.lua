@@ -10,41 +10,69 @@ local es = Enum.EasingStyle
 
 function mergeConfig(baseConfig, changes, whiteList, blackList)
 	if not whiteList then whiteList = changes end
+	-- print("\nComp")
 	for k, v in pairs(changes) do
-		if k == fusion.OnChange then
+		-- print("K: "..tostring(k))
+		if k == fusion.Children then
+			-- print("A")
 			baseConfig[k] = baseConfig[k] or {}
+			-- print(v)
+			-- print(baseConfig[k])
 			for i, val in ipairs(v) do
 				table.insert(baseConfig[k], val)
 			end
+			-- print(baseConfig[k])
 		else
+			-- print("B")
 			if whiteList[k] ~= nil and blackList[k] == nil then
+				-- print("B2")
 				baseConfig[k] = changes[k] or baseConfig[k]
 			end
 		end
 	end
+	-- print("Out")
+	-- print(changes)
+	-- print(baseConfig)
+	-- print("Return")
 	return baseConfig
 end
 
 function setPublicState(key, state, inst, maid)
 	local readOnly = state.set == nil
 	-- if readOnly then key = "_"..key end
-	if type(state:get()) == "table" and state.get then
-		for k, v in pairs(state:get()) do
-			local vState = fusion.State(v)
-			if not readOnly then
-				local vCompute = fusion.Computed(function()
-					return state:get()[k]
-				end)
-				local function updateParentState()
-					local newTabl = state:get()
-					newTabl[k] = vState:get()
-					state:set(newTabl)
-				end
-				maid:GiveTask(fusion.Observer(vState):onChange(updateParentState))
-				maid:GiveTask(fusion.Observer(vCompute):onChange(updateParentState))
-			end
-			setPublicState(key.."_"..k, vState, inst, maid)
-		end
+	local stateType = type(state:get())
+	local valid = {
+		string = true,
+		boolean = true,
+		number = true,
+		UDim = true,
+		UDim2 = true,
+		BrickColor = true,
+		Color3 = true,
+		Vector2 = true,
+		Vector3 = true,
+		NumberSequence = true,
+		ColorSequence = true,
+		NumberRange = true,
+		Rect = true,
+	}
+	if not valid[stateType] then
+		-- for k, v in pairs(state:get()) do
+		-- 	local vState = fusion.State(v)
+		-- 	if not readOnly then
+		-- 		local vCompute = fusion.Computed(function()
+		-- 			return state:get()[k]
+		-- 		end)
+		-- 		local function updateParentState()
+		-- 			local newTabl = state:get()
+		-- 			newTabl[k] = vState:get()
+		-- 			state:set(newTabl)
+		-- 		end
+		-- 		maid:GiveTask(fusion.Observer(vState):onChange(updateParentState))
+		-- 		maid:GiveTask(fusion.Observer(vCompute):onChange(updateParentState))
+		-- 	end
+		-- 	setPublicState(key.."_"..k, vState, inst, maid)
+		-- end
 		return
 	end
 	--bind to attributes
@@ -57,7 +85,7 @@ function setPublicState(key, state, inst, maid)
 		enumType = tostring(state:get().EnumType)
 		val = val.Name
 	end
-
+	-- print(key, val)
 	maid._attributer:Connect(key, val)
 	local compat = fusion.Observer(state)
 
@@ -68,6 +96,7 @@ function setPublicState(key, state, inst, maid)
 				inst:SetAttribute(key, v)
 			end
 		else
+			-- print("Setting: ", key, val)
 			v = v or state:get()
 			if inst:GetAttribute(key) ~= state:get() then
 				inst:SetAttribute(key, state:get())
@@ -91,9 +120,6 @@ function setPublicState(key, state, inst, maid)
 		end
 	end))
 end
-
-
-
 
 --[=[
 	@class Util
@@ -130,6 +156,7 @@ util.import = function(stateOrVal)
 		return fusion.State(stateOrVal)
 	end
 end
+
 --[=[
 	@function getInteractionColor
 	creates a FusionState that responds to the boolean Clicked and Hovered FusionStates
@@ -161,6 +188,7 @@ util.getInteractionColor = function(_Clicked, _Hovered, _Color)
 	end)
 	return _DynamicMainColor
 end
+
 --[=[
 	@function initFusion
 	A simple Fusion wrapper that adds some alternate syntax. This is a bad thing I do.
@@ -169,28 +197,29 @@ end
 	@return FusionState
 ]=]
 util.initFusion = function(fusionLibrary)
-	fusionLibrary.new = fusionLibrary.New
+	local wrapper = {}
+	wrapper.New = fusionLibrary.New
 
-	fusionLibrary.c = fusionLibrary.Children
+	wrapper.Children = fusionLibrary.Children
 
-	fusionLibrary.e = fusionLibrary.OnEvent
+	wrapper.OnEvent = fusionLibrary.OnEvent
 
-	fusionLibrary.dt = fusionLibrary.OnChange
+	wrapper.OnChange = fusionLibrary.OnChange
 
-	fusionLibrary.v = fusionLibrary.State
-	fusionLibrary.Value = fusionLibrary.v
+	wrapper.State = fusionLibrary.State
+	wrapper.Value = wrapper.State
 
-	fusionLibrary.get = fusionLibrary.Computed
+	wrapper.Computed = fusionLibrary.Computed
 
-	fusionLibrary.gets = fusionLibrary.ComputedPairs
+	wrapper.ComputedPairs = fusionLibrary.ComputedPairs
 
-	fusionLibrary.step = fusionLibrary.Compat
-	fusionLibrary.Observer = fusionLibrary.step
+	wrapper.Compat = fusionLibrary.Compat
+	wrapper.Observer = wrapper.Compat
 
-	fusionLibrary.t = fusionLibrary.Tween
+	wrapper.Tween = fusionLibrary.Tween
 
-	fusionLibrary.s = fusionLibrary.Spring
-	return fusionLibrary
+	wrapper.Spring = fusionLibrary.Spring
+	return wrapper
 end
 fusion = util.initFusion(fusion)
 
@@ -234,26 +263,25 @@ util.cornerRadius = fusion.State(UDim.new(0, 5))
 	@param maid Maid | nil --a maid handling the instance if one already exists.
 	@return Instance --the constructed instance
 ]=]
-
 util.set = function(constructor, publicStates, params, config, maid)
-	-- print("1")
 	if not maid then
 		maid = maidConstructor.new()
 	end
 	params.SynthClassName = nil
 	params.Name = params.Name or publicStates.SynthClassName:get()
+
 	mergeConfig(config, params, nil, publicStates)
-	-- print(config)
-	-- print("2")
+
 	local inst = constructor(config)
 	maid:GiveTask(inst)
-	-- print("3")
+
 	for k, v in pairs(publicStates) do
 		setPublicState(k, v, inst, maid)
 	end
-	-- print("4")
+
 	local wasEverDescendeded = inst:IsDescendantOf(game.Players.LocalPlayer)
 	maid.deathSignal = inst.AncestryChanged:Connect(function()
+		local sClass = inst:GetAttribute("SynthClass")
 		if wasEverDescendeded == false then
 			wasEverDescendeded = inst:IsDescendantOf(game.Players.LocalPlayer)
 			if wasEverDescendeded == false then
@@ -262,15 +290,17 @@ util.set = function(constructor, publicStates, params, config, maid)
 		end
 		wasEverDescendeded = true
 		if not inst:IsDescendantOf(game.Players.LocalPlayer) then
+			-- warn("CLEANING UP "..tostring(inst:GetAttribute("SynthClass")))
 			for i, desc in ipairs(inst:GetDescendants()) do
 				desc:Destroy()
 			end
 			maid:Destroy()
 		end
 	end)
-	-- print("5")
+
 	return inst
 end
+
 --[=[
 	@function tween
 	A quick tween FusionState constructor.

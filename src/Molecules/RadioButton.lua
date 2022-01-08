@@ -59,7 +59,7 @@ function constructor.new(params)
 			fusion.New "UIStroke" {
 				ApplyStrokeMode = Enum.ApplyStrokeMode.Border,
 				Color = util.tween(fusion.Computed(function()
-					if public.Input:get() then
+					if public.Input:get() == true then
 						return _MainColor:get()
 					else
 						return _LineColor:get()

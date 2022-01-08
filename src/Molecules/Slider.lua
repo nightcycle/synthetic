@@ -77,19 +77,19 @@ function constructor.new(params)
 	public.ValueTextEnabled = util.import(params.ValueTextEnabled) or fusion.State(false)
 
 	--[=[
-		@prop Alpha number
+		@prop Input number
 		Describes the current slider as a point between 0 and 1
 		@within Slider
 		@readonly
 	]=]
-	public.Alpha = fusion.Computed(function()
+	local _DirectAlpha = fusion.Computed(function()
 		local minVal = public.MinimumValue:get()
 		local maxVal = public.MaximumValue:get()
 		local val = public.Input:get()
 		local rangeVal = maxVal - minVal
 		return (val-minVal)/rangeVal
 	end)
-	local _DisplayAlpha = fusion.State(public.Alpha:get())
+	local _DisplayAlpha = fusion.State(_DirectAlpha:get())
 
 	--[=[
 		@prop Value number
@@ -98,6 +98,7 @@ function constructor.new(params)
 		@readonly
 	]=]
 	public.Value = fusion.Computed(function()
+		print("Update")
 		local minVal = public.MinimumValue:get()
 		local maxVal = public.MaximumValue:get()
 		local rangeVal = maxVal - minVal
@@ -114,7 +115,6 @@ function constructor.new(params)
 	public.SynthClassName = fusion.Computed(function()
 		return script.Name
 	end)
-
 
 	--influencers
 	local _Hovered = fusion.State(false)
@@ -144,7 +144,6 @@ function constructor.new(params)
 		local typography = public.Typography:get()
 		return typography.TextSize --+ typography.Padding.Offset*2
 	end)
-	-- local _BubblePosition = fusion.State(UDim2.fromOffset(0,0))
 
 	local function updateBar(cursorPos:Vector2)
 		local typography = public.Typography:get()
@@ -156,7 +155,8 @@ function constructor.new(params)
 		local minVal = public.MinimumValue:get()
 		local maxVal = public.MaximumValue:get()
 		local rangeVal = maxVal - minVal
-		public.Input:set(alpha*rangeVal + minVal)
+
+		_DisplayAlpha:set(alpha)
 	end
 
 	local _MutedColor = fusion.Computed(function()
@@ -171,7 +171,7 @@ function constructor.new(params)
 		BackgroundColor = _MutedColor,
 		Color = public.Color,
 		Notches = public.Notches,
-		Alpha = public.Alpha,
+		Alpha = _DisplayAlpha,
 		KnobEnabled = true,
 		LockKnobColor = false,
 		Saturation = 1,
@@ -221,9 +221,9 @@ function constructor.new(params)
 	local _AbsPosition = fusion.State(Vector2.new(0,0))
 	local _AbsSize = fusion.State(Vector2.new(0,0))
 
-
 	maid:GiveTask(onChange.Event:Connect(function(val)
-		_DisplayAlpha:set(val)
+		print("Progress: "..tostring(val))
+		-- _DisplayAlpha:set(val)
 	end))
 
 	maid:GiveTask(knob:GetPropertyChangedSignal("AbsolutePosition"):Connect(function()
@@ -232,8 +232,30 @@ function constructor.new(params)
 	maid:GiveTask(knob:GetPropertyChangedSignal("AbsoluteSize"):Connect(function()
 		_AbsSize:set(knob.AbsoluteSize)
 	end))
+	local tipAlpha = fusion.State(0.5)
+	maid:GiveTask(inst:GetAttributeChangedSignal("RoundedAlpha"):Connect(function()
+		tipAlpha:set(inst:GetAttribute("RoundedAlpha"))
+	end))
 	effects.tip(maid, {
-		Text = public.Value,
+		Text = fusion.Computed(function()
+			local minVal = public.MinimumValue:get()
+			local maxVal = public.MaximumValue:get()
+			local alpha = tipAlpha:get()
+			print("Apha: ", alpha)
+			local notches = public.Notches:get()
+			-- local step = 1/(notches+1)
+			local value
+			if public.MaximumValue:get() <= 1 then
+				if notches % 10 then
+					value = math.round(10*(minVal + (maxVal-minVal)*alpha))/10
+				else
+					value = math.round(100*(minVal + (maxVal-minVal)*alpha))/100
+				end
+			else
+				value = math.round(minVal + (maxVal-minVal)*alpha)
+			end
+			return tostring(math.clamp(math.round(value), minVal, maxVal))
+		end),
 		Visible = _TipEnabled,
 	}, _AbsPosition, _AbsSize, fusion.State(Vector2.new(0.5,0)))
 	maid:GiveTask(synthetic.New "Bubble" {

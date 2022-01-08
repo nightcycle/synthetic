@@ -51,7 +51,7 @@ function constructor.new(params)
 	]=]
 	public.Typography = util.import(params.Typography) or typographyConstructor.new(Enum.Font.SourceSans, 10, 14)
 
-	local _Alpha = fusion.Computed(function()
+	local _Input = fusion.Computed(function()
 		if public.Input:get() == true then
 			return 1
 		else
@@ -65,13 +65,6 @@ function constructor.new(params)
 		@within Switch
 		@readonly
 	]=]
-	public.Value = fusion.Computed(function()
-		if _Alpha:get() == 1 then
-			return true
-		else
-			return false
-		end
-	end)
 
 	--[=[
 		@prop SynthClassName string
@@ -134,12 +127,16 @@ function constructor.new(params)
 		end),
 		Color = util.getInteractionColor(_Clicked, _Hovered, public.Color),
 		BackgroundColor = util.getInteractionColor(_Clicked, _Hovered, public.BackgroundColor),
-		Notches = 100,
-		Alpha = _Alpha,
+		Notches = 2,
+		Alpha = _Input,
 		KnobEnabled = true,
 		BarPadding = _Padding,
 		Padding = _Padding,
 	})
+
+	public.Value = fusion.Computed(function()
+		return public.Input:get()
+	end)
 
 	return inst
 end

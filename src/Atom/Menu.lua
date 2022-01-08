@@ -64,6 +64,13 @@ function constructor.new(params)
 	public.Options = util.import(params.Options) or fusion.State({})
 
 	--[=[
+		@prop Input string | FusionState | nil
+		Current selection to ignore (if applicable)
+		@within Menu
+	]=]
+	public.Input = util.import(params.Input) or fusion.State("")
+
+	--[=[
 		@prop Open bool | FusionState | nil
 		Whether the menu is currently open
 		@within Menu

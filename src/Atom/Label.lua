@@ -86,7 +86,7 @@ function constructor.new(params)
 	local _Padding, _TextSize, _Font = util.getTypographyStates(public.Typography)
 
 	--construct
-	return util.set(fusion.New "Frame", public, params, {
+	local inst = util.set(fusion.New "Frame", public, params, {
 		AutomaticSize = Enum.AutomaticSize.XY,
 		BackgroundTransparency = 1,
 		BackgroundColor3 = Color3.new(1, 1, 1),
@@ -96,11 +96,13 @@ function constructor.new(params)
 				AutomaticSize = Enum.AutomaticSize.XY,
 				TextColor3 = util.tween(public.TextColor),
 				Text = public.Text,
+				Visible = fusion.Computed(function()
+					return string.len(public.Text:get()) > 0
+				end),
 				BackgroundTransparency = 1,
 				Font = fusion.Computed(function()
 					return public.Typography:get().Font
-				end)
-			,
+				end),
 				TextSize = util.tween(_TextSize),
 			},
 			fusion.New 'UIListLayout' {
@@ -128,6 +130,8 @@ function constructor.new(params)
 			},
 		},
 	})
+	-- print("Label", inst:GetChildren())
+	return inst
 end
 
 return constructor

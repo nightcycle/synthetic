@@ -55,30 +55,44 @@ for i, module in ipairs(script:GetDescendants()) do
 end
 
 local constructors = {}
-local synthetic = fusion
+local synthetic = {}
+local interface = {}
+setmetatable(interface, {
+	__index = function(s, k)
+		if constructorModules[k] then
+			if not constructors[k] then
+				synthetic.Set(k, require(constructorModules[k]).new)
+			end
+			return constructors[k]
+		elseif synthetic[k] then
+			return synthetic[k]
+		elseif fusion[k] then
+			return fusion[k]
+		else
+			warn("Nothing found for "..k)
+		end
+	end
+})
 
-synthetic.classicNew = fusion.New
 synthetic.New = function(key)
 	if constructors[key] then
 		return constructors[key]
 	elseif constructorModules[key] then
-		constructors[key] = require(constructorModules[key]).new
+		synthetic.Set(key, require(constructorModules[key]).new)
 		return constructors[key]
 	else
-		return fusion.classicNew(key)
+		return fusion.New(key)
 	end
 end
 synthetic.new = synthetic.New
-
 
 synthetic.Set = function(key, constructor) --in case you wanna add your own
 	constructors[key] = constructor
 end
 synthetic.set = synthetic.Set
 
-
 synthetic.Effects = require(script:WaitForChild("Effects"))
 synthetic.Enums = require(script:WaitForChild("Enums"))
 synthetic.Util = require(script:WaitForChild("Util"))
 
-return synthetic
+return interface
