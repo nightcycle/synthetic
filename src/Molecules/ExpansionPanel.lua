@@ -103,13 +103,17 @@ function constructor.new(params)
 			fusion.New "UIListLayout" {
 				SortOrder = Enum.SortOrder.LayoutOrder
 			},
-			fusion.New "Frame" {
+			fusion.New "ImageButton" {
 				Name = "Header",
 				AutomaticSize = Enum.AutomaticSize.Y,
 				BackgroundColor3 = Color3.new(1, 1, 1),
 				BackgroundTransparency = 1,
 				BorderSizePixel = 0,
 				Size = UDim2.fromScale(1, 0),
+				ImageTransparency = 1,
+				[fusion.OnEvent "Activated"] = function()
+					public.Open:set(not public.Open:get())
+				end,
 				[fusion.Children] = {
 					fusion.New "ImageButton" {
 						Name = "keyboard_arrow_down",
