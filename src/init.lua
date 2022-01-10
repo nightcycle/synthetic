@@ -48,9 +48,11 @@ end
 local util = require(script:WaitForChild("Util"))
 local fusion = util.initFusion(require(packages:WaitForChild('fusion')))
 
-for i, module in ipairs(script:GetDescendants()) do
-	if module:IsA("ModuleScript") and module.Parent ~= script.Parent then
-		constructorModules[module.Name] = module
+for i, folder in ipairs(script:GetChildren()) do
+	for k, module in ipairs(folder:GetChildren()) do
+		if module:IsA("ModuleScript") and module.Parent ~= script.Parent then
+			constructorModules[module.Name] = module
+		end
 	end
 end
 

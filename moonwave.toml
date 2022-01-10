@@ -13,7 +13,7 @@ favicon = "/logo.png"
 # From git:
 organizationName = "nightcycle"
 projectName = "synthetic"
-url = "https://AuthorName.github.io"
+url = "https://nightcycle.github.io"
 baseUrl = "/synthetic/"
 tagline = "A library used for the construction of Material Design inspired Fusion-powered UI Components."
 
