@@ -19,7 +19,7 @@ dependencies = []
 
 [[package]]
 name = "nightcycle/attributer"
-version = "1.0.4"
+version = "2.0.0"
 dependencies = [["maid", "quenty/maid@2.0.1-canary.140ed9d6.1"], ["replicator", "nightcycle/replicator@1.0.1"], ["signal", "quenty/signal@2.0.0-canary.140ed9d6.2"]]
 
 [[package]]
@@ -34,12 +34,12 @@ dependencies = [["maid", "quenty/maid@2.0.1-canary.140ed9d6.1"]]
 
 [[package]]
 name = "nightcycle/synthetic"
-version = "2.1.8"
-dependencies = [["attributer", "nightcycle/attributer@1.0.4"], ["color-utils", "csqrl/colour-utils@1.1.1"], ["enumerator", "howmanysmall/enumerator@2.2.3"], ["filter", "nightcycle/filter@1.0.2"], ["fusion", "elttob/fusion@0.1.1-beta"], ["maid", "quenty/maid@2.0.1-canary.140ed9d6.1"], ["signal", "quenty/signal@2.0.0-canary.140ed9d6.2"], ["typography", "nightcycle/typography@1.0.2"], ["viewport", "nightcycle/viewport-handler@1.0.6"]]
+version = "2.3.2"
+dependencies = [["attributer", "nightcycle/attributer@2.0.0"], ["color-utils", "csqrl/colour-utils@1.1.1"], ["enumerator", "howmanysmall/enumerator@2.2.3"], ["filter", "nightcycle/filter@1.0.2"], ["fusion", "elttob/fusion@0.1.1-beta"], ["maid", "quenty/maid@2.0.1-canary.140ed9d6.1"], ["signal", "quenty/signal@2.0.0-canary.140ed9d6.2"], ["typography", "nightcycle/typography@1.1.5"], ["viewport", "nightcycle/viewport-handler@1.0.6"]]
 
 [[package]]
 name = "nightcycle/typography"
-version = "1.0.2"
+version = "1.1.5"
 dependencies = [["fusion", "elttob/fusion@0.1.1-beta"]]
 
 [[package]]

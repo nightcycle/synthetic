@@ -5,8 +5,10 @@
     "ReplicatedStorage": {
       "$className": "ReplicatedStorage",
       "Packages": {
-        "$className": "Folder",
-        "$path": "Packages"
+        "$path": "Packages",
+        "synthetic": {
+          "$path": "src"
+        }
       }
     },
     "StarterPlayer": {

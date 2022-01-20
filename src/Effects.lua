@@ -7,18 +7,26 @@ local maidConstructor = require(packages:WaitForChild("maid"))
 local enums = require(script.Parent:WaitForChild("Enums"))
 
 local runService = game:GetService("RunService")
-local player
-if runService:IsClient() then
-	player  = game.Players.LocalPlayer
-end
 
 --[=[
 	@class Effects
 	A list of useful effects, some probably should just be Atom components
 ]=]
 
+function getPlayerGui(target)
+	if runService:IsRunning() or not game.Players.LocalPlayer then
+		if target then
+			return target
+		else
+			return
+		end
+	else
+		return game.Players.LocalPlayer:WaitForChild("PlayerGui")
+	end
+end
+
 local fxHolder = fusion.New "ScreenGui" {
-	Parent = player:WaitForChild("PlayerGui"),
+	Parent = getPlayerGui(),
 	ResetOnSpawn = false,
 	Name = "Effects",
 	DisplayOrder = 1000,
@@ -75,6 +83,9 @@ local sounds = {
 
 local effects = {}
 
+effects.hoarcekat = function(target) --only to be used for hoarcekat
+	fxHolder.Parent = getPlayerGui(target)
+end
 --[=[
 	@function ripple
 	Plays a ripple effect

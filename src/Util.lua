@@ -1,12 +1,18 @@
 local packages = script.Parent.Parent
 local attributerConstructor = require(packages:WaitForChild("attributer"))
-local util
+
 local fusion = require(packages:WaitForChild('fusion'))
 local signalConstructor = require(packages:WaitForChild("signal"))
 local typographyConstructor = require(packages:WaitForChild("typography"))
 local maidConstructor = require(packages:WaitForChild("maid"))
 local ed = Enum.EasingDirection
 local es = Enum.EasingStyle
+
+--[=[
+	@class Util
+	A list of useful functions
+]=]
+local util = {}
 
 function mergeConfig(baseConfig, changes, whiteList, blackList)
 	if not whiteList then whiteList = changes end
@@ -121,11 +127,6 @@ function setPublicState(key, state, inst, maid)
 	end))
 end
 
---[=[
-	@class Util
-	A list of useful functions
-]=]
-util = {}
 
 util.setPublicState = setPublicState
 
