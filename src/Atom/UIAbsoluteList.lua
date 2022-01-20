@@ -11,10 +11,10 @@ local constructor = {}
 function constructor.new(params)
 
 	--[=[
-		@class UISplitList
+		@class UIAbsoluteList
 		@tag Component
 		@tag Atom
-		A component used to split and align a list along a vertical axis.
+		Tired of automatic size not working? This list component attempts to find the tightest fit for you.
 	]=]
 
 	local maid = maidConstructor.new()
@@ -24,7 +24,7 @@ function constructor.new(params)
 	--[=[
 		@prop SynthClassName string
 		Read-Only attribute used to identify what type of component it is
-		@within UISplitList
+		@within UIAbsoluteList
 		@readonly
 	]=]
 	public.SynthClassName = fusion.Computed(function()
@@ -81,7 +81,6 @@ function constructor.new(params)
 
 		local x = contentX + getAbsolutePadding("PaddingLeft", parent.AbsoluteSize.X) + getAbsolutePadding("PaddingRight", parent.AbsoluteSize.X)
 		local y = contentY + getAbsolutePadding("PaddingBottom", parent.AbsoluteSize.Y) + getAbsolutePadding("PaddingTop", parent.AbsoluteSize.Y)
-		print(x, y)
 		parent.Size = UDim2.fromOffset(x,y)
 	end
 

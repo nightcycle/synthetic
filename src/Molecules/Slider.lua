@@ -98,7 +98,7 @@ function constructor.new(params)
 		@readonly
 	]=]
 	public.Value = fusion.Computed(function()
-		print("Update")
+		-- print("Update")
 		local minVal = public.MinimumValue:get()
 		local maxVal = public.MaximumValue:get()
 		local rangeVal = maxVal - minVal
@@ -222,7 +222,7 @@ function constructor.new(params)
 	local _AbsSize = fusion.State(Vector2.new(0,0))
 
 	maid:GiveTask(onChange.Event:Connect(function(val)
-		print("Progress: "..tostring(val))
+		-- print("Progress: "..tostring(val))
 		-- _DisplayAlpha:set(val)
 	end))
 
@@ -241,7 +241,7 @@ function constructor.new(params)
 			local minVal = public.MinimumValue:get()
 			local maxVal = public.MaximumValue:get()
 			local alpha = tipAlpha:get()
-			print("Apha: ", alpha)
+			-- print("Apha: ", alpha)
 			local notches = public.Notches:get()
 			-- local step = 1/(notches+1)
 			local value

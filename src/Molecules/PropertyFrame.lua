@@ -122,10 +122,6 @@ function constructor.new(params)
 					synthetic.New "UISplitList" {
 						-- VerticalAlignment = Enum.VerticalAlignment.Top.Name,
 					},
-					synthetic.New "TextButton" {
-						LayoutOrder = 3,
-						Size = UDim2.fromOffset(50,30)
-					},
 				},
 			},
 			synthetic.New "Divider" {

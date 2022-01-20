@@ -176,46 +176,66 @@ function constructor.new(params:ButtonParameters | nil)
 		AutomaticSize = Enum.AutomaticSize.XY,
 		AutoButtonColor = false,
 		[fusion.Children] = {
-			fusion.New 'UIStroke' {
-				Color = util.tween(_MainColor),
-				Transparency = util.tween(fusion.Computed(function()
-					if enums.ButtonVariant[public.ButtonVariant:get()] == enums.ButtonVariant.Outlined then
-						return 0
-					elseif enums.ButtonVariant[public.ButtonVariant:get()] == enums.ButtonVariant.Filled then
-						return 1
-					elseif enums.ButtonVariant[public.ButtonVariant:get()] == enums.ButtonVariant.Text then
-						return 1
-					else
-						return 0
+			fusion.New "BindableEvent" {
+				Name = "OnActivated"
+			},
+			fusion.New "TextButton" {
+				BackgroundTransparency = 1,
+				Size = UDim2.fromScale(1,1),
+				[fusion.OnEvent("Activated")] = function()
+					if inst:FindFirstChild("OnActivated") then
+						inst.OnActivated:Fire()
 					end
-				end)),
-				ApplyStrokeMode = Enum.ApplyStrokeMode.Border,
-				Thickness = 2,
+				end,
+				ZIndex = 10,
 			},
-			fusion.New 'UICorner' {
-				CornerRadius = util.cornerRadius,
+			fusion.New "Frame" {
+				BackgroundTransparency = 1,
+				Name = "Display",
+				[fusion.Children] = {
+					fusion.New 'UIStroke' {
+						Color = util.tween(_MainColor),
+						Transparency = util.tween(fusion.Computed(function()
+							if enums.ButtonVariant[public.ButtonVariant:get()] == enums.ButtonVariant.Outlined then
+								return 0
+							elseif enums.ButtonVariant[public.ButtonVariant:get()] == enums.ButtonVariant.Filled then
+								return 1
+							elseif enums.ButtonVariant[public.ButtonVariant:get()] == enums.ButtonVariant.Text then
+								return 1
+							else
+								return 0
+							end
+						end)),
+						ApplyStrokeMode = Enum.ApplyStrokeMode.Border,
+						Thickness = 2,
+					},
+					fusion.New 'UICorner' {
+						CornerRadius = util.cornerRadius,
+					},
+					fusion.New 'UIListLayout' {
+						HorizontalAlignment = Enum.HorizontalAlignment.Center,
+						VerticalAlignment = Enum.VerticalAlignment.Center,
+					},
+					fusion.New 'UIPadding' {
+						PaddingBottom = _Padding,
+						PaddingTop = _Padding,
+						PaddingLeft = _Padding,
+						PaddingRight = _Padding,
+					},
+					synthetic.New 'Label' {
+						Typography = public.Typography,
+						Text = public.Text,
+						TextColor = _TextColor,
+						Image = public.Image,
+						ImageRectSize = public.ImageRectSize,
+						ImageRectOffset = public.ImageRectOffset,
+					},
+					synthetic.New 'GradientRipple' {
+						Color = _MainColor,
+					},
+				}
 			},
-			fusion.New 'UIListLayout' {
-				HorizontalAlignment = Enum.HorizontalAlignment.Center,
-				VerticalAlignment = Enum.VerticalAlignment.Center,
-			},
-			fusion.New 'UIPadding' {
-				PaddingBottom = _Padding,
-				PaddingTop = _Padding,
-				PaddingLeft = _Padding,
-				PaddingRight = _Padding,
-			},
-			synthetic.New 'Label' {
-				Typography = public.Typography,
-				Text = public.Text,
-				TextColor = _TextColor,
-				Image = public.Image,
-				ImageRectSize = public.ImageRectSize,
-				ImageRectOffset = public.ImageRectOffset,
-			},
-			synthetic.New 'GradientRipple' {
-				Color = _MainColor,
-			},
+
 		},
 		[fusion.OnEvent "InputBegan"] = function(inputObj)
 			_Hovered:set(true)

@@ -109,6 +109,10 @@ function constructor.new(params)
 				knobColor:set(knob.BackgroundColor3)
 			end))
 
+			if inst:FindFirstChild("OnChanged") then
+				inst:Fire(not public.Input:get())
+			end
+
 			task.delay(1, function()
 				rippleMaid:Destroy()
 			end)
