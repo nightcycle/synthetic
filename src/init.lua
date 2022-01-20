@@ -35,7 +35,6 @@
 	@param key string --the key the constructor will be organized under
 	@param constructor function --the constructor to be provided by synthetic.New
 ]=]
-print("Required")
 local constructorModules = {}
 local runService = game:GetService("RunService")
 local packages = script.Parent
@@ -76,16 +75,12 @@ setmetatable(interface, {
 })
 
 synthetic.New = function(key)
-	print(synthetic, key)
 	if constructors[key] then
-		print("A")
 		return constructors[key]
 	elseif constructorModules[key] then
-		print("B")
 		synthetic.Set(key, require(constructorModules[key]).new)
 		return constructors[key]
 	else
-		print("C")
 		return fusion.New(key)
 	end
 end
