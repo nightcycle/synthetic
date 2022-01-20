@@ -80,30 +80,32 @@ function constructor.new(params)
 
 	--construct
 	return util.set(fusion.New "Frame", public, params, {
-		AutomaticSize = Enum.AutomaticSize.Y,
-		Size = UDim2.fromScale(1,0),
+		AutomaticSize = Enum.AutomaticSize.X,
+		Size = fusion.Computed(function()
+			return UDim2.fromOffset(0,_TextSize:get()*2)
+		end),
 		BackgroundTransparency = 1,
 		[fusion.Children] = {
 			fusion.New 'UIListLayout' {
 				VerticalAlignment = Enum.VerticalAlignment.Center,
 				SortOrder = Enum.SortOrder.LayoutOrder,
-				HorizontalAlignment = Enum.HorizontalAlignment.Center,
+				HorizontalAlignment = Enum.HorizontalAlignment.Left,
 				Padding = UDim.new(0,0),
 				FillDirection = Enum.FillDirection.Vertical,
+			},
+			fusion.New 'UIPadding' {
+				PaddingBottom = _Padding,
+				PaddingTop = _Padding,
+				PaddingLeft = _Padding,
+				PaddingRight = _Padding,
 			},
 			fusion.New 'Frame' {
 				Name = "Content",
 				LayoutOrder = 1,
 				BackgroundTransparency = 1,
-				AutomaticSize = Enum.AutomaticSize.Y,
-				Size = UDim2.fromScale(1,0),
+				AutomaticSize = Enum.AutomaticSize.XY,
+				Size = UDim2.fromScale(0,0),
 				[fusion.Children] = {
-					fusion.New 'UIPadding' {
-						PaddingBottom = UDim.new(0,0),
-						PaddingTop = UDim.new(0,0),
-						PaddingLeft = _Padding,
-						PaddingRight = _Padding,
-					},
 					fusion.New 'TextLabel' {
 						LayoutOrder = 1,
 						AutomaticSize = Enum.AutomaticSize.XY,
@@ -116,6 +118,13 @@ function constructor.new(params)
 							return public.Typography:get().Font
 						end),
 						TextSize = util.tween(_TextSize),
+					},
+					synthetic.New "UISplitList" {
+						-- VerticalAlignment = Enum.VerticalAlignment.Top.Name,
+					},
+					synthetic.New "TextButton" {
+						LayoutOrder = 3,
+						Size = UDim2.fromOffset(50,30)
 					},
 				},
 			},

@@ -53,7 +53,9 @@ function constructor.new(params)
 		return script.Name
 	end)
 	local _Padding, _TextSize, _Font = util.getTypographyStates(public.Typography)
-
+	local _ReducedPadding = fusion.Computed(function()
+		return UDim.new(0, _Padding:get().Offset*0.5)
+	end)
 	--construct
 	return util.set(fusion.New "Frame", public, params, {
 		BackgroundTransparency = 1,
@@ -83,7 +85,7 @@ function constructor.new(params)
 				end),
 				PaddingTop = fusion.Computed(function()
 					if enums.DividerDirection[public.Direction:get()] == enums.DividerDirection.Horizontal then
-						return _Padding:get()
+						return _ReducedPadding:get()
 					else
 						return UDim.new(0,0)
 					end

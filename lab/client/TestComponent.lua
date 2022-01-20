@@ -11,18 +11,41 @@ function construct(synthetic)
 		BackgroundColor3 = Color3.fromHSV(1, 0, 0.9),
 		AnchorPoint = Vector2.new(0.5,0.5),
 		Position = UDim2.fromScale(0.5,0.5),
-		AutomaticSize = Enum.AutomaticSize.XY,
-		Size = UDim2.new(0.3, 0, 0, 20),
+		Size = UDim2.new(0, 0, 0, 0),
 		[synthetic.Children] = {
 			synthetic.New "UIPadding" {
 				PaddingTop = UDim.new(0, 15),
 				PaddingBottom = UDim.new(0, 15),
-				PaddingLeft = UDim.new(0,5),
-				PaddingRight = UDim.new(0,5),
+				PaddingLeft = UDim.new(0,2),
+				PaddingRight = UDim.new(0,2),
 			},
-			-- synthetic.New "PropertyFrame" {
-			-- 	Padding = UDim.new(0, 4),
-			-- },
+			synthetic.New "UIAbsoluteList" {
+				Padding = UDim.new(0,4),
+			},
+			synthetic.New "PropertyFrame" {
+				Text = "Prompt check",
+				TextColor = lineColor,
+				Typography = bodyType,
+				DividerEnabled = true,
+			},
+			synthetic.New "PropertyFrame" {
+				Text = "Prompt check",
+				TextColor = lineColor,
+				Typography = bodyType,
+				DividerEnabled = true,
+			},
+			synthetic.New "PropertyFrame" {
+				Text = "Prompt check",
+				TextColor = lineColor,
+				Typography = bodyType,
+				DividerEnabled = true,
+			},
+			synthetic.New "PropertyFrame" {
+				Text = "Prompt check",
+				TextColor = lineColor,
+				Typography = bodyType,
+				DividerEnabled = true,
+			},
 			-- synthetic.New "Slider" {
 			-- 	Typography = buttonType,
 			-- 	Color = color,

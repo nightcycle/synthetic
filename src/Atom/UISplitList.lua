@@ -69,12 +69,6 @@ function constructor.new(params)
 
 	local _AbsoluteMinimumWidth = fusion.State(0)
 
-	local tweenParams = {
-		Duration = 0.8,
-		EasingStyle = Enum.EasingStyle.Cubic,
-		EasingDirection = Enum.EasingDirection.Out,
-	}
-
 	--construct
 	local inst = util.set(fusion.New "UISizeConstraint", public, params, {
 		MinSize = fusion.Computed(function()
@@ -184,7 +178,9 @@ function constructor.new(params)
 		maid._parentResize = parent:GetPropertyChangedSignal("AbsoluteSize"):Connect(function()
 			solve()
 		end)
+
 		maid._parentChildAdded = parent.ChildAdded:Connect(function(child)
+			if not child:IsA("GuiObject") then return end
 			local childMaid = maidConstructor.new()
 			maid[child] = childMaid
 			childMaid:GiveTask(child:GetPropertyChangedSignal("AbsoluteSize"):Connect(function()
