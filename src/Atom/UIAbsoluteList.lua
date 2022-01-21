@@ -45,7 +45,7 @@ function constructor.new(params)
 		local parent = inst.Parent
 		local guiObjects = {}
 		for i, guiObject in ipairs(parent:GetChildren()) do
-			if guiObject:IsA("GuiObject") then
+			if guiObject:IsA("GuiObject") and guiObject.Visible then
 				table.insert(guiObjects, guiObject)
 			end
 		end
@@ -94,10 +94,14 @@ function constructor.new(params)
 		maid._parentResize = parent:GetPropertyChangedSignal("AbsoluteSize"):Connect(function()
 			solve()
 		end)
+
 		maid._parentChildAdded = parent.ChildAdded:Connect(function(child)
 			if not child:IsA("GuiObject") then return end
 			local childMaid = maidConstructor.new()
 			maid[child] = childMaid
+			childMaid:GiveTask(child:GetPropertyChangedSignal("Visible"):Connect(function()
+				solve()
+			end))
 			childMaid:GiveTask(child:GetPropertyChangedSignal("AbsoluteSize"):Connect(function()
 				solve()
 			end))

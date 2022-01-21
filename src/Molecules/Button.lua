@@ -176,8 +176,21 @@ function constructor.new(params:ButtonParameters | nil)
 		AutomaticSize = Enum.AutomaticSize.XY,
 		AutoButtonColor = false,
 		[fusion.Children] = {
+			fusion.New 'UICorner' {
+				CornerRadius = util.cornerRadius,
+			},
+			fusion.New 'UIPadding' {
+				PaddingBottom = _Padding,
+				PaddingTop = _Padding,
+				PaddingLeft = _Padding,
+				PaddingRight = _Padding,
+			},
+
+			synthetic.New 'GradientRipple' {
+				Color = _MainColor,
+			},
 			fusion.New "BindableEvent" {
-				Name = "OnActivated"
+				Name = "OnActivated",
 			},
 			fusion.New "TextButton" {
 				BackgroundTransparency = 1,
@@ -187,11 +200,23 @@ function constructor.new(params:ButtonParameters | nil)
 						inst.OnActivated:Fire()
 					end
 				end,
+				[fusion.OnEvent "MouseButton1Down"] = function(x, y)
+					effects.sound("ui_tap-variant-01")
+					if inst:FindFirstChild("GradientRipple") then
+						local ripple = inst:FindFirstChild("GradientRipple")
+						ripple.Effect:Fire(Vector2.new(x,y))
+					end
+					_Clicked:set(true)
+				end,
+				[fusion.OnEvent "MouseButton1Up"] = function()
+					_Clicked:set(false)
+				end,
 				ZIndex = 10,
 			},
 			fusion.New "Frame" {
 				BackgroundTransparency = 1,
 				Name = "Display",
+				AutomaticSize = Enum.AutomaticSize.XY,
 				[fusion.Children] = {
 					fusion.New 'UIStroke' {
 						Color = util.tween(_MainColor),
@@ -209,18 +234,9 @@ function constructor.new(params:ButtonParameters | nil)
 						ApplyStrokeMode = Enum.ApplyStrokeMode.Border,
 						Thickness = 2,
 					},
-					fusion.New 'UICorner' {
-						CornerRadius = util.cornerRadius,
-					},
 					fusion.New 'UIListLayout' {
 						HorizontalAlignment = Enum.HorizontalAlignment.Center,
 						VerticalAlignment = Enum.VerticalAlignment.Center,
-					},
-					fusion.New 'UIPadding' {
-						PaddingBottom = _Padding,
-						PaddingTop = _Padding,
-						PaddingLeft = _Padding,
-						PaddingRight = _Padding,
 					},
 					synthetic.New 'Label' {
 						Typography = public.Typography,
@@ -229,9 +245,6 @@ function constructor.new(params:ButtonParameters | nil)
 						Image = public.Image,
 						ImageRectSize = public.ImageRectSize,
 						ImageRectOffset = public.ImageRectOffset,
-					},
-					synthetic.New 'GradientRipple' {
-						Color = _MainColor,
 					},
 				}
 			},
@@ -244,17 +257,6 @@ function constructor.new(params:ButtonParameters | nil)
 		[fusion.OnEvent "InputEnded"] = function(inputObj)
 			_TipEnabled:set(false)
 			_Hovered:set(false)
-			_Clicked:set(false)
-		end,
-		[fusion.OnEvent "MouseButton1Down"] = function(x, y)
-			effects.sound("ui_tap-variant-01")
-			if inst:FindFirstChild("GradientRipple") then
-				local ripple = inst:FindFirstChild("GradientRipple")
-				ripple.Effect:Fire(Vector2.new(x,y))
-			end
-			_Clicked:set(true)
-		end,
-		[fusion.OnEvent "MouseButton1Up"] = function()
 			_Clicked:set(false)
 		end,
 	}, maid)
