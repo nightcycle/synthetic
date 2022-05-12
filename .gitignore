@@ -1,6 +1,7 @@
 build
 .vscode
 wally.lock
+old
 package-lock.json
 Packages
 .gitconfig
