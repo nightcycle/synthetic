@@ -3,34 +3,29 @@
 registry = "test"
 
 [[package]]
-name = "nightcycle/checkbox"
-version = "0.1.6"
-dependencies = [["coldfusion", "nightcycle/cold-fusion@1.0.14"], ["isotope", "nightcycle/isotope@1.1.13"], ["maid", "quenty/maid@2.0.1-canary.140ed9d6.1"], ["signal", "quenty/signal@2.0.0-canary.140ed9d6.2"]]
+name = "nightcycle/boat-graph"
+version = "1.0.2"
+dependencies = [["maid", "quenty/maid@2.0.1-canary.140ed9d6.1"]]
 
 [[package]]
 name = "nightcycle/cold-fusion"
-version = "1.0.14"
+version = "1.1.0"
 dependencies = [["maid", "quenty/maid@2.0.1-canary.140ed9d6.1"], ["signal", "quenty/signal@2.0.0-canary.140ed9d6.2"], ["testez", "roblox/testez@0.4.1"]]
 
 [[package]]
 name = "nightcycle/format"
-version = "0.1.0"
-dependencies = [["coldfusion", "nightcycle/cold-fusion@1.0.14"], ["maid", "quenty/maid@2.0.1-canary.140ed9d6.1"], ["signal", "quenty/signal@2.0.0-canary.140ed9d6.2"], ["string", "nightcycle/string@0.1.0"]]
-
-[[package]]
-name = "nightcycle/iconlabel"
-version = "0.1.6"
-dependencies = [["coldfusion", "nightcycle/cold-fusion@1.0.14"], ["format", "nightcycle/format@0.1.0"], ["isotope", "nightcycle/isotope@1.1.13"], ["maid", "quenty/maid@2.0.1-canary.140ed9d6.1"], ["signal", "quenty/signal@2.0.0-canary.140ed9d6.2"]]
+version = "0.1.2"
+dependencies = [["coldfusion", "nightcycle/cold-fusion@1.1.0"], ["maid", "quenty/maid@2.0.1-canary.140ed9d6.1"], ["signal", "quenty/signal@2.0.0-canary.140ed9d6.2"], ["string", "nightcycle/string@0.1.0"]]
 
 [[package]]
 name = "nightcycle/isotope"
-version = "1.1.13"
-dependencies = [["coldfusion", "nightcycle/cold-fusion@1.0.14"], ["maid", "quenty/maid@2.0.1-canary.140ed9d6.1"], ["signal", "quenty/signal@2.0.0-canary.140ed9d6.2"], ["testez", "roblox/testez@0.4.1"]]
+version = "1.1.21"
+dependencies = [["coldfusion", "nightcycle/cold-fusion@1.1.0"], ["maid", "quenty/maid@2.0.1-canary.140ed9d6.1"], ["signal", "quenty/signal@2.0.0-canary.140ed9d6.2"], ["testez", "roblox/testez@0.4.1"]]
 
 [[package]]
-name = "nightcycle/radio-button"
-version = "0.1.6"
-dependencies = [["coldfusion", "nightcycle/cold-fusion@1.0.14"], ["isotope", "nightcycle/isotope@1.1.13"], ["maid", "quenty/maid@2.0.1-canary.140ed9d6.1"], ["signal", "quenty/signal@2.0.0-canary.140ed9d6.2"]]
+name = "nightcycle/math"
+version = "2.2.1"
+dependencies = [["graph", "nightcycle/boat-graph@1.0.2"], ["testez", "roblox/testez@0.4.1"]]
 
 [[package]]
 name = "nightcycle/string"
@@ -38,19 +33,9 @@ version = "0.1.0"
 dependencies = []
 
 [[package]]
-name = "nightcycle/switch"
-version = "0.1.6"
-dependencies = [["coldfusion", "nightcycle/cold-fusion@1.0.14"], ["isotope", "nightcycle/isotope@1.1.13"], ["maid", "quenty/maid@2.0.1-canary.140ed9d6.1"], ["signal", "quenty/signal@2.0.0-canary.140ed9d6.2"]]
-
-[[package]]
 name = "nightcycle/synthetic"
-version = "3.0.4"
-dependencies = [["checkbox", "nightcycle/checkbox@0.1.6"], ["iconlabel", "nightcycle/iconlabel@0.1.6"], ["radiobutton", "nightcycle/radio-button@0.1.6"], ["switch", "nightcycle/switch@0.1.6"], ["textlabel", "nightcycle/textlabel@0.1.5"]]
-
-[[package]]
-name = "nightcycle/textlabel"
-version = "0.1.5"
-dependencies = [["coldfusion", "nightcycle/cold-fusion@1.0.14"], ["format", "nightcycle/format@0.1.0"], ["iconlabel", "nightcycle/iconlabel@0.1.6"], ["isotope", "nightcycle/isotope@1.1.13"], ["maid", "quenty/maid@2.0.1-canary.140ed9d6.1"], ["signal", "quenty/signal@2.0.0-canary.140ed9d6.2"]]
+version = "3.0.12"
+dependencies = [["coldfusion", "nightcycle/cold-fusion@1.1.0"], ["format", "nightcycle/format@0.1.2"], ["isotope", "nightcycle/isotope@1.1.21"], ["maid", "quenty/maid@2.0.1-canary.140ed9d6.1"], ["math", "nightcycle/math@2.2.1"], ["signal", "quenty/signal@2.0.0-canary.140ed9d6.2"]]
 
 [[package]]
 name = "quenty/maid"
