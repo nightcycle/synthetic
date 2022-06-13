@@ -71,6 +71,13 @@ function TextLabel.new(config)
 				RichText = true,
 				TextColor3 = self.TextColor3,
 				TextSize = self.TextSize,
+				Visible = self._Fuse.Computed(self.Text, function(txt)
+					if not txt or string.len(txt) == 0 then
+						return false
+					else
+						return true
+					end
+				end),
 				Font = self.Font,
 				LayoutOrder = 2,
 				TextTransparency = self.TextTransparency,
@@ -86,7 +93,7 @@ function TextLabel.new(config)
 				Size = self.IconSize,
 				LayoutOrder = 1,
 				Visible = self._Fuse.Computed(self.LeftIcon, function(icon)
-					return icon ~= nil
+					return icon ~= nil and icon ~= ""
 				end),
 				Name = "LeftIcon",
 				Icon = self.LeftIcon,
@@ -96,8 +103,8 @@ function TextLabel.new(config)
 			Icon.new {
 				Size = self.IconSize,
 				LayoutOrder = 3,
-				Visible = self._Fuse.Computed(self.LeftIcon, function(icon)
-					return icon ~= nil
+				Visible = self._Fuse.Computed(self.RightIcon, function(icon)
+					return icon ~= nil and icon ~= ""
 				end),
 				Name = "RightIcon",
 				Icon = self.RightIcon,

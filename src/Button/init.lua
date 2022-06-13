@@ -50,7 +50,7 @@ function Button.new(config)
 	self.TextXAlignment = self:Import(config.TextXAlignment, Enum.TextXAlignment.Center)
 	self.TextYAlignment = self:Import(config.TextYAlignment, Enum.TextYAlignment.Center)
 
-	self.Text = self:Import(config.Text, "Button *Time*")
+	self.Text = self:Import(config.Text, "")
 	self.LeftIcon = self:Import(config.LeftIcon)
 	self.RightIcon = self:Import(config.RightIcon)
 	self.TextOnly = self:Import(config.TextOnly, false)
@@ -60,17 +60,25 @@ function Button.new(config)
 		return UDim2.fromOffset(size, size)
 	end)
 
+
+
 	self.IsHovering = self._Fuse.Value(false)
 	self.IsPressing = self._Fuse.Value(false)
 	self.IsRippling = self._Fuse.Value(false)
 
-
 	self.Activated = Signal.new()
 	self.MouseButton1Down = Signal.new()
 	self.MouseButton1Up = Signal.new()
-
 	self.InputBegan = Signal.new()
 	self.InputEnded = Signal.new()
+	
+	self.ClickSound = self:Import(config.ClickSound, nil)
+	self._Maid:GiveTask(self.Activated:Connect(function()
+		local clickSound = self.ClickSound:Get()
+		if clickSound then
+			SoundService:PlayLocalSound(clickSound)
+		end
+	end))
 
 	self.ClickCenter = self._Fuse.Value(0.5)
 	self.ClickTick = self._Fuse.Value(0)

@@ -8,5 +8,5 @@ end
 
 return function(className)
 	assert(modules[className], "Bad Synthetic ClassName")
-	return require(modules[className])
+	return require(modules[className]).new
 end

@@ -29,14 +29,15 @@ function IconLabel.new(config)
 	self.DotsPerInch = self._Fuse.Value(36)
 
 	self.IconData = self._Fuse.Computed(self.Icon, self.DotsPerInch, function(key, dpi)
-		if not key then return {} end
+		if not key or key == "" then return {} end
 		local iconResolutions = Spritesheet[string.lower(key)] or {}
 		return iconResolutions[dpi]
 	end)
 
 	local parameters = {
 		BackgroundTransparency = 1,
-		Image = self._Fuse.Computed(self.IconData, function(iconData)
+		Image = self._Fuse.Computed(self.IconData, self.Icon, function(iconData, key)
+			if not key or key == "" then return "" end
 			if not iconData then return "" end
 			return "rbxassetid://"..iconData.Sheet
 		end),

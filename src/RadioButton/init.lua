@@ -25,8 +25,8 @@ function RadioButton.new(config)
 	self.Color3 = self:Import(config.Color3, Color3.fromHSV(0.6,1,1))
 	self.BubbleColor3 = self:Import(config.BubbleColor3, Color3.fromHSV(0,0,0.7))
 	self.Value = self:Import(config.Value, false)
-	self.EnableSound = self:Import(config.EnableSound):CleanUp()
-	self.DisableSound = self:Import(config.DisableSound):CleanUp()
+	self.EnableSound = self:Import(config.EnableSound)
+	self.DisableSound = self:Import(config.DisableSound)
 	self.Padding = self._Fuse.Computed(self.Scale, function(scale)
 		return math.round(6 * scale)
 	end)
@@ -40,14 +40,12 @@ function RadioButton.new(config)
 		if self.Value:Get() == true then
 			local clickSound = self.EnableSound:Get()
 			if clickSound then
-				clickSound.Parent = self.Instance
-				clickSound:Play()
+				SoundService:PlayLocalSound(clickSound)
 			end
 		else
 			local clickSound = self.DisableSound:Get()
 			if clickSound then
-				clickSound.Parent = self.Instance
-				clickSound:Play()
+				SoundService:PlayLocalSound(clickSound)
 			end
 		end
 		if self.BubbleEnabled:Get() == false then
