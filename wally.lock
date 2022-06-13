@@ -9,18 +9,18 @@ dependencies = [["maid", "quenty/maid@2.0.1-canary.140ed9d6.1"]]
 
 [[package]]
 name = "nightcycle/cold-fusion"
-version = "1.1.0"
-dependencies = [["maid", "quenty/maid@2.0.1-canary.140ed9d6.1"], ["signal", "quenty/signal@2.0.0-canary.140ed9d6.2"], ["testez", "roblox/testez@0.4.1"]]
+version = "1.2.5"
+dependencies = [["maid", "quenty/maid@2.0.1-canary.140ed9d6.1"], ["signal", "quenty/signal@2.0.0-canary.140ed9d6.2"]]
 
 [[package]]
 name = "nightcycle/format"
 version = "0.1.2"
-dependencies = [["coldfusion", "nightcycle/cold-fusion@1.1.0"], ["maid", "quenty/maid@2.0.1-canary.140ed9d6.1"], ["signal", "quenty/signal@2.0.0-canary.140ed9d6.2"], ["string", "nightcycle/string@0.1.0"]]
+dependencies = [["coldfusion", "nightcycle/cold-fusion@1.2.5"], ["maid", "quenty/maid@2.0.1-canary.140ed9d6.1"], ["signal", "quenty/signal@2.0.0-canary.140ed9d6.2"], ["string", "nightcycle/string@0.1.0"]]
 
 [[package]]
 name = "nightcycle/isotope"
-version = "1.1.21"
-dependencies = [["coldfusion", "nightcycle/cold-fusion@1.1.0"], ["maid", "quenty/maid@2.0.1-canary.140ed9d6.1"], ["signal", "quenty/signal@2.0.0-canary.140ed9d6.2"], ["testez", "roblox/testez@0.4.1"]]
+version = "1.1.28"
+dependencies = [["coldfusion", "nightcycle/cold-fusion@1.2.5"], ["maid", "quenty/maid@2.0.1-canary.140ed9d6.1"], ["signal", "quenty/signal@2.0.0-canary.140ed9d6.2"]]
 
 [[package]]
 name = "nightcycle/math"
@@ -34,8 +34,8 @@ dependencies = []
 
 [[package]]
 name = "nightcycle/synthetic"
-version = "3.0.12"
-dependencies = [["coldfusion", "nightcycle/cold-fusion@1.1.0"], ["format", "nightcycle/format@0.1.2"], ["isotope", "nightcycle/isotope@1.1.21"], ["maid", "quenty/maid@2.0.1-canary.140ed9d6.1"], ["math", "nightcycle/math@2.2.1"], ["signal", "quenty/signal@2.0.0-canary.140ed9d6.2"]]
+version = "3.1.8"
+dependencies = [["coldfusion", "nightcycle/cold-fusion@1.2.5"], ["format", "nightcycle/format@0.1.2"], ["isotope", "nightcycle/isotope@1.1.28"], ["maid", "quenty/maid@2.0.1-canary.140ed9d6.1"], ["math", "nightcycle/math@2.2.1"], ["signal", "quenty/signal@2.0.0-canary.140ed9d6.2"]]
 
 [[package]]
 name = "quenty/maid"

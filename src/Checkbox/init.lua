@@ -2,10 +2,13 @@
 local SoundService = game:GetService("SoundService")
 local ReplicatedStorage = game:GetService("ReplicatedStorage")
 
-local packages = script.Parent.Parent
+local package = script.Parent
+local packages = package.Parent
 
 local Isotope = require(packages:WaitForChild("isotope"))
 local Signal = require(packages:WaitForChild("signal"))
+
+local Bubble = require(package:WaitForChild("Bubble"))
 
 local Checkbox = {}
 Checkbox.__index = Checkbox
@@ -20,10 +23,9 @@ function Checkbox.new(config)
 	self.Name = self:Import(config.Name, script.Name)
 	self.ClassName = self._Fuse.Computed(function() return script.Name end)
 	self.Scale = self:Import(config.Scale, 1)
-	self.TextColor3 = self:Import(config.TextColor3, Color3.new(1,1,1))
 	self.BorderColor3 = self:Import(config.BorderColor3, Color3.fromHSV(0,0,0.4))
-	self.Color3 = self:Import(config.BackgroundColor3, Color3.fromHSV(0.6,1,1))
-	self.BubbleColor3 = self:Import(config.BubbleColor3, Color3.fromHSV(0,0,0.7))
+	self.BackgroundColor3 = self:Import(config.BackgroundColor3, Color3.fromHSV(0.6,1,1))
+
 	self.Value = self:Import(config.Value, false)
 	self.EnableSound = self:Import(config.EnableSound)
 	self.DisableSound = self:Import(config.DisableSound)
@@ -33,6 +35,14 @@ function Checkbox.new(config)
 	self.Width = self._Fuse.Computed(self.Scale, function(scale)
 		return math.round(scale * 20)
 	end)
+	
+	self.TweenColor = self._Fuse.Computed(self.Value, self.BorderColor3, self.BackgroundColor3, function(val, borderColor3, backgroundColor3)
+		if not val then
+			return borderColor3
+		else
+			return backgroundColor3
+		end
+	end):Tween()
 
 	self.Activated = Signal.new()
 	self.BubbleEnabled = self._Fuse.Value(false)
@@ -73,6 +83,13 @@ function Checkbox.new(config)
 				AnchorPoint = Vector2.new(0.5,0.5),
 				[self._Fuse.Event "Activated"] = function()
 					self.Activated:Fire()
+					if self.BubbleEnabled:Get() then
+						local bubble = Bubble.new {
+							Parent = self.Instance,
+						}
+						local fireFunction = bubble:WaitForChild("Fire")
+						fireFunction:Invoke()
+					end
 				end
 			},
 			self._Fuse.new "ImageLabel" {
@@ -81,13 +98,13 @@ function Checkbox.new(config)
 				Image = "rbxassetid://3926305904",
 				ImageRectOffset = Vector2.new(312,4),
 				ImageRectSize = Vector2.new(24,24),
-				ImageColor3 = self.TextColor3,
+				ImageColor3 = self.BorderColor3,
 				ImageTransparency = self._Fuse.Computed(self.Value, function(val)
 					if val then return 0 else return 1 end
 				end):Tween(),
 				Position = UDim2.fromScale(0.5,0.5),
 				AnchorPoint = Vector2.new(0.5,0.5),
-				BackgroundColor3 = self.Color3,
+				BackgroundColor3 = self.TweenColor,
 				BackgroundTransparency = self._Fuse.Computed(self.Value, function(val)
 					if val then
 						return 0
@@ -111,40 +128,8 @@ function Checkbox.new(config)
 							return math.round(padding*0.25)
 						end),
 						Transparency = 0,
-						Color = self._Fuse.Computed(
-							self.Value,
-							self.BorderColor3,
-							self.Color3, function(val, border, background)
-							if val then return background else return border end
-						end):Tween()
+						Color = self.TweenColor,
 					}
-				}
-			},
-			self._Fuse.new "Frame" {
-				Name = "Bubble",
-				Position = UDim2.fromScale(0.5,0.5),
-				AnchorPoint = Vector2.new(0.5,0.5),
-				BorderSizePixel = 0,
-				ZIndex = 1,
-				BackgroundColor3 = self.BubbleColor3,
-				Size = self._Fuse.Computed(self.BubbleEnabled, self.Value, function(bVal, val)
-					if val then
-						return UDim2.fromScale(1, 1)
-					else
-						return UDim2.fromScale(0, 0)
-					end
-				end):Tween(),
-				BackgroundTransparency = self._Fuse.Computed(self.BubbleEnabled, self.Value, function(bVal, val)
-					if bVal == false then
-						return 1
-					else
-						return 0
-					end
-				end):Tween(0.5),
-				[self._Fuse.Children] = {
-					self._Fuse.new "UICorner" {
-						CornerRadius = UDim.new(0.5,0),
-					},
 				}
 			},
 		}

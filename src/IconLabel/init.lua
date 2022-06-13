@@ -2,7 +2,8 @@
 local SoundService = game:GetService("SoundService")
 local ReplicatedStorage = game:GetService("ReplicatedStorage")
 
-local packages = script.Parent.Parent
+local package = script.Parent
+local packages = package.Parent
 
 local Isotope = require(packages:WaitForChild("isotope"))
 local Signal = require(packages:WaitForChild("signal"))

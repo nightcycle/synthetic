@@ -32,10 +32,11 @@ function TextLabel.new(config)
 	self.TextYAlignment = self:Import(config.TextYAlignment, Enum.TextYAlignment.Center)
 	self.Text = self:Import(config.Text, false)
 	self.Font = self:Import(config.Font, Enum.Font.Gotham)
+	self.IconScale = self:Import(config.IconScale, 1.25)
 	self.LeftIcon = self:Import(config.LeftIcon)
 	self.RightIcon = self:Import(config.RightIcon)
-	self.IconSize = self._Fuse.Computed(self.TextSize, function(textSize)
-		local size = math.round(textSize*1.25)
+	self.IconSize = self._Fuse.Computed(self.TextSize, self.IconScale, function(textSize, scale)
+		local size = math.round(textSize*scale)
 		return UDim2.fromOffset(size, size)
 	end)
 	local parameters = {
@@ -66,6 +67,9 @@ function TextLabel.new(config)
 					end
 				end),
 				Padding = self.Padding,
+				-- self._Fuse.Computed(self.Padding, function(pad)
+				-- 	return UDim.new(pad.Scale*2, pad.Offset*2)
+				-- end),
 			},
 			self._Fuse.new "TextLabel" {
 				RichText = true,

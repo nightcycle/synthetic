@@ -1,7 +1,9 @@
 
 local RunService = game:GetService("RunService")
 
-local packages = script.Parent.Parent
+local package = script.Parent
+local packages = package.Parent
+
 local Isotope = require(packages:WaitForChild("isotope"))
 local math = require(packages:WaitForChild("math"))
 

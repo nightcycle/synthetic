@@ -2,16 +2,20 @@
 local SoundService = game:GetService("SoundService")
 local ReplicatedStorage = game:GetService("ReplicatedStorage")
 
-local packages = script.Parent.Parent
+local package = script.Parent
+local packages = package.Parent
 
 local Isotope = require(packages:WaitForChild("isotope"))
 local Signal = require(packages:WaitForChild("signal"))
+
+local Bubble = require(package:WaitForChild("Bubble"))
 
 local Switch = {}
 Switch.__index = Switch
 setmetatable(Switch, Isotope)
 
 function Switch:Destroy()
+	self.ActiveColor3:Unlock()
 	Isotope.Destroy(self)
 end
 
@@ -20,10 +24,8 @@ function Switch.new(config)
 	self.Name = self:Import(config.Name, script.Name)
 	self.ClassName = self._Fuse.Computed(function() return script.Name end)
 	self.Scale = self:Import(config.Scale, 1)
-	self.TextColor3 = self:Import(config.TextColor3, Color3.new(1,1,1))
 	self.BackgroundColor3 = self:Import(config.BackgroundColor3, Color3.fromHSV(0,0,0.9))
-	self.Color3 = self:Import(config.Color3, Color3.fromHSV(0.6,1,1))
-	self.BubbleColor3 = self:Import(config.BubbleColor3, Color3.fromHSV(0,0,0.7))
+	self.EnabledColor3 = self:Import(config.Color3, Color3.fromHSV(0.6,1,1))
 	self.Value = self:Import(config.Value, false)
 	self.EnableSound = self:Import(config.EnableSound)
 	self.DisableSound = self:Import(config.DisableSound)
@@ -54,6 +56,63 @@ function Switch.new(config)
 			self.BubbleEnabled:Set(false)
 		end
 	end))
+	self.ActiveColor3 = self._Fuse.Computed(
+		self.Value,
+		self.BackgroundColor3,
+		self.EnabledColor3,
+		function(val, back, col)
+			if val then
+				return col
+			else
+				return back
+			end
+		end
+	):Lock()
+	self.Knob = self._Fuse.new "Frame" {
+		Name = "Knob",
+		ZIndex = 2,
+		Position = self._Fuse.Computed(
+			self.Value,
+			function(val)
+				if val then
+					return UDim2.fromScale(1,0.5)
+				else
+					return UDim2.fromScale(0,0.5)
+				end
+			end
+		):Tween(),
+		AnchorPoint = Vector2.new(0.5,0.5),
+		Size = UDim2.fromScale(1,1),
+		SizeConstraint = Enum.SizeConstraint.RelativeYY,
+		BackgroundTransparency = 1,
+		[self._Fuse.Children] = {
+			self._Fuse.new "Frame" {
+				Name = "Frame",
+				ZIndex = 2,
+				Position = UDim2.fromScale(0.5,0.5),
+				AnchorPoint = Vector2.new(0.5,0.5),
+				BackgroundColor3 = self.ActiveColor3:Tween(),
+				Size = self._Fuse.Computed(self.Width, self.Padding, function(width, padding)
+					return UDim2.fromOffset(width-padding, width-padding)
+				end),
+				BorderSizePixel = 0,
+				[self._Fuse.Children] = {
+					self._Fuse.new "UICorner" {
+						CornerRadius = self._Fuse.Computed(self.Padding, function(padding)
+							return UDim.new(1,0)
+						end)
+					},
+					self._Fuse.new "UIStroke" {
+						ApplyStrokeMode = Enum.ApplyStrokeMode.Border,
+						Thickness = self._Fuse.Computed(self.Padding, function(padding)
+							return 1--math.round(padding*0.25)
+						end),
+						Transparency = 0.8,
+					}
+				}
+			},
+		},
+	}
 
 	local parameters = {
 		Size = self._Fuse.Computed(self.Width, function(width)
@@ -71,6 +130,15 @@ function Switch.new(config)
 				AnchorPoint = Vector2.new(0.5,0.5),
 				[self._Fuse.Event "Activated"] = function()
 					self.Activated:Fire()
+					if self.BubbleEnabled:Get() then
+						local bubble = Bubble.new {
+							Parent = self.Knob,
+							-- BackgroundColor3 = self.ActiveColor3,
+							-- BackgroundTransparency = 0.6,
+						}
+						local fireFunction = bubble:WaitForChild("Fire")
+						fireFunction:Invoke()
+					end
 				end
 			},
 			self._Fuse.new "Frame" {
@@ -96,7 +164,7 @@ function Switch.new(config)
 						end),
 						BackgroundColor3 = self._Fuse.Computed(
 							self.Value,
-							self.Color3, function(val, col)
+							self.EnabledColor3, function(val, col)
 							local h,s,v = col:ToHSV()
 							if val then
 								return Color3.fromHSV(h, 0.5, 1)
@@ -110,101 +178,7 @@ function Switch.new(config)
 							}
 						},
 					},
-					self._Fuse.new "Frame" {
-						Name = "Knob",
-						ZIndex = 2,
-						Position = self._Fuse.Computed(
-							self.Value,
-							function(val)
-								if val then
-									return UDim2.fromScale(1,0.5)
-								else
-									return UDim2.fromScale(0,0.5)
-								end
-							end
-						):Tween(),
-						-- Position = UDim2.fromScale(0.5,0.5),
-						-- AnchorPoint = self._Fuse.Computed(
-						-- 	self.Value,
-						-- 	function(val)
-						-- 		if val then
-						-- 			return Vector2.new(0,0.5)
-						-- 		else
-						-- 			return Vector2.new(1,0.5)
-						-- 		end
-						-- 	end
-						-- ):Tween(),
-						AnchorPoint = Vector2.new(0.5,0.5),
-
-						Size = UDim2.fromScale(1,1),
-						SizeConstraint = Enum.SizeConstraint.RelativeYY,
-						BackgroundTransparency = 1,
-						[self._Fuse.Children] = {
-							self._Fuse.new "Frame" {
-								Name = "Frame",
-								ZIndex = 2,
-								Position = UDim2.fromScale(0.5,0.5),
-								AnchorPoint = Vector2.new(0.5,0.5),
-								BackgroundColor3 = self._Fuse.Computed(
-									self.Value,
-									self.BackgroundColor3,
-									self.Color3,
-									function(val, back, col)
-										if val then
-											return col
-										else
-											return back
-										end
-									end
-								):Tween(),
-								Size = self._Fuse.Computed(self.Width, self.Padding, function(width, padding)
-									return UDim2.fromOffset(width-padding, width-padding)
-								end),
-								BorderSizePixel = 0,
-								[self._Fuse.Children] = {
-									self._Fuse.new "UICorner" {
-										CornerRadius = self._Fuse.Computed(self.Padding, function(padding)
-											return UDim.new(1,0)
-										end)
-									},
-									self._Fuse.new "UIStroke" {
-										ApplyStrokeMode = Enum.ApplyStrokeMode.Border,
-										Thickness = self._Fuse.Computed(self.Padding, function(padding)
-											return 1--math.round(padding*0.25)
-										end),
-										Transparency = 0.8,
-									}
-								}
-							},
-							self._Fuse.new "Frame" {
-								Name = "Bubble",
-								Position = UDim2.fromScale(0.5,0.5),
-								AnchorPoint = Vector2.new(0.5,0.5),
-								BorderSizePixel = 0,
-								ZIndex = 1,
-								BackgroundColor3 = self.BubbleColor3,
-								Size = self._Fuse.Computed(self.BubbleEnabled, self.Value, function(bVal, val)
-									if val then
-										return UDim2.fromScale(1, 1)
-									else
-										return UDim2.fromScale(0, 0)
-									end
-								end):Tween(),
-								BackgroundTransparency = self._Fuse.Computed(self.BubbleEnabled, self.Value, function(bVal, val)
-									if bVal == false then
-										return 1
-									else
-										return 0
-									end
-								end):Tween(0.5),
-								[self._Fuse.Children] = {
-									self._Fuse.new "UICorner" {
-										CornerRadius = UDim.new(0.5,0),
-									},
-								}
-							},
-						},
-					}
+					self.Knob,
 				}
 			},
 		}

@@ -29,7 +29,8 @@ function Button.new(config)
 	self.Padding = self:Import(config.Padding, UDim.new(0, 2))
 	self.CornerRadius = self:Import(config.CornerRadius, UDim.new(0,4))
 	self.TextSize = self:Import(config.TextSize, 14)
-
+	self.Size = self:Import(config.Size, nil)
+	self.IconScale = self:Import(config.IconScale, 1.25)
 	self.BorderSizePixel = self:Import(config.BorderSizePixel, 3)
 	self.TextColor3 = self:Import(config.TextColor3, Color3.new(0.2,0.2,0.2))
 	self.Font = self:Import(config.Font, Enum.Font.GothamBold)
@@ -59,9 +60,20 @@ function Button.new(config)
 		local size = math.round(textSize*1.25)
 		return UDim2.fromOffset(size, size)
 	end)
-
-
-
+	self.ActiveBorderColor3 = self._Fuse.Computed(self.BackgroundTransparency, self.BorderColor3, self.BackgroundColor3, function(trans, border, background)
+		if trans == 0 then
+			return background
+		else
+			return border
+		end
+	end)
+	self.ActiveBorderTransparency = self._Fuse.Computed(self.BackgroundTransparency, function(backTrans)
+		if backTrans == 0 then
+			return 1
+		else
+			return 0
+		end
+	end)
 	self.IsHovering = self._Fuse.Value(false)
 	self.IsPressing = self._Fuse.Value(false)
 	self.IsRippling = self._Fuse.Value(false)
@@ -114,14 +126,13 @@ function Button.new(config)
 		end
 	)
 
-
 	self.TextLabel = TextLabel.new {
 		BackgroundTransparency = 1,
 		TextTransparency = self.TextTransparency,
 
 		ZIndex = 2,
 		Font = self.Font,
-		Padding = UDim.new(0,0),
+		Padding = self.Padding,
 		TextSize = self.TextSize,
 		TextColor3 = self._Fuse.Computed(
 			self.IsHovering,
@@ -143,7 +154,7 @@ function Button.new(config)
 		TextYAlignment = self.TextYAlignment,
 
 		Text = self.Text,
-
+		IconScale = self.IconScale,
 		LeftIcon = self.LeftIcon,
 		RightIcon = self.RightIcon,
 		AnchorPoint = Vector2.new(0.5,0.5),
@@ -152,7 +163,8 @@ function Button.new(config)
 
 
 	self.LabelAbsoluteSize = self._Fuse.Property(self.TextLabel, "AbsoluteSize", 60)
-	self.ButtonSize = self._Fuse.Computed(self.Padding, self.LabelAbsoluteSize,  function(padding: UDim, absSize: Vector2 | nil)
+	self.ButtonSize = self._Fuse.Computed(self.Padding, self.LabelAbsoluteSize, self.Size, function(padding: UDim, absSize: Vector2 | nil, size)
+		if size then return size end
 		absSize = absSize or Vector2.new(0,0)
 		local fullSize = absSize + Vector2.new(1,1) * padding.Offset * 2
 		return UDim2.fromOffset(fullSize.X, fullSize.Y)
@@ -198,7 +210,7 @@ function Button.new(config)
 				PaddingRight = self.Padding,
 			},
 			self._Fuse.new 'UIStroke' {
-				Transparency = 0,
+				Transparency = self.ActiveBorderTransparency,
 				ApplyStrokeMode = Enum.ApplyStrokeMode.Border,
 				Thickness = self._Fuse.Computed(self.TextOnly, self.BorderSizePixel, function(textOnly, bSizePix)
 					if textOnly then
@@ -207,7 +219,7 @@ function Button.new(config)
 						return bSizePix
 					end
 				end),
-				Color = self._Fuse.Computed(self.BorderColor3, self.ActiveFillColor, self.ActiveBackgroundColor, self.IsHovering, self.IsPressing, function(border, fill, back, hover, press)
+				Color = self._Fuse.Computed(self.ActiveBorderColor3, self.ActiveFillColor, self.ActiveBackgroundColor, self.IsHovering, self.IsPressing, function(border, fill, back, hover, press)
 					if press then
 						return fill
 					elseif hover then
@@ -333,10 +345,11 @@ function Button.new(config)
 					
 					if not self.IsPressing:Get() and self.TimeSinceLastClick:Get() > 0.8 then
 						self.ClickTick:Set(tick())
-						self.ClickCenter:Set(x/self.ButtonSize:Get().X.Offset - 0.5)
 						self.IsRippling:Set(true)
 						task.delay(self.MaxRippleDuration:Get() + 0.2, function()
-							self.IsRippling:Set(false)
+							pcall(function()
+								self.IsRippling:Set(false)
+							end)
 						end)
 						self.IsPressing:Set(true)
 					end
@@ -368,8 +381,16 @@ function Button.new(config)
 		self.TimeSinceLastClick:Set(tick() - self.ClickTick:Get())
 	end))
 
+
 	-- print("Parameters", parameters, self)
 	self.Instance = self._Fuse.new("Frame")(parameters)
+
+	self._Maid:GiveTask(self.Instance:WaitForChild("TextButton").MouseButton1Down:Connect(function(x)
+		local xWidth = self.Instance.AbsoluteSize.X
+		local xPos = self.Instance.AbsolutePosition.X
+		local clickCenter = (x-xPos)/xWidth
+		self.ClickCenter:Set(clickCenter)
+	end))
 
 	self:Construct()
 	

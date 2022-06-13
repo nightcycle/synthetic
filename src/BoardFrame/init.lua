@@ -3,7 +3,8 @@
 local RunService = game:GetService("RunService")
 local UserInputService = game:GetService("UserInputService")
 
-local packages = script.Parent.Parent
+local package = script.Parent
+local packages = package.Parent
 local Isotope = require(packages:WaitForChild("isotope"))
 local math = require(packages:WaitForChild("math"))
 

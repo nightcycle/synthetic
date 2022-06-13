@@ -3,7 +3,7 @@ return function (coreGui)
 	local module = require(script.Parent)
 	local demo = {
 		Scale = 2,
-		Color3 = Color3.fromHSV(0.75,1,1),
+		EnabledColor3 = Color3.fromHSV(0.6,1,1),
 		Position = UDim2.fromScale(0.5,0.5),
 		AnchorPoint = Vector2.new(0.5,0.5),
 		Parent = coreGui,
