@@ -17,13 +17,6 @@ function Hint:Destroy()
 	Isotope.Destroy(self)
 end
 
-function Hint:Fire()
-	self.Value:Set(1)
-	task.delay(0.4, function()
-		self:Destroy()
-	end)
-end
-
 function Hint.new(config)
 	local self = setmetatable(Isotope.new(config), Hint)
 
