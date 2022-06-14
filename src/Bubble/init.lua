@@ -40,12 +40,6 @@ function Bubble.new(config)
 		Parent = self.Parent,
 	}
 
-	for k, v in pairs(config) do
-		if parameters[k] == nil and self[k] == nil then
-			parameters[k] = v
-		end
-	end
-
 	self.Instance = EffectGui.new(parameters)
 	self._Maid:GiveTask(self.Instance)
 

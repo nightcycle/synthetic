@@ -12,15 +12,15 @@ local ColdFusion = require(packages:WaitForChild("coldfusion"))
 
 local Button = require(package:WaitForChild("Button"))
 
-local ButtonList = {}
-ButtonList.__index = ButtonList
-setmetatable(ButtonList, Isotope)
+local DataTable = {}
+DataTable.__index = DataTable
+setmetatable(DataTable, Isotope)
 
-function ButtonList:Destroy()
+function DataTable:Destroy()
 	Isotope.Destroy(self)
 end
 
-function ButtonList:InsertButton(txt: string, layoutOrder:number | nil,  bindableEvent: BindableEvent | nil, leftIcon: string | nil, rightIcon: string | nil)
+function DataTable:InsertButton(txt: string, layoutOrder:number | nil,  bindableEvent: BindableEvent | nil, leftIcon: string | nil, rightIcon: string | nil)
 	self.Data:Update(function(cur)
 		cur[txt] = {
 			Text = txt,
@@ -33,8 +33,8 @@ function ButtonList:InsertButton(txt: string, layoutOrder:number | nil,  bindabl
 	end)
 end
 
-function ButtonList.new(config)
-	local self = setmetatable(Isotope.new(config), ButtonList)
+function DataTable.new(config)
+	local self = setmetatable(Isotope.new(config), DataTable)
 	self.Name = self:Import(config.Name, script.Name)
 	self.ClassName = self._Fuse.Computed(function() return script.Name end)
 
@@ -99,7 +99,7 @@ function ButtonList.new(config)
 			parameters[k] = v
 		end
 	end
-	-- print("Parameters", parameters, self)
+
 	self.Instance = self._Fuse.new("Frame")(parameters)
 
 	self._Fuse.Computed(self.Data, function(data)
@@ -149,4 +149,4 @@ function ButtonList.new(config)
 	return self.Instance
 end
 
-return ButtonList
+return DataTable

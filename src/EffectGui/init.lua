@@ -21,7 +21,7 @@ function EffectGui.new(config)
 	self.Name = self:Import(config.Name, script.Name)
 	self.ClassName = self._Fuse.Computed(function() return script.Name end)
 	self.Parent = self:Import(config.Parent, nil)
-
+	self.Enabled = self:Import(config.Enabled, true)
 	self.AnchorPoint = self._Fuse.Property(self.Parent, "AnchorPoint"):Else(Vector2.new(0,0))
 	self.AbsolutePosition = self._Fuse.Property(self.Parent, "AbsolutePosition", 60):Else(Vector2.new(0,0))
 	self.AbsoluteSize = self._Fuse.Property(self.Parent, "AbsoluteSize", 60):Else(Vector2.new(0,0))
@@ -66,6 +66,7 @@ function EffectGui.new(config)
 
 	local parameters = {
 		DisplayOrder = self.DisplayOrder,
+		Enabled = self.Enabled,
 		Parent = self.Parent,
 		[self._Fuse.Children] = {
 			self._Fuse.new "Frame" {
@@ -89,6 +90,9 @@ function EffectGui.new(config)
 	end
 
 	self.Instance = self._Fuse.new("ScreenGui")(parameters)
+	self._Maid:GiveTask(self.Instance.Destroying:Connect(function()
+		self:Destroy()
+	end))
 	if self.Instance:FindFirstAncestorWhichIsA("ScreenGui") then
 		self._KnownAncestorGui:Set(self.Instance:FindFirstAncestorWhichIsA("ScreenGui"))
 	end
