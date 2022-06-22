@@ -23,6 +23,17 @@ function Bubble:Fire()
 	end)
 end
 
+function Bubble:Enable()
+	self.Value:Set(1)
+end
+
+function Bubble:Disable()
+	self.Value:Set(0)
+	task.delay(0.4, function()
+		self:Destroy()
+	end)
+end
+
 function Bubble.new(config)
 	local self = setmetatable(Isotope.new(config), Bubble)
 
@@ -31,6 +42,7 @@ function Bubble.new(config)
 	self.Parent = self:Import(config.Parent, nil)
 	self.Scale = self:Import(config.Scale, 1.25)
 	self.BackgroundTransparency = self:Import(config.BackgroundTransparency, 0.6)
+	self.FinalTransparency = self:Import(config.FinalTransparency, 1)
 	self.BackgroundColor3 = self:Import(config.BackgroundColor3, Color3.fromHSV(0,0,0.7))
 	self.Value = self._Fuse.Value(0)
 	self.ValueTween = self.Value:Tween(0.3, Enum.EasingStyle.Quad, Enum.EasingDirection.Out)
@@ -45,11 +57,12 @@ function Bubble.new(config)
 
 	self.AbsoluteSize = self._Fuse.Attribute(self.Instance, "AbsoluteSize"):Else(Vector2.new(0,0))
 	self.AnchorPosition = self._Fuse.Attribute(self.Instance, "AnchorPosition"):Else(UDim2.fromOffset(0,0))
+	self.CenterPosition = self._Fuse.Attribute(self.Instance, "CenterPosition"):Else(UDim2.fromOffset(0,0))
 
 	local bubbleFrame = self._Fuse.new "Frame" {
 		Name = "Bubble",
 		Parent = self.Instance,
-		Position = self.AnchorPosition,
+		Position = self.CenterPosition,
 		AnchorPoint = Vector2.new(0.5,0.5),
 		BorderSizePixel = 0,
 		ZIndex = 1,
@@ -58,11 +71,11 @@ function Bubble.new(config)
 			local diameter = math.max(size.X, size.Y) * val * scale
 			return UDim2.fromOffset(diameter,diameter)
 		end),
-		BackgroundTransparency = self._Fuse.Computed(self.Value, self.BackgroundTransparency, function(val, background)
+		BackgroundTransparency = self._Fuse.Computed(self.Value, self.BackgroundTransparency, self.FinalTransparency, function(val, background, max)
 			if val == 0 then
 				return background
 			else
-				return 1
+				return max
 			end
 		end):Tween(0.3, Enum.EasingStyle.Quad, Enum.EasingDirection.In),
 		[self._Fuse.Children] = {

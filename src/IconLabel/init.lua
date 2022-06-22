@@ -59,8 +59,8 @@ function IconLabel.new(config)
 	end
 
 	self.Instance = self._Fuse.new("ImageLabel")(parameters)
-
-	self._Maid:GiveTask(self.Instance:GetPropertyChangedSignal("AbsoluteSize"):Connect(function()
+	self.AbsoluteSize = self._Fuse.Property(self.Instance, "AbsoluteSize"):Else(Vector2.new(0,0))
+	self._Maid:GiveTask(self.AbsoluteSize:Connect(function()
 		if not self.Instance or not self.Instance:IsDescendantOf(game) then return end
 		local dpi = math.min(self.Instance.AbsoluteSize.X, self.Instance.AbsoluteSize.Y)
 		local options = {36,48,72,96}

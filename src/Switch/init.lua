@@ -25,7 +25,7 @@ function Switch.new(config)
 	self.ClassName = self._Fuse.Computed(function() return script.Name end)
 	self.Scale = self:Import(config.Scale, 1)
 	self.BackgroundColor3 = self:Import(config.BackgroundColor3, Color3.fromHSV(0,0,0.9))
-	self.EnabledColor3 = self:Import(config.Color3, Color3.fromHSV(0.6,1,1))
+	self.EnabledColor3 = self:Import(config.EnabledColor3, Color3.fromHSV(0.6,1,1))
 	self.Value = self:Import(config.Value, false)
 	self.EnableSound = self:Import(config.EnableSound)
 	self.DisableSound = self:Import(config.DisableSound)
@@ -36,9 +36,8 @@ function Switch.new(config)
 		return math.round(scale * 20)
 	end)
 	self.Activated = Signal.new()
-	self.BubbleEnabled = self._Fuse.Value(false)
-	self._Maid:GiveTask(self.Activated:Connect(function()
-		self.Value:Set(not self.Value:Get())
+	self.BubbleEnabled = self:Import(config.BubbleEnabled, true)
+	self._Maid:GiveTask(self.Activated:Connect(function()	
 		if self.Value:Get() == true then
 			local clickSound = self.EnableSound:Get()
 			if clickSound then
@@ -49,6 +48,9 @@ function Switch.new(config)
 			if clickSound then
 				SoundService:PlayLocalSound(clickSound)
 			end
+		end
+		if self.Value:IsA("Value") then
+			self.Value:Set(not self.Value:Get())
 		end
 		if self.BubbleEnabled:Get() == false then
 			self.BubbleEnabled:Set(true)
@@ -115,6 +117,7 @@ function Switch.new(config)
 	}
 
 	local parameters = {
+		Name = self.Name,
 		Size = self._Fuse.Computed(self.Width, function(width)
 			return UDim2.fromOffset(width * 2, width * 2)
 		end),

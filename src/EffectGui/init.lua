@@ -22,14 +22,16 @@ function EffectGui.new(config)
 	self.ClassName = self._Fuse.Computed(function() return script.Name end)
 	self.Parent = self:Import(config.Parent, nil)
 	self.Enabled = self:Import(config.Enabled, true)
-	self.AnchorPoint = self._Fuse.Property(self.Parent, "AnchorPoint"):Else(Vector2.new(0,0))
+	self.ZIndexBehavior = self:Import(config.ZIndexBehavior, Enum.ZIndexBehavior.Sibling)
+
+	self.ParentAnchorPoint = self._Fuse.Property(self.Parent, "AnchorPoint"):Else(Vector2.new(0,0))
 	self.AbsolutePosition = self._Fuse.Property(self.Parent, "AbsolutePosition", 60):Else(Vector2.new(0,0))
 	self.AbsoluteSize = self._Fuse.Property(self.Parent, "AbsoluteSize", 60):Else(Vector2.new(0,0))
 	self.Position = self._Fuse.Computed(self.AbsolutePosition, function(absPos)
 		absPos = absPos or Vector2.new(0,0)
 		return UDim2.fromOffset(absPos.X, absPos.Y)
 	end):Else(UDim2.fromOffset(0,0))
-	self.AnchorPosition = self._Fuse.Computed(self.AbsolutePosition, self.AbsoluteSize, self.AnchorPoint, function(absPos, absSize, anchorPoint)
+	self.AnchorPosition = self._Fuse.Computed(self.AbsolutePosition, self.AbsoluteSize, self.ParentAnchorPoint, function(absPos, absSize, anchorPoint)
 		absPos = absPos or Vector2.new(0,0)
 		absSize = absSize or Vector2.new(0,0)
 		anchorPoint = anchorPoint or Vector2.new(0,0)
@@ -67,6 +69,7 @@ function EffectGui.new(config)
 	local parameters = {
 		DisplayOrder = self.DisplayOrder,
 		Enabled = self.Enabled,
+		ZIndexBehavior = self.ZIndexBehavior,
 		Parent = self.Parent,
 		[self._Fuse.Children] = {
 			self._Fuse.new "Frame" {

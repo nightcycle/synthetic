@@ -13,19 +13,29 @@ version = "1.2.6"
 dependencies = [["maid", "quenty/maid@2.0.1-canary.140ed9d6.1"], ["signal", "quenty/signal@2.0.0-canary.140ed9d6.2"]]
 
 [[package]]
+name = "nightcycle/cold-fusion"
+version = "2.0.13"
+dependencies = [["maid", "quenty/maid@2.0.1-canary.140ed9d6.1"], ["math", "nightcycle/math@3.4.0"], ["signal", "quenty/signal@2.0.0-canary.140ed9d6.2"]]
+
+[[package]]
 name = "nightcycle/format"
 version = "0.1.2"
 dependencies = [["coldfusion", "nightcycle/cold-fusion@1.2.6"], ["maid", "quenty/maid@2.0.1-canary.140ed9d6.1"], ["signal", "quenty/signal@2.0.0-canary.140ed9d6.2"], ["string", "nightcycle/string@0.1.0"]]
 
 [[package]]
 name = "nightcycle/isotope"
-version = "1.1.29"
-dependencies = [["coldfusion", "nightcycle/cold-fusion@1.2.6"], ["maid", "quenty/maid@2.0.1-canary.140ed9d6.1"], ["signal", "quenty/signal@2.0.0-canary.140ed9d6.2"]]
+version = "1.2.14"
+dependencies = [["coldfusion", "nightcycle/cold-fusion@2.0.13"], ["maid", "quenty/maid@2.0.1-canary.140ed9d6.1"], ["signal", "quenty/signal@2.0.0-canary.140ed9d6.2"]]
 
 [[package]]
 name = "nightcycle/math"
 version = "2.2.1"
 dependencies = [["graph", "nightcycle/boat-graph@1.0.2"], ["testez", "roblox/testez@0.4.1"]]
+
+[[package]]
+name = "nightcycle/math"
+version = "3.4.0"
+dependencies = [["graph", "nightcycle/boat-graph@1.0.2"]]
 
 [[package]]
 name = "nightcycle/string"
@@ -34,8 +44,8 @@ dependencies = []
 
 [[package]]
 name = "nightcycle/synthetic"
-version = "3.1.9"
-dependencies = [["coldfusion", "nightcycle/cold-fusion@1.2.6"], ["format", "nightcycle/format@0.1.2"], ["isotope", "nightcycle/isotope@1.1.29"], ["maid", "quenty/maid@2.0.1-canary.140ed9d6.1"], ["math", "nightcycle/math@2.2.1"], ["signal", "quenty/signal@2.0.0-canary.140ed9d6.2"]]
+version = "3.3.7"
+dependencies = [["coldfusion", "nightcycle/cold-fusion@2.0.13"], ["format", "nightcycle/format@0.1.2"], ["isotope", "nightcycle/isotope@1.2.14"], ["maid", "quenty/maid@2.0.1-canary.140ed9d6.1"], ["math", "nightcycle/math@2.2.1"], ["signal", "quenty/signal@2.0.0-canary.140ed9d6.2"]]
 
 [[package]]
 name = "quenty/maid"

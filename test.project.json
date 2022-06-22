@@ -10,19 +10,6 @@
           "$path": "src"
         }
       }
-    },
-    "StarterPlayer": {
-      "$className": "StarterPlayer",
-      "StarterPlayerScripts": {
-        "$className": "StarterPlayerScripts",
-        "synthetic": {
-          "$path": "src"
-        }
-      },
-      "StarterCharacterScripts": {
-        "$className": "StarterCharacterScripts",
-        "$path": "lab"
-      }
     }
   }
 }

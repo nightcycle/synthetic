@@ -23,10 +23,16 @@ function Hint.new(config)
 	self.Name = self:Import(config.Name, script.Name)
 	self.ClassName = self._Fuse.Computed(function() return script.Name end)
 	self.Parent = self:Import(config.Parent, nil)
+	
 	self.Font = self:Import(config.Font, Enum.Font.Gotham)
 	self.Text = self:Import(config.Text, nil)
 	self.TextSize = self:Import(config.TextSize, 10)
 	self.AnchorPoint = self:Import(config.AnchorPoint, Vector2.new(0,0))
+
+	-- self.AnchorPoint:Connect(function(cur)
+	-- 	print("Update", cur)
+	-- end)
+
 	self.Padding = self:Import(config.Padding, UDim.new(0,2))
 	self.GapPadding = self:Import(config.GapPadding, UDim.new(0,6))
 	self.CornerRadius = self:Import(config.CornerRadius , UDim.new(0,3))
@@ -34,6 +40,7 @@ function Hint.new(config)
 	self.TextTransparency = self:Import(config.TextTransparency, 0)
 	self.BackgroundColor3 = self:Import(config.BackgroundColor3, Color3.fromHSV(0,0,0.7))
 	self.Enabled = self:Import(config.Enabled, false)
+	self.Override = self:Import(config.Override, false)
 	self.Visible = self._Fuse.Value(false)
 
 	self.ActiveTextTransparency = self._Fuse.Computed(self.Enabled, self.TextTransparency, function(enab, trans)
@@ -47,18 +54,27 @@ function Hint.new(config)
 	self._Fuse.Computed(self.Parent, function(par)
 		if par then
 			self._Maid._parentInputBeginSignal = par.InputChanged:Connect(function()
-				self.Visible:Set(false)
-				self.Enabled:Set(true)
-			end)
-			self._Maid._parentInputEndSignal =  par.MouseLeave:Connect(function()
-				self.Enabled:Set(false)
-				task.wait(0.3)
-				if self.Enabled:Get() == false then
+				if not self.Override:Get() then
 					self.Visible:Set(false)
 				end
+				if self.Enabled:IsA("Value") then
+					self.Enabled:Set(true)
+				end
+			end)
+			self._Maid._parentInputEndSignal =  par.MouseLeave:Connect(function()
+				if self.Enabled:IsA("Value") then
+					self.Enabled:Set(false)
+				end
+				task.wait(0.3)
+				pcall(function()
+					if self.Enabled:Get() == false then
+						if not self.Override:Get() then
+							self.Visible:Set(false)
+						end
+					end
+				end)
 			end)
 		end
-		
 	end)
 	local parameters = {
 		Name = self.Name,
@@ -74,7 +90,13 @@ function Hint.new(config)
 	self.AbsoluteSize = self._Fuse.Attribute(self.Instance, "AbsoluteSize"):Else(Vector2.new(0,0))
 	self.CenterPosition = self._Fuse.Attribute(self.Instance, "CenterPosition"):Else(UDim2.fromOffset(0,0))
 
+	config.Override = nil
+	config.CornerRadius = nil
+	config.GapPadding = nil
+	config.Padding = nil
 	config.AnchorPoint = nil
+	config.Enabled = nil
+	config.BackgroundColor3 = nil
 	config.BackgroundTransparency = nil
 	config.LeftIcon = nil
 	config.RightIcon = nil

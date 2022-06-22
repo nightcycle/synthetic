@@ -47,8 +47,7 @@ function Checkbox.new(config)
 	self.Activated = Signal.new()
 	self.BubbleEnabled = self._Fuse.Value(false)
 	self._Maid:GiveTask(self.Activated:Connect(function()
-		self.Value:Set(not self.Value:Get())
-		if self.Value:Get() == true then
+		if not self.Value:Get() == true then
 			local clickSound = self.EnableSound:Get()
 			if clickSound then
 				SoundService:PlayLocalSound(clickSound)
@@ -58,6 +57,9 @@ function Checkbox.new(config)
 			if clickSound then
 				SoundService:PlayLocalSound(clickSound)
 			end
+		end
+		if self.Value:IsA("Value") then
+			self.Value:Set(not self.Value:Get())
 		end
 		if self.BubbleEnabled:Get() == false then
 			self.BubbleEnabled:Set(true)

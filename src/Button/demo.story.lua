@@ -4,7 +4,7 @@ return function (coreGui)
 	local module = require(script.Parent)
 	local demo = {
 		Text = "Button *Time*",
-		BackgroundTransparency = 0,
+		BackgroundTransparency = 1,
 		BorderTransparency = 0,
 		TextSize = 20,
 		Padding = UDim.new(0, 8),

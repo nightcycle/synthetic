@@ -149,7 +149,7 @@ function Button.new(config)
 				end
 				return textColor3
 			end
-		):Tween(0.3),
+		):Tween(0.2),
 		TextXAlignment = self.TextXAlignment,
 		TextYAlignment = self.TextYAlignment,
 
@@ -178,7 +178,7 @@ function Button.new(config)
 		else
 			return backgroundColor
 		end
-	end):Tween(0.2)
+	end):Tween(0.15)
 
 	self.ActiveFillColor = self._Fuse.Computed(self.IsPressing, self.IsRippling, self.ActiveBackgroundColor, self.SelectedBackgroundColor3,  function(isPressing, isRipple, hoverColor, selectedColor)
 		if isPressing or isRipple then
@@ -186,7 +186,7 @@ function Button.new(config)
 		else
 			return hoverColor
 		end
-	end):Tween(0.15)
+	end):Tween(0.1)
 
 	local parameters = {
 		Name = self.Name,
