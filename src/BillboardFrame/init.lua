@@ -20,6 +20,8 @@ function SurfaceFrame.new(config)
 	self.Size = self:Import(config.Size, Vector2.new(2,2))
 	self.LightInfluence = self:Import(config.LightInfluence, 0)
 	self.AlwaysOnTop = self:Import(config.AlwaysOnTop, false)
+	self.MaxDistance = self:Import(config.MaxDistance, 100)
+	self.AnchorPoint = self:Import(config.AnchorPoint, Vector2.new(0.5,0.5))
 
 	self.Part = self._Fuse.new "Part" {
 		Name = self.Name,
@@ -34,16 +36,17 @@ function SurfaceFrame.new(config)
 	}
 
 	self.SurfaceGui = self._Fuse.new "BillboardGui" {
-		Name = self:Import(config.Name, script.Name),
+		Name = self.Name,
 		Parent = self.Parent,
 		Adornee = self.Part,
+		AlwaysOnTop = self.AlwaysOnTop,
 		Size = self._Fuse.Computed(self.Size, function(size: Vector2)
 			return UDim2.fromScale(size.X, size.Y)
 		end),
 		-- SizingMode = Enum.SurfaceGuiSizingMode.PixelsPerStud,
 		ClipsDescendants = false,
 		LightInfluence = self.LightInfluence,
-		MaxDistance = self:Import(config.MaxDistance, 50),
+		MaxDistance = self.MaxDistance,
 	}
 
 	local parameters = {
@@ -51,7 +54,7 @@ function SurfaceFrame.new(config)
 		Parent = self.SurfaceGui,
 		Position = UDim2.fromScale(0.5,0.5),
 		Size = UDim2.fromScale(1,1),
-		AnchorPoint = self:Import(config.AnchorPoint, Vector2.new(0.5,0.5)),
+		AnchorPoint = self.AnchorPoint,
 	}
 
 	for k, v in pairs(config) do

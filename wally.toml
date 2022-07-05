@@ -1,15 +1,15 @@
 [package]
 name = "nightcycle/synthetic"
 description = "Material UI inspired elements made with Cold-Fusion"
-version = "3.3.16"
+version = "3.3.19"
 authors = ["CJ Oyer <coyer@nightcycle.us>"]
 realm = "shared"
 registry = "https://github.com/upliftgames/wally-index"
 exclude = ["Packages", ".vscode"]
 
 [dependencies]
-coldfusion = "nightcycle/cold-fusion@2.0.20"
-isotope = "nightcycle/isotope@1.2.21"
+coldfusion = "nightcycle/cold-fusion@2.0.21"
+isotope = "nightcycle/isotope@1.2.22"
 signal = "quenty/signal@^2.0.0-canary"
 maid = "quenty/maid@^2.0.1-canary"
 format = "nightcycle/format@0.1.2"
