@@ -14,7 +14,7 @@ dependencies = [["maid", "quenty/maid@2.0.1-canary.140ed9d6.1"], ["signal", "que
 
 [[package]]
 name = "nightcycle/cold-fusion"
-version = "2.0.13"
+version = "2.0.23"
 dependencies = [["maid", "quenty/maid@2.0.1-canary.140ed9d6.1"], ["math", "nightcycle/math@3.4.0"], ["signal", "quenty/signal@2.0.0-canary.140ed9d6.2"]]
 
 [[package]]
@@ -24,8 +24,8 @@ dependencies = [["coldfusion", "nightcycle/cold-fusion@1.2.6"], ["maid", "quenty
 
 [[package]]
 name = "nightcycle/isotope"
-version = "1.2.14"
-dependencies = [["coldfusion", "nightcycle/cold-fusion@2.0.13"], ["maid", "quenty/maid@2.0.1-canary.140ed9d6.1"], ["signal", "quenty/signal@2.0.0-canary.140ed9d6.2"]]
+version = "1.2.23"
+dependencies = [["coldfusion", "nightcycle/cold-fusion@2.0.23"], ["maid", "quenty/maid@2.0.1-canary.140ed9d6.1"], ["signal", "quenty/signal@2.0.0-canary.140ed9d6.2"]]
 
 [[package]]
 name = "nightcycle/math"
@@ -44,8 +44,8 @@ dependencies = []
 
 [[package]]
 name = "nightcycle/synthetic"
-version = "3.3.7"
-dependencies = [["coldfusion", "nightcycle/cold-fusion@2.0.13"], ["format", "nightcycle/format@0.1.2"], ["isotope", "nightcycle/isotope@1.2.14"], ["maid", "quenty/maid@2.0.1-canary.140ed9d6.1"], ["math", "nightcycle/math@2.2.1"], ["signal", "quenty/signal@2.0.0-canary.140ed9d6.2"]]
+version = "3.3.19"
+dependencies = [["coldfusion", "nightcycle/cold-fusion@2.0.23"], ["format", "nightcycle/format@0.1.2"], ["isotope", "nightcycle/isotope@1.2.23"], ["maid", "quenty/maid@2.0.1-canary.140ed9d6.1"], ["math", "nightcycle/math@2.2.1"], ["signal", "quenty/signal@2.0.0-canary.140ed9d6.2"]]
 
 [[package]]
 name = "quenty/maid"
