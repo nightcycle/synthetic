@@ -79,10 +79,19 @@ function Button.new(config)
 	self.IsRippling = self._Fuse.Value(false)
 
 	self.Activated = Signal.new()
+	self._Maid:GiveTask(self.Activated)
+
 	self.MouseButton1Down = Signal.new()
+	self._Maid:GiveTask(self.MouseButton1Down)
+
 	self.MouseButton1Up = Signal.new()
+	self._Maid:GiveTask(self.MouseButton1Up)
+
 	self.InputBegan = Signal.new()
+	self._Maid:GiveTask(self.InputBegan)
+
 	self.InputEnded = Signal.new()
+	self._Maid:GiveTask(self.InputEnded)
 	
 	self.ClickSound = self:Import(config.ClickSound, nil)
 	self._Maid:GiveTask(self.Activated:Connect(function()

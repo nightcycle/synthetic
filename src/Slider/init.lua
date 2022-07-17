@@ -66,6 +66,7 @@ function Slider.new(config)
 	end)
 
 	self.OnRelease = Signal.new()
+	self._Maid:GiveTask(self.OnRelease)
 
 	self.Dragging = self._Fuse.Value(false)
 

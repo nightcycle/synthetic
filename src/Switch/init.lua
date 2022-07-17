@@ -36,6 +36,8 @@ function Switch.new(config)
 		return math.round(scale * 20)
 	end)
 	self.Activated = Signal.new()
+	self._Maid:GiveTask(self.Activated)
+
 	self.BubbleEnabled = self:Import(config.BubbleEnabled, true)
 	self._Maid:GiveTask(self.Activated:Connect(function()	
 		if self.Value:Get() == true then

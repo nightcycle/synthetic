@@ -40,7 +40,10 @@ function TextField.new(config)
 	self.ClassName = self._Fuse.Computed(function() return script.Name end)
 
 	self.OnInputChanged = Signal.new()
+	self._Maid:GiveTask(self.OnInputChanged)
+
 	self.OnInputComplete = Signal.new()
+	self._Maid:GiveTask(self.OnInputComplete)
 
 	self.TextSize = self:Import(config.TextSize, 14)
 	self.LowerText = self:Import(config.LowerText, nil)

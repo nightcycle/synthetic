@@ -65,13 +65,13 @@ function SurfaceFrame.new(config)
 
 	self.Instance = self._Fuse.new "Frame" (parameters)
 
-	self._Maid:GiveTask(self.SurfaceGui)
-	self._Maid:GiveTask(self.SurfaceGui.Destroying:Connect(function() self:Destroy() end))
+	-- self._Maid:GiveTask(self.SurfaceGui)
+	-- self._Maid:GiveTask(self.SurfaceGui.Destroying:Connect(function() self:Destroy() end))
 	
-	self._Maid:GiveTask(self.Part)
-	self._Maid:GiveTask(self.Part.Destroying:Connect(function() self:Destroy() end))
+	-- self._Maid:GiveTask(self.Part)
+	-- self._Maid:GiveTask(self.Part.Destroying:Connect(function() self:Destroy() end))
 
-	self._Maid:GiveTask(self.Instance)
+	-- self._Maid:GiveTask(self.Instance)
 	self._Maid:GiveTask(self.Instance.Destroying:Connect(function() self:Destroy() end))
 
 	self:Construct()

@@ -45,6 +45,8 @@ function Checkbox.new(config)
 	end):Tween()
 
 	self.Activated = Signal.new()
+	self._Maid:GiveTask(self.Activated)
+
 	self.BubbleEnabled = self._Fuse.Value(false)
 	self._Maid:GiveTask(self.Activated:Connect(function()
 		if not self.Value:Get() == true then
