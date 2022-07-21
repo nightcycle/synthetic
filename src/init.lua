@@ -1,7 +1,7 @@
 --!strict
 local module = script
 local packages = script.Parent
-local Isotope = require(packages:WaitForChild("isotope"))
+local Isotope = require(packages.isotope)
 type Isotope = Isotope.Isotope
 type Fuse = Isotope.Fuse
 type State = Isotope.State
@@ -17,7 +17,7 @@ export type ViewportMountFrameParameters = ViewportMountFrame.ViewportMountFrame
 
 local TextField = require(module.TextField)
 export type TextFieldConstructor = typeof(TextField.new)
-export type TextFieldParameters = ViewportMountFrame.TextFieldParameters
+export type TextFieldParameters = TextField.TextFieldParameters
 
 local Switch = require(module.Switch)
 export type SwitchConstructor = typeof(Switch.new)
@@ -27,9 +27,9 @@ local SurfaceFrame = require(module.SurfaceFrame)
 export type SurfaceFrameConstructor = typeof(SurfaceFrame.new)
 export type SurfaceFrameParameters = SurfaceFrame.SurfaceFrameParameters
 
-local SliderFrame = require(module.SliderFrame)
-export type SliderFrameConstructor = typeof(SliderFrame.new)
-export type SliderFrameParameters = SliderFrame.SliderFrameParameters
+local Slider = require(module.Slider)
+export type SliderConstructor = typeof(Slider.new)
+export type SliderParameters = Slider.SliderParameters
 
 local RadioButton = require(module.RadioButton)
 export type RadioButtonConstructor = typeof(RadioButton.new)
@@ -80,7 +80,7 @@ export type Synthetic = ((className: "TextLabel") -> TextLabelConstructor)
 & ((className: "TextField") -> TextFieldConstructor)
 & ((className: "Switch") -> SwitchConstructor)
 & ((className: "SurfaceFrame") -> SurfaceFrameConstructor)
-& ((className: "SliderFrame") -> SliderFrameConstructor)
+& ((className: "Slider") -> SliderConstructor)
 & ((className: "RadioButton") -> RadioButtonConstructor)
 & ((className: "IconLabel") -> IconLabelConstructor)
 & ((className: "Hint") -> HintConstructor)
@@ -118,35 +118,35 @@ local synth: Synthetic = function(className: string)
 	elseif className == "ViewportMountFrame" then
 		return ViewportMountFrame.new
 	elseif className == "TextField" then
-		return nil
+		return TextField.new
 	elseif className == "Switch" then
-		return nil
+		return Switch.new
 	elseif className == "SurfaceFrame" then
-		return nil
+		return SurfaceFrame.new
 	elseif className == "Slider" then
-		return nil
+		return Slider.new
 	elseif className == "RadioButton" then
-		return nil
+		return RadioButton.new
 	elseif className == "IconLabel" then
-		return nil
+		return IconLabel.new
 	elseif className == "Hint" then
-		return nil
+		return Hint.new
 	elseif className == "EffectGui" then
-		return nil
+		return EffectGui.new
 	elseif className == "Checkbox" then
-		return nil
+		return Checkbox.new
 	elseif className == "ButtonList" then
-		return nil
+		return ButtonList.new
 	elseif className == "Button" then
-		return nil
+		return Button.new
 	elseif className == "Bubble" then
-		return nil
+		return Bubble.new
 	elseif className == "BoundingBoxFrame" then
-		return nil
+		return BoundingBoxFrame.new
 	elseif className == "BoardFrame" then
-		return nil
+		return BoardFrame.new
 	elseif className == "BillboardFrame" then
-		return nil
+		return BillboardFrame.new
 	end
 	return nil
 end

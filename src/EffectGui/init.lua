@@ -1,6 +1,4 @@
 --!strict
-local ReplicatedStorage = game:GetService("ReplicatedStorage")
-
 local package = script.Parent
 local packages = package.Parent
 
@@ -10,8 +8,6 @@ type Fuse = Isotope.Fuse
 type State = Isotope.State
 type ValueState = Isotope.ValueState
 
-local Signal = require(packages:WaitForChild("signal"))
-
 local EffectGui = {}
 EffectGui.__index = EffectGui
 setmetatable(EffectGui, Isotope)
@@ -20,8 +16,16 @@ function EffectGui:Destroy()
 	Isotope.Destroy(self)
 end
 
-function EffectGui.new(config)
-	local self = setmetatable(Isotope.new(config), EffectGui)
+export type EffectGuiParameters = {
+	Name: string | State?,
+	Parent: Instance | State?,
+	Enabled: boolean | State?,
+	ZIndexBehavior: Enum.ZIndexBehavior | State?,
+	[any]: any?,
+}
+
+function EffectGui.new(config: EffectGuiParameters): ScreenGui
+	local self = setmetatable(Isotope.new() :: any, EffectGui)
 
 	self.Name = self:Import(config.Name, script.Name)
 	self.ClassName = self._Fuse.Computed(function() return script.Name end)
@@ -66,8 +70,9 @@ function EffectGui.new(config)
 	end)
 	self.AncestorDisplayOrder = self._Fuse.Property(self._AncestorGui, "DisplayOrder")
 
-	self.DisplayOrder = self._Fuse.Computed(self._AncestorGui, self.AncestorDisplayOrder, function(gui, displayOrder)
+	self.DisplayOrder = self._Fuse.Computed(self._AncestorGui, self.AncestorDisplayOrder, function(gui: ScreenGui?, displayOrder: number)
 		if not gui then return 1000 end
+		assert(gui ~= nil and gui:IsA("ScreenGui"))
 		return (displayOrder or gui.DisplayOrder) + 1
 	end)
 

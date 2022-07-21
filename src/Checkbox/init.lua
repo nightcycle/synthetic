@@ -1,6 +1,5 @@
 --!strict
 local SoundService = game:GetService("SoundService")
-local ReplicatedStorage = game:GetService("ReplicatedStorage")
 
 local package = script.Parent
 local packages = package.Parent
@@ -23,8 +22,20 @@ function Checkbox:Destroy()
 	Isotope.Destroy(self)
 end
 
-function Checkbox.new(config)
-	local self = setmetatable(Isotope.new(config), Checkbox)
+export type CheckboxParameters = {
+	Name: string | State?,
+	Scale: number | State?,
+	BorderColor3: Color3 | State?,
+	BackgroundColor3: Color3 | State?,
+	Value: boolean | State?,
+	EnableSound: Sound | State?,
+	DisableSound: Sound | State?,
+	[any]: any?,
+}
+
+
+function Checkbox.new(config: CheckboxParameters): GuiObject
+	local self = setmetatable(Isotope.new() :: any, Checkbox)
 	self.Name = self:Import(config.Name, script.Name)
 	self.ClassName = self._Fuse.Computed(function() return script.Name end)
 	self.Scale = self:Import(config.Scale, 1)
@@ -34,10 +45,10 @@ function Checkbox.new(config)
 	self.Value = self:Import(config.Value, false)
 	self.EnableSound = self:Import(config.EnableSound)
 	self.DisableSound = self:Import(config.DisableSound)
-	self.Padding = self._Fuse.Computed(self.Scale, function(scale)
+	self.Padding = self._Fuse.Computed(self.Scale, function(scale: number)
 		return math.round(6 * scale)
 	end)
-	self.Width = self._Fuse.Computed(self.Scale, function(scale)
+	self.Width = self._Fuse.Computed(self.Scale, function(scale: number)
 		return math.round(scale * 20)
 	end)
 	
@@ -77,7 +88,7 @@ function Checkbox.new(config)
 
 	local parameters = {
 		Name = self.Name,
-		Size = self._Fuse.Computed(self.Width, function(width)
+		Size = self._Fuse.Computed(self.Width, function(width: number)
 			return UDim2.fromOffset(width * 2, width * 2)
 		end),
 		BackgroundTransparency = 1,
@@ -96,7 +107,8 @@ function Checkbox.new(config)
 						local bubble = Bubble.new {
 							Parent = self.Instance,
 						}
-						local fireFunction = bubble:WaitForChild("Fire")
+						local fireFunction: Instance? = bubble:WaitForChild("Fire")
+						assert(fireFunction ~= nil and fireFunction:IsA("BindableFunction"))
 						fireFunction:Invoke()
 					end
 				end
@@ -121,19 +133,19 @@ function Checkbox.new(config)
 						return 0.999
 					end
 				end):Tween(),
-				Size = self._Fuse.Computed(self.Width, self.Padding, function(width, padding)
+				Size = self._Fuse.Computed(self.Width, self.Padding, function(width: number, padding: number)
 					return UDim2.fromOffset(width-padding, width-padding)
 				end),
 				BorderSizePixel = 0,
 				[self._Fuse.Children] = {
 					self._Fuse.new "UICorner" {
-						CornerRadius = self._Fuse.Computed(self.Padding, function(padding)
+						CornerRadius = self._Fuse.Computed(self.Padding, function(padding: number)
 							return UDim.new(0,math.round(padding*0.5))
 						end)
 					},
 					self._Fuse.new "UIStroke" {
 						ApplyStrokeMode = Enum.ApplyStrokeMode.Border,
-						Thickness = self._Fuse.Computed(self.Padding, function(padding)
+						Thickness = self._Fuse.Computed(self.Padding, function(padding: number)
 							return math.round(padding*0.25)
 						end),
 						Transparency = 0,

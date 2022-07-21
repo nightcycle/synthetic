@@ -1,6 +1,5 @@
 --!strict
 local SoundService = game:GetService("SoundService")
-local ReplicatedStorage = game:GetService("ReplicatedStorage")
 
 local package = script.Parent
 local packages = package.Parent
@@ -23,22 +22,36 @@ function RadioButton:Destroy()
 	Isotope.Destroy(self)
 end
 
-function RadioButton.new(config)
-	local self = setmetatable(Isotope.new(config), RadioButton)
-	self.Name = self:Import(config.Name, script.Name)
+export type RadioButtonParameters = {
+	Name: string | State?,
+	Scale: number | State?,
+	BorderColor3: Color3 | State?,
+	BackgroundColor3: Color3 | State?,
+	Value: boolean | State?,
+	EnableSound: Sound | State?,
+	DisableSound: Sound | State?,
+	[any]: any?,
+}
+
+function RadioButton.new(config: RadioButtonParameters): GuiObject
+	local self = setmetatable(Isotope.new() :: any, RadioButton)
 	self.ClassName = self._Fuse.Computed(function() return script.Name end)
+
+	self.Name = self:Import(config.Name, script.Name)
 	self.Scale = self:Import(config.Scale, 1)
 	self.BorderColor3 = self:Import(config.BorderColor3, Color3.fromHSV(0,0,0.4))
 	self.BackgroundColor3 = self:Import(config.BackgroundColor3, Color3.fromHSV(0.6,1,1))
 	self.Value = self:Import(config.Value, false)
 	self.EnableSound = self:Import(config.EnableSound)
 	self.DisableSound = self:Import(config.DisableSound)
+
 	self.Padding = self._Fuse.Computed(self.Scale, function(scale)
 		return math.round(6 * scale)
 	end)
-	self.Width = self._Fuse.Computed(self.Scale, function(scale)
+	self.Width = self._Fuse.Computed(self.Scale, function(scale: number)
 		return math.round(scale * 20)
 	end)
+
 	self.Activated = Signal.new()
 	self._Maid:GiveTask(self.Activated)
 	
@@ -67,7 +80,7 @@ function RadioButton.new(config)
 
 	local parameters = {
 		Name = self.Name,
-		Size = self._Fuse.Computed(self.Width, function(width)
+		Size = self._Fuse.Computed(self.Width, function(width: number)
 			return UDim2.fromOffset(width * 2, width * 2)
 		end),
 		BackgroundTransparency = 1,
@@ -86,7 +99,8 @@ function RadioButton.new(config)
 						local bubble = Bubble.new {
 							Parent = self.Instance,
 						}
-						local fireFunction = bubble:WaitForChild("Fire")
+						local fireFunction: Instance? = bubble:WaitForChild("Fire")
+						assert(fireFunction ~= nil and fireFunction:IsA("BindableFunction"))
 						fireFunction:Invoke()
 					end
 				end
@@ -98,14 +112,14 @@ function RadioButton.new(config)
 				AnchorPoint = Vector2.new(0.5,0.5),
 				BackgroundColor3 = self.BackgroundColor3,
 				BackgroundTransparency = 0.999,
-				Size = self._Fuse.Computed(self.Width, self.Padding, function(width, padding)
+				Size = self._Fuse.Computed(self.Width, self.Padding, function(width: number, padding: number)
 					return UDim2.fromOffset(width-padding, width-padding)
 				end),
 				BorderSizePixel = 0,
 				[self._Fuse.Children] = {
 					self._Fuse.new "Frame" {
 						Name = "Fill",
-						Size = self._Fuse.Computed(self.Width, self.Padding, function(width, padding)
+						Size = self._Fuse.Computed(self.Width, self.Padding, function(width: number, padding: number)
 							local w = math.round(width - padding*2)
 							return UDim2.fromOffset(w,w)
 						end),
@@ -134,7 +148,7 @@ function RadioButton.new(config)
 					},
 					self._Fuse.new "UIStroke" {
 						ApplyStrokeMode = Enum.ApplyStrokeMode.Border,
-						Thickness = self._Fuse.Computed(self.Padding, function(padding)
+						Thickness = self._Fuse.Computed(self.Padding, function(padding: number)
 							return math.round(padding*0.25)
 						end),
 						Transparency = 0,

@@ -1,37 +1,41 @@
 --!strict
-
-local RunService = game:GetService("RunService")
-
 local package = script.Parent
 local packages = package.Parent
-local Isotope = require(packages:WaitForChild("isotope"))
+local Isotope = require(packages.isotope)
 type Isotope = Isotope.Isotope
 type Fuse = Isotope.Fuse
 type State = Isotope.State
 type ValueState = Isotope.ValueState
 
-local math = require(packages:WaitForChild("math"))
-
 local SurfaceFrame = {}
 SurfaceFrame.__index = SurfaceFrame
 setmetatable(SurfaceFrame, Isotope)
 
-function SurfaceFrame.new(config)
-	local self = Isotope.new()
+export type SurfaceFrameParameters = {
+	Name: string | State?,
+	Face: string | State?,
+	Adornee: Instance | State?,
+	Parent: Instance | State?,
+	PixelsPerStud: number | State?,
+	[any]: any?,
+}
+
+function SurfaceFrame.new(config: SurfaceFrameParameters): GuiObject
+	local self = Isotope.new() :: any
 	setmetatable(self, SurfaceFrame)
 
 	self.Name = self:Import(config.Name, script.Name)
 	self.Face = self:Import(config.Face, "Left")
 	self.Adornee = self:Import(config.Adornee, nil)
 	self.Parent = self:Import(config.Parent, nil)
-
+	self.PixelsPerStud = self:Import(config.PixelsPerStud, 10)
 	self.SurfaceGui = self._Fuse.new "SurfaceGui" {
-		Name = self:Import(config.Name, script.Name),
+		Name = self.Name,
 		Parent = self.Parent,
 		Adornee = self.Adornee,
 		Face = self.Face,
 		SizingMode = Enum.SurfaceGuiSizingMode.PixelsPerStud,
-		PixelsPerStud = self:Import(config.PixelsPerStud, 10),
+		PixelsPerStud = self.PixelsPerStud,
 		ClipsDescendants = true,
 		LightInfluence = 1,
 	}

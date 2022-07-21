@@ -21,7 +21,7 @@ setmetatable(ViewportMountFrame, Isotope)
 export type ViewportMountFrameParameters = {
 	WorldPosition: Vector2 | State?,
 	WorldSize: Vector2 | State?,
-	[any]: any
+	[any]: any?,
 }
 
 function ViewportMountFrame.new(config: ViewportMountFrameParameters): GuiObject

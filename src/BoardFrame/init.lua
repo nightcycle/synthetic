@@ -18,8 +18,32 @@ local BoardFrame = {}
 BoardFrame.__index = BoardFrame
 setmetatable(BoardFrame, Isotope)
 
-function BoardFrame.new(config)
-	local self = Isotope.new()
+export type BoardFrameParameters = {
+	Parent: Instance | State?,
+	Name: string | State?,
+	Color: Color3 | State?,
+	Size: UDim2 | State?,
+	Position: UDim2 | State?,
+	AnchorPoint: Vector2 | State?,
+	PixelsPerStud: number | State?,
+	CanvasPosition: Vector2 | State?,
+	CanvasTransparency: number | State?,
+	CanvasColor: Color3 | State?,
+	CanvasMaterial: string | State?,
+	CanvasMaterialVariant: string | State?,
+	LockPosition: boolean | State?,
+	LockZoom: boolean | State?,
+	Zoom: number | State?,
+	MinZoom: number | State?,
+	MaxZoom: number | State?,
+	ZoomSpeed: number | State?,
+	CameraHeight: number | State?,
+	[any]: any?,
+}
+
+
+function BoardFrame.new(config: BoardFrameParameters): GuiObject
+	local self = Isotope.new() :: any
 	setmetatable(self, BoardFrame)
 
 	self.Color = self:Import(config.Color, Color3.new(0.3,0,0))
@@ -44,27 +68,27 @@ function BoardFrame.new(config)
 
 	self.Delta = self._Fuse.Value(1/60)
 	self.AbsoluteSize = self._Fuse.Value(Vector2.new(0,0))
-	self.CanvasSize = self._Fuse.Computed(self.AbsoluteSize, self.PixelsPerStud, function(absSize, pxRatio)
+	self.CanvasSize = self._Fuse.Computed(self.AbsoluteSize, self.PixelsPerStud, function(absSize: Vector2, pxRatio: number)
 		return absSize / pxRatio
 	end) --self:Import(config.CanvasSize, Vector2.new(60,40))
 
-	self.SizeRatio = self._Fuse.Computed(self.AbsoluteSize, function(absSize)
+	self.SizeRatio = self._Fuse.Computed(self.AbsoluteSize, function(absSize: Vector2)
 		return absSize.X / absSize.Y
 	end)
 
 	self.CameraHeight = self:Import(config.CameraHeight, 100)
-	self.CameraFieldOfView = self._Fuse.Computed(self.Zoom, self.CanvasSize, self.CameraHeight, function(zoom, canvasSize, z)
+	self.CameraFieldOfView = self._Fuse.Computed(self.Zoom, self.CanvasSize, self.CameraHeight, function(zoom: number, canvasSize: Vector2, z: number)
 		local y = canvasSize.Y
 		local goalY = y / zoom
 		local angle = math.atan2(goalY*0.5, z)*2
 		return math.deg(angle)
 	end)
-	self.CameraWindowSize = self._Fuse.Computed(self.CameraHeight, self.CameraFieldOfView, self.SizeRatio, function(height, fov, ratio)
+	self.CameraWindowSize = self._Fuse.Computed(self.CameraHeight, self.CameraFieldOfView, self.SizeRatio, function(height: number, fov: number, ratio: number)
 		local y = 2*math.tan(math.rad(fov*0.5))*height
 		local x = y * ratio
 		return Vector2.new(math.abs(x),math.abs(y))
 	end)
-	self.AbsoluteCanvasPosition = self._Fuse.Computed(self.CanvasPosition, self.CameraWindowSize, self.CanvasSize, function(pos, winSize, canSize)
+	self.AbsoluteCanvasPosition = self._Fuse.Computed(self.CanvasPosition, self.CameraWindowSize, self.CanvasSize, function(pos: Vector2, winSize: Vector2, canSize: Vector2)
 		local min = pos - winSize/2
 		local max = pos + winSize/2
 
@@ -89,7 +113,7 @@ function BoardFrame.new(config)
 		end
 		return Vector2.new(x,y)
 	end)
-	self.CameraCFrame = self._Fuse.Computed(self.AbsoluteCanvasPosition, self.CameraHeight, self.CameraFieldOfView, function(canvasPos, height, fov)
+	self.CameraCFrame = self._Fuse.Computed(self.AbsoluteCanvasPosition, self.CameraHeight, self.CameraFieldOfView, function(canvasPos: Vector2, height: number, fov: number)
 		local pos = Vector3.new(canvasPos.X, canvasPos.Y, height)
 		return CFrame.new(pos, Vector3.new(canvasPos.X, canvasPos.Y, 0))
 	end)
@@ -129,8 +153,9 @@ function BoardFrame.new(config)
 		Name = "CanvasPart",
 		Shape = Enum.PartType.Block,
 		Parent = self.WorldModel,
-		Material = self._Fuse.Computed(self.CanvasMaterial, function(matName)
-			return Enum.Material[matName]
+		Material = self._Fuse.Computed(self.CanvasMaterial, function(matName: string)
+			local enum: any = Enum.Material
+			return enum[matName]
 		end),
 		MaterialVariant = self.CanvasMaterialVariant,
 		Transparency = self.CanvasTransparency,
@@ -142,7 +167,7 @@ function BoardFrame.new(config)
 	}
 	self.PreviousMousePosition = self._Fuse.Value(Vector2.new(0,0))
 	self.MousePosition = self._Fuse.Value(Vector2.new(0,0))
-	self.MouseDelta = self._Fuse.Computed(self.MousePosition, self.PreviousMousePosition, function(mPos, pMPos)
+	self.MouseDelta = self._Fuse.Computed(self.MousePosition, self.PreviousMousePosition, function(mPos:Vector2, pMPos:Vector2)
 		return pMPos - mPos
 	end)
 	self.IsHovering = self._Fuse.Computed(self.MousePosition, function(mPos)
@@ -156,7 +181,7 @@ function BoardFrame.new(config)
 		end
 		return false
 	end)
-	self._Maid:GiveTask(UserInputService.PointerAction:Connect(function(wheel, pan, pinch)
+	self._Maid:GiveTask(UserInputService.PointerAction:Connect(function(wheel: number, pan: number, pinch: number)
 		if not self.LockZoom:Get() and self.IsHovering:Get() then
 			local currentZoom = self.Zoom:Get()
 			local zoomSpeed = self.ZoomSpeed:Get()

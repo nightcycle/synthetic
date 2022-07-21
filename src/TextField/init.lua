@@ -1,7 +1,4 @@
 --!strict
-local SoundService = game:GetService("SoundService")
-local ReplicatedStorage = game:GetService("ReplicatedStorage")
-
 local package = script.Parent
 local packages = package.Parent
 
@@ -11,7 +8,6 @@ type Fuse = Isotope.Fuse
 type State = Isotope.State
 type ValueState = Isotope.ValueState
 
-local Format = require(packages:WaitForChild("format"))
 local ColdFusion = require(packages:WaitForChild("coldfusion"))
 local Signal = require(packages:WaitForChild("signal"))
 
@@ -25,8 +21,9 @@ function TextField:Destroy()
 	Isotope.Destroy(self)
 end
 
-function TextField:SetInput(txt, cursorOffset)
+function TextField:SetInput(txt, cursorOffset: number?)
 	self.TextBox.Text = txt
+	assert(typeof(self.TextBox.CursorPosition) == "number")
 	self.TextBox.CursorPosition += cursorOffset or 0
 end
 
@@ -39,9 +36,35 @@ function TextField:Clear()
 	self.TextBox.CursorPosition = 1
 end
 
-function TextField.new(config)
-	local self = setmetatable(Isotope.new(config), TextField)
-	self.Name = self:Import(config.Name, script.Name)
+export type TextFieldParameters = {
+	Name: string | State?,
+	TextSize: number | State?,
+	LowerText: string | State?,
+	LowerTextColor3: Color3 | State?,
+	Width: UDim | State?,
+	CornerRadius: number | State?,
+	CharacterLimit: number | State?,
+	BackgroundTransparency: number | State?,
+	ClearTextOnFocus: boolean | State?,
+	TextColor3: Color3 | State?,
+	TextTransparency: number | State?,
+	Text: string | State?,
+	Font: Enum.Font | State?,
+	MaintainLowerSpacing: boolean | State?,
+	BackgroundColor3: Color3 | State?,
+	FocusedBackgroundColor3: Color3 | State?,
+	HoverBackgroundColor3: Color3 | State?,
+	BorderSizePixel: number | State?,
+	BorderColor3: Color3 | State?,
+	IconScale: number | State?,
+	LeftIcon: string | State?,
+	RightIcon: string | State?,
+	[any]: any?,
+}
+
+function TextField.new(config: TextFieldParameters): GuiObject
+	local self = setmetatable(Isotope.new() :: any, TextField)
+
 	self.ClassName = self._Fuse.Computed(function() return script.Name end)
 
 	self.OnInputChanged = Signal.new()
@@ -50,6 +73,7 @@ function TextField.new(config)
 	self.OnInputComplete = Signal.new()
 	self._Maid:GiveTask(self.OnInputComplete)
 
+	self.Name = self:Import(config.Name, script.Name)
 	self.TextSize = self:Import(config.TextSize, 14)
 	self.LowerText = self:Import(config.LowerText, nil)
 	self.LowerTextColor3 = self:Import(config.LowerTextColor3, Color3.new(1,0,0))
@@ -57,9 +81,7 @@ function TextField.new(config)
 	self.CornerRadius = self:Import(config.CornerRadius, UDim.new(0,3))
 	self.CharacterLimit = self:Import(config.CharacterLimit, nil)
 	self.BackgroundTransparency = self:Import(config.BackgroundTransparency, 0)
-	
 	self.ClearTextOnFocus = self:Import(config.ClearTextOnFocus, false)
-
 	self.TextColor3 = self:Import(config.TextColor3, Color3.new(1,1,1))
 	self.TextTransparency = self:Import(config.TextTransparency, 0)
 	self.Text = self:Import(config.Text, false)
@@ -67,18 +89,20 @@ function TextField.new(config)
 	self.MaintainLowerSpacing = self:Import(config.MaintainLowerSpacing, false)
 	self.BackgroundColor3 = self:Import(config.BackgroundColor3, Color3.fromHSV(0,0,0.2))
 	self.FocusedBackgroundColor3 = self:Import(config.FocusedBackgroundColor3,Color3.fromHSV(0,0,0.4))
-	self.HoverBackgroundColor3 = self:Import(config.HoverBackgroundColor3, self._Fuse.Computed(self.FocusedBackgroundColor3, self.BackgroundColor3, function(sCol, bCol)
+	self.HoverBackgroundColor3 = self:Import(config.HoverBackgroundColor3, self._Fuse.Computed(self.FocusedBackgroundColor3, self.BackgroundColor3, function(sCol: Color3, bCol: Color3)
 		local h1,s1,v1 = sCol:ToHSV()
-		local h2,s2,v2 = bCol:ToHSV()
+		local _,s2,v2 = bCol:ToHSV()
 		return Color3.fromHSV(h1, s1 + (s2-s1)*0.5, v1 + (v2-v1)*0.5)
 	end)):IsDeep()
-	self.IsHovering = self._Fuse.Value(false)
 	self.BorderSizePixel = self:Import(config.BorderSizePixel, 2)
 	self.BorderColor3 = self:Import(config.BorderColor3, Color3.fromHSV(0.6,1,1))
 	self.IconScale = self:Import(config.IconScale, 1.25)
 	self.LeftIcon = self:Import(config.LeftIcon)
 	self.RightIcon = self:Import(config.RightIcon)
-	self.IconSize = self._Fuse.Computed(self.TextSize, self.IconScale, function(textSize, scale)
+
+	self.IsHovering = self._Fuse.Value(false)
+
+	self.IconSize = self._Fuse.Computed(self.TextSize, self.IconScale, function(textSize: number, scale: number)
 		return math.round(textSize*scale)
 	end)
 	self.IconCount = self._Fuse.Computed(self.LeftIcon, self.RightIcon, function(left, right)
@@ -90,21 +114,21 @@ function TextField.new(config)
 			return 0
 		end
 	end)
-	self.LeftOffset = self._Fuse.Computed(self.LeftIcon, self.IconSize, self.TextSize, function(leftIcon, iconSize, textSize)
+	self.LeftOffset = self._Fuse.Computed(self.LeftIcon, self.IconSize, self.TextSize, function(leftIcon: string?, iconSize: number, textSize: number)
 		if leftIcon then
 			return iconSize + textSize
 		else
 			return 0
 		end
 	end)
-	self.RightOffset = self._Fuse.Computed(self.RightIcon, self.IconSize, self.TextSize, function(rightIcon, iconSize, textSize)
+	self.RightOffset = self._Fuse.Computed(self.RightIcon, self.IconSize, self.TextSize, function(rightIcon: string?, iconSize: number, textSize: number)
 		if rightIcon then
 			return iconSize + textSize
 		else
 			return 0
 		end
 	end)
-	self.CenterOffset = self._Fuse.Computed(self.LeftOffset, self.RightOffset, function(leftOff, rightOff)
+	self.CenterOffset = self._Fuse.Computed(self.LeftOffset, self.RightOffset, function(leftOff: number, rightOff: number)
 		return leftOff - rightOff
 	end)
 	
@@ -150,7 +174,7 @@ function TextField.new(config)
 	self.IsEmpty = self._Fuse.Computed(self.Input, self.IsFocused, function(input, focused)
 		return input == "" and not focused
 	end)
-	self.LowerTextSize = self._Fuse.Computed(self.TextSize, self.IsEmpty, function(textSize, isEmpty)
+	self.LowerTextSize = self._Fuse.Computed(self.TextSize, self.IsEmpty, function(textSize: number, isEmpty)
 		return textSize*0.75
 	end)
 	self.LowerTextFrameHeight = self._Fuse.Computed(self.LowerTextSize, function(txtSize)
@@ -159,7 +183,7 @@ function TextField.new(config)
 	self.CharacterCount = self._Fuse.Computed(self.Input, function(input)
 		return string.len(input)
 	end)
-	self._Fuse.Computed(self.Input, self.CharacterCount, self.CharacterLimit, function(input, count, lim)
+	self._Fuse.Computed(self.Input, self.CharacterCount, self.CharacterLimit, function(input, count: number, lim: number)
 		if lim then
 			if lim < count then
 				self:SetInput(string.sub(input, 1, lim))
@@ -175,7 +199,7 @@ function TextField.new(config)
 		TextTransparency = self.TextTransparency,
 		TextXAlignment = Enum.TextXAlignment.Left,
 		TextYAlignment = Enum.TextYAlignment.Center,
-		TextSize = self._Fuse.Computed(self.TextSize, self.IsEmpty, function(textSize, isEmpty)
+		TextSize = self._Fuse.Computed(self.TextSize, self.IsEmpty, function(textSize: number, isEmpty)
 			if isEmpty then
 				return textSize*1
 			else
@@ -192,7 +216,7 @@ function TextField.new(config)
 		Size = self._Fuse.Computed(self.TextSize, self.LeftOffset, self.RightOffset, function(textSize, leftOffset, rightOffset)
 			return UDim2.new(UDim.new(1,-textSize*2-leftOffset-rightOffset), UDim.new(0, textSize * 0.75))
 		end):Tween(),
-		Position = self._Fuse.Computed(self.IsEmpty, self.TextSize, self.LeftOffset, self.RightOffset, self.CenterOffset, function(isEmpty, textSize, lOff, rOff, cOff)
+		Position = self._Fuse.Computed(self.IsEmpty, self.TextSize, self.LeftOffset, self.RightOffset, self.CenterOffset, function(isEmpty, textSize: number, lOff: number, rOff: number, cOff: number)
 			if not isEmpty then
 				return UDim2.new(UDim.new(0,textSize*0.75+lOff), UDim.new(0,textSize*0.5))
 			else
@@ -220,13 +244,13 @@ function TextField.new(config)
 				return backColor
 			end
 		end),
-		Size = self._Fuse.Computed(self.TextSize, self.Width, function(textSize, width)
+		Size = self._Fuse.Computed(self.TextSize, self.Width, function(textSize: number, width)
 			return UDim2.new(width, UDim.new(0,textSize*3))
 		end),
 		[ColdFusion.Children] = {
 			self._Fuse.new "Frame" {
 				AnchorPoint = Vector2.new(0.5,1),
-				Size = self._Fuse.Computed(self.BorderSizePixel, self.IsFocused, function(pix, focused)
+				Size = self._Fuse.Computed(self.BorderSizePixel, self.IsFocused, function(pix: number, focused)
 					if focused then
 						return UDim2.new(UDim.new(1,0), UDim.new(0,pix))
 					else
@@ -328,7 +352,7 @@ function TextField.new(config)
 		Position = UDim2.fromScale(1,0),
 		AutomaticSize = Enum.AutomaticSize.XY,
 		BackgroundTransparency = 1,
-		Text = self._Fuse.Computed(self.CharacterLimit, self.CharacterCount, function(lim, count)
+		Text = self._Fuse.Computed(self.CharacterLimit, self.CharacterCount, function(lim: number, count: number)
 			if lim and count then
 				return count.." / "..lim
 			else
@@ -395,7 +419,7 @@ function TextField.new(config)
 				HorizontalAlignment = Enum.HorizontalAlignment.Center,
 				SortOrder = Enum.SortOrder.LayoutOrder,
 				VerticalAlignment = Enum.VerticalAlignment.Top,
-				Padding = self._Fuse.Computed(self.TextSize, function(txtSize)
+				Padding = self._Fuse.Computed(self.TextSize, function(txtSize: number)
 					return UDim.new(0,txtSize*0.25)
 				end),
 			},

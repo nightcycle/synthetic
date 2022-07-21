@@ -1,7 +1,4 @@
 --!strict
-local SoundService = game:GetService("SoundService")
-local ReplicatedStorage = game:GetService("ReplicatedStorage")
-
 local package = script.Parent
 local packages = package.Parent
 
@@ -11,7 +8,6 @@ type Fuse = Isotope.Fuse
 type State = Isotope.State
 type ValueState = Isotope.ValueState
 
-local Format = require(packages:WaitForChild("format"))
 local Maid = require(packages:WaitForChild("maid"))
 local ColdFusion = require(packages:WaitForChild("coldfusion"))
 
@@ -38,8 +34,40 @@ function ButtonList:InsertButton(txt: string, layoutOrder:number | nil,  bindabl
 	end)
 end
 
-function ButtonList.new(config)
-	local self = setmetatable(Isotope.new(config), ButtonList)
+export type ButtonListParameters = {
+	Data: {[any]: any} | State?,
+	Size: UDim2 | State?,
+	AutomaticSize: Enum.AutomaticSize | State?,
+	ListPadding: UDim | State?,
+	Padding: UDim | State?,
+	CornerRadius: UDim | State?,
+	TextSize: number | State?,
+	IconScale: number | State?,
+	BorderSizePixel: number | State?,
+	TextColor3: Color3 | State?,
+	Font: Enum.Font | State?,
+	SelectedTextColor3: Color3 | State?,
+	HoverTextColor3: Color3 | State?,
+	BackgroundColor3: Color3 | State?,
+	BorderColor3: Color3 | State?,
+	SelectedBackgroundColor3: Color3 | State?,
+	HoverBackgroundColor3: Color3 | State?,
+	BackgroundTransparency: number | State?,
+	BorderTransparency: number | State?,
+	TextTransparency: number | State?,
+	TextXAlignment: Enum.TextXAlignment | State?,
+	TextYAlignment: Enum.TextYAlignment | State?,
+	TextOnly: boolean | State?,
+	VerticalAlignment: Enum.VerticalAlignment | State?,
+	HorizontalAlignment: Enum.HorizontalAlignment | State?,
+	FillDirection: Enum.FillDirection | State?,
+	
+	[any]: any?,
+}
+
+
+function ButtonList.new(config: ButtonListParameters): GuiObject
+	local self = setmetatable(Isotope.new() :: any, ButtonList)
 	self.Name = self:Import(config.Name, script.Name)
 	self.ClassName = self._Fuse.Computed(function() return script.Name end)
 
@@ -65,9 +93,9 @@ function ButtonList.new(config)
 	self.BackgroundColor3 = self:Import(config.BackgroundColor3,Color3.fromHSV(0.7,0,1))
 	self.BorderColor3 = self:Import(config.BorderColor3,Color3.fromHSV(0.7,0,0.3))
 	self.SelectedBackgroundColor3 = self:Import(config.SelectedBackgroundColor3,Color3.fromHSV(0.7,0.7,1))
-	self.HoverBackgroundColor3 = self:Import(config.HoverBackgroundColor3, self._Fuse.Computed(self.SelectedBackgroundColor3, self.BackgroundColor3, function(sCol, bCol)
+	self.HoverBackgroundColor3 = self:Import(config.HoverBackgroundColor3, self._Fuse.Computed(self.SelectedBackgroundColor3, self.BackgroundColor3, function(sCol: Color3, bCol: Color3)
 		local h1,s1,v1 = sCol:ToHSV()
-		local h2,s2,v2 = bCol:ToHSV()
+		local _,s2,v2 = bCol:ToHSV()
 		return Color3.fromHSV(h1, s1 + (s2-s1)*0.5, v1 + (v2-v1)*0.5)
 	end)):IsDeep()
 	self.BackgroundTransparency = self:Import(config.BackgroundTransparency,0)
@@ -140,7 +168,8 @@ function ButtonList.new(config)
 			}
 
 			if buttonData.BindableEvent then
-				local buttonActivated = button:WaitForChild("Activated")
+				local buttonActivated: Instance? = button:WaitForChild("Activated")
+				assert(buttonActivated ~= nil and buttonActivated:IsA("BindableEvent"))
 				self._BuildMaid:GiveTask(buttonActivated.Event:Connect(function()
 					buttonData.BindableEvent:Fire()
 				end))

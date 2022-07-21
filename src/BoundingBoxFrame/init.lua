@@ -19,8 +19,15 @@ local BoundingBoxFrame = {}
 BoundingBoxFrame.__index = BoundingBoxFrame
 setmetatable(BoundingBoxFrame, Isotope)
 
-function BoundingBoxFrame.new(config)
-	local self = Isotope.new()
+export type BoundingBoxFrameParameters = {
+	Target: Instance | State?,
+	[any]: any?,
+}
+
+
+
+function BoundingBoxFrame.new(config: BoundingBoxFrameParameters): GuiObject
+	local self = Isotope.new() :: any
 	setmetatable(self, BoundingBoxFrame)
 
 	self.Target = self:Import(config.Target, nil)

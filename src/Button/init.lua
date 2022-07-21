@@ -1,7 +1,6 @@
 --!strict
 local SoundService = game:GetService("SoundService")
 local RunService = game:GetService("RunService")
-local ReplicatedStorage = game:GetService("ReplicatedStorage")
 local TweenService = game:GetService("TweenService")
 
 local package = script.Parent
@@ -13,7 +12,6 @@ type Fuse = Isotope.Fuse
 type State = Isotope.State
 type ValueState = Isotope.ValueState
 
-local Format = require(packages:WaitForChild("format"))
 local Signal = require(packages:WaitForChild("signal"))
 
 local TextLabel = require(script.Parent:WaitForChild("TextLabel"))
@@ -26,11 +24,39 @@ function Button:Destroy()
 	Isotope.Destroy(self)
 end
 
-function Button.new(config)
-	local self = setmetatable(Isotope.new(), Button)
-	self.Name = self:Import(config.Name, script.Name)
-	self.ClassName = self._Fuse.Computed(function() return script.Name end)
+export type ButtonParameters = {
+	Name: string | State?,
+	Padding: UDim | State?,
+	CornerRadius: UDim | State?,
+	TextSize: number | State?,
+	Size: UDim2 | State?,
+	IconScale: number | State?,
+	BorderSizePixel: number | State?,
+	TextColor3: Color3 | State?,
+	Font: Enum.Font | State?,
+	SelectedTextColor3: Color3 | State?,
+	HoverTextColor3: Color3 | State?,
+	BackgroundColor3: Color3 | State?,
+	BorderColor3: Color3 | State?,
+	SelectedBackgroundColor3: Color3 | State?,
+	HoverBackgroundColor3: Color3 | State?,
+	BackgroundTransparency: number | State?,
+	BorderTransparency: number | State?,
+	TextTransparency: number | State?,
+	TextXAlignment: Enum.TextXAlignment | State?,
+	TextYAlignment: Enum.TextYAlignment | State?,
+	Text: string | State?,
+	LeftIcon: string | State?,
+	RightIcon: string | State?,
+	TextOnly: boolean | State?,
+	[any]: any?,
+}
 
+
+function Button.new(config: ButtonParameters): GuiObject
+	local self = setmetatable(Isotope.new() :: any, Button)
+	self.ClassName = self._Fuse.Computed(function() return script.Name end)
+	self.Name = self:Import(config.Name, script.Name)
 	self.Padding = self:Import(config.Padding, UDim.new(0, 2))
 	self.CornerRadius = self:Import(config.CornerRadius, UDim.new(0,4))
 	self.TextSize = self:Import(config.TextSize, 14)
@@ -44,9 +70,9 @@ function Button.new(config)
 	self.BackgroundColor3 = self:Import(config.BackgroundColor3,Color3.fromHSV(0.7,0,1))
 	self.BorderColor3 = self:Import(config.BorderColor3,Color3.fromHSV(0.7,0,0.3))
 	self.SelectedBackgroundColor3 = self:Import(config.SelectedBackgroundColor3,Color3.fromHSV(0.7,0.7,1))
-	self.HoverBackgroundColor3 = self:Import(config.HoverBackgroundColor3, self._Fuse.Computed(self.SelectedBackgroundColor3, self.BackgroundColor3, function(sCol, bCol)
+	self.HoverBackgroundColor3 = self:Import(config.HoverBackgroundColor3, self._Fuse.Computed(self.SelectedBackgroundColor3, self.BackgroundColor3, function(sCol: Color3, bCol: Color3)
 		local h1,s1,v1 = sCol:ToHSV()
-		local h2,s2,v2 = bCol:ToHSV()
+		local _,s2,v2 = bCol:ToHSV()
 		return Color3.fromHSV(h1, s1 + (s2-s1)*0.5, v1 + (v2-v1)*0.5)
 	end)):IsDeep()
 	self.BackgroundTransparency = self:Import(config.BackgroundTransparency,0)
@@ -61,7 +87,7 @@ function Button.new(config)
 	self.RightIcon = self:Import(config.RightIcon)
 	self.TextOnly = self:Import(config.TextOnly, false)
 
-	self.IconSize = self._Fuse.Computed(self.TextSize, function(textSize)
+	self.IconSize = self._Fuse.Computed(self.TextSize, function(textSize: number)
 		local size = math.round(textSize*1.25)
 		return UDim2.fromOffset(size, size)
 	end)
@@ -110,14 +136,14 @@ function Button.new(config)
 	self.ClickTick = self._Fuse.Value(0)
 	self.MaxRippleDuration = self._Fuse.Value(0.4)
 	self.TimeSinceLastClick = self._Fuse.Value(tick())
-	self.RippleAlpha = self._Fuse.Computed(self.TimeSinceLastClick, self.MaxRippleDuration, function(timeSince, dur)
+	self.RippleAlpha = self._Fuse.Computed(self.TimeSinceLastClick, self.MaxRippleDuration, function(timeSince: number, dur: number)
 		return math.clamp(timeSince / dur, 0, 1)
 	end)
 	local bump = 0.01
-	self.LeftRippleAlpha = self._Fuse.Computed(self.RippleAlpha, self.ClickCenter, function(alpha, center)
+	self.LeftRippleAlpha = self._Fuse.Computed(self.RippleAlpha, self.ClickCenter, function(alpha: number, center: number)
 		return math.clamp(center - alpha, bump*2, 1-bump*2)
 	end)
-	self.RightRippleAlpha = self._Fuse.Computed(self.RippleAlpha, self.ClickCenter, function(alpha, center)
+	self.RightRippleAlpha = self._Fuse.Computed(self.RippleAlpha, self.ClickCenter, function(alpha: number, center: number)
 		return math.clamp(center + alpha, bump*2, 1-bump*2)
 	end)
 	local eDir = Enum.EasingDirection.InOut
@@ -126,7 +152,7 @@ function Button.new(config)
 		self.ClickCenter,
 		self.LeftRippleAlpha,
 		self.RightRippleAlpha,	
-		function(centerAlpha, leftAlpha, rightAlpha)
+		function(centerAlpha: number, leftAlpha: number, rightAlpha: number)
 			leftAlpha = math.clamp(TweenService:GetValue(leftAlpha, eSty, eDir), bump, math.max(centerAlpha-bump, bump*2))
 			rightAlpha = math.clamp(TweenService:GetValue(rightAlpha, eSty, eDir), math.min(centerAlpha+bump, 1-bump*2), 1-bump)
 			return {
@@ -177,9 +203,10 @@ function Button.new(config)
 
 
 	self.LabelAbsoluteSize = self._Fuse.Property(self.TextLabel, "AbsoluteSize", 60)
-	self.ButtonSize = self._Fuse.Computed(self.Padding, self.LabelAbsoluteSize, self.Size, function(padding: UDim, absSize: Vector2 | nil, size)
+	self.ButtonSize = self._Fuse.Computed(self.Padding, self.LabelAbsoluteSize, self.Size, function(padding: UDim, absSize: Vector2?, size: Vector2?)
 		if size then return size end
 		absSize = absSize or Vector2.new(0,0)
+		assert(absSize ~= nil)
 		local fullSize = absSize + Vector2.new(1,1) * padding.Offset * 2
 		return UDim2.fromOffset(fullSize.X, fullSize.Y)
 	end)
@@ -399,7 +426,7 @@ function Button.new(config)
 	-- print("Parameters", parameters, self)
 	self.Instance = self._Fuse.new("Frame")(parameters)
 
-	self._Maid:GiveTask(self.Instance:WaitForChild("TextButton").MouseButton1Down:Connect(function(x)
+	self._Maid:GiveTask(self.Instance:WaitForChild("TextButton").MouseButton1Down:Connect(function(x: number)
 		local xWidth = self.Instance.AbsoluteSize.X
 		local xPos = self.Instance.AbsolutePosition.X
 		local clickCenter = (x-xPos)/xWidth

@@ -1,7 +1,4 @@
 --!strict
-local SoundService = game:GetService("SoundService")
-local ReplicatedStorage = game:GetService("ReplicatedStorage")
-
 local package = script.Parent
 local packages = package.Parent
 
@@ -11,8 +8,6 @@ type Fuse = Isotope.Fuse
 type State = Isotope.State
 type ValueState = Isotope.ValueState
 
-local Signal = require(packages:WaitForChild("signal"))
-local Format = require(packages:WaitForChild("format"))
 local Spritesheet = require(script:WaitForChild("Spritesheet"))
 
 local IconLabel = {}
@@ -23,17 +18,25 @@ function IconLabel:Destroy()
 	Isotope.Destroy(self)
 end
 
-function IconLabel.new(config)
-	local self = setmetatable(Isotope.new(config), IconLabel)
-	self.Name = self:Import(config.Name, script.Name)
-	self.ClassName = self._Fuse.Computed(function() return script.Name end)
+export type IconLabelParameters = {
+	Name: string | State?,
+	IconTransparency: number | State?,
+	IconColor3: Color3 | State?,
+	Icon: string | State?,
+	[any]: any?,
+}
 
+function IconLabel.new(config: IconLabelParameters): GuiObject
+	local self = setmetatable(Isotope.new() :: any, IconLabel)
+
+	self.Name = self:Import(config.Name, script.Name)
 	self.IconTransparency = self:Import(config.IconTransparency, 0)
 	self.IconColor3 = self:Import(config.IconColor3, Color3.new(1,1,1))
 	self.Icon = self:Import(config.Icon, nil)
 	
-	self.DotsPerInch = self._Fuse.Value(36)
 
+	self.ClassName = self._Fuse.Computed(function() return script.Name end)
+	self.DotsPerInch = self._Fuse.Value(36)
 	self.IconData = self._Fuse.Computed(self.Icon, self.DotsPerInch, function(key, dpi)
 		if not key or key == "" then return {} end
 		local iconResolutions = Spritesheet[string.lower(key)] or {}

@@ -1,7 +1,4 @@
 --!strict
-
-local RunService = game:GetService("RunService")
-
 local package = script.Parent
 local packages = package.Parent
 local Isotope = require(packages:WaitForChild("isotope"))
@@ -10,14 +7,24 @@ type Fuse = Isotope.Fuse
 type State = Isotope.State
 type ValueState = Isotope.ValueState
 
-local math = require(packages:WaitForChild("math"))
-
 local SurfaceFrame = {}
 SurfaceFrame.__index = SurfaceFrame
 setmetatable(SurfaceFrame, Isotope)
 
-function SurfaceFrame.new(config)
-	local self = Isotope.new()
+export type BillboardFrameParameters = {
+	Name: string | State?,
+	Parent: Instance | State?,
+	Position: UDim2 | State?,
+	Size: Vector2 | State?,
+	LightInfluence: number | State?,
+	AlwaysOnTop: boolean | State?,
+	MaxDistance: number | State?,
+	AnchorPoint: Vector2 | State?,
+	[any]: any?,
+}
+
+function SurfaceFrame.new(config: BillboardFrameParameters): GuiObject
+	local self = Isotope.new() :: any
 	setmetatable(self, SurfaceFrame)
 
 	self.Name = self:Import(config.Name, script.Name)
@@ -71,12 +78,6 @@ function SurfaceFrame.new(config)
 	end
 
 	self.Instance = self._Fuse.new "Frame" (parameters)
-
-	-- self._Maid:GiveTask(self.SurfaceGui)
-	-- self._Maid:GiveTask(self.SurfaceGui.Destroying:Connect(function() self:Destroy() end))
-	
-	-- self._Maid:GiveTask(self.Part)
-	-- self._Maid:GiveTask(self.Part.Destroying:Connect(function() self:Destroy() end))
 
 	-- self._Maid:GiveTask(self.Instance)
 	self._Maid:GiveTask(self.Instance.Destroying:Connect(function() self:Destroy() end))

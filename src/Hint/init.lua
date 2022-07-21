@@ -1,6 +1,4 @@
 --!strict
-local ReplicatedStorage = game:GetService("ReplicatedStorage")
-
 local package = script.Parent
 local packages = package.Parent
 
@@ -10,7 +8,6 @@ type Fuse = Isotope.Fuse
 type State = Isotope.State
 type ValueState = Isotope.ValueState
 
-local Signal = require(packages:WaitForChild("signal"))
 local EffectGui = require(package:WaitForChild("EffectGui"))
 local TextLabel = require(package:WaitForChild("TextLabel"))
 
@@ -22,22 +19,35 @@ function Hint:Destroy()
 	Isotope.Destroy(self)
 end
 
-function Hint.new(config)
-	local self = setmetatable(Isotope.new(config), Hint)
+export type HintParameters = {
+	Name: string | State?,
+	Parent: Instance | State?,
+	Font: Enum.Font | State?,
+	Text: string | State?,
+	TextSize: number | State?,
+	AnchorPoint: Vector2 | State?,
+	Padding: UDim | State?,
+	GapPadding: UDim | State?,
+	CornerRadius: UDim | State?,
+	BackgroundTransparency: number | State?,
+	TextTransparency: number | State?,
+	BackgroundColor3: Color3 | State?,
+	Enabled: boolean | State?,
+	Override: boolean | State?,
+	[any]: any?,
+}
+
+
+function Hint.new(config: HintParameters): GuiObject
+	local self = setmetatable(Isotope.new() :: any, Hint)
+	self.ClassName = self._Fuse.Computed(function() return script.Name end)
 
 	self.Name = self:Import(config.Name, script.Name)
-	self.ClassName = self._Fuse.Computed(function() return script.Name end)
 	self.Parent = self:Import(config.Parent, nil)
-	
 	self.Font = self:Import(config.Font, Enum.Font.Gotham)
 	self.Text = self:Import(config.Text, nil)
 	self.TextSize = self:Import(config.TextSize, 10)
 	self.AnchorPoint = self:Import(config.AnchorPoint, Vector2.new(0,0))
-
-	-- self.AnchorPoint:Connect(function(cur)
-	-- 	print("Update", cur)
-	-- end)
-
 	self.Padding = self:Import(config.Padding, UDim.new(0,2))
 	self.GapPadding = self:Import(config.GapPadding, UDim.new(0,6))
 	self.CornerRadius = self:Import(config.CornerRadius , UDim.new(0,3))

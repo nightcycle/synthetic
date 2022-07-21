@@ -1,6 +1,5 @@
 --!strict
 local SoundService = game:GetService("SoundService")
-local ReplicatedStorage = game:GetService("ReplicatedStorage")
 
 local package = script.Parent
 local packages = package.Parent
@@ -24,26 +23,42 @@ function Switch:Destroy()
 	Isotope.Destroy(self)
 end
 
-function Switch.new(config)
-	local self = setmetatable(Isotope.new(config), Switch)
-	self.Name = self:Import(config.Name, script.Name)
+export type SwitchParameters = {
+	Name: string | State?,
+	Scale: number | State?,
+	BackgroundColor3: Color3 | State?,
+	EnabledColor3: Color3 | State?,
+	Value: boolean | State?,
+	EnableSound: Sound | State?,
+	DisableSound: Sound | State?,
+	BubbleEnabled: boolean | State?,
+	[any]: any?,
+}
+
+
+function Switch.new(config: SwitchParameters): GuiObject
+	local self = setmetatable(Isotope.new() :: any, Switch)
 	self.ClassName = self._Fuse.Computed(function() return script.Name end)
+
+	self.Name = self:Import(config.Name, script.Name)
 	self.Scale = self:Import(config.Scale, 1)
 	self.BackgroundColor3 = self:Import(config.BackgroundColor3, Color3.fromHSV(0,0,0.9))
 	self.EnabledColor3 = self:Import(config.EnabledColor3, Color3.fromHSV(0.6,1,1))
 	self.Value = self:Import(config.Value, false)
 	self.EnableSound = self:Import(config.EnableSound)
 	self.DisableSound = self:Import(config.DisableSound)
+	self.BubbleEnabled = self:Import(config.BubbleEnabled, true)
+
 	self.Padding = self._Fuse.Computed(self.Scale, function(scale)
 		return math.round(6 * scale)
 	end)
-	self.Width = self._Fuse.Computed(self.Scale, function(scale)
+	self.Width = self._Fuse.Computed(self.Scale, function(scale: number)
 		return math.round(scale * 20)
 	end)
 	self.Activated = Signal.new()
 	self._Maid:GiveTask(self.Activated)
 
-	self.BubbleEnabled = self:Import(config.BubbleEnabled, true)
+
 	self._Maid:GiveTask(self.Activated:Connect(function()	
 		if self.Value:Get() == true then
 			local clickSound = self.EnableSound:Get()
@@ -101,7 +116,7 @@ function Switch.new(config)
 				Position = UDim2.fromScale(0.5,0.5),
 				AnchorPoint = Vector2.new(0.5,0.5),
 				BackgroundColor3 = self.ActiveColor3:Tween(),
-				Size = self._Fuse.Computed(self.Width, self.Padding, function(width, padding)
+				Size = self._Fuse.Computed(self.Width, self.Padding, function(width: number, padding: number)
 					return UDim2.fromOffset(width-padding, width-padding)
 				end),
 				BorderSizePixel = 0,
@@ -125,7 +140,7 @@ function Switch.new(config)
 
 	local parameters = {
 		Name = self.Name,
-		Size = self._Fuse.Computed(self.Width, function(width)
+		Size = self._Fuse.Computed(self.Width, function(width: number)
 			return UDim2.fromOffset(width * 2, width * 2)
 		end),
 		BackgroundTransparency = 1,
@@ -141,12 +156,14 @@ function Switch.new(config)
 				[self._Fuse.Event "Activated"] = function()
 					self.Activated:Fire()
 					if self.BubbleEnabled:Get() then
-						local bubble = Bubble.new {
+						local bubble: Instance = Bubble.new {
 							Parent = self.Knob,
 							-- BackgroundColor3 = self.ActiveColor3,
 							-- BackgroundTransparency = 0.6,
 						}
-						local fireFunction = bubble:WaitForChild("Fire")
+
+						local fireFunction:Instance? = bubble:WaitForChild("Fire")
+						assert(fireFunction ~= nil and fireFunction:IsA("BindableFunction"))
 						fireFunction:Invoke()
 					end
 				end
@@ -154,7 +171,7 @@ function Switch.new(config)
 			self._Fuse.new "Frame" {
 				Name = "Frame",
 				ZIndex = 1,
-				Size = self._Fuse.Computed(self.Width, self.Padding, function(width, padding)
+				Size = self._Fuse.Computed(self.Width, self.Padding, function(width: number, padding: number)
 					local w = width - padding*2
 					return UDim2.new(0, 2*w, 1, 0)
 				end),
@@ -168,14 +185,14 @@ function Switch.new(config)
 						BackgroundTransparency = 0.5,
 						Position = UDim2.fromScale(0.5,0.5),
 						AnchorPoint = Vector2.new(0.5,0.5),
-						Size = self._Fuse.Computed(self.Width, self.Padding, function(width, padding)
+						Size = self._Fuse.Computed(self.Width, self.Padding, function(width: number, padding: number)
 							local w = math.round(width - padding*1.75)
 							return UDim2.new(1, 0, 0, w)
 						end),
 						BackgroundColor3 = self._Fuse.Computed(
 							self.Value,
 							self.EnabledColor3, function(val, col)
-							local h,s,v = col:ToHSV()
+							local h,_s,_v = col:ToHSV()
 							if val then
 								return Color3.fromHSV(h, 0.5, 1)
 							else

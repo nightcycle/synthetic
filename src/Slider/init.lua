@@ -1,8 +1,6 @@
 --!strict
 local SoundService = game:GetService("SoundService")
-local RunService = game:GetService("RunService")
 local UserInputService = game:GetService("UserInputService")
-local ReplicatedStorage = game:GetService("ReplicatedStorage")
 
 local package = script.Parent
 local packages = package.Parent
@@ -22,6 +20,28 @@ local Slider = {}
 Slider.__index = Slider
 setmetatable(Slider, Isotope)
 
+export type SliderParameters = {
+	Name: string | State?,
+	Scale: number | State?,
+	BackgroundColor3: Color3 | State?,
+	EnabledColor3: Color3 | State?,
+	HintBackgroundColor3: Color3 | State?,
+	TextColor3: Color3 | State?,
+	TickSound: Sound | State?,
+	EnableSound: Sound | State?,
+	DisableSound: Sound | State?,
+	Input: number | State?,
+	Minimum: number | State?,
+	Maximum: number | State?,
+	Increment: number | State?,
+	BorderSizePixel: number | State?,
+	Padding: UDim | State?,
+	Size: UDim2 | State?,
+	BubbleEnabled: boolean | State?,
+	HintEnabled: boolean | State?,
+	[any]: any?,
+}
+
 function Slider:Destroy()
 	self.TextColor3:Unlock()
 	self.HintBackgroundColor3:Unlock()
@@ -30,10 +50,11 @@ function Slider:Destroy()
 	Isotope.Destroy(self)
 end
 
-function Slider.new(config)
-	local self = setmetatable(Isotope.new(config), Slider)
-	self.Name = self:Import(config.Name, script.Name)
+function Slider.new(config: SliderParameters): GuiObject
+	local self = setmetatable(Isotope.new() :: any, Slider)
 	self.ClassName = self._Fuse.Computed(function() return script.Name end)
+
+	self.Name = self:Import(config.Name, script.Name)
 	self.Scale = self:Import(config.Scale, 1)
 	self.BackgroundColor3 = self:Import(config.BackgroundColor3, Color3.fromHSV(0,0,0.9))
 	self.EnabledColor3 = self:Import(config.EnabledColor3, Color3.fromHSV(0.6,1,1)):Lock()
@@ -42,7 +63,6 @@ function Slider.new(config)
 	self.TickSound = self:Import(config.TickSound, nil)
 	self.EnableSound = self:Import(config.EnableSound, nil)
 	self.DisableSound = self:Import(config.DisableSound, nil)
-
 	self.Input = self:Import(config.Input, 5)
 	self.Minimum = self:Import(config.Minimum, 0)
 	self.Maximum = self:Import(config.Maximum, 10)
@@ -54,7 +74,7 @@ function Slider.new(config)
 	self.HintEnabled = self:Import(config.HintEnabled, true)
 
 
-	self.Value = self._Fuse.Computed(self.Input, self.Minimum, self.Maximum, self.Increment,  function(input, min, max, inc)
+	self.Value = self._Fuse.Computed(self.Input, self.Minimum, self.Maximum, self.Increment,  function(input: number, min: number, max: number, inc: number)
 		local val = input-(input%inc)--math.round(input * inc)/inc
 		if val ~= val then val = min end
 		-- print("Val", val, "Inc", inc, "In", input)
@@ -66,7 +86,7 @@ function Slider.new(config)
 			SoundService:PlayLocalSound(tickSound)
 		end
 	end)
-	self.Alpha = self._Fuse.Computed(self.Value, self.Minimum, self.Maximum, function(val, min, max)
+	self.Alpha = self._Fuse.Computed(self.Value, self.Minimum, self.Maximum, function(val: number, min: number, max: number)
 		return (val - min)/(max-min)
 	end)
 
@@ -75,7 +95,7 @@ function Slider.new(config)
 
 	self.Dragging = self._Fuse.Value(false)
 
-	self.Diameter = self._Fuse.Computed(self.Size, self.Padding, function(size, padding)
+	self.Diameter = self._Fuse.Computed(self.Size, self.Padding, function(size:UDim2, padding:UDim)
 		return size.Y.Offset - padding.Offset*2
 	end)
 	self.Knob = self._Fuse.new "Frame" {
@@ -103,19 +123,19 @@ function Slider.new(config)
 				Position = UDim2.fromScale(0.5,0.5),
 				AnchorPoint = Vector2.new(0.5,0.5),
 				BackgroundColor3 = self.EnabledColor3:Tween(),
-				Size = self._Fuse.Computed(self.Diameter, function(diameter)
+				Size = self._Fuse.Computed(self.Diameter, function(diameter: number)
 					return UDim2.fromOffset(diameter,diameter)
 				end),
 				BorderSizePixel = 0,
 				[self._Fuse.Children] = {
 					self._Fuse.new "UICorner" {
-						CornerRadius = self._Fuse.Computed(self.Padding, function(padding)
+						CornerRadius = self._Fuse.Computed(self.Padding, function(padding: UDim)
 							return UDim.new(1,0)
 						end)
 					},
 					self._Fuse.new "UIStroke" {
 						ApplyStrokeMode = Enum.ApplyStrokeMode.Border,
-						Thickness = self._Fuse.Computed(self.Padding, function(padding)
+						Thickness = self._Fuse.Computed(self.Padding, function(padding: UDim)
 							return 1--math.round(padding*0.25)
 						end),
 						Transparency = 0.8,
@@ -161,7 +181,8 @@ function Slider.new(config)
 				}
 				self._Maid._currentBubble = function()
 					if bubble and bubble:IsDescendantOf(game) then
-						local destFunction = bubble:FindFirstChild("Disable")
+						local destFunction: Instance? = bubble:FindFirstChild("Disable")
+						assert(destFunction ~= nil and destFunction:IsA("BindableFunction"))
 						if destFunction then
 							destFunction:Invoke()
 						else
@@ -169,7 +190,8 @@ function Slider.new(config)
 						end
 					end
 				end
-				local enabFunction = bubble:WaitForChild("Enable")
+				local enabFunction: Instance? = bubble:WaitForChild("Enable")
+				assert(enabFunction ~= nil and enabFunction:IsA("BindableFunction"))
 				enabFunction:Invoke()
 				local enabSound = self.EnableSound:Get()
 				if enabSound then
@@ -211,7 +233,7 @@ function Slider.new(config)
 								CornerRadius = UDim.new(0.5,0),
 							},
 							self._Fuse.new "UIGradient" {
-								Color = self._Fuse.Computed(self.BackgroundColor3, self.EnabledColor3, self.Alpha, function(back, enab, alpha)
+								Color = self._Fuse.Computed(self.BackgroundColor3, self.EnabledColor3, self.Alpha, function(back, enab, alpha: number)
 									local bump = 0.001
 									return ColorSequence.new({
 										ColorSequenceKeypoint.new(0, enab),

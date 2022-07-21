@@ -1,6 +1,4 @@
 --!strict
-local ReplicatedStorage = game:GetService("ReplicatedStorage")
-
 local package = script.Parent
 local packages = package.Parent
 
@@ -10,7 +8,6 @@ type Fuse = Isotope.Fuse
 type State = Isotope.State
 type ValueState = Isotope.ValueState
 
-local Signal = require(packages:WaitForChild("signal"))
 local EffectGui = require(package:WaitForChild("EffectGui"))
 
 local Bubble = {}
@@ -39,8 +36,18 @@ function Bubble:Disable()
 	end)
 end
 
-function Bubble.new(config)
-	local self = setmetatable(Isotope.new(config), Bubble)
+export type BubbleParameters = {
+	Name: string | State?,
+	Parent: Instance | State?,
+	Scale: number | State?,
+	BackgroundTransparency: number | State?,
+	FinalTransparency: number | State?,
+	BackgroundColor3: Color3 | State?,
+	[any]: any?,
+}
+
+function Bubble.new(config: BubbleParameters): GuiObject
+	local self = setmetatable(Isotope.new() :: any, Bubble)
 
 	self.Name = self:Import(config.Name, script.Name)
 	self.ClassName = self._Fuse.Computed(function() return script.Name end)
