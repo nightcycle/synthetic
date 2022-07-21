@@ -8,9 +8,9 @@ registry = "https://github.com/upliftgames/wally-index"
 exclude = ["Packages", ".vscode"]
 
 [dependencies]
-coldfusion = "nightcycle/cold-fusion@^2.0.23"
-isotope = "nightcycle/isotope@^1.2.23"
+coldfusion = "nightcycle/cold-fusion@^2.1.0"
+isotope = "nightcycle/isotope@^1.3.1"
 signal = "quenty/signal@^2.0.0-canary"
 maid = "quenty/maid@^2.0.1-canary"
 format = "nightcycle/format@0.1.2"
-math = "nightcycle/math@2.2.1"
+math = "nightcycle/luau-math@1.0.1"

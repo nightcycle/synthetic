@@ -1,18 +1,32 @@
 
+--!strict
+
 local RunService = game:GetService("RunService")
 
 local package = script.Parent
 local packages = package.Parent
 
 local Isotope = require(packages:WaitForChild("isotope"))
+type Isotope = Isotope.Isotope
+type Fuse = Isotope.Fuse
+type State = Isotope.State
+type ValueState = Isotope.ValueState
+
 local math = require(packages:WaitForChild("math"))
 
-local ViewportMountFrame = {}
+local ViewportMountFrame: {[any]: any} = {}
 ViewportMountFrame.__index = ViewportMountFrame
 setmetatable(ViewportMountFrame, Isotope)
 
-function ViewportMountFrame.new(config)
-	local self = Isotope.new()
+export type ViewportMountFrameParameters = {
+	WorldPosition: Vector2 | State?,
+	WorldSize: Vector2 | State?,
+	[any]: any
+}
+
+function ViewportMountFrame.new(config: ViewportMountFrameParameters): GuiObject
+	local self: any = Isotope.new()
+
 	setmetatable(self, ViewportMountFrame)
 
 	self.WorldPosition = self:Import(config.WorldPosition, Vector2.new(0,0))
@@ -39,21 +53,21 @@ function ViewportMountFrame.new(config)
 	local parameters = {
 		Name = self:Import(config.Name, script.Name),
 		Parent = self:Import(config.Parent, nil),
-		Size = self._Fuse.Computed(self.WorldSize, self.BoardCameraWindowSize, self.BoardAbsoluteSize, function(size, winSize, boardSize)
+		Size = self._Fuse.Computed(self.WorldSize, self.BoardCameraWindowSize, self.BoardAbsoluteSize, function(size: Vector2, winSize, boardSize)
 			boardSize = boardSize or Vector2.new(0,0)
 			winSize = winSize or Vector2.new(0,0)
 			local ratio = boardSize / winSize
 			local finalSize = size * ratio * 0.5
 			return UDim2.fromOffset(finalSize.X,finalSize.Y)
 		end),
-		Position = self._Fuse.Computed(self.WorldPosition, self.CameraCFrame, self.FieldOfView, self.BoardAbsoluteSize, function(pos, camCF, fov, viewportSize)
+		Position = self._Fuse.Computed(self.WorldPosition, self.CameraCFrame, self.FieldOfView, self.BoardAbsoluteSize, function(pos: Vector2, camCF, fov, viewportSize)
 			camCF = camCF or CFrame.new(0,0,0)
 			fov = fov or 10
 			pos = pos or Vector2.new(0,0)
 			viewportSize = viewportSize or Vector2.new(0,0)
-			pos = Vector3.new(pos.X, pos.Y, 0)
+			local pos3 = Vector3.new(pos.X, pos.Y, 0)
 			--This is written by EgoMoose :D
-			local camSpacePoint = camCF:PointToObjectSpace(pos); -- make point relative to camera so easier to work with
+			local camSpacePoint = camCF:PointToObjectSpace(pos3); -- make point relative to camera so easier to work with
 
 			local r = viewportSize.X/viewportSize.Y; -- aspect ratio
 			local h = -camSpacePoint.Z*math.tan(math.rad(fov/2)); -- calc height/2

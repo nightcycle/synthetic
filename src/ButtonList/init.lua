@@ -6,6 +6,11 @@ local package = script.Parent
 local packages = package.Parent
 
 local Isotope = require(packages:WaitForChild("isotope"))
+type Isotope = Isotope.Isotope
+type Fuse = Isotope.Fuse
+type State = Isotope.State
+type ValueState = Isotope.ValueState
+
 local Format = require(packages:WaitForChild("format"))
 local Maid = require(packages:WaitForChild("maid"))
 local ColdFusion = require(packages:WaitForChild("coldfusion"))

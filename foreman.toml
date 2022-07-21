@@ -1,7 +1,5 @@
 [tools]
 remodel = 	{source = "rojo-rbx/remodel", 			version = "0.9.1" }
-rojo = 		{source = "quenty/rojo", 				version = "7.0.0-quenty-npm-canary.4"}
+rojo = 		{source = "rojo-rbx/rojo", 				version = "7.1.0" }
 wally = 	{source = "UpliftGames/wally", 			version = "0.3.1" }
-stylua = 	{source = "JohnnyMorganz/StyLua", 		version = "0.11.3" }
 tarmac = 	{source = "Roblox/tarmac",				version = "0.7.0"}
-moonwave = { 	source = "UpliftGames/moonwave", 		version = "0.3.2"}

@@ -3,19 +3,14 @@
 registry = "test"
 
 [[package]]
-name = "nightcycle/boat-graph"
-version = "1.0.2"
-dependencies = [["maid", "quenty/maid@2.0.1-canary.140ed9d6.1"]]
-
-[[package]]
 name = "nightcycle/cold-fusion"
 version = "1.2.6"
 dependencies = [["maid", "quenty/maid@2.0.1-canary.140ed9d6.1"], ["signal", "quenty/signal@2.0.0-canary.140ed9d6.2"]]
 
 [[package]]
 name = "nightcycle/cold-fusion"
-version = "2.0.23"
-dependencies = [["maid", "quenty/maid@2.0.1-canary.140ed9d6.1"], ["math", "nightcycle/math@3.4.0"], ["signal", "quenty/signal@2.0.0-canary.140ed9d6.2"]]
+version = "2.1.0"
+dependencies = [["Maid", "quenty/maid@2.0.1-canary.140ed9d6.1"], ["Math", "nightcycle/math@3.6.0"], ["Signal", "quenty/signal@2.0.0-canary.140ed9d6.2"]]
 
 [[package]]
 name = "nightcycle/format"
@@ -24,18 +19,18 @@ dependencies = [["coldfusion", "nightcycle/cold-fusion@1.2.6"], ["maid", "quenty
 
 [[package]]
 name = "nightcycle/isotope"
-version = "1.2.23"
-dependencies = [["coldfusion", "nightcycle/cold-fusion@2.0.23"], ["maid", "quenty/maid@2.0.1-canary.140ed9d6.1"], ["signal", "quenty/signal@2.0.0-canary.140ed9d6.2"]]
+version = "1.3.1"
+dependencies = [["coldfusion", "nightcycle/cold-fusion@2.1.0"], ["maid", "quenty/maid@2.0.1-canary.140ed9d6.1"], ["signal", "quenty/signal@2.0.0-canary.140ed9d6.2"]]
+
+[[package]]
+name = "nightcycle/luau-math"
+version = "1.0.1"
+dependencies = []
 
 [[package]]
 name = "nightcycle/math"
-version = "2.2.1"
-dependencies = [["graph", "nightcycle/boat-graph@1.0.2"], ["testez", "roblox/testez@0.4.1"]]
-
-[[package]]
-name = "nightcycle/math"
-version = "3.4.0"
-dependencies = [["graph", "nightcycle/boat-graph@1.0.2"]]
+version = "3.6.0"
+dependencies = []
 
 [[package]]
 name = "nightcycle/string"
@@ -44,8 +39,8 @@ dependencies = []
 
 [[package]]
 name = "nightcycle/synthetic"
-version = "3.3.19"
-dependencies = [["coldfusion", "nightcycle/cold-fusion@2.0.23"], ["format", "nightcycle/format@0.1.2"], ["isotope", "nightcycle/isotope@1.2.23"], ["maid", "quenty/maid@2.0.1-canary.140ed9d6.1"], ["math", "nightcycle/math@2.2.1"], ["signal", "quenty/signal@2.0.0-canary.140ed9d6.2"]]
+version = "3.3.23"
+dependencies = [["coldfusion", "nightcycle/cold-fusion@2.1.0"], ["format", "nightcycle/format@0.1.2"], ["isotope", "nightcycle/isotope@1.3.1"], ["maid", "quenty/maid@2.0.1-canary.140ed9d6.1"], ["math", "nightcycle/luau-math@1.0.1"], ["signal", "quenty/signal@2.0.0-canary.140ed9d6.2"]]
 
 [[package]]
 name = "quenty/maid"
@@ -55,9 +50,4 @@ dependencies = []
 [[package]]
 name = "quenty/signal"
 version = "2.0.0-canary.140ed9d6.2"
-dependencies = []
-
-[[package]]
-name = "roblox/testez"
-version = "0.4.1"
 dependencies = []

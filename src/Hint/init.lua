@@ -5,6 +5,11 @@ local package = script.Parent
 local packages = package.Parent
 
 local Isotope = require(packages:WaitForChild("isotope"))
+type Isotope = Isotope.Isotope
+type Fuse = Isotope.Fuse
+type State = Isotope.State
+type ValueState = Isotope.ValueState
+
 local Signal = require(packages:WaitForChild("signal"))
 local EffectGui = require(package:WaitForChild("EffectGui"))
 local TextLabel = require(package:WaitForChild("TextLabel"))

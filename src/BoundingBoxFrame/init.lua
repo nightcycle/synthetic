@@ -1,8 +1,16 @@
+--!strict
+
 local RunService = game:GetService("RunService")
 
 local package = script.Parent
 local packages = package.Parent
+
 local Isotope = require(packages:WaitForChild("isotope"))
+type Isotope = Isotope.Isotope
+type Fuse = Isotope.Fuse
+type State = Isotope.State
+type ValueState = Isotope.ValueState
+
 local math = require(packages:WaitForChild("math"))
 
 local MountFrame = require(package:WaitForChild("ViewportMountFrame"))
