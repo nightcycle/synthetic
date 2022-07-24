@@ -14,7 +14,7 @@ setmetatable(SurfaceFrame, Isotope)
 export type BillboardFrameParameters = {
 	Name: string | State?,
 	Parent: Instance | State?,
-	Position: UDim2 | State?,
+	Position: Vector3 | State?,
 	Size: Vector2 | State?,
 	LightInfluence: number | State?,
 	AlwaysOnTop: boolean | State?,

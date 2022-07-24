@@ -9,7 +9,7 @@ return function(coreGui)
 	local maid = Maid.new()
 	local Synthetic = require(script.Parent.Parent)
 	task.spawn(function()
-		local board = Synthetic("BoardFrame").new{
+		local board = Synthetic("BoardFrame"){
 			Parent = coreGui,
 			Size = UDim2.fromScale(0.5,0.5),
 			Position = UDim2.fromScale(0.5,0.5),
@@ -33,7 +33,7 @@ return function(coreGui)
 			part.CFrame *= CFrame.Angles(dt*math.rad(30), dt*math.rad(30), dt*math.rad(30))
 		end))
 
-		local boundingBoxFrame = Synthetic("BoundingBoxFrame").new{
+		local boundingBoxFrame = Synthetic("BoundingBoxFrame"){
 			Parent = board,
 			Target = part,
 			BackgroundTransparency = 0.5,
