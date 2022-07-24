@@ -74,7 +74,7 @@ function Button.new(config: ButtonParameters): GuiObject
 		local h1,s1,v1 = sCol:ToHSV()
 		local _,s2,v2 = bCol:ToHSV()
 		return Color3.fromHSV(h1, s1 + (s2-s1)*0.5, v1 + (v2-v1)*0.5)
-	end)):IsDeep()
+	end))
 	self.BackgroundTransparency = self:Import(config.BackgroundTransparency,0)
 	self.BorderTransparency = self:Import(config.BackgroundTransparency,0)
 	self.TextTransparency = self:Import(config.TextTransparency, 0)
