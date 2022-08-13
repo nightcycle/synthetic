@@ -126,7 +126,7 @@ function BoardFrame.new(config: BoardFrameParameters): GuiObject
 	}
 	local parameters = {
 		Parent = self:Import(config.Parent, nil),
-		Name = self:Import(config.Name, "BoardFrame"),
+		Name = self:Import(config.Name, script.Name),
 		ClipsDescendants = true,
 		Size = self.Size,
 		Position = self.Position,

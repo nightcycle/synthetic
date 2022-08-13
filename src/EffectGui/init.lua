@@ -77,6 +77,7 @@ function EffectGui.new(config: EffectGuiParameters): ScreenGui
 	end)
 
 	local parameters = {
+		Name = self.Name,
 		DisplayOrder = self.DisplayOrder,
 		Enabled = self.Enabled,
 		ZIndexBehavior = self.ZIndexBehavior,

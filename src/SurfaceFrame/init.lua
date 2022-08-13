@@ -13,10 +13,13 @@ setmetatable(SurfaceFrame, Isotope)
 
 export type SurfaceFrameParameters = {
 	Name: string | State?,
-	Face: string | State?,
+	Face: Enum.NormalId | State?,
 	Adornee: Instance | State?,
 	Parent: Instance | State?,
 	PixelsPerStud: number | State?,
+	LightInfluence: number | State?,
+	Brightness: number | State?,
+	AlwaysOnTop: boolean | State?,
 	[any]: any?,
 }
 
@@ -25,10 +28,14 @@ function SurfaceFrame.new(config: SurfaceFrameParameters): GuiObject
 	setmetatable(self, SurfaceFrame)
 
 	self.Name = self:Import(config.Name, script.Name)
-	self.Face = self:Import(config.Face, "Left")
+	self.Face = self:Import(config.Face, Enum.NormalId.Left)
 	self.Adornee = self:Import(config.Adornee, nil)
 	self.Parent = self:Import(config.Parent, nil)
 	self.PixelsPerStud = self:Import(config.PixelsPerStud, 10)
+	self.LightInfluence = self:Import(config.LightInfluence, 1)
+	self.Brightness = self:Import(config.Brightness, 0)
+	self.AlwaysOnTop = self:Import(config.AlwaysOnTop, false)
+
 	self.SurfaceGui = self._Fuse.new "SurfaceGui" {
 		Name = self.Name,
 		Parent = self.Parent,
@@ -36,8 +43,10 @@ function SurfaceFrame.new(config: SurfaceFrameParameters): GuiObject
 		Face = self.Face,
 		SizingMode = Enum.SurfaceGuiSizingMode.PixelsPerStud,
 		PixelsPerStud = self.PixelsPerStud,
+		AlwaysOnTop = self.AlwaysOnTop,
+		Brightness = self.Brightness,
 		ClipsDescendants = true,
-		LightInfluence = 1,
+		LightInfluence = self.LightInfluence,
 	}
 
 	local parameters = {
@@ -54,7 +63,7 @@ function SurfaceFrame.new(config: SurfaceFrameParameters): GuiObject
 	self.Instance = self._Fuse.new "Frame" (parameters)
 
 	self._Maid:GiveTask(self.SurfaceGui)
-	self._Maid:GiveTask(self.SurfaceGui.Destroying:Connect(function() self:Destroy() end))
+	-- self._Maid:GiveTask(self.SurfaceGui.Destroying:Connect(function() self:Destroy() end))
 	self._Maid:GiveTask(self.Instance)
 	self._Maid:GiveTask(self.Instance.Destroying:Connect(function() self:Destroy() end))
 

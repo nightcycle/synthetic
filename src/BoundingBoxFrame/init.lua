@@ -30,6 +30,7 @@ function BoundingBoxFrame.new(config: BoundingBoxFrameParameters): GuiObject
 	local self = Isotope.new() :: any
 	setmetatable(self, BoundingBoxFrame)
 
+	self.Name = self:Import(config.Name, nil)
 	self.Target = self:Import(config.Target, nil)
 
 	self.TargetCFrame = self._Fuse.Value(nil)
@@ -38,7 +39,7 @@ function BoundingBoxFrame.new(config: BoundingBoxFrameParameters): GuiObject
 	self.Camera = self._Fuse.Property(self.BoardFrame, "CurrentCamera")
 
 	local parameters = {
-		Name = "BoundingBoxFrame",
+		Name = self.Name,
 		AnchorPoint = Vector2.new(0.5,0.5),
 		WorldPosition = self._Fuse.Computed(self.TargetCFrame, function(cf)
 			if not cf then return Vector2.new(0,0) end
