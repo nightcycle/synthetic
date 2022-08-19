@@ -6,66 +6,76 @@ local RunService = game:GetService("RunService")
 local package = script.Parent
 local packages = package.Parent
 
-local Isotope = require(packages:WaitForChild("isotope"))
-type Isotope = Isotope.Isotope
-type Fuse = Isotope.Fuse
-type State = Isotope.State
-type ValueState = Isotope.ValueState
+local Util = require(package.Util)
+
+local Types = require(package.Types)
+type ParameterValue<T> = Types.ParameterValue<T>
+
+local ColdFusion = require(packages.coldfusion)
+type Fuse = ColdFusion.Fuse
+type State<T> = ColdFusion.State<T>
+type ValueState<T> = ColdFusion.ValueState<T>
+
+local Maid = require(packages.maid)
+type Maid = Maid.Maid
 
 local math = require(packages:WaitForChild("math"))
 
-local ViewportMountFrame: {[any]: any} = {}
-ViewportMountFrame.__index = ViewportMountFrame
-setmetatable(ViewportMountFrame, Isotope)
-
-export type ViewportMountFrameParameters = {
-	WorldPosition: Vector2 | State?,
-	WorldSize: Vector2 | State?,
-	[any]: any?,
+export type ViewportMountFrameParameters = Types.ViewportFrameParameters & {
+	WorldPosition: ParameterValue<Vector2>?,
+	WorldSize: ParameterValue<Vector2>?,
 }
 
-function ViewportMountFrame.new(config: ViewportMountFrameParameters): GuiObject
-	local self: any = Isotope.new()
+export type ViewportMountFrame = ViewportFrame
 
-	setmetatable(self, ViewportMountFrame)
+return function(config: ViewportMountFrameParameters): Frame
+	local _Maid = Maid.new()
+	local _Fuse = ColdFusion.fuse(_Maid)
+	local _Computed = _Fuse.Computed
+	local _Value = _Fuse.Value
+	local _import = _Fuse.import
+	local _new = _Fuse.new
 
-	self.WorldPosition = self:Import(config.WorldPosition, Vector2.new(0,0))
-	self.WorldSize = self:Import(config.WorldSize, Vector2.new(0,0))
+	local WorldPosition = _import(config.WorldPosition, Vector2.new(0,0))
+	local WorldSize = _import(config.WorldSize, Vector2.new(0,0))
 
-	self.BillboardFrame = self._Fuse.Value(nil)
-	self.Camera = self._Fuse.Property(self.BillboardFrame, "CurrentCamera")
+	local B: any = _Value(nil); local BillboardFrame: ValueState<ViewportFrame?> = B
+	local C: any = _Fuse.Property(BillboardFrame, "CurrentCamera"); local Camera: ValueState<Camera?> = C
 
 	-- using signals here causes a noticeable drag when moving board camera
-	self.CameraCFrame = self._Fuse.Value(nil)
-	self.FieldOfView = self._Fuse.Value(nil)
-	self.BoardAbsoluteSize = self._Fuse.Value(nil)
-	self.BoardCameraWindowSize = self._Fuse.Value(nil)
-	self._Maid:GiveTask(RunService.Heartbeat:Connect(function(dt)
-		local cam = self.Camera:Get()
-		local boardFrame = self.BillboardFrame:Get()
+	local CameraCFrame = _Value(CFrame.new(0,0,0))
+	local FieldOfView = _Value(70)
+	local BoardAbsoluteSize = _Value(Vector2.new(0,0))
+	local BoardCameraWindowSize = _Value(Vector2.new(0,0))
+
+	_Maid:GiveTask(RunService.Heartbeat:Connect(function(dt)
+		local cam = Camera:Get()
+		local boardFrame = BillboardFrame:Get()
 		if not cam or not boardFrame then return end
-		self.CameraCFrame:Set(cam.CFrame)
-		self.FieldOfView:Set(cam.FieldOfView)
-		self.BoardAbsoluteSize:Set(boardFrame.AbsoluteSize)
-		self.BoardCameraWindowSize:Set(boardFrame:GetAttribute("CameraWindowSize"))
+		assert(cam ~= nil and boardFrame ~= nil)
+		CameraCFrame:Set(cam.CFrame)
+		FieldOfView:Set(cam.FieldOfView)
+		BoardAbsoluteSize:Set(boardFrame.AbsoluteSize)
+		BoardCameraWindowSize:Set(boardFrame:GetAttribute("CameraWindowSize"))
 	end))
 
-	local parameters = {
-		Name = self:Import(config.Name, script.Name),
-		Parent = self:Import(config.Parent, nil),
-		Size = self._Fuse.Computed(self.WorldSize, self.BoardCameraWindowSize, self.BoardAbsoluteSize, function(size: Vector2, winSize, boardSize)
+	local parameters: any = {
+		Name = _import(config.Name, script.Name),
+		Parent = _import(config.Parent, nil),
+		Size = _Computed(function(size: Vector2, winSize, boardSize)
 			boardSize = boardSize or Vector2.new(0,0)
 			winSize = winSize or Vector2.new(0,0)
 			local ratio = boardSize / winSize
 			local finalSize = size * ratio * 0.5
 			return UDim2.fromOffset(finalSize.X,finalSize.Y)
-		end),
-		Position = self._Fuse.Computed(self.WorldPosition, self.CameraCFrame, self.FieldOfView, self.BoardAbsoluteSize, function(pos: Vector2, camCF, fov, viewportSize)
+		end, WorldSize, BoardCameraWindowSize, BoardAbsoluteSize),
+		Position = _Computed(function(pos: Vector2, camCF, fov, viewportSize)
 			camCF = camCF or CFrame.new(0,0,0)
 			fov = fov or 10
 			pos = pos or Vector2.new(0,0)
 			viewportSize = viewportSize or Vector2.new(0,0)
 			local pos3 = Vector3.new(pos.X, pos.Y, 0)
+
 			--This is written by EgoMoose :D
 			local camSpacePoint = camCF:PointToObjectSpace(pos3); -- make point relative to camera so easier to work with
 
@@ -83,25 +93,27 @@ function ViewportMountFrame.new(config: ViewportMountFrameParameters): GuiObject
 			local finalPos = Vector2.new(scaleX*viewportSize.X, scaleY*viewportSize.Y);
 
 			return UDim2.fromOffset(finalPos.X, finalPos.Y)
-		end),
+		end, WorldPosition, CameraCFrame, FieldOfView, BoardAbsoluteSize),
+		Attributes = {
+			ClassName = script.Name,
+		},
 	}
 
 	for k, v in pairs(config) do
-		if parameters[k] == nil and self[k] == nil then
+		if parameters[k] == nil then
 			parameters[k] = v
 		end
 	end
 
-	self.Instance = self._Fuse.new("Frame")(parameters)
-	self._Maid:GiveTask(self.Instance.Destroying:Connect(function() self:Destroy() end))
+	local Output = _Fuse.new("Frame")(parameters)
 
-	self.BillboardFrame:Set(self.Instance:FindFirstAncestorOfClass("ViewportFrame"))
-	self._Maid:GiveTask(self.Instance.AncestryChanged:Connect(function()
-		self.BillboardFrame:Set(self.Instance:FindFirstAncestorOfClass("ViewportFrame"))
+	Util.cleanUpPrep(_Maid, Output)
+
+	BillboardFrame:Set(Output:FindFirstAncestorOfClass("ViewportFrame"))
+	_Maid:GiveTask(Output.AncestryChanged:Connect(function()
+		BillboardFrame:Set(Output:FindFirstAncestorOfClass("ViewportFrame"))
 	end))
 
-	self:Construct()
-	return self.Instance
-end
 
-return ViewportMountFrame
+	return Output
+end

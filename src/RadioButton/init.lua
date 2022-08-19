@@ -4,11 +4,18 @@ local SoundService = game:GetService("SoundService")
 local package = script.Parent
 local packages = package.Parent
 
-local Isotope = require(packages:WaitForChild("isotope"))
-type Isotope = Isotope.Isotope
-type Fuse = Isotope.Fuse
-type State = Isotope.State
-type ValueState = Isotope.ValueState
+local Util = require(package.Util)
+
+local Types = require(package.Types)
+type ParameterValue<T> = Types.ParameterValue<T>
+
+local ColdFusion = require(packages.coldfusion)
+type Fuse = ColdFusion.Fuse
+type State<T> = ColdFusion.State<T>
+type ValueState<T> = ColdFusion.ValueState<T>
+
+local Maid = require(packages.maid)
+type Maid = Maid.Maid
 
 local Signal = require(packages:WaitForChild("signal"))
 
@@ -16,76 +23,78 @@ local Bubble = require(package:WaitForChild("Bubble"))
 
 local RadioButton = {}
 RadioButton.__index = RadioButton
-setmetatable(RadioButton, Isotope)
 
-function RadioButton:Destroy()
-	Isotope.Destroy(self)
-end
-
-export type RadioButtonParameters = {
-	Name: string | State?,
-	Scale: number | State?,
-	BorderColor3: Color3 | State?,
-	BackgroundColor3: Color3 | State?,
-	Value: boolean | State?,
-	EnableSound: Sound | State?,
-	DisableSound: Sound | State?,
-	[any]: any?,
+export type RadioButtonParameters = Types.FrameParameters & {
+	Scale: ParameterValue<number>?,
+	BorderColor3: ParameterValue<Color3>?,
+	BackgroundColor3: ParameterValue<Color3>?,
+	Value: ParameterValue<boolean>?,
+	EnableSound: ParameterValue<Sound>?,
+	DisableSound: ParameterValue<Sound>?,
 }
 
-function RadioButton.new(config: RadioButtonParameters): GuiObject
-	local self = setmetatable(Isotope.new() :: any, RadioButton)
-	self.ClassName = self._Fuse.Computed(function() return script.Name end)
+export type RadioButton = Frame
 
-	self.Name = self:Import(config.Name, script.Name)
-	self.Scale = self:Import(config.Scale, 1)
-	self.BorderColor3 = self:Import(config.BorderColor3, Color3.fromHSV(0,0,0.4))
-	self.BackgroundColor3 = self:Import(config.BackgroundColor3, Color3.fromHSV(0.6,1,1))
-	self.Value = self:Import(config.Value, false)
-	self.EnableSound = self:Import(config.EnableSound)
-	self.DisableSound = self:Import(config.DisableSound)
+return function (config: RadioButtonParameters): RadioButton
+	local _Maid = Maid.new()
+	local _Fuse = ColdFusion.fuse(_Maid)
+	local _Computed = _Fuse.Computed
+	local _Value = _Fuse.Value
+	local _import = _Fuse.import
+	local _new = _Fuse.new
 
-	self.Padding = self._Fuse.Computed(self.Scale, function(scale)
+	local Name = _import(config.Name, script.Name)
+	local Scale = _import(config.Scale, 1)
+	local BorderColor3 = _import(config.BorderColor3, Color3.fromHSV(0,0,0.4))
+	local BC3: any = _import(config.BackgroundColor3, Color3.fromHSV(0.6,1,1)); local BackgroundColor3: State<Color3> = BC3
+	local Value = _Value(if typeof(config.Value) == "boolean" then config.Value elseif typeof(config.Value) == "table" then config.Value:Get() else false)
+	local ES: any = _import(config.EnableSound, nil); local EnableSound: State<Sound?> = ES
+	local DS: any = _import(config.DisableSound, nil); local DisableSound: State<Sound?> = DS
+
+	local Padding = _Computed(function(scale)
 		return math.round(6 * scale)
-	end)
-	self.Width = self._Fuse.Computed(self.Scale, function(scale: number)
+	end, Scale)
+	local Width = _Computed(function(scale: number)
 		return math.round(scale * 20)
-	end)
+	end, Scale)
 
-	self.Activated = Signal.new()
-	self._Maid:GiveTask(self.Activated)
+	local Activated = Signal.new()
+	_Maid:GiveTask(Activated)
 	
-	self.BubbleEnabled = self._Fuse.Value(false)
-	self._Maid:GiveTask(self.Activated:Connect(function()
-		if self.Value:Get() == true then
-			local clickSound = self.EnableSound:Get()
+	local BubbleEnabled = _Value(false)
+	_Maid:GiveTask(Activated:Connect(function()
+		if Value:Get() == true then
+			local clickSound = EnableSound:Get()
 			if clickSound then
 				SoundService:PlayLocalSound(clickSound)
 			end
 		else
-			local clickSound = self.DisableSound:Get()
+			local clickSound = DisableSound:Get()
 			if clickSound then
 				SoundService:PlayLocalSound(clickSound)
 			end
 		end
-		if self.Value:IsA("Value") then
-			self.Value:Set(not self.Value:Get())
+		if Value:IsA("Value") then
+			Value:Set(not Value:Get())
 		end
-		if self.BubbleEnabled:Get() == false then
-			self.BubbleEnabled:Set(true)
+		if BubbleEnabled:Get() == false then
+			BubbleEnabled:Set(true)
 			task.wait(0.2)
-			self.BubbleEnabled:Set(false)
+			BubbleEnabled:Set(false)
 		end
 	end))
-
-	local parameters = {
-		Name = self.Name,
-		Size = self._Fuse.Computed(self.Width, function(width: number)
+	local Output: Frame
+	local parameters: any = {
+		Name = Name,
+		Size = _Computed(Width, function(width: number)
 			return UDim2.fromOffset(width * 2, width * 2)
 		end),
 		BackgroundTransparency = 1,
-		[self._Fuse.Children] = {
-			self._Fuse.new "ImageButton" {
+		Attributes = {
+			ClassName = script.Name,
+		},
+		Children = {
+			_new "ImageButton" {
 				Name = "Button",
 				ZIndex = 3,
 				BackgroundTransparency = 1,
@@ -93,11 +102,11 @@ function RadioButton.new(config: RadioButtonParameters): GuiObject
 				Position = UDim2.fromScale(0.5,0.5),
 				Size = UDim2.fromScale(1,1),
 				AnchorPoint = Vector2.new(0.5,0.5),
-				[self._Fuse.Event "Activated"] = function()
-					self.Activated:Fire()
-					if self.BubbleEnabled:Get() then
+				[_Fuse.Event "Activated"] = function()
+					Activated:Fire()
+					if BubbleEnabled:Get() then
 						local bubble = Bubble.new {
-							Parent = self.Instance,
+							Parent = Output,
 						}
 						local fireFunction: Instance? = bubble:WaitForChild("Fire")
 						assert(fireFunction ~= nil and fireFunction:IsA("BindableFunction"))
@@ -105,73 +114,74 @@ function RadioButton.new(config: RadioButtonParameters): GuiObject
 					end
 				end
 			},
-			self._Fuse.new "Frame" {
+			_new "Frame" {
 				Name = "Frame",
 				ZIndex = 2,
 				Position = UDim2.fromScale(0.5,0.5),
 				AnchorPoint = Vector2.new(0.5,0.5),
-				BackgroundColor3 = self.BackgroundColor3,
+				BackgroundColor3 = BackgroundColor3,
 				BackgroundTransparency = 0.999,
-				Size = self._Fuse.Computed(self.Width, self.Padding, function(width: number, padding: number)
+				Size = _Computed(function(width: number, padding: number)
 					return UDim2.fromOffset(width-padding, width-padding)
-				end),
+				end, Width, Padding),
 				BorderSizePixel = 0,
-				[self._Fuse.Children] = {
-					self._Fuse.new "Frame" {
+				Children = {
+					_new "Frame" {
 						Name = "Fill",
-						Size = self._Fuse.Computed(self.Width, self.Padding, function(width: number, padding: number)
+						Size = _Computed(function(width: number, padding: number): UDim2
 							local w = math.round(width - padding*2)
 							return UDim2.fromOffset(w,w)
-						end),
-						BackgroundColor3 = self.BackgroundColor3,
-						BackgroundTransparency = self._Fuse.Computed(self.Value, function(val)
+						end, Width, Padding),
+						BackgroundColor3 = BackgroundColor3,
+						BackgroundTransparency = _Computed(function(val)
 							if val then
 								return 0
 							else
 								return 1
 							end
-						end):Tween(),
-						[self._Fuse.Children] = {
-							self._Fuse.new "UICorner" {
-								CornerRadius = self._Fuse.Computed(self.Padding, function(padding)
+						end, Value):Tween(),
+						Children ={
+							_new "UICorner" {
+								CornerRadius = _Computed(Padding, function(padding)
 									return UDim.new(1,0)
 								end)
 							},
-						},
+						} :: {Instance},
 						Position = UDim2.fromScale(0.5,0.5),
 						AnchorPoint = Vector2.new(0.5,0.5),
 					},
-					self._Fuse.new "UICorner" {
-						CornerRadius = self._Fuse.Computed(self.Padding, function(padding)
+					_new "UICorner" {
+						CornerRadius = _Computed(function(padding)
 							return UDim.new(1,0)
-						end)
+						end, Padding)
 					},
-					self._Fuse.new "UIStroke" {
+					_new "UIStroke" {
 						ApplyStrokeMode = Enum.ApplyStrokeMode.Border,
-						Thickness = self._Fuse.Computed(self.Padding, function(padding: number)
+						Thickness = _Computed(function(padding: number)
 							return math.round(padding*0.25)
-						end),
+						end, Padding),
 						Transparency = 0,
-						Color = self._Fuse.Computed(
-							self.Value,
-							self.BorderColor3,
-							self.BackgroundColor3, function(val, border, background)
-							if val then return background else return border end
-						end):Tween()
+						Color = _Computed(
+							function(val, border, background)
+								if val then return background else return border end
+							end,
+							Value,
+							BorderColor3,
+							BackgroundColor3
+						):Tween(),
 					}
-				}
+				} :: {Instance}
 			},
-		}
+		} :: {Instance}
 	}
 	for k, v in pairs(config) do
-		if parameters[k] == nil and self[k] == nil then
+		if parameters[k] == nil then
 			parameters[k] = v
 		end
 	end
-	-- print("Parameters", parameters, self)
-	self.Instance = self._Fuse.new("Frame")(parameters)
-	self:Construct()
-	return self.Instance
-end
+	Output = _new("Frame")(parameters)
 
-return RadioButton
+	Util.cleanUpPrep(_Maid, Output)
+
+	return Output
+end

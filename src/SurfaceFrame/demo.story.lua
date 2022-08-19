@@ -1,6 +1,3 @@
-local ReplicatedStorage = game:GetService("ReplicatedStorage")
-local RunService = game:GetService("RunService")
-
 local package = script.Parent.Parent
 local packages = package.Parent
 local Maid = require(packages:WaitForChild("maid"))
@@ -18,7 +15,7 @@ return function (coreGui)
 		Size = UDim2.fromOffset(50,10),
 	}
 	
-	maid:GiveTask(module.new(demo))
+	maid:GiveTask(module(demo))
 	return function()
 		maid:Destroy()
 	end

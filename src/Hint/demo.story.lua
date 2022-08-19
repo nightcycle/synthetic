@@ -1,5 +1,3 @@
-local SoundService = game:GetService("SoundService")
-local ReplicatedStorage = game:GetService("ReplicatedStorage")
 return function (coreGui)
 	local buttonModule = require(script.Parent.Parent:WaitForChild("Button"))
 	local demo = {
@@ -13,8 +11,8 @@ return function (coreGui)
 		RightIcon = "star"
 	}
 	local module = require(script.Parent)
-	local button = buttonModule.new(demo)
-	local hint = module.new({
+	local button = buttonModule(demo)
+	local hint = module({
 		Parent = button,
 		AnchorPoint = Vector2.new(0,1),
 		Padding = UDim.new(0,4),

@@ -5,160 +5,159 @@ local UserInputService = game:GetService("UserInputService")
 local package = script.Parent
 local packages = package.Parent
 
-local Isotope = require(packages:WaitForChild("isotope"))
-type Isotope = Isotope.Isotope
-type Fuse = Isotope.Fuse
-type State = Isotope.State
-type ValueState = Isotope.ValueState
+local Util = require(package.Util)
+
+local Types = require(package.Types)
+type ParameterValue<T> = Types.ParameterValue<T>
+
+local ColdFusion = require(packages.coldfusion)
+type Fuse = ColdFusion.Fuse
+type State<T> = ColdFusion.State<T>
+type ValueState<T> = ColdFusion.ValueState<T>
+
+local Maid = require(packages.maid)
+type Maid = Maid.Maid
 
 local Signal = require(packages:WaitForChild("signal"))
 
 local Bubble = require(package:WaitForChild("Bubble"))
 local Hint = require(package:WaitForChild("Hint"))
 
-local Slider = {}
-Slider.__index = Slider
-setmetatable(Slider, Isotope)
-
-export type SliderParameters = {
-	Name: string | State?,
-	Scale: number | State?,
-	BackgroundColor3: Color3 | State?,
-	EnabledColor3: Color3 | State?,
-	HintBackgroundColor3: Color3 | State?,
-	TextColor3: Color3 | State?,
-	TickSound: Sound | State?,
-	EnableSound: Sound | State?,
-	DisableSound: Sound | State?,
-	Input: number | State?,
-	Minimum: number | State?,
-	Maximum: number | State?,
-	Increment: number | State?,
-	BorderSizePixel: number | State?,
-	Padding: UDim | State?,
-	Size: UDim2 | State?,
-	BubbleEnabled: boolean | State?,
-	HintEnabled: boolean | State?,
-	[any]: any?,
+export type SliderParameters = Types.FrameParameters & {
+	Scale: ParameterValue<number>?,
+	EnabledColor3: ParameterValue<Color3>?,
+	HintBackgroundColor3: ParameterValue<Color3>?,
+	TextColor3: ParameterValue<Color3>?,
+	TickSound: ParameterValue<Sound>?,
+	EnableSound: ParameterValue<Sound>?,
+	DisableSound: ParameterValue<Sound>?,
+	Input: ParameterValue<number>?,
+	Minimum: ParameterValue<number>?,
+	Maximum: ParameterValue<number>?,
+	Increment: ParameterValue<number>?,
+	Padding: ParameterValue<UDim>?,
+	BubbleEnabled: ParameterValue<boolean>?,
+	HintEnabled: ParameterValue<boolean>?,
 }
 
-function Slider:Destroy()
-	self.TextColor3:Unlock()
-	self.HintBackgroundColor3:Unlock()
-	self.Value:Unlock()
-	self.EnabledColor3:Unlock()
-	Isotope.Destroy(self)
-end
+export type Slider = Frame
 
-function Slider.new(config: SliderParameters): GuiObject
-	local self = setmetatable(Isotope.new() :: any, Slider)
-	self.ClassName = self._Fuse.Computed(function() return script.Name end)
+return function(config: SliderParameters): Slider
+	local _Maid = Maid.new()
+	local _Fuse = ColdFusion.fuse(_Maid)
+	local _Computed = _Fuse.Computed
+	local _Value = _Fuse.Value
+	local _import = _Fuse.import
+	local _new = _Fuse.new
 
-	self.Name = self:Import(config.Name, script.Name)
-	self.Scale = self:Import(config.Scale, 1)
-	self.BackgroundColor3 = self:Import(config.BackgroundColor3, Color3.fromHSV(0,0,0.9))
-	self.EnabledColor3 = self:Import(config.EnabledColor3, Color3.fromHSV(0.6,1,1)):Lock()
-	self.HintBackgroundColor3 = self:Import(config.HintBackgroundColor3, Color3.fromHSV(0,0,0.5)):Lock()
-	self.TextColor3 = self:Import(config.TextColor3, Color3.fromHSV(0,0,0.2)):Lock()
-	self.TickSound = self:Import(config.TickSound, nil)
-	self.EnableSound = self:Import(config.EnableSound, nil)
-	self.DisableSound = self:Import(config.DisableSound, nil)
-	self.Input = self:Import(config.Input, 5)
-	self.Minimum = self:Import(config.Minimum, 0)
-	self.Maximum = self:Import(config.Maximum, 10)
-	self.Increment = self:Import(config.Increment, 1)
-	self.BorderSizePixel = self:Import(config.BorderSizePixel, 4)
-	self.Padding = self:Import(config.Padding, UDim.new(0,4))
-	self.Size = self:Import(config.Size, UDim2.fromOffset(150,50))
-	self.BubbleEnabled = self:Import(config.BubbleEnabled, true)
-	self.HintEnabled = self:Import(config.HintEnabled, true)
+	-- local Scale = _import(config.Scale, 1)
+	local Name = _import(config.Name, script.Name)
+	local BackgroundColor3 = _import(config.BackgroundColor3, Color3.fromHSV(0,0,0.9))
+	local EnabledColor3 = _import(config.EnabledColor3, Color3.fromHSV(0.6,1,1))
+	local HintBackgroundColor3 = _import(config.HintBackgroundColor3, Color3.fromHSV(0,0,0.5))
+	local TextColor3 = _import(config.TextColor3, Color3.fromHSV(0,0,0.2))
+	local TickSound = _import(config.TickSound, nil)
+	local EnableSound = _import(config.EnableSound, nil)
+	local DisableSound = _import(config.DisableSound, nil)
+	local Input = _Value(if typeof(config.Input) == "number" then config.Input elseif typeof(config.Input) == "table" then config.Input:Get() else 5)
+	local Minimum = _import(config.Minimum, 0)
+	local Maximum = _import(config.Maximum, 10)
+	local Increment = _import(config.Increment, 1)
+	local BorderSizePixel = _import(config.BorderSizePixel, 4)
+	local Padding = _import(config.Padding, UDim.new(0,4))
+	local Size = _import(config.Size, UDim2.fromOffset(150,50))
+	local BubbleEnabled = _import(config.BubbleEnabled, true)
+	local HintEnabled = _import(config.HintEnabled, true)
 
-
-	self.Value = self._Fuse.Computed(self.Input, self.Minimum, self.Maximum, self.Increment,  function(input: number, min: number, max: number, inc: number)
+	local Value = _Computed(function(input: number, min: number, max: number, inc: number): number
 		local val = input-(input%inc)--math.round(input * inc)/inc
 		if val ~= val then val = min end
-		-- print("Val", val, "Inc", inc, "In", input)
 		return math.clamp(val, min, max)
-	end):Lock()
-	self.Value:Connect(function()
-		local tickSound = self.TickSound:Get()
+	end, Input, Minimum, Maximum, Increment)
+
+	Value:Connect(function()
+		local tickSound = TickSound:Get()
 		if tickSound then
 			SoundService:PlayLocalSound(tickSound)
 		end
 	end)
-	self.Alpha = self._Fuse.Computed(self.Value, self.Minimum, self.Maximum, function(val: number, min: number, max: number)
+
+	local Alpha = _Computed(Value, Minimum, Maximum, function(val: number, min: number, max: number)
 		return (val - min)/(max-min)
 	end)
 
-	self.OnRelease = Signal.new()
-	self._Maid:GiveTask(self.OnRelease)
+	local OnRelease = Signal.new()
+	_Maid:GiveTask(OnRelease)
 
-	self.Dragging = self._Fuse.Value(false)
+	local Dragging = _Value(false)
 
-	self.Diameter = self._Fuse.Computed(self.Size, self.Padding, function(size:UDim2, padding:UDim)
+	local Diameter = _Computed(function(size:UDim2, padding:UDim)
 		return size.Y.Offset - padding.Offset*2
-	end)
-	self.Knob = self._Fuse.new "Frame" {
+	end, Size, Padding)
+
+	local Knob: any = _Fuse.new "Frame" {
 		Name = "Knob",
 		ZIndex = 2,
-		Position = self._Fuse.Computed(
-			self.Alpha,
-			function(val)
+		Position = _Computed(
+			function(val): UDim2
 				return UDim2.fromScale(val,0.5)
-			end
+			end,
+			Alpha
 		),
-		AnchorPoint = self._Fuse.Computed(
-			self.Alpha,
-			function(val)
+		AnchorPoint = _Computed(
+			function(val): Vector2
 				return Vector2.new(val,0.5)
-			end
+			end,
+			Alpha
 		),
 		Size = UDim2.fromScale(1,1),
 		SizeConstraint = Enum.SizeConstraint.RelativeYY,
 		BackgroundTransparency = 1,
-		[self._Fuse.Children] = {
-			self._Fuse.new "Frame" {
+		Children = {
+			_Fuse.new "Frame" {
 				Name = "Frame",
 				ZIndex = 2,
 				Position = UDim2.fromScale(0.5,0.5),
 				AnchorPoint = Vector2.new(0.5,0.5),
-				BackgroundColor3 = self.EnabledColor3:Tween(),
-				Size = self._Fuse.Computed(self.Diameter, function(diameter: number)
+				BackgroundColor3 = EnabledColor3:Tween(),
+				Size = _Computed(Diameter, function(diameter: number)
 					return UDim2.fromOffset(diameter,diameter)
 				end),
 				BorderSizePixel = 0,
-				[self._Fuse.Children] = {
-					self._Fuse.new "UICorner" {
-						CornerRadius = self._Fuse.Computed(self.Padding, function(padding: UDim)
+				Children = {
+					_Fuse.new "UICorner" {
+						CornerRadius = _Computed(function(padding: UDim)
 							return UDim.new(1,0)
-						end)
+						end, Padding)
 					},
-					self._Fuse.new "UIStroke" {
+					_Fuse.new "UIStroke" {
 						ApplyStrokeMode = Enum.ApplyStrokeMode.Border,
-						Thickness = self._Fuse.Computed(self.Padding, function(padding: UDim)
+						Thickness = _Computed(function(padding: UDim)
 							return 1--math.round(padding*0.25)
-						end),
+						end, Padding),
 						Transparency = 0.8,
 					}
-				}
+				} :: {Instance}
 			},
-		},
+		} :: {Instance}
 	}
-	self.Hint = Hint.new {
-		Parent = self.Knob,
+
+	local _Hint = Hint.new {
+		Parent = Knob,
 		Override = true,
 		AnchorPoint = Vector2.new(0,-1),
-		BackgroundColor3 = self.HintBackgroundColor3,
-		TextColor3 = self.TextColor3,
+		BackgroundColor3 = HintBackgroundColor3,
+		TextColor3 = TextColor3,
 		Padding = UDim.new(0,4),
-		Enabled = self._Fuse.Computed(self.Dragging, self.HintEnabled, function(drag, enab)
+		Enabled = _Computed(function(drag, enab): boolean
 			return drag and enab
-		end),
-		Text = self._Fuse.Computed(self.Value, function(val)
+		end, Dragging, HintEnabled),
+		Text = _Computed(function(val): string
 			return tostring(val)
-		end)
+		end, Value)
 	}
-	self.Button = self._Fuse.new "ImageButton" {
+
+	local Button = _Fuse.new "ImageButton" {
 		Name = "Button",
 		ZIndex = 3,
 		BackgroundTransparency = 1,
@@ -166,20 +165,17 @@ function Slider.new(config: SliderParameters): GuiObject
 		Position = UDim2.fromScale(0.5,0.5),
 		Size = UDim2.fromScale(1,1),
 		AnchorPoint = Vector2.new(0.5,0.5),
-		[self._Fuse.Event "MouseButton1Down"] = function()
-			self.Dragging:Set(true)
-			if self.BubbleEnabled:Get() then
-				
+		[_Fuse.Event "MouseButton1Down"] = function()
+			Dragging:Set(true)
+			if BubbleEnabled:Get() then	
 				local bubble = Bubble.new {
-					Parent = self.Knob,
+					Parent = Knob,
 					FinalTransparency = 0.7,
 					BackgroundTransparency = 1,
-					BackgroundColor3 = self.EnabledColor3,
+					BackgroundColor3 = EnabledColor3,
 					Scale = 1.75,
-					-- BackgroundColor3 = self.ActiveColor3,
-					-- BackgroundTransparency = 0.6,
 				}
-				self._Maid._currentBubble = function()
+				_Maid._currentBubble = function()
 					if bubble and bubble:IsDescendantOf(game) then
 						local destFunction: Instance? = bubble:FindFirstChild("Disable")
 						assert(destFunction ~= nil and destFunction:IsA("BindableFunction"))
@@ -193,7 +189,7 @@ function Slider.new(config: SliderParameters): GuiObject
 				local enabFunction: Instance? = bubble:WaitForChild("Enable")
 				assert(enabFunction ~= nil and enabFunction:IsA("BindableFunction"))
 				enabFunction:Invoke()
-				local enabSound = self.EnableSound:Get()
+				local enabSound = EnableSound:Get()
 				if enabSound then
 					SoundService:PlayLocalSound(enabSound)
 				end
@@ -201,92 +197,94 @@ function Slider.new(config: SliderParameters): GuiObject
 		end,
 	}
 
-	self.ButtonAbsolutePosition = self._Fuse.Property(self.Button, "AbsolutePosition"):Else(Vector2.new(0,0))
-	self.ButtonAbsoluteSize = self._Fuse.Property(self.Button, "AbsoluteSize"):Else(Vector2.new(0,0))
+	local ButtonAbsolutePosition = _Fuse.Property(Button, "AbsolutePosition"):Else(Vector2.new(0,0))
+	local ButtonAbsoluteSize = _Fuse.Property(Button, "AbsoluteSize"):Else(Vector2.new(0,0))
 
 	local parameters = {
-		Name = self.Name,
-		Size = self.Size,
+		Name = Name,
+		Size = Size,
 		BackgroundTransparency = 1,
-		[self._Fuse.Children] = {
-			self.Button,
-			self._Fuse.new "Frame" {
+		Children = {
+			Button,
+			_Fuse.new "Frame" {
 				Name = "Frame",
 				ZIndex = 1,
 				Size = UDim2.fromScale(1,1),
 				Position = UDim2.fromScale(0.5,0.5),
 				AnchorPoint = Vector2.new(0.5,0.5),
 				BackgroundTransparency = 1,
-				[self._Fuse.Children] = {
-					self._Fuse.new "Frame" {
-						Name = "Track",
-						ZIndex = 1,
-						BackgroundTransparency = 0.5,
-						Position = UDim2.fromScale(0.5,0.5),
-						AnchorPoint = Vector2.new(0.5,0.5),
-						Size = self._Fuse.Computed(self.Diameter, self.BorderSizePixel, function(diameter, bsp)
-							return UDim2.new(1, -diameter, 0, bsp)
-						end),
-						BackgroundColor3 = Color3.new(1,1,1),
-						[self._Fuse.Children] = {
-							self._Fuse.new "UICorner" {
-								CornerRadius = UDim.new(0.5,0),
-							},
-							self._Fuse.new "UIGradient" {
-								Color = self._Fuse.Computed(self.BackgroundColor3, self.EnabledColor3, self.Alpha, function(back, enab, alpha: number)
-									local bump = 0.001
-									return ColorSequence.new({
-										ColorSequenceKeypoint.new(0, enab),
-										ColorSequenceKeypoint.new(math.clamp(alpha-bump, bump, 1-bump*2), enab),
-										ColorSequenceKeypoint.new(math.clamp(alpha, bump*2, 1-bump), back),
-										ColorSequenceKeypoint.new(1, back),
-									})
-								end)
-							},
+				Children = {
+						_Fuse.new "Frame" {
+							Name = "Track",
+							ZIndex = 1,
+							BackgroundTransparency = 0.5,
+							Position = UDim2.fromScale(0.5,0.5),
+							AnchorPoint = Vector2.new(0.5,0.5),
+							Size = _Computed(Diameter, BorderSizePixel, function(diameter, bsp)
+								return UDim2.new(1, -diameter, 0, bsp)
+							end),
+							BackgroundColor3 = Color3.new(1,1,1),
+							Children = {
+								_Fuse.new "UICorner" {
+									CornerRadius = UDim.new(0.5,0),
+								},
+								_Fuse.new "UIGradient" {
+									Color = _Computed(function(back, enab, alpha: number)
+										local bump = 0.001
+										return ColorSequence.new({
+											ColorSequenceKeypoint.new(0, enab),
+											ColorSequenceKeypoint.new(math.clamp(alpha-bump, bump, 1-bump*2), enab),
+											ColorSequenceKeypoint.new(math.clamp(alpha, bump*2, 1-bump), back),
+											ColorSequenceKeypoint.new(1, back),
+										})
+									end, BackgroundColor3, EnabledColor3, Alpha)
+								},
+							} :: {Instance},
 						},
-					},
-					self.Knob,
-				}
+						Knob,
+					} :: {Instance},
 			},
-		}
+		} :: {Instance}
 	}
 	for k, v in pairs(config) do
-		if parameters[k] == nil and self[k] == nil then
+		if parameters[k] == nil then
 			parameters[k] = v
 		end
 	end
 	-- print("Parameters", parameters, self)
-	self.Instance = self._Fuse.new("Frame")(parameters)
-	self._Fuse.Computed(self.Dragging, function(dragging)
-		self._Maid._dragStep = nil
-		self._Maid._dragRelease = nil
+	local Output = _Fuse.new("Frame")(parameters)
+
+	_Computed(function(dragging): nil
+		_Maid._dragStep = nil
+		_Maid._dragRelease = nil
 		if dragging then
-			self._Maid._dragStep = UserInputService.InputChanged:Connect(function(inputObj: InputObject)
+			_Maid._dragStep = UserInputService.InputChanged:Connect(function(inputObj: InputObject)
 				if inputObj.UserInputType == Enum.UserInputType.MouseMovement then
 					local pos = Vector2.new(inputObj.Position.X, inputObj.Position.Y)
-					local absPos = self.ButtonAbsolutePosition:Get()
-					local absSize = self.ButtonAbsoluteSize:Get()
-					local min = self.Minimum:Get()
-					local max = self.Maximum:Get()
-					self.Input:Set(min + (max-min)*math.clamp((pos.X - absPos.X)/absSize.X, 0, 1))
+					local absPos = ButtonAbsolutePosition:Get()
+					local absSize = ButtonAbsoluteSize:Get()
+					local min = Minimum:Get()
+					local max = Maximum:Get()
+					Input:Set(min + (max-min)*math.clamp((pos.X - absPos.X)/absSize.X, 0, 1))
 				end
 			end)
-			self._Maid._dragRelease = UserInputService.InputEnded:Connect(function(inputObj: InputObject)
+			_Maid._dragRelease = UserInputService.InputEnded:Connect(function(inputObj: InputObject)
 				if inputObj.UserInputType == Enum.UserInputType.MouseButton1 then
-					self.Dragging:Set(false)
-					self.OnRelease:Fire(self.Value:Get())
+					Dragging:Set(false)
+					OnRelease:Fire(Value:Get())
 				end
 			end)
 		else
-			local disabSound = self.DisableSound:Get()
+			local disabSound = DisableSound:Get()
 			if disabSound then
 				SoundService:PlayLocalSound(disabSound)
 			end
-			self._Maid._currentBubble = nil
+			_Maid._currentBubble = nil
 		end
-	end)
-	self:Construct()
-	return self.Instance
-end
+		return nil
+	end, Dragging)
 
-return Slider
+	Util.cleanUpPrep(_Maid, Output)
+
+	return Output
+end

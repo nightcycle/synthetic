@@ -2,11 +2,18 @@
 local package = script.Parent
 local packages = package.Parent
 
-local Isotope = require(packages:WaitForChild("isotope"))
-type Isotope = Isotope.Isotope
-type Fuse = Isotope.Fuse
-type State = Isotope.State
-type ValueState = Isotope.ValueState
+local Util = require(package.Util)
+
+local Types = require(package.Types)
+type ParameterValue<T> = Types.ParameterValue<T>
+
+local ColdFusion = require(packages.coldfusion)
+type Fuse = ColdFusion.Fuse
+type State<T> = ColdFusion.State<T>
+type ValueState<T> = ColdFusion.ValueState<T>
+
+local Maid = require(packages.maid)
+type Maid = Maid.Maid
 
 local Maid = require(packages:WaitForChild("maid"))
 local ColdFusion = require(packages:WaitForChild("coldfusion"))
@@ -34,42 +41,34 @@ function ButtonList:InsertButton(txt: string, layoutOrder:number | nil,  bindabl
 	end)
 end
 
-export type ButtonListParameters = {
-	Data: {[any]: any} | State?,
-	Size: UDim2 | State?,
-	AutomaticSize: Enum.AutomaticSize | State?,
-	ListPadding: UDim | State?,
-	Padding: UDim | State?,
-	CornerRadius: UDim | State?,
-	TextSize: number | State?,
-	IconScale: number | State?,
-	BorderSizePixel: number | State?,
-	TextColor3: Color3 | State?,
-	Font: Enum.Font | State?,
-	SelectedTextColor3: Color3 | State?,
-	HoverTextColor3: Color3 | State?,
-	BackgroundColor3: Color3 | State?,
-	BorderColor3: Color3 | State?,
-	SelectedBackgroundColor3: Color3 | State?,
-	HoverBackgroundColor3: Color3 | State?,
-	BackgroundTransparency: number | State?,
-	BorderTransparency: number | State?,
-	TextTransparency: number | State?,
-	TextXAlignment: Enum.TextXAlignment | State?,
-	TextYAlignment: Enum.TextYAlignment | State?,
-	TextOnly: boolean | State?,
-	VerticalAlignment: Enum.VerticalAlignment | State?,
-	HorizontalAlignment: Enum.HorizontalAlignment | State?,
-	FillDirection: Enum.FillDirection | State?,
-	
-	[any]: any?,
+export type ButtonListParameters = Types.FrameParameters & {
+	Data: ParameterValue<{[any]: any}>?,
+	ListPadding: ParameterValue<UDim>?,
+	Padding: ParameterValue<UDim>?,
+	CornerRadius: ParameterValue<UDim>?,
+	IconScale: ParameterValue<number>?,
+	SelectedTextColor3: ParameterValue<Color3>?,
+	HoverTextColor3: ParameterValue<Color3>?,
+	SelectedBackgroundColor3: ParameterValue<Color3>?,
+	HoverBackgroundColor3: ParameterValue<Color3>?,
+	TextTransparency: ParameterValue<number>?,
+	TextSize: ParameterValue<number>?,
+	TextColor3: ParameterValue<Color3>?,
+	Font: ParameterValue<Enum.Font>?,
+	TextXAlignment: ParameterValue<Enum.TextXAlignment>?,
+	TextYAlignment: ParameterValue<Enum.TextYAlignment>?,
+	TextOnly: ParameterValue<boolean>?,
+	VerticalAlignment: ParameterValue<Enum.VerticalAlignment>?,
+	HorizontalAlignment: ParameterValue<Enum.HorizontalAlignment>?,
+	FillDirection: ParameterValue<Enum.FillDirection>?,
 }
 
+export type ButtonList = Frame
 
-function ButtonList.new(config: ButtonListParameters): GuiObject
+function ButtonList.new(config: ButtonListParameters): ButtonList
 	local self = setmetatable(Isotope.new() :: any, ButtonList)
 	self.Name = self:Import(config.Name, script.Name)
-	self.ClassName = self._Fuse.Computed(function() return script.Name end)
+	self.ClassName = _Computed(function() return script.Name end)
 
 	self._BuildMaid = Maid.new()
 	self._Maid:GiveTask(self._BuildMaid)
@@ -93,7 +92,7 @@ function ButtonList.new(config: ButtonListParameters): GuiObject
 	self.BackgroundColor3 = self:Import(config.BackgroundColor3,Color3.fromHSV(0.7,0,1))
 	self.BorderColor3 = self:Import(config.BorderColor3,Color3.fromHSV(0.7,0,0.3))
 	self.SelectedBackgroundColor3 = self:Import(config.SelectedBackgroundColor3,Color3.fromHSV(0.7,0.7,1))
-	self.HoverBackgroundColor3 = self:Import(config.HoverBackgroundColor3, self._Fuse.Computed(self.SelectedBackgroundColor3, self.BackgroundColor3, function(sCol: Color3, bCol: Color3)
+	self.HoverBackgroundColor3 = self:Import(config.HoverBackgroundColor3, _Computed(self.SelectedBackgroundColor3, self.BackgroundColor3, function(sCol: Color3, bCol: Color3)
 		local h1,s1,v1 = sCol:ToHSV()
 		local _,s2,v2 = bCol:ToHSV()
 		return Color3.fromHSV(h1, s1 + (s2-s1)*0.5, v1 + (v2-v1)*0.5)
@@ -116,8 +115,8 @@ function ButtonList.new(config: ButtonListParameters): GuiObject
 		AutomaticSize = Enum.AutomaticSize.XY,
 		BackgroundTransparency = 1,
 		Size = UDim2.fromScale(0,0),
-		[ColdFusion.Children] = {
-			self._Fuse.new "UIListLayout" {
+		Children = {
+			_Fuse.new "UIListLayout" {
 				FillDirection = self.FillDirection,
 				SortOrder = Enum.SortOrder.LayoutOrder,
 				HorizontalAlignment = self.HorizontalAlignment,
@@ -133,9 +132,9 @@ function ButtonList.new(config: ButtonListParameters): GuiObject
 		end
 	end
 	-- print("Parameters", parameters, self)
-	self.Instance = self._Fuse.new("Frame")(parameters)
+	self.Instance = _Fuse.new("Frame")(parameters)
 
-	self._Fuse.Computed(self.Data, function(data)
+	_Computed(self.Data, function(data)
 		self._BuildMaid:DoCleaning()
 		for k, buttonData in pairs(data) do
 			local button = Button.new {

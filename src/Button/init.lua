@@ -3,14 +3,21 @@ local SoundService = game:GetService("SoundService")
 local RunService = game:GetService("RunService")
 local TweenService = game:GetService("TweenService")
 
+local Util = require(package.Util)
+
 local package = script.Parent
 local packages = package.Parent
 
-local Isotope = require(packages:WaitForChild("isotope"))
-type Isotope = Isotope.Isotope
-type Fuse = Isotope.Fuse
-type State = Isotope.State
-type ValueState = Isotope.ValueState
+local Types = require(package.Types)
+type ParameterValue<T> = Types.ParameterValue<T>
+
+local ColdFusion = require(packages.coldfusion)
+type Fuse = ColdFusion.Fuse
+type State<T> = ColdFusion.State<T>
+type ValueState<T> = ColdFusion.ValueState<T>
+
+local Maid = require(packages.maid)
+type Maid = Maid.Maid
 
 local Signal = require(packages:WaitForChild("signal"))
 
@@ -24,38 +31,32 @@ function Button:Destroy()
 	Isotope.Destroy(self)
 end
 
-export type ButtonParameters = {
-	Name: string | State?,
-	Padding: UDim | State?,
-	CornerRadius: UDim | State?,
-	TextSize: number | State?,
-	Size: UDim2 | State?,
-	IconScale: number | State?,
-	BorderSizePixel: number | State?,
-	TextColor3: Color3 | State?,
-	Font: Enum.Font | State?,
-	SelectedTextColor3: Color3 | State?,
-	HoverTextColor3: Color3 | State?,
-	BackgroundColor3: Color3 | State?,
-	BorderColor3: Color3 | State?,
-	SelectedBackgroundColor3: Color3 | State?,
-	HoverBackgroundColor3: Color3 | State?,
-	BackgroundTransparency: number | State?,
-	BorderTransparency: number | State?,
-	TextTransparency: number | State?,
-	TextXAlignment: Enum.TextXAlignment | State?,
-	TextYAlignment: Enum.TextYAlignment | State?,
-	Text: string | State?,
-	LeftIcon: string | State?,
-	RightIcon: string | State?,
-	TextOnly: boolean | State?,
-	[any]: any?,
+export type ButtonParameters = Types.FrameParameters & {
+	Padding: ParameterValue<UDim>?,
+	CornerRadius: ParameterValue<UDim>?,
+	TextSize: ParameterValue<number>?,
+	IconScale: ParameterValue<number>?,
+	TextColor3: ParameterValue<Color3>?,
+	Font: ParameterValue<Enum.Font>?,
+	SelectedTextColor3: ParameterValue<Color3>?,
+	HoverTextColor3: ParameterValue<Color3>?,
+	SelectedBackgroundColor3: ParameterValue<Color3>?,
+	HoverBackgroundColor3: ParameterValue<Color3>?,
+	TextTransparency: ParameterValue<number>?,
+	TextXAlignment: ParameterValue<Enum.TextXAlignment>?,
+	TextYAlignment: ParameterValue<Enum.TextYAlignment>?,
+	Text: ParameterValue<string>?,
+	LeftIcon: ParameterValue<string>?,
+	RightIcon: ParameterValue<string>?,
+	ClickSound: ParameterValue<Sound>?,
+	TextOnly: ParameterValue<boolean>?,
 }
 
+export type Button = Frame
 
-function Button.new(config: ButtonParameters): GuiObject
+function Button.new(config: ButtonParameters): Button
 	local self = setmetatable(Isotope.new() :: any, Button)
-	self.ClassName = self._Fuse.Computed(function() return script.Name end)
+	self.ClassName = _Computed(function() return script.Name end)
 	self.Name = self:Import(config.Name, script.Name)
 	self.Padding = self:Import(config.Padding, UDim.new(0, 2))
 	self.CornerRadius = self:Import(config.CornerRadius, UDim.new(0,4))
@@ -70,7 +71,7 @@ function Button.new(config: ButtonParameters): GuiObject
 	self.BackgroundColor3 = self:Import(config.BackgroundColor3,Color3.fromHSV(0.7,0,1))
 	self.BorderColor3 = self:Import(config.BorderColor3,Color3.fromHSV(0.7,0,0.3))
 	self.SelectedBackgroundColor3 = self:Import(config.SelectedBackgroundColor3,Color3.fromHSV(0.7,0.7,1))
-	self.HoverBackgroundColor3 = self:Import(config.HoverBackgroundColor3, self._Fuse.Computed(self.SelectedBackgroundColor3, self.BackgroundColor3, function(sCol: Color3, bCol: Color3)
+	self.HoverBackgroundColor3 = self:Import(config.HoverBackgroundColor3, _Computed(self.SelectedBackgroundColor3, self.BackgroundColor3, function(sCol: Color3, bCol: Color3)
 		local h1,s1,v1 = sCol:ToHSV()
 		local _,s2,v2 = bCol:ToHSV()
 		return Color3.fromHSV(h1, s1 + (s2-s1)*0.5, v1 + (v2-v1)*0.5)
@@ -87,27 +88,27 @@ function Button.new(config: ButtonParameters): GuiObject
 	self.RightIcon = self:Import(config.RightIcon)
 	self.TextOnly = self:Import(config.TextOnly, false)
 
-	self.IconSize = self._Fuse.Computed(self.TextSize, function(textSize: number)
+	self.IconSize = _Computed(self.TextSize, function(textSize: number)
 		local size = math.round(textSize*1.25)
 		return UDim2.fromOffset(size, size)
 	end)
-	self.ActiveBorderColor3 = self._Fuse.Computed(self.BackgroundTransparency, self.BorderColor3, self.BackgroundColor3, function(trans, border, background)
+	self.ActiveBorderColor3 = _Computed(self.BackgroundTransparency, self.BorderColor3, self.BackgroundColor3, function(trans, border, background)
 		if trans == 0 then
 			return background
 		else
 			return border
 		end
 	end)
-	self.ActiveBorderTransparency = self._Fuse.Computed(self.BackgroundTransparency, function(backTrans)
+	self.ActiveBorderTransparency = _Computed(self.BackgroundTransparency, function(backTrans)
 		if backTrans == 0 then
 			return 1
 		else
 			return 0
 		end
 	end)
-	self.IsHovering = self._Fuse.Value(false)
-	self.IsPressing = self._Fuse.Value(false)
-	self.IsRippling = self._Fuse.Value(false)
+	self.IsHovering = _Value(false)
+	self.IsPressing = _Value(false)
+	self.IsRippling = _Value(false)
 
 	self.Activated = Signal.new()
 	self._Maid:GiveTask(self.Activated)
@@ -132,23 +133,23 @@ function Button.new(config: ButtonParameters): GuiObject
 		end
 	end))
 
-	self.ClickCenter = self._Fuse.Value(0.5)
-	self.ClickTick = self._Fuse.Value(0)
-	self.MaxRippleDuration = self._Fuse.Value(0.4)
-	self.TimeSinceLastClick = self._Fuse.Value(tick())
-	self.RippleAlpha = self._Fuse.Computed(self.TimeSinceLastClick, self.MaxRippleDuration, function(timeSince: number, dur: number)
+	self.ClickCenter = _Value(0.5)
+	self.ClickTick = _Value(0)
+	self.MaxRippleDuration = _Value(0.4)
+	self.TimeSinceLastClick = _Value(tick())
+	self.RippleAlpha = _Computed(self.TimeSinceLastClick, self.MaxRippleDuration, function(timeSince: number, dur: number)
 		return math.clamp(timeSince / dur, 0, 1)
 	end)
 	local bump = 0.01
-	self.LeftRippleAlpha = self._Fuse.Computed(self.RippleAlpha, self.ClickCenter, function(alpha: number, center: number)
+	self.LeftRippleAlpha = _Computed(self.RippleAlpha, self.ClickCenter, function(alpha: number, center: number)
 		return math.clamp(center - alpha, bump*2, 1-bump*2)
 	end)
-	self.RightRippleAlpha = self._Fuse.Computed(self.RippleAlpha, self.ClickCenter, function(alpha: number, center: number)
+	self.RightRippleAlpha = _Computed(self.RippleAlpha, self.ClickCenter, function(alpha: number, center: number)
 		return math.clamp(center + alpha, bump*2, 1-bump*2)
 	end)
 	local eDir = Enum.EasingDirection.InOut
 	local eSty = Enum.EasingStyle.Quad
-	self.TimeKeys = self._Fuse.Computed(
+	self.TimeKeys = _Computed(
 		self.ClickCenter,
 		self.LeftRippleAlpha,
 		self.RightRippleAlpha,	
@@ -174,7 +175,7 @@ function Button.new(config: ButtonParameters): GuiObject
 		Font = self.Font,
 		Padding = self.Padding,
 		TextSize = self.TextSize,
-		TextColor3 = self._Fuse.Computed(
+		TextColor3 = _Computed(
 			self.IsHovering,
 			self.IsPressing,
 			self.IsRippling,
@@ -202,16 +203,16 @@ function Button.new(config: ButtonParameters): GuiObject
 	}
 
 
-	self.LabelAbsoluteSize = self._Fuse.Property(self.TextLabel, "AbsoluteSize", 60)
-	self.ButtonSize = self._Fuse.Computed(self.Padding, self.LabelAbsoluteSize, self.Size, function(padding: UDim, absSize: Vector2?, size: Vector2?)
-		if size then return size end
+	self.LabelAbsoluteSize = _Fuse.Property(self.TextLabel, "AbsoluteSize", 60)
+	self.ButtonSize = _Computed(self.Padding, self.LabelAbsoluteSize, self.Size, function(padding: UDim, absSize: Vector2?, size: Vector2?): UDim2
+		if size then return UDim2.fromOffset(size.X, size.Y) end
 		absSize = absSize or Vector2.new(0,0)
 		assert(absSize ~= nil)
 		local fullSize = absSize + Vector2.new(1,1) * padding.Offset * 2
 		return UDim2.fromOffset(fullSize.X, fullSize.Y)
 	end)
 
-	self.ActiveBackgroundColor = self._Fuse.Computed(self.IsPressing, self.IsRippling, self.IsHovering, self.BackgroundColor3, self.HoverBackgroundColor3, self.SelectedBackgroundColor3, function(isPressing, isRippling, isHovering, backgroundColor, hoverColor, selColor)
+	self.ActiveBackgroundColor = _Computed(self.IsPressing, self.IsRippling, self.IsHovering, self.BackgroundColor3, self.HoverBackgroundColor3, self.SelectedBackgroundColor3, function(isPressing, isRippling, isHovering, backgroundColor, hoverColor, selColor)
 		if isHovering or isRippling then
 			return hoverColor
 		elseif isPressing then
@@ -221,7 +222,7 @@ function Button.new(config: ButtonParameters): GuiObject
 		end
 	end):Tween(0.15)
 
-	self.ActiveFillColor = self._Fuse.Computed(self.IsPressing, self.IsRippling, self.ActiveBackgroundColor, self.SelectedBackgroundColor3,  function(isPressing, isRipple, hoverColor, selectedColor)
+	self.ActiveFillColor = _Computed(self.IsPressing, self.IsRippling, self.ActiveBackgroundColor, self.SelectedBackgroundColor3,  function(isPressing, isRipple, hoverColor, selectedColor)
 		if isPressing or isRipple then
 			return selectedColor
 		else
@@ -233,34 +234,34 @@ function Button.new(config: ButtonParameters): GuiObject
 		Name = self.Name,
 		Size = self.ButtonSize,
 		BackgroundColor3 = Color3.new(1,1,1),
-		BackgroundTransparency = self._Fuse.Computed(self.TextOnly, function(textOnly)
+		BackgroundTransparency = _Computed(self.TextOnly, function(textOnly)
 			if textOnly then
 				return 1
 			else
 				return 0
 			end
 		end),
-		[self._Fuse.Children] = {
-			self._Fuse.new "UICorner" {
+		Children = {
+			_Fuse.new "UICorner" {
 				CornerRadius = self.CornerRadius,
 			},
-			self._Fuse.new "UIPadding" {
+			_Fuse.new "UIPadding" {
 				PaddingBottom = self.Padding,
 				PaddingTop = self.Padding,
 				PaddingLeft = self.Padding,
 				PaddingRight = self.Padding,
 			},
-			self._Fuse.new 'UIStroke' {
+			_Fuse.new 'UIStroke' {
 				Transparency = self.ActiveBorderTransparency,
 				ApplyStrokeMode = Enum.ApplyStrokeMode.Border,
-				Thickness = self._Fuse.Computed(self.TextOnly, self.BorderSizePixel, function(textOnly, bSizePix)
+				Thickness = _Computed(self.TextOnly, self.BorderSizePixel, function(textOnly, bSizePix)
 					if textOnly then
 						return 0
 					else
 						return bSizePix
 					end
 				end),
-				Color = self._Fuse.Computed(self.ActiveBorderColor3, self.ActiveFillColor, self.ActiveBackgroundColor, self.IsHovering, self.IsPressing, function(border, fill, back, hover, press)
+				Color = _Computed(self.ActiveBorderColor3, self.ActiveFillColor, self.ActiveBackgroundColor, self.IsHovering, self.IsPressing, function(border, fill, back, hover, press)
 					if press then
 						return fill
 					elseif hover then
@@ -270,8 +271,8 @@ function Button.new(config: ButtonParameters): GuiObject
 					end
 				end),
 			},
-			self._Fuse.new 'UIGradient' {
-				Transparency = self._Fuse.Computed(
+			_Fuse.new 'UIGradient' {
+				Transparency = _Computed(
 					self.IsHovering,
 					self.IsPressing,
 					self.IsRippling,
@@ -319,7 +320,7 @@ function Button.new(config: ButtonParameters): GuiObject
 						})
 					end
 				),
-				Color = self._Fuse.Computed(
+				Color = _Computed(
 					self.IsHovering,
 					self.IsPressing,
 					self.IsRippling,
@@ -368,7 +369,7 @@ function Button.new(config: ButtonParameters): GuiObject
 					end
 				),
 			},
-			self._Fuse.new "TextButton" {
+			_Fuse.new "TextButton" {
 				RichText = true,
 				TextColor3 = self.TextColor3,
 				LayoutOrder = 2,
@@ -378,10 +379,10 @@ function Button.new(config: ButtonParameters): GuiObject
 				AnchorPoint = Vector2.new(0.5,0.5),
 				TextTransparency = self.TextTransparency,
 				Text = "",
-				[self._Fuse.Event "Activated"] = function()
+				[_Fuse.Event "Activated"] = function()
 					self.Activated:Fire()
 				end,
-				[self._Fuse.Event "MouseButton1Down"] = function(x)
+				[_Fuse.Event "MouseButton1Down"] = function(x: any)
 					self.MouseButton1Down:Fire()
 					
 					if not self.IsPressing:Get() and self.TimeSinceLastClick:Get() > 0.8 then
@@ -396,14 +397,14 @@ function Button.new(config: ButtonParameters): GuiObject
 					end
 		
 				end,
-				[self._Fuse.Event "MouseButton1Up"] = function()
+				[_Fuse.Event "MouseButton1Up"] = function()
 					self.MouseButton1Up:Fire()
 					self.IsPressing:Set(false)
 				end,
-				[self._Fuse.Event "InputChanged"] = function()
+				[_Fuse.Event "InputChanged"] = function()
 					self.IsHovering:Set(true)
 				end,
-				[self._Fuse.Event "MouseLeave"] = function()
+				[_Fuse.Event "MouseLeave"] = function()
 					self.IsHovering:Set(false)
 				end,
 				BackgroundTransparency = 1,
@@ -424,7 +425,7 @@ function Button.new(config: ButtonParameters): GuiObject
 
 
 	-- print("Parameters", parameters, self)
-	self.Instance = self._Fuse.new("Frame")(parameters)
+	self.Instance = _Fuse.new("Frame")(parameters)
 
 	self._Maid:GiveTask(self.Instance:WaitForChild("TextButton").MouseButton1Down:Connect(function(x: number)
 		local xWidth = self.Instance.AbsoluteSize.X

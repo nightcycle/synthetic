@@ -1,9 +1,6 @@
-local SoundService = game:GetService("SoundService")
-local ReplicatedStorage = game:GetService("ReplicatedStorage")
-
 return function (coreGui)
 	local module = require(script.Parent)
-	local demo = {
+	local demo: any = {
 		Text = "Label",
 		TextSize = 18,
 		TextColor3 = Color3.fromHSV(1,0,0.2),
@@ -21,7 +18,7 @@ return function (coreGui)
 		AnchorPoint = Vector2.new(0.5,0.5),
 		Parent = coreGui,
 	}
-	local object = module.new(demo)
+	local object = module(demo)
 	return function()
 		object:Destroy()
 	end

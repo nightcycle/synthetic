@@ -1,6 +1,3 @@
-local ReplicatedStorage = game:GetService("ReplicatedStorage")
-local RunService = game:GetService("RunService")
-
 local package = script.Parent.Parent
 local packages = package.Parent
 local Maid = require(packages:WaitForChild("maid"))
@@ -16,7 +13,7 @@ return function (coreGui)
 		Parent = game:WaitForChild("StarterGui"),
 	}
 	
-	local frame = module.new(demo)
+	local frame = module(demo)
 
 	maid:GiveTask(frame)
 	return function()

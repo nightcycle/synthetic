@@ -1,5 +1,3 @@
-local SoundService = game:GetService("SoundService")
-local ReplicatedStorage = game:GetService("ReplicatedStorage")
 return function (coreGui)
 	local module = require(script.Parent)
 	local demo = {
@@ -16,7 +14,7 @@ return function (coreGui)
 		LeftIcon = "star",
 		RightIcon = "accessibility"
 	}
-	local object = module.new(demo)
+	local object = module(demo)
 	return function()
 		object:Destroy()
 	end

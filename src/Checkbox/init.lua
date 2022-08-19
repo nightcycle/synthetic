@@ -4,11 +4,18 @@ local SoundService = game:GetService("SoundService")
 local package = script.Parent
 local packages = package.Parent
 
-local Isotope = require(packages:WaitForChild("isotope"))
-type Isotope = Isotope.Isotope
-type Fuse = Isotope.Fuse
-type State = Isotope.State
-type ValueState = Isotope.ValueState
+local Util = require(package.Util)
+
+local Types = require(package.Types)
+type ParameterValue<T> = Types.ParameterValue<T>
+
+local ColdFusion = require(packages.coldfusion)
+type Fuse = ColdFusion.Fuse
+type State<T> = ColdFusion.State<T>
+type ValueState<T> = ColdFusion.ValueState<T>
+
+local Maid = require(packages.maid)
+type Maid = Maid.Maid
 
 local Signal = require(packages:WaitForChild("signal"))
 
@@ -22,22 +29,19 @@ function Checkbox:Destroy()
 	Isotope.Destroy(self)
 end
 
-export type CheckboxParameters = {
-	Name: string | State?,
-	Scale: number | State?,
-	BorderColor3: Color3 | State?,
-	BackgroundColor3: Color3 | State?,
-	Value: boolean | State?,
-	EnableSound: Sound | State?,
-	DisableSound: Sound | State?,
-	[any]: any?,
+export type CheckboxParameters = Types.FrameParameters & {
+	Scale: ParameterValue<number>?,
+	Value: ParameterValue<boolean>?,
+	EnableSound: ParameterValue<Sound>?,
+	DisableSound: ParameterValue<Sound>?,
 }
 
+export type Checkbox = Frame
 
-function Checkbox.new(config: CheckboxParameters): GuiObject
+function Checkbox.new(config: CheckboxParameters): Checkbox
 	local self = setmetatable(Isotope.new() :: any, Checkbox)
 	self.Name = self:Import(config.Name, script.Name)
-	self.ClassName = self._Fuse.Computed(function() return script.Name end)
+	self.ClassName = _Computed(function() return script.Name end)
 	self.Scale = self:Import(config.Scale, 1)
 	self.BorderColor3 = self:Import(config.BorderColor3, Color3.fromHSV(0,0,0.4))
 	self.BackgroundColor3 = self:Import(config.BackgroundColor3, Color3.fromHSV(0.6,1,1))
@@ -45,14 +49,14 @@ function Checkbox.new(config: CheckboxParameters): GuiObject
 	self.Value = self:Import(config.Value, false)
 	self.EnableSound = self:Import(config.EnableSound)
 	self.DisableSound = self:Import(config.DisableSound)
-	self.Padding = self._Fuse.Computed(self.Scale, function(scale: number)
+	self.Padding = _Computed(self.Scale, function(scale: number)
 		return math.round(6 * scale)
 	end)
-	self.Width = self._Fuse.Computed(self.Scale, function(scale: number)
+	self.Width = _Computed(self.Scale, function(scale: number)
 		return math.round(scale * 20)
 	end)
 	
-	self.TweenColor = self._Fuse.Computed(self.Value, self.BorderColor3, self.BackgroundColor3, function(val, borderColor3, backgroundColor3)
+	self.TweenColor = _Computed(self.Value, self.BorderColor3, self.BackgroundColor3, function(val, borderColor3, backgroundColor3)
 		if not val then
 			return borderColor3
 		else
@@ -63,7 +67,7 @@ function Checkbox.new(config: CheckboxParameters): GuiObject
 	self.Activated = Signal.new()
 	self._Maid:GiveTask(self.Activated)
 
-	self.BubbleEnabled = self._Fuse.Value(false)
+	self.BubbleEnabled = _Value(false)
 	self._Maid:GiveTask(self.Activated:Connect(function()
 		if not self.Value:Get() == true then
 			local clickSound = self.EnableSound:Get()
@@ -88,12 +92,12 @@ function Checkbox.new(config: CheckboxParameters): GuiObject
 
 	local parameters = {
 		Name = self.Name,
-		Size = self._Fuse.Computed(self.Width, function(width: number)
+		Size = _Computed(self.Width, function(width: number)
 			return UDim2.fromOffset(width * 2, width * 2)
 		end),
 		BackgroundTransparency = 1,
-		[self._Fuse.Children] = {
-			self._Fuse.new "ImageButton" {
+		Children = {
+			_Fuse.new "ImageButton" {
 				Name = "Button",
 				ZIndex = 3,
 				BackgroundTransparency = 1,
@@ -101,7 +105,7 @@ function Checkbox.new(config: CheckboxParameters): GuiObject
 				Position = UDim2.fromScale(0.5,0.5),
 				Size = UDim2.fromScale(1,1),
 				AnchorPoint = Vector2.new(0.5,0.5),
-				[self._Fuse.Event "Activated"] = function()
+				[_Fuse.Event "Activated"] = function()
 					self.Activated:Fire()
 					if self.BubbleEnabled:Get() then
 						local bubble = Bubble.new {
@@ -113,39 +117,39 @@ function Checkbox.new(config: CheckboxParameters): GuiObject
 					end
 				end
 			},
-			self._Fuse.new "ImageLabel" {
+			_Fuse.new "ImageLabel" {
 				Name = "ImageLabel",
 				ZIndex = 2,
 				Image = "rbxassetid://3926305904",
 				ImageRectOffset = Vector2.new(312,4),
 				ImageRectSize = Vector2.new(24,24),
 				ImageColor3 = self.BorderColor3,
-				ImageTransparency = self._Fuse.Computed(self.Value, function(val)
+				ImageTransparency = _Computed(self.Value, function(val)
 					if val then return 0 else return 1 end
 				end):Tween(),
 				Position = UDim2.fromScale(0.5,0.5),
 				AnchorPoint = Vector2.new(0.5,0.5),
 				BackgroundColor3 = self.TweenColor,
-				BackgroundTransparency = self._Fuse.Computed(self.Value, function(val)
+				BackgroundTransparency = _Computed(self.Value, function(val)
 					if val then
 						return 0
 					else
 						return 0.999
 					end
 				end):Tween(),
-				Size = self._Fuse.Computed(self.Width, self.Padding, function(width: number, padding: number)
+				Size = _Computed(self.Width, self.Padding, function(width: number, padding: number)
 					return UDim2.fromOffset(width-padding, width-padding)
 				end),
 				BorderSizePixel = 0,
-				[self._Fuse.Children] = {
-					self._Fuse.new "UICorner" {
-						CornerRadius = self._Fuse.Computed(self.Padding, function(padding: number)
+				Children = {
+					_Fuse.new "UICorner" {
+						CornerRadius = _Computed(self.Padding, function(padding: number)
 							return UDim.new(0,math.round(padding*0.5))
 						end)
 					},
-					self._Fuse.new "UIStroke" {
+					_Fuse.new "UIStroke" {
 						ApplyStrokeMode = Enum.ApplyStrokeMode.Border,
-						Thickness = self._Fuse.Computed(self.Padding, function(padding: number)
+						Thickness = _Computed(self.Padding, function(padding: number)
 							return math.round(padding*0.25)
 						end),
 						Transparency = 0,
@@ -154,6 +158,7 @@ function Checkbox.new(config: CheckboxParameters): GuiObject
 				}
 			},
 		}
+
 	}
 	for k, v in pairs(config) do
 		if parameters[k] == nil and self[k] == nil then
@@ -161,7 +166,7 @@ function Checkbox.new(config: CheckboxParameters): GuiObject
 		end
 	end
 	-- print("Parameters", parameters, self)
-	self.Instance = self._Fuse.new("Frame")(parameters)
+	self.Instance = _Fuse.new("Frame")(parameters)
 	self:Construct()
 	return self.Instance
 end

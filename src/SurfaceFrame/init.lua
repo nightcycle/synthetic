@@ -1,75 +1,78 @@
 --!strict
 local package = script.Parent
 local packages = package.Parent
-local Isotope = require(packages.isotope)
-type Isotope = Isotope.Isotope
-type Fuse = Isotope.Fuse
-type State = Isotope.State
-type ValueState = Isotope.ValueState
 
-local SurfaceFrame = {}
-SurfaceFrame.__index = SurfaceFrame
-setmetatable(SurfaceFrame, Isotope)
+local Util = require(package.Util)
 
-export type SurfaceFrameParameters = {
-	Name: string | State?,
-	Face: Enum.NormalId | State?,
-	Adornee: Instance | State?,
-	Parent: Instance | State?,
-	PixelsPerStud: number | State?,
-	LightInfluence: number | State?,
-	Brightness: number | State?,
-	AlwaysOnTop: boolean | State?,
-	[any]: any?,
+local Types = require(package.Types)
+type ParameterValue<T> = Types.ParameterValue<T>
+
+local ColdFusion = require(packages.coldfusion)
+type Fuse = ColdFusion.Fuse
+type State<T> = ColdFusion.State<T>
+type ValueState<T> = ColdFusion.ValueState<T>
+
+local Maid = require(packages.maid)
+type Maid = Maid.Maid
+
+export type SurfaceFrameParameters = Types.FrameParameters & {
+	Face: ParameterValue<Enum.NormalId>?,
+	Adornee: ParameterValue<Instance>?,
+	Parent: ParameterValue<Instance>?,
+	PixelsPerStud: ParameterValue<number>?,
+	LightInfluence: ParameterValue<number>?,
+	Brightness: ParameterValue<number>?,
+	AlwaysOnTop: ParameterValue<boolean>?,
 }
 
-function SurfaceFrame.new(config: SurfaceFrameParameters): GuiObject
-	local self = Isotope.new() :: any
-	setmetatable(self, SurfaceFrame)
+export type SurfaceFrame = Frame
 
-	self.Name = self:Import(config.Name, script.Name)
-	self.Face = self:Import(config.Face, Enum.NormalId.Left)
-	self.Adornee = self:Import(config.Adornee, nil)
-	self.Parent = self:Import(config.Parent, nil)
-	self.PixelsPerStud = self:Import(config.PixelsPerStud, 10)
-	self.LightInfluence = self:Import(config.LightInfluence, 1)
-	self.Brightness = self:Import(config.Brightness, 0)
-	self.AlwaysOnTop = self:Import(config.AlwaysOnTop, false)
+return function(config: SurfaceFrameParameters): SurfaceFrame
+	local _Maid = Maid.new()
+	local _Fuse = ColdFusion.fuse(_Maid)
+	local _Computed = _Fuse.Computed
+	local _Value = _Fuse.Value
+	local _import = _Fuse.import
+	local _new = _Fuse.new
 
-	self.SurfaceGui = self._Fuse.new "SurfaceGui" {
-		Name = self.Name,
-		Parent = self.Parent,
-		Adornee = self.Adornee,
-		Face = self.Face,
+	local Name = _import(config.Name, script.Name)
+	local Face = _import(config.Face, Enum.NormalId.Left)
+	local Ad: any = _import(config.Adornee, nil); local Adornee: State<Instance> = Ad
+	local PixelsPerStud = _import(config.PixelsPerStud, 10)
+	local LightInfluence = _import(config.LightInfluence, 1)
+	local Brightness = _import(config.Brightness, 0)
+	local AlwaysOnTop = _import(config.AlwaysOnTop, false)
+
+	local SurfaceGui = _new "SurfaceGui" {
+		Name = Name,
+		Adornee = Adornee,
+		Face = Face,
 		SizingMode = Enum.SurfaceGuiSizingMode.PixelsPerStud,
-		PixelsPerStud = self.PixelsPerStud,
-		AlwaysOnTop = self.AlwaysOnTop,
-		Brightness = self.Brightness,
+		PixelsPerStud = PixelsPerStud,
+		AlwaysOnTop = AlwaysOnTop,
+		Brightness = Brightness,
 		ClipsDescendants = true,
-		LightInfluence = self.LightInfluence,
+		LightInfluence = LightInfluence,
 	}
+	_Maid:GiveTask(SurfaceGui)
 
-	local parameters = {
-		Name = self.Name,
-		Parent = self.SurfaceGui,
+	local parameters: any = {
+		Name = Name,
+		Parent = SurfaceGui,
+		Attributes = {
+			ClassName = script.Name,
+		}
 	}
 
 	for k, v in pairs(config) do
-		if parameters[k] == nil and self[k] == nil then
+		if parameters[k] == nil then
 			parameters[k] = v
 		end
 	end
 
-	self.Instance = self._Fuse.new "Frame" (parameters)
+	local Output = _new "Frame" (parameters)
 
-	self._Maid:GiveTask(self.SurfaceGui)
-	-- self._Maid:GiveTask(self.SurfaceGui.Destroying:Connect(function() self:Destroy() end))
-	self._Maid:GiveTask(self.Instance)
-	self._Maid:GiveTask(self.Instance.Destroying:Connect(function() self:Destroy() end))
+	Util.cleanUpPrep(_Maid, Output)
 
-	self:Construct()
-
-	return self.Instance
+	return Output
 end
-
-return SurfaceFrame

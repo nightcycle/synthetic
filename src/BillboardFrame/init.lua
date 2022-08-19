@@ -1,31 +1,40 @@
 --!strict
 local package = script.Parent
 local packages = package.Parent
-local Isotope = require(packages:WaitForChild("isotope"))
-type Isotope = Isotope.Isotope
-type Fuse = Isotope.Fuse
-type State = Isotope.State
-type ValueState = Isotope.ValueState
 
-local SurfaceFrame = {}
-SurfaceFrame.__index = SurfaceFrame
-setmetatable(SurfaceFrame, Isotope)
+local Util = require(package.Util)
 
-export type BillboardFrameParameters = {
-	Name: string | State?,
-	Parent: Instance | State?,
-	Position: Vector3 | State?,
-	Size: Vector2 | State?,
-	LightInfluence: number | State?,
-	AlwaysOnTop: boolean | State?,
-	MaxDistance: number | State?,
-	AnchorPoint: Vector2 | State?,
-	[any]: any?,
+local Types = require(package.Types)
+type ParameterValue<T> = Types.ParameterValue<T>
+
+local ColdFusion = require(packages.coldfusion)
+type Fuse = ColdFusion.Fuse
+type State<T> = ColdFusion.State<T>
+type ValueState<T> = ColdFusion.ValueState<T>
+
+local Maid = require(packages.maid)
+type Maid = Maid.Maid
+
+local BillboardFrame = {}
+BillboardFrame.__index = BillboardFrame
+setmetatable(BillboardFrame, Isotope)
+
+export type BillboardFrameParameters = Types.FrameParameters & {
+	Name: ParameterValue<string>?,
+	Parent: ParameterValue<Instance>?,
+	Position: ParameterValue<Vector3>?,
+	Size: ParameterValue<Vector2>?,
+	LightInfluence: ParameterValue<number>?,
+	AlwaysOnTop: ParameterValue<boolean>?,
+	MaxDistance: ParameterValue<number>?,
+	AnchorPoint: ParameterValue<Vector2>?,
 }
 
-function SurfaceFrame.new(config: BillboardFrameParameters): GuiObject
+export type BillboardFrame = Frame
+
+function BillboardFrame.new(config: BillboardFrameParameters): BillboardFrame
 	local self = Isotope.new() :: any
-	setmetatable(self, SurfaceFrame)
+	setmetatable(self, BillboardFrame)
 
 	self.Name = self:Import(config.Name, script.Name)
 	self.Parent = self:Import(config.Parent, nil)
@@ -37,7 +46,7 @@ function SurfaceFrame.new(config: BillboardFrameParameters): GuiObject
 	self.MaxDistance = self:Import(config.MaxDistance, 100)
 	self.AnchorPoint = self:Import(config.AnchorPoint, Vector2.new(0.5,0.5))
 
-	self.Part = self._Fuse.new "Part" {
+	self.Part = _Fuse.new "Part" {
 		Name = self.Name,
 		Parent = workspace,
 		Position = self.Position,
@@ -49,12 +58,12 @@ function SurfaceFrame.new(config: BillboardFrameParameters): GuiObject
 		CanQuery = false,
 	}
 
-	self.SurfaceGui = self._Fuse.new "BillboardGui" {
+	self.SurfaceGui = _Fuse.new "BillboardGui" {
 		Name = self.Name,
 		Parent = self.Parent,
 		Adornee = self.Part,
 		AlwaysOnTop = self.AlwaysOnTop,
-		Size = self._Fuse.Computed(self.Size, function(size: Vector2)
+		Size = _Computed(self.Size, function(size: Vector2)
 			return UDim2.fromScale(size.X, size.Y)
 		end),
 		-- SizingMode = Enum.SurfaceGuiSizingMode.PixelsPerStud,
@@ -77,7 +86,7 @@ function SurfaceFrame.new(config: BillboardFrameParameters): GuiObject
 		end
 	end
 
-	self.Instance = self._Fuse.new "Frame" (parameters)
+	self.Instance = _Fuse.new "Frame" (parameters)
 
 	-- self._Maid:GiveTask(self.Instance)
 	self._Maid:GiveTask(self.Instance.Destroying:Connect(function() self:Destroy() end))
@@ -87,4 +96,4 @@ function SurfaceFrame.new(config: BillboardFrameParameters): GuiObject
 	return self.Instance
 end
 
-return SurfaceFrame
+return BillboardFrame

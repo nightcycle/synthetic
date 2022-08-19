@@ -5,11 +5,18 @@ local RunService = game:GetService("RunService")
 local package = script.Parent
 local packages = package.Parent
 
-local Isotope = require(packages:WaitForChild("isotope"))
-type Isotope = Isotope.Isotope
-type Fuse = Isotope.Fuse
-type State = Isotope.State
-type ValueState = Isotope.ValueState
+local Util = require(package.Util)
+
+local Types = require(package.Types)
+type ParameterValue<T> = Types.ParameterValue<T>
+
+local ColdFusion = require(packages.coldfusion)
+type Fuse = ColdFusion.Fuse
+type State<T> = ColdFusion.State<T>
+type ValueState<T> = ColdFusion.ValueState<T>
+
+local Maid = require(packages.maid)
+type Maid = Maid.Maid
 
 local math = require(packages:WaitForChild("math"))
 
@@ -19,33 +26,32 @@ local BoundingBoxFrame = {}
 BoundingBoxFrame.__index = BoundingBoxFrame
 setmetatable(BoundingBoxFrame, Isotope)
 
-export type BoundingBoxFrameParameters = {
-	Target: Instance | State?,
-	[any]: any?,
+export type BoundingBoxFrameParameters = MountFrame.ViewportMountFrameParameters & {
+	Target: ParameterValue<Instance>?,
 }
 
+export type BoundingBoxFrame = MountFrame.ViewportMountFrame
 
-
-function BoundingBoxFrame.new(config: BoundingBoxFrameParameters): GuiObject
+function BoundingBoxFrame.new(config: BoundingBoxFrameParameters): BoundingBoxFrame
 	local self = Isotope.new() :: any
 	setmetatable(self, BoundingBoxFrame)
 
 	self.Name = self:Import(config.Name, nil)
 	self.Target = self:Import(config.Target, nil)
 
-	self.TargetCFrame = self._Fuse.Value(nil)
-	self.TargetSize = self._Fuse.Value(nil)
-	self.BoardFrame = self._Fuse.Value(nil)
-	self.Camera = self._Fuse.Property(self.BoardFrame, "CurrentCamera")
+	self.TargetCFrame = _Value(nil)
+	self.TargetSize = _Value(nil)
+	self.BoardFrame = _Value(nil)
+	self.Camera = _Fuse.Property(self.BoardFrame, "CurrentCamera")
 
 	local parameters = {
 		Name = self.Name,
 		AnchorPoint = Vector2.new(0.5,0.5),
-		WorldPosition = self._Fuse.Computed(self.TargetCFrame, function(cf)
+		WorldPosition = _Computed(self.TargetCFrame, function(cf)
 			if not cf then return Vector2.new(0,0) end
 			return Vector2.new(cf.p.X, cf.p.Y)
 		end),
-		WorldSize = self._Fuse.Computed(self.TargetSize, function(size)
+		WorldSize = _Computed(self.TargetSize, function(size)
 			if not size then return Vector2.new(0,0) end
 			return size
 		end),

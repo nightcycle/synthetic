@@ -1,5 +1,5 @@
 [tools]
 remodel = 	{source = "rojo-rbx/remodel", 			version = "0.9.1" }
-rojo = 		{source = "rojo-rbx/rojo", 				version = "7.1.0" }
+rojo = 		{source = "Boegie19/rojo", 				version = "7.2.1-exp.13" }
 wally = 	{source = "UpliftGames/wally", 			version = "0.3.1" }
 tarmac = 	{source = "Roblox/tarmac",				version = "0.7.0"}

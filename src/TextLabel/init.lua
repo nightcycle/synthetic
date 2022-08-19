@@ -2,70 +2,77 @@
 local package = script.Parent
 local packages = package.Parent
 
-local Isotope = require(packages:WaitForChild("isotope"))
-type Isotope = Isotope.Isotope
-type Fuse = Isotope.Fuse
-type State = Isotope.State
-type ValueState = Isotope.ValueState
+local Util = require(package.Util)
+
+local Types = require(package.Types)
+type ParameterValue<T> = Types.ParameterValue<T>
+
+local ColdFusion: Fuse = require(packages.coldfusion)
+type Fuse = ColdFusion.Fuse
+type State<T> = ColdFusion.State<T>
+type ValueState<T> = ColdFusion.ValueState<T>
+
+local Maid = require(packages.maid)
+type Maid = Maid.Maid
 
 local Format = require(packages:WaitForChild("format"))
-local ColdFusion = require(packages:WaitForChild("coldfusion"))
 
 local Icon = require(package:WaitForChild("IconLabel"))
 
-local TextLabel = {}
-TextLabel.__index = TextLabel
-setmetatable(TextLabel, Isotope)
-
-function TextLabel:Destroy()
-	Isotope.Destroy(self)
-end
-
-export type TextLabelParameters = {
-	Padding: UDim | State?,
-	TextSize: number | State?,
-	TextColor3: Color3 | State?,
-	TextTransparency: number | State?,
-	TextXAlignment: Enum.TextXAlignment | State?,
-	TextYAlignment: Enum.TextYAlignment | State?,
-	Text: string | State?,
-	Font: Enum.Font | State?,
-	IconScale: number | State?,
-	LeftIcon: string | State?,
-	RightIcon: string | State?,
-	[any]: any?,
+export type TextLabelParameters = Types.FrameParameters & {
+	Padding: ParameterValue<UDim>?,
+	TextSize: ParameterValue<number>?,
+	TextColor3: ParameterValue<Color3>?,
+	TextTransparency: ParameterValue<number>?,
+	TextXAlignment: ParameterValue<Enum.TextXAlignment>?,
+	TextYAlignment: ParameterValue<Enum.TextYAlignment>?,
+	Text: ParameterValue<string>?,
+	Font: ParameterValue<Enum.Font>?,
+	IconScale: ParameterValue<number>?,
+	LeftIcon: ParameterValue<string>?,
+	RightIcon: ParameterValue<string>?,
 }
 
-function TextLabel.new(config: TextLabelParameters): GuiObject
-	local self: any = setmetatable(Isotope.new() :: any, TextLabel)
+export type TextLabel = Frame
 
-	self.Name = self:Import(config.Name, script.Name)
-	self.ClassName = self._Fuse.Computed(function() return script.Name end)
+return function(config: TextLabelParameters): TextLabel
+	local _Maid = Maid.new()
+	local _Fuse = ColdFusion.fuse(_Maid)
+	local _Computed = _Fuse.Computed
+	local _Value = _Fuse.Value
+	local _import = _Fuse.import
+	local _new = _Fuse.new
 
-	self.Padding = self:Import(config.Padding, UDim.new(0, 2))
-	self.TextSize = self:Import(config.TextSize, 14)
-	self.TextColor3 = self:Import(config.TextColor3, Color3.new(1,1,1))
-	self.TextTransparency = self:Import(config.TextTransparency, 0)
-	self.TextXAlignment = self:Import(config.TextXAlignment, Enum.TextXAlignment.Center)
-	self.TextYAlignment = self:Import(config.TextYAlignment, Enum.TextYAlignment.Center)
-	self.Text = self:Import(config.Text, false)
-	self.Font = self:Import(config.Font, Enum.Font.Gotham)
-	self.IconScale = self:Import(config.IconScale, 1.25)
-	self.LeftIcon = self:Import(config.LeftIcon)
-	self.RightIcon = self:Import(config.RightIcon)
-	self.IconSize = self._Fuse.Computed(self.TextSize, self.IconScale, function(textSize: number, scale: number)
+	local Padding = _import(config.Padding, UDim.new(0, 2))
+	local TextSize = _import(config.TextSize, 14)
+	local TextColor3 = _import(config.TextColor3, Color3.new(1,1,1))
+	local TextTransparency = _import(config.TextTransparency, 0)
+	local TextXAlignment = _import(config.TextXAlignment, Enum.TextXAlignment.Center)
+	local TextYAlignment = _import(config.TextYAlignment, Enum.TextYAlignment.Center)
+	local Text = _import(config.Text, false)
+	local Font = _import(config.Font, Enum.Font.Gotham)
+	local IconScale = _import(config.IconScale, 1.25)
+	local LeftIcon = _import(config.LeftIcon, "")
+	local RightIcon = _import(config.RightIcon, "")
+	local IconSize = _Computed(function(textSize: number, scale: number)
 		local size = math.round(textSize*scale)
 		return UDim2.fromOffset(size, size)
-	end)
-	local parameters = {
-		Name = self.Name,
+	end, TextSize, IconScale)
+
+	local parameters: any = {
+		Name = _import(config.Name, script.Name),
+		Text = Text,
 		AutomaticSize = Enum.AutomaticSize.XY,
 		BackgroundTransparency = 1,
 		Size = UDim2.fromScale(0,0),
-		[ColdFusion.Children] = {
-			self._Fuse.new "UIListLayout" {
+		Attributes = {
+			ClassName = _Computed(function() return script.Name end)
+		},
+		Children = {
+			_new("UIListLayout")({
+				Name = "Test",
 				FillDirection = Enum.FillDirection.Horizontal,
-				HorizontalAlignment = self._Fuse.Computed(self.TextXAlignment, function(xAlign)
+				HorizontalAlignment = _Computed(function(xAlign: Enum.TextXAlignment)
 					if xAlign == Enum.TextXAlignment.Center then
 						return Enum.HorizontalAlignment.Center
 					elseif xAlign == Enum.TextXAlignment.Left then
@@ -74,9 +81,9 @@ function TextLabel.new(config: TextLabelParameters): GuiObject
 						return Enum.HorizontalAlignment.Right
 					end
 					error("HorizontalAlignment Error")
-				end),
+				end, TextXAlignment),
 				SortOrder = Enum.SortOrder.LayoutOrder,
-				VerticalAlignment = self._Fuse.Computed(self.TextYAlignment, function(yAlign)
+				VerticalAlignment = _Computed(function(yAlign)
 					if yAlign == Enum.TextYAlignment.Center then
 						return Enum.VerticalAlignment.Center
 					elseif yAlign == Enum.TextYAlignment.Top then
@@ -85,70 +92,66 @@ function TextLabel.new(config: TextLabelParameters): GuiObject
 						return Enum.VerticalAlignment.Bottom
 					end
 					error("VerticalAlignment Error")
-				end),
-				Padding = self.Padding,
-				-- self._Fuse.Computed(self.Padding, function(pad)
-				-- 	return UDim.new(pad.Scale*2, pad.Offset*2)
-				-- end),
-			},
-			self._Fuse.new "TextLabel" {
+				end, TextYAlignment),
+				Attributes = {},
+				Padding = Padding,
+				Children = {},
+			}),
+			_new "TextLabel" {
 				RichText = true,
-				TextColor3 = self.TextColor3,
-				TextSize = self.TextSize,
-				Visible = self._Fuse.Computed(self.Text, function(txt)
+				TextColor3 = TextColor3,
+				TextSize = TextSize,
+				Visible = _Computed(function(txt)
 					if not txt or string.len(txt) == 0 then
 						return false
 					else
 						return true
 					end
-				end),
-				Font = self.Font,
+				end, Text),
+				Font = Font,
 				LayoutOrder = 2,
-				TextTransparency = self.TextTransparency,
-				Text = self._Fuse.Computed(self.Text, function(txt)
+				TextTransparency = TextTransparency,
+				Text = _Computed(function(txt)
 					return Format(txt)
 					-- return txt
-				end),
+				end, Text),
 				BackgroundTransparency = 1,
 				AutomaticSize = Enum.AutomaticSize.XY,
 			},
-			Icon.new {
-				Parent = self.Instance,
-				Size = self.IconSize,
+			Icon{
+				Size = IconSize,
 				LayoutOrder = 1,
-				Visible = self._Fuse.Computed(self.LeftIcon, function(icon)
+				Visible = _Computed(function(icon)
 					return icon ~= nil and icon ~= ""
-				end),
+				end, LeftIcon),
 				Name = "LeftIcon",
-				Icon = self.LeftIcon,
-				IconColor3 = self.TextColor3,
-				IconTransparency = self.TextTransparency,
+				Icon = LeftIcon,
+				IconColor3 = TextColor3,
+				IconTransparency = TextTransparency,
 			},
-			Icon.new {
-				Size = self.IconSize,
+			Icon{
+				Size = IconSize,
 				LayoutOrder = 3,
-				Visible = self._Fuse.Computed(self.RightIcon, function(icon)
+				Visible = _Computed(function(icon)
 					return icon ~= nil and icon ~= ""
-				end),
+				end, RightIcon),
 				Name = "RightIcon",
-				Icon = self.RightIcon,
-				IconColor3 = self.TextColor3,
-				IconTransparency = self.TextTransparency,
+				Icon = RightIcon,
+				IconColor3 = TextColor3,
+				IconTransparency = TextTransparency,
 			},
-		}
+		} :: {Instance}
 	}
 
 	for k, v in pairs(config) do
-		if parameters[k] == nil and self[k] == nil then
+		if parameters[k] == nil then
 			parameters[k] = v
 		end
 	end
 	-- print("Parameters", parameters, self)
-	self.Instance = self._Fuse.new("Frame")(parameters)
+	local Output = _new("Frame")(parameters)
 
-	self:Construct()
+	Util.cleanUpPrep(_Maid, Output)
 	
-	return self.Instance
+	return Output
 end
-
-return TextLabel

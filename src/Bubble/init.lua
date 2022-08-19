@@ -2,11 +2,18 @@
 local package = script.Parent
 local packages = package.Parent
 
-local Isotope = require(packages:WaitForChild("isotope"))
-type Isotope = Isotope.Isotope
-type Fuse = Isotope.Fuse
-type State = Isotope.State
-type ValueState = Isotope.ValueState
+local Util = require(package.Util)
+
+local Types = require(package.Types)
+type ParameterValue<T> = Types.ParameterValue<T>
+
+local ColdFusion = require(packages.coldfusion)
+type Fuse = ColdFusion.Fuse
+type State<T> = ColdFusion.State<T>
+type ValueState<T> = ColdFusion.ValueState<T>
+
+local Maid = require(packages.maid)
+type Maid = Maid.Maid
 
 local EffectGui = require(package:WaitForChild("EffectGui"))
 
@@ -37,29 +44,30 @@ function Bubble:Disable()
 end
 
 export type BubbleParameters = {
-	Name: string | State?,
-	Parent: Instance | State?,
-	Scale: number | State?,
-	BackgroundTransparency: number | State?,
-	FinalTransparency: number | State?,
-	BackgroundColor3: Color3 | State?,
-	[any]: any?,
+	Name: ParameterValue<string>?,
+	Parent: ParameterValue<Instance>?,
+	Scale: ParameterValue<number>?,
+	BackgroundTransparency: ParameterValue<number>?,
+	FinalTransparency: ParameterValue<number>?,
+	BackgroundColor3: ParameterValue<Color3>?,
 }
 
-function Bubble.new(config: BubbleParameters): GuiObject
+export type Bubble = EffectGui.EffectGui
+
+function Bubble.new(config: BubbleParameters): Bubble
 	local self = setmetatable(Isotope.new() :: any, Bubble)
 
 	self.Name = self:Import(config.Name, script.Name)
-	self.ClassName = self._Fuse.Computed(function() return script.Name end)
+	self.ClassName = _Computed(function() return script.Name end)
 	self.Parent = self:Import(config.Parent, nil)
 	self.Scale = self:Import(config.Scale, 1.25)
 	self.BackgroundTransparency = self:Import(config.BackgroundTransparency, 0.6)
 	self.FinalTransparency = self:Import(config.FinalTransparency, 1)
 	self.BackgroundColor3 = self:Import(config.BackgroundColor3, Color3.fromHSV(0,0,0.7))
-	self.Value = self._Fuse.Value(0)
+	self.Value = _Value(0)
 	self.ValueTween = self.Value:Tween(0.3, Enum.EasingStyle.Quad, Enum.EasingDirection.Out)
 
-	local parameters = {
+	local parameters: any = {
 		Name = self.Name,
 		Parent = self.Parent,
 	}
@@ -67,11 +75,11 @@ function Bubble.new(config: BubbleParameters): GuiObject
 	self.Instance = EffectGui.new(parameters)
 	self._Maid:GiveTask(self.Instance)
 
-	self.AbsoluteSize = self._Fuse.Attribute(self.Instance, "AbsoluteSize"):Else(Vector2.new(0,0))
-	self.AnchorPosition = self._Fuse.Attribute(self.Instance, "AnchorPosition"):Else(UDim2.fromOffset(0,0))
-	self.CenterPosition = self._Fuse.Attribute(self.Instance, "CenterPosition"):Else(UDim2.fromOffset(0,0))
+	self.AbsoluteSize = _Fuse.Attribute(self.Instance, "AbsoluteSize"):Else(Vector2.new(0,0))
+	self.AnchorPosition = _Fuse.Attribute(self.Instance, "AnchorPosition"):Else(UDim2.fromOffset(0,0))
+	self.CenterPosition = _Fuse.Attribute(self.Instance, "CenterPosition"):Else(UDim2.fromOffset(0,0))
 
-	local bubbleFrame = self._Fuse.new "Frame" {
+	local bubbleFrame = _Fuse.new "Frame" {
 		Name = "Bubble",
 		Parent = self.Instance,
 		Position = self.CenterPosition,
@@ -79,19 +87,19 @@ function Bubble.new(config: BubbleParameters): GuiObject
 		BorderSizePixel = 0,
 		ZIndex = 1,
 		BackgroundColor3 = self.BackgroundColor3,
-		Size = self._Fuse.Computed(self.ValueTween, self.AbsoluteSize, self.Scale, function(val, size, scale)
+		Size = _Computed(self.ValueTween, self.AbsoluteSize, self.Scale, function(val, size, scale)
 			local diameter = math.max(size.X, size.Y) * val * scale
 			return UDim2.fromOffset(diameter,diameter)
 		end),
-		BackgroundTransparency = self._Fuse.Computed(self.Value, self.BackgroundTransparency, self.FinalTransparency, function(val, background, max)
+		BackgroundTransparency = _Computed(self.Value, self.BackgroundTransparency, self.FinalTransparency, function(val, background, max)
 			if val == 0 then
 				return background
 			else
 				return max
 			end
 		end):Tween(0.3, Enum.EasingStyle.Quad, Enum.EasingDirection.In),
-		[self._Fuse.Children] = {
-			self._Fuse.new "UICorner" {
+		Children = {
+			_Fuse.new "UICorner" {
 				CornerRadius = UDim.new(0.5,0),
 			},
 		}

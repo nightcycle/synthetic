@@ -1,5 +1,3 @@
-local SoundService = game:GetService("SoundService")
-local ReplicatedStorage = game:GetService("ReplicatedStorage")
 return function (coreGui)
 	local object
 	task.spawn(function()
@@ -13,7 +11,7 @@ return function (coreGui)
 			Parent = coreGui,
 			Size = UDim2.fromOffset(32,32),
 		}
-		object = module.new(demo)
+		object = module(demo)
 	end)
 
 	return function()
