@@ -161,7 +161,7 @@ return function(config: SwitchParameters): Switch
 				[_Fuse.Event "Activated"] = function()
 					Activated:Fire()
 					if BubbleEnabled:Get() then
-						local bubble = Bubble.new {
+						local bubble = Bubble{
 							Parent = Knob,
 							-- BackgroundColor3 = ActiveColor3,
 							-- BackgroundTransparency = 0.6,

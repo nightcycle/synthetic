@@ -15,10 +15,6 @@ type ValueState<T> = ColdFusion.ValueState<T>
 local Maid = require(packages.maid)
 type Maid = Maid.Maid
 
-local BillboardFrame = {}
-BillboardFrame.__index = BillboardFrame
-setmetatable(BillboardFrame, Isotope)
-
 export type BillboardFrameParameters = Types.FrameParameters & {
 	Name: ParameterValue<string>?,
 	Parent: ParameterValue<Instance>?,
@@ -32,24 +28,30 @@ export type BillboardFrameParameters = Types.FrameParameters & {
 
 export type BillboardFrame = Frame
 
-function BillboardFrame.new(config: BillboardFrameParameters): BillboardFrame
-	local self = Isotope.new() :: any
-	setmetatable(self, BillboardFrame)
+return function(config: BillboardFrameParameters): BillboardFrame
+	local _Maid = Maid.new()
+	local _Fuse = ColdFusion.fuse(_Maid)
+	local _Computed = _Fuse.Computed
+	local _Value = _Fuse.Value
+	local _import = _Fuse.import
+	local _new = _Fuse.new
 
-	self.Name = self:Import(config.Name, script.Name)
-	self.Parent = self:Import(config.Parent, nil)
+	local P: any = _import(config.Parent, nil); local Parent: State<Instance> = P
 	
-	self.Position = self:Import(config.Position, nil)
-	self.Size = self:Import(config.Size, Vector2.new(2,2))
-	self.LightInfluence = self:Import(config.LightInfluence, 0)
-	self.AlwaysOnTop = self:Import(config.AlwaysOnTop, false)
-	self.MaxDistance = self:Import(config.MaxDistance, 100)
-	self.AnchorPoint = self:Import(config.AnchorPoint, Vector2.new(0.5,0.5))
+	local v3Def: any = Vector3.new(0,0,0)
+	local v2Def: any = Vector2.new(0,0)
+	local PO: any = _import(config.Position, v3Def); local Position: State<Vector3> = PO
+	local S: any = _import(config.Size, v2Def); local Size: State<Vector2> = S
+	local LightInfluence = _import(config.LightInfluence, 0)
+	local AlwaysOnTop = _import(config.AlwaysOnTop, false)
+	local MaxDistance = _import(config.MaxDistance, 100)
+	local AnchorPoint = _import(config.AnchorPoint, Vector2.new(0.5,0.5))
 
-	self.Part = _Fuse.new "Part" {
-		Name = self.Name,
-		Parent = workspace,
-		Position = self.Position,
+	local partParent: any = workspace
+
+	local Part: any = _new "Part"{
+		Parent = partParent,
+		Position = Position,
 		Transparency = 1,
 		Size = Vector3.new(1,1,1)*0.05,
 		Anchored = true,
@@ -58,42 +60,36 @@ function BillboardFrame.new(config: BillboardFrameParameters): BillboardFrame
 		CanQuery = false,
 	}
 
-	self.SurfaceGui = _Fuse.new "BillboardGui" {
-		Name = self.Name,
-		Parent = self.Parent,
-		Adornee = self.Part,
-		AlwaysOnTop = self.AlwaysOnTop,
-		Size = _Computed(self.Size, function(size: Vector2)
+	local SurfaceGui = _new "BillboardGui" {
+		-- Name = Name,
+		Parent = Parent,
+		Adornee = Part,
+		AlwaysOnTop = AlwaysOnTop,
+		Size = _Computed(function(size: Vector2)
 			return UDim2.fromScale(size.X, size.Y)
-		end),
-		-- SizingMode = Enum.SurfaceGuiSizingMode.PixelsPerStud,
+		end, Size),
 		ClipsDescendants = false,
-		LightInfluence = self.LightInfluence,
-		MaxDistance = self.MaxDistance,
+		LightInfluence = LightInfluence,
+		MaxDistance = MaxDistance,
 	}
 
-	local parameters = {
-		Name = self.Name,
-		Parent = self.SurfaceGui,
+	local parameters: any = {
+		-- Name = Name,
+		Parent = SurfaceGui,
 		Position = UDim2.fromScale(0.5,0.5),
 		Size = UDim2.fromScale(1,1),
-		AnchorPoint = self.AnchorPoint,
+		AnchorPoint = AnchorPoint,
 	}
 
 	for k, v in pairs(config) do
-		if parameters[k] == nil and self[k] == nil then
+		if parameters[k] == nil then
 			parameters[k] = v
 		end
 	end
 
-	self.Instance = _Fuse.new "Frame" (parameters)
+	local Output = _new "Frame" (parameters)
 
-	-- self._Maid:GiveTask(self.Instance)
-	self._Maid:GiveTask(self.Instance.Destroying:Connect(function() self:Destroy() end))
+	Util.cleanUpPrep(_Maid, Output)
 
-	self:Construct()
-
-	return self.Instance
+	return Output
 end
-
-return BillboardFrame

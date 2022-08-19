@@ -142,7 +142,7 @@ return function(config: SliderParameters): Slider
 		} :: {Instance}
 	}
 
-	local _Hint = Hint.new {
+	local _Hint = Hint {
 		Parent = Knob,
 		Override = true,
 		AnchorPoint = Vector2.new(0,-1),
@@ -168,7 +168,7 @@ return function(config: SliderParameters): Slider
 		[_Fuse.Event "MouseButton1Down"] = function()
 			Dragging:Set(true)
 			if BubbleEnabled:Get() then	
-				local bubble = Bubble.new {
+				local bubble = Bubble {
 					Parent = Knob,
 					FinalTransparency = 0.7,
 					BackgroundTransparency = 1,

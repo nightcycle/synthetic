@@ -15,34 +15,9 @@ type ValueState<T> = ColdFusion.ValueState<T>
 local Maid = require(packages.maid)
 type Maid = Maid.Maid
 
-local Maid = require(packages:WaitForChild("maid"))
-local ColdFusion = require(packages:WaitForChild("coldfusion"))
-
-local Button = require(package:WaitForChild("Button"))
-
-local ButtonList = {}
-ButtonList.__index = ButtonList
-setmetatable(ButtonList, Isotope)
-
-function ButtonList:Destroy()
-	Isotope.Destroy(self)
-end
-
-function ButtonList:InsertButton(txt: string, layoutOrder:number | nil,  bindableEvent: BindableEvent | nil, leftIcon: string | nil, rightIcon: string | nil)
-	self.Data:Update(function(cur)
-		cur[txt] = {
-			Text = txt,
-			LayoutOrder = layoutOrder,
-			LeftIcon = leftIcon,
-			RightIcon = rightIcon,
-			BindableEvent = bindableEvent
-		}
-		return cur
-	end)
-end
+local Button = require(package.Button)
 
 export type ButtonListParameters = Types.FrameParameters & {
-	Data: ParameterValue<{[any]: any}>?,
 	ListPadding: ParameterValue<UDim>?,
 	Padding: ParameterValue<UDim>?,
 	CornerRadius: ParameterValue<UDim>?,
@@ -65,121 +40,144 @@ export type ButtonListParameters = Types.FrameParameters & {
 
 export type ButtonList = Frame
 
-function ButtonList.new(config: ButtonListParameters): ButtonList
-	local self = setmetatable(Isotope.new() :: any, ButtonList)
-	self.Name = self:Import(config.Name, script.Name)
-	self.ClassName = _Computed(function() return script.Name end)
+return function (config: ButtonListParameters): ButtonList
+	local _Maid: Maid = Maid.new()
+	local _Fuse: Fuse = ColdFusion.fuse(_Maid)
+	local _Computed = _Fuse.Computed
+	local _Value = _Fuse.Value
+	local _import = _Fuse.import
+	local _new = _Fuse.new
 
-	self._BuildMaid = Maid.new()
-	self._Maid:GiveTask(self._BuildMaid)
+	local Name = _import(config.Name, script.Name)
 
-	self.Data = self:Import(config.Data, {})
+	local _BuildMaid = Maid.new()
+	_Maid:GiveTask(_BuildMaid)
 
-	self.Size = self:Import(config.Size, UDim2.fromScale(0,0))
-	self.AutomaticSize = self:Import(config.AutomaticSize, Enum.AutomaticSize.XY)
+	local Data = _Value({})
 
-	self.ListPadding = self:Import(config.ListPadding, UDim.new(0,2))
-	self.Padding = self:Import(config.Padding, UDim.new(0, 2))
-	self.CornerRadius = self:Import(config.CornerRadius, UDim.new(0,4))
-	self.TextSize = self:Import(config.TextSize, 14)
+	local Size = _import(config.Size, UDim2.fromScale(0,0))
+	local AutomaticSize = _import(config.AutomaticSize, Enum.AutomaticSize.XY)
 
-	self.IconScale = self:Import(config.IconScale, 1.25)
-	self.BorderSizePixel = self:Import(config.BorderSizePixel, 3)
-	self.TextColor3 = self:Import(config.TextColor3, Color3.new(0.2,0.2,0.2))
-	self.Font = self:Import(config.Font, Enum.Font.GothamBold)
-	self.SelectedTextColor3 = self:Import(config.SelectedTextColor3, Color3.new(1,1,1))
-	self.HoverTextColor3 = self:Import(config.HoverTextColor3, Color3.new(0.2,0.2,0.2))
-	self.BackgroundColor3 = self:Import(config.BackgroundColor3,Color3.fromHSV(0.7,0,1))
-	self.BorderColor3 = self:Import(config.BorderColor3,Color3.fromHSV(0.7,0,0.3))
-	self.SelectedBackgroundColor3 = self:Import(config.SelectedBackgroundColor3,Color3.fromHSV(0.7,0.7,1))
-	self.HoverBackgroundColor3 = self:Import(config.HoverBackgroundColor3, _Computed(self.SelectedBackgroundColor3, self.BackgroundColor3, function(sCol: Color3, bCol: Color3)
+	local ListPadding = _import(config.ListPadding, UDim.new(0,2))
+	local Padding = _import(config.Padding, UDim.new(0, 2))
+	local CornerRadius = _import(config.CornerRadius, UDim.new(0,4))
+	local TextSize = _import(config.TextSize, 14)
+
+	local IconScale = _import(config.IconScale, 1.25)
+	local BorderSizePixel = _import(config.BorderSizePixel, 3)
+	local TextColor3 = _import(config.TextColor3, Color3.new(0.2,0.2,0.2))
+	local Font = _import(config.Font, Enum.Font.GothamBold)
+	local SelectedTextColor3 = _import(config.SelectedTextColor3, Color3.new(1,1,1))
+	local HoverTextColor3 = _import(config.HoverTextColor3, Color3.new(0.2,0.2,0.2))
+	local BackgroundColor3 = _import(config.BackgroundColor3,Color3.fromHSV(0.7,0,1))
+	local BorderColor3 = _import(config.BorderColor3,Color3.fromHSV(0.7,0,0.3))
+	local SelectedBackgroundColor3 = _import(config.SelectedBackgroundColor3,Color3.fromHSV(0.7,0.7,1))
+	local HoverBackgroundColor3 = if config.HoverBackgroundColor3 then _import(config.HoverBackgroundColor3, Color3.new(1,1,1)) else _Computed(function(sCol: Color3, bCol: Color3)
 		local h1,s1,v1 = sCol:ToHSV()
 		local _,s2,v2 = bCol:ToHSV()
 		return Color3.fromHSV(h1, s1 + (s2-s1)*0.5, v1 + (v2-v1)*0.5)
-	end)):IsDeep()
-	self.BackgroundTransparency = self:Import(config.BackgroundTransparency,0)
-	self.BorderTransparency = self:Import(config.BackgroundTransparency,0)
-	self.TextTransparency = self:Import(config.TextTransparency, 0)
+	end, SelectedBackgroundColor3, BackgroundColor3)
+	local BackgroundTransparency = _import(config.BackgroundTransparency,0)
+	local BorderTransparency = _import(config.BackgroundTransparency,0)
+	local TextTransparency = _import(config.TextTransparency, 0)
 
-	self.TextXAlignment = self:Import(config.TextXAlignment, Enum.TextXAlignment.Center)
-	self.TextYAlignment = self:Import(config.TextYAlignment, Enum.TextYAlignment.Center)
+	local TextXAlignment: State<Enum.TextXAlignment> = _import(config.TextXAlignment, Enum.TextXAlignment.Center)
+	local TextYAlignment = _import(config.TextYAlignment, Enum.TextYAlignment.Center)
 
-	self.TextOnly = self:Import(config.TextOnly, false)
+	local TextOnly: State<boolean> = _import(config.TextOnly, false)
 
-	self.VerticalAlignment = self:Import(config.VerticalAlignment, Enum.VerticalAlignment.Center)
-	self.HorizontalAlignment = self:Import(config.HorizontalAlignment, Enum.HorizontalAlignment.Center)
-	self.FillDirection = self:Import(config.FillDirection, Enum.FillDirection.Vertical)
+	local VerticalAlignment = _import(config.VerticalAlignment, Enum.VerticalAlignment.Center)
+	local HorizontalAlignment = _import(config.HorizontalAlignment, Enum.HorizontalAlignment.Center)
+	local FillDirection = _import(config.FillDirection, Enum.FillDirection.Vertical)
 	
-	local parameters = {
-		Name = self.Name,
+	local parameters: any = {
+		Name = Name,
 		AutomaticSize = Enum.AutomaticSize.XY,
 		BackgroundTransparency = 1,
 		Size = UDim2.fromScale(0,0),
+		Attributes = {
+			ClassName = script.Name,
+		},
 		Children = {
 			_Fuse.new "UIListLayout" {
-				FillDirection = self.FillDirection,
+				FillDirection = FillDirection,
 				SortOrder = Enum.SortOrder.LayoutOrder,
-				HorizontalAlignment = self.HorizontalAlignment,
-				VerticalAlignment = self.VerticalAlignment,
-				Padding = self.ListPadding,
+				HorizontalAlignment = HorizontalAlignment,
+				VerticalAlignment = VerticalAlignment,
+				Padding = ListPadding,
 			},
 		}
 	}
 
 	for k, v in pairs(config) do
-		if parameters[k] == nil and self[k] == nil then
+		if parameters[k] == nil then
 			parameters[k] = v
 		end
 	end
 	-- print("Parameters", parameters, self)
-	self.Instance = _Fuse.new("Frame")(parameters)
+	local Output: any = _Fuse.new("Frame")(parameters)
 
-	_Computed(self.Data, function(data)
-		self._BuildMaid:DoCleaning()
+	_Computed(function(data)
+		_BuildMaid:DoCleaning()
 		for k, buttonData in pairs(data) do
-			local button = Button.new {
-				Parent = self.Instance,
-				Size = self.Size,
-				AutomaticSize = self.AutomaticSize,
+			local button = Button({
+				Parent = Output,
+				Size = Size,
+				AutomaticSize = AutomaticSize,
 				
-				IconScale = self.IconScale,
-				BorderSizePixel = self.BorderSizePixel,
-				TextColor3 = self.TextColor3,
-				Font = self.Font,
-				SelectedTextColor3 = self.SelectedTextColor3,
-				HoverTextColor3 = self.HoverTextColor3,
-				BackgroundColor3 = self.BackgroundColor3,
-				BorderColor3 = self.BorderColor3,
-				SelectedBackgroundColor3 = self.SelectedBackgroundColor3,
-				HoverBackgroundColor3 = self.HoverBackgroundColor3,
-				BackgroundTransparency = self.BackgroundTransparency,
-				BorderTransparency = self.BorderTransparency,
-				TextTransparency = self.TextTransparency,
+				CornerRadius = CornerRadius,
+				Padding = Padding,
+				IconScale = IconScale,
+				BorderSizePixel = BorderSizePixel,
+				TextColor3 = TextColor3,
+				TextSize = TextSize,
+				Font = Font,
+				SelectedTextColor3 = SelectedTextColor3,
+				HoverTextColor3 = HoverTextColor3,
+				BackgroundColor3 = BackgroundColor3,
+				BorderColor3 = BorderColor3,
+				SelectedBackgroundColor3 = SelectedBackgroundColor3,
+				HoverBackgroundColor3 = HoverBackgroundColor3,
+				BackgroundTransparency = BackgroundTransparency,
+				BorderTransparency = BorderTransparency,
+				TextTransparency = TextTransparency,
 			
-				TextXAlignment = self.TextXAlignment,
-				TextYAlignment = self.TextYAlignment,
+				TextXAlignment = TextXAlignment,
+				TextYAlignment = TextYAlignment,
 			
 				Text = buttonData.Text,
 				LeftIcon = buttonData.LeftIcon,
 				RightIcon = buttonData.RightIcon,
 				LayoutOrder = buttonData.LayoutOrder,
-				TextOnly = self.TextOnly,
-			}
+				TextOnly = TextOnly,
+			})
 
 			if buttonData.BindableEvent then
 				local buttonActivated: Instance? = button:WaitForChild("Activated")
 				assert(buttonActivated ~= nil and buttonActivated:IsA("BindableEvent"))
-				self._BuildMaid:GiveTask(buttonActivated.Event:Connect(function()
+				_BuildMaid:GiveTask(buttonActivated.Event:Connect(function()
 					buttonData.BindableEvent:Fire()
 				end))
 			end
-			self._BuildMaid:GiveTask(button)
+			_BuildMaid:GiveTask(button)
 		end
+		return nil
+	end, Data)
+
+	Util.bindFunction(Output, _Maid, "InsertButton", function(txt: string, layoutOrder:number?,  bindableEvent: BindableEvent?, leftIcon: string?, rightIcon: string?)
+		
+		Data:Update(function(cur)
+			cur[txt] = {
+				Text = txt,
+				LayoutOrder = layoutOrder,
+				LeftIcon = leftIcon,
+				RightIcon = rightIcon,
+				BindableEvent = bindableEvent
+			}
+			return cur
+		end)
+
 	end)
 
-	self:Construct()
-	
-	return self.Instance
+	return Output
 end
-
-return ButtonList

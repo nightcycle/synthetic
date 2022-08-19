@@ -18,13 +18,11 @@ type Maid = Maid.Maid
 local EffectGui = require(package:WaitForChild("EffectGui"))
 local TextLabel = require(package:WaitForChild("TextLabel"))
 
-local Hint = {}
-Hint.__index = Hint
-setmetatable(Hint, Isotope)
+-- setmetatable(Hint, Isotope)
 
-function Hint.Destroy(self: any)
-	Isotope.Destroy(self)
-end
+-- function Hint.Destroy(self: any)
+-- 	Isotope.Destroy(self)
+-- end
 
 export type HintParameters = TextLabel.TextLabelParameters & {
 	Enabled: ParameterValue<boolean>?,
@@ -36,126 +34,135 @@ export type HintParameters = TextLabel.TextLabelParameters & {
 
 export type Hint = TextLabel
 
-function Hint.new(config: HintParameters): Hint
-	local self = setmetatable(Isotope.new() :: any, Hint)
-	self.ClassName = _Computed(function() return script.Name end)
+return function (config: HintParameters): Hint
+	local _Maid = Maid.new()
+	local _Fuse = ColdFusion.fuse(_Maid)
+	local _Computed = _Fuse.Computed
+	local _Value = _Fuse.Value
+	local _import = _Fuse.import
+	local _new = _Fuse.new
 
-	self.Name = self:Import(config.Name, script.Name)
-	self.Parent = self:Import(config.Parent, nil)
-	self.Font = self:Import(config.Font, Enum.Font.Gotham)
-	self.Text = self:Import(config.Text, nil)
-	self.TextSize = self:Import(config.TextSize, 10)
-	self.AnchorPoint = self:Import(config.AnchorPoint, Vector2.new(0,0))
-	self.Padding = self:Import(config.Padding, UDim.new(0,2))
-	self.GapPadding = self:Import(config.GapPadding, UDim.new(0,6))
-	self.CornerRadius = self:Import(config.CornerRadius , UDim.new(0,3))
-	self.BackgroundTransparency = self:Import(config.BackgroundTransparency, 0)
-	self.TextTransparency = self:Import(config.TextTransparency, 0)
-	self.BackgroundColor3 = self:Import(config.BackgroundColor3, Color3.fromHSV(0,0,0.7))
-	self.Enabled = self:Import(config.Enabled, false)
-	self.Override = self:Import(config.Override, false)
-	self.Visible = _Value(false)
+	local Name = _import(config.Name, script.Name)
+	local Parent = _import(config.Parent, nil)
+	local Font = _import(config.Font, Enum.Font.Gotham)
+	local Text = _import(config.Text, nil)
+	local TextSize = _import(config.TextSize, 10)
+	local AnchorPoint = _import(config.AnchorPoint, Vector2.new(0,0))
+	local P: any = _import(config.Padding, UDim.new(0,2)); local Padding: State<UDim> = P
+	local GapPadding = _import(config.GapPadding, UDim.new(0,6))
+	local CornerRadius = _import(config.CornerRadius , UDim.new(0,3))
+	local BackgroundTransparency = _import(config.BackgroundTransparency, 0)
+	local TextTransparency = _import(config.TextTransparency, 0)
+	local BackgroundColor3 = _import(config.BackgroundColor3, Color3.fromHSV(0,0,0.7))
+	local Enabled = _Value(if typeof(config.Enabled) == "boolean" then config.Enabled elseif typeof(config.Enabled) == "table" then config.Enabled:Get() else false)
 
-	self.ActiveTextTransparency = _Computed(self.Enabled, self.TextTransparency, function(enab, trans)
+	local Override = _import(config.Override, false)
+	local Visible = _Value(false)
+
+	local ActiveTextTransparency = _Computed(function(enab, trans)
 		if enab then
 			return trans
 		else
 			return 1
 		end
-	end):Tween()
+	end, Enabled, TextTransparency):Tween()
 
-	_Computed(self.Parent, function(par)
+	_Computed(function(par): nil
 		if par then
-			self._Maid._parentInputBeginSignal = par.InputChanged:Connect(function()
-				if not self.Override:Get() then
-					self.Visible:Set(false)
+			_Maid._parentInputBeginSignal = par.InputChanged:Connect(function()
+				if not Override:Get() then
+					Visible:Set(false)
 				end
-				if self.Enabled:IsA("Value") then
-					self.Enabled:Set(true)
+				if Enabled:IsA("Value") then
+					Enabled:Set(true)
 				end
 			end)
-			self._Maid._parentInputEndSignal =  par.MouseLeave:Connect(function()
-				if self.Enabled:IsA("Value") then
-					self.Enabled:Set(false)
+			_Maid._parentInputEndSignal =  par.MouseLeave:Connect(function()
+				if Enabled:IsA("Value") then
+					Enabled:Set(false)
 				end
 				task.wait(0.3)
 				pcall(function()
-					if self.Enabled:Get() == false then
-						if not self.Override:Get() then
-							self.Visible:Set(false)
+					if Enabled:Get() == false then
+						if not Override:Get() then
+							Visible:Set(false)
 						end
 					end
 				end)
 			end)
 		end
-	end)
+		return nil
+	end, Parent)
 	local parameters: any = {
-		Name = self.Name,
-		Parent = self.Parent,
-		Enabled = self.Visible,
+		Name = Name,
+		Parent = Parent,
+		Enabled = Visible,
 	}
-	self.Instance = EffectGui.new(parameters)
-	self._Maid:GiveTask(self.Instance.Destroying:Connect(function()
-		self:Destroy()
-	end))
-	self._Maid:GiveTask(self.Instance)
+	local Output: any = EffectGui(parameters)
 
-	self.AbsoluteSize = _Fuse.Attribute(self.Instance, "AbsoluteSize"):Else(Vector2.new(0,0))
-	self.CenterPosition = _Fuse.Attribute(self.Instance, "CenterPosition"):Else(UDim2.fromOffset(0,0))
+	local AbsoluteSize = _Fuse.Attribute(Output, "AbsoluteSize"):Else(Vector2.new(0,0))
+	local CenterPosition = _Fuse.Attribute(Output, "CenterPosition"):Else(UDim2.fromOffset(0,0))
 
-	config.Override = nil
-	config.CornerRadius = nil
-	config.GapPadding = nil
-	config.Padding = nil
-	config.AnchorPoint = nil
-	config.Enabled = nil
-	config.BackgroundColor3 = nil
-	config.BackgroundTransparency = nil
-	config.LeftIcon = nil
-	config.RightIcon = nil
-	config.TextTransparency = self.ActiveTextTransparency
-	self.TextLabel = TextLabel.new(config)
+	local tConfig: any = config
+	tConfig.Override = nil
+	tConfig.CornerRadius = nil
+	tConfig.GapPadding = nil
+	tConfig.Padding = nil
+	tConfig.AnchorPoint = nil
+	tConfig.Enabled = nil
+	tConfig.BackgroundColor3 = nil
+	tConfig.BackgroundTransparency = nil
+	tConfig.LeftIcon = nil
+	tConfig.RightIcon = nil
+	tConfig.Text = Text
+	tConfig.TextSize = TextSize
+	tConfig.Font = Font
+	tConfig.TextTransparency = ActiveTextTransparency
 
-	local bubbleFrame = _Fuse.new "Frame" {
+	local TextLabel = TextLabel(tConfig)
+
+	local bubbleFrame = _new "Frame" {
 		Name = "Hint",
-		Parent = self.Instance,
-		Position = _Computed(self.CenterPosition, self.AnchorPoint, self.AbsoluteSize, self.GapPadding, function(center: UDim2, anchor: Vector2, size: Vector2, pad: UDim)
+		Parent = Output,
+		Position = _Computed(function(center: UDim2, anchor: Vector2, size: Vector2, pad: UDim)
 			local pos: Vector2 = Vector2.new(center.X.Offset, center.Y.Offset)
 			local finalPoint = pos + (size*0.5 + Vector2.new(1,1)*pad.Offset)*anchor
 			return UDim2.fromOffset(finalPoint.X, finalPoint.Y)
-		end),
-		AnchorPoint = _Computed(self.AnchorPoint, function(anchor)
+		end, CenterPosition, AnchorPoint, AbsoluteSize, GapPadding),
+		AnchorPoint = _Computed(function(anchor)
 			return Vector2.new(1,1)*0.5-anchor
-		end),
+		end, AnchorPoint),
 		BorderSizePixel = 0,
 		ZIndex = 1,
-		BackgroundColor3 = self.BackgroundColor3,
+		BackgroundColor3 = BackgroundColor3,
 		AutomaticSize = Enum.AutomaticSize.XY,
 		Size = UDim2.fromOffset(0,0),
-		BackgroundTransparency = _Computed(self.BackgroundTransparency, self.Enabled, function(background, enab)
+		BackgroundTransparency = _Computed(function(background, enab)
 			if enab then
 				return background
 			else
 				return 1
 			end
-		end):Tween(),
+		end, BackgroundTransparency, Enabled):Tween(),
+		Attributes = {
+			ClassName = script.Name,
+		},
 		Children = {
-			_Fuse.new "UIPadding" {
-				PaddingBottom = self.Padding,
-				PaddingTop = self.Padding,
-				PaddingLeft = self.Padding,
-				PaddingRight = self.Padding,
+			_new "UIPadding" {
+				PaddingBottom = Padding,
+				PaddingTop = Padding,
+				PaddingLeft = Padding,
+				PaddingRight = Padding,
 			},
-			_Fuse.new "UICorner" {
-				CornerRadius = self.CornerRadius,
+			_new "UICorner" {
+				CornerRadius = CornerRadius,
 			},
-			self.TextLabel,
-		}
+			TextLabel,
+		} :: {Instance}
 	}
-	self._Maid:GiveTask(bubbleFrame)
+	_Maid:GiveTask(bubbleFrame)
 
-	self:Construct()
-	return self.Instance
+	Util.cleanUpPrep(_Maid, Output)
+
+	return Output
 end
-
-return Hint

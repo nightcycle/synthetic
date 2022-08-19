@@ -19,12 +19,8 @@ type Maid = Maid.Maid
 
 local math = require(packages:WaitForChild("math"))
 
-local BoardFrame = {}
-BoardFrame.__index = BoardFrame
-setmetatable(BoardFrame, Isotope)
-
 export type BoardFrameParameters = Types.ViewportFrameParameters & {
-	Color: ParameterValue<Color3>?,
+	-- Color: ParameterValue<Color3>?,
 	PixelsPerStud: ParameterValue<number>?,
 	CanvasPosition: ParameterValue<Vector2>?,
 	CanvasTransparency: ParameterValue<number>?,
@@ -42,53 +38,57 @@ export type BoardFrameParameters = Types.ViewportFrameParameters & {
 
 export type BoardFrame = ViewportFrame
 
-function BoardFrame.new(config: BoardFrameParameters): BoardFrame
-	local self = Isotope.new() :: any
-	setmetatable(self, BoardFrame)
+return function(config: BoardFrameParameters): BoardFrame
+	local _Maid = Maid.new()
+	local _Fuse = ColdFusion.fuse(_Maid)
+	local _Computed = _Fuse.Computed
+	local _Value = _Fuse.Value
+	local _import = _Fuse.import
+	local _new = _Fuse.new
 
-	self.Color = self:Import(config.Color, Color3.new(0.3,0,0))
-	self.Size = self:Import(config.Size, UDim2.fromScale(1,1))
-	self.Position = self:Import(config.Position, UDim2.fromScale(0.5,0.5))
-	self.AnchorPoint = self:Import(config.AnchorPoint, Vector2.new(0.5,0.5))
+	-- local Color = _import(config.Color, Color3.new(0.3,0,0))
+	local Size = _import(config.Size, UDim2.fromScale(1,1))
+	local Position = _import(config.Position, UDim2.fromScale(0.5,0.5))
+	local AnchorPoint = _import(config.AnchorPoint, Vector2.new(0.5,0.5))
 
-	self.PixelsPerStud = self:Import(config.PixelsPerStud, 20)
-	self.CanvasPosition = self:Import(config.CanvasPosition, Vector2.new(0,0))
-	self.CanvasTransparency = self:Import(config.CanvasTransparency, 0)
-	self.CanvasColor = self:Import(config.CanvasColor, Color3.new(1,1,1))
-	self.CanvasMaterial = self:Import(config.CanvasMaterial, "SmoothPlastic")
-	self.CanvasMaterialVariant = self:Import(config.CanvasMaterialVariant, "")
+	local PixelsPerStud = _import(config.PixelsPerStud, 20)
+	local CanvasPosition = _Value(if typeof(config.CanvasPosition) == "Vector2" then config.CanvasPosition elseif typeof(config.CanvasPosition) == "table" then config.CanvasPosition:Get() else Vector2.new(0,0))
+	local CanvasTransparency = _import(config.CanvasTransparency, 0)
+	local CanvasColor = _import(config.CanvasColor, Color3.new(1,1,1))
+	local CanvasMaterial = _import(config.CanvasMaterial, "SmoothPlastic")
+	local CanvasMaterialVariant = _import(config.CanvasMaterialVariant, "")
 
-	self.LockPosition = self:Import(config.LockPosition, false)
-	self.LockZoom = self:Import(config.LockZoom, false)
+	local LockPosition = _import(config.LockPosition, false)
+	local LockZoom = _import(config.LockZoom, false)
 
-	self.Zoom = self:Import(config.Zoom, 1)
-	self.MinZoom = self:Import(config.MinZoom, 1)
-	self.MaxZoom = self:Import(config.MaxZoom, 10)
-	self.ZoomSpeed = self:Import(config.ZoomSpeed, 4)
+	local Zoom = _Value(if typeof(config.Zoom) == "number" then config.Zoom elseif typeof(config.Zoom) == "table" then config.Zoom:Get() else 1)
+	local MinZoom = _import(config.MinZoom, 1)
+	local MaxZoom = _import(config.MaxZoom, 10)
+	local ZoomSpeed = _import(config.ZoomSpeed, 4)
 
-	self.Delta = _Value(1/60)
-	self.AbsoluteSize = _Value(Vector2.new(0,0))
-	self.CanvasSize = _Computed(self.AbsoluteSize, self.PixelsPerStud, function(absSize: Vector2, pxRatio: number)
+	local Delta = _Value(1/60)
+	local AbsoluteSize = _Value(Vector2.new(0,0))
+	local CanvasSize = _Computed(function(absSize: Vector2, pxRatio: number)
 		return absSize / pxRatio
-	end) --self:Import(config.CanvasSize, Vector2.new(60,40))
+	end, AbsoluteSize, PixelsPerStud) --_import(config.CanvasSize, Vector2.new(60,40))
 
-	self.SizeRatio = _Computed(self.AbsoluteSize, function(absSize: Vector2)
+	local SizeRatio = _Computed(function(absSize: Vector2)
 		return absSize.X / absSize.Y
-	end)
+	end, AbsoluteSize)
 
-	self.CameraHeight = self:Import(config.CameraHeight, 100)
-	self.CameraFieldOfView = _Computed(self.Zoom, self.CanvasSize, self.CameraHeight, function(zoom: number, canvasSize: Vector2, z: number)
+	local CameraHeight = _import(config.CameraHeight, 100)
+	local CameraFieldOfView = _Computed(function(zoom: number, canvasSize: Vector2, z: number)
 		local y = canvasSize.Y
 		local goalY = y / zoom
 		local angle = math.atan2(goalY*0.5, z)*2
 		return math.deg(angle)
-	end)
-	self.CameraWindowSize = _Computed(self.CameraHeight, self.CameraFieldOfView, self.SizeRatio, function(height: number, fov: number, ratio: number)
+	end, Zoom, CanvasSize, CameraHeight)
+	local CameraWindowSize = _Computed(function(height: number, fov: number, ratio: number)
 		local y = 2*math.tan(math.rad(fov*0.5))*height
 		local x = y * ratio
 		return Vector2.new(math.abs(x),math.abs(y))
-	end)
-	self.AbsoluteCanvasPosition = _Computed(self.CanvasPosition, self.CameraWindowSize, self.CanvasSize, function(pos: Vector2, winSize: Vector2, canSize: Vector2)
+	end, CameraHeight, CameraFieldOfView, SizeRatio)
+	local AbsoluteCanvasPosition = _Computed(function(pos: Vector2, winSize: Vector2, canSize: Vector2)
 		local min = pos - winSize/2
 		local max = pos + winSize/2
 
@@ -112,80 +112,83 @@ function BoardFrame.new(config: BoardFrameParameters): BoardFrame
 			if max.Y > canMax.Y then y -= max.Y - canMax.Y end
 		end
 		return Vector2.new(x,y)
-	end)
-	self.CameraCFrame = _Computed(self.AbsoluteCanvasPosition, self.CameraHeight, self.CameraFieldOfView, function(canvasPos: Vector2, height: number, fov: number)
+	end, CanvasPosition, CameraWindowSize, CanvasSize)
+	local CameraCFrame = _Computed(AbsoluteCanvasPosition, CameraHeight, CameraFieldOfView, function(canvasPos: Vector2, height: number, fov: number)
 		local pos = Vector3.new(canvasPos.X, canvasPos.Y, height)
 		return CFrame.new(pos, Vector3.new(canvasPos.X, canvasPos.Y, 0))
 	end)
-	self.Camera = _Fuse.new "Camera" {
-		CFrame = self.CameraCFrame,
-		FieldOfView = self.CameraFieldOfView,--:Tween(0.1, Enum.EasingStyle.Quad, Enum.EasingDirection.InOut),
+	local Camera = _Fuse.new "Camera" {
+		CFrame = CameraCFrame,
+		FieldOfView = CameraFieldOfView,--:Tween(0.1, Enum.EasingStyle.Quad, Enum.EasingDirection.InOut),
 	}
-	self.WorldModel = _Fuse.new "WorldModel" {
+	local WorldModel: any = _Fuse.new "WorldModel" {
 		Name = "Canvas",
 	}
-	local parameters = {
-		Parent = self:Import(config.Parent, nil),
-		Name = self:Import(config.Name, script.Name),
+	local parameters: any = {
+		Parent = _import(config.Parent, nil),
+		Name = _import(config.Name, script.Name),
 		ClipsDescendants = true,
-		Size = self.Size,
-		Position = self.Position,
-		AnchorPoint = self.AnchorPoint,
+		Size = Size,
+		Position = Position,
+		AnchorPoint = AnchorPoint,
 		Transparency = 1,
-		CurrentCamera = self.Camera,
+		CurrentCamera = Camera,
 		Children = {
-				self.WorldModel,
-				self.Camera,
+				WorldModel,
+				Camera,
 			}
 	}
 
 	for k, v in pairs(config) do
-		if parameters[k] == nil and self[k] == nil then
+		if parameters[k] == nil then
 			parameters[k] = v
 		end
 	end
 
 	-- print("Parameters", parameters, self)
-	self.Instance = _Fuse.new("ViewportFrame")(parameters)
-	self._Maid:GiveTask(self.Instance.Destroying:Connect(function() self:Destroy() end))
+	local Output = _Fuse.new("ViewportFrame")(parameters)
+	Util.cleanUpPrep(_Maid, Output)
 
-	self.Canvas = _Fuse.new "Part" {
+	local _Canvas = _Fuse.new "Part" {
 		Name = "CanvasPart",
 		Shape = Enum.PartType.Block,
-		Parent = self.WorldModel,
-		Material = _Computed(self.CanvasMaterial, function(matName: string)
+		Parent = WorldModel,
+		Material = _Computed(function(matName: string): Enum.Material
 			local enum: any = Enum.Material
 			return enum[matName]
-		end),
-		MaterialVariant = self.CanvasMaterialVariant,
-		Transparency = self.CanvasTransparency,
-		Color = self.CanvasColor,
-		CFrame = CFrame.new(Vector3.new(0,0,-1), Vector3.new(0,0,1)),
-		Size = _Computed(self.CanvasSize, function(size)
+		end, CanvasMaterial),
+		MaterialVariant = CanvasMaterialVariant,
+		Transparency = CanvasTransparency,
+		Color = CanvasColor,
+		["CFrame"] = CFrame.new(Vector3.new(0,0,-1), Vector3.new(0,0,1)),
+		Size = _Computed(CanvasSize, function(size)
 			return Vector3.new(size.X, size.Y, 0.01)
 		end),
 	}
-	self.PreviousMousePosition = _Value(Vector2.new(0,0))
-	self.MousePosition = _Value(Vector2.new(0,0))
-	self.MouseDelta = _Computed(self.MousePosition, self.PreviousMousePosition, function(mPos:Vector2, pMPos:Vector2)
+	local PreviousMousePosition = _Value(Vector2.new(0,0))
+	local MousePosition = _Value(Vector2.new(0,0))
+	local MouseDelta = _Computed(function(mPos:Vector2, pMPos:Vector2)
 		return pMPos - mPos
-	end)
-	self.IsHovering = _Computed(self.MousePosition, function(mPos)
-		local sGui = self.Instance:FindFirstAncestorWhichIsA("BasePlayerGui")
+	end, MousePosition, PreviousMousePosition)
+
+	local IsHovering = _Computed(function(mPos)
+		local sGui = Output:FindFirstAncestorWhichIsA("BasePlayerGui")
 		if not sGui then return false end
+		assert(sGui ~= nil)
 		local guis = sGui:GetGuiObjectsAtPosition(mPos.X, mPos.Y)
 		for i, gui in ipairs(guis) do
-			if gui == self.Instance then
+			if gui == Output then
 				return true
 			end
 		end
 		return false
-	end)
-	self._Maid:GiveTask(UserInputService.PointerAction:Connect(function(wheel: number, pan: number, pinch: number)
-		if not self.LockZoom:Get() and self.IsHovering:Get() then
-			local currentZoom = self.Zoom:Get()
-			local zoomSpeed = self.ZoomSpeed:Get()
-			local delta = self.Delta:Get()
+	end, MousePosition)
+
+	_Maid:GiveTask(UserInputService.PointerAction:Connect(function(wheel: number, pan: number, pinch: number)
+		if not LockZoom:Get() and IsHovering:Get() then
+			local currentZoom = Zoom:Get()
+			local zoomSpeed = ZoomSpeed:Get()
+			local delta = Delta:Get()
 			local alpha = (wheel + pinch)
 		
 			zoomSpeed *= alpha
@@ -193,37 +196,34 @@ function BoardFrame.new(config: BoardFrameParameters): BoardFrame
 			local goal = currentZoom * (1 + zoomSpeed)
 			-- print("Goal", goal, "Alpha", alpha, "Speed", zoomSpeed)
 			local newZoom = currentZoom + delta * (goal - currentZoom)
-			self.Zoom:Set(
+			Zoom:Set(
 				math.clamp(
 					newZoom,
-					self.MinZoom:Get(),
-					self.MaxZoom:Get()
+					MinZoom:Get(),
+					MaxZoom:Get()
 				)
 			)
 		end
 	end))
-	self._Maid:GiveTask(RunService.RenderStepped:Connect(function(delta)
-		self.Delta:Set(delta)
-		self.AbsoluteSize:Set(self.Instance.AbsoluteSize)
-		self.PreviousMousePosition:Set(self.MousePosition:Get())
-		self.MousePosition:Set(UserInputService:GetMouseLocation())
-		if self.IsHovering:Get() and UserInputService:IsMouseButtonPressed(Enum.UserInputType.MouseButton1) and not self.LockPosition:Get() then
 
-			local mouseDelta = self.MouseDelta:Get()--UserInputService:GetMouseDelta()
+	_Maid:GiveTask(RunService.RenderStepped:Connect(function(delta)
+		Delta:Set(delta)
+		AbsoluteSize:Set(Output.AbsoluteSize)
+		PreviousMousePosition:Set(MousePosition:Get())
+		MousePosition:Set(UserInputService:GetMouseLocation())
+		if IsHovering:Get() and UserInputService:IsMouseButtonPressed(Enum.UserInputType.MouseButton1) and not LockPosition:Get() then
+
+			local mouseDelta = MouseDelta:Get()--UserInputService:GetMouseDelta()
 			-- print("Dragging", mouseDelta)
-			local cameraWindowSize = self.CameraWindowSize:Get()
-			local vportSize = self.AbsoluteSize:Get()
+			local cameraWindowSize = CameraWindowSize:Get()
+			local vportSize = AbsoluteSize:Get()
 			local mouseOffset = mouseDelta * Vector2.new(1,-1)
 			local worldOffset = cameraWindowSize * mouseOffset / vportSize
-			-- local delta = self.Delta:Get()
+			-- local delta = Delta:Get()
 			-- print("World", worldOffset, "Mouse", mouseScaleOffset, "Pos", mousePos)
-			self.CanvasPosition:Set(self.AbsoluteCanvasPosition:Get() + worldOffset)
+			CanvasPosition:Set(AbsoluteCanvasPosition:Get() + worldOffset)
 		end
 	end))
-	self:Construct()
-	-- print("Returning canvas")
 
-	return self.Instance
+	return Output
 end
-
-return BoardFrame

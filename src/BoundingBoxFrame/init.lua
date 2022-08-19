@@ -20,53 +20,54 @@ type Maid = Maid.Maid
 
 local math = require(packages:WaitForChild("math"))
 
-local MountFrame = require(package:WaitForChild("ViewportMountFrame"))
-
-local BoundingBoxFrame = {}
-BoundingBoxFrame.__index = BoundingBoxFrame
-setmetatable(BoundingBoxFrame, Isotope)
+local MountFrame = require(package.ViewportMountFrame)
 
 export type BoundingBoxFrameParameters = MountFrame.ViewportMountFrameParameters & {
-	Target: ParameterValue<Instance>?,
+	Target: ParameterValue<Instance?>?,
 }
 
-export type BoundingBoxFrame = MountFrame.ViewportMountFrame
+export type BoundingBoxFrame = Frame
 
-function BoundingBoxFrame.new(config: BoundingBoxFrameParameters): BoundingBoxFrame
-	local self = Isotope.new() :: any
-	setmetatable(self, BoundingBoxFrame)
+return function(config: BoundingBoxFrameParameters): BoundingBoxFrame
+	local _Maid = Maid.new()
+	local _Fuse = ColdFusion.fuse(_Maid)
+	local _Computed = _Fuse.Computed
+	local _Value = _Fuse.Value
+	local _import = _Fuse.import
+	local _new = _Fuse.new
 
-	self.Name = self:Import(config.Name, nil)
-	self.Target = self:Import(config.Target, nil)
+	local T: any = _import(config.Target, nil); local Target: State<Instance?> = T
+	local TCF: any = _Value(nil); local TargetCFrame: ValueState<CFrame?> = TCF
+	local TS: any  = _Value(nil); local TargetSize: ValueState<Vector2?> = TS
+	local BFR: any  = _Value(nil); local BoardFrame: ValueState<ViewportFrame?>  = BFR
+	local C: any  = _Fuse.Property(BoardFrame, "CurrentCamera"); local Camera: ValueState<Camera?> = C
 
-	self.TargetCFrame = _Value(nil)
-	self.TargetSize = _Value(nil)
-	self.BoardFrame = _Value(nil)
-	self.Camera = _Fuse.Property(self.BoardFrame, "CurrentCamera")
-
-	local parameters = {
-		Name = self.Name,
+	local parameters: any = {
 		AnchorPoint = Vector2.new(0.5,0.5),
-		WorldPosition = _Computed(self.TargetCFrame, function(cf)
+		Attributes = {
+			ClassName = script.Name,
+		},
+		WorldPosition = _Computed(function(cf)
 			if not cf then return Vector2.new(0,0) end
 			return Vector2.new(cf.p.X, cf.p.Y)
-		end),
-		WorldSize = _Computed(self.TargetSize, function(size)
+		end, TargetCFrame),
+		WorldSize = _Computed(function(size)
 			if not size then return Vector2.new(0,0) end
 			return size
-		end),
-		Parent = self:Import(config.Parent, nil)
+		end, TargetSize),
+		Parent = _import(config.Parent, nil)
 	}
 
 	for k, v in pairs(config) do
-		if parameters[k] == nil and self[k] == nil then
+		if parameters[k] == nil then
 			parameters[k] = v
 		end
 	end
-	self._Maid:GiveTask(RunService.Heartbeat:Connect(function(dt)
-		local target = self.Target:Get()
-		local cam = self.Camera:Get()
+	_Maid:GiveTask(RunService.Heartbeat:Connect(function(dt)
+		local target = Target:Get()
+		local cam = Camera:Get()
 		if not target or not cam then return end
+		assert(target ~= nil and cam ~= nil)
 		local camCF = cam.CFrame
 
 		local parts = {}
@@ -82,23 +83,19 @@ function BoundingBoxFrame.new(config: BoundingBoxFrameParameters): BoundingBoxFr
 
 		local size, cf = math.Mesh.getBoundingBoxAtCFrame(camCF, parts)
 
-		self.TargetCFrame:Set(cf)
-		-- print("BoundSize", size)
-		self.TargetSize:Set(Vector2.new(size.X, size.Y)*2)
+		TargetCFrame:Set(cf)
+		TargetSize:Set(Vector2.new(size.X, size.Y)*2)
 	end))
 
 
-	self.Instance = MountFrame.new(parameters)
-	self._Maid:GiveTask(self.Instance)
-	self._Maid:GiveTask(self.Instance.Destroying:Connect(function() self:Destroy() end))
+	local Output = MountFrame(parameters)
 
-	self.BoardFrame:Set(self.Instance:FindFirstAncestorOfClass("ViewportFrame"))
-	self._Maid:GiveTask(self.Instance.AncestryChanged:Connect(function()
-		self.BoardFrame:Set(self.Instance:FindFirstAncestorOfClass("ViewportFrame"))
+	Util.cleanUpPrep(_Maid, Output)
+
+	BoardFrame:Set(Output:FindFirstAncestorOfClass("ViewportFrame"))
+	_Maid:GiveTask(Output.AncestryChanged:Connect(function()
+		BoardFrame:Set(Output:FindFirstAncestorOfClass("ViewportFrame"))
 	end))
 
-	self:Construct()
-	return self.Instance
+	return Output
 end
-
-return BoundingBoxFrame
