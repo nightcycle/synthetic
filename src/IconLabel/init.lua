@@ -26,7 +26,7 @@ export type IconLabelParameters = Types.ImageLabelParameters & {
 
 export type IconLabel = ImageLabel
 
-return function(config: IconLabelParameters): IconLabel
+function Constructor(config: IconLabelParameters): IconLabel
 	local _Maid = Maid.new()
 	local _Fuse = ColdFusion.fuse(_Maid)
 	local _Computed = _Fuse.Computed
@@ -98,4 +98,14 @@ return function(config: IconLabelParameters): IconLabel
 	Util.cleanUpPrep(_Maid, Output)
 
 	return Output
+end
+
+return function(maid: Maid?)
+	return function(params: IconLabelParameters): IconLabel
+		local inst = Constructor(params)
+		if maid then
+			maid:GiveTask(inst)
+		end
+		return inst
+	end
 end

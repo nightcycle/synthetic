@@ -34,7 +34,7 @@ export type HintParameters = TextLabel.TextLabelParameters & {
 
 export type Hint = TextLabel
 
-return function (config: HintParameters): Hint
+function Constructor(config: HintParameters): Hint
 	local _Maid = Maid.new()
 	local _Fuse = ColdFusion.fuse(_Maid)
 	local _Computed = _Fuse.Computed
@@ -119,7 +119,7 @@ return function (config: HintParameters): Hint
 	tConfig.Font = Font
 	tConfig.TextTransparency = ActiveTextTransparency
 
-	local TextLabel = TextLabel(tConfig)
+	local TextLabel = TextLabel(_Maid)(tConfig)
 
 	local bubbleFrame = _new "Frame" {
 		Name = "Hint",
@@ -165,4 +165,14 @@ return function (config: HintParameters): Hint
 	Util.cleanUpPrep(_Maid, Output)
 
 	return Output
+end
+
+return function(maid: Maid?)
+	return function(params: HintParameters): Hint
+		local inst = Constructor(params)
+		if maid then
+			maid:GiveTask(inst)
+		end
+		return inst
+	end
 end

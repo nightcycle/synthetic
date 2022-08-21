@@ -13,7 +13,7 @@ return function (coreGui)
 		Parent = game:WaitForChild("StarterGui"),
 	}
 	
-	local frame = module(demo)
+	local frame = module()(demo)
 
 	maid:GiveTask(frame)
 	return function()

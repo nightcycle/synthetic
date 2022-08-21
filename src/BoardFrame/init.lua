@@ -38,7 +38,7 @@ export type BoardFrameParameters = Types.ViewportFrameParameters & {
 
 export type BoardFrame = ViewportFrame
 
-return function(config: BoardFrameParameters): BoardFrame
+function Constructor(config: BoardFrameParameters): BoardFrame
 	local _Maid = Maid.new()
 	local _Fuse = ColdFusion.fuse(_Maid)
 	local _Computed = _Fuse.Computed
@@ -226,4 +226,14 @@ return function(config: BoardFrameParameters): BoardFrame
 	end))
 
 	return Output
+end
+
+return function(maid: Maid?)
+	return function(params: BoardFrameParameters): BoardFrame
+		local inst = Constructor(params)
+		if maid then
+			maid:GiveTask(inst)
+		end
+		return inst
+	end
 end

@@ -40,7 +40,7 @@ export type ButtonListParameters = Types.FrameParameters & {
 
 export type ButtonList = Frame
 
-return function (config: ButtonListParameters): ButtonList
+function Constructor(config: ButtonListParameters): ButtonList
 	local _Maid: Maid = Maid.new()
 	local _Fuse: Fuse = ColdFusion.fuse(_Maid)
 	local _Computed = _Fuse.Computed
@@ -120,7 +120,7 @@ return function (config: ButtonListParameters): ButtonList
 	_Computed(function(data)
 		_BuildMaid:DoCleaning()
 		for k, buttonData in pairs(data) do
-			local button = Button({
+			local button = Button(_Maid)({
 				Parent = Output,
 				Size = Size,
 				AutomaticSize = AutomaticSize,
@@ -180,4 +180,14 @@ return function (config: ButtonListParameters): ButtonList
 	end)
 
 	return Output
+end
+
+return function(maid: Maid?)
+	return function(params: ButtonListParameters): ButtonList
+		local inst = Constructor(params)
+		if maid then
+			maid:GiveTask(inst)
+		end
+		return inst
+	end
 end

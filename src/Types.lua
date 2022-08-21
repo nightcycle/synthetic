@@ -17,6 +17,7 @@ export type InstanceParameters = {
 	Archivable: ParameterValue<boolean>?,		
 	Name: ParameterValue<string>?,
 	Parent: ParameterValue<Instance>?,
+	Children: {Instance}?,
 }
 
 export type GuiBase2dParameters = InstanceParameters & {	

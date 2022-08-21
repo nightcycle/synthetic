@@ -11,8 +11,8 @@ return function (coreGui)
 		RightIcon = "star"
 	}
 	local module = require(script.Parent)
-	local button = buttonModule(demo)
-	local hint = module({
+	local button = buttonModule()(demo)
+	local hint = module()({
 		Parent = button,
 		AnchorPoint = Vector2.new(0,1),
 		Padding = UDim.new(0,4),

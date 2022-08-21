@@ -13,7 +13,7 @@ return function (coreGui)
 		AnchorPoint = Vector2.new(0.5,0.5),
 		Parent = coreGui,
 	}
-	local object = module(demo)
+	local object = module(nil)(demo)
 	local insertButtonFunction = object:WaitForChild("InsertButton")
 	insertButtonFunction:Invoke("Test123", 1, nil, "home", "settings")
 	insertButtonFunction:Invoke("Test456", 2, nil, "accessibility", "menu")

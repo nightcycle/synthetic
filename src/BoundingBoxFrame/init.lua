@@ -28,7 +28,7 @@ export type BoundingBoxFrameParameters = MountFrame.ViewportMountFrameParameters
 
 export type BoundingBoxFrame = Frame
 
-return function(config: BoundingBoxFrameParameters): BoundingBoxFrame
+function Constructor(config: BoundingBoxFrameParameters): BoundingBoxFrame
 	local _Maid = Maid.new()
 	local _Fuse = ColdFusion.fuse(_Maid)
 	local _Computed = _Fuse.Computed
@@ -88,7 +88,7 @@ return function(config: BoundingBoxFrameParameters): BoundingBoxFrame
 	end))
 
 
-	local Output = MountFrame(parameters)
+	local Output = MountFrame(_Maid)(parameters)
 
 	Util.cleanUpPrep(_Maid, Output)
 
@@ -98,4 +98,14 @@ return function(config: BoundingBoxFrameParameters): BoundingBoxFrame
 	end))
 
 	return Output
+end
+
+return function(maid: Maid?)
+	return function(params: BoundingBoxFrameParameters): BoundingBoxFrame
+		local inst = Constructor(params)
+		if maid then
+			maid:GiveTask(inst)
+		end
+		return inst
+	end
 end

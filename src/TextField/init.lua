@@ -33,9 +33,9 @@ export type TextFieldParameters = Types.TextBoxParameters & {
 	RightIcon: ParameterValue<string>?,
 }
 
-export type TextField = TextBox
+export type TextField = Frame
 
-return function(config: TextFieldParameters): Frame
+function Constructor(config: TextFieldParameters): TextField
 	local _Maid = Maid.new()
 	local _Fuse = ColdFusion.fuse(_Maid)
 	local _Computed = _Fuse.Computed
@@ -297,7 +297,7 @@ return function(config: TextFieldParameters): Frame
 						IsHovering:Set(false)
 					end,
 				},
-				IconLabel{
+				IconLabel(_Maid){
 					Name = "Right",
 					IconTransparency = 0,
 					IconColor3 = TextColor3,
@@ -310,7 +310,7 @@ return function(config: TextFieldParameters): Frame
 					end),
 					AnchorPoint = Vector2.new(1, 0.5),
 				},
-				IconLabel{
+				IconLabel(_Maid){
 					Name = "Left",
 					Position = _Computed(function(txtSize)
 						return UDim2.new(UDim.new(0,txtSize), UDim.new(0.5,0))
@@ -452,4 +452,14 @@ return function(config: TextFieldParameters): Frame
 	Util.cleanUpPrep(_Maid, Output)
 
 	return Output
+end
+
+return function(maid: Maid?)
+	return function(params: TextFieldParameters): TextField
+		local inst = Constructor(params)
+		if maid then
+			maid:GiveTask(inst)
+		end
+		return inst
+	end
 end

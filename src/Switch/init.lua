@@ -32,7 +32,7 @@ export type SwitchParameters = Types.FrameParameters & {
 
 export type Switch = Frame
 
-return function(config: SwitchParameters): Switch
+function Constructor(config: SwitchParameters): Switch
 	local _Maid = Maid.new()
 	local _Fuse = ColdFusion.fuse(_Maid)
 	local _Computed = _Fuse.Computed
@@ -161,7 +161,7 @@ return function(config: SwitchParameters): Switch
 				[_Fuse.Event "Activated"] = function()
 					Activated:Fire()
 					if BubbleEnabled:Get() then
-						local bubble = Bubble{
+						local bubble = Bubble(_Maid){
 							Parent = Knob,
 							-- BackgroundColor3 = ActiveColor3,
 							-- BackgroundTransparency = 0.6,
@@ -228,4 +228,14 @@ return function(config: SwitchParameters): Switch
 	Util.cleanUpPrep(_Maid, Output)
 
 	return Output
+end
+
+return function(maid: Maid?)
+	return function(params: SwitchParameters): Switch
+		local inst = Constructor(params)
+		if maid then
+			maid:GiveTask(inst)
+		end
+		return inst
+	end
 end

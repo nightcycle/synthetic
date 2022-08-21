@@ -30,7 +30,7 @@ export type CheckboxParameters = Types.FrameParameters & {
 
 export type Checkbox = Frame
 
-return function (config: CheckboxParameters): Checkbox
+function Constructor(config: CheckboxParameters): Checkbox
 	local _Maid: Maid = Maid.new()
 	local _Fuse: Fuse = ColdFusion.fuse(_Maid)
 	local _Computed = _Fuse.Computed
@@ -105,7 +105,7 @@ return function (config: CheckboxParameters): Checkbox
 				[_Fuse.Event "Activated"] = function()
 					Activated:Fire()
 					if BubbleEnabled:Get() then
-						local bubble = Bubble.new {
+						local bubble = Bubble(_Maid){
 							Parent = Output,
 						}
 						local fireFunction: Instance? = bubble:WaitForChild("Fire")
@@ -166,4 +166,14 @@ return function (config: CheckboxParameters): Checkbox
 	Output = _new("Frame")(parameters)
 	Util.cleanUpPrep(_Maid, Output)
 	return Output
+end
+
+return function(maid: Maid?)
+	return function(params: CheckboxParameters): Checkbox
+		local inst = Constructor(params)
+		if maid then
+			maid:GiveTask(inst)
+		end
+		return inst
+	end
 end

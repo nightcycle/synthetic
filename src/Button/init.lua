@@ -47,7 +47,7 @@ export type ButtonParameters = Types.FrameParameters & {
 
 export type Button = Frame
 
-return function(config: ButtonParameters): Button
+function Constructor(config: ButtonParameters): Button
 	local _Maid: Maid = Maid.new()
 	local _Fuse: Fuse = ColdFusion.fuse(_Maid)
 	local _Computed = _Fuse.Computed
@@ -165,7 +165,7 @@ return function(config: ButtonParameters): Button
 		RightRippleAlpha
 	)
 
-	local TextLabel = TextLabel{
+	local TextLabel = TextLabel(_Maid){
 		BackgroundTransparency = 1,
 		TextTransparency = TextTransparency,
 		ZIndex = 2,
@@ -438,4 +438,14 @@ return function(config: ButtonParameters): Button
 	Util.cleanUpPrep(_Maid, Output)
 
 	return Output
+end
+
+return function(maid: Maid?)
+	return function(params: ButtonParameters): Button
+		local inst = Constructor(params)
+		if maid then
+			maid:GiveTask(inst)
+		end
+		return inst
+	end
 end

@@ -10,7 +10,7 @@ return function (coreGui)
 		LeftIcon = "star",
 		RightIcon = "star"
 	}
-	local object = module(demo)
+	local object = module()(demo)
 	return function()
 		object:Destroy()
 	end

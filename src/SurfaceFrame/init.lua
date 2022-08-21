@@ -27,7 +27,7 @@ export type SurfaceFrameParameters = Types.FrameParameters & {
 
 export type SurfaceFrame = Frame
 
-return function(config: SurfaceFrameParameters): SurfaceFrame
+function Constructor(config: SurfaceFrameParameters): SurfaceFrame
 	local _Maid = Maid.new()
 	local _Fuse = ColdFusion.fuse(_Maid)
 	local _Computed = _Fuse.Computed
@@ -75,4 +75,14 @@ return function(config: SurfaceFrameParameters): SurfaceFrame
 	Util.cleanUpPrep(_Maid, Output)
 
 	return Output
+end
+
+return function(maid: Maid?)
+	return function(params: SurfaceFrameParameters): SurfaceFrame
+		local inst = Constructor(params)
+		if maid then
+			maid:GiveTask(inst)
+		end
+		return inst
+	end
 end

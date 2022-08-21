@@ -14,7 +14,7 @@ return function (coreGui)
 		DisableSound = ReplicatedStorage.Library.Sounds.UI.Button.Cancel,
 		TickSound = ReplicatedStorage.Library.Sounds.UI.Tap["1"],
 	}
-	local object = module(demo)
+	local object = module()(demo)
 	return function()
 		object:Destroy()
 	end

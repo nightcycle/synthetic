@@ -11,7 +11,7 @@ return function (coreGui)
 			Parent = coreGui,
 			Size = UDim2.fromOffset(32,32),
 		}
-		object = module(demo)
+		object = module()(demo)
 	end)
 
 	return function()

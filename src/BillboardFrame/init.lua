@@ -28,7 +28,7 @@ export type BillboardFrameParameters = Types.FrameParameters & {
 
 export type BillboardFrame = Frame
 
-return function(config: BillboardFrameParameters): BillboardFrame
+function Constructor(config: BillboardFrameParameters): BillboardFrame
 	local _Maid = Maid.new()
 	local _Fuse = ColdFusion.fuse(_Maid)
 	local _Computed = _Fuse.Computed
@@ -92,4 +92,14 @@ return function(config: BillboardFrameParameters): BillboardFrame
 	Util.cleanUpPrep(_Maid, Output)
 
 	return Output
+end
+
+return function(maid: Maid?)
+	return function(params: BillboardFrameParameters): BillboardFrame
+		local inst = Constructor(params)
+		if maid then
+			maid:GiveTask(inst)
+		end
+		return inst
+	end
 end

@@ -19,7 +19,7 @@ export type EffectGuiParameters = Types.ScreenGuiParameters & {}
 
 export type EffectGui = ScreenGui
 
-return function (config: EffectGuiParameters): EffectGui
+function Constructor(config: EffectGuiParameters): EffectGui
 	local _Maid: Maid = Maid.new()
 	local _Fuse: Fuse = ColdFusion.fuse(_Maid)
 	local _Computed = _Fuse.Computed
@@ -126,4 +126,15 @@ return function (config: EffectGuiParameters): EffectGui
 	end))
 
 	return Output
+end
+
+
+return function(maid: Maid?)
+	return function(params: EffectGuiParameters): EffectGui
+		local inst = Constructor(params)
+		if maid then
+			maid:GiveTask(inst)
+		end
+		return inst
+	end
 end

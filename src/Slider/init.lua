@@ -42,7 +42,7 @@ export type SliderParameters = Types.FrameParameters & {
 
 export type Slider = Frame
 
-return function(config: SliderParameters): Slider
+function Constructor(config: SliderParameters): Slider
 	local _Maid = Maid.new()
 	local _Fuse = ColdFusion.fuse(_Maid)
 	local _Computed = _Fuse.Computed
@@ -142,7 +142,7 @@ return function(config: SliderParameters): Slider
 		} :: {Instance}
 	}
 
-	local _Hint = Hint {
+	local _Hint = Hint(_Maid){
 		Parent = Knob,
 		Override = true,
 		AnchorPoint = Vector2.new(0,-1),
@@ -168,7 +168,7 @@ return function(config: SliderParameters): Slider
 		[_Fuse.Event "MouseButton1Down"] = function()
 			Dragging:Set(true)
 			if BubbleEnabled:Get() then	
-				local bubble = Bubble {
+				local bubble = Bubble(_Maid){
 					Parent = Knob,
 					FinalTransparency = 0.7,
 					BackgroundTransparency = 1,
@@ -287,4 +287,14 @@ return function(config: SliderParameters): Slider
 	Util.cleanUpPrep(_Maid, Output)
 
 	return Output
+end
+
+return function(maid: Maid?)
+	return function(params: SliderParameters): Slider
+		local inst = Constructor(params)
+		if maid then
+			maid:GiveTask(inst)
+		end
+		return inst
+	end
 end

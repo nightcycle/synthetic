@@ -4,7 +4,7 @@ return function (coreGui)
 		Name = "FX",
 		Parent = coreGui,
 	}
-	local object = module(demo)
+	local object = module()(demo)
 	return function()
 		object:Destroy()
 	end

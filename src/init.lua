@@ -1,6 +1,9 @@
 --!strict
 local module = script
 
+local Maid = require(module.Parent.maid)
+export type Maid = Maid.Maid
+
 local Types = require(module.Types)
 export type ParameterValue<T> = Types.ParameterValue<T>
 
@@ -17,7 +20,8 @@ local Switch = require(module.Switch)
 export type SwitchParameters = Switch.SwitchParameters
 
 local SurfaceFrame = require(module.SurfaceFrame)
-export type SurfaceFrameConstructor = SurfaceFrame.SurfaceFrame
+export type SurfaceFrameParameters = SurfaceFrame.SurfaceFrameParameters
+-- export type SurfaceFrameConstructor = SurfaceFrame.SurfaceFrame
 
 local Slider = require(module.Slider)
 export type SliderParameters = Slider.SliderParameters
@@ -55,80 +59,82 @@ export type BoardFrameParameters = BoardFrame.BoardFrameParameters
 local BillboardFrame = require(module.BillboardFrame)
 export type BillboardFrameParameters = BillboardFrame.BillboardFrameParameters
 
-export type Synthetic = ((className: "TextLabel") -> ((TextLabelParameters) -> TextLabel.TextLabel))	
-& ((className: "ViewportMountFrame") -> ((ViewportMountFrameParameters) -> ViewportMountFrame.ViewportMountFrame))
-& ((className: "TextField") -> ((TextFieldParameters) -> TextField.TextField))
-& ((className: "Switch") -> ((SwitchParameters) -> Switch.Switch))
-& ((className: "SurfaceFrame") -> ((SurfaceFrameConstructor) -> SurfaceFrame.SurfaceFrameParameters))
-& ((className: "Slider") -> ((SliderParameters) -> Slider.Slider))
-& ((className: "RadioButton") -> ((RadioButtonParameters) -> RadioButton.RadioButton))
-& ((className: "IconLabel") -> ((IconLabelParameters) -> IconLabel.IconLabel))
-& ((className: "Hint") -> ((HintParameters) -> Hint.Hint))
-& ((className: "EffectGui") -> ((EffectGuiParameters) -> EffectGui.EffectGui))
-& ((className: "Checkbox") -> ((CheckboxParameters) -> Checkbox.Checkbox))
-& ((className: "ButtonList") -> ((ButtonListParameters) -> ButtonList.ButtonList))
-& ((className: "Button") -> ((ButtonParameters) -> Button.Button))
-& ((className: "Bubble") -> ((BubbleParameters) -> Bubble.Bubble))
-& ((className: "BoundingBoxFrame") -> ((BoundingBoxFrameParameters) -> BoundingBoxFrame.BoundingBoxFrame))
-& ((className: "BoardFrame") -> ((BoardFrameParameters) -> BoardFrame.BoardFrame))
-& ((className: "BillboardFrame") -> ((BillboardFrameParameters) -> BillboardFrame.BillboardFrame))
+export type Synthetic = (
+	((className: "TextLabel") -> ((TextLabelParameters) -> TextLabel.TextLabel))	
+	& ((className: "ViewportMountFrame") -> ((ViewportMountFrameParameters) -> ViewportMountFrame.ViewportMountFrame))
+	& ((className: "TextField") -> ((TextFieldParameters) -> TextField.TextField))
+	& ((className: "Switch") -> ((SwitchParameters) -> Switch.Switch))
+	& ((className: "SurfaceFrame") -> ((SurfaceFrameParameters) -> SurfaceFrame.SurfaceFrameParameters))
+	& ((className: "Slider") -> ((SliderParameters) -> Slider.Slider))
+	& ((className: "RadioButton") -> ((RadioButtonParameters) -> RadioButton.RadioButton))
+	& ((className: "IconLabel") -> ((IconLabelParameters) -> IconLabel.IconLabel))
+	& ((className: "Hint") -> ((HintParameters) -> Hint.Hint))
+	& ((className: "EffectGui") -> ((EffectGuiParameters) -> EffectGui.EffectGui))
+	& ((className: "Checkbox") -> ((CheckboxParameters) -> Checkbox.Checkbox))
+	& ((className: "ButtonList") -> ((ButtonListParameters) -> ButtonList.ButtonList))
+	& ((className: "Button") -> ((ButtonParameters) -> Button.Button))
+	& ((className: "Bubble") -> ((BubbleParameters) -> Bubble.Bubble))
+	& ((className: "BoundingBoxFrame") -> ((BoundingBoxFrameParameters) -> BoundingBoxFrame.BoundingBoxFrame))
+	& ((className: "BoardFrame") -> ((BoardFrameParameters) -> BoardFrame.BoardFrame))
+	& ((className: "BillboardFrame") -> ((BillboardFrameParameters) -> BillboardFrame.BillboardFrame))
+)
 
-local synth: Synthetic = function(className: string): any
-	assert(
-		className == "TextLabel" 
-		or className == "ViewportMountFrame"
-		or className == "TextField"
-		or className == "Switch"
-		or className == "SurfaceFrame"
-		or className == "Slider"
-		or className == "RadioButton"
-		or className == "IconLabel"
-		or className == "Hint"
-		or className == "EffectGui"
-		or className == "Checkbox"
-		or className == "ButtonList"
-		or className == "Button"
-		or className == "Bubble"
-		or className == "BoundingBoxFrame"
-		or className == "BoardFrame"
-		or className == "BillboardFrame"
-	)
-	if className == "TextLabel" then
-		return TextLabel
-	elseif className == "ViewportMountFrame" then
-		return ViewportMountFrame
-	elseif className == "TextField" then
-		return TextField
-	elseif className == "Switch" then
-		return Switch
-	elseif className == "SurfaceFrame" then
-		return SurfaceFrame
-	elseif className == "Slider" then
-		return Slider
-	elseif className == "RadioButton" then
-		return RadioButton
-	elseif className == "IconLabel" then
-		return IconLabel
-	elseif className == "Hint" then
-		return Hint
-	elseif className == "EffectGui" then
-		return EffectGui
-	elseif className == "Checkbox" then
-		return Checkbox
-	elseif className == "ButtonList" then
-		return ButtonList
-	elseif className == "Button" then
-		return Button
-	elseif className == "Bubble" then
-		return Bubble
-	elseif className == "BoundingBoxFrame" then
-		return BoundingBoxFrame
-	elseif className == "BoardFrame" then
-		return BoardFrame
-	elseif className == "BillboardFrame" then
-		return BillboardFrame
+return function(maid: Maid?): Synthetic
+	return function(className: any): any
+		assert(
+			className == "TextLabel" 
+			or className == "ViewportMountFrame"
+			or className == "TextField"
+			or className == "Switch"
+			or className == "SurfaceFrame"
+			or className == "Slider"
+			or className == "RadioButton"
+			or className == "IconLabel"
+			or className == "Hint"
+			or className == "EffectGui"
+			or className == "Checkbox"
+			or className == "ButtonList"
+			or className == "Button"
+			or className == "Bubble"
+			or className == "BoundingBoxFrame"
+			or className == "BoardFrame"
+			or className == "BillboardFrame"
+		)
+		if className == "TextLabel" then
+			return TextLabel(maid)
+		elseif className == "ViewportMountFrame" then
+			return ViewportMountFrame(maid)
+		elseif className == "TextField" then
+			return TextField(maid)
+		elseif className == "Switch" then
+			return Switch(maid)
+		elseif className == "SurfaceFrame" then
+			return SurfaceFrame(maid)
+		elseif className == "Slider" then
+			return Slider(maid)
+		elseif className == "RadioButton" then
+			return RadioButton(maid)
+		elseif className == "IconLabel" then
+			return IconLabel(maid)
+		elseif className == "Hint" then
+			return Hint(maid)
+		elseif className == "EffectGui" then
+			return EffectGui(maid)
+		elseif className == "Checkbox" then
+			return Checkbox(maid)
+		elseif className == "ButtonList" then
+			return ButtonList(maid)
+		elseif className == "Button" then
+			return Button(maid)
+		elseif className == "Bubble" then
+			return Bubble(maid)
+		elseif className == "BoundingBoxFrame" then
+			return BoundingBoxFrame(maid)
+		elseif className == "BoardFrame" then
+			return BoardFrame(maid)
+		elseif className == "BillboardFrame" then
+			return BillboardFrame(maid)
+		end
+		return nil
 	end
-	return nil
 end
-
-return synth

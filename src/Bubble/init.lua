@@ -28,7 +28,7 @@ export type BubbleParameters = {
 
 export type Bubble = EffectGui.EffectGui
 
-return function(config: BubbleParameters): Bubble
+function Constructor(config: BubbleParameters): Bubble
 	local _Maid: Maid = Maid.new()
 	local _Fuse: Fuse = ColdFusion.fuse(_Maid)
 	local _Computed = _Fuse.Computed
@@ -112,4 +112,14 @@ return function(config: BubbleParameters): Bubble
 	end)
 
 	return Output
+end
+
+return function(maid: Maid?)
+	return function(params: BubbleParameters): Bubble
+		local inst = Constructor(params)
+		if maid then
+			maid:GiveTask(inst)
+		end
+		return inst
+	end
 end

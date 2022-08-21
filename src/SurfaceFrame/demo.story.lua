@@ -15,7 +15,7 @@ return function (coreGui)
 		Size = UDim2.fromOffset(50,10),
 	}
 	
-	maid:GiveTask(module(demo))
+	maid:GiveTask(module()(demo))
 	return function()
 		maid:Destroy()
 	end

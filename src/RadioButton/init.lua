@@ -35,7 +35,7 @@ export type RadioButtonParameters = Types.FrameParameters & {
 
 export type RadioButton = Frame
 
-return function (config: RadioButtonParameters): RadioButton
+function Constructor(config: RadioButtonParameters): RadioButton
 	local _Maid = Maid.new()
 	local _Fuse = ColdFusion.fuse(_Maid)
 	local _Computed = _Fuse.Computed
@@ -105,9 +105,9 @@ return function (config: RadioButtonParameters): RadioButton
 				[_Fuse.Event "Activated"] = function()
 					Activated:Fire()
 					if BubbleEnabled:Get() then
-						local bubble = Bubble.new {
+						local bubble = Bubble(_Maid)({
 							Parent = Output,
-						}
+						})
 						local fireFunction: Instance? = bubble:WaitForChild("Fire")
 						assert(fireFunction ~= nil and fireFunction:IsA("BindableFunction"))
 						fireFunction:Invoke()
@@ -184,4 +184,14 @@ return function (config: RadioButtonParameters): RadioButton
 	Util.cleanUpPrep(_Maid, Output)
 
 	return Output
+end
+
+return function(maid: Maid?)
+	return function(params: RadioButtonParameters): RadioButton
+		local inst = Constructor(params)
+		if maid then
+			maid:GiveTask(inst)
+		end
+		return inst
+	end
 end

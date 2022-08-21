@@ -10,7 +10,7 @@ return function (coreGui)
 		EnableSound = ReplicatedStorage.Library.Sounds.UI.Button.Confirm["1"]:Clone(),
 		DisableSound = ReplicatedStorage.Library.Sounds.UI.Button.Cancel:Clone(),
 	}
-	local object = module(demo)
+	local object = module()(demo)
 	return function()
 		object:Destroy()
 	end

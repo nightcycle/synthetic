@@ -26,9 +26,9 @@ export type ViewportMountFrameParameters = Types.ViewportFrameParameters & {
 	WorldSize: ParameterValue<Vector2>?,
 }
 
-export type ViewportMountFrame = ViewportFrame
+export type ViewportMountFrame = Frame
 
-return function(config: ViewportMountFrameParameters): Frame
+function Constructor(config: ViewportMountFrameParameters): ViewportMountFrame
 	local _Maid = Maid.new()
 	local _Fuse = ColdFusion.fuse(_Maid)
 	local _Computed = _Fuse.Computed
@@ -116,4 +116,14 @@ return function(config: ViewportMountFrameParameters): Frame
 
 
 	return Output
+end
+
+return function(maid: Maid?)
+	return function(params: ViewportMountFrameParameters): ViewportMountFrame
+		local inst = Constructor(params)
+		if maid then
+			maid:GiveTask(inst)
+		end
+		return inst
+	end
 end
