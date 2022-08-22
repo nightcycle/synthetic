@@ -31,7 +31,6 @@ function Constructor(config: EffectGuiParameters): EffectGui
 	local Par: any = _import(config.Parent, nil); local Parent: State<Instance?> = Par
 	local Enabled = _Value(if typeof(config.Enabled) == "boolean" then config.Enabled elseif typeof(config.Enabled) == "table" then config.Enabled:Get() else false)
 	local ZIndexBehavior = _import(config.ZIndexBehavior, Enum.ZIndexBehavior.Sibling)
-
 	local ParentAnchorPoint: State<Vector2> = _Fuse.Property(Parent, "AnchorPoint"):Else(Vector2.new(0,0))
 	local AbsolutePosition: State<Vector2> = _Fuse.Property(Parent, "AbsolutePosition", 60):Else(Vector2.new(0,0))
 	local AbsoluteSize: State<Vector2> = _Fuse.Property(Parent, "AbsoluteSize", 60):Else(Vector2.new(0,0))
@@ -107,7 +106,6 @@ function Constructor(config: EffectGuiParameters): EffectGui
 			}
 		} :: {Instance}
 	}
-
 	for k, v in pairs(config) do
 		if parameters[k] == nil then
 			parameters[k] = v

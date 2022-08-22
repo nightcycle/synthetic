@@ -54,10 +54,10 @@ function Constructor(config: HintParameters): Hint
 	local BackgroundTransparency = _import(config.BackgroundTransparency, 0)
 	local TextTransparency = _import(config.TextTransparency, 0)
 	local BackgroundColor3 = _import(config.BackgroundColor3, Color3.fromHSV(0,0,0.7))
-	local Enabled = _Value(if typeof(config.Enabled) == "boolean" then config.Enabled elseif typeof(config.Enabled) == "table" then config.Enabled:Get() else false)
+	local Enabled: any = if typeof(config.Enabled) == "boolean" then _Value(config.Enabled) elseif typeof(config.Enabled) == "table" then config.Enabled else _Value(false)
 
 	local Override = _import(config.Override, false)
-	local Visible = _Value(false)
+	local Visible = _Value(Override:Get())
 
 	local ActiveTextTransparency = _Computed(function(enab, trans)
 		if enab then
@@ -146,7 +146,8 @@ function Constructor(config: HintParameters): Hint
 		end, BackgroundTransparency, Enabled):Tween(),
 		Attributes = {
 			ClassName = script.Name,
-		},
+			Visible = Visible,
+		} :: {[string]: State<any> | any},
 		Children = {
 			_new "UIPadding" {
 				PaddingBottom = Padding,
