@@ -16,7 +16,6 @@ local Maid = require(packages.maid)
 type Maid = Maid.Maid
 
 export type BillboardFrameParameters = Types.FrameParameters & {
-	Name: ParameterValue<string>?,
 	Parent: ParameterValue<Instance>?,
 	Position: ParameterValue<Vector3>?,
 	Size: ParameterValue<Vector2>?,
@@ -74,12 +73,16 @@ function Constructor(config: BillboardFrameParameters): BillboardFrame
 	}
 
 	local parameters: any = {
-		-- Name = Name,
 		Parent = SurfaceGui,
 		Position = UDim2.fromScale(0.5,0.5),
 		Size = UDim2.fromScale(1,1),
 		AnchorPoint = AnchorPoint,
 	}
+
+	config.Size = nil
+	config.LightInfluence = nil
+	config.AlwaysOnTop = nil
+	config.MaxDistance = nil
 
 	for k, v in pairs(config) do
 		if parameters[k] == nil then

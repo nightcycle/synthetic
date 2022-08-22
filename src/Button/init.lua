@@ -33,6 +33,8 @@ export type ButtonParameters = Types.FrameParameters & {
 	Font: ParameterValue<Enum.Font>?,
 	SelectedTextColor3: ParameterValue<Color3>?,
 	HoverTextColor3: ParameterValue<Color3>?,
+	BorderTransparency: ParameterValue<number>?,
+	BackgroundTransparency: ParameterValue<number>?,
 	SelectedBackgroundColor3: ParameterValue<Color3>?,
 	HoverBackgroundColor3: ParameterValue<Color3>?,
 	TextTransparency: ParameterValue<number>?,
@@ -415,6 +417,25 @@ function Constructor(config: ButtonParameters): Button
 			TextLabel,
 		} :: {Instance}
 	}
+	config.BorderTransparency = nil
+	config.Padding = nil
+	config.CornerRadius = nil
+	config.TextSize = nil
+	config.IconScale = nil
+	config.TextColor3 = nil
+	config.Font = nil
+	config.SelectedTextColor3 = nil
+	config.HoverTextColor3 = nil
+	config.SelectedBackgroundColor3 = nil
+	config.HoverBackgroundColor3 = nil
+	config.TextTransparency = nil
+	config.TextXAlignment = nil
+	config.TextYAlignment = nil
+	config.Text = nil
+	config.LeftIcon = nil
+	config.RightIcon = nil
+	config.ClickSound = nil
+	config.TextOnly = nil
 
 	for k, v in pairs(config) do
 		if parameters[k] == nil then
@@ -428,6 +449,10 @@ function Constructor(config: ButtonParameters): Button
 
 	-- print("Parameters", parameters, self)
 	local Output = _Fuse.new("Frame")(parameters)
+	Util.bindSignal(Output, _Maid, "MouseButton1Down", MouseButton1Down)
+	Util.bindSignal(Output, _Maid, "MouseButton1Up", MouseButton1Up)
+	Util.bindSignal(Output, _Maid, "Activated", Activated)
+	
 	_Maid:GiveTask(TextButton.MouseButton1Down:Connect(function(x: number)
 		local xWidth = Output.AbsoluteSize.X
 		local xPos = Output.AbsolutePosition.X

@@ -13,7 +13,6 @@ Util.__index = Util
 
 function Util.cleanUpPrep(maid: Maid, inst: Instance)
 	maid:GiveTask(inst.Destroying:Connect(function()
-		maid:Destroy()
 		for i, inst in ipairs(inst:GetDescendants()) do
 			pcall(function()
 				inst:Destroy()
@@ -21,6 +20,9 @@ function Util.cleanUpPrep(maid: Maid, inst: Instance)
 		end
 		pcall(function()
 			inst:Destroy()
+		end)
+		pcall(function()
+			maid:Destroy()
 		end)
 	end))
 end

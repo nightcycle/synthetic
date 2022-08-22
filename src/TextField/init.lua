@@ -52,6 +52,7 @@ function Constructor(config: TextFieldParameters): TextField
 	local Name = _import(config.Name, script.Name)
 	local TextSize = _import(config.TextSize, 14)
 
+	local Parent = _import(config.Parent, nil)
 	local LowerText: State<string> = _import(config.LowerText, "")
 	local LowerTextColor3: State<Color3> = _import(config.LowerTextColor3, Color3.new(1,0,0))
 	local Width = _import(config.Width, UDim.new(0,250))
@@ -161,9 +162,9 @@ function Constructor(config: TextFieldParameters): TextField
 	local LowerTextSize = _Computed(function(textSize: number, isEmpty)
 		return textSize*0.75
 	end, TextSize, IsEmpty)
-	local LowerTextFrameHeight = _Computed(LowerTextSize, function(txtSize)
+	local LowerTextFrameHeight = _Computed(function(txtSize)
 		return UDim.new(0,txtSize)
-	end)
+	end, LowerTextSize)
 	local CharacterCount = _Computed(function(input)
 		return string.len(input)
 	end, Input)
@@ -305,9 +306,9 @@ function Constructor(config: TextFieldParameters): TextField
 					Position = _Computed(function(txtSize)
 						return UDim2.new(UDim.new(1,-txtSize), UDim.new(0.5,0))
 					end, TextSize),
-					Size = _Computed(IconSize, function(iconSize)
+					Size = _Computed(function(iconSize)
 						return UDim2.fromOffset(iconSize, iconSize)
-					end),
+					end, IconSize),
 					AnchorPoint = Vector2.new(1, 0.5),
 				},
 				IconLabel(_Maid){
@@ -402,6 +403,7 @@ function Constructor(config: TextFieldParameters): TextField
 		Attributes = {
 			Text = Text,
 		},
+		Parent = Parent,
 		Children = { 
 			_new "UIListLayout" {
 				FillDirection = Enum.FillDirection.Vertical,
@@ -416,6 +418,18 @@ function Constructor(config: TextFieldParameters): TextField
 			LowerTextFrame,
 		} :: {Instance}
 	}
+
+	config.LowerText = nil
+	config.LowerTextColor3 = nil
+	config.Width = nil
+	config.CornerRadius = nil
+	config.CharacterLimit = nil
+	config.MaintainLowerSpacing = nil
+	config.FocusedBackgroundColor3 = nil
+	config.HoverBackgroundColor3 = nil
+	config.IconScale = nil
+	config.LeftIcon = nil
+	config.RightIcon = nil
 
 	for k, v in pairs(config) do
 		if parameters[k] == nil then

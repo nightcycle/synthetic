@@ -60,6 +60,7 @@ function Constructor(config: SwitchParameters): Switch
 
 
 	_Maid:GiveTask(Activated:Connect(function()	
+		-- print("VAL", Value:Get())
 		if Value:Get() == true then
 			local clickSound = EnableSound:Get()
 			if clickSound then
@@ -71,8 +72,12 @@ function Constructor(config: SwitchParameters): Switch
 				SoundService:PlayLocalSound(clickSound)
 			end
 		end
+		-- print("ISVAL", Value:IsA("Value"))
 		if Value:IsA("Value") then
+			-- print("Get", Value:Get())
+			-- print("V1", Value)
 			Value:Set(not Value:Get())
+			-- print("V2", Value)
 		end
 		if BubbleEnabled:Get() == false then
 			BubbleEnabled:Set(true)
@@ -124,15 +129,15 @@ function Constructor(config: SwitchParameters): Switch
 				BorderSizePixel = 0,
 				Children = {
 					_new "UICorner" {
-						CornerRadius = _Computed(Padding, function(padding)
+						CornerRadius = _Computed(function(padding)
 							return UDim.new(1,0)
-						end)
+						end, Padding)
 					},
 					_new "UIStroke" {
 						ApplyStrokeMode = Enum.ApplyStrokeMode.Border,
-						Thickness = _Computed(Padding, function(padding)
+						Thickness = _Computed(function(padding)
 							return 1--math.round(padding*0.25)
-						end),
+						end, Padding),
 						Transparency = 0.8,
 					}
 				} :: {Instance},
@@ -142,9 +147,9 @@ function Constructor(config: SwitchParameters): Switch
 
 	local parameters: any = {
 		Name = Name,
-		Size = _Computed(Width, function(width: number)
+		Size = _Computed(function(width: number)
 			return UDim2.fromOffset(width * 2, width * 2)
-		end),
+		end, Width),
 		BackgroundTransparency = 1,
 		Attributes = {
 			ClassName = script.Name,
@@ -217,6 +222,14 @@ function Constructor(config: SwitchParameters): Switch
 			},
 		} :: {Instance},
 	}
+
+	config.Scale = nil
+	config.EnabledColor3 = nil
+	config.Value = nil
+	config.EnableSound = nil
+	config.DisableSound = nil
+	config.BubbleEnabled = nil
+
 	for k, v in pairs(config) do
 		if parameters[k] == nil then
 			parameters[k] = v

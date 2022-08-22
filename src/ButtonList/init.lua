@@ -26,6 +26,8 @@ export type ButtonListParameters = Types.FrameParameters & {
 	HoverTextColor3: ParameterValue<Color3>?,
 	SelectedBackgroundColor3: ParameterValue<Color3>?,
 	HoverBackgroundColor3: ParameterValue<Color3>?,
+	BorderTransparency: ParameterValue<number>?,
+	BackgroundTransparency: ParameterValue<number>?,
 	TextTransparency: ParameterValue<number>?,
 	TextSize: ParameterValue<number>?,
 	TextColor3: ParameterValue<Color3>?,
@@ -77,8 +79,8 @@ function Constructor(config: ButtonListParameters): ButtonList
 		local _,s2,v2 = bCol:ToHSV()
 		return Color3.fromHSV(h1, s1 + (s2-s1)*0.5, v1 + (v2-v1)*0.5)
 	end, SelectedBackgroundColor3, BackgroundColor3)
-	local BackgroundTransparency = _import(config.BackgroundTransparency,0)
-	local BorderTransparency = _import(config.BackgroundTransparency,0)
+	local BackTrans: any = _import(config.BackgroundTransparency,0); local BackgroundTransparency: State<number> = BackTrans
+	local BordTrans: any = _import(config.BackgroundTransparency,0); local BorderTransparency: State<number> = BordTrans
 	local TextTransparency = _import(config.TextTransparency, 0)
 
 	local TextXAlignment: State<Enum.TextXAlignment> = _import(config.TextXAlignment, Enum.TextXAlignment.Center)
@@ -108,6 +110,27 @@ function Constructor(config: ButtonListParameters): ButtonList
 			},
 		}
 	}
+
+	config.BorderTransparency = nil
+	config.ListPadding = nil
+	config.Padding = nil
+	config.CornerRadius = nil
+	config.IconScale = nil
+	config.SelectedTextColor3 = nil
+	config.HoverTextColor3 = nil
+	config.SelectedBackgroundColor3 = nil
+	config.HoverBackgroundColor3 = nil
+	config.TextTransparency = nil
+	config.TextSize = nil
+	config.TextColor3 = nil
+	config.Font = nil
+	config.TextXAlignment = nil
+	config.TextYAlignment = nil
+	config.TextOnly = nil
+	config.VerticalAlignment = nil
+	config.HorizontalAlignment = nil
+	config.FillDirection = nil
+
 
 	for k, v in pairs(config) do
 		if parameters[k] == nil then

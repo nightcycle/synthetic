@@ -40,7 +40,7 @@ function Constructor(config: ViewportMountFrameParameters): ViewportMountFrame
 	local WorldSize = _import(config.WorldSize, Vector2.new(0,0))
 
 	local B: any = _Value(nil); local BillboardFrame: ValueState<ViewportFrame?> = B
-	local C: any = _Fuse.Property(BillboardFrame, "CurrentCamera"); local Camera: ValueState<Camera?> = C
+	local C: any = _Fuse.Property(B, "CurrentCamera"); local Camera: ValueState<Camera?> = C
 
 	-- using signals here causes a noticeable drag when moving board camera
 	local CameraCFrame = _Value(CFrame.new(0,0,0))
@@ -98,6 +98,9 @@ function Constructor(config: ViewportMountFrameParameters): ViewportMountFrame
 			ClassName = script.Name,
 		},
 	}
+
+	config.WorldPosition = nil
+	config.WorldSize = nil
 
 	for k, v in pairs(config) do
 		if parameters[k] == nil then

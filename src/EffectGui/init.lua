@@ -28,13 +28,13 @@ function Constructor(config: EffectGuiParameters): EffectGui
 	local _new = _Fuse.new
 	
 	local Name = _import(config.Name, script.Name)
-	local Parent = _import(config.Parent, game.Players.LocalPlayer:WaitForChild("PlayerGui"))
+	local Par: any = _import(config.Parent, nil); local Parent: State<Instance?> = Par
 	local Enabled = _Value(if typeof(config.Enabled) == "boolean" then config.Enabled elseif typeof(config.Enabled) == "table" then config.Enabled:Get() else false)
 	local ZIndexBehavior = _import(config.ZIndexBehavior, Enum.ZIndexBehavior.Sibling)
 
-	local ParentAnchorPoint = _Fuse.Property(Parent, "AnchorPoint"):Else(Vector2.new(0,0))
-	local AbsolutePosition = _Fuse.Property(Parent, "AbsolutePosition", 60):Else(Vector2.new(0,0))
-	local AbsoluteSize = _Fuse.Property(Parent, "AbsoluteSize", 60):Else(Vector2.new(0,0))
+	local ParentAnchorPoint: State<Vector2> = _Fuse.Property(Parent, "AnchorPoint"):Else(Vector2.new(0,0))
+	local AbsolutePosition: State<Vector2> = _Fuse.Property(Parent, "AbsolutePosition", 60):Else(Vector2.new(0,0))
+	local AbsoluteSize: State<Vector2> = _Fuse.Property(Parent, "AbsoluteSize", 60):Else(Vector2.new(0,0))
 	
 	local Position: State<UDim2> = _Computed(function(absPos): UDim2
 		absPos = absPos or Vector2.new(0,0)
@@ -74,11 +74,11 @@ function Constructor(config: EffectGuiParameters): EffectGui
 	end, _KnownAncestorGui)
 	local AncestorDisplayOrder = _Fuse.Property(_AncestorGui, "DisplayOrder")
 
-	local DisplayOrder = _Computed(_AncestorGui, AncestorDisplayOrder, function(gui: ScreenGui?, displayOrder: number)
+	local DisplayOrder = _Computed(function(gui: ScreenGui?, displayOrder: number)
 		if not gui then return 1000 end
 		assert(gui ~= nil and gui:IsA("ScreenGui"))
 		return (displayOrder or gui.DisplayOrder) + 1
-	end)
+	end, _AncestorGui, AncestorDisplayOrder)
 
 	local parameters: any = {
 		Name = Name,
@@ -106,7 +106,6 @@ function Constructor(config: EffectGuiParameters): EffectGui
 				end, AbsolutePosition),
 			}
 		} :: {Instance}
-
 	}
 
 	for k, v in pairs(config) do

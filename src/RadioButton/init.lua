@@ -86,9 +86,9 @@ function Constructor(config: RadioButtonParameters): RadioButton
 	local Output: Frame
 	local parameters: any = {
 		Name = Name,
-		Size = _Computed(Width, function(width: number)
+		Size = _Computed(function(width: number)
 			return UDim2.fromOffset(width * 2, width * 2)
-		end),
+		end, Width),
 		BackgroundTransparency = 1,
 		Attributes = {
 			ClassName = script.Name,
@@ -142,9 +142,9 @@ function Constructor(config: RadioButtonParameters): RadioButton
 						end, Value):Tween(),
 						Children ={
 							_new "UICorner" {
-								CornerRadius = _Computed(Padding, function(padding)
+								CornerRadius = _Computed(function(padding)
 									return UDim.new(1,0)
-								end)
+								end, Padding)
 							},
 						} :: {Instance},
 						Position = UDim2.fromScale(0.5,0.5),
@@ -174,6 +174,14 @@ function Constructor(config: RadioButtonParameters): RadioButton
 			},
 		} :: {Instance}
 	}
+
+	config.Scale = nil
+	config.BorderColor3 = nil
+	config.BackgroundColor3 = nil
+	config.Value = nil
+	config.EnableSound = nil
+	config.DisableSound = nil
+
 	for k, v in pairs(config) do
 		if parameters[k] == nil then
 			parameters[k] = v

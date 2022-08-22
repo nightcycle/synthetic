@@ -61,11 +61,11 @@ function Constructor(config: TextLabelParameters): TextLabel
 
 	local parameters: any = {
 		Name = _import(config.Name, script.Name),
-		Text = Text,
 		AutomaticSize = Enum.AutomaticSize.XY,
 		BackgroundTransparency = 1,
 		Size = UDim2.fromScale(0,0),
 		Attributes = {
+			Text = Text,
 			ClassName = _Computed(function() return script.Name end)
 		},
 		Children = {
@@ -97,7 +97,7 @@ function Constructor(config: TextLabelParameters): TextLabel
 				Padding = Padding,
 				Children = {},
 			}),
-			_new "TextLabel" {
+			_new("TextLabel")({
 				RichText = true,
 				TextColor3 = TextColor3,
 				TextSize = TextSize,
@@ -117,7 +117,7 @@ function Constructor(config: TextLabelParameters): TextLabel
 				end, Text),
 				BackgroundTransparency = 1,
 				AutomaticSize = Enum.AutomaticSize.XY,
-			},
+			}),
 			Icon(_Maid){
 				Size = IconSize,
 				LayoutOrder = 1,
@@ -142,6 +142,18 @@ function Constructor(config: TextLabelParameters): TextLabel
 			},
 		} :: {Instance}
 	}
+
+	config.Padding = nil
+	config.TextSize = nil
+	config.TextColor3 = nil
+	config.TextTransparency = nil
+	config.TextXAlignment = nil
+	config.TextYAlignment = nil
+	config.Text = nil
+	config.Font = nil
+	config.IconScale = nil
+	config.LeftIcon = nil
+	config.RightIcon = nil
 
 	for k, v in pairs(config) do
 		if parameters[k] == nil then

@@ -139,6 +139,20 @@ function Constructor(config: BoardFrameParameters): BoardFrame
 			}
 	}
 
+	config.PixelsPerStud = nil
+	config.CanvasPosition = nil
+	config.CanvasTransparency = nil
+	config.CanvasColor = nil
+	config.CanvasMaterial = nil
+	config.CanvasMaterialVariant = nil
+	config.LockPosition = nil
+	config.LockZoom = nil
+	config.Zoom = nil
+	config.MinZoom = nil
+	config.MaxZoom = nil
+	config.ZoomSpeed = nil
+	config.CameraHeight = nil
+
 	for k, v in pairs(config) do
 		if parameters[k] == nil then
 			parameters[k] = v

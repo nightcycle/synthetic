@@ -89,9 +89,9 @@ function Constructor(config: CheckboxParameters): Checkbox
 	local Output: Frame
 	local parameters = {
 		Name = Name,
-		Size = _Computed(Width, function(width: number)
+		Size = _Computed(function(width: number)
 			return UDim2.fromOffset(width * 2, width * 2)
-		end),
+		end, Width),
 		BackgroundTransparency = 1,
 		Children = {
 			_new "ImageButton" {
@@ -140,23 +140,28 @@ function Constructor(config: CheckboxParameters): Checkbox
 				BorderSizePixel = 0,
 				Children = {
 					_new "UICorner" {
-						CornerRadius = _Computed(Padding, function(padding: number)
+						CornerRadius = _Computed(function(padding: number)
 							return UDim.new(0,math.round(padding*0.5))
-						end)
+						end, Padding)
 					},
 					_new "UIStroke" {
 						ApplyStrokeMode = Enum.ApplyStrokeMode.Border,
-						Thickness = _Computed(Padding, function(padding: number)
+						Thickness = _Computed(function(padding: number)
 							return math.round(padding*0.25)
-						end),
+						end, Padding),
 						Transparency = 0,
 						Color = TweenColor,
 					}
 				} :: {Instance}
 			},
 		} :: {Instance}
-
 	}
+	
+	config.Scale = nil
+	config.Value = nil
+	config.EnableSound = nil
+	config.DisableSound = nil
+
 	for k, v in pairs(config) do
 		if parameters[k] == nil then
 			parameters[k] = v

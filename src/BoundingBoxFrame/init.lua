@@ -40,7 +40,7 @@ function Constructor(config: BoundingBoxFrameParameters): BoundingBoxFrame
 	local TCF: any = _Value(nil); local TargetCFrame: ValueState<CFrame?> = TCF
 	local TS: any  = _Value(nil); local TargetSize: ValueState<Vector2?> = TS
 	local BFR: any  = _Value(nil); local BoardFrame: ValueState<ViewportFrame?>  = BFR
-	local C: any  = _Fuse.Property(BoardFrame, "CurrentCamera"); local Camera: ValueState<Camera?> = C
+	local C: any  = _Fuse.Property(BFR, "CurrentCamera"); local Camera: ValueState<Camera?> = C
 
 	local parameters: any = {
 		AnchorPoint = Vector2.new(0.5,0.5),
@@ -57,6 +57,8 @@ function Constructor(config: BoundingBoxFrameParameters): BoundingBoxFrame
 		end, TargetSize),
 		Parent = _import(config.Parent, nil)
 	}
+
+	config.Target = nil
 
 	for k, v in pairs(config) do
 		if parameters[k] == nil then

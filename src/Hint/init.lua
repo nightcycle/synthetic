@@ -98,7 +98,7 @@ function Constructor(config: HintParameters): Hint
 		Parent = Parent,
 		Enabled = Visible,
 	}
-	local Output: any = EffectGui(parameters)
+	local Output: any = EffectGui(_Maid)(parameters)
 
 	local AbsoluteSize = _Fuse.Attribute(Output, "AbsoluteSize"):Else(Vector2.new(0,0))
 	local CenterPosition = _Fuse.Attribute(Output, "CenterPosition"):Else(UDim2.fromOffset(0,0))

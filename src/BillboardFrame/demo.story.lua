@@ -10,7 +10,7 @@ return function (coreGui)
 		BackgroundColor3 = Color3.fromHSV(0.75,1,1),
 		Position = Vector3.new(0,10,0),
 		AnchorPoint = Vector2.new(0.5,0.5),
-		Parent = game:WaitForChild("StarterGui"),
+		Parent = coreGui,
 	}
 	
 	local frame = module()(demo)

@@ -66,6 +66,10 @@ function Constructor(config: IconLabelParameters): IconLabel
 		ImageColor3 = IconColor3,
 		ImageTransparency = IconTransparency,
 	}
+	
+	config.IconTransparency = nil
+	config.IconColor3 = nil
+	config.Icon = nil
 
 	for k, v in pairs(config) do
 		if parameters[k] == nil then

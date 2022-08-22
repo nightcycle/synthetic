@@ -17,8 +17,8 @@ type Maid = Maid.Maid
 
 export type SurfaceFrameParameters = Types.FrameParameters & {
 	Face: ParameterValue<Enum.NormalId>?,
-	Adornee: ParameterValue<Instance>?,
-	Parent: ParameterValue<Instance>?,
+	Adornee: ParameterValue<Instance?>?,
+	Parent: ParameterValue<Instance?>?,
 	PixelsPerStud: ParameterValue<number>?,
 	LightInfluence: ParameterValue<number>?,
 	Brightness: ParameterValue<number>?,
@@ -41,12 +41,14 @@ function Constructor(config: SurfaceFrameParameters): SurfaceFrame
 	local PixelsPerStud = _import(config.PixelsPerStud, 10)
 	local LightInfluence = _import(config.LightInfluence, 1)
 	local Brightness = _import(config.Brightness, 0)
+	local Par: any = _import(config.Parent, nil); local Parent: State<Instance?> = Par
 	local AlwaysOnTop = _import(config.AlwaysOnTop, false)
 
 	local SurfaceGui = _new "SurfaceGui" {
 		Name = Name,
 		Adornee = Adornee,
 		Face = Face,
+		Parent = Parent,
 		SizingMode = Enum.SurfaceGuiSizingMode.PixelsPerStud,
 		PixelsPerStud = PixelsPerStud,
 		AlwaysOnTop = AlwaysOnTop,
@@ -63,6 +65,13 @@ function Constructor(config: SurfaceFrameParameters): SurfaceFrame
 			ClassName = script.Name,
 		}
 	}
+
+	config.Face = nil
+	config.Adornee = nil
+	config.PixelsPerStud = nil
+	config.LightInfluence = nil
+	config.Brightness = nil
+	config.AlwaysOnTop = nil
 
 	for k, v in pairs(config) do
 		if parameters[k] == nil then

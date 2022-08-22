@@ -82,9 +82,9 @@ function Constructor(config: SliderParameters): Slider
 		end
 	end)
 
-	local Alpha = _Computed(Value, Minimum, Maximum, function(val: number, min: number, max: number)
+	local Alpha = _Computed(function(val: number, min: number, max: number)
 		return (val - min)/(max-min)
-	end)
+	end, Value, Minimum, Maximum)
 
 	local OnRelease = Signal.new()
 	_Maid:GiveTask(OnRelease)
@@ -120,9 +120,9 @@ function Constructor(config: SliderParameters): Slider
 				Position = UDim2.fromScale(0.5,0.5),
 				AnchorPoint = Vector2.new(0.5,0.5),
 				BackgroundColor3 = EnabledColor3:Tween(),
-				Size = _Computed(Diameter, function(diameter: number)
+				Size = _Computed(function(diameter: number)
 					return UDim2.fromOffset(diameter,diameter)
-				end),
+				end, Diameter),
 				BorderSizePixel = 0,
 				Children = {
 					_Fuse.new "UICorner" {
@@ -220,9 +220,9 @@ function Constructor(config: SliderParameters): Slider
 							BackgroundTransparency = 0.5,
 							Position = UDim2.fromScale(0.5,0.5),
 							AnchorPoint = Vector2.new(0.5,0.5),
-							Size = _Computed(Diameter, BorderSizePixel, function(diameter, bsp)
+							Size = _Computed(function(diameter, bsp)
 								return UDim2.new(1, -diameter, 0, bsp)
-							end),
+							end, Diameter, BorderSizePixel),
 							BackgroundColor3 = Color3.new(1,1,1),
 							Children = {
 								_Fuse.new "UICorner" {
@@ -246,6 +246,22 @@ function Constructor(config: SliderParameters): Slider
 			},
 		} :: {Instance}
 	}
+
+	config.Scale = nil
+	config.EnabledColor3 = nil
+	config.HintBackgroundColor3 = nil
+	config.TextColor3 = nil
+	config.TickSound = nil
+	config.EnableSound = nil
+	config.DisableSound = nil
+	config.Input = nil
+	config.Minimum = nil
+	config.Maximum = nil
+	config.Increment = nil
+	config.Padding = nil
+	config.BubbleEnabled = nil
+	config.HintEnabled = nil
+
 	for k, v in pairs(config) do
 		if parameters[k] == nil then
 			parameters[k] = v
