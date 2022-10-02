@@ -4,13 +4,11 @@ local packages = package.Parent
 
 local Util = require(package.Util)
 
-local Types = require(package.Types)
-type ParameterValue<T> = Types.ParameterValue<T>
-
 local ColdFusion = require(packages.coldfusion)
 type Fuse = ColdFusion.Fuse
 type State<T> = ColdFusion.State<T>
 type ValueState<T> = ColdFusion.ValueState<T>
+type CanBeState<T> = ColdFusion.CanBeState<T>
 
 local Maid = require(packages.maid)
 type Maid = Maid.Maid
@@ -18,47 +16,52 @@ type Maid = Maid.Maid
 local EffectGui = require(package:WaitForChild("EffectGui"))
 local TextLabel = require(package:WaitForChild("TextLabel"))
 
--- setmetatable(Hint, Isotope)
-
--- function Hint.Destroy(self: any)
--- 	Isotope.Destroy(self)
--- end
-
 export type HintParameters = TextLabel.TextLabelParameters & {
-	Enabled: ParameterValue<boolean>?,
-	Padding: ParameterValue<UDim>?,
-	GapPadding: ParameterValue<UDim>?,
-	CornerRadius: ParameterValue<UDim>?,
-	Override: ParameterValue<boolean>?,
+	Enabled: CanBeState<boolean>?,
+	Padding: CanBeState<UDim>?,
+	GapPadding: CanBeState<UDim>?,
+	CornerRadius: CanBeState<UDim>?,
+	Override: CanBeState<boolean>?,
 }
 
-export type Hint = TextLabel
+export type Hint = ScreenGui
 
 function Constructor(config: HintParameters): Hint
+	-- init workspace
 	local _Maid = Maid.new()
 	local _Fuse = ColdFusion.fuse(_Maid)
-	local _Computed = _Fuse.Computed
-	local _Value = _Fuse.Value
-	local _import = _Fuse.import
 	local _new = _Fuse.new
+	local _mount = _Fuse.mount
+	local _import = _Fuse.import
+	local _OUT = _Fuse.OUT
+	local _REF = _Fuse.REF
+	local _CHILDREN = _Fuse.CHILDREN
+	local _ON_EVENT = _Fuse.ON_EVENT
+	local _ON_PROPERTY = _Fuse.ON_PROPERTY
+	local _Value = _Fuse.Value
+	local _Computed = _Fuse.Computed
 
+	-- unload config states
 	local Name = _import(config.Name, script.Name)
-	local Parent = _import(config.Parent, nil)
+	local Parent: State<GuiObject?> = _import(config.Parent, nil :: GuiObject?)
 	local Font = _import(config.Font, Enum.Font.Gotham)
 	local Text = _import(config.Text, nil)
 	local TextSize = _import(config.TextSize, 10)
 	local AnchorPoint = _import(config.AnchorPoint, Vector2.new(0,0))
-	local P: any = _import(config.Padding, UDim.new(0,2)); local Padding: State<UDim> = P
+	local Padding: State<UDim> = _import(config.Padding, UDim.new(0,2)) :: any
 	local GapPadding = _import(config.GapPadding, UDim.new(0,6))
 	local CornerRadius = _import(config.CornerRadius , UDim.new(0,3))
 	local BackgroundTransparency = _import(config.BackgroundTransparency, 0)
 	local TextTransparency = _import(config.TextTransparency, 0)
 	local BackgroundColor3 = _import(config.BackgroundColor3, Color3.fromHSV(0,0,0.7))
 	local Enabled: any = if typeof(config.Enabled) == "boolean" then _Value(config.Enabled) elseif typeof(config.Enabled) == "table" then config.Enabled else _Value(false)
-
 	local Override = _import(config.Override, false)
-	local Visible = _Value(Override:Get())
 
+	-- init internal states
+	local AbsoluteSize = _Value(Vector2.new(0,0))
+	local CenterPosition = _Value(UDim2.fromOffset(0,0))
+	local OutputState = (config :: any)[_REF] or _Value(nil :: ScreenGui?)
+	local Visible = _Value(Override:Get())
 	local ActiveTextTransparency = _Computed(function(enab, trans)
 		if enab then
 			return trans
@@ -66,19 +69,18 @@ function Constructor(config: HintParameters): Hint
 			return 1
 		end
 	end, Enabled, TextTransparency):Tween()
-
-	_Computed(function(par): nil
+	_Computed(function(par: GuiObject?): nil
 		if par then
 			_Maid._parentInputBeginSignal = par.InputChanged:Connect(function()
 				if not Override:Get() then
 					Visible:Set(false)
 				end
-				if Enabled:IsA("Value") then
+				if Enabled.Set then
 					Enabled:Set(true)
 				end
 			end)
 			_Maid._parentInputEndSignal =  par.MouseLeave:Connect(function()
-				if Enabled:IsA("Value") then
+				if Enabled.Set then
 					Enabled:Set(false)
 				end
 				task.wait(0.3)
@@ -93,16 +95,8 @@ function Constructor(config: HintParameters): Hint
 		end
 		return nil
 	end, Parent)
-	local parameters: any = {
-		Name = Name,
-		Parent = Parent,
-		Enabled = Visible,
-	}
-	local Output: any = EffectGui(_Maid)(parameters)
 
-	local AbsoluteSize = _Fuse.Attribute(Output, "AbsoluteSize"):Else(Vector2.new(0,0))
-	local CenterPosition = _Fuse.Attribute(Output, "CenterPosition"):Else(UDim2.fromOffset(0,0))
-
+	-- filter sub-config
 	local tConfig: any = config
 	tConfig.Override = nil
 	tConfig.CornerRadius = nil
@@ -119,11 +113,10 @@ function Constructor(config: HintParameters): Hint
 	tConfig.Font = Font
 	tConfig.TextTransparency = ActiveTextTransparency
 
-	local TextLabel = TextLabel(_Maid)(tConfig)
-
+	-- construct sub-instance
 	local bubbleFrame = _new "Frame" {
 		Name = "Hint",
-		Parent = Output,
+		Parent = OutputState,
 		Position = _Computed(function(center: UDim2, anchor: Vector2, size: Vector2, pad: UDim)
 			local pos: Vector2 = Vector2.new(center.X.Offset, center.Y.Offset)
 			local finalPoint = pos + (size*0.5 + Vector2.new(1,1)*pad.Offset)*anchor
@@ -144,11 +137,8 @@ function Constructor(config: HintParameters): Hint
 				return 1
 			end
 		end, BackgroundTransparency, Enabled):Tween(),
-		Attributes = {
-			ClassName = script.Name,
-			Visible = Visible,
-		} :: {[string]: State<any> | any},
-		Children = {
+
+		[_CHILDREN] = {
 			_new "UIPadding" {
 				PaddingBottom = Padding,
 				PaddingTop = Padding,
@@ -158,11 +148,28 @@ function Constructor(config: HintParameters): Hint
 			_new "UICorner" {
 				CornerRadius = CornerRadius,
 			},
-			TextLabel,
+			TextLabel(_Maid)(tConfig),
 		} :: {Instance}
 	}
 	_Maid:GiveTask(bubbleFrame)
 
+	-- assemble final parameters
+	local parameters: any = {
+		Name = Name,
+		Parent = Parent,
+		Enabled = Visible,
+	}
+	
+	-- construct output instance
+	local Output: ScreenGui = EffectGui(_Maid)(parameters)
+
+	_Maid:GiveTask(Output:GetAttributeChangedSignal("AbsoluteSize"):Connect(function()
+		AbsoluteSize:Set(Output:GetAttribute("AbsoluteSize") or Vector2.new(0,0))
+	end))
+
+	_Maid:GiveTask(Output:GetAttributeChangedSignal("CenterPosition"):Connect(function()
+		CenterPosition:Set(Output:GetAttribute("CenterPosition") or UDim2.fromOffset(0,0))
+	end))
 	Util.cleanUpPrep(_Maid, Output)
 
 	return Output

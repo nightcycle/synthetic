@@ -9,12 +9,12 @@ local packages = package.Parent
 local Util = require(package.Util)
 
 local Types = require(package.Types)
-type ParameterValue<T> = Types.ParameterValue<T>
 
 local ColdFusion = require(packages.coldfusion)
 type Fuse = ColdFusion.Fuse
 type State<T> = ColdFusion.State<T>
 type ValueState<T> = ColdFusion.ValueState<T>
+type CanBeState<T> = ColdFusion.CanBeState<T>
 
 local Maid = require(packages.maid)
 type Maid = Maid.Maid
@@ -22,25 +22,43 @@ type Maid = Maid.Maid
 local math = require(packages:WaitForChild("math"))
 
 export type ViewportMountFrameParameters = Types.ViewportFrameParameters & {
-	WorldPosition: ParameterValue<Vector2>?,
-	WorldSize: ParameterValue<Vector2>?,
+	WorldPosition: CanBeState<Vector2>?,
+	WorldSize: CanBeState<Vector2>?,
 }
 
 export type ViewportMountFrame = Frame
 
 function Constructor(config: ViewportMountFrameParameters): ViewportMountFrame
+	-- init workspace
 	local _Maid = Maid.new()
 	local _Fuse = ColdFusion.fuse(_Maid)
-	local _Computed = _Fuse.Computed
-	local _Value = _Fuse.Value
-	local _import = _Fuse.import
 	local _new = _Fuse.new
+	local _mount = _Fuse.mount
+	local _import = _Fuse.import
+	local _OUT = _Fuse.OUT
+	local _REF = _Fuse.REF
+	local _CHILDREN = _Fuse.CHILDREN
+	local _ON_EVENT = _Fuse.ON_EVENT
+	local _ON_PROPERTY = _Fuse.ON_PROPERTY
+	local _Value = _Fuse.Value
+	local _Computed = _Fuse.Computed
 
+	-- unload config states
 	local WorldPosition = _import(config.WorldPosition, Vector2.new(0,0))
 	local WorldSize = _import(config.WorldSize, Vector2.new(0,0))
 
-	local B: any = _Value(nil); local BillboardFrame: ValueState<ViewportFrame?> = B
-	local C: any = _Fuse.Property(B, "CurrentCamera"); local Camera: ValueState<Camera?> = C
+	-- init internal states
+	local Camera: ValueState<Camera?> = _Value(nil :: Camera?)
+	local BillboardFrame: ValueState<ViewportFrame?> = _Value(nil :: ViewportFrame?)
+	_Maid:GiveTask(BillboardFrame:Connect(function(cur: ViewportFrame?)
+		Camera:Set(nil)
+		if not cur then return end
+		assert(cur ~= nil)
+		_Maid._billboardCameraCheck = cur:GetPropertyChangedSignal("CurrentCamera"):Connect(function()
+			Camera:Set(cur.CurrentCamera)
+		end)
+		Camera:Set(cur.CurrentCamera)
+	end))
 
 	-- using signals here causes a noticeable drag when moving board camera
 	local CameraCFrame = _Value(CFrame.new(0,0,0))
@@ -59,6 +77,7 @@ function Constructor(config: ViewportMountFrameParameters): ViewportMountFrame
 		BoardCameraWindowSize:Set(boardFrame:GetAttribute("CameraWindowSize"))
 	end))
 
+	-- assemble final parameters
 	local parameters: any = {
 		Name = _import(config.Name, script.Name),
 		Parent = _import(config.Parent, nil),
@@ -94,9 +113,6 @@ function Constructor(config: ViewportMountFrameParameters): ViewportMountFrame
 
 			return UDim2.fromOffset(finalPos.X, finalPos.Y)
 		end, WorldPosition, CameraCFrame, FieldOfView, BoardAbsoluteSize),
-		Attributes = {
-			ClassName = script.Name,
-		},
 	}
 
 	config.WorldPosition = nil
@@ -108,17 +124,17 @@ function Constructor(config: ViewportMountFrameParameters): ViewportMountFrame
 		end
 	end
 
+	-- construct output instance
 	local Output = _Fuse.new("Frame")(parameters)
-
 	Util.cleanUpPrep(_Maid, Output)
 
+	-- provide output inst to relevant states
 	BillboardFrame:Set(Output:FindFirstAncestorOfClass("ViewportFrame"))
 	_Maid:GiveTask(Output.AncestryChanged:Connect(function()
 		BillboardFrame:Set(Output:FindFirstAncestorOfClass("ViewportFrame"))
 	end))
 
-
-	return Output
+	return Output :: Frame
 end
 
 return function(maid: Maid?)

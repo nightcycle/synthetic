@@ -7,13 +7,11 @@ local packages = package.Parent
 
 local Util = require(package.Util)
 
-local Types = require(package.Types)
-type ParameterValue<T> = Types.ParameterValue<T>
-
 local ColdFusion = require(packages.coldfusion)
 type Fuse = ColdFusion.Fuse
 type State<T> = ColdFusion.State<T>
 type ValueState<T> = ColdFusion.ValueState<T>
+type CanBeState<T> = ColdFusion.CanBeState<T>
 
 local Maid = require(packages.maid)
 type Maid = Maid.Maid
@@ -23,48 +21,46 @@ local math = require(packages:WaitForChild("math"))
 local MountFrame = require(package.ViewportMountFrame)
 
 export type BoundingBoxFrameParameters = MountFrame.ViewportMountFrameParameters & {
-	Target: ParameterValue<Instance?>?,
+	Target: CanBeState<Instance?>?,
 }
 
 export type BoundingBoxFrame = Frame
 
 function Constructor(config: BoundingBoxFrameParameters): BoundingBoxFrame
+	-- init workspace
 	local _Maid = Maid.new()
 	local _Fuse = ColdFusion.fuse(_Maid)
-	local _Computed = _Fuse.Computed
-	local _Value = _Fuse.Value
-	local _import = _Fuse.import
 	local _new = _Fuse.new
+	local _mount = _Fuse.mount
+	local _import = _Fuse.import
+	local _OUT = _Fuse.OUT
+	local _REF = _Fuse.REF
+	local _CHILDREN = _Fuse.CHILDREN
+	local _ON_EVENT = _Fuse.ON_EVENT
+	local _ON_PROPERTY = _Fuse.ON_PROPERTY
+	local _Value = _Fuse.Value
+	local _Computed = _Fuse.Computed
 
-	local T: any = _import(config.Target, nil); local Target: State<Instance?> = T
-	local TCF: any = _Value(nil); local TargetCFrame: ValueState<CFrame?> = TCF
-	local TS: any  = _Value(nil); local TargetSize: ValueState<Vector2?> = TS
-	local BFR: any  = _Value(nil); local BoardFrame: ValueState<ViewportFrame?>  = BFR
-	local C: any  = _Fuse.Property(BFR, "CurrentCamera"); local Camera: ValueState<Camera?> = C
+	-- unload config states
+	local Parent = _import(config.Parent, nil)
 
-	local parameters: any = {
-		AnchorPoint = Vector2.new(0.5,0.5),
-		Attributes = {
-			ClassName = script.Name,
-		},
-		WorldPosition = _Computed(function(cf)
-			if not cf then return Vector2.new(0,0) end
-			return Vector2.new(cf.p.X, cf.p.Y)
-		end, TargetCFrame),
-		WorldSize = _Computed(function(size)
-			if not size then return Vector2.new(0,0) end
-			return size
-		end, TargetSize),
-		Parent = _import(config.Parent, nil)
-	}
+	-- init internal states
+	local Target: State<Instance?> = _Value(nil :: Instance?)
+	local TargetCFrame: ValueState<CFrame?> = _Value(nil :: CFrame?)
+	local TargetSize: ValueState<Vector2?> = _Value(nil :: Vector2?)
+	local BoardFrame: ValueState<ViewportFrame?>  = _Value(nil :: ViewportFrame?); 
+	local Camera: ValueState<Camera?> = _Value(nil :: Camera?)
+	_Maid:GiveTask(BoardFrame:Connect(function(cur: ViewportFrame?)
+		Camera:Set(nil)
+		if not cur then return end
+		assert(cur ~= nil)
+		_Maid._billboardCameraCheck = cur:GetPropertyChangedSignal("CurrentCamera"):Connect(function()
+			Camera:Set(cur.CurrentCamera)
+		end)
+		Camera:Set(cur.CurrentCamera)
+	end))
 
-	config.Target = nil
-
-	for k, v in pairs(config) do
-		if parameters[k] == nil then
-			parameters[k] = v
-		end
-	end
+	-- update states each frame
 	_Maid:GiveTask(RunService.Heartbeat:Connect(function(dt)
 		local target = Target:Get()
 		local cam = Camera:Get()
@@ -89,11 +85,34 @@ function Constructor(config: BoundingBoxFrameParameters): BoundingBoxFrame
 		TargetSize:Set(Vector2.new(size.X, size.Y)*2)
 	end))
 
+	-- assemble final parameters
+	local parameters: any = {
+		AnchorPoint = Vector2.new(0.5,0.5),
+		WorldPosition = _Computed(function(cf: CFrame?)
+			if not cf then return Vector2.new(0,0) end
+			assert(cf ~= nil)
+			return Vector2.new(cf.Position.X, cf.Position.Y)
+		end, TargetCFrame),
+		WorldSize = _Computed(function(size: Vector2?): Vector2
+			if not size then return Vector2.new(0,0) end
+			assert(size ~= nil)
+			return size
+		end, TargetSize),
+		Parent = Parent
+	}
 
+	config.Target = nil
+
+	for k, v in pairs(config) do
+		if parameters[k] == nil then
+			parameters[k] = v
+		end
+	end
+
+	-- construct output instance
 	local Output = MountFrame(_Maid)(parameters)
-
 	Util.cleanUpPrep(_Maid, Output)
-
+	
 	BoardFrame:Set(Output:FindFirstAncestorOfClass("ViewportFrame"))
 	_Maid:GiveTask(Output.AncestryChanged:Connect(function()
 		BoardFrame:Set(Output:FindFirstAncestorOfClass("ViewportFrame"))

@@ -4,13 +4,11 @@ local packages = package.Parent
 
 local Util = require(package.Util)
 
-local Types = require(package.Types)
-type ParameterValue<T> = Types.ParameterValue<T>
-
 local ColdFusion = require(packages.coldfusion)
 type Fuse = ColdFusion.Fuse
 type State<T> = ColdFusion.State<T>
 type ValueState<T> = ColdFusion.ValueState<T>
+type CanBeState<T> = ColdFusion.CanBeState<T>
 
 local Maid = require(packages.maid)
 type Maid = Maid.Maid
@@ -18,66 +16,70 @@ type Maid = Maid.Maid
 local EffectGui = require(package:WaitForChild("EffectGui"))
 
 export type BubbleParameters = {
-	Name: ParameterValue<string>?,
-	Parent: ParameterValue<Instance>?,
-	Scale: ParameterValue<number>?,
-	BackgroundTransparency: ParameterValue<number>?,
-	FinalTransparency: ParameterValue<number>?,
-	BackgroundColor3: ParameterValue<Color3>?,
+	Name: CanBeState<string>?,
+	Parent: CanBeState<Instance>?,
+	Scale: CanBeState<number>?,
+	BackgroundTransparency: CanBeState<number>?,
+	FinalTransparency: CanBeState<number>?,
+	BackgroundColor3: CanBeState<Color3>?,
 }
 
 export type Bubble = EffectGui.EffectGui
 
 function Constructor(config: BubbleParameters): Bubble
+	-- init workspace
 	local _Maid: Maid = Maid.new()
 	local _Fuse: Fuse = ColdFusion.fuse(_Maid)
-	local _Computed = _Fuse.Computed
-	local _Value = _Fuse.Value
-	local _import = _Fuse.import
-	local _new = _Fuse.new
 
+	local _new = _Fuse.new
+	local _mount = _Fuse.mount
+	local _import = _Fuse.import
+
+	local _OUT = _Fuse.OUT
+	local _REF = _Fuse.REF
+	local _CHILDREN = _Fuse.CHILDREN
+	local _ON_EVENT = _Fuse.ON_EVENT
+	local _ON_PROPERTY = _Fuse.ON_PROPERTY
+
+	local _Value = _Fuse.Value
+	local _Computed = _Fuse.Computed
+
+	-- unload config states
 	local Name = _import(config.Name, script.Name)
 	local Parent = _import(config.Parent, nil)
 	local Scale = _import(config.Scale, 1.25)
 	local BackgroundTransparency = _import(config.BackgroundTransparency, 0.6)
 	local FinalTransparency = _import(config.FinalTransparency, 1)
 	local BackgroundColor3 = _import(config.BackgroundColor3, Color3.fromHSV(0,0,0.7))
+
+	-- init internal states
 	local Value = _Value(0)
 	local ValueTween = Value:Tween(0.3, Enum.EasingStyle.Quad, Enum.EasingDirection.Out)
+	local AbsoluteSize = _Value(Vector2.new(0,0))
+	local CenterPosition = _Value(UDim2.fromOffset(0,0))
+	local OutputState = (config :: any)[_REF] or _Value(nil :: ScreenGui?)
 
-	local parameters: any = {
-		Attributes = {
-			ClassName = script.Name,
-		},
-		Name = Name,
-		Parent = Parent,
-	}
-
-	local Output: any = EffectGui(_Maid)(parameters)
-	local AbsoluteSize = _Fuse.Attribute(Output, "AbsoluteSize"):Else(Vector2.new(0,0))
-	-- local AnchorPosition = _Fuse.Attribute(Output, "AnchorPosition"):Else(UDim2.fromOffset(0,0))
-	local CenterPosition = _Fuse.Attribute(Output, "CenterPosition"):Else(UDim2.fromOffset(0,0))
-
+	-- construct internal instances
 	local bubbleFrame = _new "Frame" {
 		Name = "Bubble",
-		Parent = Output,
+		Parent = OutputState,
 		Position = CenterPosition,
 		AnchorPoint = Vector2.new(0.5,0.5),
 		BorderSizePixel = 0,
 		ZIndex = 1,
 		BackgroundColor3 = BackgroundColor3,
-		Size = _Computed(function(val, size, scale)
+		Size = _Computed(function(val: number, size: Vector2, scale: number)
 			local diameter = math.max(size.X, size.Y) * val * scale
 			return UDim2.fromOffset(diameter,diameter)
 		end, ValueTween, AbsoluteSize, Scale),
-		BackgroundTransparency = _Computed(function(val, background, max)
+		BackgroundTransparency = _Computed(function(val: number, background: number, max: number)
 			if val == 0 then
 				return background
 			else
 				return max
 			end
 		end, Value, BackgroundTransparency, FinalTransparency):Tween(0.3, Enum.EasingStyle.Quad, Enum.EasingDirection.In),
-		Children = {
+		[_CHILDREN] = {
 			_new "UICorner" {
 				CornerRadius = UDim.new(0.5,0),
 			},
@@ -85,8 +87,25 @@ function Constructor(config: BubbleParameters): Bubble
 	}
 	_Maid:GiveTask(bubbleFrame)
 
+	-- construct output instance
+	local Output: ScreenGui = EffectGui(_Maid)({
+		[_REF] = OutputState,
+		Name = Name,
+		Parent = Parent,
+	} :: any)
 	Util.cleanUpPrep(_Maid, Output)
 
+	-- bind states to attributes
+	_Maid:GiveTask(Output:GetAttributeChangedSignal("AbsoluteSize"):Connect(function()
+		AbsoluteSize:Set(Output:GetAttribute("AbsoluteSize") or Vector2.new(0,0))
+	end))
+	AbsoluteSize:Set(Output:GetAttribute("AbsoluteSize") or Vector2.new(0,0))
+	_Maid:GiveTask(Output:GetAttributeChangedSignal("CenterPosition"):Connect(function()
+		CenterPosition:Set(Output:GetAttribute("CenterPosition") or UDim2.fromOffset(0,0))
+	end))
+	CenterPosition:Set(Output:GetAttribute("CenterPosition") or UDim2.fromOffset(0,0))
+
+	-- bind functions to output
 	Util.bindFunction(Output, _Maid, "Fire", function()
 		Value:Set(1)
 		task.delay(0.4, function()
@@ -95,12 +114,10 @@ function Constructor(config: BubbleParameters): Bubble
 			end)
 		end)
 	end)
-
-	Util.bindFunction(Output, _Maid, "Disable", function()
+	Util.bindFunction(Output, _Maid, "Enable", function()
 		Value:Set(1)
 	end)
-
-	Util.bindFunction(Output, _Maid, "Enable", function()
+	Util.bindFunction(Output, _Maid, "Disable", function()
 		Value:Set(0)
 		task.delay(0.4, function()
 			pcall(function()

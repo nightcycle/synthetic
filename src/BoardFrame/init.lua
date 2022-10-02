@@ -7,12 +7,12 @@ local packages = package.Parent
 local Util = require(package.Util)
 
 local Types = require(package.Types)
-type ParameterValue<T> = Types.ParameterValue<T>
 
 local ColdFusion = require(packages.coldfusion)
 type Fuse = ColdFusion.Fuse
 type State<T> = ColdFusion.State<T>
 type ValueState<T> = ColdFusion.ValueState<T>
+type CanBeState<T> = ColdFusion.CanBeState<T>
 
 local Maid = require(packages.maid)
 type Maid = Maid.Maid
@@ -20,63 +20,66 @@ type Maid = Maid.Maid
 local math = require(packages:WaitForChild("math"))
 
 export type BoardFrameParameters = Types.ViewportFrameParameters & {
-	-- Color: ParameterValue<Color3>?,
-	PixelsPerStud: ParameterValue<number>?,
-	CanvasPosition: ParameterValue<Vector2>?,
-	CanvasTransparency: ParameterValue<number>?,
-	CanvasColor: ParameterValue<Color3>?,
-	CanvasMaterial: ParameterValue<string>?,
-	CanvasMaterialVariant: ParameterValue<string>?,
-	LockPosition: ParameterValue<boolean>?,
-	LockZoom: ParameterValue<boolean>?,
-	Zoom: ParameterValue<number>?,
-	MinZoom: ParameterValue<number>?,
-	MaxZoom: ParameterValue<number>?,
-	ZoomSpeed: ParameterValue<number>?,
-	CameraHeight: ParameterValue<number>?,
+	-- Color: CanBeState<Color3>?,
+	PixelsPerStud: CanBeState<number>?,
+	CanvasPosition: CanBeState<Vector2>?,
+	CanvasTransparency: CanBeState<number>?,
+	CanvasColor: CanBeState<Color3>?,
+	CanvasMaterial: CanBeState<string>?,
+	CanvasMaterialVariant: CanBeState<string>?,
+	LockPosition: CanBeState<boolean>?,
+	LockZoom: CanBeState<boolean>?,
+	Zoom: CanBeState<number>?,
+	MinZoom: CanBeState<number>?,
+	MaxZoom: CanBeState<number>?,
+	ZoomSpeed: CanBeState<number>?,
+	CameraHeight: CanBeState<number>?,
 }
 
 export type BoardFrame = ViewportFrame
 
 function Constructor(config: BoardFrameParameters): BoardFrame
+	-- init workspace
 	local _Maid = Maid.new()
 	local _Fuse = ColdFusion.fuse(_Maid)
-	local _Computed = _Fuse.Computed
-	local _Value = _Fuse.Value
-	local _import = _Fuse.import
 	local _new = _Fuse.new
-
-	-- local Color = _import(config.Color, Color3.new(0.3,0,0))
+	local _mount = _Fuse.mount
+	local _import = _Fuse.import
+	local _OUT = _Fuse.OUT
+	local _REF = _Fuse.REF
+	local _CHILDREN = _Fuse.CHILDREN
+	local _ON_EVENT = _Fuse.ON_EVENT
+	local _ON_PROPERTY = _Fuse.ON_PROPERTY
+	local _Value = _Fuse.Value
+	local _Computed = _Fuse.Computed
+	
+	-- unload config states
 	local Size = _import(config.Size, UDim2.fromScale(1,1))
 	local Position = _import(config.Position, UDim2.fromScale(0.5,0.5))
 	local AnchorPoint = _import(config.AnchorPoint, Vector2.new(0.5,0.5))
-
 	local PixelsPerStud = _import(config.PixelsPerStud, 20)
 	local CanvasPosition = _Value(if typeof(config.CanvasPosition) == "Vector2" then config.CanvasPosition elseif typeof(config.CanvasPosition) == "table" then config.CanvasPosition:Get() else Vector2.new(0,0))
 	local CanvasTransparency = _import(config.CanvasTransparency, 0)
 	local CanvasColor = _import(config.CanvasColor, Color3.new(1,1,1))
 	local CanvasMaterial = _import(config.CanvasMaterial, "SmoothPlastic")
 	local CanvasMaterialVariant = _import(config.CanvasMaterialVariant, "")
-
 	local LockPosition = _import(config.LockPosition, false)
 	local LockZoom = _import(config.LockZoom, false)
-
-	local Zoom = _Value(if typeof(config.Zoom) == "number" then config.Zoom elseif typeof(config.Zoom) == "table" then config.Zoom:Get() else 1)
 	local MinZoom = _import(config.MinZoom, 1)
 	local MaxZoom = _import(config.MaxZoom, 10)
 	local ZoomSpeed = _import(config.ZoomSpeed, 4)
+	local CameraHeight = _import(config.CameraHeight, 100)
 
+	-- init internal states
+	local Zoom = _Value(if typeof(config.Zoom) == "number" then config.Zoom elseif typeof(config.Zoom) == "table" then config.Zoom:Get() else 1)
 	local Delta = _Value(1/60)
 	local AbsoluteSize = _Value(Vector2.new(0,0))
 	local CanvasSize = _Computed(function(absSize: Vector2, pxRatio: number)
 		return absSize / pxRatio
 	end, AbsoluteSize, PixelsPerStud) --_import(config.CanvasSize, Vector2.new(60,40))
-
 	local SizeRatio = _Computed(function(absSize: Vector2)
 		return absSize.X / absSize.Y
 	end, AbsoluteSize)
-
-	local CameraHeight = _import(config.CameraHeight, 100)
 	local CameraFieldOfView = _Computed(function(zoom: number, canvasSize: Vector2, z: number)
 		local y = canvasSize.Y
 		local goalY = y / zoom
@@ -113,17 +116,21 @@ function Constructor(config: BoardFrameParameters): BoardFrame
 		end
 		return Vector2.new(x,y)
 	end, CanvasPosition, CameraWindowSize, CanvasSize)
-	local CameraCFrame = _Computed(AbsoluteCanvasPosition, CameraHeight, CameraFieldOfView, function(canvasPos: Vector2, height: number, fov: number)
+	local CameraCFrame = _Computed(function(canvasPos: Vector2, height: number, fov: number)
 		local pos = Vector3.new(canvasPos.X, canvasPos.Y, height)
 		return CFrame.new(pos, Vector3.new(canvasPos.X, canvasPos.Y, 0))
-	end)
+	end, AbsoluteCanvasPosition, CameraHeight, CameraFieldOfView)
+
+	-- constructing instances
 	local Camera = _Fuse.new "Camera" {
 		CFrame = CameraCFrame,
-		FieldOfView = CameraFieldOfView,--:Tween(0.1, Enum.EasingStyle.Quad, Enum.EasingDirection.InOut),
+		FieldOfView = CameraFieldOfView,
 	}
 	local WorldModel: any = _Fuse.new "WorldModel" {
 		Name = "Canvas",
 	}
+
+	-- assemble final parameters
 	local parameters: any = {
 		Parent = _import(config.Parent, nil),
 		Name = _import(config.Name, script.Name),
@@ -133,7 +140,7 @@ function Constructor(config: BoardFrameParameters): BoardFrame
 		AnchorPoint = AnchorPoint,
 		Transparency = 1,
 		CurrentCamera = Camera,
-		Children = {
+		[_CHILDREN] = {
 				WorldModel,
 				Camera,
 			}
@@ -159,8 +166,8 @@ function Constructor(config: BoardFrameParameters): BoardFrame
 		end
 	end
 
-	-- print("Parameters", parameters, self)
-	local Output = _Fuse.new("ViewportFrame")(parameters)
+	-- construct output instance
+	local Output: ViewportFrame = _Fuse.new("ViewportFrame")(parameters) :: any
 	Util.cleanUpPrep(_Maid, Output)
 
 	local _Canvas = _Fuse.new "Part" {
@@ -175,9 +182,9 @@ function Constructor(config: BoardFrameParameters): BoardFrame
 		Transparency = CanvasTransparency,
 		Color = CanvasColor,
 		["CFrame"] = CFrame.new(Vector3.new(0,0,-1), Vector3.new(0,0,1)),
-		Size = _Computed(CanvasSize, function(size)
+		Size = _Computed(function(size: Vector2)
 			return Vector3.new(size.X, size.Y, 0.01)
-		end),
+		end, CanvasSize),
 	}
 	local PreviousMousePosition = _Value(Vector2.new(0,0))
 	local MousePosition = _Value(Vector2.new(0,0))
@@ -185,7 +192,7 @@ function Constructor(config: BoardFrameParameters): BoardFrame
 		return pMPos - mPos
 	end, MousePosition, PreviousMousePosition)
 
-	local IsHovering = _Computed(function(mPos)
+	local IsHovering = _Computed(function(mPos: Vector2)
 		local sGui = Output:FindFirstAncestorWhichIsA("BasePlayerGui")
 		if not sGui then return false end
 		assert(sGui ~= nil)

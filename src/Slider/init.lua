@@ -8,12 +8,12 @@ local packages = package.Parent
 local Util = require(package.Util)
 
 local Types = require(package.Types)
-type ParameterValue<T> = Types.ParameterValue<T>
 
 local ColdFusion = require(packages.coldfusion)
 type Fuse = ColdFusion.Fuse
 type State<T> = ColdFusion.State<T>
 type ValueState<T> = ColdFusion.ValueState<T>
+type CanBeState<T> = ColdFusion.CanBeState<T>
 
 local Maid = require(packages.maid)
 type Maid = Maid.Maid
@@ -24,33 +24,39 @@ local Bubble = require(package:WaitForChild("Bubble"))
 local Hint = require(package:WaitForChild("Hint"))
 
 export type SliderParameters = Types.FrameParameters & {
-	Scale: ParameterValue<number>?,
-	EnabledColor3: ParameterValue<Color3>?,
-	HintBackgroundColor3: ParameterValue<Color3>?,
-	TextColor3: ParameterValue<Color3>?,
-	TickSound: ParameterValue<Sound>?,
-	EnableSound: ParameterValue<Sound>?,
-	DisableSound: ParameterValue<Sound>?,
-	Input: ParameterValue<number>?,
-	Minimum: ParameterValue<number>?,
-	Maximum: ParameterValue<number>?,
-	Increment: ParameterValue<number>?,
-	Padding: ParameterValue<UDim>?,
-	BubbleEnabled: ParameterValue<boolean>?,
-	HintEnabled: ParameterValue<boolean>?,
+	EnabledColor3: CanBeState<Color3>?,
+	HintBackgroundColor3: CanBeState<Color3>?,
+	TextColor3: CanBeState<Color3>?,
+	TickSound: CanBeState<Sound>?,
+	EnableSound: CanBeState<Sound>?,
+	DisableSound: CanBeState<Sound>?,
+	Input: CanBeState<number>?,
+	Minimum: CanBeState<number>?,
+	Maximum: CanBeState<number>?,
+	Increment: CanBeState<number>?,
+	Padding: CanBeState<UDim>?,
+	BubbleEnabled: CanBeState<boolean>?,
+	HintEnabled: CanBeState<boolean>?,
 }
 
 export type Slider = Frame
 
 function Constructor(config: SliderParameters): Slider
+	-- init workspace
 	local _Maid = Maid.new()
 	local _Fuse = ColdFusion.fuse(_Maid)
-	local _Computed = _Fuse.Computed
-	local _Value = _Fuse.Value
-	local _import = _Fuse.import
 	local _new = _Fuse.new
+	local _mount = _Fuse.mount
+	local _import = _Fuse.import
+	local _OUT = _Fuse.OUT
+	local _REF = _Fuse.REF
+	local _CHILDREN = _Fuse.CHILDREN
+	local _ON_EVENT = _Fuse.ON_EVENT
+	local _ON_PROPERTY = _Fuse.ON_PROPERTY
+	local _Value = _Fuse.Value
+	local _Computed = _Fuse.Computed
 
-	-- local Scale = _import(config.Scale, 1)
+	-- unload config states
 	local Name = _import(config.Name, script.Name)
 	local BackgroundColor3 = _import(config.BackgroundColor3, Color3.fromHSV(0,0,0.9))
 	local EnabledColor3 = _import(config.EnabledColor3, Color3.fromHSV(0.6,1,1))
@@ -69,43 +75,45 @@ function Constructor(config: SliderParameters): Slider
 	local BubbleEnabled = _import(config.BubbleEnabled, true)
 	local HintEnabled = _import(config.HintEnabled, true)
 
+	-- construct signals
+	local OnRelease = Signal.new(); _Maid:GiveTask(OnRelease)
+
+	-- init internal states
+	local Dragging = _Value(false)
+	local ButtonAbsolutePosition = _Value(Vector2.new(0,0))
+	local ButtonAbsoluteSize = _Value(Vector2.new(0,0))
 	local Value = _Computed(function(input: number, min: number, max: number, inc: number): number
 		local val = input-(input%inc)--math.round(input * inc)/inc
 		if val ~= val then val = min end
 		return math.clamp(val, min, max)
 	end, Input, Minimum, Maximum, Increment)
+	local Alpha = _Computed(function(val: number, min: number, max: number)
+		return (val - min)/(max-min)
+	end, Value, Minimum, Maximum)
 
+	-- bind internal states
 	Value:Connect(function()
 		local tickSound = TickSound:Get()
 		if tickSound then
 			SoundService:PlayLocalSound(tickSound)
 		end
 	end)
-
-	local Alpha = _Computed(function(val: number, min: number, max: number)
-		return (val - min)/(max-min)
-	end, Value, Minimum, Maximum)
-
-	local OnRelease = Signal.new()
-	_Maid:GiveTask(OnRelease)
-
-	local Dragging = _Value(false)
-
 	local Diameter = _Computed(function(size:UDim2, padding:UDim)
 		return size.Y.Offset - padding.Offset*2
 	end, Size, Padding)
 
+	-- construct sub-instances
 	local Knob: any = _Fuse.new "Frame" {
 		Name = "Knob",
 		ZIndex = 2,
 		Position = _Computed(
-			function(val): UDim2
+			function(val: number): UDim2
 				return UDim2.fromScale(val,0.5)
 			end,
 			Alpha
 		),
 		AnchorPoint = _Computed(
-			function(val): Vector2
+			function(val: number): Vector2
 				return Vector2.new(val,0.5)
 			end,
 			Alpha
@@ -113,7 +121,7 @@ function Constructor(config: SliderParameters): Slider
 		Size = UDim2.fromScale(1,1),
 		SizeConstraint = Enum.SizeConstraint.RelativeYY,
 		BackgroundTransparency = 1,
-		Children = {
+		[_CHILDREN] = {
 			_Fuse.new "Frame" {
 				Name = "Frame",
 				ZIndex = 2,
@@ -124,7 +132,7 @@ function Constructor(config: SliderParameters): Slider
 					return UDim2.fromOffset(diameter,diameter)
 				end, Diameter),
 				BorderSizePixel = 0,
-				Children = {
+				[_CHILDREN] = {
 					_Fuse.new "UICorner" {
 						CornerRadius = _Computed(function(padding: UDim)
 							return UDim.new(1,0)
@@ -165,7 +173,9 @@ function Constructor(config: SliderParameters): Slider
 		Position = UDim2.fromScale(0.5,0.5),
 		Size = UDim2.fromScale(1,1),
 		AnchorPoint = Vector2.new(0.5,0.5),
-		[_Fuse.Event "MouseButton1Down"] = function()
+		[_OUT "AbsolutePosition"] = ButtonAbsolutePosition :: any,
+		[_OUT "AbsoluteSize"] = ButtonAbsoluteSize :: any,	
+		[_ON_EVENT "MouseButton1Down"] = function()
 			Dragging:Set(true)
 			if BubbleEnabled:Get() then	
 				local bubble = Bubble(_Maid){
@@ -194,17 +204,16 @@ function Constructor(config: SliderParameters): Slider
 					SoundService:PlayLocalSound(enabSound)
 				end
 			end
-		end,
+		end :: any,
+
 	}
 
-	local ButtonAbsolutePosition = _Fuse.Property(Button, "AbsolutePosition"):Else(Vector2.new(0,0))
-	local ButtonAbsoluteSize = _Fuse.Property(Button, "AbsoluteSize"):Else(Vector2.new(0,0))
-
+	-- assemble output parameters
 	local parameters = {
 		Name = Name,
 		Size = Size,
 		BackgroundTransparency = 1,
-		Children = {
+		[_CHILDREN] = {
 			Button,
 			_Fuse.new "Frame" {
 				Name = "Frame",
@@ -213,7 +222,7 @@ function Constructor(config: SliderParameters): Slider
 				Position = UDim2.fromScale(0.5,0.5),
 				AnchorPoint = Vector2.new(0.5,0.5),
 				BackgroundTransparency = 1,
-				Children = {
+				[_CHILDREN] = {
 						_Fuse.new "Frame" {
 							Name = "Track",
 							ZIndex = 1,
@@ -224,7 +233,7 @@ function Constructor(config: SliderParameters): Slider
 								return UDim2.new(1, -diameter, 0, bsp)
 							end, Diameter, BorderSizePixel),
 							BackgroundColor3 = Color3.new(1,1,1),
-							Children = {
+							[_CHILDREN] = {
 								_Fuse.new "UICorner" {
 									CornerRadius = UDim.new(0.5,0),
 								},
@@ -247,7 +256,6 @@ function Constructor(config: SliderParameters): Slider
 		} :: {Instance}
 	}
 
-	config.Scale = nil
 	config.EnabledColor3 = nil
 	config.HintBackgroundColor3 = nil
 	config.TextColor3 = nil
@@ -261,14 +269,15 @@ function Constructor(config: SliderParameters): Slider
 	config.Padding = nil
 	config.BubbleEnabled = nil
 	config.HintEnabled = nil
-
+	
 	for k, v in pairs(config) do
 		if parameters[k] == nil then
 			parameters[k] = v
 		end
 	end
-	-- print("Parameters", parameters, self)
-	local Output = _Fuse.new("Frame")(parameters)
+
+	-- construct output instance
+	local Output: Frame = _Fuse.new("Frame")(parameters) :: any
 
 	_Computed(function(dragging): nil
 		_Maid._dragStep = nil

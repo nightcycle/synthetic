@@ -5,41 +5,50 @@ local packages = package.Parent
 local Util = require(package.Util)
 
 local Types = require(package.Types)
-type ParameterValue<T> = Types.ParameterValue<T>
 
 local ColdFusion = require(packages.coldfusion)
 type Fuse = ColdFusion.Fuse
 type State<T> = ColdFusion.State<T>
 type ValueState<T> = ColdFusion.ValueState<T>
+type CanBeState<T> = ColdFusion.CanBeState<T>
 
 local Maid = require(packages.maid)
 type Maid = Maid.Maid
 
-
 local Spritesheet = require(script:WaitForChild("Spritesheet"))
 
 export type IconLabelParameters = Types.ImageLabelParameters & {
-	IconTransparency: ParameterValue<number>?,
-	IconColor3: ParameterValue<Color3>?,
-	Icon: ParameterValue<string>?,
+	IconTransparency: CanBeState<number>?,
+	IconColor3: CanBeState<Color3>?,
+	Icon: CanBeState<string>?,
 }
 
 export type IconLabel = ImageLabel
 
 function Constructor(config: IconLabelParameters): IconLabel
+	-- init workspace
 	local _Maid = Maid.new()
 	local _Fuse = ColdFusion.fuse(_Maid)
-	local _Computed = _Fuse.Computed
-	local _Value = _Fuse.Value
-	local _import = _Fuse.import
 	local _new = _Fuse.new
-
+	local _mount = _Fuse.mount
+	local _import = _Fuse.import
+	local _OUT = _Fuse.OUT
+	local _REF = _Fuse.REF
+	local _CHILDREN = _Fuse.CHILDREN
+	local _ON_EVENT = _Fuse.ON_EVENT
+	local _ON_PROPERTY = _Fuse.ON_PROPERTY
+	local _Value = _Fuse.Value
+	local _Computed = _Fuse.Computed
+	
+	-- unload config states
 	local Name = _import(config.Name, script.Name)
 	local IconTransparency = _import(config.IconTransparency, 0)
 	local IconColor3 = _import(config.IconColor3, Color3.new(1,1,1))
-	local Icon: State<nil> = _import(config.Icon, nil)
-	
+	local Icon: State<string?> = _import(config.Icon, nil :: string?)
 
+	-- init internal states
+	local AbsoluteSize = _Value(Vector2.new(0,0))
+	local OutputState = (config :: any)[_REF] or _Value(nil :: IconLabel?)
 	local DotsPerInch = _Value(36)
 	local IconData = _Computed(function(key: string?, dpi): any
 		if not key or key == "" then return nil end
@@ -48,40 +57,15 @@ function Constructor(config: IconLabelParameters): IconLabel
 		return iconResolutions[dpi]
 	end, Icon, DotsPerInch)
 
-	local parameters: any = {
-		Name = Name,
-		BackgroundTransparency = 1,
-		Image = _Computed(function(iconData, key)
-			if not key or key == "" then return "" end
-			if not iconData then return "" end
-			return "rbxassetid://"..iconData.Sheet
-		end, IconData, Icon),
-		ImageRectOffset = _Computed(function(iconData)
-			if not iconData then return Vector2.new(0,0) end
-			return Vector2.new(iconData.X, iconData.Y)
-		end, IconData),
-		ImageRectSize = _Computed(function(dpi)
-			return Vector2.new(dpi, dpi)
-		end, DotsPerInch),
-		ImageColor3 = IconColor3,
-		ImageTransparency = IconTransparency,
-	}
-	
-	config.IconTransparency = nil
-	config.IconColor3 = nil
-	config.Icon = nil
 
-	for k, v in pairs(config) do
-		if parameters[k] == nil then
-			parameters[k] = v
-		end
-	end
-
-	local Output = _Fuse.new("ImageLabel")(parameters)
-	local AbsoluteSize = _Fuse.Property(Output, "AbsoluteSize"):Else(Vector2.new(0,0))
+	-- bind state changes
 	_Maid:GiveTask(AbsoluteSize:Connect(function()
-		if not Output or not Output:IsDescendantOf(game) then return end
-		local dpi = math.min(Output.AbsoluteSize.X, Output.AbsoluteSize.Y)
+		local output = OutputState:Get()
+		if not output or not output:IsDescendantOf(game) then 
+			return 
+		end
+		assert(output ~= nil)
+		local dpi = math.min(output.AbsoluteSize.X, output.AbsoluteSize.Y)
 		local options = {36,48,72,96}
 		local closest = 36
 		local closestDelta = nil
@@ -98,6 +82,41 @@ function Constructor(config: IconLabelParameters): IconLabel
 	
 		DotsPerInch:Set(closest)
 	end))
+
+	-- assemble final parameters
+	local parameters: any = {
+		[_REF] = OutputState :: any,
+		Name = Name,
+		BackgroundTransparency = 1,
+		Image = _Computed(function(iconData, key)
+			if not key or key == "" then return "" end
+			if not iconData then return "" end
+			return "rbxassetid://"..iconData.Sheet
+		end, IconData, Icon),
+		ImageRectOffset = _Computed(function(iconData)
+			if not iconData then return Vector2.new(0,0) end
+			return Vector2.new(iconData.X, iconData.Y)
+		end, IconData),
+		ImageRectSize = _Computed(function(dpi: number)
+			return Vector2.new(dpi, dpi)
+		end, DotsPerInch),
+		ImageColor3 = IconColor3,
+		ImageTransparency = IconTransparency,
+		[_OUT "AbsoluteSize"] = AbsoluteSize,
+	}
+	
+	config.IconTransparency = nil
+	config.IconColor3 = nil
+	config.Icon = nil
+
+	for k, v in pairs(config) do
+		if parameters[k] == nil then
+			parameters[k] = v
+		end
+	end
+	
+	-- construct output instance
+	local Output: ImageLabel = _Fuse.new("ImageLabel")(parameters) :: any
 
 	Util.cleanUpPrep(_Maid, Output)
 

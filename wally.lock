@@ -4,13 +4,13 @@ registry = "test"
 
 [[package]]
 name = "nightcycle/cold-fusion"
-version = "4.1.23"
-dependencies = [["Maid", "nightcycle/maid@1.0.2"], ["Math", "nightcycle/math@3.6.0"], ["Signal", "nightcycle/signal@1.0.2"]]
+version = "5.0.21"
+dependencies = [["Maid", "nightcycle/maid@1.0.4"], ["Math", "nightcycle/math@3.6.0"], ["NetworkUtil", "nightcycle/network-util@1.2.0"], ["Signal", "nightcycle/signal@1.0.2"]]
 
 [[package]]
 name = "nightcycle/format"
 version = "0.1.3"
-dependencies = [["maid", "nightcycle/maid@1.0.2"], ["signal", "nightcycle/signal@1.0.2"], ["string", "nightcycle/string@0.1.0"]]
+dependencies = [["maid", "nightcycle/maid@1.0.4"], ["signal", "nightcycle/signal@1.0.2"], ["string", "nightcycle/string@0.1.0"]]
 
 [[package]]
 name = "nightcycle/luau-math"
@@ -19,13 +19,18 @@ dependencies = []
 
 [[package]]
 name = "nightcycle/maid"
-version = "1.0.2"
+version = "1.0.4"
 dependencies = []
 
 [[package]]
 name = "nightcycle/math"
 version = "3.6.0"
 dependencies = []
+
+[[package]]
+name = "nightcycle/network-util"
+version = "1.2.0"
+dependencies = [["Maid", "nightcycle/maid@1.0.4"], ["Signal", "nightcycle/signal@1.0.2"]]
 
 [[package]]
 name = "nightcycle/signal"
@@ -39,5 +44,5 @@ dependencies = []
 
 [[package]]
 name = "nightcycle/synthetic"
-version = "3.5.4"
-dependencies = [["coldfusion", "nightcycle/cold-fusion@4.1.23"], ["format", "nightcycle/format@0.1.3"], ["maid", "nightcycle/maid@1.0.2"], ["math", "nightcycle/luau-math@1.3.1"], ["signal", "nightcycle/signal@1.0.2"]]
+version = "3.5.14"
+dependencies = [["coldfusion", "nightcycle/cold-fusion@5.0.21"], ["format", "nightcycle/format@0.1.3"], ["maid", "nightcycle/maid@1.0.4"], ["math", "nightcycle/luau-math@1.3.1"], ["signal", "nightcycle/signal@1.0.2"]]

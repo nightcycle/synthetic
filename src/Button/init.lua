@@ -3,19 +3,17 @@ local SoundService = game:GetService("SoundService")
 local RunService = game:GetService("RunService")
 local TweenService = game:GetService("TweenService")
 
-
-
 local package = script.Parent
 local packages = package.Parent
 
 local Util = require(package.Util)
 local Types = require(package.Types)
-type ParameterValue<T> = Types.ParameterValue<T>
 
 local ColdFusion = require(packages.coldfusion)
 type Fuse = ColdFusion.Fuse
 type State<T> = ColdFusion.State<T>
 type ValueState<T> = ColdFusion.ValueState<T>
+type CanBeState<T> = ColdFusion.CanBeState<T>
 
 local Maid = require(packages.maid)
 type Maid = Maid.Maid
@@ -25,43 +23,55 @@ local Signal = require(packages:WaitForChild("signal"))
 local TextLabel = require(script.Parent:WaitForChild("TextLabel"))
 
 export type ButtonParameters = Types.FrameParameters & {
-	Padding: ParameterValue<UDim>?,
-	CornerRadius: ParameterValue<UDim>?,
-	TextSize: ParameterValue<number>?,
-	IconScale: ParameterValue<number>?,
-	TextColor3: ParameterValue<Color3>?,
-	Font: ParameterValue<Enum.Font>?,
-	SelectedTextColor3: ParameterValue<Color3>?,
-	HoverTextColor3: ParameterValue<Color3>?,
-	BorderTransparency: ParameterValue<number>?,
-	BackgroundTransparency: ParameterValue<number>?,
-	SelectedBackgroundColor3: ParameterValue<Color3>?,
-	HoverBackgroundColor3: ParameterValue<Color3>?,
-	TextTransparency: ParameterValue<number>?,
-	TextXAlignment: ParameterValue<Enum.TextXAlignment>?,
-	TextYAlignment: ParameterValue<Enum.TextYAlignment>?,
-	Text: ParameterValue<string>?,
-	LeftIcon: ParameterValue<string>?,
-	RightIcon: ParameterValue<string>?,
-	ClickSound: ParameterValue<Sound>?,
-	TextOnly: ParameterValue<boolean>?,
+	Padding: CanBeState<UDim>?,
+	CornerRadius: CanBeState<UDim>?,
+	TextSize: CanBeState<number>?,
+	IconScale: CanBeState<number>?,
+	TextColor3: CanBeState<Color3>?,
+	Font: CanBeState<Enum.Font>?,
+	SelectedTextColor3: CanBeState<Color3>?,
+	HoverTextColor3: CanBeState<Color3>?,
+	BorderTransparency: CanBeState<number>?,
+	BackgroundTransparency: CanBeState<number>?,
+	SelectedBackgroundColor3: CanBeState<Color3>?,
+	HoverBackgroundColor3: CanBeState<Color3>?,
+	TextTransparency: CanBeState<number>?,
+	TextXAlignment: CanBeState<Enum.TextXAlignment>?,
+	TextYAlignment: CanBeState<Enum.TextYAlignment>?,
+	Text: CanBeState<string>?,
+	LeftIcon: CanBeState<string>?,
+	RightIcon: CanBeState<string>?,
+	ClickSound: CanBeState<Sound>?,
+	TextOnly: CanBeState<boolean>?,
+	IsSelected: CanBeState<boolean>?,
 }
 
 export type Button = Frame
 
 function Constructor(config: ButtonParameters): Button
+	-- init workspace
 	local _Maid: Maid = Maid.new()
 	local _Fuse: Fuse = ColdFusion.fuse(_Maid)
-	local _Computed = _Fuse.Computed
-	local _Value = _Fuse.Value
-	local _import = _Fuse.import
-	local _new = _Fuse.new
 
+	local _new = _Fuse.new
+	local _mount = _Fuse.mount
+	local _import = _Fuse.import
+
+	local _OUT = _Fuse.OUT
+	local _REF = _Fuse.REF
+	local _CHILDREN = _Fuse.CHILDREN
+	local _ON_EVENT = _Fuse.ON_EVENT
+	local _ON_PROPERTY = _Fuse.ON_PROPERTY
+
+	local _Value = _Fuse.Value
+	local _Computed = _Fuse.Computed
+
+	-- unload config states
 	local Name = _import(config.Name, script.Name)
 	local Padding = _import(config.Padding, UDim.new(0, 2))
 	local CornerRadius = _import(config.CornerRadius, UDim.new(0,4))
 	local TextSize = _import(config.TextSize, 14)
-	local Size = _import(config.Size, nil)
+	local Size: State<Vector2?> = _import(config.Size, nil :: Vector2?)
 	local IconScale = _import(config.IconScale, 1.25)
 	local BorderSizePixel = _import(config.BorderSizePixel, 3)
 	local TextColor3 = _import(config.TextColor3, Color3.new(0.2,0.2,0.2))
@@ -71,27 +81,36 @@ function Constructor(config: ButtonParameters): Button
 	local BackgroundColor3 = _import(config.BackgroundColor3,Color3.fromHSV(0.7,0,1))
 	local BorderColor3 = _import(config.BorderColor3,Color3.fromHSV(0.7,0,0.3))
 	local SelectedBackgroundColor3 = _import(config.SelectedBackgroundColor3,Color3.fromHSV(0.7,0.7,1))
-	local HoverBackgroundColor3 = _import(config.HoverBackgroundColor3, _Computed(function(sCol: Color3, bCol: Color3)
+	local HoverBackgroundColor3: State<Color3> = _import(config.HoverBackgroundColor3, _Computed(function(sCol: Color3, bCol: Color3): Color3
 		local h1,s1,v1 = sCol:ToHSV()
 		local _,s2,v2 = bCol:ToHSV()
 		return Color3.fromHSV(h1, s1 + (s2-s1)*0.5, v1 + (v2-v1)*0.5)
-	end, SelectedBackgroundColor3, BackgroundColor3))
-	local BackgroundTransparency = _import(config.BackgroundTransparency,0)
-	-- local BorderTransparency = _import(config.BackgroundTransparency, 0)
+	end, SelectedBackgroundColor3, BackgroundColor3)) :: any
+	local BackgroundTransparency: State<number> = _import(config.BackgroundTransparency,0) :: any
 	local TextTransparency = _import(config.TextTransparency, 0)
-
 	local TextXAlignment = _import(config.TextXAlignment, Enum.TextXAlignment.Center)
 	local TextYAlignment = _import(config.TextYAlignment, Enum.TextYAlignment.Center)
-
 	local Text = _import(config.Text, "")
 	local LeftIcon = _import(config.LeftIcon, "")
 	local RightIcon = _import(config.RightIcon, "")
 	local TextOnly = _import(config.TextOnly, false)
+	local IsSelected: ValueState<boolean> = if config.IsSelected then if typeof(config.IsSelected) == "table" then config.IsSelected else _Value(config.IsSelected) else _Value(false) :: any
+	local ClickSound = _import(config.ClickSound, nil)
 
-	-- local IconSize = _Computed(function(textSize: number)
-	-- 	local size = math.round(textSize*1.25)
-	-- 	return UDim2.fromOffset(size, size)
-	-- end, TextSize)
+	-- init signals
+	local Activated = Signal.new(); _Maid:GiveTask(Activated)
+	local MouseButton1Down = Signal.new(); _Maid:GiveTask(MouseButton1Down)
+	local MouseButton1Up = Signal.new(); _Maid:GiveTask(MouseButton1Up)
+	local InputBegan = Signal.new(); _Maid:GiveTask(InputBegan)
+	local InputEnded = Signal.new(); _Maid:GiveTask(InputEnded)
+
+	-- init internal states
+	local IsHovering = _Value(false)
+	local IsRippling = _Value(false)
+	local ClickCenter = _Value(0.5)
+	local ClickTick = _Value(0)
+	local MaxRippleDuration = _Value(0.4)
+	local TimeSinceLastClick = _Value(tick())
 	local ActiveBorderColor3 = _Computed(function(trans, border, background)
 		if trans == 0 then
 			return background
@@ -106,37 +125,6 @@ function Constructor(config: ButtonParameters): Button
 			return 0
 		end
 	end, BackgroundTransparency)
-	local IsHovering = _Value(false)
-	local IsPressing = _Value(false)
-	local IsRippling = _Value(false)
-
-	local Activated = Signal.new()
-	_Maid:GiveTask(Activated)
-
-	local MouseButton1Down = Signal.new()
-	_Maid:GiveTask(MouseButton1Down)
-
-	local MouseButton1Up = Signal.new()
-	_Maid:GiveTask(MouseButton1Up)
-
-	local InputBegan = Signal.new()
-	_Maid:GiveTask(InputBegan)
-
-	local InputEnded = Signal.new()
-	_Maid:GiveTask(InputEnded)
-	
-	local ClickSound = _import(config.ClickSound, nil)
-	_Maid:GiveTask(Activated:Connect(function()
-		local clickSound = ClickSound:Get()
-		if clickSound then
-			SoundService:PlayLocalSound(clickSound)
-		end
-	end))
-
-	local ClickCenter = _Value(0.5)
-	local ClickTick = _Value(0)
-	local MaxRippleDuration = _Value(0.4)
-	local TimeSinceLastClick = _Value(tick())
 	local RippleAlpha = _Computed(function(timeSince: number, dur: number)
 		return math.clamp(timeSince / dur, 0, 1)
 	end, TimeSinceLastClick, MaxRippleDuration)
@@ -166,7 +154,39 @@ function Constructor(config: ButtonParameters): Button
 		LeftRippleAlpha,
 		RightRippleAlpha
 	)
+	local LabelAbsoluteSize = _Value(Vector2.new(0,0))
+	local ButtonSize = _Computed(function(padding: UDim, absSize: Vector2, size: Vector2?): UDim2
+		if size then return UDim2.fromOffset(size.X, size.Y) end
+		absSize = absSize or Vector2.new(0,0)
+		local fullSize = absSize + Vector2.new(1,1) * padding.Offset * 2
+		return UDim2.fromOffset(fullSize.X, fullSize.Y)
+	end, Padding, LabelAbsoluteSize, Size)
+	local ActiveBackgroundColor = _Computed(function(isPressing: boolean, isRippling: boolean, isHovering: boolean, backgroundColor: Color3, hoverColor: Color3, selColor: Color3)
+		if isHovering or isRippling then
+			return hoverColor
+		elseif isPressing then
+			return selColor
+		else
+			return backgroundColor
+		end
+	end, IsSelected, IsRippling, IsHovering, BackgroundColor3, HoverBackgroundColor3, SelectedBackgroundColor3):Tween(0.15)
+	local ActiveFillColor = _Computed(function(isPressing, isRipple, hoverColor, selectedColor)
+		if isPressing or isRipple then
+			return selectedColor
+		else
+			return hoverColor
+		end
+	end, IsSelected, IsRippling, ActiveBackgroundColor, SelectedBackgroundColor3):Tween(0.1)
 
+	-- bind signals
+	_Maid:GiveTask(Activated:Connect(function()
+		local clickSound = ClickSound:Get()
+		if clickSound then
+			SoundService:PlayLocalSound(clickSound)
+		end
+	end))
+
+	-- construct sub-instances
 	local TextLabel = TextLabel(_Maid){
 		BackgroundTransparency = 1,
 		TextTransparency = TextTransparency,
@@ -174,6 +194,7 @@ function Constructor(config: ButtonParameters): Button
 		Font = Font,
 		Padding = Padding,
 		TextSize = TextSize,
+		[_OUT "AbsoluteSize"] = LabelAbsoluteSize,
 		TextColor3 = _Computed(
 			function(hover, press, ripple, textColor3, hoverColor, selColor)	
 				if press or ripple then
@@ -184,7 +205,7 @@ function Constructor(config: ButtonParameters): Button
 				return textColor3
 			end,
 			IsHovering,
-			IsPressing,
+			IsSelected,
 			IsRippling,
 			TextColor3,
 			HoverTextColor3,
@@ -201,35 +222,7 @@ function Constructor(config: ButtonParameters): Button
 		Position = UDim2.fromScale(0.5,0.5),
 	}
 
-
-	local LabelAbsoluteSize = _Fuse.Property(TextLabel, "AbsoluteSize", 60)
-	local ButtonSize = _Computed(function(padding: UDim, absSize: Vector2?, size: Vector2?): UDim2
-		if size then return UDim2.fromOffset(size.X, size.Y) end
-		absSize = absSize or Vector2.new(0,0)
-		assert(absSize ~= nil)
-		local fullSize = absSize + Vector2.new(1,1) * padding.Offset * 2
-		return UDim2.fromOffset(fullSize.X, fullSize.Y)
-	end, Padding, LabelAbsoluteSize, Size)
-
-	local ActiveBackgroundColor = _Computed(function(isPressing, isRippling, isHovering, backgroundColor, hoverColor, selColor)
-		if isHovering or isRippling then
-			return hoverColor
-		elseif isPressing then
-			return selColor
-		else
-			return backgroundColor
-		end
-	end, IsPressing, IsRippling, IsHovering, BackgroundColor3, HoverBackgroundColor3, SelectedBackgroundColor3):Tween(0.15)
-
-	local ActiveFillColor = _Computed(function(isPressing, isRipple, hoverColor, selectedColor)
-		if isPressing or isRipple then
-			return selectedColor
-		else
-			return hoverColor
-		end
-	end, IsPressing, IsRippling, ActiveBackgroundColor, SelectedBackgroundColor3):Tween(0.1)
-
-	local TextButton = _Fuse.new "TextButton" {
+	local TextButton: TextButton = _Fuse.new "TextButton" {
 		RichText = true,
 		TextColor3 = TextColor3,
 		LayoutOrder = 2,
@@ -239,13 +232,13 @@ function Constructor(config: ButtonParameters): Button
 		AnchorPoint = Vector2.new(0.5,0.5),
 		TextTransparency = TextTransparency,
 		Text = "",
-		[_Fuse.Event "Activated"] = function()
+		[_ON_EVENT "Activated"] = function()
 			Activated:Fire()
 		end,
-		[_Fuse.Event "MouseButton1Down"] = function(x: any)
+		[_ON_EVENT "MouseButton1Down"] = function(x: any)
 			MouseButton1Down:Fire()
 			
-			if not IsPressing:Get() and TimeSinceLastClick:Get() > 0.8 then
+			if not IsSelected:Get() and TimeSinceLastClick:Get() > 0.8 then
 				ClickTick:Set(tick())
 				IsRippling:Set(true)
 				task.delay(MaxRippleDuration:Get() + 0.2, function()
@@ -253,24 +246,32 @@ function Constructor(config: ButtonParameters): Button
 						IsRippling:Set(false)
 					end)
 				end)
-				IsPressing:Set(true)
+				if IsSelected.Set then
+					local ValSelect: any = IsSelected
+					ValSelect:Set(true)
+				end
+				-- IsSelected:Set(true)
 			end
 
 		end,
-		[_Fuse.Event "MouseButton1Up"] = function()
+		[_ON_EVENT "MouseButton1Up"] = function()
 			MouseButton1Up:Fire()
-			IsPressing:Set(false)
+			if IsSelected.Set then
+				local ValSelect: any = IsSelected
+				ValSelect:Set(false)
+			end
 		end,
-		[_Fuse.Event "InputChanged"] = function()
+		[_ON_EVENT "InputChanged"] = function()
 			IsHovering:Set(true)
 		end,
-		[_Fuse.Event "MouseLeave"] = function()
+		[_ON_EVENT "MouseLeave"] = function()
 			IsHovering:Set(false)
 		end,
 		BackgroundTransparency = 1,
 		AutomaticSize = Enum.AutomaticSize.XY,
-	}
+	} :: any
 
+	-- assemble final parameters
 	local parameters: any = {
 		Name = Name,
 		Size = ButtonSize,
@@ -282,10 +283,7 @@ function Constructor(config: ButtonParameters): Button
 				return 0
 			end
 		end, TextOnly),
-		Attributes = {
-			ClassName = script.Name,
-		},
-		Children = {
+		[_CHILDREN] = {
 			_Fuse.new "UICorner" {
 				CornerRadius = CornerRadius,
 			},
@@ -313,11 +311,11 @@ function Constructor(config: ButtonParameters): Button
 					else
 						return border
 					end
-				end, ActiveBorderColor3, ActiveFillColor, ActiveBackgroundColor, IsHovering, IsPressing),
+				end, ActiveBorderColor3, ActiveFillColor, ActiveBackgroundColor, IsHovering, IsSelected),
 			},
 			_Fuse.new 'UIGradient' {
 				Transparency = _Computed(
-					function(hover, press, ripple, defTrans, timeKeys)
+					function(hover: boolean, press: boolean, ripple: boolean, defTrans: number, timeKeys: {number})
 						local fill = math.min(0.7, defTrans)
 						if ripple then
 							local startTrans = defTrans
@@ -359,7 +357,7 @@ function Constructor(config: ButtonParameters): Button
 						})
 					end,
 					IsHovering,
-					IsPressing,
+					IsSelected,
 					IsRippling,
 					BackgroundTransparency,
 					TimeKeys
@@ -406,7 +404,7 @@ function Constructor(config: ButtonParameters): Button
 						})
 					end,
 					IsHovering,
-					IsPressing,
+					IsSelected,
 					IsRippling,
 					ActiveBackgroundColor,
 					ActiveFillColor,
@@ -432,6 +430,7 @@ function Constructor(config: ButtonParameters): Button
 	config.TextXAlignment = nil
 	config.TextYAlignment = nil
 	config.Text = nil
+	config.IsSelected = nil
 	config.LeftIcon = nil
 	config.RightIcon = nil
 	config.ClickSound = nil
@@ -442,13 +441,13 @@ function Constructor(config: ButtonParameters): Button
 			parameters[k] = v
 		end
 	end
+
 	_Maid:GiveTask(RunService.RenderStepped:Connect(function(dt)
 		TimeSinceLastClick:Set(tick() - ClickTick:Get())
 	end))
 
-
-	-- print("Parameters", parameters, self)
-	local Output = _Fuse.new("Frame")(parameters)
+	-- construct output instance
+	local Output: Frame = _Fuse.new("Frame")(parameters) :: any
 	Util.bindSignal(Output, _Maid, "MouseButton1Down", MouseButton1Down)
 	Util.bindSignal(Output, _Maid, "MouseButton1Up", MouseButton1Up)
 	Util.bindSignal(Output, _Maid, "Activated", Activated)

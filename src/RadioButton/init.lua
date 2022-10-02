@@ -7,12 +7,12 @@ local packages = package.Parent
 local Util = require(package.Util)
 
 local Types = require(package.Types)
-type ParameterValue<T> = Types.ParameterValue<T>
 
 local ColdFusion = require(packages.coldfusion)
 type Fuse = ColdFusion.Fuse
 type State<T> = ColdFusion.State<T>
 type ValueState<T> = ColdFusion.ValueState<T>
+type CanBeState<T> = ColdFusion.CanBeState<T>
 
 local Maid = require(packages.maid)
 type Maid = Maid.Maid
@@ -25,32 +25,46 @@ local RadioButton = {}
 RadioButton.__index = RadioButton
 
 export type RadioButtonParameters = Types.FrameParameters & {
-	Scale: ParameterValue<number>?,
-	BorderColor3: ParameterValue<Color3>?,
-	BackgroundColor3: ParameterValue<Color3>?,
-	Value: ParameterValue<boolean>?,
-	EnableSound: ParameterValue<Sound>?,
-	DisableSound: ParameterValue<Sound>?,
+	Scale: CanBeState<number>?,
+	BorderColor3: CanBeState<Color3>?,
+	BackgroundColor3: CanBeState<Color3>?,
+	Value: CanBeState<boolean>?,
+	EnableSound: CanBeState<Sound>?,
+	DisableSound: CanBeState<Sound>?,
 }
 
 export type RadioButton = Frame
 
 function Constructor(config: RadioButtonParameters): RadioButton
+	-- init workspace
 	local _Maid = Maid.new()
 	local _Fuse = ColdFusion.fuse(_Maid)
-	local _Computed = _Fuse.Computed
-	local _Value = _Fuse.Value
-	local _import = _Fuse.import
 	local _new = _Fuse.new
+	local _mount = _Fuse.mount
+	local _import = _Fuse.import
+	local _OUT = _Fuse.OUT
+	local _REF = _Fuse.REF
+	local _CHILDREN = _Fuse.CHILDREN
+	local _ON_EVENT = _Fuse.ON_EVENT
+	local _ON_PROPERTY = _Fuse.ON_PROPERTY
+	local _Value = _Fuse.Value
+	local _Computed = _Fuse.Computed
 
+	-- unload config states
 	local Name = _import(config.Name, script.Name)
 	local Scale = _import(config.Scale, 1)
-	local BorderColor3 = _import(config.BorderColor3, Color3.fromHSV(0,0,0.4))
-	local BC3: any = _import(config.BackgroundColor3, Color3.fromHSV(0.6,1,1)); local BackgroundColor3: State<Color3> = BC3
+	local BorderColor3: State<Color3> = _import(config.BorderColor3, Color3.fromHSV(0,0,0.4)) :: any
+	local BackgroundColor3: State<Color3> = _import(config.BackgroundColor3, Color3.fromHSV(0.6,1,1)) :: any
 	local Value = _Value(if typeof(config.Value) == "boolean" then config.Value elseif typeof(config.Value) == "table" then config.Value:Get() else false)
-	local ES: any = _import(config.EnableSound, nil); local EnableSound: State<Sound?> = ES
-	local DS: any = _import(config.DisableSound, nil); local DisableSound: State<Sound?> = DS
+	local EnableSound: State<Sound?> = _import(config.EnableSound, nil) :: any
+	local DisableSound: State<Sound?> = _import(config.DisableSound, nil) :: any
 
+	-- construct signals
+	local Activated = Signal.new(); _Maid:GiveTask(Activated)
+
+	-- init internal states
+	local OutputState = (config :: any)[_REF] or _Value(nil :: RadioButton?)
+	local BubbleEnabled = _Value(false)
 	local Padding = _Computed(function(scale)
 		return math.round(6 * scale)
 	end, Scale)
@@ -58,10 +72,7 @@ function Constructor(config: RadioButtonParameters): RadioButton
 		return math.round(scale * 20)
 	end, Scale)
 
-	local Activated = Signal.new()
-	_Maid:GiveTask(Activated)
-	
-	local BubbleEnabled = _Value(false)
+	-- bind signal
 	_Maid:GiveTask(Activated:Connect(function()
 		if Value:Get() == true then
 			local clickSound = EnableSound:Get()
@@ -74,7 +85,7 @@ function Constructor(config: RadioButtonParameters): RadioButton
 				SoundService:PlayLocalSound(clickSound)
 			end
 		end
-		if Value:IsA("Value") then
+		if Value.Set then
 			Value:Set(not Value:Get())
 		end
 		if BubbleEnabled:Get() == false then
@@ -83,17 +94,17 @@ function Constructor(config: RadioButtonParameters): RadioButton
 			BubbleEnabled:Set(false)
 		end
 	end))
-	local Output: Frame
+
+
+	-- assemble final parameters
 	local parameters: any = {
+		[_REF] = OutputState :: any,
 		Name = Name,
 		Size = _Computed(function(width: number)
 			return UDim2.fromOffset(width * 2, width * 2)
 		end, Width),
 		BackgroundTransparency = 1,
-		Attributes = {
-			ClassName = script.Name,
-		},
-		Children = {
+		[_CHILDREN] = {
 			_new "ImageButton" {
 				Name = "Button",
 				ZIndex = 3,
@@ -102,11 +113,11 @@ function Constructor(config: RadioButtonParameters): RadioButton
 				Position = UDim2.fromScale(0.5,0.5),
 				Size = UDim2.fromScale(1,1),
 				AnchorPoint = Vector2.new(0.5,0.5),
-				[_Fuse.Event "Activated"] = function()
+				[_ON_EVENT "Activated"] = function()
 					Activated:Fire()
 					if BubbleEnabled:Get() then
 						local bubble = Bubble(_Maid)({
-							Parent = Output,
+							Parent = OutputState :: any,
 						})
 						local fireFunction: Instance? = bubble:WaitForChild("Fire")
 						assert(fireFunction ~= nil and fireFunction:IsA("BindableFunction"))
@@ -125,7 +136,7 @@ function Constructor(config: RadioButtonParameters): RadioButton
 					return UDim2.fromOffset(width-padding, width-padding)
 				end, Width, Padding),
 				BorderSizePixel = 0,
-				Children = {
+				[_CHILDREN] = {
 					_new "Frame" {
 						Name = "Fill",
 						Size = _Computed(function(width: number, padding: number): UDim2
@@ -140,7 +151,7 @@ function Constructor(config: RadioButtonParameters): RadioButton
 								return 1
 							end
 						end, Value):Tween(),
-						Children ={
+						[_CHILDREN] ={
 							_new "UICorner" {
 								CornerRadius = _Computed(function(padding)
 									return UDim.new(1,0)
@@ -162,7 +173,7 @@ function Constructor(config: RadioButtonParameters): RadioButton
 						end, Padding),
 						Transparency = 0,
 						Color = _Computed(
-							function(val, border, background)
+							function(val: boolean, border: Color3, background: Color3)
 								if val then return background else return border end
 							end,
 							Value,
@@ -187,8 +198,9 @@ function Constructor(config: RadioButtonParameters): RadioButton
 			parameters[k] = v
 		end
 	end
-	Output = _new("Frame")(parameters)
 
+	-- construct output instance
+	local Output = _new("Frame")(parameters) :: any
 	Util.cleanUpPrep(_Maid, Output)
 
 	return Output

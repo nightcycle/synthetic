@@ -5,197 +5,201 @@ local packages = package.Parent
 local ColdFusion = require(packages.coldfusion)
 
 type Fuse = ColdFusion.Fuse
-type State<T> = ColdFusion.State<T>
-type ValueState<T> = ColdFusion.ValueState<T>
+type State<T> = {
+	Get: (any) -> T,
+}
+type ValueState<T> = State<T> & {
+	Set: (any, T) -> nil,
+}
 
 local Maid = require(packages.maid)
 type Maid = Maid.Maid
 
-export type ParameterValue<T> = (State<T> | T)
+export type CanBeState<T> = (State<T> | T)
 
 export type InstanceParameters = {
-	Archivable: ParameterValue<boolean>?,		
-	Name: ParameterValue<string>?,
-	Parent: ParameterValue<Instance>?,
+	Archivable: CanBeState<boolean>?,		
+	Name: CanBeState<string>?,
+	Parent: CanBeState<Instance>?,
 	Children: {Instance}?,
 }
 
 export type GuiBase2dParameters = InstanceParameters & {	
-	AbsolutePosition: ParameterValue<Vector2>?,
-	AbsoluteRotiation: ParameterValue<number>?,
-	AbsoluteSize: ParameterValue<Vector2>?,
-	AutoLocalize: ParameterValue<boolean>?,
-	RootLocalizationTable: ParameterValue<LocalizationTable>?,
-	SelectionGroup: ParameterValue<boolean>?,
+	AbsolutePosition: CanBeState<Vector2>?,
+	AbsoluteRotiation: CanBeState<number>?,
+	AbsoluteSize: CanBeState<Vector2>?,
+	AutoLocalize: CanBeState<boolean>?,
+	RootLocalizationTable: CanBeState<LocalizationTable>?,
+	SelectionGroup: CanBeState<boolean>?,
 }
 
 export type LayerCollectorParameters = GuiBase2dParameters & {
-	Enabled: ParameterValue<boolean>?,
-	ResetOnSpawn: ParameterValue<boolean>?,
-	ZIndexBehavior: ParameterValue<Enum.ZIndexBehavior>?,
+	Enabled: CanBeState<boolean>?,
+	ResetOnSpawn: CanBeState<boolean>?,
+	ZIndexBehavior: CanBeState<Enum.ZIndexBehavior>?,
 }
 
 export type GuiObjectParameters = GuiBase2dParameters & {
-	Active: ParameterValue<boolean>?,
-	AnchorPoint: ParameterValue<Vector2>?,
-	AutomaticSize: ParameterValue<Enum.AutomaticSize>?,
-	BackgroundColor3: ParameterValue<Color3>?,
-	BackgroundTransparency: ParameterValue<number>?,
-	BorderColor3: ParameterValue<Color3>?,
-	BorderMode: ParameterValue<Enum.BorderMode>?,	
-	BorderSizePixel: ParameterValue<number>?,
-	ClipsDescendants: ParameterValue<boolean>?,	
-	LayoutOrder: ParameterValue<number>?,		
-	NextSelectionDown: ParameterValue<GuiObject>?,
-	NextSelectionLeft: ParameterValue<GuiObject>?,
-	NextSelectionRight: ParameterValue<GuiObject>?,
-	NextSelectionUp: ParameterValue<GuiObject>?,		
-	Position: ParameterValue<UDim2>?,
-	Rotation: ParameterValue<number>?,		
-	Selectable: ParameterValue<boolean>?,		
-	SelectionImageObject: ParameterValue<GuiObject>?,
-	SelectionOrder: ParameterValue<number>?,				
-	Size: ParameterValue<UDim2>?,			
-	SizeConstraint: ParameterValue<Enum.SizeConstraint>?,		
-	Visible: ParameterValue<boolean>?,
-	ZIndex: ParameterValue<number>?,
+	Active: CanBeState<boolean>?,
+	AnchorPoint: CanBeState<Vector2>?,
+	AutomaticSize: CanBeState<Enum.AutomaticSize>?,
+	BackgroundColor3: CanBeState<Color3>?,
+	BackgroundTransparency: CanBeState<number>?,
+	BorderColor3: CanBeState<Color3>?,
+	BorderMode: CanBeState<Enum.BorderMode>?,	
+	BorderSizePixel: CanBeState<number>?,
+	ClipsDescendants: CanBeState<boolean>?,	
+	LayoutOrder: CanBeState<number>?,		
+	NextSelectionDown: CanBeState<GuiObject>?,
+	NextSelectionLeft: CanBeState<GuiObject>?,
+	NextSelectionRight: CanBeState<GuiObject>?,
+	NextSelectionUp: CanBeState<GuiObject>?,		
+	Position: CanBeState<UDim2>?,
+	Rotation: CanBeState<number>?,		
+	Selectable: CanBeState<boolean>?,		
+	SelectionImageObject: CanBeState<GuiObject>?,
+	SelectionOrder: CanBeState<number>?,				
+	Size: CanBeState<UDim2>?,			
+	SizeConstraint: CanBeState<Enum.SizeConstraint>?,		
+	Visible: CanBeState<boolean>?,
+	ZIndex: CanBeState<number>?,
 }
 
 export type FrameParameters = GuiObjectParameters
 
 export type GuiButtonParameters = GuiObjectParameters & {
-	AutoButtonColor: ParameterValue<boolean>?,	
-	Modal: ParameterValue<boolean>?,
-	Selected: ParameterValue<boolean>?,			
-	Style: ParameterValue<Enum.ButtonStyle>?,	
+	AutoButtonColor: CanBeState<boolean>?,	
+	Modal: CanBeState<boolean>?,
+	Selected: CanBeState<boolean>?,			
+	Style: CanBeState<Enum.ButtonStyle>?,	
 }
 
 type ImageDisplay = {
-	Image: ParameterValue<string>?,
-	ImageColor3: ParameterValue<Color3>?,
-	ImageRectOffset: ParameterValue<Vector2>?,		
-	ImageRectSize: ParameterValue<Vector2>?,	
-	ImageTransparency: ParameterValue<number>?,	
-	IsLoaded: ParameterValue<boolean>?,		
-	PressedImage: ParameterValue<string>?,	
-	ResampleMode: ParameterValue<Enum.ResamplerMode>?,
-	ScaleType: ParameterValue<Enum.ScaleType>?,
-	SliceCenter: ParameterValue<Rect>?,
-	SliceScale: ParameterValue<number>?,
-	TileSize: ParameterValue<UDim2>?,
+	Image: CanBeState<string>?,
+	ImageColor3: CanBeState<Color3>?,
+	ImageRectOffset: CanBeState<Vector2>?,		
+	ImageRectSize: CanBeState<Vector2>?,	
+	ImageTransparency: CanBeState<number>?,	
+	IsLoaded: CanBeState<boolean>?,		
+	PressedImage: CanBeState<string>?,	
+	ResampleMode: CanBeState<Enum.ResamplerMode>?,
+	ScaleType: CanBeState<Enum.ScaleType>?,
+	SliceCenter: CanBeState<Rect>?,
+	SliceScale: CanBeState<number>?,
+	TileSize: CanBeState<UDim2>?,
 }
 
 type TextDisplay = {
-	Font: ParameterValue<Enum.Font>?,
-	FontFace: ParameterValue<Enum.Font>?,		
-	LineHeight: ParameterValue<number>?,			
-	MaxVisibleGraphemes: ParameterValue<number>?,
-	RichText: ParameterValue<boolean>?,
-	Text: ParameterValue<string>?,
-	TextBounds: ParameterValue<Vector2>?,
-	TextColor3: ParameterValue<Color3>?,
-	TextFits: ParameterValue<boolean>?,
-	TextScaled: ParameterValue<boolean>?,
-	TextSize: ParameterValue<number>?,
-	TextStrokeColor3: ParameterValue<boolean>?,
-	TextStrokeTransparency: ParameterValue<number>?,
-	TextTransparency: ParameterValue<number>?,
-	TextTruncate: ParameterValue<boolean>?,		
-	TextWrapped: ParameterValue<boolean>?,		
-	TextXAlignment: ParameterValue<Enum.TextXAlignment>?,
-	TextYAlignment: ParameterValue<Enum.TextYAlignment>?,
+	Font: CanBeState<Enum.Font>?,
+	FontFace: CanBeState<Enum.Font>?,		
+	LineHeight: CanBeState<number>?,			
+	MaxVisibleGraphemes: CanBeState<number>?,
+	RichText: CanBeState<boolean>?,
+	Text: CanBeState<string>?,
+	TextBounds: CanBeState<Vector2>?,
+	TextColor3: CanBeState<Color3>?,
+	TextFits: CanBeState<boolean>?,
+	TextScaled: CanBeState<boolean>?,
+	TextSize: CanBeState<number>?,
+	TextStrokeColor3: CanBeState<boolean>?,
+	TextStrokeTransparency: CanBeState<number>?,
+	TextTransparency: CanBeState<number>?,
+	TextTruncate: CanBeState<boolean>?,		
+	TextWrapped: CanBeState<boolean>?,		
+	TextXAlignment: CanBeState<Enum.TextXAlignment>?,
+	TextYAlignment: CanBeState<Enum.TextYAlignment>?,
 }
 
 export type TextButtonParameters = GuiButtonParameters & TextDisplay & {			
-	ContentText: ParameterValue<string>?,	
+	ContentText: CanBeState<string>?,	
 }
 
 export type ImageButtonParameters = GuiButtonParameters & ImageDisplay & {
-	HoverImage: ParameterValue<string>?,
+	HoverImage: CanBeState<string>?,
 }
 
 export type ImageLabelParameters = GuiObjectParameters & ImageDisplay
 export type TextLabelParameters = GuiObjectParameters & TextDisplay
 
 export type ScrollingFrameParameters = GuiObjectParameters & {
-	AbsoluteCanvasSize: ParameterValue<Vector2>?,	
-	AbsoluteWindowSize: ParameterValue<Vector2>?,	
-	AutomaticCanvasSize: ParameterValue<Enum.AutomaticSize>?,	
-	BottomImage: ParameterValue<string>?,	
-	CanvasPosition: ParameterValue<Vector2>?,	
-	CanvasSize: ParameterValue<UDim2>?,	
-	ElasticBehavior: ParameterValue<Enum.ElasticBehavior>?,			
-	HorizontalScrollBarInset: ParameterValue<Enum.ScrollBarInset>?,	
-	MidImage: ParameterValue<string>?,
-	ScrollBarImageColor3: ParameterValue<Color3>?,
-	ScrollBarImageTransparency: ParameterValue<number>?,		
-	ScrollBarThickness: ParameterValue<number>?,
-	ScrollingDirection: ParameterValue<Enum.ScrollingDirection>?,
-	ScrollingEnabled: ParameterValue<boolean>?,
-	TopImage: ParameterValue<string>?,
-	VerticalScrollBarInset: ParameterValue<Enum.ScrollBarInset>?,			
-	VerticalScrollBarPosition: ParameterValue<Enum.VerticalScrollBarPosition>?,	
+	AbsoluteCanvasSize: CanBeState<Vector2>?,	
+	AbsoluteWindowSize: CanBeState<Vector2>?,	
+	AutomaticCanvasSize: CanBeState<Enum.AutomaticSize>?,	
+	BottomImage: CanBeState<string>?,	
+	CanvasPosition: CanBeState<Vector2>?,	
+	CanvasSize: CanBeState<UDim2>?,	
+	ElasticBehavior: CanBeState<Enum.ElasticBehavior>?,			
+	HorizontalScrollBarInset: CanBeState<Enum.ScrollBarInset>?,	
+	MidImage: CanBeState<string>?,
+	ScrollBarImageColor3: CanBeState<Color3>?,
+	ScrollBarImageTransparency: CanBeState<number>?,		
+	ScrollBarThickness: CanBeState<number>?,
+	ScrollingDirection: CanBeState<Enum.ScrollingDirection>?,
+	ScrollingEnabled: CanBeState<boolean>?,
+	TopImage: CanBeState<string>?,
+	VerticalScrollBarInset: CanBeState<Enum.ScrollBarInset>?,			
+	VerticalScrollBarPosition: CanBeState<Enum.VerticalScrollBarPosition>?,	
 }
 
 export type ViewportFrameParameters = GuiObjectParameters & {
-	Ambient: ParameterValue<Color3>?,	
-	CurrentCamera: ParameterValue<Camera>?,	
-	ImageColor3: ParameterValue<Color3>?,	
-	ImageTransparency: ParameterValue<number>?,	
-	LightColor: ParameterValue<Color3>?,
-	LightDirection: ParameterValue<Vector3>?,
+	Ambient: CanBeState<Color3>?,	
+	CurrentCamera: CanBeState<Camera>?,	
+	ImageColor3: CanBeState<Color3>?,	
+	ImageTransparency: CanBeState<number>?,	
+	LightColor: CanBeState<Color3>?,
+	LightDirection: CanBeState<Vector3>?,
 }
 
 
 export type BillboardGuiParameters = LayerCollectorParameters & {
-	Active: ParameterValue<boolean>?,
-	Adornee: ParameterValue<Instance>?,
-	AlwaysOnTop: ParameterValue<boolean>?,
-	Brightness: ParameterValue<number>?,
-	ClipsDescendants: ParameterValue<boolean>?,
-	CurrentDistance: ParameterValue<number>?,
-	DistanceLowerLimit: ParameterValue<number>?,
-	DistanceStep: ParameterValue<number>?,
-	DistanceUpperLimit: ParameterValue<number>?,
-	ExtentsOffset: ParameterValue<Vector3>?,
-	ExtentsOffsetWorldSpace: ParameterValue<Vector3>?,
-	LightInfluence: ParameterValue<number>?,
-	MaxDistance: ParameterValue<number>?,
-	PlayerToHideFrom: ParameterValue<Instance>?,
-	Size: ParameterValue<UDim2>?,
-	SizeOffset: ParameterValue<Vector2>?,
-	StudsOffset: ParameterValue<Vector3>?,	
-	StudsOffsetWorldSpace: ParameterValue<Vector3>?,
+	Active: CanBeState<boolean>?,
+	Adornee: CanBeState<Instance>?,
+	AlwaysOnTop: CanBeState<boolean>?,
+	Brightness: CanBeState<number>?,
+	ClipsDescendants: CanBeState<boolean>?,
+	CurrentDistance: CanBeState<number>?,
+	DistanceLowerLimit: CanBeState<number>?,
+	DistanceStep: CanBeState<number>?,
+	DistanceUpperLimit: CanBeState<number>?,
+	ExtentsOffset: CanBeState<Vector3>?,
+	ExtentsOffsetWorldSpace: CanBeState<Vector3>?,
+	LightInfluence: CanBeState<number>?,
+	MaxDistance: CanBeState<number>?,
+	PlayerToHideFrom: CanBeState<Instance>?,
+	Size: CanBeState<UDim2>?,
+	SizeOffset: CanBeState<Vector2>?,
+	StudsOffset: CanBeState<Vector3>?,	
+	StudsOffsetWorldSpace: CanBeState<Vector3>?,
 }
 
 export type ScreenGuiParameters = LayerCollectorParameters & {
-	DisplayOrder: ParameterValue<number>?,
-	IgnoreGuiInset: ParameterValue<boolean>?,
+	DisplayOrder: CanBeState<number>?,
+	IgnoreGuiInset: CanBeState<boolean>?,
 }
 
 export type SurfaceGuiParameters = LayerCollectorParameters & {
-	Active: ParameterValue<boolean>?,
-	Adornee: ParameterValue<Instance>?,
-	AlwaysOnTop: ParameterValue<boolean>?,
-	Brightness: ParameterValue<number>?,
-	CanvasSize: ParameterValue<Vector2>?,
-	ClipsDescendants: ParameterValue<boolean>?,
-	Face: ParameterValue<Enum.NormalId>?,
-	LightInfluence: ParameterValue<number>?,
-	PixelsPerStud: ParameterValue<number>?,
-	SizingMode: ParameterValue<Enum.SurfaceGuiSizingMode>?,
-	ToolPunchThroughDistance: ParameterValue<number>?,
-	ZOffset: ParameterValue<number>?,
+	Active: CanBeState<boolean>?,
+	Adornee: CanBeState<Instance>?,
+	AlwaysOnTop: CanBeState<boolean>?,
+	Brightness: CanBeState<number>?,
+	CanvasSize: CanBeState<Vector2>?,
+	ClipsDescendants: CanBeState<boolean>?,
+	Face: CanBeState<Enum.NormalId>?,
+	LightInfluence: CanBeState<number>?,
+	PixelsPerStud: CanBeState<number>?,
+	SizingMode: CanBeState<Enum.SurfaceGuiSizingMode>?,
+	ToolPunchThroughDistance: CanBeState<number>?,
+	ZOffset: CanBeState<number>?,
 }
 
 export type TextBoxParameters = GuiObjectParameters & TextDisplay & {
-	ClearTextOnFocus: ParameterValue<boolean>?,		
-	CursorPosition: ParameterValue<number>?,		
-	MultiLine: ParameterValue<boolean>?,			
-	PlaceholderColor3: ParameterValue<Color3>?,		
-	PlaceholderText: ParameterValue<string>?,		
-	TextEditable: ParameterValue<boolean>?,		
-	ShowNativeInput: ParameterValue<boolean>?,
+	ClearTextOnFocus: CanBeState<boolean>?,		
+	CursorPosition: CanBeState<number>?,		
+	MultiLine: CanBeState<boolean>?,			
+	PlaceholderColor3: CanBeState<Color3>?,		
+	PlaceholderText: CanBeState<string>?,		
+	TextEditable: CanBeState<boolean>?,		
+	ShowNativeInput: CanBeState<boolean>?,
 }
 
 return {}

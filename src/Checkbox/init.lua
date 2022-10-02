@@ -7,12 +7,12 @@ local packages = package.Parent
 local Util = require(package.Util)
 
 local Types = require(package.Types)
-type ParameterValue<T> = Types.ParameterValue<T>
 
 local ColdFusion = require(packages.coldfusion)
 type Fuse = ColdFusion.Fuse
 type State<T> = ColdFusion.State<T>
 type ValueState<T> = ColdFusion.ValueState<T>
+type CanBeState<T> = ColdFusion.CanBeState<T>
 
 local Maid = require(packages.maid)
 type Maid = Maid.Maid
@@ -22,37 +22,53 @@ local Signal = require(packages:WaitForChild("signal"))
 local Bubble = require(package:WaitForChild("Bubble"))
 
 export type CheckboxParameters = Types.FrameParameters & {
-	Scale: ParameterValue<number>?,
-	Value: ParameterValue<boolean>?,
-	EnableSound: ParameterValue<Sound>?,
-	DisableSound: ParameterValue<Sound>?,
+	Scale: CanBeState<number>?,
+	Value: CanBeState<boolean>?,
+	EnableSound: CanBeState<Sound>?,
+	DisableSound: CanBeState<Sound>?,
 }
 
 export type Checkbox = Frame
 
 function Constructor(config: CheckboxParameters): Checkbox
+	-- init workspace
 	local _Maid: Maid = Maid.new()
 	local _Fuse: Fuse = ColdFusion.fuse(_Maid)
-	local _Computed = _Fuse.Computed
-	local _Value = _Fuse.Value
-	local _import = _Fuse.import
-	local _new = _Fuse.new
 
+	local _new = _Fuse.new
+	local _mount = _Fuse.mount
+	local _import = _Fuse.import
+
+	local _OUT = _Fuse.OUT
+	local _REF = _Fuse.REF
+	local _CHILDREN = _Fuse.CHILDREN
+	local _ON_EVENT = _Fuse.ON_EVENT
+	local _ON_PROPERTY = _Fuse.ON_PROPERTY
+
+	local _Value = _Fuse.Value
+	local _Computed = _Fuse.Computed
+	
+	-- unload config states
 	local Name = _import(config.Name, script.Name)
 	local Scale = _import(config.Scale, 1)
 	local BorderColor3 = _import(config.BorderColor3, Color3.fromHSV(0,0,0.4))
 	local BackgroundColor3 = _import(config.BackgroundColor3, Color3.fromHSV(0.6,1,1))
-
 	local Value = _Value(if typeof(config.Value) == "boolean" then config.Value elseif typeof(config.Value) == "table" then config.Value:Get() else false)
-	local ES: any = _import(config.EnableSound, nil); local EnableSound: State<Sound?> = ES
-	local DS: any = _import(config.DisableSound, nil); local DisableSound: State<Sound?> = DS
+	local EnableSound: State<Sound?>  = _import(config.EnableSound, nil :: Sound?)
+	local DisableSound: State<Sound?>  = _import(config.DisableSound, nil :: Sound?)
+	
+	-- construct signals
+	local Activated = Signal.new()
+	_Maid:GiveTask(Activated)
+
+	-- init internal states
+	local BubbleEnabled = _Value(false)
 	local Padding = _Computed(function(scale: number)
 		return math.round(6 * scale)
 	end, Scale)
 	local Width = _Computed(function(scale: number)
 		return math.round(scale * 20)
 	end, Scale)
-	
 	local TweenColor = _Computed(function(val, borderColor3, backgroundColor3)
 		if not val then
 			return borderColor3
@@ -61,12 +77,9 @@ function Constructor(config: CheckboxParameters): Checkbox
 		end
 	end, Value, BorderColor3, BackgroundColor3):Tween()
 
-	local Activated = Signal.new()
-	_Maid:GiveTask(Activated)
-
-	local BubbleEnabled = _Value(false)
+	-- bind signals
 	_Maid:GiveTask(Activated:Connect(function()
-		if not Value:Get() == true then
+		if not (Value:Get() == true) then
 			local clickSound = EnableSound:Get()
 			if clickSound then
 				SoundService:PlayLocalSound(clickSound)
@@ -77,7 +90,7 @@ function Constructor(config: CheckboxParameters): Checkbox
 				SoundService:PlayLocalSound(clickSound)
 			end
 		end
-		if Value:IsA("Value") then
+		if Value.Set then
 			Value:Set(not Value:Get())
 		end
 		if BubbleEnabled:Get() == false then
@@ -86,6 +99,8 @@ function Constructor(config: CheckboxParameters): Checkbox
 			BubbleEnabled:Set(false)
 		end
 	end))
+
+	-- assemble final parameters
 	local Output: Frame
 	local parameters = {
 		Name = Name,
@@ -93,7 +108,7 @@ function Constructor(config: CheckboxParameters): Checkbox
 			return UDim2.fromOffset(width * 2, width * 2)
 		end, Width),
 		BackgroundTransparency = 1,
-		Children = {
+		[_CHILDREN] = {
 			_new "ImageButton" {
 				Name = "Button",
 				ZIndex = 3,
@@ -102,7 +117,7 @@ function Constructor(config: CheckboxParameters): Checkbox
 				Position = UDim2.fromScale(0.5,0.5),
 				Size = UDim2.fromScale(1,1),
 				AnchorPoint = Vector2.new(0.5,0.5),
-				[_Fuse.Event "Activated"] = function()
+				[_ON_EVENT "Activated"] = function()
 					Activated:Fire()
 					if BubbleEnabled:Get() then
 						local bubble = Bubble(_Maid){
@@ -111,6 +126,7 @@ function Constructor(config: CheckboxParameters): Checkbox
 						local fireFunction: Instance? = bubble:WaitForChild("Fire")
 						assert(fireFunction ~= nil and fireFunction:IsA("BindableFunction"))
 						fireFunction:Invoke()
+						-- _Maid._bubble = bubble
 					end
 				end
 			},
@@ -138,7 +154,7 @@ function Constructor(config: CheckboxParameters): Checkbox
 					return UDim2.fromOffset(width-padding, width-padding)
 				end, Width, Padding),
 				BorderSizePixel = 0,
-				Children = {
+				[_CHILDREN] = {
 					_new "UICorner" {
 						CornerRadius = _Computed(function(padding: number)
 							return UDim.new(0,math.round(padding*0.5))
@@ -167,9 +183,13 @@ function Constructor(config: CheckboxParameters): Checkbox
 			parameters[k] = v
 		end
 	end
-	-- print("Parameters", parameters, self)
-	Output = _new("Frame")(parameters)
+
+	-- Construct final gui
+	Output = _new("Frame")(parameters) :: Frame
+
+	-- Bind gui's life to maid
 	Util.cleanUpPrep(_Maid, Output)
+
 	return Output
 end
 

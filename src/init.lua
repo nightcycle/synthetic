@@ -1,11 +1,12 @@
 --!strict
+
 local module = script
 
 local Maid = require(module.Parent.maid)
 export type Maid = Maid.Maid
 
 local Types = require(module.Types)
-export type ParameterValue<T> = Types.ParameterValue<T>
+export type CanBeState<T> = Types.CanBeState<T>
 
 local TextLabel = require(module.TextLabel)
 export type TextLabelParameters = TextLabel.TextLabelParameters
@@ -21,7 +22,6 @@ export type SwitchParameters = Switch.SwitchParameters
 
 local SurfaceFrame = require(module.SurfaceFrame)
 export type SurfaceFrameParameters = SurfaceFrame.SurfaceFrameParameters
--- export type SurfaceFrameConstructor = SurfaceFrame.SurfaceFrame
 
 local Slider = require(module.Slider)
 export type SliderParameters = Slider.SliderParameters
@@ -40,9 +40,6 @@ export type EffectGuiParameters = EffectGui.EffectGuiParameters
 
 local Checkbox = require(module.Checkbox)
 export type CheckboxParameters = Checkbox.CheckboxParameters
-
-local ButtonList = require(module.ButtonList)
-export type ButtonListParameters = ButtonList.ButtonListParameters
 
 local Button = require(module.Button)
 export type ButtonParameters = Button.ButtonParameters
@@ -71,7 +68,6 @@ export type Synthetic = (
 	& ((className: "Hint") -> ((HintParameters) -> Hint.Hint))
 	& ((className: "EffectGui") -> ((EffectGuiParameters) -> EffectGui.EffectGui))
 	& ((className: "Checkbox") -> ((CheckboxParameters) -> Checkbox.Checkbox))
-	& ((className: "ButtonList") -> ((ButtonListParameters) -> ButtonList.ButtonList))
 	& ((className: "Button") -> ((ButtonParameters) -> Button.Button))
 	& ((className: "Bubble") -> ((BubbleParameters) -> Bubble.Bubble))
 	& ((className: "BoundingBoxFrame") -> ((BoundingBoxFrameParameters) -> BoundingBoxFrame.BoundingBoxFrame))
@@ -122,8 +118,6 @@ return function(maid: Maid?): Synthetic
 			return EffectGui(maid)
 		elseif className == "Checkbox" then
 			return Checkbox(maid)
-		elseif className == "ButtonList" then
-			return ButtonList(maid)
 		elseif className == "Button" then
 			return Button(maid)
 		elseif className == "Bubble" then

@@ -7,12 +7,12 @@ local packages = package.Parent
 local Util = require(package.Util)
 
 local Types = require(package.Types)
-type ParameterValue<T> = Types.ParameterValue<T>
 
 local ColdFusion = require(packages.coldfusion)
 type Fuse = ColdFusion.Fuse
 type State<T> = ColdFusion.State<T>
 type ValueState<T> = ColdFusion.ValueState<T>
+type CanBeState<T> = ColdFusion.CanBeState<T>
 
 local Maid = require(packages.maid)
 type Maid = Maid.Maid
@@ -22,24 +22,32 @@ local Signal = require(packages:WaitForChild("signal"))
 local Bubble = require(package:WaitForChild("Bubble"))
 
 export type SwitchParameters = Types.FrameParameters & {
-	Scale: ParameterValue<number>?,
-	EnabledColor3: ParameterValue<Color3>?,
-	Value: ParameterValue<boolean>?,
-	EnableSound: ParameterValue<Sound>?,
-	DisableSound: ParameterValue<Sound>?,
-	BubbleEnabled: ParameterValue<boolean>?,
+	Scale: CanBeState<number>?,
+	EnabledColor3: CanBeState<Color3>?,
+	Value: CanBeState<boolean>?,
+	EnableSound: CanBeState<Sound>?,
+	DisableSound: CanBeState<Sound>?,
+	BubbleEnabled: CanBeState<boolean>?,
 }
 
 export type Switch = Frame
 
 function Constructor(config: SwitchParameters): Switch
+	-- init workspace
 	local _Maid = Maid.new()
 	local _Fuse = ColdFusion.fuse(_Maid)
-	local _Computed = _Fuse.Computed
-	local _Value = _Fuse.Value
-	local _import = _Fuse.import
 	local _new = _Fuse.new
+	local _mount = _Fuse.mount
+	local _import = _Fuse.import
+	local _OUT = _Fuse.OUT
+	local _REF = _Fuse.REF
+	local _CHILDREN = _Fuse.CHILDREN
+	local _ON_EVENT = _Fuse.ON_EVENT
+	local _ON_PROPERTY = _Fuse.ON_PROPERTY
+	local _Value = _Fuse.Value
+	local _Computed = _Fuse.Computed
 
+	-- unload config states
 	local Name = _import(config.Name, script.Name)
 	local Scale = _import(config.Scale, 1)
 	local BackgroundColor3 = _import(config.BackgroundColor3, Color3.fromHSV(0,0,0.9))
@@ -49,45 +57,18 @@ function Constructor(config: SwitchParameters): Switch
 	local DS: any = _import(config.DisableSound, nil); local DisableSound: State<Sound?> = DS
 	local BubbleEnabled = _Value(if typeof(config.BubbleEnabled) == "boolean" then config.BubbleEnabled elseif typeof(config.BubbleEnabled) == "table" then config.BubbleEnabled:Get() else false)
 
+	-- construct signals
+	local Activated = Signal.new(); _Maid:GiveTask(Activated)
+
+	-- init internal states
 	local Padding = _Computed(function(scale)
 		return math.round(6 * scale)
 	end, Scale)
 	local Width = _Computed(function(scale: number)
 		return math.round(scale * 20)
 	end, Scale)
-	local Activated = Signal.new()
-	_Maid:GiveTask(Activated)
-
-
-	_Maid:GiveTask(Activated:Connect(function()	
-		-- print("VAL", Value:Get())
-		if Value:Get() == true then
-			local clickSound = EnableSound:Get()
-			if clickSound then
-				SoundService:PlayLocalSound(clickSound)
-			end
-		else
-			local clickSound = DisableSound:Get()
-			if clickSound then
-				SoundService:PlayLocalSound(clickSound)
-			end
-		end
-		-- print("ISVAL", Value:IsA("Value"))
-		if Value:IsA("Value") then
-			-- print("Get", Value:Get())
-			-- print("V1", Value)
-			Value:Set(not Value:Get())
-			-- print("V2", Value)
-		end
-		if BubbleEnabled:Get() == false then
-			BubbleEnabled:Set(true)
-			task.wait(0.2)
-			BubbleEnabled:Set(false)
-		end
-	end))
-
 	local ActiveColor3 = _Computed(
-		function(val, back, col)
+		function(val: boolean, back: Color3, col: Color3): Color3
 			if val then
 				return col
 			else
@@ -99,6 +80,30 @@ function Constructor(config: SwitchParameters): Switch
 		EnabledColor3
 	)
 
+	-- bind states
+	_Maid:GiveTask(Activated:Connect(function()	
+		if Value:Get() == true then
+			local clickSound = EnableSound:Get()
+			if clickSound then
+				SoundService:PlayLocalSound(clickSound)
+			end
+		else
+			local clickSound = DisableSound:Get()
+			if clickSound then
+				SoundService:PlayLocalSound(clickSound)
+			end
+		end
+		if Value.Set then
+			Value:Set(not Value:Get())
+		end
+		if BubbleEnabled:Get() == false then
+			BubbleEnabled:Set(true)
+			task.wait(0.2)
+			BubbleEnabled:Set(false)
+		end
+	end))
+
+	-- construct sub-instances
 	local Knob = _new "Frame" {
 	 	Name = "Knob",
 		ZIndex = 2,
@@ -116,7 +121,7 @@ function Constructor(config: SwitchParameters): Switch
 		Size = UDim2.fromScale(1,1),
 		SizeConstraint = Enum.SizeConstraint.RelativeYY,
 		BackgroundTransparency = 1,
-		Children = {
+		[_CHILDREN] = {
 			_new "Frame" {
 				Name = "Frame",
 				ZIndex = 2,
@@ -127,7 +132,7 @@ function Constructor(config: SwitchParameters): Switch
 					return UDim2.fromOffset(width-padding, width-padding)
 				end, Width, Padding),
 				BorderSizePixel = 0,
-				Children = {
+				[_CHILDREN] = {
 					_new "UICorner" {
 						CornerRadius = _Computed(function(padding)
 							return UDim.new(1,0)
@@ -145,16 +150,14 @@ function Constructor(config: SwitchParameters): Switch
 		} :: {Instance},
 	}
 
+	-- assemble final parameters
 	local parameters: any = {
 		Name = Name,
 		Size = _Computed(function(width: number)
 			return UDim2.fromOffset(width * 2, width * 2)
 		end, Width),
 		BackgroundTransparency = 1,
-		Attributes = {
-			ClassName = script.Name,
-		},
-		Children = {
+		[_CHILDREN] = {
 			_new "ImageButton" {
 				Name = "Button",
 				ZIndex = 3,
@@ -163,7 +166,7 @@ function Constructor(config: SwitchParameters): Switch
 				Position = UDim2.fromScale(0.5,0.5),
 				Size = UDim2.fromScale(1,1),
 				AnchorPoint = Vector2.new(0.5,0.5),
-				[_Fuse.Event "Activated"] = function()
+				[_ON_EVENT "Activated"] = function()
 					Activated:Fire()
 					if BubbleEnabled:Get() then
 						local bubble = Bubble(_Maid){
@@ -188,7 +191,7 @@ function Constructor(config: SwitchParameters): Switch
 				Position = UDim2.fromScale(0.5,0.5),
 				AnchorPoint = Vector2.new(0.5,0.5),
 				BackgroundTransparency = 1,
-				Children = {
+				[_CHILDREN] = {
 					_new "Frame" {
 						Name = "Track",
 						ZIndex = 1,
@@ -211,7 +214,7 @@ function Constructor(config: SwitchParameters): Switch
 							Value,
 							EnabledColor3
 						):Tween(),
-						Children = {
+						[_CHILDREN] = {
 							_new "UICorner" {
 								CornerRadius = UDim.new(0.5,0),
 							}
@@ -235,9 +238,9 @@ function Constructor(config: SwitchParameters): Switch
 			parameters[k] = v
 		end
 	end
-	-- print("Parameters", parameters, self)
-	local Output = _new("Frame")(parameters)
-
+	
+	-- construct output instance
+	local Output: Frame = _new("Frame")(parameters) :: any
 	Util.cleanUpPrep(_Maid, Output)
 
 	return Output
