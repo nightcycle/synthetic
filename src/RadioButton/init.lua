@@ -203,6 +203,8 @@ function Constructor(config: RadioButtonParameters): RadioButton
 	local Output = _new("Frame")(parameters) :: any
 	Util.cleanUpPrep(_Maid, Output)
 
+	Util.bindSignal(Output, _Maid, "Activated", Activated)
+
 	return Output
 end
 

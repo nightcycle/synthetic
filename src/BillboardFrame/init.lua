@@ -20,6 +20,7 @@ export type BillboardFrameParameters = Types.FrameParameters & {
 	Position: CanBeState<Vector3>?,
 	Size: CanBeState<Vector2>?,
 	LightInfluence: CanBeState<number>?,
+	Active: CanBeState<boolean>?,
 	AlwaysOnTop: CanBeState<boolean>?,
 	MaxDistance: CanBeState<number>?,
 	AnchorPoint: CanBeState<Vector2>?,
@@ -49,6 +50,7 @@ function Constructor(config: BillboardFrameParameters): BillboardFrame
 	local LightInfluence = _import(config.LightInfluence, 0)
 	local AlwaysOnTop = _import(config.AlwaysOnTop, false)
 	local MaxDistance = _import(config.MaxDistance, 100)
+	local Active = _import(config.Active, true)
 	local AnchorPoint = _import(config.AnchorPoint, Vector2.new(0.5,0.5))
 	
 	-- constructing instances
@@ -66,6 +68,7 @@ function Constructor(config: BillboardFrameParameters): BillboardFrame
 	local SurfaceGui = _new "BillboardGui" {
 		Parent = Parent,
 		Adornee = Part,
+		Active = Active,
 		AlwaysOnTop = AlwaysOnTop,
 		Size = _Computed(function(size: Vector2)
 			return UDim2.fromScale(size.X, size.Y)

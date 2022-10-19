@@ -189,7 +189,8 @@ function Constructor(config: CheckboxParameters): Checkbox
 
 	-- Bind gui's life to maid
 	Util.cleanUpPrep(_Maid, Output)
-
+	Util.bindSignal(Output, _Maid, "Activated", Activated)
+	
 	return Output
 end
 

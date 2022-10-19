@@ -242,7 +242,8 @@ function Constructor(config: SwitchParameters): Switch
 	-- construct output instance
 	local Output: Frame = _new("Frame")(parameters) :: any
 	Util.cleanUpPrep(_Maid, Output)
-
+	Util.bindSignal(Output, _Maid, "Activated", Activated)
+	
 	return Output
 end
 

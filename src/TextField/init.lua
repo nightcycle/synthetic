@@ -3,7 +3,6 @@ local package = script.Parent
 local packages = package.Parent
 
 local Util = require(package.Util)
-
 local Types = require(package.Types)
 
 local ColdFusion = require(packages.coldfusion)
@@ -418,6 +417,13 @@ function Constructor(config: TextFieldParameters): TextField
 
 	config.LowerText = nil
 	config.LowerTextColor3 = nil
+	config.TextColor3 = nil
+	config.TextTransparency = nil
+	config.TextStrokeColor3 = nil
+	config.TextScaled = nil
+	config.Font = nil
+	config.Text = nil
+	config.TextSize = nil
 	config.Width = nil
 	config.CornerRadius = nil
 	config.CharacterLimit = nil
@@ -458,6 +464,8 @@ function Constructor(config: TextFieldParameters): TextField
 		end
 		return nil
 	end, Input, CharacterCount, CharacterLimit)
+	Util.bindSignal(Output, _Maid, "OnInputChanged", OnInputChanged)
+	Util.bindSignal(Output, _Maid, "OnInputComplete", OnInputComplete)
 
 	return Output
 end

@@ -92,12 +92,12 @@ function Constructor(config: SliderParameters): Slider
 	end, Value, Minimum, Maximum)
 
 	-- bind internal states
-	Value:Connect(function()
+	_Maid:GiveTask(Value:Connect(function()
 		local tickSound = TickSound:Get()
 		if tickSound then
 			SoundService:PlayLocalSound(tickSound)
 		end
-	end)
+	end))
 	local Diameter = _Computed(function(size:UDim2, padding:UDim)
 		return size.Y.Offset - padding.Offset*2
 	end, Size, Padding)
@@ -308,6 +308,10 @@ function Constructor(config: SliderParameters): Slider
 		end
 		return nil
 	end, Dragging)
+
+	_Maid:GiveTask(Value:Connect(function(cur)
+		Output:SetAttribute("Value", cur)
+	end))
 
 	Util.cleanUpPrep(_Maid, Output)
 
