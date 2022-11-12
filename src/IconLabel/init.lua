@@ -88,18 +88,22 @@ function Constructor(config: IconLabelParameters): IconLabel
 		[_REF] = OutputState :: any,
 		Name = Name,
 		BackgroundTransparency = 1,
-		Image = _Computed(function(iconData, key)
+		Image = _Computed(function(iconData, key: string?)
 			if not key or key == "" then return "" end
-			if not iconData then return "" end
+			if not iconData then return key or "" end
 			return "rbxassetid://"..iconData.Sheet
 		end, IconData, Icon),
 		ImageRectOffset = _Computed(function(iconData)
 			if not iconData then return Vector2.new(0,0) end
 			return Vector2.new(iconData.X, iconData.Y)
 		end, IconData),
-		ImageRectSize = _Computed(function(dpi: number)
-			return Vector2.new(dpi, dpi)
-		end, DotsPerInch),
+		ImageRectSize = _Computed(function(dpi: number, iconData)
+			if iconData then
+				return Vector2.new(dpi, dpi)
+			else
+				return Vector2.new(0,0)
+			end
+		end, DotsPerInch, IconData),
 		ImageColor3 = IconColor3,
 		ImageTransparency = IconTransparency,
 		[_OUT "AbsoluteSize"] = AbsoluteSize,

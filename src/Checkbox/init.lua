@@ -23,9 +23,10 @@ local Bubble = require(package:WaitForChild("Bubble"))
 
 export type CheckboxParameters = Types.FrameParameters & {
 	Scale: CanBeState<number>?,
-	Value: CanBeState<boolean>?,
+	Value: ValueState<boolean>,
 	EnableSound: CanBeState<Sound>?,
 	DisableSound: CanBeState<Sound>?,
+	TextColor3: CanBeState<Color3>?,
 }
 
 export type Checkbox = Frame
@@ -52,8 +53,9 @@ function Constructor(config: CheckboxParameters): Checkbox
 	local Name = _import(config.Name, script.Name)
 	local Scale = _import(config.Scale, 1)
 	local BorderColor3 = _import(config.BorderColor3, Color3.fromHSV(0,0,0.4))
+	local TextColor3 = _import(config.TextColor3, Color3.fromHSV(0,0,0.4))
 	local BackgroundColor3 = _import(config.BackgroundColor3, Color3.fromHSV(0.6,1,1))
-	local Value = _Value(if typeof(config.Value) == "boolean" then config.Value elseif typeof(config.Value) == "table" then config.Value:Get() else false)
+	local Value = config.Value :: any
 	local EnableSound: State<Sound?>  = _import(config.EnableSound, nil :: Sound?)
 	local DisableSound: State<Sound?>  = _import(config.DisableSound, nil :: Sound?)
 	
@@ -136,7 +138,7 @@ function Constructor(config: CheckboxParameters): Checkbox
 				Image = "rbxassetid://3926305904",
 				ImageRectOffset = Vector2.new(312,4),
 				ImageRectSize = Vector2.new(24,24),
-				ImageColor3 = BorderColor3,
+				ImageColor3 = TextColor3,
 				ImageTransparency = _Computed(function(val)
 					if val then return 0 else return 1 end
 				end, Value):Tween(),
@@ -174,9 +176,10 @@ function Constructor(config: CheckboxParameters): Checkbox
 	}
 	
 	config.Scale = nil
-	config.Value = nil
+	config.Value = nil :: any
 	config.EnableSound = nil
 	config.DisableSound = nil
+	config.TextColor3 = nil
 
 	for k, v in pairs(config) do
 		if parameters[k] == nil then

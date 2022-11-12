@@ -24,7 +24,7 @@ local Bubble = require(package:WaitForChild("Bubble"))
 export type SwitchParameters = Types.FrameParameters & {
 	Scale: CanBeState<number>?,
 	EnabledColor3: CanBeState<Color3>?,
-	Value: CanBeState<boolean>?,
+	Value: ValueState<boolean>,
 	EnableSound: CanBeState<Sound>?,
 	DisableSound: CanBeState<Sound>?,
 	BubbleEnabled: CanBeState<boolean>?,
@@ -52,7 +52,7 @@ function Constructor(config: SwitchParameters): Switch
 	local Scale = _import(config.Scale, 1)
 	local BackgroundColor3 = _import(config.BackgroundColor3, Color3.fromHSV(0,0,0.9))
 	local EnabledColor3 = _import(config.EnabledColor3, Color3.fromHSV(0.6,1,1))
-	local Value = _Value(if typeof(config.Value) == "boolean" then config.Value elseif typeof(config.Value) == "table" then config.Value:Get() else false)
+	local Value = config.Value :: any
 	local ES: any = _import(config.EnableSound, nil); local EnableSound: State<Sound?> = ES
 	local DS: any = _import(config.DisableSound, nil); local DisableSound: State<Sound?> = DS
 	local BubbleEnabled = _Value(if typeof(config.BubbleEnabled) == "boolean" then config.BubbleEnabled elseif typeof(config.BubbleEnabled) == "table" then config.BubbleEnabled:Get() else false)
@@ -228,7 +228,7 @@ function Constructor(config: SwitchParameters): Switch
 
 	config.Scale = nil
 	config.EnabledColor3 = nil
-	config.Value = nil
+	config.Value = nil :: any
 	config.EnableSound = nil
 	config.DisableSound = nil
 	config.BubbleEnabled = nil

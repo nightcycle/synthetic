@@ -28,7 +28,7 @@ export type RadioButtonParameters = Types.FrameParameters & {
 	Scale: CanBeState<number>?,
 	BorderColor3: CanBeState<Color3>?,
 	BackgroundColor3: CanBeState<Color3>?,
-	Value: CanBeState<boolean>?,
+	Value: ValueState<boolean>,
 	EnableSound: CanBeState<Sound>?,
 	DisableSound: CanBeState<Sound>?,
 }
@@ -55,7 +55,7 @@ function Constructor(config: RadioButtonParameters): RadioButton
 	local Scale = _import(config.Scale, 1)
 	local BorderColor3: State<Color3> = _import(config.BorderColor3, Color3.fromHSV(0,0,0.4)) :: any
 	local BackgroundColor3: State<Color3> = _import(config.BackgroundColor3, Color3.fromHSV(0.6,1,1)) :: any
-	local Value = _Value(if typeof(config.Value) == "boolean" then config.Value elseif typeof(config.Value) == "table" then config.Value:Get() else false)
+	local Value = config.Value
 	local EnableSound: State<Sound?> = _import(config.EnableSound, nil) :: any
 	local DisableSound: State<Sound?> = _import(config.DisableSound, nil) :: any
 
@@ -189,7 +189,7 @@ function Constructor(config: RadioButtonParameters): RadioButton
 	config.Scale = nil
 	config.BorderColor3 = nil
 	config.BackgroundColor3 = nil
-	config.Value = nil
+	config.Value = nil :: any
 	config.EnableSound = nil
 	config.DisableSound = nil
 

@@ -12,18 +12,17 @@ local Util = {}
 Util.__index = Util
 
 function Util.cleanUpPrep(maid: Maid, inst: Instance)
+	local compMaid = Maid.new()
+	compMaid:GiveTask(inst)
+	for i, desc in ipairs(inst:GetDescendants()) do
+		compMaid:GiveTask(desc)
+	end
+
+	maid:GiveTask(compMaid)
+
 	maid:GiveTask(inst.Destroying:Connect(function()
-		for i, inst in ipairs(inst:GetDescendants()) do
-			pcall(function()
-				inst:Destroy()
-			end)
-		end
-		pcall(function()
-			inst:Destroy()
-		end)
-		pcall(function()
-			maid:Destroy()
-		end)
+		compMaid:Destroy()
+		maid:Destroy()
 	end))
 end
 
