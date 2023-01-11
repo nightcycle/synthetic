@@ -19,6 +19,7 @@ local Signal = require(packages:WaitForChild("signal"))
 local IconLabel = require(script.Parent:WaitForChild("IconLabel"))
 
 export type TextFieldParameters = Types.TextBoxParameters & {
+	Value: ValueState<string>,
 	LowerText: CanBeState<string>?,
 	LowerTextColor3: CanBeState<Color3>?,
 	Width: CanBeState<UDim>?,
@@ -51,6 +52,7 @@ function Constructor(config: TextFieldParameters): TextField
 
 	-- unload config states
 	local Name = _import(config.Name, script.Name)
+	local Value = config.Value
 	local TextSize = _import(config.TextSize, 14)
 	local Parent = _import(config.Parent, nil)
 	local LowerText: State<string> = _import(config.LowerText, "")
@@ -75,8 +77,8 @@ function Constructor(config: TextFieldParameters): TextField
 	local BorderSizePixel = _import(config.BorderSizePixel, 2)
 	local BorderColor3 = _import(config.BorderColor3, Color3.fromHSV(0.6,1,1))
 	local IconScale = _import(config.IconScale, 1.25)
-	local LeftIcon: State<string?> = _import(config.LeftIcon, "" :: string?)
-	local RightIcon: State<string?> = _import(config.RightIcon, "" :: string?)
+	local LeftIcon: State<string?> = _import(config.LeftIcon, nil :: string?)
+	local RightIcon: State<string?> = _import(config.RightIcon, nil :: string?)
 
 	-- construct signals
 	local OnInputChanged = Signal.new(); _Maid:GiveTask(OnInputChanged)
@@ -84,7 +86,6 @@ function Constructor(config: TextFieldParameters): TextField
 
 	-- init internal states
 	local IsFocused: ValueState<boolean> = _Value(false)
-	local Input: ValueState<string?> = _Value("" :: string?)
 	local CursorPosition = _Value(0)
 	local TextBox = _Value(nil :: TextBox?)
 	local IsHovering: ValueState<boolean> = _Value(false)
@@ -110,34 +111,34 @@ function Constructor(config: TextFieldParameters): TextField
 	end, LeftOffset, RightOffset)
 	local IsEmpty = _Computed(function(input, focused)
 		return input == "" and not focused
-	end, Input, IsFocused)
+	end, Value, IsFocused)
 	local LowerTextSize = _Computed(function(textSize: number, isEmpty)
 		return textSize*0.75
 	end, TextSize, IsEmpty)
 	local LowerTextFrameHeight = _Computed(function(txtSize: number)
 		return UDim.new(0,txtSize)
 	end, LowerTextSize)
-	local CharacterCount = _Computed(function(input: string?)
+	local CharacterCount = _Computed(function(input: string)
 		if not input then return 0 end
 		assert(input ~= nil)
 		return string.len(input)
-	end, Input)
+	end, Value)
 
 	-- bind states
-	Input:Connect(function(cur)
+	_Maid:GiveTask(Value:Connect(function(cur)
 		OnInputChanged:Fire(cur)
-	end)
-	IsFocused:Connect(function(v)
+	end))
+	_Maid:GiveTask(IsFocused:Connect(function(v)
 		if v == false then
-			OnInputComplete:Fire()
+			OnInputComplete:Fire(Value:Get())
 		end
-	end)
+	end))
 
 	-- constructing instances
 	_new("TextBox")({
 		[_REF] = TextBox,
 		BackgroundTransparency = 1,
-		Text = "",
+		Text = Value,
 		ClearTextOnFocus = ClearTextOnFocus,
 		AnchorPoint = Vector2.new(0.5,1),
 		Position = _Computed(function(txtSize, cOff)
@@ -152,7 +153,7 @@ function Constructor(config: TextFieldParameters): TextField
 		TextTruncate = Enum.TextTruncate.AtEnd,
 		TextXAlignment = Enum.TextXAlignment.Left,
 		TextYAlignment = Enum.TextYAlignment.Center,
-		[_OUT "Text"] = Input,
+		[_OUT "Text"] = Value,
 		[_OUT "CursorPosition"] = CursorPosition,
 		TextTransparency = TextTransparency,
 		Size = _Computed(function(textSize, lOff, rOff)
@@ -430,8 +431,10 @@ function Constructor(config: TextFieldParameters): TextField
 	config.MaintainLowerSpacing = nil
 	config.FocusedBackgroundColor3 = nil
 	config.HoverBackgroundColor3 = nil
+	config.ClearTextOnFocus = nil
 	config.IconScale = nil
 	config.LeftIcon = nil
+	config.Value = nil :: any
 	config.RightIcon = nil
 
 	for k, v in pairs(config) do
@@ -446,24 +449,24 @@ function Constructor(config: TextFieldParameters): TextField
 
 	-- bind functions to output
 	local _setInput = Util.bindFunction(Output, _Maid, "SetInput", function(txt, cursorOffset: number?)
-		Input:Set(txt)
-		assert(typeof(TextBox.CursorPosition) == "number")
-		CursorPosition:Set(CursorPosition:Get() or 0)
+		Value:Set(txt)
+		-- assert(typeof(TextBox.CursorPosition) == "number")
+		CursorPosition:Set(cursorOffset or CursorPosition:Get() or 0)
 		return nil
 	end)
 	local _clear = Util.bindFunction(Output, _Maid, "Clear", function()
-		Input:Set("")
+		Value:Set("")
 		CursorPosition:Set(1)
 		return nil
 	end)
-	_Computed(function(input: string?, count: number, lim: number?): nil
+	_Computed(function(input: string, count: number, lim: number?): nil
 		if lim and input then
 			if lim < count then
 				_setInput:Invoke(string.sub(input, 1, lim))
 			end
 		end
 		return nil
-	end, Input, CharacterCount, CharacterLimit)
+	end, Value, CharacterCount, CharacterLimit)
 	Util.bindSignal(Output, _Maid, "OnInputChanged", OnInputChanged)
 	Util.bindSignal(Output, _Maid, "OnInputComplete", OnInputComplete)
 
