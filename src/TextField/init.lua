@@ -85,6 +85,7 @@ function Constructor(config: TextFieldParameters): TextField
 	local OnInputComplete = Signal.new(); _Maid:GiveTask(OnInputComplete)
 
 	-- init internal states
+	local TextBoxValue: ValueState<string> = _Value(Value:Get())
 	local IsFocused: ValueState<boolean> = _Value(false)
 	local CursorPosition = _Value(0)
 	local TextBox = _Value(nil :: TextBox?)
@@ -153,7 +154,7 @@ function Constructor(config: TextFieldParameters): TextField
 		TextTruncate = Enum.TextTruncate.AtEnd,
 		TextXAlignment = Enum.TextXAlignment.Left,
 		TextYAlignment = Enum.TextYAlignment.Center,
-		[_OUT "Text"] = Value,
+		[_OUT "Text"] = TextBoxValue,
 		[_OUT "CursorPosition"] = CursorPosition,
 		TextTransparency = TextTransparency,
 		Size = _Computed(function(textSize, lOff, rOff)
@@ -169,6 +170,7 @@ function Constructor(config: TextFieldParameters): TextField
 			local txtBox = TextBox:Get()
 			if not txtBox then return end
 			assert(txtBox ~= nil)
+			Value:Set(TextBoxValue:Get())
 			IsFocused:Set(txtBox:IsFocused())
 		end,
 	} :: {[any]: any})
