@@ -2,17 +2,17 @@ local package = script.Parent.Parent
 local packages = package.Parent
 local Maid = require(packages:WaitForChild("maid"))
 
-return function (coreGui)
+return function(coreGui)
 	local maid = Maid.new()
 	local module = require(script.Parent)
 
 	local demo = {
-		BackgroundColor3 = Color3.fromHSV(0.75,1,1),
-		Position = Vector3.new(0,10,0),
-		AnchorPoint = Vector2.new(0.5,0.5),
+		BackgroundColor3 = Color3.fromHSV(0.75, 1, 1),
+		Position = Vector3.new(0, 10, 0),
+		AnchorPoint = Vector2.new(0.5, 0.5),
 		Parent = coreGui,
 	}
-	
+
 	local frame = module()(demo)
 
 	maid:GiveTask(frame)

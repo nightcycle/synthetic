@@ -41,19 +41,21 @@ function Constructor(config: SurfaceFrameParameters): SurfaceFrame
 	local _ON_PROPERTY = _Fuse.ON_PROPERTY
 	local _Value = _Fuse.Value
 	local _Computed = _Fuse.Computed
-	
+
 	-- unload config states
 	local Name = _import(config.Name, script.Name)
 	local Face = _import(config.Face, Enum.NormalId.Left)
-	local Ad: any = _import(config.Adornee, nil); local Adornee: State<Instance> = Ad
+	local Ad: any = _import(config.Adornee, nil)
+	local Adornee: State<Instance> = Ad
 	local PixelsPerStud = _import(config.PixelsPerStud, 10)
 	local LightInfluence = _import(config.LightInfluence, 1)
 	local Brightness = _import(config.Brightness, 0)
-	local Par: any = _import(config.Parent, nil); local Parent: State<Instance?> = Par
+	local Par: any = _import(config.Parent, nil)
+	local Parent: State<Instance?> = Par
 	local AlwaysOnTop = _import(config.AlwaysOnTop, false)
 
 	-- construct sub-instances
-	local SurfaceGui = _new "SurfaceGui" {
+	local SurfaceGui = _new("SurfaceGui")({
 		Name = Name,
 		Adornee = Adornee,
 		Face = Face,
@@ -64,7 +66,7 @@ function Constructor(config: SurfaceFrameParameters): SurfaceFrame
 		Brightness = Brightness,
 		ClipsDescendants = true,
 		LightInfluence = LightInfluence,
-	}
+	})
 	_Maid:GiveTask(SurfaceGui)
 
 	-- assemble final parameters
@@ -87,7 +89,7 @@ function Constructor(config: SurfaceFrameParameters): SurfaceFrame
 	end
 
 	-- construct output instance
-	local Output: Frame = _new "Frame" (parameters) :: any
+	local Output: Frame = _new("Frame")(parameters) :: any
 	Util.cleanUpPrep(_Maid, Output)
 
 	return Output

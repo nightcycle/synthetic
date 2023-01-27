@@ -39,37 +39,38 @@ function Constructor(config: IconLabelParameters): IconLabel
 	local _ON_PROPERTY = _Fuse.ON_PROPERTY
 	local _Value = _Fuse.Value
 	local _Computed = _Fuse.Computed
-	
+
 	-- unload config states
 	local Name = _import(config.Name, script.Name)
 	local IconTransparency = _import(config.IconTransparency, 0)
-	local IconColor3 = _import(config.IconColor3, Color3.new(1,1,1))
+	local IconColor3 = _import(config.IconColor3, Color3.new(1, 1, 1))
 	local Icon: State<string?> = _import(config.Icon, nil :: string?)
 
 	-- init internal states
-	local AbsoluteSize = _Value(Vector2.new(0,0))
+	local AbsoluteSize = _Value(Vector2.new(0, 0))
 	local OutputState = (config :: any)[_REF] or _Value(nil :: IconLabel?)
 	local DotsPerInch = _Value(36)
 	local IconData = _Computed(function(key: string?, dpi): any
-		if not key or key == "" then return nil end
+		if not key or key == "" then
+			return nil
+		end
 		assert(key ~= nil)
 		local iconResolutions = Spritesheet[string.lower(key)] or {}
 		return iconResolutions[dpi]
 	end, Icon, DotsPerInch)
 
-
 	-- bind state changes
 	_Maid:GiveTask(AbsoluteSize:Connect(function()
 		local output = OutputState:Get()
-		if not output or not output:IsDescendantOf(game) then 
-			return 
+		if not output or not output:IsDescendantOf(game) then
+			return
 		end
 		assert(output ~= nil)
 		local dpi = math.min(output.AbsoluteSize.X, output.AbsoluteSize.Y)
-		local options = {36,48,72,96}
+		local options = { 36, 48, 72, 96 }
 		local closest = 36
 		local closestDelta = nil
-	
+
 		for i, res in ipairs(options) do
 			if dpi % res == 0 or res % dpi == 0 then
 				closest = res
@@ -79,7 +80,7 @@ function Constructor(config: IconLabelParameters): IconLabel
 				closestDelta = math.abs(res - dpi)
 			end
 		end
-	
+
 		DotsPerInch:Set(closest)
 	end))
 
@@ -89,26 +90,32 @@ function Constructor(config: IconLabelParameters): IconLabel
 		Name = Name,
 		BackgroundTransparency = 1,
 		Image = _Computed(function(iconData, key: string?)
-			if not key or key == "" then return "" end
-			if not iconData then return key or "" end
-			return "rbxassetid://"..iconData.Sheet
+			if not key or key == "" then
+				return ""
+			end
+			if not iconData then
+				return key or ""
+			end
+			return "rbxassetid://" .. iconData.Sheet
 		end, IconData, Icon),
 		ImageRectOffset = _Computed(function(iconData)
-			if not iconData then return Vector2.new(0,0) end
+			if not iconData then
+				return Vector2.new(0, 0)
+			end
 			return Vector2.new(iconData.X, iconData.Y)
 		end, IconData),
 		ImageRectSize = _Computed(function(dpi: number, iconData)
 			if iconData then
 				return Vector2.new(dpi, dpi)
 			else
-				return Vector2.new(0,0)
+				return Vector2.new(0, 0)
 			end
 		end, DotsPerInch, IconData),
 		ImageColor3 = IconColor3,
 		ImageTransparency = IconTransparency,
-		[_OUT "AbsoluteSize"] = AbsoluteSize,
+		[_OUT("AbsoluteSize")] = AbsoluteSize,
 	}
-	
+
 	config.IconTransparency = nil
 	config.IconColor3 = nil
 	config.Icon = nil
@@ -118,7 +125,7 @@ function Constructor(config: IconLabelParameters): IconLabel
 			parameters[k] = v
 		end
 	end
-	
+
 	-- construct output instance
 	local Output: ImageLabel = _Fuse.new("ImageLabel")(parameters) :: any
 

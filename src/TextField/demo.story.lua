@@ -1,4 +1,4 @@
-return function (coreGui)
+return function(coreGui)
 	local module = require(script.Parent)
 	local demo: any = {
 		-- Text = "Label",

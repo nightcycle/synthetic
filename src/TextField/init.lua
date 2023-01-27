@@ -56,33 +56,38 @@ function Constructor(config: TextFieldParameters): TextField
 	local TextSize = _import(config.TextSize, 14)
 	local Parent = _import(config.Parent, nil)
 	local LowerText: State<string> = _import(config.LowerText, "")
-	local LowerTextColor3: State<Color3> = _import(config.LowerTextColor3, Color3.new(1,0,0))
-	local Width = _import(config.Width, UDim.new(0,250))
-	local CornerRadius = _import(config.CornerRadius, UDim.new(0,3))
+	local LowerTextColor3: State<Color3> = _import(config.LowerTextColor3, Color3.new(1, 0, 0))
+	local Width = _import(config.Width, UDim.new(0, 250))
+	local CornerRadius = _import(config.CornerRadius, UDim.new(0, 3))
 	local CharacterLimit: State<number?> = _import(config.CharacterLimit, nil :: number?)
 	local BackgroundTransparency = _import(config.BackgroundTransparency, 0)
 	local ClearTextOnFocus = _import(config.ClearTextOnFocus, false)
-	local TextColor3 = _import(config.TextColor3, Color3.new(1,1,1))
+	local TextColor3 = _import(config.TextColor3, Color3.new(1, 1, 1))
 	local TextTransparency = _import(config.TextTransparency, 0)
 	local Text = _import(config.Text, "Text")
 	local Font = _import(config.Font, Enum.Font.Gotham)
 	local MaintainLowerSpacing = _import(config.MaintainLowerSpacing, false)
-	local BackgroundColor3 = _import(config.BackgroundColor3, Color3.fromHSV(0,0,0.2))
-	local FocusedBackgroundColor3 = _import(config.FocusedBackgroundColor3, Color3.fromHSV(0,0,0.4))
-	local HoverBackgroundColor3: State<Color3> = _import(config.HoverBackgroundColor3, _Computed(function(sCol: Color3, bCol: Color3): Color3
-		local h1,s1,v1 = sCol:ToHSV()
-		local _,s2,v2 = bCol:ToHSV()
-		return Color3.fromHSV(h1, s1 + (s2-s1)*0.5, v1 + (v2-v1)*0.5)
-	end, FocusedBackgroundColor3, BackgroundColor3))
+	local BackgroundColor3 = _import(config.BackgroundColor3, Color3.fromHSV(0, 0, 0.2))
+	local FocusedBackgroundColor3 = _import(config.FocusedBackgroundColor3, Color3.fromHSV(0, 0, 0.4))
+	local HoverBackgroundColor3: State<Color3> = _import(
+		config.HoverBackgroundColor3,
+		_Computed(function(sCol: Color3, bCol: Color3): Color3
+			local h1, s1, v1 = sCol:ToHSV()
+			local _, s2, v2 = bCol:ToHSV()
+			return Color3.fromHSV(h1, s1 + (s2 - s1) * 0.5, v1 + (v2 - v1) * 0.5)
+		end, FocusedBackgroundColor3, BackgroundColor3)
+	)
 	local BorderSizePixel = _import(config.BorderSizePixel, 2)
-	local BorderColor3 = _import(config.BorderColor3, Color3.fromHSV(0.6,1,1))
+	local BorderColor3 = _import(config.BorderColor3, Color3.fromHSV(0.6, 1, 1))
 	local IconScale = _import(config.IconScale, 1.25)
 	local LeftIcon: State<string?> = _import(config.LeftIcon, nil :: string?)
 	local RightIcon: State<string?> = _import(config.RightIcon, nil :: string?)
 
 	-- construct signals
-	local OnInputChanged = Signal.new(); _Maid:GiveTask(OnInputChanged)
-	local OnInputComplete = Signal.new(); _Maid:GiveTask(OnInputComplete)
+	local OnInputChanged = Signal.new()
+	_Maid:GiveTask(OnInputChanged)
+	local OnInputComplete = Signal.new()
+	_Maid:GiveTask(OnInputComplete)
 
 	-- init internal states
 	local TextBoxValue: ValueState<string> = _Value(Value:Get())
@@ -91,7 +96,7 @@ function Constructor(config: TextFieldParameters): TextField
 	local TextBox = _Value(nil :: TextBox?)
 	local IsHovering: ValueState<boolean> = _Value(false)
 	local IconSize = _Computed(function(textSize: number, scale: number)
-		return math.round(textSize*scale)
+		return math.round(textSize * scale)
 	end, TextSize, IconScale)
 	local LeftOffset = _Computed(function(leftIcon: string?, iconSize: number, textSize: number)
 		if leftIcon then
@@ -114,13 +119,15 @@ function Constructor(config: TextFieldParameters): TextField
 		return input == "" and not focused
 	end, Value, IsFocused)
 	local LowerTextSize = _Computed(function(textSize: number, isEmpty)
-		return textSize*0.75
+		return textSize * 0.75
 	end, TextSize, IsEmpty)
 	local LowerTextFrameHeight = _Computed(function(txtSize: number)
-		return UDim.new(0,txtSize)
+		return UDim.new(0, txtSize)
 	end, LowerTextSize)
 	local CharacterCount = _Computed(function(input: string)
-		if not input then return 0 end
+		if not input then
+			return 0
+		end
 		assert(input ~= nil)
 		return string.len(input)
 	end, Value)
@@ -141,9 +148,9 @@ function Constructor(config: TextFieldParameters): TextField
 		BackgroundTransparency = 1,
 		Text = Value,
 		ClearTextOnFocus = ClearTextOnFocus,
-		AnchorPoint = Vector2.new(0.5,1),
+		AnchorPoint = Vector2.new(0.5, 1),
 		Position = _Computed(function(txtSize, cOff)
-			return UDim2.new(UDim.new(0.5,0.5*cOff),UDim.new(1,-txtSize*0.5))
+			return UDim2.new(UDim.new(0.5, 0.5 * cOff), UDim.new(1, -txtSize * 0.5))
 		end, TextSize, CenterOffset),
 		TextColor3 = TextColor3,
 		TextSize = TextSize,
@@ -154,28 +161,32 @@ function Constructor(config: TextFieldParameters): TextField
 		TextTruncate = Enum.TextTruncate.AtEnd,
 		TextXAlignment = Enum.TextXAlignment.Left,
 		TextYAlignment = Enum.TextYAlignment.Center,
-		[_OUT "Text"] = TextBoxValue,
-		[_OUT "CursorPosition"] = CursorPosition,
+		[_OUT("Text")] = TextBoxValue,
+		[_OUT("CursorPosition")] = CursorPosition,
 		TextTransparency = TextTransparency,
 		Size = _Computed(function(textSize, lOff, rOff)
-			return UDim2.new(UDim.new(1,-textSize*1.25-lOff-rOff), UDim.new(0, textSize))
+			return UDim2.new(UDim.new(1, -textSize * 1.25 - lOff - rOff), UDim.new(0, textSize))
 		end, TextSize, LeftOffset, RightOffset),
-		[_ON_EVENT "Focused"] = function()
+		[_ON_EVENT("Focused")] = function()
 			local txtBox = TextBox:Get()
-			if not txtBox then return end
+			if not txtBox then
+				return
+			end
 			assert(txtBox ~= nil)
 			IsFocused:Set(txtBox:IsFocused())
 		end,
-		[_ON_EVENT "FocusLost"] = function()
+		[_ON_EVENT("FocusLost")] = function()
 			local txtBox = TextBox:Get()
-			if not txtBox then return end
+			if not txtBox then
+				return
+			end
 			assert(txtBox ~= nil)
 			Value:Set(TextBoxValue:Get())
 			IsFocused:Set(txtBox:IsFocused())
 		end,
-	} :: {[any]: any})
-	
-	local Label = _new "TextLabel" {
+	} :: { [any]: any })
+
+	local Label = _new("TextLabel")({
 		Name = "Label",
 		BackgroundTransparency = 1,
 		Text = Text,
@@ -185,9 +196,9 @@ function Constructor(config: TextFieldParameters): TextField
 		TextYAlignment = Enum.TextYAlignment.Center,
 		TextSize = _Computed(function(textSize: number, isEmpty)
 			if isEmpty then
-				return textSize*1
+				return textSize * 1
 			else
-				return textSize*0.75
+				return textSize * 0.75
 			end
 		end, TextSize, IsEmpty):Tween(),
 		TextColor3 = _Computed(function(col, textCol, isEmpty)
@@ -198,151 +209,160 @@ function Constructor(config: TextFieldParameters): TextField
 			end
 		end, BorderColor3, TextColor3, IsEmpty):Tween(),
 		Size = _Computed(function(textSize, leftOffset, rightOffset)
-			return UDim2.new(UDim.new(1,-textSize*2-leftOffset-rightOffset), UDim.new(0, textSize * 0.75))
+			return UDim2.new(UDim.new(1, -textSize * 2 - leftOffset - rightOffset), UDim.new(0, textSize * 0.75))
 		end, TextSize, LeftOffset, RightOffset):Tween(),
 		Position = _Computed(function(isEmpty, textSize: number, lOff: number, rOff: number, cOff: number)
 			if not isEmpty then
-				return UDim2.new(UDim.new(0,textSize*0.75+lOff), UDim.new(0,textSize*0.5))
+				return UDim2.new(UDim.new(0, textSize * 0.75 + lOff), UDim.new(0, textSize * 0.5))
 			else
-				return UDim2.new(UDim.new(0.5, (lOff - rOff)*0.5),UDim.new(0.5,0))
+				return UDim2.new(UDim.new(0.5, (lOff - rOff) * 0.5), UDim.new(0.5, 0))
 			end
 		end, IsEmpty, TextSize, LeftOffset, RightOffset, CenterOffset):Tween(),
 		AnchorPoint = _Computed(function(isEmpty): Vector2
 			if not isEmpty then
-				return Vector2.new(0,0)
+				return Vector2.new(0, 0)
 			else
-				return Vector2.new(0.5,0.5)
+				return Vector2.new(0.5, 0.5)
 			end
 		end, IsEmpty):Tween(),
-	}
+	})
 
-	local Frame = _new "Frame" {
+	local Frame = _new("Frame")({
 		Name = "Container",
 		BackgroundTransparency = BackgroundTransparency,
-		BackgroundColor3 = _Computed(function(isFocused: boolean, isHovering: boolean, backColor: Color3, focusColor: Color3, hoverColor: Color3): Color3
-			if isFocused then
-				return focusColor
-			elseif isHovering then
-				return hoverColor
-			else
-				return backColor
-			end
-		end, IsFocused, IsHovering, BackgroundColor3, FocusedBackgroundColor3, HoverBackgroundColor3),
+		BackgroundColor3 = _Computed(
+			function(isFocused: boolean, isHovering: boolean, backColor: Color3, focusColor: Color3, hoverColor: Color3): Color3
+				if isFocused then
+					return focusColor
+				elseif isHovering then
+					return hoverColor
+				else
+					return backColor
+				end
+			end,
+			IsFocused,
+			IsHovering,
+			BackgroundColor3,
+			FocusedBackgroundColor3,
+			HoverBackgroundColor3
+		),
 		Size = _Computed(function(textSize: number, width)
-			return UDim2.new(width, UDim.new(0,textSize*3))
+			return UDim2.new(width, UDim.new(0, textSize * 3))
 		end, TextSize, Width),
 		[_CHILDREN] = {
-				_new("Frame")({
-					AnchorPoint = Vector2.new(0.5,1),
-					Size = _Computed(function(pix: number, focused)
-						if focused then
-							return UDim2.new(UDim.new(1,0), UDim.new(0,pix))
-						else
-							return UDim2.new(UDim.new(1,0), UDim.new(0,pix*0.5))
-						end
-					end, BorderSizePixel, IsFocused):Tween(),
-					Position = UDim2.fromScale(0.5,1),
-					BackgroundTransparency = _Computed(function(trans)
-						if trans == 0 then
-							return 0
-						else
-							return 1
-						end
-					end, BackgroundTransparency):Tween(),
-					BackgroundColor3 = _Computed(function(isFocused: boolean, borderCol: Color3, textCol: Color3)
-						if isFocused then
-							return borderCol
-						else
-							return textCol
-						end
-					end, IsFocused, BorderColor3, TextColor3):Tween(),
-				}),
-				_new "UIStroke" {
-					ApplyStrokeMode = Enum.ApplyStrokeMode.Border,
-					Thickness = BorderSizePixel,
-					Color = _Computed(function(bCol: Color3, tCol: Color3, isFoc: boolean)
-						if isFoc then
-							return bCol
-						else
-							return tCol
-						end
-					end, BorderColor3, TextColor3, IsFocused):Tween(),
-					Transparency = _Computed(function(trans: number)
-						if trans == 0 then
-							return 1
-						else
-							return 0
-						end
-					end, BackgroundTransparency):Tween(),
-				},
-				_new "UICorner" {
-					CornerRadius = CornerRadius,
-				},
-				_new "TextButton" {
-					Text = "",
-					TextTransparency = 1,
-					AnchorPoint = Vector2.new(0.5,0.5),
-					Position = UDim2.fromScale(0.5,0.5),
-					Size = UDim2.fromScale(1,1),
-					ZIndex = 10,
-					BackgroundTransparency = 1,
-					[_ON_EVENT "Activated"] = function()
-						local txtBox = TextBox:Get()
-						if not txtBox then return end
-						assert(txtBox ~= nil)
-						if txtBox:IsFocused() then
-							txtBox:ReleaseFocus()
-						else
-							txtBox:CaptureFocus()
-						end
-					end,
-					[_ON_EVENT "InputChanged"] = function()
-						IsHovering:Set(true)
-					end,
-					[_ON_EVENT "MouseLeave"] = function()
-						IsHovering:Set(false)
-					end,
-				},
-				IconLabel(_Maid){
-					Name = "Right",
-					IconTransparency = 0,
-					IconColor3 = TextColor3,
-					Icon = RightIcon :: any,
-					Position = _Computed(function(txtSize)
-						return UDim2.new(UDim.new(1,-txtSize), UDim.new(0.5,0))
-					end, TextSize),
-					Size = _Computed(function(iconSize)
-						return UDim2.fromOffset(iconSize, iconSize)
-					end, IconSize),
-					AnchorPoint = Vector2.new(1, 0.5),
-				} :: any,
-				IconLabel(_Maid){
-					Name = "Left",
-					Position = _Computed(function(txtSize: number)
-						return UDim2.new(UDim.new(0,txtSize), UDim.new(0.5,0))
-					end, TextSize),
-					Size = _Computed(function(iconSize)
-						return UDim2.fromOffset(iconSize, iconSize)
-					end, IconSize),
-					AnchorPoint = Vector2.new(0, 0.5),
-					IconTransparency = 0,
-					IconColor3 = TextColor3,
-					Icon = LeftIcon :: any,
-				},
-				TextBox,
-				Label,
-			} :: {any},
-	}
+			_new("Frame")({
+				AnchorPoint = Vector2.new(0.5, 1),
+				Size = _Computed(function(pix: number, focused)
+					if focused then
+						return UDim2.new(UDim.new(1, 0), UDim.new(0, pix))
+					else
+						return UDim2.new(UDim.new(1, 0), UDim.new(0, pix * 0.5))
+					end
+				end, BorderSizePixel, IsFocused):Tween(),
+				Position = UDim2.fromScale(0.5, 1),
+				BackgroundTransparency = _Computed(function(trans)
+					if trans == 0 then
+						return 0
+					else
+						return 1
+					end
+				end, BackgroundTransparency):Tween(),
+				BackgroundColor3 = _Computed(function(isFocused: boolean, borderCol: Color3, textCol: Color3)
+					if isFocused then
+						return borderCol
+					else
+						return textCol
+					end
+				end, IsFocused, BorderColor3, TextColor3):Tween(),
+			}),
+			_new("UIStroke")({
+				ApplyStrokeMode = Enum.ApplyStrokeMode.Border,
+				Thickness = BorderSizePixel,
+				Color = _Computed(function(bCol: Color3, tCol: Color3, isFoc: boolean)
+					if isFoc then
+						return bCol
+					else
+						return tCol
+					end
+				end, BorderColor3, TextColor3, IsFocused):Tween(),
+				Transparency = _Computed(function(trans: number)
+					if trans == 0 then
+						return 1
+					else
+						return 0
+					end
+				end, BackgroundTransparency):Tween(),
+			}),
+			_new("UICorner")({
+				CornerRadius = CornerRadius,
+			}),
+			_new("TextButton")({
+				Text = "",
+				TextTransparency = 1,
+				AnchorPoint = Vector2.new(0.5, 0.5),
+				Position = UDim2.fromScale(0.5, 0.5),
+				Size = UDim2.fromScale(1, 1),
+				ZIndex = 10,
+				BackgroundTransparency = 1,
+				[_ON_EVENT("Activated")] = function()
+					local txtBox = TextBox:Get()
+					if not txtBox then
+						return
+					end
+					assert(txtBox ~= nil)
+					if txtBox:IsFocused() then
+						txtBox:ReleaseFocus()
+					else
+						txtBox:CaptureFocus()
+					end
+				end,
+				[_ON_EVENT("InputChanged")] = function()
+					IsHovering:Set(true)
+				end,
+				[_ON_EVENT("MouseLeave")] = function()
+					IsHovering:Set(false)
+				end,
+			}),
+			IconLabel(_Maid)({
+				Name = "Right",
+				IconTransparency = 0,
+				IconColor3 = TextColor3,
+				Icon = RightIcon :: any,
+				Position = _Computed(function(txtSize)
+					return UDim2.new(UDim.new(1, -txtSize), UDim.new(0.5, 0))
+				end, TextSize),
+				Size = _Computed(function(iconSize)
+					return UDim2.fromOffset(iconSize, iconSize)
+				end, IconSize),
+				AnchorPoint = Vector2.new(1, 0.5),
+			}) :: any,
+			IconLabel(_Maid)({
+				Name = "Left",
+				Position = _Computed(function(txtSize: number)
+					return UDim2.new(UDim.new(0, txtSize), UDim.new(0.5, 0))
+				end, TextSize),
+				Size = _Computed(function(iconSize)
+					return UDim2.fromOffset(iconSize, iconSize)
+				end, IconSize),
+				AnchorPoint = Vector2.new(0, 0.5),
+				IconTransparency = 0,
+				IconColor3 = TextColor3,
+				Icon = LeftIcon :: any,
+			}),
+			TextBox,
+			Label,
+		} :: { any },
+	})
 
-	local CharLimitLabel = _new "TextLabel" {
+	local CharLimitLabel = _new("TextLabel")({
 		Name = "CharLimit",
-		AnchorPoint = Vector2.new(1,0),
-		Position = UDim2.fromScale(1,0),
+		AnchorPoint = Vector2.new(1, 0),
+		Position = UDim2.fromScale(1, 0),
 		AutomaticSize = Enum.AutomaticSize.XY,
 		BackgroundTransparency = 1,
 		Text = _Computed(function(lim: number?, count: number)
 			if lim and count then
-				return count.." / "..lim
+				return count .. " / " .. lim
 			else
 				return ""
 			end
@@ -359,12 +379,12 @@ function Constructor(config: TextFieldParameters): TextField
 				return textCol
 			end
 		end, BorderColor3, TextColor3, IsEmpty),
-	}
+	})
 
-	local LowerTextLabel = _new "TextLabel" {
+	local LowerTextLabel = _new("TextLabel")({
 		Name = "TextLabel",
-		AnchorPoint = Vector2.new(0,0),
-		Position = UDim2.fromScale(0,0),
+		AnchorPoint = Vector2.new(0, 0),
+		Position = UDim2.fromScale(0, 0),
 		AutomaticSize = Enum.AutomaticSize.XY,
 		BackgroundTransparency = 1,
 		Text = LowerText,
@@ -374,7 +394,7 @@ function Constructor(config: TextFieldParameters): TextField
 		TextYAlignment = Enum.TextYAlignment.Center,
 		TextSize = LowerTextSize,
 		TextColor3 = LowerTextColor3,
-	}
+	})
 
 	local LowerTextFrame = _new("Frame")({
 		Name = "LowerTextFrame",
@@ -391,7 +411,7 @@ function Constructor(config: TextFieldParameters): TextField
 		[_CHILDREN] = {
 			CharLimitLabel,
 			LowerTextLabel,
-		} :: {Instance},
+		} :: { Instance },
 	})
 
 	-- assemble final parameters
@@ -400,22 +420,22 @@ function Constructor(config: TextFieldParameters): TextField
 		AutomaticSize = Enum.AutomaticSize.Y,
 		BackgroundTransparency = 1,
 		Size = _Computed(function(width)
-			return UDim2.new(width, UDim.new(0,0))
+			return UDim2.new(width, UDim.new(0, 0))
 		end, Width),
 		Parent = Parent,
-		[_CHILDREN] = { 
-			_new "UIListLayout" {
+		[_CHILDREN] = {
+			_new("UIListLayout")({
 				FillDirection = Enum.FillDirection.Vertical,
 				HorizontalAlignment = Enum.HorizontalAlignment.Center,
 				SortOrder = Enum.SortOrder.LayoutOrder,
 				VerticalAlignment = Enum.VerticalAlignment.Top,
 				Padding = _Computed(function(txtSize: number)
-					return UDim.new(0,txtSize*0.25)
+					return UDim.new(0, txtSize * 0.25)
 				end, TextSize),
-			},
+			}),
 			Frame,
 			LowerTextFrame,
-		} :: {Instance}
+		} :: { Instance },
 	}
 
 	config.LowerText = nil

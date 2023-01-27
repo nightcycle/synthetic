@@ -26,7 +26,7 @@ function Util.cleanUpPrep(maid: Maid, inst: Instance)
 	end))
 end
 
-function Util.bindFunction<F>(inst: Instance, maid: Maid, name: string, func: F): BindableFunction & {OnInvoke: F}
+function Util.bindFunction<F>(inst: Instance, maid: Maid, name: string, func: F): BindableFunction & { OnInvoke: F }
 	assert(typeof(func) == "function")
 	local bindableFunction = Instance.new("BindableFunction")
 	bindableFunction.Name = name

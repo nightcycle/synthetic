@@ -44,28 +44,28 @@ function Constructor(config: BillboardFrameParameters): BillboardFrame
 	local _Computed = _Fuse.Computed
 
 	-- unload config states
-	local Parent: State<Instance?>  = _import(config.Parent, nil :: Instance?) :: any
-	local Position = _import(config.Position :: any, Vector3.new(0,0,0)) :: State<Vector3>
-	local Size: State<Vector2>  = _import(config.Size :: any, Vector2.new(0,0)) :: any
+	local Parent: State<Instance?> = _import(config.Parent, nil :: Instance?) :: any
+	local Position = _import(config.Position :: any, Vector3.new(0, 0, 0)) :: State<Vector3>
+	local Size: State<Vector2> = _import(config.Size :: any, Vector2.new(0, 0)) :: any
 	local LightInfluence = _import(config.LightInfluence, 0)
 	local AlwaysOnTop = _import(config.AlwaysOnTop, false)
 	local MaxDistance = _import(config.MaxDistance, 100)
 	local Active = _import(config.Active, true)
-	local AnchorPoint = _import(config.AnchorPoint, Vector2.new(0.5,0.5))
-	
+	local AnchorPoint = _import(config.AnchorPoint, Vector2.new(0.5, 0.5))
+
 	-- constructing instances
-	local Part: any = _new "Part"{
+	local Part: any = _new("Part")({
 		Parent = workspace,
 		Position = Position,
 		Transparency = 1,
-		Size = Vector3.new(1,1,1)*0.05,
+		Size = Vector3.new(1, 1, 1) * 0.05,
 		Anchored = true,
 		CanCollide = false,
 		CanTouch = false,
 		CanQuery = false,
-	}
+	})
 
-	local SurfaceGui = _new "BillboardGui" {
+	local SurfaceGui = _new("BillboardGui")({
 		Parent = Parent,
 		Adornee = Part,
 		Active = Active,
@@ -76,13 +76,13 @@ function Constructor(config: BillboardFrameParameters): BillboardFrame
 		ClipsDescendants = false,
 		LightInfluence = LightInfluence,
 		MaxDistance = MaxDistance,
-	}
+	})
 
 	-- assemble final parameters
 	local parameters: any = {
 		Parent = SurfaceGui,
-		Position = UDim2.fromScale(0.5,0.5),
-		Size = UDim2.fromScale(1,1),
+		Position = UDim2.fromScale(0.5, 0.5),
+		Size = UDim2.fromScale(1, 1),
 		AnchorPoint = AnchorPoint,
 	}
 
@@ -98,7 +98,7 @@ function Constructor(config: BillboardFrameParameters): BillboardFrame
 	end
 
 	-- construct output instance
-	local Output: Frame = _new "Frame" (parameters) :: any
+	local Output: Frame = _new("Frame")(parameters) :: any
 	Util.cleanUpPrep(_Maid, Output)
 
 	return Output

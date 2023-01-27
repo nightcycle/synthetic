@@ -18,13 +18,13 @@ type Maid = Maid.Maid
 export type CanBeState<T> = (State<T> | T)
 
 export type InstanceParameters = {
-	Archivable: CanBeState<boolean>?,		
+	Archivable: CanBeState<boolean>?,
 	Name: CanBeState<string>?,
 	Parent: CanBeState<Instance>?,
-	Children: {Instance}?,
+	Children: { Instance }?,
 }
 
-export type GuiBase2dParameters = InstanceParameters & {	
+export type GuiBase2dParameters = InstanceParameters & {
 	AbsolutePosition: CanBeState<Vector2>?,
 	AbsoluteRotiation: CanBeState<number>?,
 	AbsoluteSize: CanBeState<Vector2>?,
@@ -46,21 +46,21 @@ export type GuiObjectParameters = GuiBase2dParameters & {
 	BackgroundColor3: CanBeState<Color3>?,
 	BackgroundTransparency: CanBeState<number>?,
 	BorderColor3: CanBeState<Color3>?,
-	BorderMode: CanBeState<Enum.BorderMode>?,	
+	BorderMode: CanBeState<Enum.BorderMode>?,
 	BorderSizePixel: CanBeState<number>?,
-	ClipsDescendants: CanBeState<boolean>?,	
-	LayoutOrder: CanBeState<number>?,		
+	ClipsDescendants: CanBeState<boolean>?,
+	LayoutOrder: CanBeState<number>?,
 	NextSelectionDown: CanBeState<GuiObject>?,
 	NextSelectionLeft: CanBeState<GuiObject>?,
 	NextSelectionRight: CanBeState<GuiObject>?,
-	NextSelectionUp: CanBeState<GuiObject>?,		
+	NextSelectionUp: CanBeState<GuiObject>?,
 	Position: CanBeState<UDim2>?,
-	Rotation: CanBeState<number>?,		
-	Selectable: CanBeState<boolean>?,		
+	Rotation: CanBeState<number>?,
+	Selectable: CanBeState<boolean>?,
 	SelectionImageObject: CanBeState<GuiObject>?,
-	SelectionOrder: CanBeState<number>?,				
-	Size: CanBeState<UDim2>?,			
-	SizeConstraint: CanBeState<Enum.SizeConstraint>?,		
+	SelectionOrder: CanBeState<number>?,
+	Size: CanBeState<UDim2>?,
+	SizeConstraint: CanBeState<Enum.SizeConstraint>?,
 	Visible: CanBeState<boolean>?,
 	ZIndex: CanBeState<number>?,
 }
@@ -68,20 +68,20 @@ export type GuiObjectParameters = GuiBase2dParameters & {
 export type FrameParameters = GuiObjectParameters
 
 export type GuiButtonParameters = GuiObjectParameters & {
-	AutoButtonColor: CanBeState<boolean>?,	
+	AutoButtonColor: CanBeState<boolean>?,
 	Modal: CanBeState<boolean>?,
-	Selected: CanBeState<boolean>?,			
-	Style: CanBeState<Enum.ButtonStyle>?,	
+	Selected: CanBeState<boolean>?,
+	Style: CanBeState<Enum.ButtonStyle>?,
 }
 
 type ImageDisplay = {
 	Image: CanBeState<string>?,
 	ImageColor3: CanBeState<Color3>?,
-	ImageRectOffset: CanBeState<Vector2>?,		
-	ImageRectSize: CanBeState<Vector2>?,	
-	ImageTransparency: CanBeState<number>?,	
-	IsLoaded: CanBeState<boolean>?,		
-	PressedImage: CanBeState<string>?,	
+	ImageRectOffset: CanBeState<Vector2>?,
+	ImageRectSize: CanBeState<Vector2>?,
+	ImageTransparency: CanBeState<number>?,
+	IsLoaded: CanBeState<boolean>?,
+	PressedImage: CanBeState<string>?,
 	ResampleMode: CanBeState<Enum.ResamplerMode>?,
 	ScaleType: CanBeState<Enum.ScaleType>?,
 	SliceCenter: CanBeState<Rect>?,
@@ -91,8 +91,8 @@ type ImageDisplay = {
 
 type TextDisplay = {
 	Font: CanBeState<Enum.Font>?,
-	FontFace: CanBeState<Enum.Font>?,		
-	LineHeight: CanBeState<number>?,			
+	FontFace: CanBeState<Enum.Font>?,
+	LineHeight: CanBeState<number>?,
 	MaxVisibleGraphemes: CanBeState<number>?,
 	RichText: CanBeState<boolean>?,
 	Text: CanBeState<string>?,
@@ -104,14 +104,14 @@ type TextDisplay = {
 	TextStrokeColor3: CanBeState<boolean>?,
 	TextStrokeTransparency: CanBeState<number>?,
 	TextTransparency: CanBeState<number>?,
-	TextTruncate: CanBeState<boolean>?,		
-	TextWrapped: CanBeState<boolean>?,		
+	TextTruncate: CanBeState<boolean>?,
+	TextWrapped: CanBeState<boolean>?,
 	TextXAlignment: CanBeState<Enum.TextXAlignment>?,
 	TextYAlignment: CanBeState<Enum.TextYAlignment>?,
 }
 
-export type TextButtonParameters = GuiButtonParameters & TextDisplay & {			
-	ContentText: CanBeState<string>?,	
+export type TextButtonParameters = GuiButtonParameters & TextDisplay & {
+	ContentText: CanBeState<string>?,
 }
 
 export type ImageButtonParameters = GuiButtonParameters & ImageDisplay & {
@@ -122,34 +122,33 @@ export type ImageLabelParameters = GuiObjectParameters & ImageDisplay
 export type TextLabelParameters = GuiObjectParameters & TextDisplay
 
 export type ScrollingFrameParameters = GuiObjectParameters & {
-	AbsoluteCanvasSize: CanBeState<Vector2>?,	
-	AbsoluteWindowSize: CanBeState<Vector2>?,	
-	AutomaticCanvasSize: CanBeState<Enum.AutomaticSize>?,	
-	BottomImage: CanBeState<string>?,	
-	CanvasPosition: CanBeState<Vector2>?,	
-	CanvasSize: CanBeState<UDim2>?,	
-	ElasticBehavior: CanBeState<Enum.ElasticBehavior>?,			
-	HorizontalScrollBarInset: CanBeState<Enum.ScrollBarInset>?,	
+	AbsoluteCanvasSize: CanBeState<Vector2>?,
+	AbsoluteWindowSize: CanBeState<Vector2>?,
+	AutomaticCanvasSize: CanBeState<Enum.AutomaticSize>?,
+	BottomImage: CanBeState<string>?,
+	CanvasPosition: CanBeState<Vector2>?,
+	CanvasSize: CanBeState<UDim2>?,
+	ElasticBehavior: CanBeState<Enum.ElasticBehavior>?,
+	HorizontalScrollBarInset: CanBeState<Enum.ScrollBarInset>?,
 	MidImage: CanBeState<string>?,
 	ScrollBarImageColor3: CanBeState<Color3>?,
-	ScrollBarImageTransparency: CanBeState<number>?,		
+	ScrollBarImageTransparency: CanBeState<number>?,
 	ScrollBarThickness: CanBeState<number>?,
 	ScrollingDirection: CanBeState<Enum.ScrollingDirection>?,
 	ScrollingEnabled: CanBeState<boolean>?,
 	TopImage: CanBeState<string>?,
-	VerticalScrollBarInset: CanBeState<Enum.ScrollBarInset>?,			
-	VerticalScrollBarPosition: CanBeState<Enum.VerticalScrollBarPosition>?,	
+	VerticalScrollBarInset: CanBeState<Enum.ScrollBarInset>?,
+	VerticalScrollBarPosition: CanBeState<Enum.VerticalScrollBarPosition>?,
 }
 
 export type ViewportFrameParameters = GuiObjectParameters & {
-	Ambient: CanBeState<Color3>?,	
-	CurrentCamera: CanBeState<Camera>?,	
-	ImageColor3: CanBeState<Color3>?,	
-	ImageTransparency: CanBeState<number>?,	
+	Ambient: CanBeState<Color3>?,
+	CurrentCamera: CanBeState<Camera>?,
+	ImageColor3: CanBeState<Color3>?,
+	ImageTransparency: CanBeState<number>?,
 	LightColor: CanBeState<Color3>?,
 	LightDirection: CanBeState<Vector3>?,
 }
-
 
 export type BillboardGuiParameters = LayerCollectorParameters & {
 	Active: CanBeState<boolean>?,
@@ -168,7 +167,7 @@ export type BillboardGuiParameters = LayerCollectorParameters & {
 	PlayerToHideFrom: CanBeState<Instance>?,
 	Size: CanBeState<UDim2>?,
 	SizeOffset: CanBeState<Vector2>?,
-	StudsOffset: CanBeState<Vector3>?,	
+	StudsOffset: CanBeState<Vector3>?,
 	StudsOffsetWorldSpace: CanBeState<Vector3>?,
 }
 
@@ -193,12 +192,12 @@ export type SurfaceGuiParameters = LayerCollectorParameters & {
 }
 
 export type TextBoxParameters = GuiObjectParameters & TextDisplay & {
-	ClearTextOnFocus: CanBeState<boolean>?,		
-	CursorPosition: CanBeState<number>?,		
-	MultiLine: CanBeState<boolean>?,			
-	PlaceholderColor3: CanBeState<Color3>?,		
-	PlaceholderText: CanBeState<string>?,		
-	TextEditable: CanBeState<boolean>?,		
+	ClearTextOnFocus: CanBeState<boolean>?,
+	CursorPosition: CanBeState<number>?,
+	MultiLine: CanBeState<boolean>?,
+	PlaceholderColor3: CanBeState<Color3>?,
+	PlaceholderText: CanBeState<string>?,
+	TextEditable: CanBeState<boolean>?,
 	ShowNativeInput: CanBeState<boolean>?,
 }
 

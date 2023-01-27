@@ -48,17 +48,17 @@ function Constructor(config: CheckboxParameters): Checkbox
 
 	local _Value = _Fuse.Value
 	local _Computed = _Fuse.Computed
-	
+
 	-- unload config states
 	local Name = _import(config.Name, script.Name)
 	local Scale = _import(config.Scale, 1)
-	local BorderColor3 = _import(config.BorderColor3, Color3.fromHSV(0,0,0.4))
-	local TextColor3 = _import(config.TextColor3, Color3.fromHSV(0,0,0.4))
-	local BackgroundColor3 = _import(config.BackgroundColor3, Color3.fromHSV(0.6,1,1))
+	local BorderColor3 = _import(config.BorderColor3, Color3.fromHSV(0, 0, 0.4))
+	local TextColor3 = _import(config.TextColor3, Color3.fromHSV(0, 0, 0.4))
+	local BackgroundColor3 = _import(config.BackgroundColor3, Color3.fromHSV(0.6, 1, 1))
 	local Value = config.Value :: any
-	local EnableSound: State<Sound?>  = _import(config.EnableSound, nil :: Sound?)
-	local DisableSound: State<Sound?>  = _import(config.DisableSound, nil :: Sound?)
-	
+	local EnableSound: State<Sound?> = _import(config.EnableSound, nil :: Sound?)
+	local DisableSound: State<Sound?> = _import(config.DisableSound, nil :: Sound?)
+
 	-- construct signals
 	local Activated = Signal.new()
 	_Maid:GiveTask(Activated)
@@ -111,39 +111,43 @@ function Constructor(config: CheckboxParameters): Checkbox
 		end, Width),
 		BackgroundTransparency = 1,
 		[_CHILDREN] = {
-			_new "ImageButton" {
+			_new("ImageButton")({
 				Name = "Button",
 				ZIndex = 3,
 				BackgroundTransparency = 1,
 				ImageTransparency = 1,
-				Position = UDim2.fromScale(0.5,0.5),
-				Size = UDim2.fromScale(1,1),
-				AnchorPoint = Vector2.new(0.5,0.5),
-				[_ON_EVENT "Activated"] = function()
+				Position = UDim2.fromScale(0.5, 0.5),
+				Size = UDim2.fromScale(1, 1),
+				AnchorPoint = Vector2.new(0.5, 0.5),
+				[_ON_EVENT("Activated")] = function()
 					Activated:Fire()
 					if BubbleEnabled:Get() then
-						local bubble = Bubble(_Maid){
+						local bubble = Bubble(_Maid)({
 							Parent = Output,
-						}
+						})
 						local fireFunction: Instance? = bubble:WaitForChild("Fire")
 						assert(fireFunction ~= nil and fireFunction:IsA("BindableFunction"))
 						fireFunction:Invoke()
 						-- _Maid._bubble = bubble
 					end
-				end
-			},
-			_new "ImageLabel" {
+				end,
+			}),
+			_new("ImageLabel")({
 				Name = "ImageLabel",
 				ZIndex = 2,
 				Image = "rbxassetid://3926305904",
-				ImageRectOffset = Vector2.new(312,4),
-				ImageRectSize = Vector2.new(24,24),
+				ImageRectOffset = Vector2.new(312, 4),
+				ImageRectSize = Vector2.new(24, 24),
 				ImageColor3 = TextColor3,
 				ImageTransparency = _Computed(function(val)
-					if val then return 0 else return 1 end
+					if val then
+						return 0
+					else
+						return 1
+					end
 				end, Value):Tween(),
-				Position = UDim2.fromScale(0.5,0.5),
-				AnchorPoint = Vector2.new(0.5,0.5),
+				Position = UDim2.fromScale(0.5, 0.5),
+				AnchorPoint = Vector2.new(0.5, 0.5),
 				BackgroundColor3 = TweenColor,
 				BackgroundTransparency = _Computed(function(val)
 					if val then
@@ -153,28 +157,28 @@ function Constructor(config: CheckboxParameters): Checkbox
 					end
 				end, Value):Tween(),
 				Size = _Computed(function(width: number, padding: number)
-					return UDim2.fromOffset(width-padding, width-padding)
+					return UDim2.fromOffset(width - padding, width - padding)
 				end, Width, Padding),
 				BorderSizePixel = 0,
 				[_CHILDREN] = {
-					_new "UICorner" {
+					_new("UICorner")({
 						CornerRadius = _Computed(function(padding: number)
-							return UDim.new(0,math.round(padding*0.5))
-						end, Padding)
-					},
-					_new "UIStroke" {
+							return UDim.new(0, math.round(padding * 0.5))
+						end, Padding),
+					}),
+					_new("UIStroke")({
 						ApplyStrokeMode = Enum.ApplyStrokeMode.Border,
 						Thickness = _Computed(function(padding: number)
-							return math.round(padding*0.25)
+							return math.round(padding * 0.25)
 						end, Padding),
 						Transparency = 0,
 						Color = TweenColor,
-					}
-				} :: {Instance}
-			},
-		} :: {Instance}
+					}),
+				} :: { Instance },
+			}),
+		} :: { Instance },
 	}
-	
+
 	config.Scale = nil
 	config.Value = nil :: any
 	config.EnableSound = nil
@@ -193,7 +197,7 @@ function Constructor(config: CheckboxParameters): Checkbox
 	-- Bind gui's life to maid
 	Util.cleanUpPrep(_Maid, Output)
 	Util.bindSignal(Output, _Maid, "Activated", Activated)
-	
+
 	return Output
 end
 

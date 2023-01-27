@@ -5,6 +5,8 @@ local RunService = game:GetService("RunService")
 local package = script.Parent
 local packages = package.Parent
 
+local MeshUtil = require(packages.meshutil)
+
 local Util = require(package.Util)
 
 local ColdFusion = require(packages.coldfusion)
@@ -15,8 +17,6 @@ type CanBeState<T> = ColdFusion.CanBeState<T>
 
 local Maid = require(packages.maid)
 type Maid = Maid.Maid
-
-local math = require(packages:WaitForChild("math"))
 
 local MountFrame = require(package.ViewportMountFrame)
 
@@ -48,11 +48,13 @@ function Constructor(config: BoundingBoxFrameParameters): BoundingBoxFrame
 	local Target: State<Instance?> = _Value(nil :: Instance?)
 	local TargetCFrame: ValueState<CFrame?> = _Value(nil :: CFrame?)
 	local TargetSize: ValueState<Vector2?> = _Value(nil :: Vector2?)
-	local BoardFrame: ValueState<ViewportFrame?>  = _Value(nil :: ViewportFrame?); 
+	local BoardFrame: ValueState<ViewportFrame?> = _Value(nil :: ViewportFrame?)
 	local Camera: ValueState<Camera?> = _Value(nil :: Camera?)
 	_Maid:GiveTask(BoardFrame:Connect(function(cur: ViewportFrame?)
 		Camera:Set(nil)
-		if not cur then return end
+		if not cur then
+			return
+		end
 		assert(cur ~= nil)
 		_Maid._billboardCameraCheck = cur:GetPropertyChangedSignal("CurrentCamera"):Connect(function()
 			Camera:Set(cur.CurrentCamera)
@@ -64,7 +66,9 @@ function Constructor(config: BoundingBoxFrameParameters): BoundingBoxFrame
 	_Maid:GiveTask(RunService.Heartbeat:Connect(function(dt)
 		local target = Target:Get()
 		local cam = Camera:Get()
-		if not target or not cam then return end
+		if not target or not cam then
+			return
+		end
 		assert(target ~= nil and cam ~= nil)
 		local camCF = cam.CFrame
 
@@ -79,26 +83,30 @@ function Constructor(config: BoundingBoxFrameParameters): BoundingBoxFrame
 			table.insert(parts, target)
 		end
 
-		local size, cf = math.Mesh.getBoundingBoxAtCFrame(camCF, parts)
+		local size, cf = MeshUtil.getBoundingBoxAtCFrame(camCF, parts)
 
 		TargetCFrame:Set(cf)
-		TargetSize:Set(Vector2.new(size.X, size.Y)*2)
+		TargetSize:Set(Vector2.new(size.X, size.Y) * 2)
 	end))
 
 	-- assemble final parameters
 	local parameters: any = {
-		AnchorPoint = Vector2.new(0.5,0.5),
+		AnchorPoint = Vector2.new(0.5, 0.5),
 		WorldPosition = _Computed(function(cf: CFrame?)
-			if not cf then return Vector2.new(0,0) end
+			if not cf then
+				return Vector2.new(0, 0)
+			end
 			assert(cf ~= nil)
 			return Vector2.new(cf.Position.X, cf.Position.Y)
 		end, TargetCFrame),
 		WorldSize = _Computed(function(size: Vector2?): Vector2
-			if not size then return Vector2.new(0,0) end
+			if not size then
+				return Vector2.new(0, 0)
+			end
 			assert(size ~= nil)
 			return size
 		end, TargetSize),
-		Parent = Parent
+		Parent = Parent,
 	}
 
 	config.Target = nil
@@ -112,7 +120,7 @@ function Constructor(config: BoundingBoxFrameParameters): BoundingBoxFrame
 	-- construct output instance
 	local Output = MountFrame(_Maid)(parameters)
 	Util.cleanUpPrep(_Maid, Output)
-	
+
 	BoardFrame:Set(Output:FindFirstAncestorOfClass("ViewportFrame"))
 	_Maid:GiveTask(Output.AncestryChanged:Connect(function()
 		BoardFrame:Set(Output:FindFirstAncestorOfClass("ViewportFrame"))

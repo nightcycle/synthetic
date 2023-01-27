@@ -1,4 +1,4 @@
-return function (coreGui)
+return function(coreGui)
 	local module = require(script.Parent)
 	local demo = {
 		Text = "Button *Time*",
@@ -8,11 +8,11 @@ return function (coreGui)
 		Padding = UDim.new(0, 8),
 		IconScale = 1,
 		TextOnly = false,
-		Position = UDim2.fromScale(0.5,0.5),
-		AnchorPoint = Vector2.new(0.5,0.5),
+		Position = UDim2.fromScale(0.5, 0.5),
+		AnchorPoint = Vector2.new(0.5, 0.5),
 		Parent = coreGui,
 		LeftIcon = "star",
-		RightIcon = "accessibility"
+		RightIcon = "accessibility",
 	}
 	local object = module()(demo)
 	return function()

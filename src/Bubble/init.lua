@@ -50,27 +50,25 @@ function Constructor(config: BubbleParameters): Bubble
 	local Scale = _import(config.Scale, 1.25)
 	local BackgroundTransparency = _import(config.BackgroundTransparency, 0.6)
 	local FinalTransparency = _import(config.FinalTransparency, 1)
-	local BackgroundColor3 = _import(config.BackgroundColor3, Color3.fromHSV(0,0,0.7))
+	local BackgroundColor3 = _import(config.BackgroundColor3, Color3.fromHSV(0, 0, 0.7))
 
 	-- init internal states
 	local Value = _Value(0)
 	local ValueTween = Value:Tween(0.3, Enum.EasingStyle.Quad, Enum.EasingDirection.Out)
-	local AbsoluteSize = _Value(Vector2.new(0,0))
-	local CenterPosition = _Value(UDim2.fromOffset(0,0))
-	local OutputState = (config :: any)[_REF] or _Value(nil :: ScreenGui?)
+	local AbsoluteSize = _Value(Vector2.new(0, 0))
+	local CenterPosition = _Value(UDim2.fromOffset(0, 0))
 
 	-- construct internal instances
-	local bubbleFrame = _new "Frame" {
+	local bubbleFrame = _new("Frame")({
 		Name = "Bubble",
-		Parent = OutputState,
 		Position = CenterPosition,
-		AnchorPoint = Vector2.new(0.5,0.5),
+		AnchorPoint = Vector2.new(0.5, 0.5),
 		BorderSizePixel = 0,
 		ZIndex = 1,
 		BackgroundColor3 = BackgroundColor3,
 		Size = _Computed(function(val: number, size: Vector2, scale: number)
 			local diameter = math.max(size.X, size.Y) * val * scale
-			return UDim2.fromOffset(diameter,diameter)
+			return UDim2.fromOffset(diameter, diameter)
 		end, ValueTween, AbsoluteSize, Scale),
 		BackgroundTransparency = _Computed(function(val: number, background: number, max: number)
 			if val == 0 then
@@ -78,32 +76,36 @@ function Constructor(config: BubbleParameters): Bubble
 			else
 				return max
 			end
-		end, Value, BackgroundTransparency, FinalTransparency):Tween(0.3, Enum.EasingStyle.Quad, Enum.EasingDirection.In),
+		end, Value, BackgroundTransparency, FinalTransparency):Tween(
+			0.3,
+			Enum.EasingStyle.Quad,
+			Enum.EasingDirection.In
+		),
 		[_CHILDREN] = {
-			_new "UICorner" {
-				CornerRadius = UDim.new(0.5,0),
-			},
-		} :: {Instance},
-	}
+			_new("UICorner")({
+				CornerRadius = UDim.new(0.5, 0),
+			}),
+		} :: { Instance },
+	})
 	_Maid:GiveTask(bubbleFrame)
 
 	-- construct output instance
 	local Output: ScreenGui = EffectGui(_Maid)({
-		[_REF] = OutputState,
 		Name = Name,
 		Parent = Parent,
 	} :: any)
+	bubbleFrame.Parent = Output
 	Util.cleanUpPrep(_Maid, Output)
 
 	-- bind states to attributes
 	_Maid:GiveTask(Output:GetAttributeChangedSignal("AbsoluteSize"):Connect(function()
-		AbsoluteSize:Set(Output:GetAttribute("AbsoluteSize") or Vector2.new(0,0))
+		AbsoluteSize:Set(Output:GetAttribute("AbsoluteSize") or Vector2.new(0, 0))
 	end))
-	AbsoluteSize:Set(Output:GetAttribute("AbsoluteSize") or Vector2.new(0,0))
+	AbsoluteSize:Set(Output:GetAttribute("AbsoluteSize") or Vector2.new(0, 0))
 	_Maid:GiveTask(Output:GetAttributeChangedSignal("CenterPosition"):Connect(function()
-		CenterPosition:Set(Output:GetAttribute("CenterPosition") or UDim2.fromOffset(0,0))
+		CenterPosition:Set(Output:GetAttribute("CenterPosition") or UDim2.fromOffset(0, 0))
 	end))
-	CenterPosition:Set(Output:GetAttribute("CenterPosition") or UDim2.fromOffset(0,0))
+	CenterPosition:Set(Output:GetAttribute("CenterPosition") or UDim2.fromOffset(0, 0))
 
 	-- bind functions to output
 	Util.bindFunction(Output, _Maid, "Fire", function()

@@ -53,7 +53,7 @@ function Constructor(config: TextLabelParameters): TextLabel
 	-- unload config states
 	local Padding = _import(config.Padding, UDim.new(0, 2))
 	local TextSize = _import(config.TextSize, 14)
-	local TextColor3 = _import(config.TextColor3, Color3.new(1,1,1))
+	local TextColor3 = _import(config.TextColor3, Color3.new(1, 1, 1))
 	local TextTransparency = _import(config.TextTransparency, 0)
 	local TextXAlignment = _import(config.TextXAlignment, Enum.TextXAlignment.Center)
 	local TextYAlignment = _import(config.TextYAlignment, Enum.TextYAlignment.Center)
@@ -65,7 +65,7 @@ function Constructor(config: TextLabelParameters): TextLabel
 
 	-- init internal states
 	local IconSize = _Computed(function(textSize: number, scale: number)
-		local size = math.round(textSize*scale)
+		local size = math.round(textSize * scale)
 		return UDim2.fromOffset(size, size)
 	end, TextSize, IconScale)
 
@@ -74,7 +74,7 @@ function Constructor(config: TextLabelParameters): TextLabel
 		Name = _import(config.Name, script.Name),
 		AutomaticSize = Enum.AutomaticSize.XY,
 		BackgroundTransparency = 1,
-		Size = UDim2.fromScale(0,0),
+		Size = UDim2.fromScale(0, 0),
 		[_CHILDREN] = {
 			_new("UIListLayout")({
 				Name = "Test",
@@ -123,7 +123,7 @@ function Constructor(config: TextLabelParameters): TextLabel
 				BackgroundTransparency = 1,
 				AutomaticSize = Enum.AutomaticSize.XY,
 			}),
-			Icon(_Maid){
+			Icon(_Maid)({
 				Size = IconSize,
 				LayoutOrder = 1,
 				Visible = _Computed(function(icon)
@@ -133,8 +133,8 @@ function Constructor(config: TextLabelParameters): TextLabel
 				Icon = LeftIcon,
 				IconColor3 = TextColor3,
 				IconTransparency = TextTransparency,
-			},
-			Icon(_Maid){
+			}),
+			Icon(_Maid)({
 				Size = IconSize,
 				LayoutOrder = 3,
 				Visible = _Computed(function(icon)
@@ -144,8 +144,8 @@ function Constructor(config: TextLabelParameters): TextLabel
 				Icon = RightIcon,
 				IconColor3 = TextColor3,
 				IconTransparency = TextTransparency,
-			},
-		} :: {Instance}
+			}),
+		} :: { Instance },
 	}
 
 	config.Padding = nil
@@ -169,7 +169,7 @@ function Constructor(config: TextLabelParameters): TextLabel
 	-- construct output instance
 	local Output = _new("Frame")(parameters)
 	Util.cleanUpPrep(_Maid, Output)
-	
+
 	return Output :: Frame
 end
 

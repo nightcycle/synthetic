@@ -50,15 +50,23 @@ function Constructor(config: SwitchParameters): Switch
 	-- unload config states
 	local Name = _import(config.Name, script.Name)
 	local Scale = _import(config.Scale, 1)
-	local BackgroundColor3 = _import(config.BackgroundColor3, Color3.fromHSV(0,0,0.9))
-	local EnabledColor3 = _import(config.EnabledColor3, Color3.fromHSV(0.6,1,1))
+	local BackgroundColor3 = _import(config.BackgroundColor3, Color3.fromHSV(0, 0, 0.9))
+	local EnabledColor3 = _import(config.EnabledColor3, Color3.fromHSV(0.6, 1, 1))
 	local Value = config.Value :: any
-	local ES: any = _import(config.EnableSound, nil); local EnableSound: State<Sound?> = ES
-	local DS: any = _import(config.DisableSound, nil); local DisableSound: State<Sound?> = DS
-	local BubbleEnabled = _Value(if typeof(config.BubbleEnabled) == "boolean" then config.BubbleEnabled elseif typeof(config.BubbleEnabled) == "table" then config.BubbleEnabled:Get() else false)
+	local ES: any = _import(config.EnableSound, nil)
+	local EnableSound: State<Sound?> = ES
+	local DS: any = _import(config.DisableSound, nil)
+	local DisableSound: State<Sound?> = DS
+	local BubbleEnabled = _Value(
+		if typeof(config.BubbleEnabled) == "boolean"
+			then config.BubbleEnabled
+			elseif typeof(config.BubbleEnabled) == "table" then config.BubbleEnabled:Get()
+			else false
+	)
 
 	-- construct signals
-	local Activated = Signal.new(); _Maid:GiveTask(Activated)
+	local Activated = Signal.new()
+	_Maid:GiveTask(Activated)
 
 	-- init internal states
 	local Padding = _Computed(function(scale)
@@ -67,21 +75,16 @@ function Constructor(config: SwitchParameters): Switch
 	local Width = _Computed(function(scale: number)
 		return math.round(scale * 20)
 	end, Scale)
-	local ActiveColor3 = _Computed(
-		function(val: boolean, back: Color3, col: Color3): Color3
-			if val then
-				return col
-			else
-				return back
-			end
-		end,
-		Value,
-		BackgroundColor3,
-		EnabledColor3
-	)
+	local ActiveColor3 = _Computed(function(val: boolean, back: Color3, col: Color3): Color3
+		if val then
+			return col
+		else
+			return back
+		end
+	end, Value, BackgroundColor3, EnabledColor3)
 
 	-- bind states
-	_Maid:GiveTask(Activated:Connect(function()	
+	_Maid:GiveTask(Activated:Connect(function()
 		if Value:Get() == true then
 			local clickSound = EnableSound:Get()
 			if clickSound then
@@ -104,51 +107,48 @@ function Constructor(config: SwitchParameters): Switch
 	end))
 
 	-- construct sub-instances
-	local Knob = _new "Frame" {
-	 	Name = "Knob",
+	local Knob = _new("Frame")({
+		Name = "Knob",
 		ZIndex = 2,
-		Position = _Computed(
-			function(val)
-				if val then
-					return UDim2.fromScale(1,0.5)
-				else
-					return UDim2.fromScale(0,0.5)
-				end
-			end,
-			Value
-		):Tween(),
-		AnchorPoint = Vector2.new(0.5,0.5),
-		Size = UDim2.fromScale(1,1),
+		Position = _Computed(function(val)
+			if val then
+				return UDim2.fromScale(1, 0.5)
+			else
+				return UDim2.fromScale(0, 0.5)
+			end
+		end, Value):Tween(),
+		AnchorPoint = Vector2.new(0.5, 0.5),
+		Size = UDim2.fromScale(1, 1),
 		SizeConstraint = Enum.SizeConstraint.RelativeYY,
 		BackgroundTransparency = 1,
 		[_CHILDREN] = {
-			_new "Frame" {
+			_new("Frame")({
 				Name = "Frame",
 				ZIndex = 2,
-				Position = UDim2.fromScale(0.5,0.5),
-				AnchorPoint = Vector2.new(0.5,0.5),
+				Position = UDim2.fromScale(0.5, 0.5),
+				AnchorPoint = Vector2.new(0.5, 0.5),
 				BackgroundColor3 = ActiveColor3:Tween(),
 				Size = _Computed(function(width: number, padding: number)
-					return UDim2.fromOffset(width-padding, width-padding)
+					return UDim2.fromOffset(width - padding, width - padding)
 				end, Width, Padding),
 				BorderSizePixel = 0,
 				[_CHILDREN] = {
-					_new "UICorner" {
+					_new("UICorner")({
 						CornerRadius = _Computed(function(padding)
-							return UDim.new(1,0)
-						end, Padding)
-					},
-					_new "UIStroke" {
+							return UDim.new(1, 0)
+						end, Padding),
+					}),
+					_new("UIStroke")({
 						ApplyStrokeMode = Enum.ApplyStrokeMode.Border,
 						Thickness = _Computed(function(padding)
-							return 1--math.round(padding*0.25)
+							return 1 --math.round(padding*0.25)
 						end, Padding),
 						Transparency = 0.8,
-					}
-				} :: {Instance},
-			},
-		} :: {Instance},
-	}
+					}),
+				} :: { Instance },
+			}),
+		} :: { Instance },
+	})
 
 	-- assemble final parameters
 	local parameters: any = {
@@ -158,72 +158,68 @@ function Constructor(config: SwitchParameters): Switch
 		end, Width),
 		BackgroundTransparency = 1,
 		[_CHILDREN] = {
-			_new "ImageButton" {
+			_new("ImageButton")({
 				Name = "Button",
 				ZIndex = 3,
 				BackgroundTransparency = 1,
 				ImageTransparency = 1,
-				Position = UDim2.fromScale(0.5,0.5),
-				Size = UDim2.fromScale(1,1),
-				AnchorPoint = Vector2.new(0.5,0.5),
-				[_ON_EVENT "Activated"] = function()
+				Position = UDim2.fromScale(0.5, 0.5),
+				Size = UDim2.fromScale(1, 1),
+				AnchorPoint = Vector2.new(0.5, 0.5),
+				[_ON_EVENT("Activated")] = function()
 					Activated:Fire()
 					if BubbleEnabled:Get() then
-						local bubble = Bubble(_Maid){
+						local bubble = Bubble(_Maid)({
 							Parent = Knob,
 							-- BackgroundColor3 = ActiveColor3,
 							-- BackgroundTransparency = 0.6,
-						}
+						})
 
 						local fireFunction = bubble:FindFirstChild("Fire")
 						assert(fireFunction ~= nil and fireFunction:IsA("BindableFunction"))
 						fireFunction:Invoke()
 					end
-				end
-			},
-			_new "Frame" {
+				end,
+			}),
+			_new("Frame")({
 				Name = "Frame",
 				ZIndex = 1,
 				Size = _Computed(function(width: number, padding: number)
-					local w = width - padding*2
-					return UDim2.new(0, 2*w, 1, 0)
+					local w = width - padding * 2
+					return UDim2.new(0, 2 * w, 1, 0)
 				end, Width, Padding),
-				Position = UDim2.fromScale(0.5,0.5),
-				AnchorPoint = Vector2.new(0.5,0.5),
+				Position = UDim2.fromScale(0.5, 0.5),
+				AnchorPoint = Vector2.new(0.5, 0.5),
 				BackgroundTransparency = 1,
 				[_CHILDREN] = {
-					_new "Frame" {
+					_new("Frame")({
 						Name = "Track",
 						ZIndex = 1,
 						BackgroundTransparency = 0.5,
-						Position = UDim2.fromScale(0.5,0.5),
-						AnchorPoint = Vector2.new(0.5,0.5),
+						Position = UDim2.fromScale(0.5, 0.5),
+						AnchorPoint = Vector2.new(0.5, 0.5),
 						Size = _Computed(function(width: number, padding: number)
-							local w = math.round(width - padding*1.75)
+							local w = math.round(width - padding * 1.75)
 							return UDim2.new(1, 0, 0, w)
 						end, Width, Padding),
-						BackgroundColor3 = _Computed(
-							function(val, col)
-								local h,_s,_v = col:ToHSV()
-								if val then
-									return Color3.fromHSV(h, 0.5, 1)
-								else
-									return Color3.fromHSV(h, 0, 1)
-								end
-							end,
-							Value,
-							EnabledColor3
-						):Tween(),
+						BackgroundColor3 = _Computed(function(val, col)
+							local h, _s, _v = col:ToHSV()
+							if val then
+								return Color3.fromHSV(h, 0.5, 1)
+							else
+								return Color3.fromHSV(h, 0, 1)
+							end
+						end, Value, EnabledColor3):Tween(),
 						[_CHILDREN] = {
-							_new "UICorner" {
-								CornerRadius = UDim.new(0.5,0),
-							}
-						} :: {Instance},
-					},
+							_new("UICorner")({
+								CornerRadius = UDim.new(0.5, 0),
+							}),
+						} :: { Instance },
+					}),
 					Knob,
-				} :: {Instance}
-			},
-		} :: {Instance},
+				} :: { Instance },
+			}),
+		} :: { Instance },
 	}
 
 	config.Scale = nil
@@ -238,12 +234,12 @@ function Constructor(config: SwitchParameters): Switch
 			parameters[k] = v
 		end
 	end
-	
+
 	-- construct output instance
 	local Output: Frame = _new("Frame")(parameters) :: any
 	Util.cleanUpPrep(_Maid, Output)
 	Util.bindSignal(Output, _Maid, "Activated", Activated)
-	
+
 	return Output
 end
 

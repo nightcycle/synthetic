@@ -53,14 +53,15 @@ function Constructor(config: RadioButtonParameters): RadioButton
 	-- unload config states
 	local Name = _import(config.Name, script.Name)
 	local Scale = _import(config.Scale, 1)
-	local BorderColor3: State<Color3> = _import(config.BorderColor3, Color3.fromHSV(0,0,0.4)) :: any
-	local BackgroundColor3: State<Color3> = _import(config.BackgroundColor3, Color3.fromHSV(0.6,1,1)) :: any
+	local BorderColor3: State<Color3> = _import(config.BorderColor3, Color3.fromHSV(0, 0, 0.4)) :: any
+	local BackgroundColor3: State<Color3> = _import(config.BackgroundColor3, Color3.fromHSV(0.6, 1, 1)) :: any
 	local Value = config.Value
 	local EnableSound: State<Sound?> = _import(config.EnableSound, nil) :: any
 	local DisableSound: State<Sound?> = _import(config.DisableSound, nil) :: any
 
 	-- construct signals
-	local Activated = Signal.new(); _Maid:GiveTask(Activated)
+	local Activated = Signal.new()
+	_Maid:GiveTask(Activated)
 
 	-- init internal states
 	local OutputState = (config :: any)[_REF] or _Value(nil :: RadioButton?)
@@ -95,7 +96,6 @@ function Constructor(config: RadioButtonParameters): RadioButton
 		end
 	end))
 
-
 	-- assemble final parameters
 	local parameters: any = {
 		[_REF] = OutputState :: any,
@@ -105,15 +105,15 @@ function Constructor(config: RadioButtonParameters): RadioButton
 		end, Width),
 		BackgroundTransparency = 1,
 		[_CHILDREN] = {
-			_new "ImageButton" {
+			_new("ImageButton")({
 				Name = "Button",
 				ZIndex = 3,
 				BackgroundTransparency = 1,
 				ImageTransparency = 1,
-				Position = UDim2.fromScale(0.5,0.5),
-				Size = UDim2.fromScale(1,1),
-				AnchorPoint = Vector2.new(0.5,0.5),
-				[_ON_EVENT "Activated"] = function()
+				Position = UDim2.fromScale(0.5, 0.5),
+				Size = UDim2.fromScale(1, 1),
+				AnchorPoint = Vector2.new(0.5, 0.5),
+				[_ON_EVENT("Activated")] = function()
 					Activated:Fire()
 					if BubbleEnabled:Get() then
 						local bubble = Bubble(_Maid)({
@@ -123,25 +123,25 @@ function Constructor(config: RadioButtonParameters): RadioButton
 						assert(fireFunction ~= nil and fireFunction:IsA("BindableFunction"))
 						fireFunction:Invoke()
 					end
-				end
-			},
-			_new "Frame" {
+				end,
+			}),
+			_new("Frame")({
 				Name = "Frame",
 				ZIndex = 2,
-				Position = UDim2.fromScale(0.5,0.5),
-				AnchorPoint = Vector2.new(0.5,0.5),
+				Position = UDim2.fromScale(0.5, 0.5),
+				AnchorPoint = Vector2.new(0.5, 0.5),
 				BackgroundColor3 = BackgroundColor3,
 				BackgroundTransparency = 0.999,
 				Size = _Computed(function(width: number, padding: number)
-					return UDim2.fromOffset(width-padding, width-padding)
+					return UDim2.fromOffset(width - padding, width - padding)
 				end, Width, Padding),
 				BorderSizePixel = 0,
 				[_CHILDREN] = {
-					_new "Frame" {
+					_new("Frame")({
 						Name = "Fill",
 						Size = _Computed(function(width: number, padding: number): UDim2
-							local w = math.round(width - padding*2)
-							return UDim2.fromOffset(w,w)
+							local w = math.round(width - padding * 2)
+							return UDim2.fromOffset(w, w)
 						end, Width, Padding),
 						BackgroundColor3 = BackgroundColor3,
 						BackgroundTransparency = _Computed(function(val)
@@ -151,39 +151,38 @@ function Constructor(config: RadioButtonParameters): RadioButton
 								return 1
 							end
 						end, Value):Tween(),
-						[_CHILDREN] ={
-							_new "UICorner" {
+						[_CHILDREN] = {
+							_new("UICorner")({
 								CornerRadius = _Computed(function(padding)
-									return UDim.new(1,0)
-								end, Padding)
-							},
-						} :: {Instance},
-						Position = UDim2.fromScale(0.5,0.5),
-						AnchorPoint = Vector2.new(0.5,0.5),
-					},
-					_new "UICorner" {
+									return UDim.new(1, 0)
+								end, Padding),
+							}),
+						} :: { Instance },
+						Position = UDim2.fromScale(0.5, 0.5),
+						AnchorPoint = Vector2.new(0.5, 0.5),
+					}),
+					_new("UICorner")({
 						CornerRadius = _Computed(function(padding)
-							return UDim.new(1,0)
-						end, Padding)
-					},
-					_new "UIStroke" {
+							return UDim.new(1, 0)
+						end, Padding),
+					}),
+					_new("UIStroke")({
 						ApplyStrokeMode = Enum.ApplyStrokeMode.Border,
 						Thickness = _Computed(function(padding: number)
-							return math.round(padding*0.25)
+							return math.round(padding * 0.25)
 						end, Padding),
 						Transparency = 0,
-						Color = _Computed(
-							function(val: boolean, border: Color3, background: Color3)
-								if val then return background else return border end
-							end,
-							Value,
-							BorderColor3,
-							BackgroundColor3
-						):Tween(),
-					}
-				} :: {Instance}
-			},
-		} :: {Instance}
+						Color = _Computed(function(val: boolean, border: Color3, background: Color3)
+							if val then
+								return background
+							else
+								return border
+							end
+						end, Value, BorderColor3, BackgroundColor3):Tween(),
+					}),
+				} :: { Instance },
+			}),
+		} :: { Instance },
 	}
 
 	config.Scale = nil
