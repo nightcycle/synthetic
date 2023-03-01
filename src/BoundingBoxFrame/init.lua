@@ -28,18 +28,18 @@ export type BoundingBoxFrame = Frame
 
 function Constructor(config: BoundingBoxFrameParameters): BoundingBoxFrame
 	-- init workspace
-	local _Maid = Maid.new()
-	local _Fuse = ColdFusion.fuse(_Maid)
-	local _new = _Fuse.new
-	local _mount = _Fuse.mount
-	local _import = _Fuse.import
-	local _OUT = _Fuse.OUT
-	local _REF = _Fuse.REF
-	local _CHILDREN = _Fuse.CHILDREN
-	local _ON_EVENT = _Fuse.ON_EVENT
-	local _ON_PROPERTY = _Fuse.ON_PROPERTY
-	local _Value = _Fuse.Value
-	local _Computed = _Fuse.Computed
+	local maid = Maid.new()
+	local _fuse = ColdFusion.fuse(maid)
+	local _new = _fuse.new
+	local _mount = _fuse.mount
+	local _import = _fuse.import
+	local _OUT = _fuse.OUT
+	local _REF = _fuse.REF
+	local _CHILDREN = _fuse.CHILDREN
+	local _ON_EVENT = _fuse.ON_EVENT
+	local _ON_PROPERTY = _fuse.ON_PROPERTY
+	local _Value = _fuse.Value
+	local _Computed = _fuse.Computed
 
 	-- unload config states
 	local Parent = _import(config.Parent, nil)
@@ -50,20 +50,20 @@ function Constructor(config: BoundingBoxFrameParameters): BoundingBoxFrame
 	local TargetSize: ValueState<Vector2?> = _Value(nil :: Vector2?)
 	local BoardFrame: ValueState<ViewportFrame?> = _Value(nil :: ViewportFrame?)
 	local Camera: ValueState<Camera?> = _Value(nil :: Camera?)
-	_Maid:GiveTask(BoardFrame:Connect(function(cur: ViewportFrame?)
+	maid:GiveTask(BoardFrame:Connect(function(cur: ViewportFrame?)
 		Camera:Set(nil)
 		if not cur then
 			return
 		end
 		assert(cur ~= nil)
-		_Maid._billboardCameraCheck = cur:GetPropertyChangedSignal("CurrentCamera"):Connect(function()
+		maid._billboardCameraCheck = cur:GetPropertyChangedSignal("CurrentCamera"):Connect(function()
 			Camera:Set(cur.CurrentCamera)
 		end)
 		Camera:Set(cur.CurrentCamera)
 	end))
 
 	-- update states each frame
-	_Maid:GiveTask(RunService.Heartbeat:Connect(function(dt)
+	maid:GiveTask(RunService.Heartbeat:Connect(function(dt)
 		local target = Target:Get()
 		local cam = Camera:Get()
 		if not target or not cam then
@@ -118,11 +118,11 @@ function Constructor(config: BoundingBoxFrameParameters): BoundingBoxFrame
 	end
 
 	-- construct output instance
-	local Output = MountFrame(_Maid)(parameters)
-	Util.cleanUpPrep(_Maid, Output)
+	local Output = MountFrame(maid)(parameters)
+	Util.cleanUpPrep(maid, Output)
 
 	BoardFrame:Set(Output:FindFirstAncestorOfClass("ViewportFrame"))
-	_Maid:GiveTask(Output.AncestryChanged:Connect(function()
+	maid:GiveTask(Output.AncestryChanged:Connect(function()
 		BoardFrame:Set(Output:FindFirstAncestorOfClass("ViewportFrame"))
 	end))
 

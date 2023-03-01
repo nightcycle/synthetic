@@ -27,18 +27,18 @@ export type ViewportMountFrame = Frame
 
 function Constructor(config: ViewportMountFrameParameters): ViewportMountFrame
 	-- init workspace
-	local _Maid = Maid.new()
-	local _Fuse = ColdFusion.fuse(_Maid)
-	local _new = _Fuse.new
-	local _mount = _Fuse.mount
-	local _import = _Fuse.import
-	local _OUT = _Fuse.OUT
-	local _REF = _Fuse.REF
-	local _CHILDREN = _Fuse.CHILDREN
-	local _ON_EVENT = _Fuse.ON_EVENT
-	local _ON_PROPERTY = _Fuse.ON_PROPERTY
-	local _Value = _Fuse.Value
-	local _Computed = _Fuse.Computed
+	local maid = Maid.new()
+	local _fuse = ColdFusion.fuse(maid)
+	local _new = _fuse.new
+	local _mount = _fuse.mount
+	local _import = _fuse.import
+	local _OUT = _fuse.OUT
+	local _REF = _fuse.REF
+	local _CHILDREN = _fuse.CHILDREN
+	local _ON_EVENT = _fuse.ON_EVENT
+	local _ON_PROPERTY = _fuse.ON_PROPERTY
+	local _Value = _fuse.Value
+	local _Computed = _fuse.Computed
 
 	-- unload config states
 	local WorldPosition = _import(config.WorldPosition, Vector2.new(0, 0))
@@ -47,13 +47,13 @@ function Constructor(config: ViewportMountFrameParameters): ViewportMountFrame
 	-- init internal states
 	local Camera: ValueState<Camera?> = _Value(nil :: Camera?)
 	local BillboardFrame: ValueState<ViewportFrame?> = _Value(nil :: ViewportFrame?)
-	_Maid:GiveTask(BillboardFrame:Connect(function(cur: ViewportFrame?)
+	maid:GiveTask(BillboardFrame:Connect(function(cur: ViewportFrame?)
 		Camera:Set(nil)
 		if not cur then
 			return
 		end
 		assert(cur ~= nil)
-		_Maid._billboardCameraCheck = cur:GetPropertyChangedSignal("CurrentCamera"):Connect(function()
+		maid._billboardCameraCheck = cur:GetPropertyChangedSignal("CurrentCamera"):Connect(function()
 			Camera:Set(cur.CurrentCamera)
 		end)
 		Camera:Set(cur.CurrentCamera)
@@ -65,7 +65,7 @@ function Constructor(config: ViewportMountFrameParameters): ViewportMountFrame
 	local BoardAbsoluteSize = _Value(Vector2.new(0, 0))
 	local BoardCameraWindowSize = _Value(Vector2.new(0, 0))
 
-	_Maid:GiveTask(RunService.Heartbeat:Connect(function(dt)
+	maid:GiveTask(RunService.Heartbeat:Connect(function(dt)
 		local cam = Camera:Get()
 		local boardFrame = BillboardFrame:Get()
 		if not cam or not boardFrame then
@@ -126,12 +126,12 @@ function Constructor(config: ViewportMountFrameParameters): ViewportMountFrame
 	end
 
 	-- construct output instance
-	local Output = _Fuse.new("Frame")(parameters)
-	Util.cleanUpPrep(_Maid, Output)
+	local Output = _fuse.new("Frame")(parameters)
+	Util.cleanUpPrep(maid, Output)
 
 	-- provide output inst to relevant states
 	BillboardFrame:Set(Output:FindFirstAncestorOfClass("ViewportFrame"))
-	_Maid:GiveTask(Output.AncestryChanged:Connect(function()
+	maid:GiveTask(Output.AncestryChanged:Connect(function()
 		BillboardFrame:Set(Output:FindFirstAncestorOfClass("ViewportFrame"))
 	end))
 

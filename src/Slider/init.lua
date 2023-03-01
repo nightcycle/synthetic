@@ -43,18 +43,18 @@ export type Slider = Frame
 
 function Constructor(config: SliderParameters): Slider
 	-- init workspace
-	local _Maid = Maid.new()
-	local _Fuse = ColdFusion.fuse(_Maid)
-	local _new = _Fuse.new
-	local _mount = _Fuse.mount
-	local _import = _Fuse.import
-	local _OUT = _Fuse.OUT
-	local _REF = _Fuse.REF
-	local _CHILDREN = _Fuse.CHILDREN
-	local _ON_EVENT = _Fuse.ON_EVENT
-	local _ON_PROPERTY = _Fuse.ON_PROPERTY
-	local _Value = _Fuse.Value
-	local _Computed = _Fuse.Computed
+	local maid = Maid.new()
+	local _fuse = ColdFusion.fuse(maid)
+	local _new = _fuse.new
+	local _mount = _fuse.mount
+	local _import = _fuse.import
+	local _OUT = _fuse.OUT
+	local _REF = _fuse.REF
+	local _CHILDREN = _fuse.CHILDREN
+	local _ON_EVENT = _fuse.ON_EVENT
+	local _ON_PROPERTY = _fuse.ON_PROPERTY
+	local _Value = _fuse.Value
+	local _Computed = _fuse.Computed
 
 	-- unload config states
 	local Name = _import(config.Name, script.Name)
@@ -82,7 +82,7 @@ function Constructor(config: SliderParameters): Slider
 
 	-- construct signals
 	local OnRelease = Signal.new()
-	_Maid:GiveTask(OnRelease)
+	maid:GiveTask(OnRelease)
 
 	-- init internal states
 	local Dragging = _Value(false)
@@ -100,7 +100,7 @@ function Constructor(config: SliderParameters): Slider
 	end, Value, Minimum, Maximum)
 
 	-- bind internal states
-	_Maid:GiveTask(Value:Connect(function()
+	maid:GiveTask(Value:Connect(function()
 		local tickSound = TickSound:Get()
 		if tickSound then
 			SoundService:PlayLocalSound(tickSound)
@@ -111,7 +111,7 @@ function Constructor(config: SliderParameters): Slider
 	end, Size, Padding)
 
 	-- construct sub-instances
-	local Knob: any = _Fuse.new("Frame")({
+	local Knob: any = _fuse.new("Frame")({
 		Name = "Knob",
 		ZIndex = 2,
 		Position = _Computed(function(val: number): UDim2
@@ -124,7 +124,7 @@ function Constructor(config: SliderParameters): Slider
 		SizeConstraint = Enum.SizeConstraint.RelativeYY,
 		BackgroundTransparency = 1,
 		[_CHILDREN] = {
-			_Fuse.new("Frame")({
+			_fuse.new("Frame")({
 				Name = "Frame",
 				ZIndex = 2,
 				Position = UDim2.fromScale(0.5, 0.5),
@@ -135,12 +135,12 @@ function Constructor(config: SliderParameters): Slider
 				end, Diameter),
 				BorderSizePixel = 0,
 				[_CHILDREN] = {
-					_Fuse.new("UICorner")({
+					_fuse.new("UICorner")({
 						CornerRadius = _Computed(function(padding: UDim)
 							return UDim.new(1, 0)
 						end, Padding),
 					}),
-					_Fuse.new("UIStroke")({
+					_fuse.new("UIStroke")({
 						ApplyStrokeMode = Enum.ApplyStrokeMode.Border,
 						Thickness = _Computed(function(padding: UDim)
 							return 1 --math.round(padding*0.25)
@@ -152,7 +152,7 @@ function Constructor(config: SliderParameters): Slider
 		} :: { Instance },
 	})
 
-	local _Hint = Hint(_Maid)({
+	local _Hint = Hint(maid)({
 		Parent = Knob,
 		Override = true,
 		AnchorPoint = Vector2.new(0, -1),
@@ -167,7 +167,7 @@ function Constructor(config: SliderParameters): Slider
 		end, Value),
 	})
 
-	local Button = _Fuse.new("ImageButton")({
+	local Button = _fuse.new("ImageButton")({
 		Name = "Button",
 		ZIndex = 3,
 		BackgroundTransparency = 1,
@@ -180,14 +180,14 @@ function Constructor(config: SliderParameters): Slider
 		[_ON_EVENT("MouseButton1Down")] = function()
 			Dragging:Set(true)
 			if BubbleEnabled:Get() then
-				local bubble = Bubble(_Maid)({
+				local bubble = Bubble(maid)({
 					Parent = Knob,
 					FinalTransparency = 0.7,
 					BackgroundTransparency = 1,
 					BackgroundColor3 = EnabledColor3,
 					Scale = 1.75,
 				})
-				_Maid._currentBubble = function()
+				maid._currentBubble = function()
 					if bubble and bubble:IsDescendantOf(game) then
 						local destFunction: Instance? = bubble:FindFirstChild("Disable")
 						assert(destFunction ~= nil and destFunction:IsA("BindableFunction"))
@@ -216,7 +216,7 @@ function Constructor(config: SliderParameters): Slider
 		BackgroundTransparency = 1,
 		[_CHILDREN] = {
 			Button,
-			_Fuse.new("Frame")({
+			_fuse.new("Frame")({
 				Name = "Frame",
 				ZIndex = 1,
 				Size = UDim2.fromScale(1, 1),
@@ -224,7 +224,7 @@ function Constructor(config: SliderParameters): Slider
 				AnchorPoint = Vector2.new(0.5, 0.5),
 				BackgroundTransparency = 1,
 				[_CHILDREN] = {
-					_Fuse.new("Frame")({
+					_fuse.new("Frame")({
 						Name = "Track",
 						ZIndex = 1,
 						BackgroundTransparency = 0.5,
@@ -235,10 +235,10 @@ function Constructor(config: SliderParameters): Slider
 						end, Diameter, BorderSizePixel),
 						BackgroundColor3 = Color3.new(1, 1, 1),
 						[_CHILDREN] = {
-							_Fuse.new("UICorner")({
+							_fuse.new("UICorner")({
 								CornerRadius = UDim.new(0.5, 0),
 							}),
-							_Fuse.new("UIGradient")({
+							_fuse.new("UIGradient")({
 								Color = _Computed(function(back, enab, alpha: number)
 									local bump = 0.001
 									return ColorSequence.new({
@@ -278,13 +278,13 @@ function Constructor(config: SliderParameters): Slider
 	end
 
 	-- construct output instance
-	local Output: Frame = _Fuse.new("Frame")(parameters) :: any
+	local Output: Frame = _fuse.new("Frame")(parameters) :: any
 
 	_Computed(function(dragging): nil
-		_Maid._dragStep = nil
-		_Maid._dragRelease = nil
+		maid._dragStep = nil
+		maid._dragRelease = nil
 		if dragging then
-			_Maid._dragStep = UserInputService.InputChanged:Connect(function(inputObj: InputObject)
+			maid._dragStep = UserInputService.InputChanged:Connect(function(inputObj: InputObject)
 				if inputObj.UserInputType == Enum.UserInputType.MouseMovement then
 					local pos = Vector2.new(inputObj.Position.X, inputObj.Position.Y)
 					local absPos = ButtonAbsolutePosition:Get()
@@ -294,7 +294,7 @@ function Constructor(config: SliderParameters): Slider
 					Input:Set(min + (max - min) * math.clamp((pos.X - absPos.X) / absSize.X, 0, 1))
 				end
 			end)
-			_Maid._dragRelease = UserInputService.InputEnded:Connect(function(inputObj: InputObject)
+			maid._dragRelease = UserInputService.InputEnded:Connect(function(inputObj: InputObject)
 				if inputObj.UserInputType == Enum.UserInputType.MouseButton1 then
 					Dragging:Set(false)
 					OnRelease:Fire(Value:Get())
@@ -305,16 +305,16 @@ function Constructor(config: SliderParameters): Slider
 			if disabSound then
 				SoundService:PlayLocalSound(disabSound)
 			end
-			_Maid._currentBubble = nil
+			maid._currentBubble = nil
 		end
 		return nil
 	end, Dragging)
 
-	_Maid:GiveTask(Value:Connect(function(cur)
+	maid:GiveTask(Value:Connect(function(cur)
 		Output:SetAttribute("Value", cur)
 	end))
 
-	Util.cleanUpPrep(_Maid, Output)
+	Util.cleanUpPrep(maid, Output)
 
 	return Output
 end

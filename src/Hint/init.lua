@@ -28,18 +28,18 @@ export type Hint = ScreenGui
 
 function Constructor(config: HintParameters): Hint
 	-- init workspace
-	local _Maid = Maid.new()
-	local _Fuse = ColdFusion.fuse(_Maid)
-	local _new = _Fuse.new
-	local _mount = _Fuse.mount
-	local _import = _Fuse.import
-	local _OUT = _Fuse.OUT
-	local _REF = _Fuse.REF
-	local _CHILDREN = _Fuse.CHILDREN
-	local _ON_EVENT = _Fuse.ON_EVENT
-	local _ON_PROPERTY = _Fuse.ON_PROPERTY
-	local _Value = _Fuse.Value
-	local _Computed = _Fuse.Computed
+	local maid = Maid.new()
+	local _fuse = ColdFusion.fuse(maid)
+	local _new = _fuse.new
+	local _mount = _fuse.mount
+	local _import = _fuse.import
+	local _OUT = _fuse.OUT
+	local _REF = _fuse.REF
+	local _CHILDREN = _fuse.CHILDREN
+	local _ON_EVENT = _fuse.ON_EVENT
+	local _ON_PROPERTY = _fuse.ON_PROPERTY
+	local _Value = _fuse.Value
+	local _Computed = _fuse.Computed
 
 	-- unload config states
 	local Name = _import(config.Name, script.Name)
@@ -70,16 +70,16 @@ function Constructor(config: HintParameters): Hint
 	end, Enabled, TextTransparency):Tween()
 	_Computed(function(par: GuiObject?): nil
 		if par then
-			_Maid._parentInputBeginSignal = par.InputChanged:Connect(function()
+			maid._parentInputBeginSignal = par.InputChanged:Connect(function()
 				if not Override:Get() then
-					Visible:Set(true)			
+					Visible:Set(true)
 				end
 				local ValEnab: ValueState<boolean> = Enabled :: any
 				if ValEnab.Set then
 					ValEnab:Set(true)
 				end
 			end)
-			_Maid._parentInputEndSignal = par.MouseLeave:Connect(function()
+			maid._parentInputEndSignal = par.MouseLeave:Connect(function()
 				local ValEnab: ValueState<boolean> = Enabled :: any
 				if ValEnab.Set then
 					ValEnab:Set(false)
@@ -148,10 +148,10 @@ function Constructor(config: HintParameters): Hint
 			_new("UICorner")({
 				CornerRadius = CornerRadius,
 			}),
-			TextLabel(_Maid)(tConfig),
+			TextLabel(maid)(tConfig),
 		} :: { Instance },
 	})
-	_Maid:GiveTask(bubbleFrame)
+	maid:GiveTask(bubbleFrame)
 
 	-- assemble final parameters
 	local parameters: any = {
@@ -162,16 +162,16 @@ function Constructor(config: HintParameters): Hint
 	}
 
 	-- construct output instance
-	local Output: ScreenGui = EffectGui(_Maid)(parameters)
+	local Output: ScreenGui = EffectGui(maid)(parameters)
 	bubbleFrame.Parent = Output
-	_Maid:GiveTask(Output:GetAttributeChangedSignal("AbsoluteSize"):Connect(function()
+	maid:GiveTask(Output:GetAttributeChangedSignal("AbsoluteSize"):Connect(function()
 		AbsoluteSize:Set(Output:GetAttribute("AbsoluteSize") or Vector2.new(0, 0))
 	end))
 
-	_Maid:GiveTask(Output:GetAttributeChangedSignal("CenterPosition"):Connect(function()
+	maid:GiveTask(Output:GetAttributeChangedSignal("CenterPosition"):Connect(function()
 		CenterPosition:Set(Output:GetAttribute("CenterPosition") or UDim2.fromOffset(0, 0))
 	end))
-	Util.cleanUpPrep(_Maid, Output)
+	Util.cleanUpPrep(maid, Output)
 
 	return Output
 end

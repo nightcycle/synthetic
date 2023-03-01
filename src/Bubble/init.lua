@@ -28,21 +28,21 @@ export type Bubble = EffectGui.EffectGui
 
 function Constructor(config: BubbleParameters): Bubble
 	-- init workspace
-	local _Maid: Maid = Maid.new()
-	local _Fuse: Fuse = ColdFusion.fuse(_Maid)
+	local maid: Maid = Maid.new()
+	local _fuse: Fuse = ColdFusion.fuse(maid)
 
-	local _new = _Fuse.new
-	local _mount = _Fuse.mount
-	local _import = _Fuse.import
+	local _new = _fuse.new
+	local _mount = _fuse.mount
+	local _import = _fuse.import
 
-	local _OUT = _Fuse.OUT
-	local _REF = _Fuse.REF
-	local _CHILDREN = _Fuse.CHILDREN
-	local _ON_EVENT = _Fuse.ON_EVENT
-	local _ON_PROPERTY = _Fuse.ON_PROPERTY
+	local _OUT = _fuse.OUT
+	local _REF = _fuse.REF
+	local _CHILDREN = _fuse.CHILDREN
+	local _ON_EVENT = _fuse.ON_EVENT
+	local _ON_PROPERTY = _fuse.ON_PROPERTY
 
-	local _Value = _Fuse.Value
-	local _Computed = _Fuse.Computed
+	local _Value = _fuse.Value
+	local _Computed = _fuse.Computed
 
 	-- unload config states
 	local Name = _import(config.Name, script.Name)
@@ -87,28 +87,28 @@ function Constructor(config: BubbleParameters): Bubble
 			}),
 		} :: { Instance },
 	})
-	_Maid:GiveTask(bubbleFrame)
+	maid:GiveTask(bubbleFrame)
 
 	-- construct output instance
-	local Output: ScreenGui = EffectGui(_Maid)({
+	local Output: ScreenGui = EffectGui(maid)({
 		Name = Name,
 		Parent = Parent,
 	} :: any)
 	bubbleFrame.Parent = Output
-	Util.cleanUpPrep(_Maid, Output)
+	Util.cleanUpPrep(maid, Output)
 
 	-- bind states to attributes
-	_Maid:GiveTask(Output:GetAttributeChangedSignal("AbsoluteSize"):Connect(function()
+	maid:GiveTask(Output:GetAttributeChangedSignal("AbsoluteSize"):Connect(function()
 		AbsoluteSize:Set(Output:GetAttribute("AbsoluteSize") or Vector2.new(0, 0))
 	end))
 	AbsoluteSize:Set(Output:GetAttribute("AbsoluteSize") or Vector2.new(0, 0))
-	_Maid:GiveTask(Output:GetAttributeChangedSignal("CenterPosition"):Connect(function()
+	maid:GiveTask(Output:GetAttributeChangedSignal("CenterPosition"):Connect(function()
 		CenterPosition:Set(Output:GetAttribute("CenterPosition") or UDim2.fromOffset(0, 0))
 	end))
 	CenterPosition:Set(Output:GetAttribute("CenterPosition") or UDim2.fromOffset(0, 0))
 
 	-- bind functions to output
-	Util.bindFunction(Output, _Maid, "Fire", function()
+	Util.bindFunction(Output, maid, "Fire", function()
 		Value:Set(1)
 		task.delay(0.4, function()
 			pcall(function()
@@ -116,10 +116,10 @@ function Constructor(config: BubbleParameters): Bubble
 			end)
 		end)
 	end)
-	Util.bindFunction(Output, _Maid, "Enable", function()
+	Util.bindFunction(Output, maid, "Enable", function()
 		Value:Set(1)
 	end)
-	Util.bindFunction(Output, _Maid, "Disable", function()
+	Util.bindFunction(Output, maid, "Disable", function()
 		Value:Set(0)
 		task.delay(0.4, function()
 			pcall(function()

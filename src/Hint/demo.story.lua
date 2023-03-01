@@ -21,13 +21,13 @@ return function(coreGui)
 	local _ON_EVENT = _fuse.ON_EVENT
 	local _ON_PROPERTY = _fuse.ON_PROPERTY
 
-	local label = _new("TextLabel"){
+	local label = _new("TextLabel")({
 		Parent = coreGui,
 		Text = "Text test lol",
 		AutomaticSize = Enum.AutomaticSize.XY,
-		AnchorPoint = Vector2.new(0.5,0.5),
-		Position = UDim2.fromScale(0.5,0.5),
-	}
+		AnchorPoint = Vector2.new(0.5, 0.5),
+		Position = UDim2.fromScale(0.5, 0.5),
+	})
 	local hint = module()({
 		Enabled = _Value(true),
 		Parent = label,
