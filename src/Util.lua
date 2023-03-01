@@ -2,53 +2,53 @@
 local package = script.Parent
 local packages = package.Parent
 
-local Maid = require(packages.maid)
+local Maid = require(packages.Maid)
 type Maid = Maid.Maid
 
-local Signal = require(packages.signal)
+local Signal = require(packages.Signal)
 type Signal = Signal.Signal
 
 local Util = {}
 Util.__index = Util
 
-function Util.cleanUpPrep(maid: Maid, inst: Instance)
+function Util.cleanUpPrep(Maid: Maid, inst: Instance)
 	local compMaid = Maid.new()
 	compMaid:GiveTask(inst)
 	for i, desc in ipairs(inst:GetDescendants()) do
 		compMaid:GiveTask(desc)
 	end
 
-	maid:GiveTask(compMaid)
+	Maid:GiveTask(compMaid)
 
-	maid:GiveTask(inst.Destroying:Connect(function()
+	Maid:GiveTask(inst.Destroying:Connect(function()
 		compMaid:Destroy()
-		maid:Destroy()
+		Maid:Destroy()
 	end))
 end
 
-function Util.bindFunction<F>(inst: Instance, maid: Maid, name: string, func: F): BindableFunction & { OnInvoke: F }
+function Util.bindFunction<F>(inst: Instance, Maid: Maid, name: string, func: F): BindableFunction & { OnInvoke: F }
 	assert(typeof(func) == "function")
 	local bindableFunction = Instance.new("BindableFunction")
 	bindableFunction.Name = name
 	bindableFunction.OnInvoke = func
-	maid:GiveTask(bindableFunction)
+	Maid:GiveTask(bindableFunction)
 	bindableFunction.Parent = inst
 
 	local bFunc: any = bindableFunction
 	return bFunc
 end
 
-function Util.bindSignal(inst: Instance, maid: Maid, name: string, signal: Signal): BindableEvent
+function Util.bindSignal(inst: Instance, Maid: Maid, name: string, Signal: Signal): BindableEvent
 	local bindableEvent = Instance.new("BindableEvent")
 	bindableEvent.Name = name
 
-	-- maid:GiveTask(bindableEvent.Event:Connect(function(...)
-	-- 	signal:Fire(...)
+	-- Maid:GiveTask(bindableEvent.Event:Connect(function(...)
+	-- 	Signal:Fire(...)
 	-- end))
-	maid:GiveTask(signal:Connect(function(...)
+	Maid:GiveTask(Signal:Connect(function(...)
 		bindableEvent:Fire(...)
 	end))
-	maid:GiveTask(bindableEvent)
+	Maid:GiveTask(bindableEvent)
 	bindableEvent.Parent = inst
 
 	return bindableEvent

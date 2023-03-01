@@ -1,9 +1,10 @@
+--!strict
 return function(coreGui)
 	local package = script.Parent.Parent
 	local packages = package.Parent
 	local module = require(script.Parent)
-	local Maid = require(packages.maid)
-	local ColdFusion = require(packages.coldfusion)
+	local Maid = require(packages.Maid)
+	local ColdFusion = require(packages.ColdFusion)
 
 	local maid = Maid.new()
 	local _fuse = ColdFusion.fuse(maid)

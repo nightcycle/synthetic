@@ -57,8 +57,8 @@ Attributes are meant to serve as custom public-facing properties, allowing you e
 
 	-- creating a mirroring State, though it will take a frame to update it and is a bit messy
 	local _InputMirror = fusion.State(false)
-	local maid = maidConstructor.new() --if you don't have a maid library, please get one. I use Quenty's
-	maid:GiveTask(currentSwitch:GetAttributeChangedSignal("Input"):Connect(function(val)
+	local Maid = maidConstructor.new() --if you don't have a Maid library, please get one. I use Quenty's
+	Maid:GiveTask(currentSwitch:GetAttributeChangedSignal("Input"):Connect(function(val)
 		_InputMirror:set(currentSwitch:GetAttribute("Input"))
 	end))
 
@@ -66,7 +66,7 @@ Attributes are meant to serve as custom public-facing properties, allowing you e
 If you wish to keep a variable private, simply remove the attribute after construction but before you parent it.
 
 ### Events
-Various components also include BindableEvents which you may use as signal constructors.
+Various components also include BindableEvents which you may use as Signal constructors.
 
 	local synthetic = require(modulePath)
 	local dialog = synthetic.New "Dialog" {

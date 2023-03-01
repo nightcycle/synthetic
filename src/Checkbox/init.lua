@@ -8,16 +8,16 @@ local Util = require(package.Util)
 
 local Types = require(package.Types)
 
-local ColdFusion = require(packages.coldfusion)
+local ColdFusion = require(packages.ColdFusion)
 type Fuse = ColdFusion.Fuse
 type State<T> = ColdFusion.State<T>
 type ValueState<T> = ColdFusion.ValueState<T>
 type CanBeState<T> = ColdFusion.CanBeState<T>
 
-local Maid = require(packages.maid)
+local Maid = require(packages.Maid)
 type Maid = Maid.Maid
 
-local Signal = require(packages:WaitForChild("signal"))
+local Signal = require(packages:WaitForChild("Signal"))
 
 local Bubble = require(package:WaitForChild("Bubble"))
 
@@ -33,8 +33,8 @@ export type Checkbox = Frame
 
 function Constructor(config: CheckboxParameters): Checkbox
 	-- init workspace
-	local maid: Maid = Maid.new()
-	local _fuse: Fuse = ColdFusion.fuse(maid)
+	local Maid: Maid = Maid.new()
+	local _fuse: Fuse = ColdFusion.fuse(Maid)
 
 	local _new = _fuse.new
 	local _mount = _fuse.mount
@@ -61,7 +61,7 @@ function Constructor(config: CheckboxParameters): Checkbox
 
 	-- construct signals
 	local Activated = Signal.new()
-	maid:GiveTask(Activated)
+	Maid:GiveTask(Activated)
 
 	-- init internal states
 	local BubbleEnabled = _Value(false)
@@ -80,7 +80,7 @@ function Constructor(config: CheckboxParameters): Checkbox
 	end, Value, BorderColor3, BackgroundColor3):Tween()
 
 	-- bind signals
-	maid:GiveTask(Activated:Connect(function()
+	Maid:GiveTask(Activated:Connect(function()
 		if not (Value:Get() == true) then
 			local clickSound = EnableSound:Get()
 			if clickSound then
@@ -122,13 +122,13 @@ function Constructor(config: CheckboxParameters): Checkbox
 				[_ON_EVENT("Activated")] = function()
 					Activated:Fire()
 					if BubbleEnabled:Get() then
-						local bubble = Bubble(maid)({
+						local bubble = Bubble(Maid)({
 							Parent = Output,
 						})
 						local fireFunction: Instance? = bubble:WaitForChild("Fire")
 						assert(fireFunction ~= nil and fireFunction:IsA("BindableFunction"))
 						fireFunction:Invoke()
-						-- maid._bubble = bubble
+						-- Maid._bubble = bubble
 					end
 				end,
 			}),
@@ -194,18 +194,18 @@ function Constructor(config: CheckboxParameters): Checkbox
 	-- Construct final gui
 	Output = _new("Frame")(parameters) :: Frame
 
-	-- Bind gui's life to maid
-	Util.cleanUpPrep(maid, Output)
-	Util.bindSignal(Output, maid, "Activated", Activated)
+	-- Bind gui's life to Maid
+	Util.cleanUpPrep(Maid, Output)
+	Util.bindSignal(Output, Maid, "Activated", Activated)
 
 	return Output
 end
 
-return function(maid: Maid?)
+return function(Maid: Maid?)
 	return function(params: CheckboxParameters): Checkbox
 		local inst = Constructor(params)
-		if maid then
-			maid:GiveTask(inst)
+		if Maid then
+			Maid:GiveTask(inst)
 		end
 		return inst
 	end

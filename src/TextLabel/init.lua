@@ -6,16 +6,16 @@ local Util = require(package.Util)
 
 local Types = require(package.Types)
 
-local ColdFusion: Fuse = require(packages.coldfusion)
+local ColdFusion: Fuse = require(packages.ColdFusion)
 type Fuse = ColdFusion.Fuse
 type State<T> = ColdFusion.State<T>
 type ValueState<T> = ColdFusion.ValueState<T>
 type CanBeState<T> = ColdFusion.CanBeState<T>
 
-local Maid = require(packages.maid)
+local Maid = require(packages.Maid)
 type Maid = Maid.Maid
 
-local Format = require(packages:WaitForChild("format"))
+local Format = require(packages:WaitForChild("Format"))
 
 local Icon = require(package:WaitForChild("IconLabel"))
 
@@ -37,8 +37,8 @@ export type TextLabel = Frame
 
 function Constructor(config: TextLabelParameters): TextLabel
 	-- init workspace
-	local maid = Maid.new()
-	local _fuse = ColdFusion.fuse(maid)
+	local Maid = Maid.new()
+	local _fuse = ColdFusion.fuse(Maid)
 	local _new = _fuse.new
 	local _mount = _fuse.mount
 	local _import = _fuse.import
@@ -123,7 +123,7 @@ function Constructor(config: TextLabelParameters): TextLabel
 				BackgroundTransparency = 1,
 				AutomaticSize = Enum.AutomaticSize.XY,
 			}),
-			Icon(maid)({
+			Icon(Maid)({
 				Size = IconSize,
 				LayoutOrder = 1,
 				Visible = _Computed(function(icon)
@@ -134,7 +134,7 @@ function Constructor(config: TextLabelParameters): TextLabel
 				IconColor3 = TextColor3,
 				IconTransparency = TextTransparency,
 			}),
-			Icon(maid)({
+			Icon(Maid)({
 				Size = IconSize,
 				LayoutOrder = 3,
 				Visible = _Computed(function(icon)
@@ -168,16 +168,16 @@ function Constructor(config: TextLabelParameters): TextLabel
 
 	-- construct output instance
 	local Output = _new("Frame")(parameters)
-	Util.cleanUpPrep(maid, Output)
+	Util.cleanUpPrep(Maid, Output)
 
 	return Output :: Frame
 end
 
-return function(maid: Maid?)
+return function(Maid: Maid?)
 	return function(...): TextLabel
 		local inst = Constructor(...)
-		if maid then
-			maid:GiveTask(inst)
+		if Maid then
+			Maid:GiveTask(inst)
 		end
 		return inst
 	end

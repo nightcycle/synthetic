@@ -4,13 +4,13 @@ local packages = package.Parent
 
 local Util = require(package.Util)
 
-local ColdFusion = require(packages.coldfusion)
+local ColdFusion = require(packages.ColdFusion)
 type Fuse = ColdFusion.Fuse
 type State<T> = ColdFusion.State<T>
 type ValueState<T> = ColdFusion.ValueState<T>
 type CanBeState<T> = ColdFusion.CanBeState<T>
 
-local Maid = require(packages.maid)
+local Maid = require(packages.Maid)
 type Maid = Maid.Maid
 
 local EffectGui = require(package:WaitForChild("EffectGui"))
@@ -28,8 +28,8 @@ export type Bubble = EffectGui.EffectGui
 
 function Constructor(config: BubbleParameters): Bubble
 	-- init workspace
-	local maid: Maid = Maid.new()
-	local _fuse: Fuse = ColdFusion.fuse(maid)
+	local Maid: Maid = Maid.new()
+	local _fuse: Fuse = ColdFusion.fuse(Maid)
 
 	local _new = _fuse.new
 	local _mount = _fuse.mount
@@ -87,28 +87,28 @@ function Constructor(config: BubbleParameters): Bubble
 			}),
 		} :: { Instance },
 	})
-	maid:GiveTask(bubbleFrame)
+	Maid:GiveTask(bubbleFrame)
 
 	-- construct output instance
-	local Output: ScreenGui = EffectGui(maid)({
+	local Output: ScreenGui = EffectGui(Maid)({
 		Name = Name,
 		Parent = Parent,
 	} :: any)
 	bubbleFrame.Parent = Output
-	Util.cleanUpPrep(maid, Output)
+	Util.cleanUpPrep(Maid, Output)
 
 	-- bind states to attributes
-	maid:GiveTask(Output:GetAttributeChangedSignal("AbsoluteSize"):Connect(function()
+	Maid:GiveTask(Output:GetAttributeChangedSignal("AbsoluteSize"):Connect(function()
 		AbsoluteSize:Set(Output:GetAttribute("AbsoluteSize") or Vector2.new(0, 0))
 	end))
 	AbsoluteSize:Set(Output:GetAttribute("AbsoluteSize") or Vector2.new(0, 0))
-	maid:GiveTask(Output:GetAttributeChangedSignal("CenterPosition"):Connect(function()
+	Maid:GiveTask(Output:GetAttributeChangedSignal("CenterPosition"):Connect(function()
 		CenterPosition:Set(Output:GetAttribute("CenterPosition") or UDim2.fromOffset(0, 0))
 	end))
 	CenterPosition:Set(Output:GetAttribute("CenterPosition") or UDim2.fromOffset(0, 0))
 
 	-- bind functions to output
-	Util.bindFunction(Output, maid, "Fire", function()
+	Util.bindFunction(Output, Maid, "Fire", function()
 		Value:Set(1)
 		task.delay(0.4, function()
 			pcall(function()
@@ -116,10 +116,10 @@ function Constructor(config: BubbleParameters): Bubble
 			end)
 		end)
 	end)
-	Util.bindFunction(Output, maid, "Enable", function()
+	Util.bindFunction(Output, Maid, "Enable", function()
 		Value:Set(1)
 	end)
-	Util.bindFunction(Output, maid, "Disable", function()
+	Util.bindFunction(Output, Maid, "Disable", function()
 		Value:Set(0)
 		task.delay(0.4, function()
 			pcall(function()
@@ -131,11 +131,11 @@ function Constructor(config: BubbleParameters): Bubble
 	return Output
 end
 
-return function(maid: Maid?)
+return function(Maid: Maid?)
 	return function(params: BubbleParameters): Bubble
 		local inst = Constructor(params)
-		if maid then
-			maid:GiveTask(inst)
+		if Maid then
+			Maid:GiveTask(inst)
 		end
 		return inst
 	end

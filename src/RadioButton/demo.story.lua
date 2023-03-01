@@ -1,10 +1,11 @@
+--!strict
 -- local ReplicatedStorage = game:GetService("ReplicatedStorage")
 return function(coreGui)
 	local package = script.Parent.Parent
 	local packages = package.Parent
 	local module = require(script.Parent)
-	local Maid = require(packages.maid)
-	local ColdFusion = require(packages.coldfusion)
+	local Maid = require(packages.Maid)
+	local ColdFusion = require(packages.ColdFusion)
 
 	local maid = Maid.new()
 	local _fuse = ColdFusion.fuse(maid)
@@ -32,9 +33,9 @@ return function(coreGui)
 		Parent = coreGui,
 		-- EnableSound = ReplicatedStorage.Library.Sounds.UI.Button.Confirm["1"]:Clone(),
 		-- DisableSound = ReplicatedStorage.Library.Sounds.UI.Button.Cancel:Clone(),
-	}
-	local object = module()(demo)
+	} :: any
+	module(maid)(demo)
 	return function()
-		object:Destroy()
+		maid:Destroy()
 	end
 end

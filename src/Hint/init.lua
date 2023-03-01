@@ -4,13 +4,13 @@ local packages = package.Parent
 
 local Util = require(package.Util)
 
-local ColdFusion = require(packages.coldfusion)
+local ColdFusion = require(packages.ColdFusion)
 type Fuse = ColdFusion.Fuse
 type State<T> = ColdFusion.State<T>
 type ValueState<T> = ColdFusion.ValueState<T>
 type CanBeState<T> = ColdFusion.CanBeState<T>
 
-local Maid = require(packages.maid)
+local Maid = require(packages.Maid)
 type Maid = Maid.Maid
 
 local EffectGui = require(package:WaitForChild("EffectGui"))
@@ -28,8 +28,8 @@ export type Hint = ScreenGui
 
 function Constructor(config: HintParameters): Hint
 	-- init workspace
-	local maid = Maid.new()
-	local _fuse = ColdFusion.fuse(maid)
+	local Maid = Maid.new()
+	local _fuse = ColdFusion.fuse(Maid)
 	local _new = _fuse.new
 	local _mount = _fuse.mount
 	local _import = _fuse.import
@@ -70,7 +70,7 @@ function Constructor(config: HintParameters): Hint
 	end, Enabled, TextTransparency):Tween()
 	_Computed(function(par: GuiObject?): nil
 		if par then
-			maid._parentInputBeginSignal = par.InputChanged:Connect(function()
+			Maid._parentInputBeginSignal = par.InputChanged:Connect(function()
 				if not Override:Get() then
 					Visible:Set(true)
 				end
@@ -79,7 +79,7 @@ function Constructor(config: HintParameters): Hint
 					ValEnab:Set(true)
 				end
 			end)
-			maid._parentInputEndSignal = par.MouseLeave:Connect(function()
+			Maid._parentInputEndSignal = par.MouseLeave:Connect(function()
 				local ValEnab: ValueState<boolean> = Enabled :: any
 				if ValEnab.Set then
 					ValEnab:Set(false)
@@ -148,10 +148,10 @@ function Constructor(config: HintParameters): Hint
 			_new("UICorner")({
 				CornerRadius = CornerRadius,
 			}),
-			TextLabel(maid)(tConfig),
+			TextLabel(Maid)(tConfig),
 		} :: { Instance },
 	})
-	maid:GiveTask(bubbleFrame)
+	Maid:GiveTask(bubbleFrame)
 
 	-- assemble final parameters
 	local parameters: any = {
@@ -162,25 +162,25 @@ function Constructor(config: HintParameters): Hint
 	}
 
 	-- construct output instance
-	local Output: ScreenGui = EffectGui(maid)(parameters)
+	local Output: ScreenGui = EffectGui(Maid)(parameters)
 	bubbleFrame.Parent = Output
-	maid:GiveTask(Output:GetAttributeChangedSignal("AbsoluteSize"):Connect(function()
+	Maid:GiveTask(Output:GetAttributeChangedSignal("AbsoluteSize"):Connect(function()
 		AbsoluteSize:Set(Output:GetAttribute("AbsoluteSize") or Vector2.new(0, 0))
 	end))
 
-	maid:GiveTask(Output:GetAttributeChangedSignal("CenterPosition"):Connect(function()
+	Maid:GiveTask(Output:GetAttributeChangedSignal("CenterPosition"):Connect(function()
 		CenterPosition:Set(Output:GetAttribute("CenterPosition") or UDim2.fromOffset(0, 0))
 	end))
-	Util.cleanUpPrep(maid, Output)
+	Util.cleanUpPrep(Maid, Output)
 
 	return Output
 end
 
-return function(maid: Maid?)
+return function(Maid: Maid?)
 	return function(params: HintParameters): Hint
 		local inst = Constructor(params)
-		if maid then
-			maid:GiveTask(inst)
+		if Maid then
+			Maid:GiveTask(inst)
 		end
 		return inst
 	end

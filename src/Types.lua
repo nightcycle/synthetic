@@ -2,7 +2,7 @@
 local package = script.Parent
 local packages = package.Parent
 
-local ColdFusion = require(packages.coldfusion)
+local ColdFusion = require(packages.ColdFusion)
 
 type Fuse = ColdFusion.Fuse
 type State<T> = {
@@ -12,7 +12,7 @@ type ValueState<T> = State<T> & {
 	Set: (any, T) -> nil,
 }
 
-local Maid = require(packages.maid)
+local Maid = require(packages.Maid)
 type Maid = Maid.Maid
 
 export type CanBeState<T> = (State<T> | T)

@@ -6,13 +6,13 @@ local Util = require(package.Util)
 
 local Types = require(package.Types)
 
-local ColdFusion = require(packages.coldfusion)
+local ColdFusion = require(packages.ColdFusion)
 type Fuse = ColdFusion.Fuse
 type State<T> = ColdFusion.State<T>
 type ValueState<T> = ColdFusion.ValueState<T>
 type CanBeState<T> = ColdFusion.CanBeState<T>
 
-local Maid = require(packages.maid)
+local Maid = require(packages.Maid)
 type Maid = Maid.Maid
 
 local Spritesheet = require(script:WaitForChild("Spritesheet"))
@@ -27,8 +27,8 @@ export type IconLabel = ImageLabel
 
 function Constructor(config: IconLabelParameters): IconLabel
 	-- init workspace
-	local maid = Maid.new()
-	local _fuse = ColdFusion.fuse(maid)
+	local Maid = Maid.new()
+	local _fuse = ColdFusion.fuse(Maid)
 	local _new = _fuse.new
 	local _mount = _fuse.mount
 	local _import = _fuse.import
@@ -60,7 +60,7 @@ function Constructor(config: IconLabelParameters): IconLabel
 	end, Icon, DotsPerInch)
 
 	-- bind state changes
-	maid:GiveTask(AbsoluteSize:Connect(function()
+	Maid:GiveTask(AbsoluteSize:Connect(function()
 		local output = OutputState:Get()
 		if not output or not output:IsDescendantOf(game) then
 			return
@@ -129,16 +129,16 @@ function Constructor(config: IconLabelParameters): IconLabel
 	-- construct output instance
 	local Output: ImageLabel = _fuse.new("ImageLabel")(parameters) :: any
 
-	Util.cleanUpPrep(maid, Output)
+	Util.cleanUpPrep(Maid, Output)
 
 	return Output
 end
 
-return function(maid: Maid?)
+return function(Maid: Maid?)
 	return function(params: IconLabelParameters): IconLabel
 		local inst = Constructor(params)
-		if maid then
-			maid:GiveTask(inst)
+		if Maid then
+			Maid:GiveTask(inst)
 		end
 		return inst
 	end

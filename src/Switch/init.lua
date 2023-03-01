@@ -8,16 +8,16 @@ local Util = require(package.Util)
 
 local Types = require(package.Types)
 
-local ColdFusion = require(packages.coldfusion)
+local ColdFusion = require(packages.ColdFusion)
 type Fuse = ColdFusion.Fuse
 type State<T> = ColdFusion.State<T>
 type ValueState<T> = ColdFusion.ValueState<T>
 type CanBeState<T> = ColdFusion.CanBeState<T>
 
-local Maid = require(packages.maid)
+local Maid = require(packages.Maid)
 type Maid = Maid.Maid
 
-local Signal = require(packages:WaitForChild("signal"))
+local Signal = require(packages:WaitForChild("Signal"))
 
 local Bubble = require(package:WaitForChild("Bubble"))
 
@@ -34,8 +34,8 @@ export type Switch = Frame
 
 function Constructor(config: SwitchParameters): Switch
 	-- init workspace
-	local maid = Maid.new()
-	local _fuse = ColdFusion.fuse(maid)
+	local Maid = Maid.new()
+	local _fuse = ColdFusion.fuse(Maid)
 	local _new = _fuse.new
 	local _mount = _fuse.mount
 	local _import = _fuse.import
@@ -66,7 +66,7 @@ function Constructor(config: SwitchParameters): Switch
 
 	-- construct signals
 	local Activated = Signal.new()
-	maid:GiveTask(Activated)
+	Maid:GiveTask(Activated)
 
 	-- init internal states
 	local Padding = _Computed(function(scale)
@@ -84,7 +84,7 @@ function Constructor(config: SwitchParameters): Switch
 	end, Value, BackgroundColor3, EnabledColor3)
 
 	-- bind states
-	maid:GiveTask(Activated:Connect(function()
+	Maid:GiveTask(Activated:Connect(function()
 		if Value:Get() == true then
 			local clickSound = EnableSound:Get()
 			if clickSound then
@@ -169,7 +169,7 @@ function Constructor(config: SwitchParameters): Switch
 				[_ON_EVENT("Activated")] = function()
 					Activated:Fire()
 					if BubbleEnabled:Get() then
-						local bubble = Bubble(maid)({
+						local bubble = Bubble(Maid)({
 							Parent = Knob,
 							-- BackgroundColor3 = ActiveColor3,
 							-- BackgroundTransparency = 0.6,
@@ -237,17 +237,17 @@ function Constructor(config: SwitchParameters): Switch
 
 	-- construct output instance
 	local Output: Frame = _new("Frame")(parameters) :: any
-	Util.cleanUpPrep(maid, Output)
-	Util.bindSignal(Output, maid, "Activated", Activated)
+	Util.cleanUpPrep(Maid, Output)
+	Util.bindSignal(Output, Maid, "Activated", Activated)
 
 	return Output
 end
 
-return function(maid: Maid?)
+return function(Maid: Maid?)
 	return function(params: SwitchParameters): Switch
 		local inst = Constructor(params)
-		if maid then
-			maid:GiveTask(inst)
+		if Maid then
+			Maid:GiveTask(inst)
 		end
 		return inst
 	end

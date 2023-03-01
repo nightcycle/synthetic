@@ -1,3 +1,5 @@
+--!strict
+
 -- local ReplicatedStorage = game:GetService("ReplicatedStorage")
 return function(coreGui)
 	local module = require(script.Parent)

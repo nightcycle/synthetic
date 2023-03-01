@@ -1,3 +1,5 @@
+--!strict
+
 return function(coreGui)
 	local module = require(script.Parent)
 	local demo: any = {

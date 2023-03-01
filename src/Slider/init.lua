@@ -9,16 +9,16 @@ local Util = require(package.Util)
 
 local Types = require(package.Types)
 
-local ColdFusion = require(packages.coldfusion)
+local ColdFusion = require(packages.ColdFusion)
 type Fuse = ColdFusion.Fuse
 type State<T> = ColdFusion.State<T>
 type ValueState<T> = ColdFusion.ValueState<T>
 type CanBeState<T> = ColdFusion.CanBeState<T>
 
-local Maid = require(packages.maid)
+local Maid = require(packages.Maid)
 type Maid = Maid.Maid
 
-local Signal = require(packages:WaitForChild("signal"))
+local Signal = require(packages:WaitForChild("Signal"))
 
 local Bubble = require(package:WaitForChild("Bubble"))
 local Hint = require(package:WaitForChild("Hint"))
@@ -43,8 +43,8 @@ export type Slider = Frame
 
 function Constructor(config: SliderParameters): Slider
 	-- init workspace
-	local maid = Maid.new()
-	local _fuse = ColdFusion.fuse(maid)
+	local Maid = Maid.new()
+	local _fuse = ColdFusion.fuse(Maid)
 	local _new = _fuse.new
 	local _mount = _fuse.mount
 	local _import = _fuse.import
@@ -82,7 +82,7 @@ function Constructor(config: SliderParameters): Slider
 
 	-- construct signals
 	local OnRelease = Signal.new()
-	maid:GiveTask(OnRelease)
+	Maid:GiveTask(OnRelease)
 
 	-- init internal states
 	local Dragging = _Value(false)
@@ -100,7 +100,7 @@ function Constructor(config: SliderParameters): Slider
 	end, Value, Minimum, Maximum)
 
 	-- bind internal states
-	maid:GiveTask(Value:Connect(function()
+	Maid:GiveTask(Value:Connect(function()
 		local tickSound = TickSound:Get()
 		if tickSound then
 			SoundService:PlayLocalSound(tickSound)
@@ -152,7 +152,7 @@ function Constructor(config: SliderParameters): Slider
 		} :: { Instance },
 	})
 
-	local _Hint = Hint(maid)({
+	local _Hint = Hint(Maid)({
 		Parent = Knob,
 		Override = true,
 		AnchorPoint = Vector2.new(0, -1),
@@ -180,14 +180,14 @@ function Constructor(config: SliderParameters): Slider
 		[_ON_EVENT("MouseButton1Down")] = function()
 			Dragging:Set(true)
 			if BubbleEnabled:Get() then
-				local bubble = Bubble(maid)({
+				local bubble = Bubble(Maid)({
 					Parent = Knob,
 					FinalTransparency = 0.7,
 					BackgroundTransparency = 1,
 					BackgroundColor3 = EnabledColor3,
 					Scale = 1.75,
 				})
-				maid._currentBubble = function()
+				Maid._currentBubble = function()
 					if bubble and bubble:IsDescendantOf(game) then
 						local destFunction: Instance? = bubble:FindFirstChild("Disable")
 						assert(destFunction ~= nil and destFunction:IsA("BindableFunction"))
@@ -281,10 +281,10 @@ function Constructor(config: SliderParameters): Slider
 	local Output: Frame = _fuse.new("Frame")(parameters) :: any
 
 	_Computed(function(dragging): nil
-		maid._dragStep = nil
-		maid._dragRelease = nil
+		Maid._dragStep = nil
+		Maid._dragRelease = nil
 		if dragging then
-			maid._dragStep = UserInputService.InputChanged:Connect(function(inputObj: InputObject)
+			Maid._dragStep = UserInputService.InputChanged:Connect(function(inputObj: InputObject)
 				if inputObj.UserInputType == Enum.UserInputType.MouseMovement then
 					local pos = Vector2.new(inputObj.Position.X, inputObj.Position.Y)
 					local absPos = ButtonAbsolutePosition:Get()
@@ -294,7 +294,7 @@ function Constructor(config: SliderParameters): Slider
 					Input:Set(min + (max - min) * math.clamp((pos.X - absPos.X) / absSize.X, 0, 1))
 				end
 			end)
-			maid._dragRelease = UserInputService.InputEnded:Connect(function(inputObj: InputObject)
+			Maid._dragRelease = UserInputService.InputEnded:Connect(function(inputObj: InputObject)
 				if inputObj.UserInputType == Enum.UserInputType.MouseButton1 then
 					Dragging:Set(false)
 					OnRelease:Fire(Value:Get())
@@ -305,25 +305,25 @@ function Constructor(config: SliderParameters): Slider
 			if disabSound then
 				SoundService:PlayLocalSound(disabSound)
 			end
-			maid._currentBubble = nil
+			Maid._currentBubble = nil
 		end
 		return nil
 	end, Dragging)
 
-	maid:GiveTask(Value:Connect(function(cur)
+	Maid:GiveTask(Value:Connect(function(cur)
 		Output:SetAttribute("Value", cur)
 	end))
 
-	Util.cleanUpPrep(maid, Output)
+	Util.cleanUpPrep(Maid, Output)
 
 	return Output
 end
 
-return function(maid: Maid?)
+return function(Maid: Maid?)
 	return function(params: SliderParameters): Slider
 		local inst = Constructor(params)
-		if maid then
-			maid:GiveTask(inst)
+		if Maid then
+			Maid:GiveTask(inst)
 		end
 		return inst
 	end

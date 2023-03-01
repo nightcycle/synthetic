@@ -1,3 +1,4 @@
+--!strict
 return function(coreGui)
 	local object
 	task.spawn(function()

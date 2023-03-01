@@ -1,14 +1,16 @@
+--!strict
+
 local package = script.Parent.Parent
 local packages = package.Parent
-local Maid = require(packages:WaitForChild("maid"))
+local Maid = require(packages:WaitForChild("Maid"))
 
 return function(coreGui)
-	local maid = Maid.new()
+	local Maid = Maid.new()
 	local module = require(script.Parent)
 
 	local part = Instance.new("Part")
 	part.Parent = workspace
-	maid:GiveTask(part)
+	Maid:GiveTask(part)
 
 	local demo = {
 		BackgroundColor3 = Color3.fromHSV(0.75, 1, 1),
@@ -19,8 +21,8 @@ return function(coreGui)
 		Size = UDim2.fromOffset(50, 10),
 	}
 
-	maid:GiveTask(module()(demo))
+	Maid:GiveTask(module()(demo))
 	return function()
-		maid:Destroy()
+		Maid:Destroy()
 	end
 end

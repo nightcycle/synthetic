@@ -2,7 +2,7 @@
 
 local module = script
 
-local Maid = require(module.Parent.maid)
+local Maid = require(module.Parent.Maid)
 export type Maid = Maid.Maid
 
 local Types = require(module.Types)
@@ -65,7 +65,7 @@ export type Synthetic =
 		className: "BillboardFrame"
 	) -> ((BillboardFrameParameters) -> BillboardFrame.BillboardFrame)))
 
-return function(maid: Maid?): Synthetic
+return function(Maid: Maid?): Synthetic
 	return function(className: any): any
 		assert(
 			className == "TextLabel"
@@ -87,37 +87,37 @@ return function(maid: Maid?): Synthetic
 				or className == "BillboardFrame"
 		)
 		if className == "TextLabel" then
-			return TextLabel(maid)
+			return TextLabel(Maid)
 		elseif className == "ViewportMountFrame" then
-			return ViewportMountFrame(maid)
+			return ViewportMountFrame(Maid)
 		elseif className == "TextField" then
-			return TextField(maid)
+			return TextField(Maid)
 		elseif className == "Switch" then
-			return Switch(maid)
+			return Switch(Maid)
 		elseif className == "SurfaceFrame" then
-			return SurfaceFrame(maid)
+			return SurfaceFrame(Maid)
 		elseif className == "Slider" then
-			return Slider(maid)
+			return Slider(Maid)
 		elseif className == "RadioButton" then
-			return RadioButton(maid)
+			return RadioButton(Maid)
 		elseif className == "IconLabel" then
-			return IconLabel(maid)
+			return IconLabel(Maid)
 		elseif className == "Hint" then
-			return Hint(maid)
+			return Hint(Maid)
 		elseif className == "EffectGui" then
-			return EffectGui(maid)
+			return EffectGui(Maid)
 		elseif className == "Checkbox" then
-			return Checkbox(maid)
+			return Checkbox(Maid)
 		elseif className == "Button" then
-			return Button(maid)
+			return Button(Maid)
 		elseif className == "Bubble" then
-			return Bubble(maid)
+			return Bubble(Maid)
 		elseif className == "BoundingBoxFrame" then
-			return BoundingBoxFrame(maid)
+			return BoundingBoxFrame(Maid)
 		elseif className == "BoardFrame" then
-			return BoardFrame(maid)
+			return BoardFrame(Maid)
 		elseif className == "BillboardFrame" then
-			return BillboardFrame(maid)
+			return BillboardFrame(Maid)
 		end
 		return nil
 	end

@@ -8,13 +8,13 @@ local Util = require(package.Util)
 
 local Types = require(package.Types)
 
-local ColdFusion = require(packages.coldfusion)
+local ColdFusion = require(packages.ColdFusion)
 type Fuse = ColdFusion.Fuse
 type State<T> = ColdFusion.State<T>
 type ValueState<T> = ColdFusion.ValueState<T>
 type CanBeState<T> = ColdFusion.CanBeState<T>
 
-local Maid = require(packages.maid)
+local Maid = require(packages.Maid)
 type Maid = Maid.Maid
 
 export type EffectGuiParameters = {
@@ -25,8 +25,8 @@ export type EffectGui = ScreenGui
 
 function Constructor(config: EffectGuiParameters): EffectGui
 	-- init workspace
-	local maid: Maid = Maid.new()
-	local _fuse: Fuse = ColdFusion.fuse(maid)
+	local Maid: Maid = Maid.new()
+	local _fuse: Fuse = ColdFusion.fuse(Maid)
 
 	local _new = _fuse.new
 	local _mount = _fuse.mount
@@ -88,7 +88,7 @@ function Constructor(config: EffectGuiParameters): EffectGui
 			result = expected
 		end
 		if result then
-			maid.onAncestorDisplayChange = result:GetPropertyChangedSignal("DisplayOrder"):Connect(function()
+			Maid.onAncestorDisplayChange = result:GetPropertyChangedSignal("DisplayOrder"):Connect(function()
 				AncestorDisplayOrder:Set(result.DisplayOrder)
 			end)
 			AncestorDisplayOrder:Set(result.DisplayOrder)
@@ -106,7 +106,7 @@ function Constructor(config: EffectGuiParameters): EffectGui
 	end, _AncestorGui, AncestorDisplayOrder)
 
 	-- bind states to frame
-	maid:GiveTask(RunService.RenderStepped:Connect(function(dt: number)
+	Maid:GiveTask(RunService.RenderStepped:Connect(function(dt: number)
 		local parent = Parent:Get()
 		if parent then
 			ParentAnchorPoint:Set(parent.AnchorPoint)
@@ -149,30 +149,30 @@ function Constructor(config: EffectGuiParameters): EffectGui
 
 	-- construct output instance
 	local Output = _fuse.new("ScreenGui")(parameters) :: any
-	Util.cleanUpPrep(maid, Output)
+	Util.cleanUpPrep(Maid, Output)
 
 	-- bind states to output attributes
-	maid:GiveTask(Position:Connect(function(cur: UDim2)
+	Maid:GiveTask(Position:Connect(function(cur: UDim2)
 		Output:SetAttribute("Position", cur)
 	end))
 	Output:SetAttribute("Position", Position:Get())
 
-	maid:GiveTask(AnchorPosition:Connect(function(cur: UDim2)
+	Maid:GiveTask(AnchorPosition:Connect(function(cur: UDim2)
 		Output:SetAttribute("AnchorPosition", cur)
 	end))
 	Output:SetAttribute("AnchorPosition", AnchorPosition:Get())
 
-	maid:GiveTask(AbsoluteSize:Connect(function(cur: Vector2)
+	Maid:GiveTask(AbsoluteSize:Connect(function(cur: Vector2)
 		Output:SetAttribute("AbsoluteSize", cur)
 	end))
 	Output:SetAttribute("AbsoluteSize", AbsoluteSize:Get())
 
-	maid:GiveTask(CenterPosition:Connect(function(cur: UDim2)
+	Maid:GiveTask(CenterPosition:Connect(function(cur: UDim2)
 		Output:SetAttribute("CenterPosition", cur)
 	end))
 	Output:SetAttribute("CenterPosition", CenterPosition:Get())
 
-	maid:GiveTask(Size:Connect(function(cur: UDim2)
+	Maid:GiveTask(Size:Connect(function(cur: UDim2)
 		Output:SetAttribute("Size", cur)
 	end))
 	Output:SetAttribute("Size", Size:Get())
@@ -180,18 +180,18 @@ function Constructor(config: EffectGuiParameters): EffectGui
 	if Output:FindFirstAncestorWhichIsA("ScreenGui") then
 		_KnownAncestorGui:Set(Output:FindFirstAncestorWhichIsA("ScreenGui"))
 	end
-	maid:GiveTask(Output.AncestryChanged:Connect(function(ancestor)
+	Maid:GiveTask(Output.AncestryChanged:Connect(function(ancestor)
 		_KnownAncestorGui:Set(Output:FindFirstAncestorWhichIsA("ScreenGui"))
 	end))
 
 	return Output
 end
 
-return function(maid: Maid?)
+return function(Maid: Maid?)
 	return function(params: EffectGuiParameters): EffectGui
 		local inst = Constructor(params)
-		if maid then
-			maid:GiveTask(inst)
+		if Maid then
+			Maid:GiveTask(inst)
 		end
 		return inst
 	end

@@ -8,13 +8,13 @@ local Util = require(package.Util)
 
 local Types = require(package.Types)
 
-local ColdFusion = require(packages.coldfusion)
+local ColdFusion = require(packages.ColdFusion)
 type Fuse = ColdFusion.Fuse
 type State<T> = ColdFusion.State<T>
 type ValueState<T> = ColdFusion.ValueState<T>
 type CanBeState<T> = ColdFusion.CanBeState<T>
 
-local Maid = require(packages.maid)
+local Maid = require(packages.Maid)
 type Maid = Maid.Maid
 
 export type BoardFrameParameters = Types.ViewportFrameParameters & {
@@ -38,8 +38,8 @@ export type BoardFrame = ViewportFrame
 
 function Constructor(config: BoardFrameParameters): BoardFrame
 	-- init workspace
-	local maid = Maid.new()
-	local _fuse = ColdFusion.fuse(maid)
+	local Maid = Maid.new()
+	local _fuse = ColdFusion.fuse(Maid)
 	local _new = _fuse.new
 	local _mount = _fuse.mount
 	local _import = _fuse.import
@@ -184,7 +184,7 @@ function Constructor(config: BoardFrameParameters): BoardFrame
 
 	-- construct output instance
 	local Output: ViewportFrame = _fuse.new("ViewportFrame")(parameters) :: any
-	Util.cleanUpPrep(maid, Output)
+	Util.cleanUpPrep(Maid, Output)
 
 	local _Canvas = _fuse.new("Part")({
 		Name = "CanvasPart",
@@ -223,7 +223,7 @@ function Constructor(config: BoardFrameParameters): BoardFrame
 		return false
 	end, MousePosition)
 
-	maid:GiveTask(UserInputService.PointerAction:Connect(function(wheel: number, pan: number, pinch: number)
+	Maid:GiveTask(UserInputService.PointerAction:Connect(function(wheel: number, pan: number, pinch: number)
 		if not LockZoom:Get() and IsHovering:Get() then
 			local currentZoom = Zoom:Get()
 			local zoomSpeed = ZoomSpeed:Get()
@@ -239,7 +239,7 @@ function Constructor(config: BoardFrameParameters): BoardFrame
 		end
 	end))
 
-	maid:GiveTask(RunService.RenderStepped:Connect(function(delta)
+	Maid:GiveTask(RunService.RenderStepped:Connect(function(delta)
 		Delta:Set(delta)
 		AbsoluteSize:Set(Output.AbsoluteSize)
 		PreviousMousePosition:Set(MousePosition:Get())
@@ -264,11 +264,11 @@ function Constructor(config: BoardFrameParameters): BoardFrame
 	return Output
 end
 
-return function(maid: Maid?)
+return function(Maid: Maid?)
 	return function(params: BoardFrameParameters): BoardFrame
 		local inst = Constructor(params)
-		if maid then
-			maid:GiveTask(inst)
+		if Maid then
+			Maid:GiveTask(inst)
 		end
 		return inst
 	end
