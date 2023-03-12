@@ -28,8 +28,8 @@ export type BoundingBoxFrame = Frame
 
 function Constructor(config: BoundingBoxFrameParameters): BoundingBoxFrame
 	-- init workspace
-	local Maid = Maid.new()
-	local _fuse = ColdFusion.fuse(Maid)
+	local maid = Maid.new()
+	local _fuse = ColdFusion.fuse(maid)
 	local _new = _fuse.new
 	local _mount = _fuse.mount
 	local _import = _fuse.import
@@ -50,20 +50,20 @@ function Constructor(config: BoundingBoxFrameParameters): BoundingBoxFrame
 	local TargetSize: ValueState<Vector2?> = _Value(nil :: Vector2?)
 	local BoardFrame: ValueState<ViewportFrame?> = _Value(nil :: ViewportFrame?)
 	local Camera: ValueState<Camera?> = _Value(nil :: Camera?)
-	Maid:GiveTask(BoardFrame:Connect(function(cur: ViewportFrame?)
+	maid:GiveTask(BoardFrame:Connect(function(cur: ViewportFrame?)
 		Camera:Set(nil)
 		if not cur then
 			return
 		end
 		assert(cur ~= nil)
-		Maid._billboardCameraCheck = cur:GetPropertyChangedSignal("CurrentCamera"):Connect(function()
+		maid._billboardCameraCheck = cur:GetPropertyChangedSignal("CurrentCamera"):Connect(function()
 			Camera:Set(cur.CurrentCamera)
 		end)
 		Camera:Set(cur.CurrentCamera)
 	end))
 
 	-- update states each frame
-	Maid:GiveTask(RunService.Heartbeat:Connect(function(dt)
+	maid:GiveTask(RunService.Heartbeat:Connect(function(dt)
 		local target = Target:Get()
 		local cam = Camera:Get()
 		if not target or not cam then
@@ -118,22 +118,22 @@ function Constructor(config: BoundingBoxFrameParameters): BoundingBoxFrame
 	end
 
 	-- construct output instance
-	local Output = MountFrame(Maid)(parameters)
-	Util.cleanUpPrep(Maid, Output)
+	local Output = MountFrame(maid)(parameters)
+	Util.cleanUpPrep(maid, Output)
 
 	BoardFrame:Set(Output:FindFirstAncestorOfClass("ViewportFrame"))
-	Maid:GiveTask(Output.AncestryChanged:Connect(function()
+	maid:GiveTask(Output.AncestryChanged:Connect(function()
 		BoardFrame:Set(Output:FindFirstAncestorOfClass("ViewportFrame"))
 	end))
 
 	return Output
 end
 
-return function(Maid: Maid?)
+return function(maid: Maid?)
 	return function(params: BoundingBoxFrameParameters): BoundingBoxFrame
 		local inst = Constructor(params)
-		if Maid then
-			Maid:GiveTask(inst)
+		if maid then
+			maid:GiveTask(inst)
 		end
 		return inst
 	end

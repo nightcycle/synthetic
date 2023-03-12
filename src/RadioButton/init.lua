@@ -37,8 +37,8 @@ export type RadioButton = Frame
 
 function Constructor(config: RadioButtonParameters): RadioButton
 	-- init workspace
-	local Maid = Maid.new()
-	local _fuse = ColdFusion.fuse(Maid)
+	local maid = Maid.new()
+	local _fuse = ColdFusion.fuse(maid)
 	local _new = _fuse.new
 	local _mount = _fuse.mount
 	local _import = _fuse.import
@@ -61,7 +61,7 @@ function Constructor(config: RadioButtonParameters): RadioButton
 
 	-- construct signals
 	local Activated = Signal.new()
-	Maid:GiveTask(Activated)
+	maid:GiveTask(Activated)
 
 	-- init internal states
 	local OutputState = (config :: any)[_REF] or _Value(nil :: RadioButton?)
@@ -74,7 +74,7 @@ function Constructor(config: RadioButtonParameters): RadioButton
 	end, Scale)
 
 	-- bind Signal
-	Maid:GiveTask(Activated:Connect(function()
+	maid:GiveTask(Activated:Connect(function()
 		if Value:Get() == true then
 			local clickSound = EnableSound:Get()
 			if clickSound then
@@ -116,7 +116,7 @@ function Constructor(config: RadioButtonParameters): RadioButton
 				[_ON_EVENT("Activated")] = function()
 					Activated:Fire()
 					if BubbleEnabled:Get() then
-						local bubble = Bubble(Maid)({
+						local bubble = Bubble(maid)({
 							Parent = OutputState :: any,
 						})
 						local fireFunction: Instance? = bubble:WaitForChild("Fire")
@@ -200,18 +200,18 @@ function Constructor(config: RadioButtonParameters): RadioButton
 
 	-- construct output instance
 	local Output = _new("Frame")(parameters) :: any
-	Util.cleanUpPrep(Maid, Output)
+	Util.cleanUpPrep(maid, Output)
 
-	Util.bindSignal(Output, Maid, "Activated", Activated)
+	Util.bindSignal(Output, maid, "Activated", Activated)
 
 	return Output
 end
 
-return function(Maid: Maid?)
+return function(maid: Maid?)
 	return function(params: RadioButtonParameters): RadioButton
 		local inst = Constructor(params)
-		if Maid then
-			Maid:GiveTask(inst)
+		if maid then
+			maid:GiveTask(inst)
 		end
 		return inst
 	end

@@ -37,8 +37,8 @@ export type TextLabel = Frame
 
 function Constructor(config: TextLabelParameters): TextLabel
 	-- init workspace
-	local Maid = Maid.new()
-	local _fuse = ColdFusion.fuse(Maid)
+	local maid = Maid.new()
+	local _fuse = ColdFusion.fuse(maid)
 	local _new = _fuse.new
 	local _mount = _fuse.mount
 	local _import = _fuse.import
@@ -123,7 +123,7 @@ function Constructor(config: TextLabelParameters): TextLabel
 				BackgroundTransparency = 1,
 				AutomaticSize = Enum.AutomaticSize.XY,
 			}),
-			Icon(Maid)({
+			Icon(maid)({
 				Size = IconSize,
 				LayoutOrder = 1,
 				Visible = _Computed(function(icon)
@@ -134,7 +134,7 @@ function Constructor(config: TextLabelParameters): TextLabel
 				IconColor3 = TextColor3,
 				IconTransparency = TextTransparency,
 			}),
-			Icon(Maid)({
+			Icon(maid)({
 				Size = IconSize,
 				LayoutOrder = 3,
 				Visible = _Computed(function(icon)
@@ -168,16 +168,16 @@ function Constructor(config: TextLabelParameters): TextLabel
 
 	-- construct output instance
 	local Output = _new("Frame")(parameters)
-	Util.cleanUpPrep(Maid, Output)
+	Util.cleanUpPrep(maid, Output)
 
 	return Output :: Frame
 end
 
-return function(Maid: Maid?)
+return function(maid: Maid?)
 	return function(...): TextLabel
 		local inst = Constructor(...)
-		if Maid then
-			Maid:GiveTask(inst)
+		if maid then
+			maid:GiveTask(inst)
 		end
 		return inst
 	end

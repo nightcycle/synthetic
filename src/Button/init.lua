@@ -50,8 +50,8 @@ export type Button = Frame
 
 function Constructor(config: ButtonParameters): Button
 	-- init workspace
-	local Maid: Maid = Maid.new()
-	local _fuse: Fuse = ColdFusion.fuse(Maid)
+	local maid: Maid = Maid.new()
+	local _fuse: Fuse = ColdFusion.fuse(maid)
 
 	local _new = _fuse.new
 	local _mount = _fuse.mount
@@ -104,15 +104,15 @@ function Constructor(config: ButtonParameters): Button
 
 	-- init signals
 	local Activated = Signal.new()
-	Maid:GiveTask(Activated)
+	maid:GiveTask(Activated)
 	local MouseButton1Down = Signal.new()
-	Maid:GiveTask(MouseButton1Down)
+	maid:GiveTask(MouseButton1Down)
 	local MouseButton1Up = Signal.new()
-	Maid:GiveTask(MouseButton1Up)
+	maid:GiveTask(MouseButton1Up)
 	local InputBegan = Signal.new()
-	Maid:GiveTask(InputBegan)
+	maid:GiveTask(InputBegan)
 	local InputEnded = Signal.new()
-	Maid:GiveTask(InputEnded)
+	maid:GiveTask(InputEnded)
 
 	-- init internal states
 	local IsHovering = _Value(false)
@@ -206,7 +206,7 @@ function Constructor(config: ButtonParameters): Button
 	end, IsSelected, IsRippling, ActiveBackgroundColor, SelectedBackgroundColor3):Tween(0.1)
 
 	-- bind signals
-	Maid:GiveTask(Activated:Connect(function()
+	maid:GiveTask(Activated:Connect(function()
 		local clickSound = ClickSound:Get()
 		if clickSound then
 			SoundService:PlayLocalSound(clickSound)
@@ -214,7 +214,7 @@ function Constructor(config: ButtonParameters): Button
 	end))
 
 	-- construct sub-instances
-	local TextLabel = TextLabel(Maid)({
+	local TextLabel = TextLabel(maid)({
 		BackgroundTransparency = 1,
 		TextTransparency = TextTransparency,
 		ZIndex = 2,
@@ -452,33 +452,33 @@ function Constructor(config: ButtonParameters): Button
 		end
 	end
 
-	Maid:GiveTask(RunService.RenderStepped:Connect(function(dt)
+	maid:GiveTask(RunService.RenderStepped:Connect(function(dt)
 		TimeSinceLastClick:Set(tick() - ClickTick:Get())
 	end))
 
 	-- construct output instance
 	local Output: Frame = _fuse.new("Frame")(parameters) :: any
-	Util.bindSignal(Output, Maid, "MouseButton1Down", MouseButton1Down)
-	Util.bindSignal(Output, Maid, "MouseButton1Up", MouseButton1Up)
-	Util.bindSignal(Output, Maid, "Activated", Activated)
+	Util.bindSignal(Output, maid, "MouseButton1Down", MouseButton1Down)
+	Util.bindSignal(Output, maid, "MouseButton1Up", MouseButton1Up)
+	Util.bindSignal(Output, maid, "Activated", Activated)
 
-	Maid:GiveTask(TextButton.MouseButton1Down:Connect(function(x: number)
+	maid:GiveTask(TextButton.MouseButton1Down:Connect(function(x: number)
 		local xWidth = Output.AbsoluteSize.X
 		local xPos = Output.AbsolutePosition.X
 		local clickCenter = (x - xPos) / xWidth
 		ClickCenter:Set(clickCenter)
 	end))
 
-	Util.cleanUpPrep(Maid, Output)
+	Util.cleanUpPrep(maid, Output)
 
 	return Output
 end
 
-return function(Maid: Maid?)
+return function(maid: Maid?)
 	return function(params: ButtonParameters): Button
 		local inst = Constructor(params)
-		if Maid then
-			Maid:GiveTask(inst)
+		if maid then
+			maid:GiveTask(inst)
 		end
 		return inst
 	end

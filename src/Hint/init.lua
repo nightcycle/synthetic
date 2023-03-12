@@ -28,8 +28,8 @@ export type Hint = ScreenGui
 
 function Constructor(config: HintParameters): Hint
 	-- init workspace
-	local Maid = Maid.new()
-	local _fuse = ColdFusion.fuse(Maid)
+	local maid = Maid.new()
+	local _fuse = ColdFusion.fuse(maid)
 	local _new = _fuse.new
 	local _mount = _fuse.mount
 	local _import = _fuse.import
@@ -70,7 +70,7 @@ function Constructor(config: HintParameters): Hint
 	end, Enabled, TextTransparency):Tween()
 	_Computed(function(par: GuiObject?): nil
 		if par then
-			Maid._parentInputBeginSignal = par.InputChanged:Connect(function()
+			maid._parentInputBeginSignal = par.InputChanged:Connect(function()
 				if not Override:Get() then
 					Visible:Set(true)
 				end
@@ -79,7 +79,7 @@ function Constructor(config: HintParameters): Hint
 					ValEnab:Set(true)
 				end
 			end)
-			Maid._parentInputEndSignal = par.MouseLeave:Connect(function()
+			maid._parentInputEndSignal = par.MouseLeave:Connect(function()
 				local ValEnab: ValueState<boolean> = Enabled :: any
 				if ValEnab.Set then
 					ValEnab:Set(false)
@@ -148,10 +148,10 @@ function Constructor(config: HintParameters): Hint
 			_new("UICorner")({
 				CornerRadius = CornerRadius,
 			}),
-			TextLabel(Maid)(tConfig),
+			TextLabel(maid)(tConfig),
 		} :: { Instance },
 	})
-	Maid:GiveTask(bubbleFrame)
+	maid:GiveTask(bubbleFrame)
 
 	-- assemble final parameters
 	local parameters: any = {
@@ -162,25 +162,25 @@ function Constructor(config: HintParameters): Hint
 	}
 
 	-- construct output instance
-	local Output: ScreenGui = EffectGui(Maid)(parameters)
+	local Output: ScreenGui = EffectGui(maid)(parameters)
 	bubbleFrame.Parent = Output
-	Maid:GiveTask(Output:GetAttributeChangedSignal("AbsoluteSize"):Connect(function()
+	maid:GiveTask(Output:GetAttributeChangedSignal("AbsoluteSize"):Connect(function()
 		AbsoluteSize:Set(Output:GetAttribute("AbsoluteSize") or Vector2.new(0, 0))
 	end))
 
-	Maid:GiveTask(Output:GetAttributeChangedSignal("CenterPosition"):Connect(function()
+	maid:GiveTask(Output:GetAttributeChangedSignal("CenterPosition"):Connect(function()
 		CenterPosition:Set(Output:GetAttribute("CenterPosition") or UDim2.fromOffset(0, 0))
 	end))
-	Util.cleanUpPrep(Maid, Output)
+	Util.cleanUpPrep(maid, Output)
 
 	return Output
 end
 
-return function(Maid: Maid?)
+return function(maid: Maid?)
 	return function(params: HintParameters): Hint
 		local inst = Constructor(params)
-		if Maid then
-			Maid:GiveTask(inst)
+		if maid then
+			maid:GiveTask(inst)
 		end
 		return inst
 	end

@@ -29,8 +29,8 @@ export type SurfaceFrame = Frame
 
 function Constructor(config: SurfaceFrameParameters): SurfaceFrame
 	-- init workspace
-	local Maid = Maid.new()
-	local _fuse = ColdFusion.fuse(Maid)
+	local maid = Maid.new()
+	local _fuse = ColdFusion.fuse(maid)
 	local _new = _fuse.new
 	local _mount = _fuse.mount
 	local _import = _fuse.import
@@ -67,7 +67,7 @@ function Constructor(config: SurfaceFrameParameters): SurfaceFrame
 		ClipsDescendants = true,
 		LightInfluence = LightInfluence,
 	})
-	Maid:GiveTask(SurfaceGui)
+	maid:GiveTask(SurfaceGui)
 
 	-- assemble final parameters
 	local parameters: any = {
@@ -90,16 +90,16 @@ function Constructor(config: SurfaceFrameParameters): SurfaceFrame
 
 	-- construct output instance
 	local Output: Frame = _new("Frame")(parameters) :: any
-	Util.cleanUpPrep(Maid, Output)
+	Util.cleanUpPrep(maid, Output)
 
 	return Output
 end
 
-return function(Maid: Maid?)
+return function(maid: Maid?)
 	return function(params: SurfaceFrameParameters): SurfaceFrame
 		local inst = Constructor(params)
-		if Maid then
-			Maid:GiveTask(inst)
+		if maid then
+			maid:GiveTask(inst)
 		end
 		return inst
 	end

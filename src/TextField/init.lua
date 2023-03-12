@@ -37,8 +37,8 @@ export type TextField = Frame
 
 function Constructor(config: TextFieldParameters): TextField
 	-- init workspace
-	local Maid = Maid.new()
-	local _fuse = ColdFusion.fuse(Maid)
+	local maid = Maid.new()
+	local _fuse = ColdFusion.fuse(maid)
 	local _new = _fuse.new
 	local _mount = _fuse.mount
 	local _import = _fuse.import
@@ -85,9 +85,9 @@ function Constructor(config: TextFieldParameters): TextField
 
 	-- construct signals
 	local OnInputChanged = Signal.new()
-	Maid:GiveTask(OnInputChanged)
+	maid:GiveTask(OnInputChanged)
 	local OnInputComplete = Signal.new()
-	Maid:GiveTask(OnInputComplete)
+	maid:GiveTask(OnInputComplete)
 
 	-- init internal states
 	local TextBoxValue: ValueState<string> = _Value(Value:Get())
@@ -133,10 +133,10 @@ function Constructor(config: TextFieldParameters): TextField
 	end, Value)
 
 	-- bind states
-	Maid:GiveTask(Value:Connect(function(cur)
+	maid:GiveTask(Value:Connect(function(cur)
 		OnInputChanged:Fire(cur)
 	end))
-	Maid:GiveTask(IsFocused:Connect(function(v)
+	maid:GiveTask(IsFocused:Connect(function(v)
 		if v == false then
 			OnInputComplete:Fire(Value:Get())
 		end
@@ -323,7 +323,7 @@ function Constructor(config: TextFieldParameters): TextField
 					IsHovering:Set(false)
 				end,
 			}),
-			IconLabel(Maid)({
+			IconLabel(maid)({
 				Name = "Right",
 				IconTransparency = 0,
 				IconColor3 = TextColor3,
@@ -336,7 +336,7 @@ function Constructor(config: TextFieldParameters): TextField
 				end, IconSize),
 				AnchorPoint = Vector2.new(1, 0.5),
 			}) :: any,
-			IconLabel(Maid)({
+			IconLabel(maid)({
 				Name = "Left",
 				Position = _Computed(function(txtSize: number)
 					return UDim2.new(UDim.new(0, txtSize), UDim.new(0.5, 0))
@@ -467,16 +467,16 @@ function Constructor(config: TextFieldParameters): TextField
 
 	-- construct output instance
 	local Output: Frame = _new("Frame")(parameters) :: any
-	Util.cleanUpPrep(Maid, Output)
+	Util.cleanUpPrep(maid, Output)
 
 	-- bind functions to output
-	local _setInput = Util.bindFunction(Output, Maid, "SetInput", function(txt, cursorOffset: number?)
+	local _setInput = Util.bindFunction(Output, maid, "SetInput", function(txt, cursorOffset: number?)
 		Value:Set(txt)
 		-- assert(typeof(TextBox.CursorPosition) == "number")
 		CursorPosition:Set(cursorOffset or CursorPosition:Get() or 0)
 		return nil
 	end)
-	local _clear = Util.bindFunction(Output, Maid, "Clear", function()
+	local _clear = Util.bindFunction(Output, maid, "Clear", function()
 		Value:Set("")
 		CursorPosition:Set(1)
 		return nil
@@ -489,17 +489,17 @@ function Constructor(config: TextFieldParameters): TextField
 		end
 		return nil
 	end, Value, CharacterCount, CharacterLimit)
-	Util.bindSignal(Output, Maid, "OnInputChanged", OnInputChanged)
-	Util.bindSignal(Output, Maid, "OnInputComplete", OnInputComplete)
+	Util.bindSignal(Output, maid, "OnInputChanged", OnInputChanged)
+	Util.bindSignal(Output, maid, "OnInputComplete", OnInputComplete)
 
 	return Output
 end
 
-return function(Maid: Maid?)
+return function(maid: Maid?)
 	return function(params: TextFieldParameters): TextField
 		local inst = Constructor(params)
-		if Maid then
-			Maid:GiveTask(inst)
+		if maid then
+			maid:GiveTask(inst)
 		end
 		return inst
 	end

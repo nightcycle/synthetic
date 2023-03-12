@@ -2,8 +2,6 @@
 local package = script.Parent
 local packages = package.Parent
 
-local Util = require(package.Util)
-
 local Types = require(package.Types)
 
 local ColdFusion = require(packages.ColdFusion)
@@ -30,8 +28,8 @@ export type BillboardFrame = Frame
 
 function Constructor(config: BillboardFrameParameters): BillboardFrame
 	-- init workspace
-	local Maid = Maid.new()
-	local _fuse = ColdFusion.fuse(Maid)
+	local maid = Maid.new()
+	local _fuse = ColdFusion.fuse(maid)
 	local _new = _fuse.new
 	local _mount = _fuse.mount
 	local _import = _fuse.import
@@ -54,6 +52,19 @@ function Constructor(config: BillboardFrameParameters): BillboardFrame
 	local AnchorPoint = _import(config.AnchorPoint, Vector2.new(0.5, 0.5))
 
 	-- constructing instances
+
+	local SurfaceGui: BillboardGui = _new("BillboardGui")({
+		Parent = Parent,
+		Active = Active,
+		AlwaysOnTop = AlwaysOnTop,
+		Size = _Computed(function(size: Vector2)
+			return UDim2.fromScale(size.X, size.Y)
+		end, Size),
+		ClipsDescendants = false,
+		LightInfluence = LightInfluence,
+		MaxDistance = MaxDistance,
+	}) :: any
+
 	local Part: any = _new("Part")({
 		Parent = workspace,
 		Position = Position,
@@ -65,18 +76,7 @@ function Constructor(config: BillboardFrameParameters): BillboardFrame
 		CanQuery = false,
 	})
 
-	local SurfaceGui = _new("BillboardGui")({
-		Parent = Parent,
-		Adornee = Part,
-		Active = Active,
-		AlwaysOnTop = AlwaysOnTop,
-		Size = _Computed(function(size: Vector2)
-			return UDim2.fromScale(size.X, size.Y)
-		end, Size),
-		ClipsDescendants = false,
-		LightInfluence = LightInfluence,
-		MaxDistance = MaxDistance,
-	})
+	SurfaceGui.Adornee = Part
 
 	-- assemble final parameters
 	local parameters: any = {
@@ -99,16 +99,19 @@ function Constructor(config: BillboardFrameParameters): BillboardFrame
 
 	-- construct output instance
 	local Output: Frame = _new("Frame")(parameters) :: any
-	Util.cleanUpPrep(Maid, Output)
 
+	maid:GiveTask(Output.Destroying:Connect(function()
+		maid:Destroy()
+	end))
+	
 	return Output
 end
 
-return function(Maid: Maid?)
+return function(maid: Maid?)
 	return function(params: BillboardFrameParameters): BillboardFrame
 		local inst = Constructor(params)
-		if Maid then
-			Maid:GiveTask(inst)
+		if maid then
+			maid:GiveTask(inst)
 		end
 		return inst
 	end

@@ -27,8 +27,8 @@ export type IconLabel = ImageLabel
 
 function Constructor(config: IconLabelParameters): IconLabel
 	-- init workspace
-	local Maid = Maid.new()
-	local _fuse = ColdFusion.fuse(Maid)
+	local maid = Maid.new()
+	local _fuse = ColdFusion.fuse(maid)
 	local _new = _fuse.new
 	local _mount = _fuse.mount
 	local _import = _fuse.import
@@ -60,7 +60,7 @@ function Constructor(config: IconLabelParameters): IconLabel
 	end, Icon, DotsPerInch)
 
 	-- bind state changes
-	Maid:GiveTask(AbsoluteSize:Connect(function()
+	maid:GiveTask(AbsoluteSize:Connect(function()
 		local output = OutputState:Get()
 		if not output or not output:IsDescendantOf(game) then
 			return
@@ -129,16 +129,16 @@ function Constructor(config: IconLabelParameters): IconLabel
 	-- construct output instance
 	local Output: ImageLabel = _fuse.new("ImageLabel")(parameters) :: any
 
-	Util.cleanUpPrep(Maid, Output)
+	Util.cleanUpPrep(maid, Output)
 
 	return Output
 end
 
-return function(Maid: Maid?)
+return function(maid: Maid?)
 	return function(params: IconLabelParameters): IconLabel
 		local inst = Constructor(params)
-		if Maid then
-			Maid:GiveTask(inst)
+		if maid then
+			maid:GiveTask(inst)
 		end
 		return inst
 	end
