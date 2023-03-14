@@ -39,13 +39,6 @@ function Constructor(config: CheckboxParameters): Checkbox
 	local _new = _fuse.new
 	local _mount = _fuse.mount
 	local _import = _fuse.import
-
-	local _OUT = _fuse.OUT
-	local _REF = _fuse.REF
-	local _CHILDREN = _fuse.CHILDREN
-	local _ON_EVENT = _fuse.ON_EVENT
-	local _ON_PROPERTY = _fuse.ON_PROPERTY
-
 	local _Value = _fuse.Value
 	local _Computed = _fuse.Computed
 
@@ -110,7 +103,7 @@ function Constructor(config: CheckboxParameters): Checkbox
 			return UDim2.fromOffset(width * 2, width * 2)
 		end, Width),
 		BackgroundTransparency = 1,
-		[_CHILDREN] = {
+		Children = {
 			_new("ImageButton")({
 				Name = "Button",
 				ZIndex = 3,
@@ -119,18 +112,20 @@ function Constructor(config: CheckboxParameters): Checkbox
 				Position = UDim2.fromScale(0.5, 0.5),
 				Size = UDim2.fromScale(1, 1),
 				AnchorPoint = Vector2.new(0.5, 0.5),
-				[_ON_EVENT("Activated")] = function()
-					Activated:Fire()
-					if BubbleEnabled:Get() then
-						local bubble = Bubble(maid)({
-							Parent = Output,
-						})
-						local fireFunction: Instance? = bubble:WaitForChild("Fire")
-						assert(fireFunction ~= nil and fireFunction:IsA("BindableFunction"))
-						fireFunction:Invoke()
-						-- maid._bubble = bubble
-					end
-				end,
+				Events = {
+					Activated = function()
+						Activated:Fire()
+						if BubbleEnabled:Get() then
+							local bubble = Bubble(maid)({
+								Parent = Output,
+							})
+							local fireFunction: Instance? = bubble:WaitForChild("Fire")
+							assert(fireFunction ~= nil and fireFunction:IsA("BindableFunction"))
+							fireFunction:Invoke()
+							-- maid._bubble = bubble
+						end
+					end,
+				},
 			}),
 			_new("ImageLabel")({
 				Name = "ImageLabel",
@@ -160,7 +155,7 @@ function Constructor(config: CheckboxParameters): Checkbox
 					return UDim2.fromOffset(width - padding, width - padding)
 				end, Width, Padding),
 				BorderSizePixel = 0,
-				[_CHILDREN] = {
+				Children = {
 					_new("UICorner")({
 						CornerRadius = _Computed(function(padding: number)
 							return UDim.new(0, math.round(padding * 0.5))

@@ -56,13 +56,6 @@ function Constructor(config: ButtonParameters): Button
 	local _new = _fuse.new
 	local _mount = _fuse.mount
 	local _import = _fuse.import
-
-	local _OUT = _fuse.OUT
-	local _REF = _fuse.REF
-	local _CHILDREN = _fuse.CHILDREN
-	local _ON_EVENT = _fuse.ON_EVENT
-	local _ON_PROPERTY = _fuse.ON_PROPERTY
-
 	local _Value = _fuse.Value
 	local _Computed = _fuse.Computed
 
@@ -221,7 +214,6 @@ function Constructor(config: ButtonParameters): Button
 		Font = Font,
 		Padding = Padding,
 		TextSize = TextSize,
-		[_OUT("AbsoluteSize")] = LabelAbsoluteSize,
 		TextColor3 = _Computed(function(hover, press, ripple, textColor3, hoverColor, selColor)
 			if press or ripple then
 				return selColor
@@ -240,6 +232,9 @@ function Constructor(config: ButtonParameters): Button
 		AnchorPoint = Vector2.new(0.5, 0.5),
 		Position = UDim2.fromScale(0.5, 0.5),
 	})
+	maid:GiveTask(RunService.RenderStepped:Connect(function(deltaTime: number)
+		LabelAbsoluteSize:Set(TextLabel.AbsoluteSize)
+	end))
 
 	local TextButton: TextButton = _fuse.new("TextButton")({
 		RichText = true,
@@ -251,40 +246,43 @@ function Constructor(config: ButtonParameters): Button
 		AnchorPoint = Vector2.new(0.5, 0.5),
 		TextTransparency = TextTransparency,
 		Text = "",
-		[_ON_EVENT("Activated")] = function()
-			Activated:Fire()
-		end,
-		[_ON_EVENT("MouseButton1Down")] = function(x: any)
-			MouseButton1Down:Fire()
-
-			if not IsSelected:Get() and TimeSinceLastClick:Get() > 0.8 then
-				ClickTick:Set(tick())
-				IsRippling:Set(true)
-				task.delay(MaxRippleDuration:Get() + 0.2, function()
-					pcall(function()
-						IsRippling:Set(false)
+		Events = {
+			Activated = function()
+				Activated:Fire()
+			end,
+			MouseButton1Down = function(x: any)
+				MouseButton1Down:Fire()
+	
+				if not IsSelected:Get() and TimeSinceLastClick:Get() > 0.8 then
+					ClickTick:Set(tick())
+					IsRippling:Set(true)
+					task.delay(MaxRippleDuration:Get() + 0.2, function()
+						pcall(function()
+							IsRippling:Set(false)
+						end)
 					end)
-				end)
+					if IsSelected.Set then
+						local ValSelect: any = IsSelected
+						ValSelect:Set(true)
+					end
+					-- IsSelected:Set(true)
+				end
+			end,
+			MouseButton1Up = function()
+				MouseButton1Up:Fire()
 				if IsSelected.Set then
 					local ValSelect: any = IsSelected
-					ValSelect:Set(true)
+					ValSelect:Set(false)
 				end
-				-- IsSelected:Set(true)
-			end
-		end,
-		[_ON_EVENT("MouseButton1Up")] = function()
-			MouseButton1Up:Fire()
-			if IsSelected.Set then
-				local ValSelect: any = IsSelected
-				ValSelect:Set(false)
-			end
-		end,
-		[_ON_EVENT("InputChanged")] = function()
-			IsHovering:Set(true)
-		end,
-		[_ON_EVENT("MouseLeave")] = function()
-			IsHovering:Set(false)
-		end,
+			end,
+			InputChanged = function()
+				IsHovering:Set(true)
+			end,
+			MouseLeave = function()
+				IsHovering:Set(false)
+			end,
+		},
+
 		BackgroundTransparency = 1,
 		AutomaticSize = Enum.AutomaticSize.XY,
 	}) :: any
@@ -301,7 +299,7 @@ function Constructor(config: ButtonParameters): Button
 				return 0
 			end
 		end, TextOnly),
-		[_CHILDREN] = {
+		Children = {
 			_fuse.new("UICorner")({
 				CornerRadius = CornerRadius,
 			}),

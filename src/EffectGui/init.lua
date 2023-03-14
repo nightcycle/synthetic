@@ -31,13 +31,6 @@ function Constructor(config: EffectGuiParameters): EffectGui
 	local _new = _fuse.new
 	local _mount = _fuse.mount
 	local _import = _fuse.import
-
-	local _OUT = _fuse.OUT
-	local _REF = _fuse.REF
-	local _CHILDREN = _fuse.CHILDREN
-	local _ON_EVENT = _fuse.ON_EVENT
-	local _ON_PROPERTY = _fuse.ON_PROPERTY
-
 	local _Value = _fuse.Value
 	local _Computed = _fuse.Computed
 
@@ -48,7 +41,7 @@ function Constructor(config: EffectGuiParameters): EffectGui
 	local ZIndexBehavior = _import(config.ZIndexBehavior, Enum.ZIndexBehavior.Sibling)
 
 	-- init internal states
-	local OutputState = (config :: any)[_REF] or _Value(nil :: ScreenGui?)
+	local OutputState = _Value(nil :: ScreenGui?)
 	local AncestorDisplayOrder = _Value(0)
 	local ParentAnchorPoint: ValueState<Vector2> = _Value(Vector2.new(0, 0))
 	local AbsolutePosition: ValueState<Vector2> = _Value(Vector2.new(0, 0))
@@ -117,13 +110,12 @@ function Constructor(config: EffectGuiParameters): EffectGui
 
 	-- assemble final parameters
 	local parameters: any = {
-		[_REF] = OutputState :: any,
 		Name = Name,
 		DisplayOrder = DisplayOrder,
 		Enabled = Enabled,
 		ZIndexBehavior = ZIndexBehavior,
 		Parent = Parent,
-		[_CHILDREN] = {
+		Children = {
 			_new("Frame")({
 				BackgroundTransparency = 1,
 				Size = _Computed(function(absSize: Vector2)
@@ -149,6 +141,7 @@ function Constructor(config: EffectGuiParameters): EffectGui
 
 	-- construct output instance
 	local Output = _fuse.new("ScreenGui")(parameters) :: any
+	OutputState:Set(Output)
 	Util.cleanUpPrep(maid, Output)
 
 	-- bind states to output attributes

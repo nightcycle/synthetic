@@ -42,11 +42,6 @@ function Constructor(config: RadioButtonParameters): RadioButton
 	local _new = _fuse.new
 	local _mount = _fuse.mount
 	local _import = _fuse.import
-	local _OUT = _fuse.OUT
-	local _REF = _fuse.REF
-	local _CHILDREN = _fuse.CHILDREN
-	local _ON_EVENT = _fuse.ON_EVENT
-	local _ON_PROPERTY = _fuse.ON_PROPERTY
 	local _Value = _fuse.Value
 	local _Computed = _fuse.Computed
 
@@ -64,7 +59,7 @@ function Constructor(config: RadioButtonParameters): RadioButton
 	maid:GiveTask(Activated)
 
 	-- init internal states
-	local OutputState = (config :: any)[_REF] or _Value(nil :: RadioButton?)
+	local OutputState = _Value(nil :: RadioButton?)
 	local BubbleEnabled = _Value(false)
 	local Padding = _Computed(function(scale)
 		return math.round(6 * scale)
@@ -98,13 +93,12 @@ function Constructor(config: RadioButtonParameters): RadioButton
 
 	-- assemble final parameters
 	local parameters: any = {
-		[_REF] = OutputState :: any,
 		Name = Name,
 		Size = _Computed(function(width: number)
 			return UDim2.fromOffset(width * 2, width * 2)
 		end, Width),
 		BackgroundTransparency = 1,
-		[_CHILDREN] = {
+		Children = {
 			_new("ImageButton")({
 				Name = "Button",
 				ZIndex = 3,
@@ -113,17 +107,19 @@ function Constructor(config: RadioButtonParameters): RadioButton
 				Position = UDim2.fromScale(0.5, 0.5),
 				Size = UDim2.fromScale(1, 1),
 				AnchorPoint = Vector2.new(0.5, 0.5),
-				[_ON_EVENT("Activated")] = function()
-					Activated:Fire()
-					if BubbleEnabled:Get() then
-						local bubble = Bubble(maid)({
-							Parent = OutputState :: any,
-						})
-						local fireFunction: Instance? = bubble:WaitForChild("Fire")
-						assert(fireFunction ~= nil and fireFunction:IsA("BindableFunction"))
-						fireFunction:Invoke()
-					end
-				end,
+				Events = {
+					Activated = function()
+						Activated:Fire()
+						if BubbleEnabled:Get() then
+							local bubble = Bubble(maid)({
+								Parent = OutputState :: any,
+							})
+							local fireFunction: Instance? = bubble:WaitForChild("Fire")
+							assert(fireFunction ~= nil and fireFunction:IsA("BindableFunction"))
+							fireFunction:Invoke()
+						end
+					end,
+				},
 			}),
 			_new("Frame")({
 				Name = "Frame",
@@ -136,7 +132,7 @@ function Constructor(config: RadioButtonParameters): RadioButton
 					return UDim2.fromOffset(width - padding, width - padding)
 				end, Width, Padding),
 				BorderSizePixel = 0,
-				[_CHILDREN] = {
+				Children = {
 					_new("Frame")({
 						Name = "Fill",
 						Size = _Computed(function(width: number, padding: number): UDim2
@@ -151,7 +147,7 @@ function Constructor(config: RadioButtonParameters): RadioButton
 								return 1
 							end
 						end, Value):Tween(),
-						[_CHILDREN] = {
+						Children = {
 							_new("UICorner")({
 								CornerRadius = _Computed(function(padding)
 									return UDim.new(1, 0)
@@ -200,6 +196,7 @@ function Constructor(config: RadioButtonParameters): RadioButton
 
 	-- construct output instance
 	local Output = _new("Frame")(parameters) :: any
+	OutputState:Set(Output)
 	Util.cleanUpPrep(maid, Output)
 
 	Util.bindSignal(Output, maid, "Activated", Activated)

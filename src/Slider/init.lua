@@ -1,6 +1,7 @@
 --!strict
 local SoundService = game:GetService("SoundService")
 local UserInputService = game:GetService("UserInputService")
+local RunService = game:GetService("RunService")
 
 local package = script.Parent
 local packages = package.Parent
@@ -48,11 +49,6 @@ function Constructor(config: SliderParameters): Slider
 	local _new = _fuse.new
 	local _mount = _fuse.mount
 	local _import = _fuse.import
-	local _OUT = _fuse.OUT
-	local _REF = _fuse.REF
-	local _CHILDREN = _fuse.CHILDREN
-	local _ON_EVENT = _fuse.ON_EVENT
-	local _ON_PROPERTY = _fuse.ON_PROPERTY
 	local _Value = _fuse.Value
 	local _Computed = _fuse.Computed
 
@@ -123,7 +119,7 @@ function Constructor(config: SliderParameters): Slider
 		Size = UDim2.fromScale(1, 1),
 		SizeConstraint = Enum.SizeConstraint.RelativeYY,
 		BackgroundTransparency = 1,
-		[_CHILDREN] = {
+		Children = {
 			_fuse.new("Frame")({
 				Name = "Frame",
 				ZIndex = 2,
@@ -134,7 +130,7 @@ function Constructor(config: SliderParameters): Slider
 					return UDim2.fromOffset(diameter, diameter)
 				end, Diameter),
 				BorderSizePixel = 0,
-				[_CHILDREN] = {
+				Children = {
 					_fuse.new("UICorner")({
 						CornerRadius = _Computed(function(padding: UDim)
 							return UDim.new(1, 0)
@@ -175,46 +171,52 @@ function Constructor(config: SliderParameters): Slider
 		Position = UDim2.fromScale(0.5, 0.5),
 		Size = UDim2.fromScale(1, 1),
 		AnchorPoint = Vector2.new(0.5, 0.5),
-		[_OUT("AbsolutePosition")] = ButtonAbsolutePosition :: any,
-		[_OUT("AbsoluteSize")] = ButtonAbsoluteSize :: any,
-		[_ON_EVENT("MouseButton1Down")] = function()
-			Dragging:Set(true)
-			if BubbleEnabled:Get() then
-				local bubble = Bubble(maid)({
-					Parent = Knob,
-					FinalTransparency = 0.7,
-					BackgroundTransparency = 1,
-					BackgroundColor3 = EnabledColor3,
-					Scale = 1.75,
-				})
-				maid._currentBubble = function()
-					if bubble and bubble:IsDescendantOf(game) then
-						local destFunction: Instance? = bubble:FindFirstChild("Disable")
-						assert(destFunction ~= nil and destFunction:IsA("BindableFunction"))
-						if destFunction then
-							destFunction:Invoke()
-						else
-							bubble:Destroy()
+		Event = {
+			MouseButton1Down = function()
+				Dragging:Set(true)
+				if BubbleEnabled:Get() then
+					local bubble = Bubble(maid)({
+						Parent = Knob,
+						FinalTransparency = 0.7,
+						BackgroundTransparency = 1,
+						BackgroundColor3 = EnabledColor3,
+						Scale = 1.75,
+					})
+					maid._currentBubble = function()
+						if bubble and bubble:IsDescendantOf(game) then
+							local destFunction: Instance? = bubble:FindFirstChild("Disable")
+							assert(destFunction ~= nil and destFunction:IsA("BindableFunction"))
+							if destFunction then
+								destFunction:Invoke()
+							else
+								bubble:Destroy()
+							end
 						end
 					end
+					local enabFunction: Instance? = bubble:WaitForChild("Enable")
+					assert(enabFunction ~= nil and enabFunction:IsA("BindableFunction"))
+					enabFunction:Invoke()
+					local enabSound = EnableSound:Get()
+					if enabSound then
+						SoundService:PlayLocalSound(enabSound)
+					end
 				end
-				local enabFunction: Instance? = bubble:WaitForChild("Enable")
-				assert(enabFunction ~= nil and enabFunction:IsA("BindableFunction"))
-				enabFunction:Invoke()
-				local enabSound = EnableSound:Get()
-				if enabSound then
-					SoundService:PlayLocalSound(enabSound)
-				end
-			end
-		end :: any,
+			end :: any,
+		},
+		
 	})
+
+	maid:GiveTask(RunService.RenderStepped:Connect(function()
+		ButtonAbsolutePosition:Set(Button.AbsolutePosition)
+		ButtonAbsoluteSize:Set(Button.AbsoluteSize)
+	end))
 
 	-- assemble output parameters
 	local parameters = {
 		Name = Name,
 		Size = Size,
 		BackgroundTransparency = 1,
-		[_CHILDREN] = {
+		Children = {
 			Button,
 			_fuse.new("Frame")({
 				Name = "Frame",
@@ -223,7 +225,7 @@ function Constructor(config: SliderParameters): Slider
 				Position = UDim2.fromScale(0.5, 0.5),
 				AnchorPoint = Vector2.new(0.5, 0.5),
 				BackgroundTransparency = 1,
-				[_CHILDREN] = {
+				Children = {
 					_fuse.new("Frame")({
 						Name = "Track",
 						ZIndex = 1,
@@ -234,7 +236,7 @@ function Constructor(config: SliderParameters): Slider
 							return UDim2.new(1, -diameter, 0, bsp)
 						end, Diameter, BorderSizePixel),
 						BackgroundColor3 = Color3.new(1, 1, 1),
-						[_CHILDREN] = {
+						Children = {
 							_fuse.new("UICorner")({
 								CornerRadius = UDim.new(0.5, 0),
 							}),

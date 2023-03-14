@@ -2,6 +2,8 @@
 local package = script.Parent
 local packages = package.Parent
 
+local RunService = game:GetService("RunService")
+
 local Util = require(package.Util)
 local Types = require(package.Types)
 
@@ -42,11 +44,6 @@ function Constructor(config: TextFieldParameters): TextField
 	local _new = _fuse.new
 	local _mount = _fuse.mount
 	local _import = _fuse.import
-	local _OUT = _fuse.OUT
-	local _REF = _fuse.REF
-	local _CHILDREN = _fuse.CHILDREN
-	local _ON_EVENT = _fuse.ON_EVENT
-	local _ON_PROPERTY = _fuse.ON_PROPERTY
 	local _Value = _fuse.Value
 	local _Computed = _fuse.Computed
 
@@ -143,8 +140,7 @@ function Constructor(config: TextFieldParameters): TextField
 	end))
 
 	-- constructing instances
-	_new("TextBox")({
-		[_REF] = TextBox,
+	local textBox = _new("TextBox")({
 		BackgroundTransparency = 1,
 		Text = Value,
 		ClearTextOnFocus = ClearTextOnFocus,
@@ -161,30 +157,36 @@ function Constructor(config: TextFieldParameters): TextField
 		TextTruncate = Enum.TextTruncate.AtEnd,
 		TextXAlignment = Enum.TextXAlignment.Left,
 		TextYAlignment = Enum.TextYAlignment.Center,
-		[_OUT("Text")] = TextBoxValue,
-		[_OUT("CursorPosition")] = CursorPosition,
 		TextTransparency = TextTransparency,
 		Size = _Computed(function(textSize, lOff, rOff)
 			return UDim2.new(UDim.new(1, -textSize * 1.25 - lOff - rOff), UDim.new(0, textSize))
 		end, TextSize, LeftOffset, RightOffset),
-		[_ON_EVENT("Focused")] = function()
-			local txtBox = TextBox:Get()
-			if not txtBox then
-				return
-			end
-			assert(txtBox ~= nil)
-			IsFocused:Set(txtBox:IsFocused())
-		end,
-		[_ON_EVENT("FocusLost")] = function()
-			local txtBox = TextBox:Get()
-			if not txtBox then
-				return
-			end
-			assert(txtBox ~= nil)
-			Value:Set(TextBoxValue:Get())
-			IsFocused:Set(txtBox:IsFocused())
-		end,
+		Events = {
+			Focused = function()
+				local txtBox = TextBox:Get()
+				if not txtBox then
+					return
+				end
+				assert(txtBox ~= nil)
+				IsFocused:Set(txtBox:IsFocused())
+			end,
+			FocusLost = function()
+				local txtBox = TextBox:Get()
+				if not txtBox then
+					return
+				end
+				assert(txtBox ~= nil)
+				Value:Set(TextBoxValue:Get())
+				IsFocused:Set(txtBox:IsFocused())
+			end,
+		},
+
 	} :: { [any]: any })
+	TextBox:Set(textBox)
+	maid:GiveTask(RunService.RenderStepped:Connect(function()
+		TextBoxValue:Set(textBox.Text)
+		CursorPosition:Set(textBox.CursorPosition)
+	end))
 
 	local Label = _new("TextLabel")({
 		Name = "Label",
@@ -249,7 +251,7 @@ function Constructor(config: TextFieldParameters): TextField
 		Size = _Computed(function(textSize: number, width)
 			return UDim2.new(width, UDim.new(0, textSize * 3))
 		end, TextSize, Width),
-		[_CHILDREN] = {
+		Children = {
 			_new("Frame")({
 				AnchorPoint = Vector2.new(0.5, 1),
 				Size = _Computed(function(pix: number, focused)
@@ -304,34 +306,36 @@ function Constructor(config: TextFieldParameters): TextField
 				Size = UDim2.fromScale(1, 1),
 				ZIndex = 10,
 				BackgroundTransparency = 1,
-				[_ON_EVENT("Activated")] = function()
-					local txtBox = TextBox:Get()
-					if not txtBox then
-						return
-					end
-					assert(txtBox ~= nil)
-					if txtBox:IsFocused() then
-						txtBox:ReleaseFocus()
-					else
-						txtBox:CaptureFocus()
-					end
-				end,
-				[_ON_EVENT("InputChanged")] = function()
-					IsHovering:Set(true)
-				end,
-				[_ON_EVENT("MouseLeave")] = function()
-					IsHovering:Set(false)
-				end,
+				Events = {
+					Activated = function()
+						local txtBox = TextBox:Get()
+						if not txtBox then
+							return
+						end
+						assert(txtBox ~= nil)
+						if txtBox:IsFocused() then
+							txtBox:ReleaseFocus()
+						else
+							txtBox:CaptureFocus()
+						end
+					end,
+					InputChanged = function()
+						IsHovering:Set(true)
+					end,
+					MouseLeave = function()
+						IsHovering:Set(false)
+					end,
+				},
 			}),
 			IconLabel(maid)({
 				Name = "Right",
 				IconTransparency = 0,
 				IconColor3 = TextColor3,
 				Icon = RightIcon :: any,
-				Position = _Computed(function(txtSize)
+				Position = _Computed(function(txtSize): UDim2
 					return UDim2.new(UDim.new(1, -txtSize), UDim.new(0.5, 0))
 				end, TextSize),
-				Size = _Computed(function(iconSize)
+				Size = _Computed(function(iconSize): UDim2
 					return UDim2.fromOffset(iconSize, iconSize)
 				end, IconSize),
 				AnchorPoint = Vector2.new(1, 0.5),
@@ -408,7 +412,7 @@ function Constructor(config: TextFieldParameters): TextField
 			local isFilled = not (charLim == nil and (lowerText == nil or lowerText == ""))
 			return lowerSpacing == true or isFilled
 		end, CharacterLimit, LowerText, MaintainLowerSpacing),
-		[_CHILDREN] = {
+		Children = {
 			CharLimitLabel,
 			LowerTextLabel,
 		} :: { Instance },
@@ -423,7 +427,7 @@ function Constructor(config: TextFieldParameters): TextField
 			return UDim2.new(width, UDim.new(0, 0))
 		end, Width),
 		Parent = Parent,
-		[_CHILDREN] = {
+		Children = {
 			_new("UIListLayout")({
 				FillDirection = Enum.FillDirection.Vertical,
 				HorizontalAlignment = Enum.HorizontalAlignment.Center,

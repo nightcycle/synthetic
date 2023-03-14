@@ -43,11 +43,6 @@ function Constructor(config: BoardFrameParameters): BoardFrame
 	local _new = _fuse.new
 	local _mount = _fuse.mount
 	local _import = _fuse.import
-	local _OUT = _fuse.OUT
-	local _REF = _fuse.REF
-	local _CHILDREN = _fuse.CHILDREN
-	local _ON_EVENT = _fuse.ON_EVENT
-	local _ON_PROPERTY = _fuse.ON_PROPERTY
 	local _Value = _fuse.Value
 	local _Computed = _fuse.Computed
 
@@ -156,7 +151,7 @@ function Constructor(config: BoardFrameParameters): BoardFrame
 		AnchorPoint = AnchorPoint,
 		Transparency = 1,
 		CurrentCamera = Camera,
-		[_CHILDREN] = {
+		Children = {
 			WorldModel,
 			Camera,
 		},

@@ -2,6 +2,8 @@
 local package = script.Parent
 local packages = package.Parent
 
+local RunService = game:GetService("RunService")
+
 local Util = require(package.Util)
 
 local Types = require(package.Types)
@@ -32,11 +34,6 @@ function Constructor(config: IconLabelParameters): IconLabel
 	local _new = _fuse.new
 	local _mount = _fuse.mount
 	local _import = _fuse.import
-	local _OUT = _fuse.OUT
-	local _REF = _fuse.REF
-	local _CHILDREN = _fuse.CHILDREN
-	local _ON_EVENT = _fuse.ON_EVENT
-	local _ON_PROPERTY = _fuse.ON_PROPERTY
 	local _Value = _fuse.Value
 	local _Computed = _fuse.Computed
 
@@ -48,7 +45,7 @@ function Constructor(config: IconLabelParameters): IconLabel
 
 	-- init internal states
 	local AbsoluteSize = _Value(Vector2.new(0, 0))
-	local OutputState = (config :: any)[_REF] or _Value(nil :: IconLabel?)
+	local OutputState = _Value(nil :: IconLabel?)
 	local DotsPerInch = _Value(36)
 	local IconData = _Computed(function(key: string?, dpi): any
 		if not key or key == "" then
@@ -86,7 +83,6 @@ function Constructor(config: IconLabelParameters): IconLabel
 
 	-- assemble final parameters
 	local parameters: any = {
-		[_REF] = OutputState :: any,
 		Name = Name,
 		BackgroundTransparency = 1,
 		Image = _Computed(function(iconData, key: string?)
@@ -113,7 +109,6 @@ function Constructor(config: IconLabelParameters): IconLabel
 		end, DotsPerInch, IconData),
 		ImageColor3 = IconColor3,
 		ImageTransparency = IconTransparency,
-		[_OUT("AbsoluteSize")] = AbsoluteSize,
 	}
 
 	config.IconTransparency = nil
@@ -127,7 +122,12 @@ function Constructor(config: IconLabelParameters): IconLabel
 	end
 
 	-- construct output instance
-	local Output: ImageLabel = _fuse.new("ImageLabel")(parameters) :: any
+	local Output = _fuse.new("ImageLabel")(parameters)
+	OutputState:Set(Output)
+
+	maid:GiveTask(RunService.RenderStepped:Connect(function(deltaTime: number)
+		AbsoluteSize:Set(Output.AbsoluteSize)
+	end))
 
 	Util.cleanUpPrep(maid, Output)
 

@@ -12,15 +12,8 @@ return function(coreGui)
 	local _new = _fuse.new
 	local _mount = _fuse.mount
 	local _import = _fuse.import
-
 	local _Value = _fuse.Value
 	local _Computed = _fuse.Computed
-
-	local _OUT = _fuse.OUT
-	local _REF = _fuse.REF
-	local _CHILDREN = _fuse.CHILDREN
-	local _ON_EVENT = _fuse.ON_EVENT
-	local _ON_PROPERTY = _fuse.ON_PROPERTY
 
 	local label = _new("TextLabel")({
 		Parent = coreGui,

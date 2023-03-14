@@ -17,12 +17,6 @@ return function(coreGui)
 	local _Value = _fuse.Value
 	local _Computed = _fuse.Computed
 
-	local _OUT = _fuse.OUT
-	local _REF = _fuse.REF
-	local _CHILDREN = _fuse.CHILDREN
-	local _ON_EVENT = _fuse.ON_EVENT
-	local _ON_PROPERTY = _fuse.ON_PROPERTY
-
 	local demo: module.CheckboxParameters = {
 		Scale = 2,
 		BackgroundColor3 = Color3.fromHSV(0.75, 0.5, 1),

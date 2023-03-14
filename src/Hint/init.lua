@@ -33,11 +33,6 @@ function Constructor(config: HintParameters): Hint
 	local _new = _fuse.new
 	local _mount = _fuse.mount
 	local _import = _fuse.import
-	local _OUT = _fuse.OUT
-	local _REF = _fuse.REF
-	local _CHILDREN = _fuse.CHILDREN
-	local _ON_EVENT = _fuse.ON_EVENT
-	local _ON_PROPERTY = _fuse.ON_PROPERTY
 	local _Value = _fuse.Value
 	local _Computed = _fuse.Computed
 
@@ -138,7 +133,7 @@ function Constructor(config: HintParameters): Hint
 			end
 		end, BackgroundTransparency, Enabled):Tween(),
 
-		[_CHILDREN] = {
+		Children = {
 			_new("UIPadding")({
 				PaddingBottom = Padding,
 				PaddingTop = Padding,
@@ -158,7 +153,7 @@ function Constructor(config: HintParameters): Hint
 		Name = Name,
 		Parent = Parent,
 		Enabled = Visible,
-		[_CHILDREN] = {},
+		Children = {},
 	}
 
 	-- construct output instance

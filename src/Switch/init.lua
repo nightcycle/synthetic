@@ -39,11 +39,6 @@ function Constructor(config: SwitchParameters): Switch
 	local _new = _fuse.new
 	local _mount = _fuse.mount
 	local _import = _fuse.import
-	local _OUT = _fuse.OUT
-	local _REF = _fuse.REF
-	local _CHILDREN = _fuse.CHILDREN
-	local _ON_EVENT = _fuse.ON_EVENT
-	local _ON_PROPERTY = _fuse.ON_PROPERTY
 	local _Value = _fuse.Value
 	local _Computed = _fuse.Computed
 
@@ -121,7 +116,7 @@ function Constructor(config: SwitchParameters): Switch
 		Size = UDim2.fromScale(1, 1),
 		SizeConstraint = Enum.SizeConstraint.RelativeYY,
 		BackgroundTransparency = 1,
-		[_CHILDREN] = {
+		Children = {
 			_new("Frame")({
 				Name = "Frame",
 				ZIndex = 2,
@@ -132,7 +127,7 @@ function Constructor(config: SwitchParameters): Switch
 					return UDim2.fromOffset(width - padding, width - padding)
 				end, Width, Padding),
 				BorderSizePixel = 0,
-				[_CHILDREN] = {
+				Children = {
 					_new("UICorner")({
 						CornerRadius = _Computed(function(padding)
 							return UDim.new(1, 0)
@@ -157,7 +152,7 @@ function Constructor(config: SwitchParameters): Switch
 			return UDim2.fromOffset(width * 2, width * 2)
 		end, Width),
 		BackgroundTransparency = 1,
-		[_CHILDREN] = {
+		Children = {
 			_new("ImageButton")({
 				Name = "Button",
 				ZIndex = 3,
@@ -166,20 +161,23 @@ function Constructor(config: SwitchParameters): Switch
 				Position = UDim2.fromScale(0.5, 0.5),
 				Size = UDim2.fromScale(1, 1),
 				AnchorPoint = Vector2.new(0.5, 0.5),
-				[_ON_EVENT("Activated")] = function()
-					Activated:Fire()
-					if BubbleEnabled:Get() then
-						local bubble = Bubble(maid)({
-							Parent = Knob,
-							-- BackgroundColor3 = ActiveColor3,
-							-- BackgroundTransparency = 0.6,
-						})
+				Events = {
+					Activated = function()
+						Activated:Fire()
+						if BubbleEnabled:Get() then
+							local bubble = Bubble(maid)({
+								Parent = Knob,
+								-- BackgroundColor3 = ActiveColor3,
+								-- BackgroundTransparency = 0.6,
+							})
+	
+							local fireFunction = bubble:FindFirstChild("Fire")
+							assert(fireFunction ~= nil and fireFunction:IsA("BindableFunction"))
+							fireFunction:Invoke()
+						end
+					end,
+				},
 
-						local fireFunction = bubble:FindFirstChild("Fire")
-						assert(fireFunction ~= nil and fireFunction:IsA("BindableFunction"))
-						fireFunction:Invoke()
-					end
-				end,
 			}),
 			_new("Frame")({
 				Name = "Frame",
@@ -191,7 +189,7 @@ function Constructor(config: SwitchParameters): Switch
 				Position = UDim2.fromScale(0.5, 0.5),
 				AnchorPoint = Vector2.new(0.5, 0.5),
 				BackgroundTransparency = 1,
-				[_CHILDREN] = {
+				Children = {
 					_new("Frame")({
 						Name = "Track",
 						ZIndex = 1,
@@ -210,7 +208,7 @@ function Constructor(config: SwitchParameters): Switch
 								return Color3.fromHSV(h, 0, 1)
 							end
 						end, Value, EnabledColor3):Tween(),
-						[_CHILDREN] = {
+						Children = {
 							_new("UICorner")({
 								CornerRadius = UDim.new(0.5, 0),
 							}),
