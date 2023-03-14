@@ -171,7 +171,7 @@ function Constructor(config: SliderParameters): Slider
 		Position = UDim2.fromScale(0.5, 0.5),
 		Size = UDim2.fromScale(1, 1),
 		AnchorPoint = Vector2.new(0.5, 0.5),
-		Event = {
+		Events = {
 			MouseButton1Down = function()
 				Dragging:Set(true)
 				if BubbleEnabled:Get() then
