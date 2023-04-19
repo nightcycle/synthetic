@@ -204,7 +204,7 @@ function Constructor(config: SliderParameters): Slider
 			end :: any,
 		},
 		
-	})
+	}) :: ImageButton
 
 	maid:GiveTask(RunService.RenderStepped:Connect(function()
 		ButtonAbsolutePosition:Set(Button.AbsolutePosition)
@@ -280,7 +280,7 @@ function Constructor(config: SliderParameters): Slider
 	end
 
 	-- construct output instance
-	local Output: Frame = _fuse.new("Frame")(parameters) :: any
+	local Output: Frame = _fuse.new("Frame")(parameters :: any) :: Frame
 
 	_Computed(function(dragging): nil
 		maid._dragStep = nil

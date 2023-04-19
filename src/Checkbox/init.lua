@@ -187,7 +187,7 @@ function Constructor(config: CheckboxParameters): Checkbox
 	end
 
 	-- Construct final gui
-	Output = _new("Frame")(parameters) :: Frame
+	Output = _new("Frame")(parameters :: any) :: Frame
 
 	-- Bind gui's life to maid
 	Util.cleanUpPrep(maid, Output)

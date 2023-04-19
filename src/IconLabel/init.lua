@@ -122,7 +122,7 @@ function Constructor(config: IconLabelParameters): IconLabel
 	end
 
 	-- construct output instance
-	local Output = _fuse.new("ImageLabel")(parameters)
+	local Output = _fuse.new("ImageLabel")(parameters) :: ImageLabel
 	OutputState:Set(Output)
 
 	maid:GiveTask(RunService.RenderStepped:Connect(function(deltaTime: number)

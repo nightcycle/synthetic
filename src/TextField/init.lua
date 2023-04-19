@@ -181,7 +181,7 @@ function Constructor(config: TextFieldParameters): TextField
 			end,
 		},
 
-	} :: { [any]: any })
+	} :: { [any]: any }) :: TextBox
 	TextBox:Set(textBox)
 	maid:GiveTask(RunService.RenderStepped:Connect(function()
 		TextBoxValue:Set(textBox.Text)
