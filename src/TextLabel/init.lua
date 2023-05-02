@@ -1,23 +1,25 @@
 --!strict
-local package = script.Parent
-local packages = package.Parent
+local Package = script.Parent
+assert(Package)
+local Packages = Package.Parent
+assert(Packages)
 
-local Util = require(package.Util)
+local Util = require(Package:WaitForChild("Util"))
 
-local Types = require(package.Types)
+local Types = require(Package:WaitForChild("Types"))
 
-local ColdFusion: Fuse = require(packages.ColdFusion)
+local ColdFusion: Fuse = require(Packages.ColdFusion)
 type Fuse = ColdFusion.Fuse
 type State<T> = ColdFusion.State<T>
 type ValueState<T> = ColdFusion.ValueState<T>
 type CanBeState<T> = ColdFusion.CanBeState<T>
 
-local Maid = require(packages.Maid)
+local Maid = require(Packages:WaitForChild("Maid"))
 type Maid = Maid.Maid
 
-local Format = require(packages:WaitForChild("Format"))
+local Format = require(Packages:WaitForChild("Format"))
 
-local Icon = require(package:WaitForChild("IconLabel"))
+local Icon = require(Package:WaitForChild("IconLabel"))
 
 export type TextLabelParameters = Types.FrameParameters & {
 	Padding: CanBeState<UDim>?,
@@ -27,7 +29,7 @@ export type TextLabelParameters = Types.FrameParameters & {
 	TextXAlignment: CanBeState<Enum.TextXAlignment>?,
 	TextYAlignment: CanBeState<Enum.TextYAlignment>?,
 	Text: CanBeState<string>?,
-	Font: CanBeState<Enum.Font>?,
+	Font: CanBeState<Font>?,
 	IconScale: CanBeState<number>?,
 	LeftIcon: CanBeState<string>?,
 	RightIcon: CanBeState<string>?,
@@ -40,7 +42,7 @@ function Constructor(config: TextLabelParameters): TextLabel
 	local maid = Maid.new()
 	local _fuse = ColdFusion.fuse(maid)
 	local _new = _fuse.new
-	local _mount = _fuse.mount
+	local _bind = _fuse.bind
 	local _import = _fuse.import
 	local _Value = _fuse.Value
 	local _Computed = _fuse.Computed
@@ -53,7 +55,7 @@ function Constructor(config: TextLabelParameters): TextLabel
 	local TextXAlignment = _import(config.TextXAlignment, Enum.TextXAlignment.Center)
 	local TextYAlignment = _import(config.TextYAlignment, Enum.TextYAlignment.Center)
 	local Text = _import(config.Text, "")
-	local Font = _import(config.Font, Enum.Font.Gotham)
+	local Font = _import(config.Font, Font.Gotham)
 	local IconScale = _import(config.IconScale, 1.25)
 	local LeftIcon = _import(config.LeftIcon, "")
 	local RightIcon = _import(config.RightIcon, "")

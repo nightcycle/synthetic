@@ -1,20 +1,22 @@
 --!strict
-local package = script.Parent
-local packages = package.Parent
+local Package = script.Parent
+assert(Package)
+local Packages = Package.Parent
+assert(Packages)
 
-local Util = require(package.Util)
+local Util = require(Package:WaitForChild("Util"))
 
-local ColdFusion = require(packages.ColdFusion)
+local ColdFusion = require(Packages:WaitForChild("ColdFusion"))
 type Fuse = ColdFusion.Fuse
 type State<T> = ColdFusion.State<T>
 type ValueState<T> = ColdFusion.ValueState<T>
 type CanBeState<T> = ColdFusion.CanBeState<T>
 
-local Maid = require(packages.Maid)
+local Maid = require(Packages:WaitForChild("Maid"))
 type Maid = Maid.Maid
 
-local EffectGui = require(package:WaitForChild("EffectGui"))
-local TextLabel = require(package:WaitForChild("TextLabel"))
+local EffectGui = require(Package:WaitForChild("EffectGui"))
+local TextLabel = require(Package:WaitForChild("TextLabel"))
 
 export type HintParameters = TextLabel.TextLabelParameters & {
 	Enabled: State<boolean>?,
@@ -31,7 +33,7 @@ function Constructor(config: HintParameters): Hint
 	local maid = Maid.new()
 	local _fuse = ColdFusion.fuse(maid)
 	local _new = _fuse.new
-	local _mount = _fuse.mount
+	local _bind = _fuse.bind
 	local _import = _fuse.import
 	local _Value = _fuse.Value
 	local _Computed = _fuse.Computed
@@ -39,7 +41,7 @@ function Constructor(config: HintParameters): Hint
 	-- unload config states
 	local Name = _import(config.Name, script.Name)
 	local Parent: State<GuiObject?> = _import(config.Parent, nil :: GuiObject?)
-	local Font = _import(config.Font, Enum.Font.Gotham)
+	local Font = _import(config.Font, Font.fromEnum(Enum.Font.Gotham))
 	local Text = _import(config.Text, nil)
 	local TextSize = _import(config.TextSize, 10)
 	local AnchorPoint = _import(config.AnchorPoint, Vector2.new(0, 0))

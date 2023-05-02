@@ -2,23 +2,25 @@
 
 local RunService = game:GetService("RunService")
 
-local package = script.Parent
-local packages = package.Parent
+local Package = script.Parent
+assert(Package)
+local Packages = Package.Parent
+assert(Packages)
 
-local MeshUtil = require(packages.MeshUtil)
+local MeshUtil = require(Packages:WaitForChild("MeshUtil"))
 
-local Util = require(package.Util)
+local Util = require(Package:WaitForChild("Util"))
 
-local ColdFusion = require(packages.ColdFusion)
+local ColdFusion = require(Packages:WaitForChild("ColdFusion"))
 type Fuse = ColdFusion.Fuse
 type State<T> = ColdFusion.State<T>
 type ValueState<T> = ColdFusion.ValueState<T>
 type CanBeState<T> = ColdFusion.CanBeState<T>
 
-local Maid = require(packages.Maid)
+local Maid = require(Packages:WaitForChild("Maid"))
 type Maid = Maid.Maid
 
-local MountFrame = require(package.ViewportMountFrame)
+local MountFrame = require(Package:WaitForChild("ViewportMountFrame"))
 
 export type BoundingBoxFrameParameters = MountFrame.ViewportMountFrameParameters & {
 	Target: CanBeState<Instance?>?,
@@ -31,7 +33,7 @@ function Constructor(config: BoundingBoxFrameParameters): BoundingBoxFrame
 	local maid = Maid.new()
 	local _fuse = ColdFusion.fuse(maid)
 	local _new = _fuse.new
-	local _mount = _fuse.mount
+	local _bind = _fuse.bind
 	local _import = _fuse.import
 	local _Value = _fuse.Value
 	local _Computed = _fuse.Computed

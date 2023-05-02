@@ -1,11 +1,13 @@
 --!strict
-local package = script.Parent
-local packages = package.Parent
+local Package = script.Parent
+assert(Package)
+local Packages = Package.Parent
+assert(Packages)
 
-local Maid = require(packages.Maid)
+local Maid = require(Packages:WaitForChild("Maid"))
 type Maid = Maid.Maid
 
-local Signal = require(packages.Signal)
+local Signal = require(Packages:WaitForChild("Signal"))
 type Signal = Signal.Signal
 
 local Util = {}

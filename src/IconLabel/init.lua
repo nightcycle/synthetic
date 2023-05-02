@@ -1,20 +1,22 @@
 --!strict
-local package = script.Parent
-local packages = package.Parent
+local Package = script.Parent
+assert(Package)
+local Packages = Package.Parent
+assert(Packages)
 
 local RunService = game:GetService("RunService")
 
-local Util = require(package.Util)
+local Util = require(Package:WaitForChild("Util"))
 
-local Types = require(package.Types)
+local Types = require(Package:WaitForChild("Types"))
 
-local ColdFusion = require(packages.ColdFusion)
+local ColdFusion = require(Packages:WaitForChild("ColdFusion"))
 type Fuse = ColdFusion.Fuse
 type State<T> = ColdFusion.State<T>
 type ValueState<T> = ColdFusion.ValueState<T>
 type CanBeState<T> = ColdFusion.CanBeState<T>
 
-local Maid = require(packages.Maid)
+local Maid = require(Packages:WaitForChild("Maid"))
 type Maid = Maid.Maid
 
 local Spritesheet = require(script:WaitForChild("Spritesheet"))
@@ -32,7 +34,7 @@ function Constructor(config: IconLabelParameters): IconLabel
 	local maid = Maid.new()
 	local _fuse = ColdFusion.fuse(maid)
 	local _new = _fuse.new
-	local _mount = _fuse.mount
+	local _bind = _fuse.bind
 	local _import = _fuse.import
 	local _Value = _fuse.Value
 	local _Computed = _fuse.Computed

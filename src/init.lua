@@ -1,59 +1,61 @@
 --!strict
 
-local module = script
+local Package = script
+local Packages = Package.Parent
+assert(Packages)
 
-local Maid = require(module.Parent.Maid)
+local Maid = require(Packages:WaitForChild("Maid"))
 export type Maid = Maid.Maid
 
-local Types = require(module.Types)
+local Types = require(Package:WaitForChild("Types"))
 export type CanBeState<T> = Types.CanBeState<T>
 
-local TextLabel = require(module.TextLabel)
+local TextLabel = require(Package:WaitForChild("TextLabel"))
 export type TextLabelParameters = TextLabel.TextLabelParameters
 
-local ViewportMountFrame = require(module.ViewportMountFrame)
+local ViewportMountFrame = require(Package:WaitForChild("ViewportMountFrame"))
 export type ViewportMountFrameParameters = ViewportMountFrame.ViewportMountFrameParameters
 
-local TextField = require(module.TextField)
+local TextField = require(Package:WaitForChild("TextField"))
 export type TextFieldParameters = TextField.TextFieldParameters
 
-local Switch = require(module.Switch)
+local Switch = require(Package:WaitForChild("Switch"))
 export type SwitchParameters = Switch.SwitchParameters
 
-local SurfaceFrame = require(module.SurfaceFrame)
+local SurfaceFrame = require(Package:WaitForChild("SurfaceFrame"))
 export type SurfaceFrameParameters = SurfaceFrame.SurfaceFrameParameters
 
-local Slider = require(module.Slider)
+local Slider = require(Package:WaitForChild("Slider"))
 export type SliderParameters = Slider.SliderParameters
 
-local RadioButton = require(module.RadioButton)
+local RadioButton = require(Package:WaitForChild("RadioButton"))
 export type RadioButtonParameters = RadioButton.RadioButtonParameters
 
-local IconLabel = require(module.IconLabel)
+local IconLabel = require(Package:WaitForChild("IconLabel"))
 export type IconLabelParameters = IconLabel.IconLabelParameters
 
-local Hint = require(module.Hint)
+local Hint = require(Package:WaitForChild("Hint"))
 export type HintParameters = Hint.HintParameters
 
-local EffectGui = require(module.EffectGui)
+local EffectGui = require(Package:WaitForChild("EffectGui"))
 export type EffectGuiParameters = EffectGui.EffectGuiParameters
 
-local Checkbox = require(module.Checkbox)
+local Checkbox = require(Package:WaitForChild("Checkbox"))
 export type CheckboxParameters = Checkbox.CheckboxParameters
 
-local Button = require(module.Button)
+local Button = require(Package:WaitForChild("Button"))
 export type ButtonParameters = Button.ButtonParameters
 
-local Bubble = require(module.Bubble)
+local Bubble = require(Package:WaitForChild("Bubble"))
 export type BubbleParameters = Bubble.BubbleParameters
 
-local BoundingBoxFrame = require(module.BoundingBoxFrame)
+local BoundingBoxFrame = require(Package:WaitForChild("BoundingBoxFrame"))
 export type BoundingBoxFrameParameters = BoundingBoxFrame.BoundingBoxFrameParameters
 
-local BoardFrame = require(module.BoardFrame)
+local BoardFrame = require(Package:WaitForChild("BoardFrame"))
 export type BoardFrameParameters = BoardFrame.BoardFrameParameters
 
-local BillboardFrame = require(module.BillboardFrame)
+local BillboardFrame = require(Package:WaitForChild("BillboardFrame"))
 export type BillboardFrameParameters = BillboardFrame.BillboardFrameParameters
 
 export type Synthetic =

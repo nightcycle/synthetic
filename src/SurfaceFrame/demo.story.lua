@@ -1,8 +1,8 @@
 --!strict
 
-local package = script.Parent.Parent
-local packages = package.Parent
-local Maid = require(packages:WaitForChild("Maid"))
+local Package = script.Parent.Parent
+local Packages = Package.Parent
+local Maid = require(Packages:WaitForChild("Maid"))
 
 return function(coreGui: Frame)
 	local Maid = Maid.new()

@@ -3,24 +3,26 @@ local SoundService = game:GetService("SoundService")
 local RunService = game:GetService("RunService")
 local TweenService = game:GetService("TweenService")
 
-local package = script.Parent
-local packages = package.Parent
+local Package = script.Parent
+assert(Package)
+local Packages = Package.Parent
+assert(Packages)
 
-local Util = require(package.Util)
-local Types = require(package.Types)
+local Util = require(Package:WaitForChild("Util"))
+local Types = require(Package:WaitForChild("Types"))
 
-local ColdFusion = require(packages.ColdFusion)
+local ColdFusion = require(Packages:WaitForChild("ColdFusion"))
 type Fuse = ColdFusion.Fuse
 type State<T> = ColdFusion.State<T>
 type ValueState<T> = ColdFusion.ValueState<T>
 type CanBeState<T> = ColdFusion.CanBeState<T>
 
-local Maid = require(packages.Maid)
+local Maid = require(Packages:WaitForChild("Maid"))
 type Maid = Maid.Maid
 
-local Signal = require(packages:WaitForChild("Signal"))
+local Signal = require(Packages:WaitForChild("Signal"))
 
-local TextLabel = require(script.Parent:WaitForChild("TextLabel"))
+local TextLabel = require(Package:WaitForChild("TextLabel"))
 
 export type ButtonParameters = Types.FrameParameters & {
 	Padding: CanBeState<UDim>?,
@@ -28,7 +30,7 @@ export type ButtonParameters = Types.FrameParameters & {
 	TextSize: CanBeState<number>?,
 	IconScale: CanBeState<number>?,
 	TextColor3: CanBeState<Color3>?,
-	Font: CanBeState<Enum.Font>?,
+	Font: CanBeState<Font>?,
 	SelectedTextColor3: CanBeState<Color3>?,
 	HoverTextColor3: CanBeState<Color3>?,
 	BorderTransparency: CanBeState<number>?,
@@ -54,7 +56,7 @@ function Constructor(config: ButtonParameters): Button
 	local _fuse: Fuse = ColdFusion.fuse(maid)
 
 	local _new = _fuse.new
-	local _mount = _fuse.mount
+	local _bind = _fuse.bind
 	local _import = _fuse.import
 	local _Value = _fuse.Value
 	local _Computed = _fuse.Computed
@@ -68,7 +70,7 @@ function Constructor(config: ButtonParameters): Button
 	local IconScale = _import(config.IconScale, 1.25)
 	local BorderSizePixel = _import(config.BorderSizePixel, 3)
 	local TextColor3 = _import(config.TextColor3, Color3.new(0.2, 0.2, 0.2))
-	local Font = _import(config.Font, Enum.Font.GothamBold)
+	local Font = _import(config.Font, Font.fromEnum(Enum.Font.GothamBold))
 	local SelectedTextColor3 = _import(config.SelectedTextColor3, Color3.new(1, 1, 1))
 	local HoverTextColor3 = _import(config.HoverTextColor3, Color3.new(0.2, 0.2, 0.2))
 	local BackgroundColor3 = _import(config.BackgroundColor3, Color3.fromHSV(0.7, 0, 1))

@@ -1,8 +1,11 @@
 --!strict
-
-local package = script.Parent.Parent
-local packages = package.Parent
-local Maid = require(packages:WaitForChild("Maid"))
+local ComponentModule = script.Parent
+assert(ComponentModule)
+local Package = ComponentModule.Parent
+assert(Package)
+local Packages = Package.Parent
+assert(Packages)
+local Maid = require(Packages:WaitForChild("Maid"))
 
 return function(coreGui)
 	local Maid = Maid.new()

@@ -3,26 +3,28 @@ local SoundService = game:GetService("SoundService")
 local UserInputService = game:GetService("UserInputService")
 local RunService = game:GetService("RunService")
 
-local package = script.Parent
-local packages = package.Parent
+local Package = script.Parent
+assert(Package)
+local Packages = Package.Parent
+assert(Packages)
 
-local Util = require(package.Util)
+local Util = require(Package:WaitForChild("Util"))
 
-local Types = require(package.Types)
+local Types = require(Package:WaitForChild("Types"))
 
-local ColdFusion = require(packages.ColdFusion)
+local ColdFusion = require(Packages:WaitForChild("ColdFusion"))
 type Fuse = ColdFusion.Fuse
 type State<T> = ColdFusion.State<T>
 type ValueState<T> = ColdFusion.ValueState<T>
 type CanBeState<T> = ColdFusion.CanBeState<T>
 
-local Maid = require(packages.Maid)
+local Maid = require(Packages:WaitForChild("Maid"))
 type Maid = Maid.Maid
 
-local Signal = require(packages:WaitForChild("Signal"))
+local Signal = require(Packages:WaitForChild("Signal"))
 
-local Bubble = require(package:WaitForChild("Bubble"))
-local Hint = require(package:WaitForChild("Hint"))
+local Bubble = require(Package:WaitForChild("Bubble"))
+local Hint = require(Package:WaitForChild("Hint"))
 
 export type SliderParameters = Types.FrameParameters & {
 	EnabledColor3: CanBeState<Color3>?,
@@ -47,7 +49,7 @@ function Constructor(config: SliderParameters): Slider
 	local maid = Maid.new()
 	local _fuse = ColdFusion.fuse(maid)
 	local _new = _fuse.new
-	local _mount = _fuse.mount
+	local _bind = _fuse.bind
 	local _import = _fuse.import
 	local _Value = _fuse.Value
 	local _Computed = _fuse.Computed

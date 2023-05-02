@@ -1,8 +1,10 @@
 --!strict
-local package = script.Parent
-local packages = package.Parent
+local Package = script.Parent
+assert(Package)
+local Packages = Package.Parent
+assert(Packages)
 
-local ColdFusion = require(packages.ColdFusion)
+local ColdFusion = require(Packages:WaitForChild("ColdFusion"))
 
 type Fuse = ColdFusion.Fuse
 type State<T> = {
@@ -12,7 +14,7 @@ type ValueState<T> = State<T> & {
 	Set: (any, T) -> nil,
 }
 
-local Maid = require(packages.Maid)
+local Maid = require(Packages:WaitForChild("Maid"))
 type Maid = Maid.Maid
 
 export type CanBeState<T> = (State<T> | T)
@@ -98,8 +100,8 @@ type ImageDisplay = any
 
 type TextDisplay = any
 -- {
--- 	Font: CanBeState<Enum.Font>?,
--- 	FontFace: CanBeState<Enum.Font>?,
+-- 	Font: CanBeState<Font>?,
+-- 	FontFace: CanBeState<Font>?,
 -- 	LineHeight: CanBeState<number>?,
 -- 	MaxVisibleGraphemes: CanBeState<number>?,
 -- 	RichText: CanBeState<boolean>?,
