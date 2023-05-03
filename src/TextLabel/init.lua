@@ -8,7 +8,7 @@ local Util = require(Package:WaitForChild("Util"))
 
 local Types = require(Package:WaitForChild("Types"))
 
-local ColdFusion: Fuse = require(Packages.ColdFusion)
+local ColdFusion: Fuse = require(Packages:WaitForChild("ColdFusion"))
 type Fuse = ColdFusion.Fuse
 type State<T> = ColdFusion.State<T>
 type ValueState<T> = ColdFusion.ValueState<T>
@@ -55,7 +55,7 @@ function Constructor(config: TextLabelParameters): TextLabel
 	local TextXAlignment = _import(config.TextXAlignment, Enum.TextXAlignment.Center)
 	local TextYAlignment = _import(config.TextYAlignment, Enum.TextYAlignment.Center)
 	local Text = _import(config.Text, "")
-	local Font = _import(config.Font, Font.Gotham)
+	local FontFace = _import(config.Font, Font.fromEnum(Enum.Font.Gotham))
 	local IconScale = _import(config.IconScale, 1.25)
 	local LeftIcon = _import(config.LeftIcon, "")
 	local RightIcon = _import(config.RightIcon, "")
@@ -110,7 +110,7 @@ function Constructor(config: TextLabelParameters): TextLabel
 						return true
 					end
 				end, Text),
-				Font = Font,
+				FontFace = FontFace,
 				LayoutOrder = 2,
 				TextTransparency = TextTransparency,
 				Text = _Computed(function(txt: string)
@@ -151,7 +151,7 @@ function Constructor(config: TextLabelParameters): TextLabel
 	config.TextXAlignment = nil
 	config.TextYAlignment = nil
 	config.Text = nil
-	config.Font = nil
+	config.FontFace = nil
 	config.IconScale = nil
 	config.LeftIcon = nil
 	config.RightIcon = nil

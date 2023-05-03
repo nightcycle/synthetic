@@ -1,7 +1,10 @@
 --!strict
-
-local Package = script.Parent.Parent
+local SurfaceFrame = script.Parent
+assert(SurfaceFrame)
+local Package = SurfaceFrame.Parent
+assert(Package)
 local Packages = Package.Parent
+assert(Packages)
 local Maid = require(Packages:WaitForChild("Maid"))
 
 return function(coreGui: Frame)

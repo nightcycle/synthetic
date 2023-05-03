@@ -70,7 +70,7 @@ function Constructor(config: ButtonParameters): Button
 	local IconScale = _import(config.IconScale, 1.25)
 	local BorderSizePixel = _import(config.BorderSizePixel, 3)
 	local TextColor3 = _import(config.TextColor3, Color3.new(0.2, 0.2, 0.2))
-	local Font = _import(config.Font, Font.fromEnum(Enum.Font.GothamBold))
+	local FontFace = _import(config.Font, Font.fromEnum(Enum.Font.GothamBold))
 	local SelectedTextColor3 = _import(config.SelectedTextColor3, Color3.new(1, 1, 1))
 	local HoverTextColor3 = _import(config.HoverTextColor3, Color3.new(0.2, 0.2, 0.2))
 	local BackgroundColor3 = _import(config.BackgroundColor3, Color3.fromHSV(0.7, 0, 1))
@@ -213,7 +213,7 @@ function Constructor(config: ButtonParameters): Button
 		BackgroundTransparency = 1,
 		TextTransparency = TextTransparency,
 		ZIndex = 2,
-		Font = Font,
+		FontFace = FontFace,
 		Padding = Padding,
 		TextSize = TextSize,
 		TextColor3 = _Computed(function(hover, press, ripple, textColor3, hoverColor, selColor)
@@ -431,7 +431,7 @@ function Constructor(config: ButtonParameters): Button
 	config.TextSize = nil
 	config.IconScale = nil
 	config.TextColor3 = nil
-	config.Font = nil
+	config.FontFace = nil
 	config.SelectedTextColor3 = nil
 	config.HoverTextColor3 = nil
 	config.SelectedBackgroundColor3 = nil

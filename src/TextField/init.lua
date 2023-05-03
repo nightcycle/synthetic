@@ -20,7 +20,7 @@ type Maid = Maid.Maid
 
 local Signal = require(Packages:WaitForChild("Signal"))
 
-local IconLabel = require(script.Parent:WaitForChild("IconLabel"))
+local IconLabel = require(Package:WaitForChild("IconLabel"))
 
 export type TextFieldParameters = Types.TextBoxParameters & {
 	Value: ValueState<string>,
@@ -64,7 +64,7 @@ function Constructor(config: TextFieldParameters): TextField
 	local TextColor3 = _import(config.TextColor3, Color3.new(1, 1, 1))
 	local TextTransparency = _import(config.TextTransparency, 0)
 	local Text = _import(config.Text, "Text")
-	local Font = _import(config.Font, Font.Gotham)
+	local FontFace = _import(config.Font, Font.fromEnum(Enum.Font.Gotham))
 	local MaintainLowerSpacing = _import(config.MaintainLowerSpacing, false)
 	local BackgroundColor3 = _import(config.BackgroundColor3, Color3.fromHSV(0, 0, 0.2))
 	local FocusedBackgroundColor3 = _import(config.FocusedBackgroundColor3, Color3.fromHSV(0, 0, 0.4))
@@ -152,7 +152,7 @@ function Constructor(config: TextFieldParameters): TextField
 		end, TextSize, CenterOffset),
 		TextColor3 = TextColor3,
 		TextSize = TextSize,
-		Font = Font,
+		FontFace = FontFace,
 		MultiLine = false,
 		PlaceholderText = "",
 		RichText = false,
@@ -194,7 +194,7 @@ function Constructor(config: TextFieldParameters): TextField
 		Name = "Label",
 		BackgroundTransparency = 1,
 		Text = Text,
-		Font = Font,
+		FontFace = FontFace,
 		TextTransparency = TextTransparency,
 		TextXAlignment = Enum.TextXAlignment.Left,
 		TextYAlignment = Enum.TextYAlignment.Center,
@@ -373,7 +373,7 @@ function Constructor(config: TextFieldParameters): TextField
 				return ""
 			end
 		end, CharacterLimit, CharacterCount),
-		Font = Font,
+		FontFace = FontFace,
 		TextTransparency = TextTransparency,
 		TextXAlignment = Enum.TextXAlignment.Left,
 		TextYAlignment = Enum.TextYAlignment.Center,
@@ -394,7 +394,7 @@ function Constructor(config: TextFieldParameters): TextField
 		AutomaticSize = Enum.AutomaticSize.XY,
 		BackgroundTransparency = 1,
 		Text = LowerText,
-		Font = Font,
+		FontFace = FontFace,
 		TextTransparency = TextTransparency,
 		TextXAlignment = Enum.TextXAlignment.Left,
 		TextYAlignment = Enum.TextYAlignment.Center,
@@ -450,7 +450,7 @@ function Constructor(config: TextFieldParameters): TextField
 	config.TextTransparency = nil
 	config.TextStrokeColor3 = nil
 	config.TextScaled = nil
-	config.Font = nil
+	config.FontFace = nil
 	config.Text = nil
 	config.TextSize = nil
 	config.Width = nil

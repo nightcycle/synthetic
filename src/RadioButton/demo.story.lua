@@ -1,8 +1,12 @@
 --!strict
 -- local ReplicatedStorage = game:GetService("ReplicatedStorage")
 return function(coreGui)
-	local Package = script.Parent.Parent
+	local RadioButton = script.Parent
+	assert(RadioButton)
+	local Package = RadioButton.Parent
+	assert(Package)
 	local Packages = Package.Parent
+	assert(Packages)
 	local module = require(script.Parent)
 	local Maid = require(Packages:WaitForChild("Maid"))
 	local ColdFusion = require(Packages:WaitForChild("ColdFusion"))

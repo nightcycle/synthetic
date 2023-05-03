@@ -41,7 +41,7 @@ function Constructor(config: HintParameters): Hint
 	-- unload config states
 	local Name = _import(config.Name, script.Name)
 	local Parent: State<GuiObject?> = _import(config.Parent, nil :: GuiObject?)
-	local Font = _import(config.Font, Font.fromEnum(Enum.Font.Gotham))
+	local FontFace = _import(config.Font, Font.fromEnum(Enum.Font.Gotham))
 	local Text = _import(config.Text, nil)
 	local TextSize = _import(config.TextSize, 10)
 	local AnchorPoint = _import(config.AnchorPoint, Vector2.new(0, 0))
@@ -108,7 +108,7 @@ function Constructor(config: HintParameters): Hint
 	tConfig.RightIcon = nil
 	tConfig.Text = Text
 	tConfig.TextSize = TextSize
-	tConfig.Font = Font
+	tConfig.FontFace = FontFace
 	tConfig.TextTransparency = ActiveTextTransparency
 
 	-- construct sub-instance
