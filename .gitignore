@@ -7,3 +7,6 @@ Packages
 .gitconfig
 build
 out
+types
+lints
+tests

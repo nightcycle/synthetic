@@ -54,12 +54,7 @@ function Constructor(config: SwitchParameters): Switch
 	local EnableSound: State<Sound?> = ES
 	local DS: any = _import(config.DisableSound, nil)
 	local DisableSound: State<Sound?> = DS
-	local BubbleEnabled = _Value(
-		if typeof(config.BubbleEnabled) == "boolean"
-			then config.BubbleEnabled
-			elseif typeof(config.BubbleEnabled) == "table" then config.BubbleEnabled:Get()
-			else false
-	)
+	local BubbleEnabled = _Value(if typeof(config.BubbleEnabled) == "boolean" then config.BubbleEnabled elseif typeof(config.BubbleEnabled) == "table" then config.BubbleEnabled:Get() else false)
 
 	-- construct signals
 	local Activated = Signal.new()
@@ -172,14 +167,13 @@ function Constructor(config: SwitchParameters): Switch
 								-- BackgroundColor3 = ActiveColor3,
 								-- BackgroundTransparency = 0.6,
 							})
-	
+
 							local fireFunction = bubble:FindFirstChild("Fire")
 							assert(fireFunction ~= nil and fireFunction:IsA("BindableFunction"))
 							fireFunction:Invoke()
 						end
 					end,
 				},
-
 			}),
 			_new("Frame")({
 				Name = "Frame",

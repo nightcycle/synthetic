@@ -51,22 +51,22 @@ function Constructor(config: EffectGuiParameters): EffectGui
 	local Position: State<UDim2> = _Computed(function(absPos): UDim2
 		absPos = absPos or Vector2.new(0, 0)
 		return UDim2.fromOffset(absPos.X, absPos.Y)
-	end, AbsolutePosition):Else(UDim2.fromOffset(0, 0))
+	end, AbsolutePosition)
 	local AnchorPosition: State<UDim2> = _Computed(function(absPos, absSize, anchorPoint): UDim2
 		absPos = absPos or Vector2.new(0, 0)
 		absSize = absSize or Vector2.new(0, 0)
 		anchorPoint = anchorPoint or Vector2.new(0, 0)
 		return UDim2.fromOffset(absPos.X + anchorPoint.X * absSize.X, absPos.Y + anchorPoint.Y * absSize.Y)
-	end, AbsolutePosition, AbsoluteSize, ParentAnchorPoint):Else(UDim2.fromOffset(0, 0))
+	end, AbsolutePosition, AbsoluteSize, ParentAnchorPoint)
 	local CenterPosition: State<UDim2> = _Computed(function(absPos, absSize, anchorPoint): UDim2
 		absPos = absPos or Vector2.new(0, 0)
 		absSize = absSize or Vector2.new(0, 0)
 		return UDim2.fromOffset(absPos.X + 0.5 * absSize.X, absPos.Y + 0.5 * absSize.Y)
-	end, AbsolutePosition, AbsoluteSize):Else(UDim2.new(0, 0))
+	end, AbsolutePosition, AbsoluteSize)
 	local Size: State<UDim2> = _Computed(function(absSize)
 		absSize = absSize or Vector2.new(0, 0)
 		return UDim2.fromOffset(absSize.X, absSize.Y)
-	end, AbsoluteSize):Else(UDim2.fromOffset(0, 0))
+	end, AbsoluteSize)
 	local _KnownAncestorGui: ValueState<ScreenGui?> = _Value(nil :: ScreenGui?)
 	local _AncestorGui = _Computed(function(known: ScreenGui?, output: ScreenGui?): ScreenGui?
 		if not output then

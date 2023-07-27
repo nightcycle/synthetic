@@ -53,12 +53,8 @@ function Constructor(config: BoardFrameParameters): BoardFrame
 	local Position = _import(config.Position, UDim2.fromScale(0.5, 0.5))
 	local AnchorPoint = _import(config.AnchorPoint, Vector2.new(0.5, 0.5))
 	local PixelsPerStud = _import(config.PixelsPerStud, 20)
-	local CanvasPosition = _Value(
-		if typeof(config.CanvasPosition) == "Vector2"
-			then config.CanvasPosition
-			elseif typeof(config.CanvasPosition) == "table" then config.CanvasPosition:Get()
-			else Vector2.new(0, 0)
-	)
+	local CanvasPosition =
+		_Value(if typeof(config.CanvasPosition) == "Vector2" then config.CanvasPosition elseif typeof(config.CanvasPosition) == "table" then config.CanvasPosition:Get() else Vector2.new(0, 0))
 	local CanvasTransparency = _import(config.CanvasTransparency, 0)
 	local CanvasColor = _import(config.CanvasColor, Color3.new(1, 1, 1))
 	local CanvasMaterial = _import(config.CanvasMaterial, "SmoothPlastic")
@@ -71,12 +67,7 @@ function Constructor(config: BoardFrameParameters): BoardFrame
 	local CameraHeight = _import(config.CameraHeight, 100)
 
 	-- init internal states
-	local Zoom = _Value(
-		if typeof(config.Zoom) == "number"
-			then config.Zoom
-			elseif typeof(config.Zoom) == "table" then config.Zoom:Get()
-			else 1
-	)
+	local Zoom = _Value(if typeof(config.Zoom) == "number" then config.Zoom elseif typeof(config.Zoom) == "table" then config.Zoom:Get() else 1)
 	local Delta = _Value(1 / 60)
 	local AbsoluteSize = _Value(Vector2.new(0, 0))
 	local CanvasSize = _Computed(function(absSize: Vector2, pxRatio: number)
@@ -241,11 +232,7 @@ function Constructor(config: BoardFrameParameters): BoardFrame
 		AbsoluteSize:Set(Output.AbsoluteSize)
 		PreviousMousePosition:Set(MousePosition:Get())
 		MousePosition:Set(UserInputService:GetMouseLocation())
-		if
-			IsHovering:Get()
-			and UserInputService:IsMouseButtonPressed(Enum.UserInputType.MouseButton1)
-			and not LockPosition:Get()
-		then
+		if IsHovering:Get() and UserInputService:IsMouseButtonPressed(Enum.UserInputType.MouseButton1) and not LockPosition:Get() then
 			local mouseDelta = MouseDelta:Get() --UserInputService:GetMouseDelta()
 			-- print("Dragging", mouseDelta)
 			local cameraWindowSize = CameraWindowSize:Get()

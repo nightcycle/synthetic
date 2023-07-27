@@ -71,11 +71,7 @@ function Constructor(config: BubbleParameters): Bubble
 			else
 				return max
 			end
-		end, Value, BackgroundTransparency, FinalTransparency):Tween(
-			0.3,
-			Enum.EasingStyle.Quad,
-			Enum.EasingDirection.In
-		),
+		end, Value, BackgroundTransparency, FinalTransparency):Tween(0.3, Enum.EasingStyle.Quad, Enum.EasingDirection.In),
 		Children = {
 			_new("UICorner")({
 				CornerRadius = UDim.new(0.5, 0),

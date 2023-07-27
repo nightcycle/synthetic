@@ -102,7 +102,7 @@ function Constructor(config: BillboardFrameParameters): BillboardFrame
 	maid:GiveTask(Output.Destroying:Connect(function()
 		maid:Destroy()
 	end))
-	
+
 	return Output
 end
 

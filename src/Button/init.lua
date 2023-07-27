@@ -92,9 +92,7 @@ function Constructor(config: ButtonParameters): Button
 	local LeftIcon = _import(config.LeftIcon, "")
 	local RightIcon = _import(config.RightIcon, "")
 	local TextOnly = _import(config.TextOnly, false)
-	local IsSelected: ValueState<boolean> = if config.IsSelected
-		then if typeof(config.IsSelected) == "table" then config.IsSelected else _Value(config.IsSelected)
-		else _Value(false) :: any
+	local IsSelected: ValueState<boolean> = if config.IsSelected then if typeof(config.IsSelected) == "table" then config.IsSelected else _Value(config.IsSelected) else _Value(false) :: any
 	local ClickSound = _import(config.ClickSound, nil)
 
 	-- init signals
@@ -143,13 +141,8 @@ function Constructor(config: ButtonParameters): Button
 	local eDir = Enum.EasingDirection.InOut
 	local eSty = Enum.EasingStyle.Quad
 	local TimeKeys = _Computed(function(centerAlpha: number, leftAlpha: number, rightAlpha: number)
-		leftAlpha =
-			math.clamp(TweenService:GetValue(leftAlpha, eSty, eDir), bump, math.max(centerAlpha - bump, bump * 2))
-		rightAlpha = math.clamp(
-			TweenService:GetValue(rightAlpha, eSty, eDir),
-			math.min(centerAlpha + bump, 1 - bump * 2),
-			1 - bump
-		)
+		leftAlpha = math.clamp(TweenService:GetValue(leftAlpha, eSty, eDir), bump, math.max(centerAlpha - bump, bump * 2))
+		rightAlpha = math.clamp(TweenService:GetValue(rightAlpha, eSty, eDir), math.min(centerAlpha + bump, 1 - bump * 2), 1 - bump)
 		return {
 			0,
 			math.clamp(leftAlpha - bump, bump, math.clamp(centerAlpha - bump * 2, bump * 2, 1 - bump * 5)),
@@ -168,30 +161,15 @@ function Constructor(config: ButtonParameters): Button
 		local fullSize = absSize + Vector2.new(1, 1) * padding.Offset * 2
 		return UDim2.fromOffset(fullSize.X, fullSize.Y)
 	end, Padding, LabelAbsoluteSize, Size)
-	local ActiveBackgroundColor = _Computed(
-		function(
-			isPressing: boolean,
-			isRippling: boolean,
-			isHovering: boolean,
-			backgroundColor: Color3,
-			hoverColor: Color3,
-			selColor: Color3
-		)
-			if isHovering or isRippling then
-				return hoverColor
-			elseif isPressing then
-				return selColor
-			else
-				return backgroundColor
-			end
-		end,
-		IsSelected,
-		IsRippling,
-		IsHovering,
-		BackgroundColor3,
-		HoverBackgroundColor3,
-		SelectedBackgroundColor3
-	):Tween(0.15)
+	local ActiveBackgroundColor = _Computed(function(isPressing: boolean, isRippling: boolean, isHovering: boolean, backgroundColor: Color3, hoverColor: Color3, selColor: Color3)
+		if isHovering or isRippling then
+			return hoverColor
+		elseif isPressing then
+			return selColor
+		else
+			return backgroundColor
+		end
+	end, IsSelected, IsRippling, IsHovering, BackgroundColor3, HoverBackgroundColor3, SelectedBackgroundColor3):Tween(0.15)
 	local ActiveFillColor = _Computed(function(isPressing, isRipple, hoverColor, selectedColor)
 		if isPressing or isRipple then
 			return selectedColor
@@ -254,7 +232,7 @@ function Constructor(config: ButtonParameters): Button
 			end,
 			MouseButton1Down = function(x: any)
 				MouseButton1Down:Fire()
-	
+
 				if not IsSelected:Get() and TimeSinceLastClick:Get() > 0.8 then
 					ClickTick:Set(tick())
 					IsRippling:Set(true)
@@ -332,54 +310,47 @@ function Constructor(config: ButtonParameters): Button
 				end, ActiveBorderColor3, ActiveFillColor, ActiveBackgroundColor, IsHovering, IsSelected),
 			}),
 			_fuse.new("UIGradient")({
-				Transparency = _Computed(
-					function(hover: boolean, press: boolean, ripple: boolean, defTrans: number, timeKeys: { number })
-						local fill = math.min(0.7, defTrans)
-						if ripple then
-							local startTrans = defTrans
-							local finishTrans = defTrans
+				Transparency = _Computed(function(hover: boolean, press: boolean, ripple: boolean, defTrans: number, timeKeys: { number })
+					local fill = math.min(0.7, defTrans)
+					if ripple then
+						local startTrans = defTrans
+						local finishTrans = defTrans
 
-							if timeKeys[5] < 0.99 then
-								finishTrans = defTrans
-							else
-								finishTrans = fill
-							end
-
-							if timeKeys[2] > 0.01 then
-								startTrans = defTrans
-							else
-								startTrans = fill
-							end
-							-- print(timeKeys)
-							local k1 = NumberSequenceKeypoint.new(timeKeys[1], startTrans)
-							local k2 = NumberSequenceKeypoint.new(timeKeys[2], startTrans)
-							local k3 = NumberSequenceKeypoint.new(timeKeys[3], fill)
-							local k4 = NumberSequenceKeypoint.new(timeKeys[4], fill)
-							local k5 = NumberSequenceKeypoint.new(timeKeys[5], finishTrans)
-							local k6 = NumberSequenceKeypoint.new(timeKeys[6], finishTrans)
-							return NumberSequence.new({ k1, k2, k3, k4, k5, k6 })
-						elseif press then
-							return NumberSequence.new({
-								NumberSequenceKeypoint.new(0, fill),
-								NumberSequenceKeypoint.new(1, fill),
-							})
-						elseif hover then
-							return NumberSequence.new({
-								NumberSequenceKeypoint.new(0, defTrans),
-								NumberSequenceKeypoint.new(1, defTrans),
-							})
+						if timeKeys[5] < 0.99 then
+							finishTrans = defTrans
+						else
+							finishTrans = fill
 						end
+
+						if timeKeys[2] > 0.01 then
+							startTrans = defTrans
+						else
+							startTrans = fill
+						end
+						-- print(timeKeys)
+						local k1 = NumberSequenceKeypoint.new(timeKeys[1], startTrans)
+						local k2 = NumberSequenceKeypoint.new(timeKeys[2], startTrans)
+						local k3 = NumberSequenceKeypoint.new(timeKeys[3], fill)
+						local k4 = NumberSequenceKeypoint.new(timeKeys[4], fill)
+						local k5 = NumberSequenceKeypoint.new(timeKeys[5], finishTrans)
+						local k6 = NumberSequenceKeypoint.new(timeKeys[6], finishTrans)
+						return NumberSequence.new({ k1, k2, k3, k4, k5, k6 })
+					elseif press then
+						return NumberSequence.new({
+							NumberSequenceKeypoint.new(0, fill),
+							NumberSequenceKeypoint.new(1, fill),
+						})
+					elseif hover then
 						return NumberSequence.new({
 							NumberSequenceKeypoint.new(0, defTrans),
 							NumberSequenceKeypoint.new(1, defTrans),
 						})
-					end,
-					IsHovering,
-					IsSelected,
-					IsRippling,
-					BackgroundTransparency,
-					TimeKeys
-				),
+					end
+					return NumberSequence.new({
+						NumberSequenceKeypoint.new(0, defTrans),
+						NumberSequenceKeypoint.new(1, defTrans),
+					})
+				end, IsHovering, IsSelected, IsRippling, BackgroundTransparency, TimeKeys),
 				Color = _Computed(function(hover, press, ripple, backColor, selColor, timeKeys)
 					if ripple then
 						local beginColor = backColor

@@ -27,7 +27,7 @@ export type TextFieldParameters = Types.TextBoxParameters & {
 	LowerText: CanBeState<string>?,
 	LowerTextColor3: CanBeState<Color3>?,
 	Width: CanBeState<UDim>?,
-	CornerRadius: CanBeState<number>?,
+	CornerRadius: CanBeState<UDim>?,
 	CharacterLimit: CanBeState<number>?,
 	MaintainLowerSpacing: CanBeState<boolean>?,
 	FocusedBackgroundColor3: CanBeState<Color3>?,
@@ -182,7 +182,6 @@ function Constructor(config: TextFieldParameters): TextField
 				IsFocused:Set(txtBox:IsFocused())
 			end,
 		},
-
 	} :: { [any]: any }) :: TextBox
 	TextBox:Set(textBox)
 	maid:GiveTask(RunService.RenderStepped:Connect(function()
@@ -234,22 +233,15 @@ function Constructor(config: TextFieldParameters): TextField
 	local Frame = _new("Frame")({
 		Name = "Container",
 		BackgroundTransparency = BackgroundTransparency,
-		BackgroundColor3 = _Computed(
-			function(isFocused: boolean, isHovering: boolean, backColor: Color3, focusColor: Color3, hoverColor: Color3): Color3
-				if isFocused then
-					return focusColor
-				elseif isHovering then
-					return hoverColor
-				else
-					return backColor
-				end
-			end,
-			IsFocused,
-			IsHovering,
-			BackgroundColor3,
-			FocusedBackgroundColor3,
-			HoverBackgroundColor3
-		),
+		BackgroundColor3 = _Computed(function(isFocused: boolean, isHovering: boolean, backColor: Color3, focusColor: Color3, hoverColor: Color3): Color3
+			if isFocused then
+				return focusColor
+			elseif isHovering then
+				return hoverColor
+			else
+				return backColor
+			end
+		end, IsFocused, IsHovering, BackgroundColor3, FocusedBackgroundColor3, HoverBackgroundColor3),
 		Size = _Computed(function(textSize: number, width)
 			return UDim2.new(width, UDim.new(0, textSize * 3))
 		end, TextSize, Width),

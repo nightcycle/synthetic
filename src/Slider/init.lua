@@ -63,12 +63,7 @@ function Constructor(config: SliderParameters): Slider
 	local TickSound = _import(config.TickSound, nil)
 	local EnableSound = _import(config.EnableSound, nil)
 	local DisableSound = _import(config.DisableSound, nil)
-	local Input = _Value(
-		if typeof(config.Input) == "number"
-			then config.Input
-			elseif typeof(config.Input) == "table" then config.Input:Get()
-			else 5
-	)
+	local Input = _Value(if typeof(config.Input) == "number" then config.Input elseif typeof(config.Input) == "table" then config.Input:Get() else 5)
 	local Minimum = _import(config.Minimum, 0)
 	local Maximum = _import(config.Maximum, 10)
 	local Increment = _import(config.Increment, 1)
@@ -205,7 +200,6 @@ function Constructor(config: SliderParameters): Slider
 				end
 			end :: any,
 		},
-		
 	}) :: ImageButton
 
 	maid:GiveTask(RunService.RenderStepped:Connect(function()

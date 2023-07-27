@@ -17,7 +17,7 @@ type ValueState<T> = State<T> & {
 local Maid = require(Packages:WaitForChild("Maid"))
 type Maid = Maid.Maid
 
-export type CanBeState<T> = (State<T> | T)
+export type CanBeState<T> = State<T> | T
 
 export type InstanceParameters = any
 -- {
@@ -71,7 +71,7 @@ export type GuiObjectParameters = any
 -- 	ZIndex: CanBeState<number>?,
 -- }
 
-export type FrameParameters = any 
+export type FrameParameters = any
 -- GuiObjectParameters
 
 export type GuiButtonParameters = any

@@ -8,7 +8,7 @@ registry = "https://github.com/upliftgames/wally-index"
 exclude = [ "Packages", ".vscode",]
 
 [dependencies]
-ColdFusion = "nightcycle/cold-fusion@8.0.0"
+ColdFusion = "nightcycle/cold-fusion@9.0.5"
 Signal = "nightcycle/signal@1.0.2"
 Maid = "nightcycle/maid@1.1.4"
 Format = "nightcycle/format@0.1.3"
