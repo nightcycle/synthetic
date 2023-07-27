@@ -187,7 +187,7 @@ function Constructor(config: ButtonParameters): Button
 	end))
 
 	-- construct sub-instances
-	local TextLabel = TextLabel(maid)({
+	local ButtonTextLabel = TextLabel(maid)({
 		BackgroundTransparency = 1,
 		TextTransparency = TextTransparency,
 		ZIndex = 2,
@@ -213,7 +213,7 @@ function Constructor(config: ButtonParameters): Button
 		Position = UDim2.fromScale(0.5, 0.5),
 	})
 	maid:GiveTask(RunService.RenderStepped:Connect(function(deltaTime: number)
-		LabelAbsoluteSize:Set(TextLabel.AbsoluteSize)
+		LabelAbsoluteSize:Set(ButtonTextLabel.AbsoluteSize)
 	end))
 
 	local TextButton: TextButton = _fuse.new("TextButton")({
@@ -393,7 +393,7 @@ function Constructor(config: ButtonParameters): Button
 				end, IsHovering, IsSelected, IsRippling, ActiveBackgroundColor, ActiveFillColor, TimeKeys),
 			}),
 			TextButton,
-			TextLabel,
+			ButtonTextLabel,
 		} :: { Instance },
 	}
 	config.BorderTransparency = nil

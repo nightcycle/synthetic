@@ -77,7 +77,7 @@ export type Synthetic = (
 	& ((className: "BillboardFrame") -> (BillboardFrameParameters) -> BillboardFrame.BillboardFrame)
 )
 
-return function(Maid: Maid?): Synthetic
+return function(maid: Maid?): Synthetic
 	return function(className: any): any
 		assert(
 			className == "TextLabel"
@@ -99,37 +99,37 @@ return function(Maid: Maid?): Synthetic
 				or className == "BillboardFrame"
 		)
 		if className == "TextLabel" then
-			return TextLabel(Maid)
+			return TextLabel(maid)
 		elseif className == "ViewportMountFrame" then
-			return ViewportMountFrame(Maid)
+			return ViewportMountFrame(maid)
 		elseif className == "TextField" then
-			return TextField(Maid)
+			return TextField(maid)
 		elseif className == "Switch" then
-			return Switch(Maid)
+			return Switch(maid)
 		elseif className == "SurfaceFrame" then
-			return SurfaceFrame(Maid)
+			return SurfaceFrame(maid)
 		elseif className == "Slider" then
-			return Slider(Maid)
+			return Slider(maid)
 		elseif className == "RadioButton" then
-			return RadioButton(Maid)
+			return RadioButton(maid)
 		elseif className == "IconLabel" then
-			return IconLabel(Maid)
+			return IconLabel(maid)
 		elseif className == "Hint" then
-			return Hint(Maid)
+			return Hint(maid)
 		elseif className == "EffectGui" then
-			return EffectGui(Maid)
+			return EffectGui(maid)
 		elseif className == "Checkbox" then
-			return Checkbox(Maid)
+			return Checkbox(maid)
 		elseif className == "Button" then
-			return Button(Maid)
+			return Button(maid)
 		elseif className == "Bubble" then
-			return Bubble(Maid)
+			return Bubble(maid)
 		elseif className == "BoundingBoxFrame" then
-			return BoundingBoxFrame(Maid)
+			return BoundingBoxFrame(maid)
 		elseif className == "BoardFrame" then
-			return BoardFrame(Maid)
+			return BoardFrame(maid)
 		elseif className == "BillboardFrame" then
-			return BillboardFrame(Maid)
+			return BillboardFrame(maid)
 		end
 		return nil
 	end
