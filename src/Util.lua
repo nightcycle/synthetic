@@ -47,7 +47,7 @@ function Util.bindSignal(inst: Instance, maid: Maid, name: string, signal: Signa
 	-- Maid:GiveTask(bindableEvent.Event:Connect(function(...)
 	-- 	signal:Fire(...)
 	-- end))
-	maid:GiveTask(Signal:Connect(function(...)
+	maid:GiveTask(signal:Connect(function(...)
 		bindableEvent:Fire(...)
 	end))
 	maid:GiveTask(bindableEvent)
