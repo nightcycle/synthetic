@@ -10,6 +10,3 @@ local _Packages = _Package.Parent
 -- References
 -- Private Functions
 -- Class
-local Synthetic = {}
-
-return Synthetic

@@ -84,7 +84,6 @@ jobs:
           fi
           curl -L "https://gist.github.com/nightcycle/a57e04de443dfa89bd08c8eb001b03c6/raw" > "lints/lua51.yml"
           curl -L "https://gist.github.com/nightcycle/93c4b9af5bbf4ed09f39aa908dffccd0/raw" > "lints/luau.yml"
-          curl -L "https://gist.github.com/nightcycle/e8c4a9a1d71cfd1a1fff59cad84156d1/raw" > "lints/roblox.yml"
 
       # apply code styling
       - name: style src scripts
