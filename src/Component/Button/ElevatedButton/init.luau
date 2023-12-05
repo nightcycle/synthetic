@@ -171,7 +171,7 @@ function Interface.cfusion(
 		styles,
 		icon,
 		if isEnabled == nil then true else isEnabled,
-		false,
+		true,
 		_Computed(function(t: ThemeData): number
 			return t.Scale
 		end, themeState),

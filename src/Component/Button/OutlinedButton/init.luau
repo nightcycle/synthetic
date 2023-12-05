@@ -44,7 +44,7 @@ function Interface.cfusion(
 		theme: CanBeState<ThemeData>,
 		icon: CanBeState<ImageData>?,
 		isEnabled: CanBeState<boolean>?
-): TextButton
+): ImageLabel
 	local maid = Maid.new()
 
 	local _fuse = ColdFusion.fuse(maid)
@@ -165,6 +165,7 @@ function Interface.cfusion(
 		styles,
 		icon,
 		if isEnabled == nil then true else isEnabled,
+		false,
 		_Computed(function(t: ThemeData): number
 			return t.Scale
 		end, themeState),

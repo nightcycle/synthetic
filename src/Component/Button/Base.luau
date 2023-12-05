@@ -31,7 +31,8 @@ local LEFT_PADDING_WITH_ICON_DP = 12
 local RIGHT_PADDING_WITH_ICON_DP = 16
 local PADDING_BETWEEN_ELEMENTS_DP = 8
 local LABEL_TEXT_ALIGNMENT = Enum.TextXAlignment.Center
-
+local IMAGE_SIZE = 500
+local HALF_IMAGE_SIZE = IMAGE_SIZE/2
 return function (
 	maid: Maid,
 	onClick: CanBeState<() -> ()>,
@@ -40,9 +41,10 @@ return function (
 	styles: CanBeState<{[Enums.ButtonStateType]: TextStyle}>,
 	textIcon: CanBeState<ImageData?>,
 	isEnabled: CanBeState<boolean>,
+	isDropShadow: CanBeState<boolean>,
 	scale: CanBeState<number>,
 	sound: CanBeState<Sound>
-): TextButton
+): ImageLabel
 
 	local _fuse = ColdFusion.fuse(maid)
 	
@@ -90,153 +92,182 @@ return function (
 	local scaleState = _import(scale, 1)
 	local iconState = _import(textIcon, nil :: ImageData?) :: any
 	local soundState = _import(sound, nil :: Sound?)
-	local inst: TextButton = _new("TextButton")({
-		Name = "TextButton",
-		Text = "",
-		BackgroundTransparency = _Computed(function(style: TextStyle): number
-			return style.BackgroundTransparency
-		end, currentStyleState),
-		BackgroundColor3 = _Computed(function(style: TextStyle): Color3
-			return style.BackgroundColor3
-		end, currentStyleState),
-		Active = isEnabledState,
-		AutomaticSize = Enum.AutomaticSize.X,
-		Size = _Computed(function(s: number): UDim2
-			return UDim2.fromOffset(0, s * HEIGHT_DP)
-		end, scaleState),
-		Events = {
-			Activated = function()
-				if isEnabledState:Get() == false then return end
-				local click = onClickState:Get()
-				local s = soundState:Get()
-				if s then
-					SoundService:PlayLocalSound(s)
-				end
-				click()
-			end,
-			MouseButton1Down = function(inputObject: InputObject)
-				isPressedState:Set(true)
-			end,
-			MouseButton1Up = function(inputObject: InputObject)
-				isPressedState:Set(false)
-			end,
-			MouseEnter = function()
-				isHoveredState:Set(true)
-			end,
-			MouseLeave = function()
-				isHoveredState:Set(false)
-			end,
-			SelectionGained = function()
-				isFocusedState:Set(true)
-			end,
-			SelectionLost = function()
-				isFocusedState:Set(false)
-			end,
-		},
+	local isDropShadowState = _import(isDropShadow, false)
+	
+	local inst: ImageLabel = _new("ImageLabel")({
+		Image = "rbxassetid://15549395120",
+		ImageColor3 = Color3.new(0,0,0),
+		BackgroundTransparency = 1,
+		ImageTransparency = _Computed(function(style: TextStyle, isDrop: boolean): number
+			return if style.BackgroundTransparency == 0 and isDrop then 0 else 1
+		end, currentStyleState, isDropShadowState),
+		ScaleType = Enum.ScaleType.Slice,
+		AutomaticSize = Enum.AutomaticSize.XY,
+		SliceCenter = Rect.new(HALF_IMAGE_SIZE, HALF_IMAGE_SIZE, HALF_IMAGE_SIZE, HALF_IMAGE_SIZE),
+		SliceScale = 1,
 		Children = {
-			_new("UICorner")({
-				CornerRadius = _Computed(function(s: number): UDim
-					return UDim.new(0, s * SHAPE_DP)
-				end, scaleState),
-			}),
-			_new("UIStroke")({
-				ApplyStrokeMode = Enum.ApplyStrokeMode.Border,
-				Color = _Computed(function(style: TextStyle): Color3
-					return style.BorderColor3
-				end, currentStyleState),
-				LineJoinMode = Enum.LineJoinMode.Round,
-				Thickness = _Computed(function(s: number): number
-					return math.max(s*1, 1)
-				end, scaleState),
-				Transparency = _Computed(function(style: TextStyle): number
-					return style.BorderTransparency
-				end, currentStyleState),
-			}),
 			_new("UIListLayout")({
-				Padding = _Computed(function(s: number): UDim
-					return UDim.new(0, s * PADDING_BETWEEN_ELEMENTS_DP)
-				end, scaleState),
+				Padding = UDim.new(0,0),
 				SortOrder = Enum.SortOrder.LayoutOrder,
 				FillDirection = Enum.FillDirection.Horizontal,
 				ItemLineAlignment = Enum.ItemLineAlignment.Center,
 				VerticalAlignment = Enum.VerticalAlignment.Center,
 				HorizontalAlignment = Enum.HorizontalAlignment.Center,
 			}),
-			_new("TextLabel")({
-				Text = textState,
-				TextScaled = true,
-				TextXAlignment = LABEL_TEXT_ALIGNMENT,
-				TextYAlignment = Enum.TextYAlignment.Center,
-				BackgroundTransparency = 1,
-				AutomaticSize = Enum.AutomaticSize.X,
-				FontFace = fontState,
-				LayoutOrder = 2,
-				TextColor3 = _Computed(function(style: TextStyle): Color3
-					return style.TextColor3
-				end, currentStyleState),
-				TextTransparency = _Computed(function(style: TextStyle): number
-					return style.TextTransparency
-				end, currentStyleState),
-				Size = _Computed(function(s: number): UDim2
-					return UDim2.fromOffset(0, s * ICON_SIZE_DP)
-				end, scaleState),
-			}),
-			_new("ImageLabel")({
-				Name = "Icon",
-				LayoutOrder = 1,
-				BackgroundTransparency = 1,
-				Visible = _Computed(function(icon: ImageData?): boolean
-					return icon ~= nil
-				end, iconState),
-				Image = _Computed(function(icon: ImageData?): string
-					return if icon then icon.Image else ""
-				end, iconState),
-				ImageColor3 = _Computed(function(icon: ImageData?, style: TextStyle?): Color3
-					return if icon and style then style.TextColor3 else Color3.new(1,1,1)
-				end, iconState, currentStyleState),
-				ImageRectOffset = _Computed(function(icon: ImageData?): Vector2
-					return if icon then icon.RectOffset else Vector2.zero
-				end, iconState),
-				ImageRectSize = _Computed(function(icon: ImageData?): Vector2
-					return if icon then icon.RectSize else Vector2.zero
-				end, iconState),
-				ImageTransparency = _Computed(function(icon: ImageData?, style: TextStyle?): number
-					return if icon and style then style.TextTransparency else 1
-				end, iconState, currentStyleState),
-				Size = _Computed(function(s: number): UDim2
-					return UDim2.fromOffset(s * ICON_SIZE_DP, s * ICON_SIZE_DP)
-				end, scaleState),
-			}),
 			_new("UIPadding")({
-				PaddingLeft = _Computed(function(s: number, icon: ImageData?): UDim
-					if icon then
-						return UDim.new(0, LEFT_PADDING_WITH_ICON_DP * s)
-					else
-						return UDim.new(0, LEFT_RIGHT_PADDING_DP * s)
-					end
-				end, scaleState, iconState),
-				PaddingRight = _Computed(function(s: number, icon: ImageData?): UDim
-					if icon then
-						return UDim.new(0, RIGHT_PADDING_WITH_ICON_DP * s)
-					else
-						return UDim.new(0, LEFT_RIGHT_PADDING_DP * s)
-					end
-				end, scaleState, iconState),
-				PaddingTop = _Computed(function(s: number): UDim
-					return UDim.new(0, s * (HEIGHT_DP-ICON_SIZE_DP) / 2)
-				end, scaleState),
-				PaddingBottom = _Computed(function(s: number): UDim
-					return UDim.new(0, s * (HEIGHT_DP-ICON_SIZE_DP) / 2)
-				end, scaleState),
+				PaddingBottom = _Computed(function(s: number, isDrop: boolean): UDim
+					return if isDrop then UDim.new(0, s * 5) else UDim.new(0,0)
+				end, scaleState, isDropShadowState),
 			}),
-			_new("UISizeConstraint")({
-				MaxSize = Vector2.new(math.huge, math.huge),
-				MinSize = _Computed(function(s: number): Vector2
-					return Vector2.new(s * CONTAINER_WIDTH_MIN_DP, 0)
+			_new("TextButton")({
+				Name = "TextButton",
+				Text = "",
+				BackgroundTransparency = _Computed(function(style: TextStyle): number
+					return style.BackgroundTransparency
+				end, currentStyleState),
+				BackgroundColor3 = _Computed(function(style: TextStyle): Color3
+					return style.BackgroundColor3
+				end, currentStyleState),
+				Active = isEnabledState,
+				AutomaticSize = Enum.AutomaticSize.X,
+				Size = _Computed(function(s: number): UDim2
+					return UDim2.fromOffset(0, s * HEIGHT_DP)
 				end, scaleState),
-			}),
+				Events = {
+					Activated = function()
+						if isEnabledState:Get() == false then return end
+						local click = onClickState:Get()
+						local s = soundState:Get()
+						if s then
+							SoundService:PlayLocalSound(s)
+						end
+						click()
+					end,
+					MouseButton1Down = function(inputObject: InputObject)
+						isPressedState:Set(true)
+					end,
+					MouseButton1Up = function(inputObject: InputObject)
+						isPressedState:Set(false)
+					end,
+					MouseEnter = function()
+						isHoveredState:Set(true)
+					end,
+					MouseLeave = function()
+						isHoveredState:Set(false)
+					end,
+					SelectionGained = function()
+						isFocusedState:Set(true)
+					end,
+					SelectionLost = function()
+						isFocusedState:Set(false)
+					end,
+				},
+				Children = {
+					_new("UICorner")({
+						CornerRadius = _Computed(function(s: number): UDim
+							return UDim.new(0, s * SHAPE_DP)
+						end, scaleState),
+					}),
+					_new("UIStroke")({
+						ApplyStrokeMode = Enum.ApplyStrokeMode.Border,
+						Color = _Computed(function(style: TextStyle): Color3
+							return style.BorderColor3
+						end, currentStyleState),
+						LineJoinMode = Enum.LineJoinMode.Round,
+						Thickness = _Computed(function(s: number): number
+							return math.max(s*1, 1)
+						end, scaleState),
+						Transparency = _Computed(function(style: TextStyle): number
+							return style.BorderTransparency
+						end, currentStyleState),
+					}),
+					_new("UIListLayout")({
+						Padding = _Computed(function(s: number): UDim
+							return UDim.new(0, s * PADDING_BETWEEN_ELEMENTS_DP)
+						end, scaleState),
+						SortOrder = Enum.SortOrder.LayoutOrder,
+						FillDirection = Enum.FillDirection.Horizontal,
+						ItemLineAlignment = Enum.ItemLineAlignment.Center,
+						VerticalAlignment = Enum.VerticalAlignment.Center,
+						HorizontalAlignment = Enum.HorizontalAlignment.Center,
+					}),
+					_new("TextLabel")({
+						Text = textState,
+						TextScaled = true,
+						TextXAlignment = LABEL_TEXT_ALIGNMENT,
+						TextYAlignment = Enum.TextYAlignment.Center,
+						BackgroundTransparency = 1,
+						AutomaticSize = Enum.AutomaticSize.X,
+						FontFace = fontState,
+						LayoutOrder = 2,
+						TextColor3 = _Computed(function(style: TextStyle): Color3
+							return style.TextColor3
+						end, currentStyleState),
+						TextTransparency = _Computed(function(style: TextStyle): number
+							return style.TextTransparency
+						end, currentStyleState),
+						Size = _Computed(function(s: number): UDim2
+							return UDim2.fromOffset(0, s * ICON_SIZE_DP)
+						end, scaleState),
+					}),
+					_new("ImageLabel")({
+						Name = "Icon",
+						LayoutOrder = 1,
+						BackgroundTransparency = 1,
+						Visible = _Computed(function(icon: ImageData?): boolean
+							return icon ~= nil
+						end, iconState),
+						Image = _Computed(function(icon: ImageData?): string
+							return if icon then icon.Image else ""
+						end, iconState),
+						ImageColor3 = _Computed(function(icon: ImageData?, style: TextStyle?): Color3
+							return if icon and style then style.TextColor3 else Color3.new(1,1,1)
+						end, iconState, currentStyleState),
+						ImageRectOffset = _Computed(function(icon: ImageData?): Vector2
+							return if icon then icon.RectOffset else Vector2.zero
+						end, iconState),
+						ImageRectSize = _Computed(function(icon: ImageData?): Vector2
+							return if icon then icon.RectSize else Vector2.zero
+						end, iconState),
+						ImageTransparency = _Computed(function(icon: ImageData?, style: TextStyle?): number
+							return if icon and style then style.TextTransparency else 1
+						end, iconState, currentStyleState),
+						Size = _Computed(function(s: number): UDim2
+							return UDim2.fromOffset(s * ICON_SIZE_DP, s * ICON_SIZE_DP)
+						end, scaleState),
+					}),
+					_new("UIPadding")({
+						PaddingLeft = _Computed(function(s: number, icon: ImageData?): UDim
+							if icon then
+								return UDim.new(0, LEFT_PADDING_WITH_ICON_DP * s)
+							else
+								return UDim.new(0, LEFT_RIGHT_PADDING_DP * s)
+							end
+						end, scaleState, iconState),
+						PaddingRight = _Computed(function(s: number, icon: ImageData?): UDim
+							if icon then
+								return UDim.new(0, RIGHT_PADDING_WITH_ICON_DP * s)
+							else
+								return UDim.new(0, LEFT_RIGHT_PADDING_DP * s)
+							end
+						end, scaleState, iconState),
+						PaddingTop = _Computed(function(s: number): UDim
+							return UDim.new(0, s * (HEIGHT_DP-ICON_SIZE_DP) / 2)
+						end, scaleState),
+						PaddingBottom = _Computed(function(s: number): UDim
+							return UDim.new(0, s * (HEIGHT_DP-ICON_SIZE_DP) / 2)
+						end, scaleState),
+					}),
+					_new("UISizeConstraint")({
+						MaxSize = Vector2.new(math.huge, math.huge),
+						MinSize = _Computed(function(s: number): Vector2
+							return Vector2.new(s * CONTAINER_WIDTH_MIN_DP, 0)
+						end, scaleState),
+					}),
+				},
+			}) :: TextButton
 		},
-	}) :: TextButton
+	}) :: ImageLabel
 
 	return inst
 end
