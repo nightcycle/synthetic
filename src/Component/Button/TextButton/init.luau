@@ -76,14 +76,13 @@ function Interface.cfusion(
 		if thm.IsDarkMode then
 			textColor = Util.getReadableColor(
 				thm.Color3,
-				if thm.BackgroundColor3 then thm.BackgroundColor3 else Util.DARK_SURFACE,
-				12
+				if thm.BackgroundColor3 then thm.BackgroundColor3 else Util.DARK_SURFACE
 			)
+			
 		else
 			textColor = Util.getReadableColor(
 				thm.Color3,
-				if thm.BackgroundColor3 then thm.BackgroundColor3 else Util.LIGHT_SURFACE,
-				5
+				if thm.BackgroundColor3 then thm.BackgroundColor3 else Util.LIGHT_SURFACE
 			)
 		end
 		assert(textColor)
