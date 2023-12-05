@@ -92,14 +92,18 @@ function Interface.cfusion(
 			thm.Elevation,
 			thm.IsDarkMode
 		)
+		local borderColor = (function()
+			local h,s,v = textColor:ToHSV()
+			return Color3.fromHSV(h,s*0.25,v*0.8)
+		end)()
 		local data = {
 			[Enums.ButtonStateType.Enabled] = Types.newTextStyle(
 				textColor,
 				0,
 				textColor,
 				1,
-				textColor,
-				1
+				borderColor,
+				0
 			),
 			[Enums.ButtonStateType.Disabled] = Types.newTextStyle(
 				(function(): Color3
@@ -120,8 +124,8 @@ function Interface.cfusion(
 				DISABLE_TRANSPARENCY,
 				textColor,
 				1,
-				textColor,
-				1
+				borderColor,
+				DISABLE_TRANSPARENCY
 			),
 			[Enums.ButtonStateType.Focused] = Types.newTextStyle(
 				textColor,
@@ -129,23 +133,23 @@ function Interface.cfusion(
 				textColor,
 				FOCUS_TRANSPARENCY,
 				textColor,
-				1
+				FOCUS_TRANSPARENCY
 			),
 			[Enums.ButtonStateType.Hovered] = Types.newTextStyle(
 				textColor,
 				0,
 				textColor,
 				HOVER_TRANSPARENCY,
-				textColor,
-				1
+				borderColor,
+				HOVER_TRANSPARENCY
 			),
 			[Enums.ButtonStateType.Pressed] = Types.newTextStyle(
 				textColor,
 				0,
 				textColor,
 				PRESS_TRANSPARENCY,
-				textColor,
-				1
+				borderColor,
+				PRESS_TRANSPARENCY
 			),
 		}
 		return data

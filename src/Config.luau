@@ -11,5 +11,15 @@
 return {
 	Sound = {
 		Volume = 1,
+	},
+	Transparency = {
+		Text = {
+			Disabled = 0.4
+		},
+		Background = {
+			Hovered = 0.85,
+			Focused = 0.45,
+			Pressed = 0.6,
+		},
 	}
 }
