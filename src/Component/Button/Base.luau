@@ -43,7 +43,9 @@ return function (
 	isEnabled: CanBeState<boolean>,
 	isDropShadow: CanBeState<boolean>,
 	scale: CanBeState<number>,
-	sound: CanBeState<Sound>
+	sound: CanBeState<Sound>,
+	hasMinimumSize: CanBeState<boolean>?,
+	cornerRadius: CanBeState<number>?
 ): ImageLabel
 
 	local _fuse = ColdFusion.fuse(maid)
@@ -93,6 +95,8 @@ return function (
 	local iconState = _import(textIcon, nil :: ImageData?) :: any
 	local soundState = _import(sound, nil :: Sound?)
 	local isDropShadowState = _import(isDropShadow, false)
+	local hasMinState = _import(hasMinimumSize, true)
+	local cornerRadiusState = _import(cornerRadius, SHAPE_DP)
 	
 	local inst: ImageLabel = _new("ImageLabel")({
 		Image = "rbxassetid://15549395120",
@@ -164,9 +168,9 @@ return function (
 				},
 				Children = {
 					_new("UICorner")({
-						CornerRadius = _Computed(function(s: number): UDim
-							return UDim.new(0, s * SHAPE_DP)
-						end, scaleState),
+						CornerRadius = _Computed(function(s: number, cornerRad: number): UDim
+							return UDim.new(0, s * cornerRad)
+						end, scaleState, cornerRadiusState),
 					}),
 					_new("UIStroke")({
 						ApplyStrokeMode = Enum.ApplyStrokeMode.Border,
@@ -193,6 +197,9 @@ return function (
 					}),
 					_new("TextLabel")({
 						Text = textState,
+						Visible = _Computed(function(txt: string): boolean
+							return txt:len() > 0
+						end, textState),
 						TextScaled = true,
 						TextXAlignment = LABEL_TEXT_ALIGNMENT,
 						TextYAlignment = Enum.TextYAlignment.Center,
@@ -237,20 +244,20 @@ return function (
 						end, scaleState),
 					}),
 					_new("UIPadding")({
-						PaddingLeft = _Computed(function(s: number, icon: ImageData?): UDim
-							if icon then
+						PaddingLeft = _Computed(function(s: number, icon: ImageData?, txt: string): UDim
+							if icon and txt:len() > 0  then
 								return UDim.new(0, LEFT_PADDING_WITH_ICON_DP * s)
 							else
 								return UDim.new(0, LEFT_RIGHT_PADDING_DP * s)
 							end
-						end, scaleState, iconState),
-						PaddingRight = _Computed(function(s: number, icon: ImageData?): UDim
-							if icon then
+						end, scaleState, iconState, textState),
+						PaddingRight = _Computed(function(s: number, icon: ImageData?, txt: string): UDim
+							if icon and txt:len() > 0 then
 								return UDim.new(0, RIGHT_PADDING_WITH_ICON_DP * s)
 							else
 								return UDim.new(0, LEFT_RIGHT_PADDING_DP * s)
 							end
-						end, scaleState, iconState),
+						end, scaleState, iconState, textState),
 						PaddingTop = _Computed(function(s: number): UDim
 							return UDim.new(0, s * (HEIGHT_DP-ICON_SIZE_DP) / 2)
 						end, scaleState),
@@ -260,9 +267,13 @@ return function (
 					}),
 					_new("UISizeConstraint")({
 						MaxSize = Vector2.new(math.huge, math.huge),
-						MinSize = _Computed(function(s: number): Vector2
-							return Vector2.new(s * CONTAINER_WIDTH_MIN_DP, 0)
-						end, scaleState),
+						MinSize = _Computed(function(s: number, hasMin: boolean): Vector2
+							if hasMin then
+								return Vector2.new(s * CONTAINER_WIDTH_MIN_DP, 0)
+							else
+								return Vector2.new(0, 0)
+							end
+						end, scaleState, hasMinState),
 					}),
 				},
 			}) :: TextButton

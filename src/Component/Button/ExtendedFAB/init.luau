@@ -27,7 +27,7 @@ type ThemeData = Types.ThemeData
 local DEFAULT_VOLUME = Config.Sound.Volume
 local DISABLE_TRANSPARENCY = Config.Transparency.Text.Disabled
 local DISABLE_BACK_TRANS = Config.Transparency.Background.Disabled
-
+local SHAPE_DP = 20 * 0.5
 -- Variables
 -- References
 -- Private Functions
@@ -175,7 +175,9 @@ function Interface.cfusion(
 		_Computed(function(t: ThemeData): number
 			return t.Scale
 		end, themeState),
-		sound
+		sound,
+		false,
+		SHAPE_DP
 	)
 	maid.bind(button)
 	return button

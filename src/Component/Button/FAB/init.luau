@@ -27,7 +27,7 @@ type ThemeData = Types.ThemeData
 local DEFAULT_VOLUME = Config.Sound.Volume
 local DISABLE_TRANSPARENCY = Config.Transparency.Text.Disabled
 local DISABLE_BACK_TRANS = Config.Transparency.Background.Disabled
-
+local SHAPE_DP = 20*0.5
 -- Variables
 -- References
 -- Private Functions
@@ -38,9 +38,8 @@ local Interface = {}
 
 function Interface.cfusion(
 	onClick: CanBeState<() -> ()>,
-	text: CanBeState<string>,
+	icon: CanBeState<ImageData>,
 	theme: CanBeState<ThemeData>,
-	icon: CanBeState<ImageData>?,
 	isEnabled: CanBeState<boolean>?
 ): ImageLabel
 	local maid = Maid.new()
@@ -56,7 +55,6 @@ function Interface.cfusion(
 	local _Computed = _fuse.Computed
 
 	local onClickState = _import(onClick, function() end)
-	local textState = _import(text, "")
 	local themeState = _import(theme, Types.newThemeData(
 		1,
 		false,
@@ -164,18 +162,20 @@ function Interface.cfusion(
 	local button = Base(
 		maid,
 		onClickState,
-		textState,		
+		"",		
 		_Computed(function(t: ThemeData): Font
 			return t.Font
 		end, themeState),
 		styles,
 		icon,
 		if isEnabled == nil then true else isEnabled,
-		false,
+		true,
 		_Computed(function(t: ThemeData): number
-			return t.Scale
+			return t.Scale * 1.25
 		end, themeState),
-		sound
+		sound,
+		false,
+		SHAPE_DP
 	)
 	maid.bind(button)
 	return button
