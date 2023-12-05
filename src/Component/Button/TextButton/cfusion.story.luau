@@ -37,7 +37,7 @@ return function(frame: Frame)
 			local Module = require(script.Parent)
 			local theme = Types.newThemeData(
 				1,
-				false,
+				isDarkMode,
 				SCALE,
 				Font.fromEnum(Enum.Font.SourceSans),
 				color,

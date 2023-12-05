@@ -12,7 +12,6 @@ local ColdFusion = require(_Packages:WaitForChild("ColdFusion"))
 -- Modules
 local Enums = require(_Package:WaitForChild("Enums"))
 local Types = require(_Package:WaitForChild("Types"))
-local Config = require(_Package:WaitForChild("Config"))
 
 -- Types
 type Maid = Maid.Maid
