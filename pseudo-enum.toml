@@ -1,0 +1,7 @@
+build_path = "src/Enums.luau"
+use_union_types_for_tree = false
+use_union_types_for_export = true
+
+[enums]
+ButtonStateType = ["Enabled", "Disabled", "Hovered", "Focused", "Pressed"]
+

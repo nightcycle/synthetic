@@ -1,6 +1,4 @@
 --!strict
-local _Package = script
-local _Packages = _Package.Parent
 -- Services
 -- Packages
 -- Modules
@@ -10,3 +8,8 @@ local _Packages = _Package.Parent
 -- References
 -- Private Functions
 -- Class
+return {
+	Sound = {
+		Volume = 1,
+	}
+}

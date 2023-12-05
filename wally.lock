@@ -3,9 +3,19 @@
 registry = "test"
 
 [[package]]
+name = "elttob/fusion"
+version = "0.2.0"
+dependencies = []
+
+[[package]]
 name = "nightcycle/cold-fusion"
 version = "9.0.7"
 dependencies = [["Maid", "nightcycle/maid@1.1.4"], ["ServiceProxy", "nightcycle/service-proxy@1.0.0"], ["Signal", "nightcycle/signal@1.0.2"], ["TableUtil", "nightcycle/table-util@1.1.0"]]
+
+[[package]]
+name = "nightcycle/curve-util"
+version = "1.0.0"
+dependencies = [["Vector", "nightcycle/vector@1.0.2"]]
 
 [[package]]
 name = "nightcycle/format"
@@ -20,6 +30,11 @@ dependencies = []
 [[package]]
 name = "nightcycle/maid"
 version = "1.1.4"
+dependencies = []
+
+[[package]]
+name = "nightcycle/material-icons"
+version = "1.0.1"
 dependencies = []
 
 [[package]]
@@ -45,9 +60,19 @@ dependencies = []
 [[package]]
 name = "nightcycle/synthetic"
 version = "5.0.0"
-dependencies = [["ColdFusion", "nightcycle/cold-fusion@9.0.7"], ["Format", "nightcycle/format@0.1.3"], ["Maid", "nightcycle/maid@1.1.4"], ["MeshUtil", "nightcycle/mesh-util@1.0.3"], ["Signal", "nightcycle/signal@1.0.2"]]
+dependencies = [["ColdFusion", "nightcycle/cold-fusion@9.0.7"], ["CurveUtil", "nightcycle/curve-util@1.0.0"], ["Format", "nightcycle/format@0.1.3"], ["Fusion", "elttob/fusion@0.2.0"], ["Maid", "nightcycle/maid@1.1.4"], ["MaterialIcons", "nightcycle/material-icons@1.0.1"], ["MeshUtil", "nightcycle/mesh-util@1.0.3"], ["Roact", "roblox/roact@1.4.4"], ["Signal", "nightcycle/signal@1.0.2"]]
 
 [[package]]
 name = "nightcycle/table-util"
 version = "1.1.0"
+dependencies = []
+
+[[package]]
+name = "nightcycle/vector"
+version = "1.0.2"
+dependencies = []
+
+[[package]]
+name = "roblox/roact"
+version = "1.4.4"
 dependencies = []
