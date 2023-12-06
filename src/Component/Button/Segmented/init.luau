@@ -493,11 +493,11 @@ function Interface.cfusion(
 		local unselectedTextColor: Color3
 
 		if thm.IsDarkMode == false then
-			selectedTextColor = Util.DARK_SURFACE --Util.getReadableColor(Util.DARK_SURFACE, selectedColor)
-			unselectedTextColor = Util.DARK_SURFACE --Util.getReadableColor(Util.DARK_SURFACE, unselectedColor)
+			selectedTextColor = Util.getElevatedColor(Util.DARK_SURFACE, thm.Elevation, thm.IsDarkMode) --Util.getReadableColor(Util.DARK_SURFACE, selectedColor)
+			unselectedTextColor = Util.getElevatedColor(Util.DARK_SURFACE, thm.Elevation, thm.IsDarkMode) --Util.getReadableColor(Util.DARK_SURFACE, unselectedColor)
 		else
-			selectedTextColor = Util.LIGHT_SURFACE --Util.getReadableColor(Util.LIGHT_SURFACE, selectedColor)
-			unselectedTextColor = Util.LIGHT_SURFACE --Util.getReadableColor(Util.LIGHT_SURFACE, unselectedColor)
+			selectedTextColor = Util.getElevatedColor(Util.LIGHT_SURFACE, thm.Elevation, thm.IsDarkMode) --Util.getReadableColor(Util.LIGHT_SURFACE, selectedColor)
+			unselectedTextColor = Util.getElevatedColor(Util.LIGHT_SURFACE, thm.Elevation, thm.IsDarkMode) --Util.getReadableColor(Util.LIGHT_SURFACE, unselectedColor)
 		end
 
 		selectedColor = Util.getReadableColor(selectedColor, selectedTextColor)
