@@ -40,9 +40,8 @@ local Interface = {}
 
 function Interface.cfusion(
 		onClick: CanBeState<() -> ()>,
-		text: CanBeState<string>,
+		icon: CanBeState<ImageData>,
 		theme: CanBeState<ThemeData>,
-		icon: CanBeState<ImageData>?,
 		isEnabled: CanBeState<boolean>?
 ): ImageLabel
 	local maid = Maid.new()
@@ -58,7 +57,6 @@ function Interface.cfusion(
 	local _Computed = _fuse.Computed
 
 	local onClickState = _import(onClick, function() end)
-	local textState = _import(text, "")
 	local themeState = _import(theme, Types.newThemeData(
 		1,
 		false,
@@ -152,7 +150,7 @@ function Interface.cfusion(
 	local button = Base(
 		maid,
 		onClickState,
-		textState,		
+		"",		
 		_Computed(function(t: ThemeData): Font
 			return t.Font
 		end, themeState),
@@ -163,7 +161,10 @@ function Interface.cfusion(
 		_Computed(function(t: ThemeData): number
 			return t.Scale
 		end, themeState),
-		sound
+		sound,
+		false,
+		nil,
+		0.75
 	)
 	maid.bind(button)
 	return button

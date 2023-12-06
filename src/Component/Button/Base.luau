@@ -45,7 +45,8 @@ return function (
 	scale: CanBeState<number>,
 	sound: CanBeState<Sound>,
 	hasMinimumSize: CanBeState<boolean>?,
-	cornerRadius: CanBeState<number>?
+	cornerRadius: CanBeState<number>?,
+	paddingScale: CanBeState<number>?
 ): ImageLabel
 
 	local _fuse = ColdFusion.fuse(maid)
@@ -97,6 +98,7 @@ return function (
 	local isDropShadowState = _import(isDropShadow, false)
 	local hasMinState = _import(hasMinimumSize, true)
 	local cornerRadiusState = _import(cornerRadius, SHAPE_DP)
+	local paddingScaleState = _import(paddingScale, 1)
 	
 	local inst: ImageLabel = _new("ImageLabel")({
 		Image = "rbxassetid://15549395120",
@@ -239,31 +241,41 @@ return function (
 						ImageTransparency = _Computed(function(icon: ImageData?, style: TextStyle?): number
 							return if icon and style then style.TextTransparency else 1
 						end, iconState, currentStyleState),
+						SizeConstraint = Enum.SizeConstraint.RelativeYY,
 						Size = _Computed(function(s: number): UDim2
-							return UDim2.fromOffset(s * ICON_SIZE_DP, s * ICON_SIZE_DP)
+							return UDim2.fromScale(1,1)
+							-- return UDim2.fromOffset(s * ICON_SIZE_DP, s * ICON_SIZE_DP)
 						end, scaleState),
 					}),
 					_new("UIPadding")({
-						PaddingLeft = _Computed(function(s: number, icon: ImageData?, txt: string): UDim
-							if icon and txt:len() > 0  then
-								return UDim.new(0, LEFT_PADDING_WITH_ICON_DP * s)
+						PaddingLeft = _Computed(function(s: number, icon: ImageData?, txt: string, padScale: number): UDim
+							if icon then
+								if txt:len() > 0 then
+									return UDim.new(0, padScale * LEFT_PADDING_WITH_ICON_DP * s)
+								else
+									return UDim.new(0, padScale * s * (HEIGHT_DP-ICON_SIZE_DP) / 2)
+								end
 							else
-								return UDim.new(0, LEFT_RIGHT_PADDING_DP * s)
+								return UDim.new(0, padScale * LEFT_RIGHT_PADDING_DP * s)
 							end
-						end, scaleState, iconState, textState),
-						PaddingRight = _Computed(function(s: number, icon: ImageData?, txt: string): UDim
-							if icon and txt:len() > 0 then
-								return UDim.new(0, RIGHT_PADDING_WITH_ICON_DP * s)
+						end, scaleState, iconState, textState, paddingScaleState),
+						PaddingRight = _Computed(function(s: number, icon: ImageData?, txt: string, padScale: number): UDim
+							if icon then
+								if txt:len() > 0 then
+									return UDim.new(0, padScale * RIGHT_PADDING_WITH_ICON_DP * s)
+								else
+									return UDim.new(0, padScale * s * (HEIGHT_DP-ICON_SIZE_DP) / 2)
+								end
 							else
-								return UDim.new(0, LEFT_RIGHT_PADDING_DP * s)
+								return UDim.new(0, padScale * LEFT_RIGHT_PADDING_DP * s)
 							end
-						end, scaleState, iconState, textState),
-						PaddingTop = _Computed(function(s: number): UDim
-							return UDim.new(0, s * (HEIGHT_DP-ICON_SIZE_DP) / 2)
-						end, scaleState),
-						PaddingBottom = _Computed(function(s: number): UDim
-							return UDim.new(0, s * (HEIGHT_DP-ICON_SIZE_DP) / 2)
-						end, scaleState),
+						end, scaleState, iconState, textState, paddingScaleState),
+						PaddingTop = _Computed(function(s: number, padScale: number): UDim
+							return UDim.new(0, padScale * s * (HEIGHT_DP-ICON_SIZE_DP) / 2)
+						end, scaleState, paddingScaleState),
+						PaddingBottom = _Computed(function(s: number, padScale: number): UDim
+							return UDim.new(0, padScale * s * (HEIGHT_DP-ICON_SIZE_DP) / 2)
+						end, scaleState, paddingScaleState),
 					}),
 					_new("UISizeConstraint")({
 						MaxSize = Vector2.new(math.huge, math.huge),

@@ -25,10 +25,8 @@ type ImageData = Types.ImageData
 type ThemeData = Types.ThemeData
 -- Constants
 local DEFAULT_VOLUME = Config.Sound.Volume
-local HOVER_TRANSPARENCY = Config.Transparency.Background.Hovered
-local FOCUS_TRANSPARENCY = Config.Transparency.Background.Focused
-local PRESS_TRANSPARENCY = Config.Transparency.Background.Pressed
 local DISABLE_TRANSPARENCY = Config.Transparency.Text.Disabled
+local DISABLE_BACK_TRANS = Config.Transparency.Background.Disabled
 
 -- Variables
 -- References
@@ -39,11 +37,10 @@ local DISABLE_TRANSPARENCY = Config.Transparency.Text.Disabled
 local Interface = {}
 
 function Interface.cfusion(
-		onClick: CanBeState<() -> ()>,
-		text: CanBeState<string>,
-		theme: CanBeState<ThemeData>,
-		icon: CanBeState<ImageData>?,
-		isEnabled: CanBeState<boolean>?
+	onClick: CanBeState<() -> ()>,
+	icon: CanBeState<ImageData>,
+	theme: CanBeState<ThemeData>,
+	isEnabled: CanBeState<boolean>?
 ): ImageLabel
 	local maid = Maid.new()
 
@@ -58,7 +55,6 @@ function Interface.cfusion(
 	local _Computed = _fuse.Computed
 
 	local onClickState = _import(onClick, function() end)
-	local textState = _import(text, "")
 	local themeState = _import(theme, Types.newThemeData(
 		1,
 		false,
@@ -72,76 +68,90 @@ function Interface.cfusion(
 	sound.SoundId = Sounds.ui_tap_variant_01
 
 	local styles = _Computed(function(thm: ThemeData): {[Enums.ButtonStateType]: TextStyle}
+		local backColor: Color3?
 		local textColor: Color3?
+
 		if thm.IsDarkMode then
-			textColor = Util.getReadableColor(
+			backColor = Util.getReadableColor(
 				thm.Color3,
 				if thm.BackgroundColor3 then thm.BackgroundColor3 else Util.DARK_SURFACE
 			)
+			assert(backColor)
+
+			textColor = Util.DARK_SURFACE
 		else
-			textColor = Util.getReadableColor(
+			backColor = Util.getReadableColor(
 				thm.Color3,
 				if thm.BackgroundColor3 then thm.BackgroundColor3 else Util.LIGHT_SURFACE
 			)
+			assert(backColor)
+
+			textColor = Util.LIGHT_SURFACE
 		end
+		assert(backColor)
 		assert(textColor)
+
+		backColor = Util.getElevatedColor(
+			backColor,
+			thm.Elevation,
+			thm.IsDarkMode
+		)
+
 		textColor = Util.getElevatedColor(
 			textColor,
 			thm.Elevation,
 			thm.IsDarkMode
 		)
+
+		local disableBackColor = (function(): Color3
+			local h,s,v = backColor:ToHSV()
+			return Color3.fromHSV(h,s*0,v)
+		end)()
+
 		local data = {
 			[Enums.ButtonStateType.Enabled] = Types.newTextStyle(
 				textColor,
 				0,
-				textColor,
-				1,
+				backColor,
+				0,
 				textColor,
 				1
 			),
 			[Enums.ButtonStateType.Disabled] = Types.newTextStyle(
 				(function(): Color3
 					if thm.IsDarkMode then
-						local h,_s,v = textColor:ToHSV()
-						return Util.getReadableColor(
-							Color3.fromHSV(h,0,v),
-							if thm.BackgroundColor3 then thm.BackgroundColor3 else Color3.new(0.15,0.15,0.15)
-						)
+						return Util.LIGHT_SURFACE
 					else
-						local h,_s,v = textColor:ToHSV()
-						return Util.getReadableColor(
-							Color3.fromHSV(h,0,v),
-							if thm.BackgroundColor3 then thm.BackgroundColor3 else Color3.new(0.85,0.85,0.85)
-						)
+						return Util.DARK_SURFACE
 					end
 				end)(),
 				DISABLE_TRANSPARENCY,
-				textColor,
-				1,
+				disableBackColor,
+				DISABLE_BACK_TRANS,
 				textColor,
 				1
 			),
 			[Enums.ButtonStateType.Focused] = Types.newTextStyle(
 				textColor,
 				0,
-				textColor,
-				FOCUS_TRANSPARENCY,
+				backColor,
+				0,
 				textColor,
 				1
 			),
 			[Enums.ButtonStateType.Hovered] = Types.newTextStyle(
 				textColor,
 				0,
-				textColor,
-				HOVER_TRANSPARENCY,
+				backColor,
+				0,
 				textColor,
 				1
 			),
 			[Enums.ButtonStateType.Pressed] = Types.newTextStyle(
 				textColor,
 				0,
-				textColor,
-				PRESS_TRANSPARENCY,
+				backColor,
+				0,
 				textColor,
 				1
 			),
@@ -152,7 +162,7 @@ function Interface.cfusion(
 	local button = Base(
 		maid,
 		onClickState,
-		textState,		
+		"",		
 		_Computed(function(t: ThemeData): Font
 			return t.Font
 		end, themeState),
@@ -161,9 +171,12 @@ function Interface.cfusion(
 		if isEnabled == nil then true else isEnabled,
 		false,
 		_Computed(function(t: ThemeData): number
-			return t.Scale
+			return t.Scale*0.85
 		end, themeState),
-		sound
+		sound,
+		false,
+		nil,
+		0.75
 	)
 	maid.bind(button)
 	return button
