@@ -8,7 +8,6 @@ local MaterialIcons = require(_Packages:WaitForChild("MaterialIcons"))
 
 -- Modules
 local Types = require(_Package:WaitForChild("Types"))
-local Enums = require(_Package:WaitForChild("Enums"))
 
 -- Types
 -- Constants

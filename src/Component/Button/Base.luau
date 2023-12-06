@@ -66,12 +66,12 @@ return function(
 	local isHoveredState = _Value(false)
 	local currentStateState = _Computed(
 		function(
-			isEnabled: boolean,
+			isEnab: boolean,
 			isFocused: boolean,
 			isPressed: boolean,
 			isHovered: boolean
 		): Enums.ButtonStateType
-			if isEnabled then
+			if isEnab then
 				if isPressed then
 					return Enums.ButtonStateType.Pressed
 				else
