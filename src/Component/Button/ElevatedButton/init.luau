@@ -175,7 +175,11 @@ function Interface.cfusion(
 		_Computed(function(t: ThemeData): number
 			return t.Scale
 		end, themeState),
-		sound
+		sound,
+		nil,
+		nil,
+		nil,
+		true
 	)
 	maid.bind(button)
 	return button

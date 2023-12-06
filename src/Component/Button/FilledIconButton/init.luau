@@ -176,7 +176,8 @@ function Interface.cfusion(
 		sound,
 		false,
 		nil,
-		0.75
+		0.75,
+		true
 	)
 	maid.bind(button)
 	return button

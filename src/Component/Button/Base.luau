@@ -4,10 +4,12 @@ local _Package = script.Parent.Parent.Parent
 local _Packages = _Package.Parent
 -- Services
 local SoundService = game:GetService("SoundService")
+local RunService = game:GetService("RunService")
 
 -- Packages
 local Maid = require(_Packages:WaitForChild("Maid"))
 local ColdFusion = require(_Packages:WaitForChild("ColdFusion"))
+local CurveUtil = require(_Packages:WaitForChild("CurveUtil"))
 
 -- Modules
 local Enums = require(_Package:WaitForChild("Enums"))
@@ -32,6 +34,7 @@ local RIGHT_PADDING_WITH_ICON_DP = 16
 local PADDING_BETWEEN_ELEMENTS_DP = 8
 local LABEL_TEXT_ALIGNMENT = Enum.TextXAlignment.Center
 local IMAGE_SIZE = 500
+local RIP_STEP = 0.005
 local HALF_IMAGE_SIZE = IMAGE_SIZE/2
 return function (
 	maid: Maid,
@@ -46,7 +49,8 @@ return function (
 	sound: CanBeState<Sound>,
 	hasMinimumSize: CanBeState<boolean>?,
 	cornerRadius: CanBeState<number>?,
-	paddingScale: CanBeState<number>?
+	paddingScale: CanBeState<number>?,
+	useRipple: CanBeState<boolean>?
 ): ImageLabel
 
 	local _fuse = ColdFusion.fuse(maid)
@@ -99,8 +103,58 @@ return function (
 	local hasMinState = _import(hasMinimumSize, true)
 	local cornerRadiusState = _import(cornerRadius, SHAPE_DP)
 	local paddingScaleState = _import(paddingScale, 1)
-	
-	local inst: ImageLabel = _new("ImageLabel")({
+	local useRippleState = _import(useRipple, false)
+
+	local inst: ImageLabel
+
+	local rippleColorState: ValueState<ColorSequence?> = _Value(nil :: ColorSequence?)
+
+	local function ripple(clickPosition: Vector2)
+		local runMaid = Maid.new()
+		local alpha = 0
+		local xStart = inst.AbsolutePosition.X
+
+		local initialAlpha = math.clamp((clickPosition.X - xStart)/inst.AbsoluteSize.X, 0, 1)
+
+		runMaid:GiveTask(RunService.RenderStepped:Connect(function(deltaTime: number)
+			alpha += deltaTime / 0.6
+
+			local moveAlpha = 1-CurveUtil.ease(
+				1-math.clamp(alpha/0.5, 0, 1), 
+				Enum.EasingStyle.Quad,
+				Enum.EasingDirection.In
+			)
+			local fadeAlpha = CurveUtil.ease(
+				math.clamp((alpha-0.1)/0.7, 0, 1), 
+				Enum.EasingStyle.Quad,
+				Enum.EasingDirection.In
+			)
+
+			local baseColor = (stylesState:Get()[Enums.ButtonStateType.Enabled] :: TextStyle).BackgroundColor3
+			local rippleColor = (Color3.new(1,1,1):Lerp(baseColor, 0.8)):Lerp(baseColor, fadeAlpha)
+
+			local leftOffset = math.clamp(initialAlpha - moveAlpha, RIP_STEP, math.max(initialAlpha-RIP_STEP, RIP_STEP*1.5))
+			local rightOffset = math.clamp(initialAlpha + moveAlpha, math.min(initialAlpha+RIP_STEP, 1-RIP_STEP*1.5), 1-RIP_STEP)
+
+			rippleColorState:Set(ColorSequence.new({
+				ColorSequenceKeypoint.new(0, baseColor),
+				ColorSequenceKeypoint.new(leftOffset-RIP_STEP*0.5, baseColor),
+				ColorSequenceKeypoint.new(leftOffset, rippleColor),
+				ColorSequenceKeypoint.new(rightOffset, rippleColor),
+				ColorSequenceKeypoint.new(rightOffset+RIP_STEP*0.5, baseColor),
+				ColorSequenceKeypoint.new(1, baseColor),
+			}))
+
+			if alpha >= 1 then
+				rippleColorState:Set(nil)
+				runMaid:Destroy()
+			end
+		end))
+		maid._ripple = runMaid
+	end
+
+
+	inst = _new("ImageLabel")({
 		Image = "rbxassetid://15549395120",
 		ImageColor3 = Color3.new(0,0,0),
 		BackgroundTransparency = 1,
@@ -131,9 +185,10 @@ return function (
 				BackgroundTransparency = _Computed(function(style: TextStyle): number
 					return style.BackgroundTransparency
 				end, currentStyleState),
-				BackgroundColor3 = _Computed(function(style: TextStyle): Color3
+				BackgroundColor3 = _Computed(function(style: TextStyle, useRip: boolean): Color3
+					if useRip then return Color3.new(1,1,1) end
 					return style.BackgroundColor3
-				end, currentStyleState),
+				end, currentStyleState, useRippleState),
 				Active = isEnabledState,
 				AutomaticSize = Enum.AutomaticSize.X,
 				Size = _Computed(function(s: number): UDim2
@@ -149,10 +204,20 @@ return function (
 						end
 						click()
 					end,
-					MouseButton1Down = function(inputObject: InputObject)
+					MouseButton1Down = function(x: number, y: number)
+						if isEnabledState:Get() == false then return end
 						isPressedState:Set(true)
 					end,
-					MouseButton1Up = function(inputObject: InputObject)
+					MouseButton1Up = function(x: number, y: number)
+						if isEnabledState:Get() == false then return end
+						if useRippleState:Get() then
+							ripple(
+								Vector2.new(
+									x,
+									y
+								)
+							)
+						end
 						isPressedState:Set(false)
 					end,
 					MouseEnter = function()
@@ -173,6 +238,19 @@ return function (
 						CornerRadius = _Computed(function(s: number, cornerRad: number): UDim
 							return UDim.new(0, s * cornerRad)
 						end, scaleState, cornerRadiusState),
+					}),
+					_new("UIGradient")({
+						Color = _Computed(function(useRip: boolean, style: TextStyle, seq: ColorSequence?): ColorSequence
+							if useRip then
+								if seq then
+									return seq
+								else
+									return ColorSequence.new(style.BackgroundColor3)
+								end
+							else
+								return ColorSequence.new(Color3.new(1,1,1))
+							end
+						end, useRippleState, currentStyleState, rippleColorState),
 					}),
 					_new("UIStroke")({
 						ApplyStrokeMode = Enum.ApplyStrokeMode.Border,

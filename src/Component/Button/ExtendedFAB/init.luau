@@ -177,7 +177,9 @@ function Interface.cfusion(
 		end, themeState),
 		sound,
 		false,
-		SHAPE_DP
+		SHAPE_DP,
+		nil,
+		true
 	)
 	maid.bind(button)
 	return button
