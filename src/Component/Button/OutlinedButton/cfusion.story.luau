@@ -19,13 +19,9 @@ local Icons = MaterialIcons.default.dp_48.scale_1
 return function(frame: Frame)
 	local maid = Maid.new()
 	task.spawn(function()
-		local function makeHalfFrame(
-			isDarkMode: boolean, 
-			color: Color3
-		): Frame
-
+		local function makeHalfFrame(isDarkMode: boolean, color: Color3): Frame
 			local halfFrame = maid:GiveTask(Instance.new("Frame"))
-			halfFrame.BackgroundColor3 = if isDarkMode then Color3.new(0.15,0.15,0.15) else Color3.new(0.85, 0.85, 0.85)
+			halfFrame.BackgroundColor3 = if isDarkMode then Color3.new(0.15, 0.15, 0.15) else Color3.new(0.85, 0.85, 0.85)
 
 			local listLayout = maid:GiveTask(Instance.new("UIListLayout"))
 			listLayout.FillDirection = Enum.FillDirection.Vertical
@@ -35,62 +31,33 @@ return function(frame: Frame)
 			listLayout.Parent = halfFrame
 
 			local Module = require(script.Parent)
-			local theme = Types.newThemeData(
-				1,
-				isDarkMode,
-				SCALE,
-				Font.fromEnum(Enum.Font.SourceSans),
-				color,
-				halfFrame.BackgroundColor3
-			)
+			local theme = Types.newThemeData(1, isDarkMode, SCALE, Font.fromEnum(Enum.Font.SourceSans), color, halfFrame.BackgroundColor3)
 
 			do
-				local button = maid:GiveTask(Module.cfusion(
-					function()
-						print("click")
-					end,
-					"Button",
-					theme,
-					nil,
-					nil
-				))
+				local button = maid:GiveTask(Module.cfusion(function()
+					print("click")
+				end, "Button", theme, nil, nil))
 				button.Parent = halfFrame
 			end
 
 			do
-				local button = maid:GiveTask(Module.cfusion(
-					function()
-						print("click")
-					end,
-					"Disabled",
-					theme,
-					nil,
-					false
-				))
+				local button = maid:GiveTask(Module.cfusion(function()
+					print("click")
+				end, "Disabled", theme, nil, false))
 				button.Parent = halfFrame
 			end
 
 			do
-				local button = maid:GiveTask(Module.cfusion(
-					function()
-						print("click")
-					end,
-					"Icon",
-					theme,
-					Types.newImageData(
-						Icons.voice_chat.Image,
-						Icons.voice_chat.ImageRectOffset,
-						Icons.voice_chat.ImageRectSize
-					),
-					true
-				))
+				local button = maid:GiveTask(Module.cfusion(function()
+					print("click")
+				end, "Icon", theme, Types.newImageData(Icons.voice_chat.Image, Icons.voice_chat.ImageRectOffset, Icons.voice_chat.ImageRectSize), true))
 				button.Parent = halfFrame
 			end
 
 			return halfFrame
 		end
 
-		local COLORS: {[number]: Color3} = {
+		local COLORS: { [number]: Color3 } = {
 			Color3.fromHSV(0, 0.9, 0.8),
 			Color3.fromHSV(0, 0.25, 0.8),
 			Color3.fromHSV(0, 0.9, 0.5),
@@ -100,27 +67,19 @@ return function(frame: Frame)
 		}
 
 		for i, color in ipairs(COLORS) do
-			local x = (i-1)/(#COLORS)
-			local width = 1/(#COLORS)
-			local dark = makeHalfFrame(
-				true, 
-				color
-			)
-			
+			local x = (i - 1) / #COLORS
+			local width = 1 / #COLORS
+			local dark = makeHalfFrame(true, color)
+
 			dark.Size = UDim2.fromScale(width, 0.5)
 			dark.Position = UDim2.fromScale(x, 0.5)
 			dark.Parent = frame
-	
-			local bright = makeHalfFrame(
-				false, 
-				color
-			)
+
+			local bright = makeHalfFrame(false, color)
 			bright.Size = UDim2.fromScale(width, 0.5)
 			bright.Position = UDim2.fromScale(x, 0)
 			bright.Parent = frame
-	
 		end
-
 	end)
 	return function()
 		maid:Destroy()

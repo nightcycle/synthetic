@@ -38,5 +38,5 @@ return {
 	notification_simple_02 = "rbxassetid://15530133223",
 	navigation_backward_selection = "rbxassetid://15530108417",
 	ui_lock = "rbxassetid://15530107845",
-	alert_error_01 = "rbxassetid://15530082764"
+	alert_error_01 = "rbxassetid://15530082764",
 }

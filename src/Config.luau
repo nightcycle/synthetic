@@ -14,7 +14,7 @@ return {
 	},
 	Transparency = {
 		Text = {
-			Disabled = 0.4
+			Disabled = 0.4,
 		},
 		Background = {
 			Disabled = 0.7,
@@ -22,5 +22,5 @@ return {
 			Focused = 0.45,
 			Pressed = 0.6,
 		},
-	}
+	},
 }
