@@ -303,10 +303,10 @@ return function(
 							return if icon and style then style.TextColor3 else Color3.new(1, 1, 1)
 						end, iconState, currentStyleState),
 						ImageRectOffset = _Computed(function(icon: ImageData?): Vector2
-							return if icon then icon.RectOffset else Vector2.zero
+							return if icon then icon.ImageRectOffset else Vector2.zero
 						end, iconState),
 						ImageRectSize = _Computed(function(icon: ImageData?): Vector2
-							return if icon then icon.RectSize else Vector2.zero
+							return if icon then icon.ImageRectSize else Vector2.zero
 						end, iconState),
 						ImageTransparency = _Computed(function(icon: ImageData?, style: TextStyle?): number
 							return if icon and style then style.TextTransparency else 1

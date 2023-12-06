@@ -14,7 +14,7 @@ return {
 	},
 	Transparency = {
 		Text = {
-			Disabled = 0.4,
+			Disabled = 0.6,
 		},
 		Background = {
 			Disabled = 0.7,
