@@ -21,7 +21,9 @@ return function(frame: Frame)
 	task.spawn(function()
 		local function makeHalfFrame(isDarkMode: boolean, color: Color3): Frame
 			local halfFrame = maid:GiveTask(Instance.new("Frame"))
-			halfFrame.BackgroundColor3 = if isDarkMode then Color3.new(0.15, 0.15, 0.15) else Color3.new(0.85, 0.85, 0.85)
+			halfFrame.BackgroundColor3 = if isDarkMode
+				then Color3.new(0.15, 0.15, 0.15)
+				else Color3.new(0.85, 0.85, 0.85)
 
 			local listLayout = maid:GiveTask(Instance.new("UIListLayout"))
 			listLayout.FillDirection = Enum.FillDirection.Vertical
@@ -31,7 +33,14 @@ return function(frame: Frame)
 			listLayout.Parent = halfFrame
 
 			local Module = require(script.Parent)
-			local theme = Types.newThemeData(1, isDarkMode, SCALE, Font.fromEnum(Enum.Font.SourceSans), color, halfFrame.BackgroundColor3)
+			local theme = Types.newThemeData(
+				1,
+				isDarkMode,
+				SCALE,
+				Font.fromEnum(Enum.Font.SourceSans),
+				color,
+				halfFrame.BackgroundColor3
+			)
 
 			do
 				local button = maid:GiveTask(Module.cfusion(function()
@@ -48,9 +57,21 @@ return function(frame: Frame)
 			end
 
 			do
-				local button = maid:GiveTask(Module.cfusion(function()
-					print("click")
-				end, "Icon", theme, Types.newImageData(Icons.voice_chat.Image, Icons.voice_chat.ImageRectOffset, Icons.voice_chat.ImageRectSize), true))
+				local button = maid:GiveTask(
+					Module.cfusion(
+						function()
+							print("click")
+						end,
+						"Icon",
+						theme,
+						Types.newImageData(
+							Icons.voice_chat.Image,
+							Icons.voice_chat.ImageRectOffset,
+							Icons.voice_chat.ImageRectSize
+						),
+						true
+					)
+				)
 				button.Parent = halfFrame
 			end
 

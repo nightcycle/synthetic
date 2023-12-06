@@ -64,32 +64,47 @@ return function(
 	local isFocusedState = _Value(false)
 	local isPressedState = _Value(false)
 	local isHoveredState = _Value(false)
-	local currentStateState = _Computed(function(isEnabled: boolean, isFocused: boolean, isPressed: boolean, isHovered: boolean): Enums.ButtonStateType
-		if isEnabled then
-			if isPressed then
-				return Enums.ButtonStateType.Pressed
-			else
-				if isHovered then
-					return Enums.ButtonStateType.Hovered
+	local currentStateState = _Computed(
+		function(
+			isEnabled: boolean,
+			isFocused: boolean,
+			isPressed: boolean,
+			isHovered: boolean
+		): Enums.ButtonStateType
+			if isEnabled then
+				if isPressed then
+					return Enums.ButtonStateType.Pressed
 				else
-					if isFocused then
-						return Enums.ButtonStateType.Focused
+					if isHovered then
+						return Enums.ButtonStateType.Hovered
 					else
-						return Enums.ButtonStateType.Enabled
+						if isFocused then
+							return Enums.ButtonStateType.Focused
+						else
+							return Enums.ButtonStateType.Enabled
+						end
 					end
 				end
+			else
+				return Enums.ButtonStateType.Disabled
 			end
-		else
-			return Enums.ButtonStateType.Disabled
-		end
-	end, isEnabledState, isFocusedState, isPressedState, isHoveredState) :: State<any>
+		end,
+		isEnabledState,
+		isFocusedState,
+		isPressedState,
+		isHoveredState
+	) :: State<any>
 
 	local stylesState = _import(styles, {}) :: any
-	local currentStyleState = _Computed(function(state: Enums.ButtonStateType, styles: { [Enums.ButtonStateType]: TextStyle }): TextStyle
-		local style = styles[state]
-		assert(style ~= nil, `no style for {state}`)
-		return style
-	end, currentStateState, stylesState)
+	local currentStyleState = _Computed(
+		function(state: Enums.ButtonStateType, styles: { [Enums.ButtonStateType]: TextStyle }): TextStyle
+			local style = styles[state]
+			assert(style ~= nil, `no style for {state}`)
+			return style
+		end,
+		currentStateState,
+		stylesState
+	)
 
 	local onClickState = _import(onClick, function() end)
 	local textState = _import(text, "")
@@ -117,14 +132,28 @@ return function(
 		runMaid:GiveTask(RunService.RenderStepped:Connect(function(deltaTime: number)
 			alpha += deltaTime / 0.6
 
-			local moveAlpha = 1 - CurveUtil.ease(1 - math.clamp(alpha / 0.5, 0, 1), Enum.EasingStyle.Quad, Enum.EasingDirection.In)
-			local fadeAlpha = CurveUtil.ease(math.clamp((alpha - 0.1) / 0.7, 0, 1), Enum.EasingStyle.Quad, Enum.EasingDirection.In)
+			local moveAlpha = 1
+				- CurveUtil.ease(
+					1 - math.clamp(alpha / 0.5, 0, 1),
+					Enum.EasingStyle.Quad,
+					Enum.EasingDirection.In
+				)
+			local fadeAlpha = CurveUtil.ease(
+				math.clamp((alpha - 0.1) / 0.7, 0, 1),
+				Enum.EasingStyle.Quad,
+				Enum.EasingDirection.In
+			)
 
 			local baseColor = (stylesState:Get()[Enums.ButtonStateType.Enabled] :: TextStyle).BackgroundColor3
 			local rippleColor = (Color3.new(1, 1, 1):Lerp(baseColor, 0.8)):Lerp(baseColor, fadeAlpha)
 
-			local leftOffset = math.clamp(initialAlpha - moveAlpha, RIP_STEP, math.max(initialAlpha - RIP_STEP, RIP_STEP * 1.5))
-			local rightOffset = math.clamp(initialAlpha + moveAlpha, math.min(initialAlpha + RIP_STEP, 1 - RIP_STEP * 1.5), 1 - RIP_STEP)
+			local leftOffset =
+				math.clamp(initialAlpha - moveAlpha, RIP_STEP, math.max(initialAlpha - RIP_STEP, RIP_STEP * 1.5))
+			local rightOffset = math.clamp(
+				initialAlpha + moveAlpha,
+				math.min(initialAlpha + RIP_STEP, 1 - RIP_STEP * 1.5),
+				1 - RIP_STEP
+			)
 
 			rippleColorState:Set(ColorSequence.new({
 				ColorSequenceKeypoint.new(0, baseColor),
@@ -232,17 +261,22 @@ return function(
 						end, scaleState, cornerRadiusState),
 					}),
 					_new("UIGradient")({
-						Color = _Computed(function(useRip: boolean, style: TextStyle, seq: ColorSequence?): ColorSequence
-							if useRip then
-								if seq then
-									return seq
+						Color = _Computed(
+							function(useRip: boolean, style: TextStyle, seq: ColorSequence?): ColorSequence
+								if useRip then
+									if seq then
+										return seq
+									else
+										return ColorSequence.new(style.BackgroundColor3)
+									end
 								else
-									return ColorSequence.new(style.BackgroundColor3)
+									return ColorSequence.new(Color3.new(1, 1, 1))
 								end
-							else
-								return ColorSequence.new(Color3.new(1, 1, 1))
-							end
-						end, useRippleState, currentStyleState, rippleColorState),
+							end,
+							useRippleState,
+							currentStyleState,
+							rippleColorState
+						),
 					}),
 					_new("UIStroke")({
 						ApplyStrokeMode = Enum.ApplyStrokeMode.Border,
@@ -318,28 +352,40 @@ return function(
 						end, scaleState),
 					}),
 					_new("UIPadding")({
-						PaddingLeft = _Computed(function(s: number, icon: ImageData?, txt: string, padScale: number): UDim
-							if icon then
-								if txt:len() > 0 then
-									return UDim.new(0, padScale * LEFT_PADDING_WITH_ICON_DP * s)
+						PaddingLeft = _Computed(
+							function(s: number, icon: ImageData?, txt: string, padScale: number): UDim
+								if icon then
+									if txt:len() > 0 then
+										return UDim.new(0, padScale * LEFT_PADDING_WITH_ICON_DP * s)
+									else
+										return UDim.new(0, padScale * s * (HEIGHT_DP - ICON_SIZE_DP) / 2)
+									end
 								else
-									return UDim.new(0, padScale * s * (HEIGHT_DP - ICON_SIZE_DP) / 2)
+									return UDim.new(0, padScale * LEFT_RIGHT_PADDING_DP * s)
 								end
-							else
-								return UDim.new(0, padScale * LEFT_RIGHT_PADDING_DP * s)
-							end
-						end, scaleState, iconState, textState, paddingScaleState),
-						PaddingRight = _Computed(function(s: number, icon: ImageData?, txt: string, padScale: number): UDim
-							if icon then
-								if txt:len() > 0 then
-									return UDim.new(0, padScale * RIGHT_PADDING_WITH_ICON_DP * s)
+							end,
+							scaleState,
+							iconState,
+							textState,
+							paddingScaleState
+						),
+						PaddingRight = _Computed(
+							function(s: number, icon: ImageData?, txt: string, padScale: number): UDim
+								if icon then
+									if txt:len() > 0 then
+										return UDim.new(0, padScale * RIGHT_PADDING_WITH_ICON_DP * s)
+									else
+										return UDim.new(0, padScale * s * (HEIGHT_DP - ICON_SIZE_DP) / 2)
+									end
 								else
-									return UDim.new(0, padScale * s * (HEIGHT_DP - ICON_SIZE_DP) / 2)
+									return UDim.new(0, padScale * LEFT_RIGHT_PADDING_DP * s)
 								end
-							else
-								return UDim.new(0, padScale * LEFT_RIGHT_PADDING_DP * s)
-							end
-						end, scaleState, iconState, textState, paddingScaleState),
+							end,
+							scaleState,
+							iconState,
+							textState,
+							paddingScaleState
+						),
 						PaddingTop = _Computed(function(s: number, padScale: number): UDim
 							return UDim.new(0, padScale * s * (HEIGHT_DP - ICON_SIZE_DP) / 2)
 						end, scaleState, paddingScaleState),

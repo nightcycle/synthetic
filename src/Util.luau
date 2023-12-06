@@ -69,7 +69,11 @@ function Util.getIfReadable(textColor3: Color3, backgroundColor3: Color3, minCon
 end
 
 -- https://github.com/alex-page/a11ycolor/blob/main/index.js
-function Util.getReadableColor(textColor3: Color3, backgroundColor3: Color3, minConstrastRatio: number?): Color3
+function Util.getReadableColor(
+	textColor3: Color3,
+	backgroundColor3: Color3,
+	minConstrastRatio: number?
+): Color3
 	minConstrastRatio = minConstrastRatio or DEFAULT_CONTRAST_RATIO
 	assert(minConstrastRatio)
 

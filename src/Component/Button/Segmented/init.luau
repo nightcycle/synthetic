@@ -42,7 +42,7 @@ local HOVER_TRANSPARENCY = Config.Transparency.Background.Hovered
 local FOCUS_TRANSPARENCY = Config.Transparency.Background.Focused
 local PRESS_TRANSPARENCY = Config.Transparency.Background.Pressed
 local DISABLE_TRANSPARENCY = Config.Transparency.Text.Disabled
-local CIRCLE_IMAGE_RECT = Rect.new(256,256,256, 256)
+local CIRCLE_IMAGE_RECT = Rect.new(256, 256, 256, 256)
 local RIGHT_CIRCLE_IMAGE = "rbxassetid://15562060748"
 local LEFT_CIRCLE_IMAGE = "rbxassetid://15562057345"
 local CENTER_IMAGE = "rbxassetid://14846394635"
@@ -53,39 +53,29 @@ local CENTER_IMAGE = "rbxassetid://14846394635"
 
 function new(
 	maid: Maid,
-	options: CanBeState<{[number]: OptionData}>,
+	options: CanBeState<{ [number]: OptionData }>,
 	isMultiSelect: CanBeState<boolean>,
-	styles: CanBeState<{[Enums.ButtonStateType]: ToggleTextStyle}>,
+	styles: CanBeState<{ [Enums.ButtonStateType]: ToggleTextStyle }>,
 	scale: CanBeState<number>,
 	font: CanBeState<Font>,
 	density: CanBeState<number>,
 	sound: CanBeState<Sound?>
 ): Frame
-
 	local _fuse = ColdFusion.fuse(maid)
-	
+
 	local _new = _fuse.new
 	local _bind = _fuse.bind
 	local _clone = _fuse.clone
 	local _import = _fuse.import
-	
+
 	local _Value = _fuse.Value
 	local _Computed = _fuse.Computed
 
-	local optionsState: State<{[number]: OptionData}> = _import(
-		options,
-		{}
-	)
+	local optionsState: State<{ [number]: OptionData }> = _import(options, {})
 
-	local isMultiSelectState: State<boolean> = _import(
-		isMultiSelect,
-		false
-	)
+	local isMultiSelectState: State<boolean> = _import(isMultiSelect, false)
 
-	local stylesState: State<{[Enums.ButtonStateType]: ToggleTextStyle}> = _import(
-		styles,
-		{}
-	)
+	local stylesState: State<{ [Enums.ButtonStateType]: ToggleTextStyle }> = _import(styles, {})
 
 	local soundState: State<Sound> = _import(sound, nil :: Sound?)
 
@@ -97,11 +87,11 @@ function new(
 	local fontState: State<Font> = _import(font, Font.fromEnum(Enum.Font.SourceSansSemibold))
 
 	local heightState = _Computed(function(s: number, d: number): number
-		return s*(HEIGHT_DP+(d*4))
+		return s * (HEIGHT_DP + (d * 4))
 	end, scaleState, densityState)
 
 	local ratioState = _Computed(function(d: number): number
-		return 3 * ((HEIGHT_DP-(d*4))/HEIGHT_DP)
+		return 3 * ((HEIGHT_DP - (d * 4)) / HEIGHT_DP)
 	end, densityState)
 
 	local inst = _new("Frame")({
@@ -136,14 +126,14 @@ function new(
 			}),
 			_new("UIStroke")({
 				ApplyStrokeMode = Enum.ApplyStrokeMode.Border,
-				Color = _Computed(function(styles: {[Enums.ButtonStateType]: ToggleTextStyle}): Color3
+				Color = _Computed(function(styles: { [Enums.ButtonStateType]: ToggleTextStyle }): Color3
 					return styles[Enums.ButtonStateType.Enabled].Unselected.BorderColor3
 				end, stylesState),
 				LineJoinMode = Enum.LineJoinMode.Round,
 				Thickness = _Computed(function(s: number): number
 					return math.max(s * OUTLINE_WIDTH_DP * 1, 1)
 				end, scaleState),
-				Transparency = _Computed(function(styles: {[Enums.ButtonStateType]: ToggleTextStyle}): number
+				Transparency = _Computed(function(styles: { [Enums.ButtonStateType]: ToggleTextStyle }): number
 					return styles[Enums.ButtonStateType.Enabled].Unselected.BorderTransparency
 				end, stylesState),
 			}),
@@ -153,18 +143,20 @@ function new(
 					return Vector2.new(s * MIN_LEFT_RIGHT_PADDING_DP * 2, 0)
 				end, scaleState),
 			}),
-		}
+		},
 	}) :: Frame
 
 	local deselectAll = maid:GiveTask(Signal.new())
 
+	for i = 1, MAX_BUTTON_COUNT do
+		local optionDataState: State<OptionData?> = _Computed(
+			function(options: { [number]: OptionData }): OptionData?
+				return options[i]
+			end,
+			optionsState
+		)
 
-	for i=1, MAX_BUTTON_COUNT do
-		local optionDataState: State<OptionData?> = _Computed(function(options: {[number]: OptionData}): OptionData?
-			return options[i]
-		end, optionsState)
-
-		local backgroundImageState = _Computed(function(options: {[number]: OptionData}): string
+		local backgroundImageState = _Computed(function(options: { [number]: OptionData }): string
 			if #options == i then
 				return RIGHT_CIRCLE_IMAGE
 			elseif i == 1 then
@@ -197,56 +189,71 @@ function new(
 		maid:GiveTask(deselectAll:Connect(function(j: number)
 			if j ~= i then
 				if isSelectedState:Get() then
-					clickCount:Set(clickCount:Get()+1)
+					clickCount:Set(clickCount:Get() + 1)
 				end
 			end
 		end))
 
-		local currentStateState = _Computed(function(isEnabled: boolean, isFocused: boolean, isPressed: boolean, isHovered: boolean): Enums.ButtonStateType
-			if isEnabled then
-				if isPressed then
-					return Enums.ButtonStateType.Pressed
-				else
-					if isHovered then
-						return Enums.ButtonStateType.Hovered
+		local currentStateState = _Computed(
+			function(
+				isEnabled: boolean,
+				isFocused: boolean,
+				isPressed: boolean,
+				isHovered: boolean
+			): Enums.ButtonStateType
+				if isEnabled then
+					if isPressed then
+						return Enums.ButtonStateType.Pressed
 					else
-						if isFocused then
-							return Enums.ButtonStateType.Focused
+						if isHovered then
+							return Enums.ButtonStateType.Hovered
 						else
-							return Enums.ButtonStateType.Enabled
+							if isFocused then
+								return Enums.ButtonStateType.Focused
+							else
+								return Enums.ButtonStateType.Enabled
+							end
 						end
 					end
+				else
+					return Enums.ButtonStateType.Disabled
 				end
-			else
-				return Enums.ButtonStateType.Disabled
-			end
-		end, isEnabledState, isFocusedState, isPressedState, isHoveredState) :: State<any>
-
+			end,
+			isEnabledState,
+			isFocusedState,
+			isPressedState,
+			isHoveredState
+		) :: State<any>
 
 		local iconState = _Computed(function(optionData: OptionData?, isSelected: boolean): ImageData?
 			return if optionData then if isSelected then optionData.SelectedIcon else optionData.Icon else nil
 		end, optionDataState, isSelectedState)
-		
+
 		local textState = _Computed(function(optionData: OptionData?, isSelected: boolean): string
 			return if optionData then if isSelected then optionData.SelectedText else optionData.Text else ""
 		end, optionDataState, isSelectedState)
 
-		local currentStyleState = _Computed(function(
-			state: Enums.ButtonStateType,
-			isSelected: boolean,
-			styles: { [Enums.ButtonStateType]: ToggleTextStyle }
-		): TextStyle
-			local toggleStyle = styles[state]
-			assert(toggleStyle ~= nil, `no style for {state}`)
-			if isSelected then
-				return toggleStyle.Selected
-			else
-				return toggleStyle.Unselected
-			end
-		end, currentStateState, isSelectedState, stylesState)
+		local currentStyleState = _Computed(
+			function(
+				state: Enums.ButtonStateType,
+				isSelected: boolean,
+				styles: { [Enums.ButtonStateType]: ToggleTextStyle }
+			): TextStyle
+				local toggleStyle = styles[state]
+				assert(toggleStyle ~= nil, `no style for {state}`)
+				if isSelected then
+					return toggleStyle.Selected
+				else
+					return toggleStyle.Unselected
+				end
+			end,
+			currentStateState,
+			isSelectedState,
+			stylesState
+		)
 
 		local barSizeState = _Computed(function(s: number): UDim2
-			return UDim2.new(0, s*OUTLINE_WIDTH_DP,1,0)
+			return UDim2.new(0, s * OUTLINE_WIDTH_DP, 1, 0)
 		end, scaleState)
 
 		_new("Frame")({
@@ -256,12 +263,18 @@ function new(
 			LayoutOrder = i - 0.5,
 			Size = barSizeState,
 			BorderSizePixel = 0,
-			BackgroundTransparency = _Computed(function(styleList: {[Enums.ButtonStateType]: ToggleTextStyle}): number
-				return styleList[Enums.ButtonStateType.Enabled].Unselected.BorderTransparency
-			end, stylesState),
-			BackgroundColor3 = _Computed(function(styleList: {[Enums.ButtonStateType]: ToggleTextStyle}): Color3
-				return styleList[Enums.ButtonStateType.Enabled].Unselected.BorderColor3
-			end, stylesState),
+			BackgroundTransparency = _Computed(
+				function(styleList: { [Enums.ButtonStateType]: ToggleTextStyle }): number
+					return styleList[Enums.ButtonStateType.Enabled].Unselected.BorderTransparency
+				end,
+				stylesState
+			),
+			BackgroundColor3 = _Computed(
+				function(styleList: { [Enums.ButtonStateType]: ToggleTextStyle }): Color3
+					return styleList[Enums.ButtonStateType.Enabled].Unselected.BorderColor3
+				end,
+				stylesState
+			),
 			Parent = inst,
 		})
 
@@ -269,10 +282,10 @@ function new(
 			Visible = _Computed(function(data: OptionData?): boolean
 				return data ~= nil
 			end, optionDataState),
-			Size = _Computed(function(options: {[number]: OptionData}, barSize: UDim2): UDim2
+			Size = _Computed(function(options: { [number]: OptionData }, barSize: UDim2): UDim2
 				local buttonCount = #options
-				local avgBarReduction = barSize.X.Offset * (buttonCount-1) / buttonCount
-				return UDim2.new(1/buttonCount,-avgBarReduction,1,0)
+				local avgBarReduction = barSize.X.Offset * (buttonCount - 1) / buttonCount
+				return UDim2.new(1 / buttonCount, -avgBarReduction, 1, 0)
 			end, optionsState, barSizeState),
 			LayoutOrder = i,
 			Parent = inst,
@@ -297,7 +310,7 @@ function new(
 					local count = clickCount:Get() + 1
 					clickCount:Set(count)
 					local initialSelect: boolean = isInitiallySelected:Get()
-					
+
 					local s = soundState:Get()
 					if s then
 						SoundService:PlayLocalSound(s)
@@ -307,7 +320,7 @@ function new(
 						deselectAll:Fire(i)
 					end
 
-					if count%2 == 0 then
+					if count % 2 == 0 then
 						onClick(initialSelect)
 					else
 						onClick(not initialSelect)
@@ -418,19 +431,19 @@ function new(
 				}),
 				_new("UIPadding")({
 					PaddingLeft = _Computed(function(s: number): UDim
-						return UDim.new(0, s * (MIN_LEFT_RIGHT_PADDING_DP+ELEMENT_SEPARATION_PADDING_DP))
+						return UDim.new(0, s * (MIN_LEFT_RIGHT_PADDING_DP + ELEMENT_SEPARATION_PADDING_DP))
 					end, scaleState),
 					PaddingRight = _Computed(function(s: number): UDim
-						return UDim.new(0, s * (MIN_LEFT_RIGHT_PADDING_DP+ELEMENT_SEPARATION_PADDING_DP))
+						return UDim.new(0, s * (MIN_LEFT_RIGHT_PADDING_DP + ELEMENT_SEPARATION_PADDING_DP))
 					end, scaleState),
 					PaddingTop = _Computed(function(s: number, h: number): UDim
-						return UDim.new(0, (h - s *ICON_SIZE_DP)/2)
+						return UDim.new(0, (h - s * ICON_SIZE_DP) / 2)
 					end, scaleState, heightState),
 					PaddingBottom = _Computed(function(s: number, h: number): UDim
-						return UDim.new(0,  (h - s *ICON_SIZE_DP)/2)
+						return UDim.new(0, (h - s * ICON_SIZE_DP) / 2)
 					end, scaleState, heightState),
 				}),
-			}
+			},
 		})
 	end
 
@@ -440,9 +453,9 @@ end
 local Interface = {}
 
 function Interface.cfusion(
-	options: CanBeState<{[number]: OptionData}>,
+	options: CanBeState<{ [number]: OptionData }>,
 	isMultiSelect: CanBeState<boolean>,
-	theme: CanBeState<ThemeData>, 
+	theme: CanBeState<ThemeData>,
 	density: CanBeState<number>
 ): Frame
 	local maid = Maid.new()
@@ -457,14 +470,22 @@ function Interface.cfusion(
 	local _Value = _fuse.Value
 	local _Computed = _fuse.Computed
 
-	local themeState = _import(theme, Types.newThemeData(1, false, 1, Font.fromEnum(Enum.Font.SourceSansSemibold), Color3.fromHSV(0.8, 0.4, 0.8)))
+	local themeState = _import(
+		theme,
+		Types.newThemeData(
+			1,
+			false,
+			1,
+			Font.fromEnum(Enum.Font.SourceSansSemibold),
+			Color3.fromHSV(0.8, 0.4, 0.8)
+		)
+	)
 
 	local sound = maid:GiveTask(Instance.new("Sound"))
 	sound.Volume = DEFAULT_VOLUME
 	sound.SoundId = Sounds.ui_tap_variant_01
 
 	local styles = _Computed(function(thm: ThemeData): { [Enums.ButtonStateType]: ToggleTextStyle }
-
 		local unselectedColor = thm.Color3
 		local selectedColor = thm.SelectionColor3
 
@@ -498,10 +519,16 @@ function Interface.cfusion(
 					(function(): Color3
 						if thm.IsDarkMode then
 							local h, _s, v = selectedTextColor:ToHSV()
-							return Util.getReadableColor(Color3.fromHSV(h, 0, v), if thm.BackgroundColor3 then thm.BackgroundColor3 else Color3.new(0.15, 0.15, 0.15))
+							return Util.getReadableColor(
+								Color3.fromHSV(h, 0, v),
+								if thm.BackgroundColor3 then thm.BackgroundColor3 else Color3.new(0.15, 0.15, 0.15)
+							)
 						else
 							local h, _s, v = unselectedTextColor:ToHSV()
-							return Util.getReadableColor(Color3.fromHSV(h, 0, v), if thm.BackgroundColor3 then thm.BackgroundColor3 else Color3.new(0.85, 0.85, 0.85))
+							return Util.getReadableColor(
+								Color3.fromHSV(h, 0, v),
+								if thm.BackgroundColor3 then thm.BackgroundColor3 else Color3.new(0.85, 0.85, 0.85)
+							)
 						end
 					end)(),
 					DISABLE_TRANSPARENCY,
@@ -514,10 +541,16 @@ function Interface.cfusion(
 					(function(): Color3
 						if thm.IsDarkMode then
 							local h, _s, v = selectedTextColor:ToHSV()
-							return Util.getReadableColor(Color3.fromHSV(h, 0, v), if thm.BackgroundColor3 then thm.BackgroundColor3 else Color3.new(0.15, 0.15, 0.15))
+							return Util.getReadableColor(
+								Color3.fromHSV(h, 0, v),
+								if thm.BackgroundColor3 then thm.BackgroundColor3 else Color3.new(0.15, 0.15, 0.15)
+							)
 						else
 							local h, _s, v = unselectedTextColor:ToHSV()
-							return Util.getReadableColor(Color3.fromHSV(h, 0, v), if thm.BackgroundColor3 then thm.BackgroundColor3 else Color3.new(0.85, 0.85, 0.85))
+							return Util.getReadableColor(
+								Color3.fromHSV(h, 0, v),
+								if thm.BackgroundColor3 then thm.BackgroundColor3 else Color3.new(0.85, 0.85, 0.85)
+							)
 						end
 					end)(),
 					DISABLE_TRANSPARENCY,
@@ -528,21 +561,62 @@ function Interface.cfusion(
 				)
 			),
 			[Enums.ButtonStateType.Focused] = Types.newToggleTextStyle(
-				Types.newTextStyle(selectedTextColor, 0, selectedColor, FOCUS_TRANSPARENCY, selectedBorderColor, 0),
-				Types.newTextStyle(unselectedTextColor, 0, unselectedColor, FOCUS_TRANSPARENCY, unselectedBorderColor, 0)
+				Types.newTextStyle(
+					selectedTextColor,
+					0,
+					selectedColor,
+					FOCUS_TRANSPARENCY,
+					selectedBorderColor,
+					0
+				),
+				Types.newTextStyle(
+					unselectedTextColor,
+					0,
+					unselectedColor,
+					FOCUS_TRANSPARENCY,
+					unselectedBorderColor,
+					0
+				)
 			),
 			[Enums.ButtonStateType.Hovered] = Types.newToggleTextStyle(
-				Types.newTextStyle(selectedTextColor, 0, selectedColor, HOVER_TRANSPARENCY, selectedBorderColor, 0),
-				Types.newTextStyle(unselectedTextColor, 0, unselectedColor, HOVER_TRANSPARENCY, unselectedBorderColor, 0)
+				Types.newTextStyle(
+					selectedTextColor,
+					0,
+					selectedColor,
+					HOVER_TRANSPARENCY,
+					selectedBorderColor,
+					0
+				),
+				Types.newTextStyle(
+					unselectedTextColor,
+					0,
+					unselectedColor,
+					HOVER_TRANSPARENCY,
+					unselectedBorderColor,
+					0
+				)
 			),
 			[Enums.ButtonStateType.Pressed] = Types.newToggleTextStyle(
-				Types.newTextStyle(selectedTextColor, 0, selectedColor, PRESS_TRANSPARENCY, selectedBorderColor, 0),
-				Types.newTextStyle(unselectedTextColor, 0, unselectedColor, PRESS_TRANSPARENCY, unselectedBorderColor, 0)
+				Types.newTextStyle(
+					selectedTextColor,
+					0,
+					selectedColor,
+					PRESS_TRANSPARENCY,
+					selectedBorderColor,
+					0
+				),
+				Types.newTextStyle(
+					unselectedTextColor,
+					0,
+					unselectedColor,
+					PRESS_TRANSPARENCY,
+					unselectedBorderColor,
+					0
+				)
 			),
 		}
 
 		return data
-
 	end, themeState)
 
 	local buttonRow = new(

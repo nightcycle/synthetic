@@ -29,7 +29,7 @@ export type TextStyle = {
 } & Style
 export type ToggleTextStyle = {
 	Selected: TextStyle,
-	Unselected: TextStyle
+	Unselected: TextStyle,
 }
 export type OptionData = {
 	Text: string,
@@ -51,7 +51,7 @@ function Types.newOptionData(
 	onSelect: (isSelected: boolean) -> (),
 	disabled: boolean,
 	isInitiallySelected: boolean,
-	text: string, 
+	text: string,
 	icon: ImageData?,
 	selectedText: string?,
 	selectedIcon: ImageData?
@@ -75,7 +75,12 @@ function Types.newImageData(image: string, rectOffset: Vector2?, rectSize: Vecto
 	}
 end
 
-function Types.newStyle(backgroundColor3: Color3, backgroundTransparency: number, borderColor3: Color3, borderTransparency: number): Style
+function Types.newStyle(
+	backgroundColor3: Color3,
+	backgroundTransparency: number,
+	borderColor3: Color3,
+	borderTransparency: number
+): Style
 	return {
 		BackgroundColor3 = backgroundColor3,
 		BackgroundTransparency = backgroundTransparency,
@@ -84,7 +89,14 @@ function Types.newStyle(backgroundColor3: Color3, backgroundTransparency: number
 	}
 end
 
-function Types.newTextStyle(textColor3: Color3, textTransparency: number, backgroundColor: Color3, backgroundTransparency: number, borderColor3: Color3, borderTransparency: number): TextStyle
+function Types.newTextStyle(
+	textColor3: Color3,
+	textTransparency: number,
+	backgroundColor: Color3,
+	backgroundTransparency: number,
+	borderColor3: Color3,
+	borderTransparency: number
+): TextStyle
 	return {
 		TextColor3 = textColor3,
 		TextTransparency = textTransparency,
@@ -95,17 +107,22 @@ function Types.newTextStyle(textColor3: Color3, textTransparency: number, backgr
 	}
 end
 
-function Types.newToggleTextStyle(
-	selected: TextStyle,
-	unselected: TextStyle
-): ToggleTextStyle
+function Types.newToggleTextStyle(selected: TextStyle, unselected: TextStyle): ToggleTextStyle
 	return {
 		Selected = selected,
-		Unselected = unselected
+		Unselected = unselected,
 	}
 end
 
-function Types.newThemeData(elevation: number, isDarkMode: boolean, scale: number, font: Font, color3: Color3, backgroundColor3: Color3?, selectionColor3: Color3?): ThemeData
+function Types.newThemeData(
+	elevation: number,
+	isDarkMode: boolean,
+	scale: number,
+	font: Font,
+	color3: Color3,
+	backgroundColor3: Color3?,
+	selectionColor3: Color3?
+): ThemeData
 	return {
 		Color3 = color3,
 		SelectionColor3 = selectionColor3 or color3,

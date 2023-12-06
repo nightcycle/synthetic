@@ -35,7 +35,13 @@ local SHAPE_DP = 20 * 0.5
 -- Class
 local Interface = {}
 
-function Interface.cfusion(onClick: CanBeState<() -> ()>, text: CanBeState<string>, theme: CanBeState<ThemeData>, icon: CanBeState<ImageData>?, isEnabled: CanBeState<boolean>?): ImageLabel
+function Interface.cfusion(
+	onClick: CanBeState<() -> ()>,
+	text: CanBeState<string>,
+	theme: CanBeState<ThemeData>,
+	icon: CanBeState<ImageData>?,
+	isEnabled: CanBeState<boolean>?
+): ImageLabel
 	local maid = Maid.new()
 
 	local _fuse = ColdFusion.fuse(maid)
@@ -50,7 +56,16 @@ function Interface.cfusion(onClick: CanBeState<() -> ()>, text: CanBeState<strin
 
 	local onClickState = _import(onClick, function() end)
 	local textState = _import(text, "")
-	local themeState = _import(theme, Types.newThemeData(1, false, 1, Font.fromEnum(Enum.Font.SourceSansSemibold), Color3.fromHSV(0.8, 0.4, 0.8)))
+	local themeState = _import(
+		theme,
+		Types.newThemeData(
+			1,
+			false,
+			1,
+			Font.fromEnum(Enum.Font.SourceSansSemibold),
+			Color3.fromHSV(0.8, 0.4, 0.8)
+		)
+	)
 
 	local sound = maid:GiveTask(Instance.new("Sound"))
 	sound.Volume = DEFAULT_VOLUME
@@ -61,12 +76,18 @@ function Interface.cfusion(onClick: CanBeState<() -> ()>, text: CanBeState<strin
 		local textColor: Color3?
 
 		if thm.IsDarkMode then
-			backColor = Util.getReadableColor(thm.Color3, if thm.BackgroundColor3 then thm.BackgroundColor3 else Util.DARK_SURFACE)
+			backColor = Util.getReadableColor(
+				thm.Color3,
+				if thm.BackgroundColor3 then thm.BackgroundColor3 else Util.DARK_SURFACE
+			)
 			assert(backColor)
 
 			textColor = Util.DARK_SURFACE
 		else
-			backColor = Util.getReadableColor(thm.Color3, if thm.BackgroundColor3 then thm.BackgroundColor3 else Util.LIGHT_SURFACE)
+			backColor = Util.getReadableColor(
+				thm.Color3,
+				if thm.BackgroundColor3 then thm.BackgroundColor3 else Util.LIGHT_SURFACE
+			)
 			assert(backColor)
 
 			textColor = Util.LIGHT_SURFACE
