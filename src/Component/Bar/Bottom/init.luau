@@ -2,20 +2,14 @@
 local _Package = script.Parent.Parent.Parent
 local _Packages = _Package.Parent
 -- Services
-local SoundService = game:GetService("SoundService")
-
 -- Packages
 local Maid = require(_Packages:WaitForChild("Maid"))
 local ColdFusion = require(_Packages:WaitForChild("ColdFusion"))
-local Signal = require(_Packages:WaitForChild("Signal"))
 local MaterialIcons = require(_Packages:WaitForChild("MaterialIcons"))
 local TableUtil = require(_Packages:WaitForChild("TableUtil"))
 
 -- Modules
-local Sounds = require(_Package:WaitForChild("Sounds"))
-local Enums = require(_Package:WaitForChild("Enums"))
 local Types = require(_Package:WaitForChild("Types"))
-local Config = require(_Package:WaitForChild("Config"))
 local Util = require(_Package:WaitForChild("Util"))
 
 local IconButton = require(_Package:WaitForChild("Component"):WaitForChild("Button"):WaitForChild("IconButton"))
@@ -31,13 +25,12 @@ type ToggleTextStyle = Types.ToggleTextStyle
 type ImageData = Types.ImageData
 type ThemeData = Types.ThemeData
 type OptionData = Types.OptionData
-type Signal = Signal.Signal
 type ButtonData = Types.ButtonData
 -- Constants
 local MAX_BUTTONS = 4
 local ICONS = MaterialIcons.default.dp_48.scale_1
 local ERROR_ICON = ICONS.error
-local BUTTON_SEPARATION_DP = 4
+local BUTTON_SEPARATION_DP = 10
 local BAR_TOP_BOTTOM_PADDING_DP = 6
 local BAR_LEFT_RIGHT_PADDING_DP = 10
 -- Variables
