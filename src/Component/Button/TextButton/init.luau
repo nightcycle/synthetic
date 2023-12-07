@@ -20,9 +20,8 @@ type Maid = Maid.Maid
 type State<V> = ColdFusion.State<V>
 type ValueState<V> = ColdFusion.ValueState<V>
 type CanBeState<V> = ColdFusion.CanBeState<V>
-type TextStyle = Types.TextStyle
+type TextStyle = Types.Style
 type ImageData = Types.ImageData
-type ThemeData = Types.ThemeData
 -- Constants
 local DEFAULT_VOLUME = Config.Sound.Volume
 local HOVER_TRANSPARENCY = Config.Transparency.Background.Hovered
@@ -40,7 +39,7 @@ local Interface = {}
 function Interface.cfusion(
 	onClick: CanBeState<() -> ()>,
 	text: CanBeState<string>,
-	theme: CanBeState<ThemeData>,
+	styles: CanBeState<{ [Enums.ButtonStateType]: Style }>,
 	icon: CanBeState<ImageData>?,
 	isEnabled: CanBeState<boolean>?
 ): ImageLabel
@@ -58,20 +57,6 @@ function Interface.cfusion(
 
 	local onClickState = _import(onClick, function() end)
 	local textState = _import(text, "")
-	local themeState = _import(
-		theme,
-		Types.newThemeData(
-			1,
-			false,
-			1,
-			Font.fromEnum(Enum.Font.SourceSansSemibold),
-			Color3.fromHSV(0.8, 0.4, 0.8)
-		)
-	)
-
-	local sound = maid:GiveTask(Instance.new("Sound"))
-	sound.Volume = DEFAULT_VOLUME
-	sound.SoundId = Sounds.ui_tap_variant_01
 
 	local styles = _Computed(function(thm: ThemeData): { [Enums.ButtonStateType]: TextStyle }
 		local textColor: Color3?

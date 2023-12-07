@@ -19,9 +19,8 @@ type Maid = Maid.Maid
 type State<V> = ColdFusion.State<V>
 type ValueState<V> = ColdFusion.ValueState<V>
 type CanBeState<V> = ColdFusion.CanBeState<V>
-type TextStyle = Types.TextStyle
 type ImageData = Types.ImageData
-type ThemeData = Types.ThemeData
+type Style = Types.Style
 -- Constants
 local HEIGHT_DP = 40
 local SHAPE_DP = 20
@@ -40,12 +39,10 @@ return function(
 	onClick: CanBeState<() -> ()>,
 	text: CanBeState<string>,
 	font: CanBeState<Font>,
-	styles: CanBeState<{ [Enums.ButtonStateType]: TextStyle }>,
+	styles: CanBeState<{ [Enums.ButtonStateType]: Style }>,
 	textIcon: CanBeState<ImageData?>,
 	isEnabled: CanBeState<boolean>,
 	isDropShadow: CanBeState<boolean>,
-	scale: CanBeState<number>,
-	sound: CanBeState<Sound>,
 	hasMinimumSize: CanBeState<boolean>?,
 	cornerRadius: CanBeState<number>?,
 	paddingScale: CanBeState<number>?,
@@ -97,7 +94,7 @@ return function(
 
 	local stylesState = _import(styles, {}) :: any
 	local currentStyleState = _Computed(
-		function(state: Enums.ButtonStateType, styles: { [Enums.ButtonStateType]: TextStyle }): TextStyle
+		function(state: Enums.ButtonStateType, styles: { [Enums.ButtonStateType]: Style }): Style
 			local style = styles[state]
 			assert(style ~= nil, `no style for {state}`)
 			return style
@@ -105,13 +102,28 @@ return function(
 		currentStateState,
 		stylesState
 	)
+	local sound = _new("Sound")({
+		SoundId = _Computed(function(st: Style): string
+			return st.SoundId
+		end, currentStyleState),
+		Volume = _Computed(function(st: Style): number
+			return st.SoundVolume
+		end, currentStyleState)
+	}) :: Sound
 
+	currentStyleState:Connect(function()
+		task.wait()
+		SoundService:PlayLocalSound(sound)
+	end)
+
+	local scaleState = _Computed(function(st: Style): number
+		return st.Scale
+	end, currentStyleState)
 	local onClickState = _import(onClick, function() end)
 	local textState = _import(text, "")
 	local fontState = _import(font, Font.fromEnum(Enum.Font.SourceSansSemibold))
-	local scaleState = _import(scale, 1)
 	local iconState = _import(textIcon, nil :: ImageData?) :: any
-	local soundState = _import(sound, nil :: Sound?)
+
 	local isDropShadowState = _import(isDropShadow, false)
 	local hasMinState = _import(hasMinimumSize, true)
 	local cornerRadiusState = _import(cornerRadius, SHAPE_DP)
@@ -144,7 +156,7 @@ return function(
 				Enum.EasingDirection.In
 			)
 
-			local baseColor = (stylesState:Get()[Enums.ButtonStateType.Enabled] :: TextStyle).BackgroundColor3
+			local baseColor = (stylesState:Get()[Enums.ButtonStateType.Enabled] :: Style).BackgroundColor3
 			local rippleColor = (Color3.new(1, 1, 1):Lerp(baseColor, 0.8)):Lerp(baseColor, fadeAlpha)
 
 			local leftOffset =
@@ -187,7 +199,7 @@ return function(
 				Image = "rbxassetid://15549395120",
 				ImageColor3 = Color3.new(0, 0, 0),
 				BackgroundTransparency = 1,
-				ImageTransparency = _Computed(function(style: TextStyle, isDrop: boolean): number
+				ImageTransparency = _Computed(function(style: Style, isDrop: boolean): number
 					return if style.BackgroundTransparency == 0 and isDrop then 0 else 1
 				end, currentStyleState, isDropShadowState),
 				ScaleType = Enum.ScaleType.Slice,
@@ -209,10 +221,10 @@ return function(
 					_new("TextButton")({
 						Name = "TextButton",
 						Text = "",
-						BackgroundTransparency = _Computed(function(style: TextStyle): number
+						BackgroundTransparency = _Computed(function(style: Style): number
 							return style.BackgroundTransparency
 						end, currentStyleState),
-						BackgroundColor3 = _Computed(function(style: TextStyle, useRip: boolean): Color3
+						BackgroundColor3 = _Computed(function(style: Style, useRip: boolean): Color3
 							if useRip then
 								return Color3.new(1, 1, 1)
 							end
@@ -229,10 +241,6 @@ return function(
 									return
 								end
 								local click = onClickState:Get()
-								local s = soundState:Get()
-								if s then
-									SoundService:PlayLocalSound(s)
-								end
 								click()
 							end,
 							MouseButton1Down = function(x: number, y: number)
@@ -271,7 +279,7 @@ return function(
 							}),
 							_new("UIGradient")({
 								Color = _Computed(
-									function(useRip: boolean, style: TextStyle, seq: ColorSequence?): ColorSequence
+									function(useRip: boolean, style: Style, seq: ColorSequence?): ColorSequence
 										if useRip then
 											if seq then
 												return seq
@@ -289,14 +297,14 @@ return function(
 							}),
 							_new("UIStroke")({
 								ApplyStrokeMode = Enum.ApplyStrokeMode.Border,
-								Color = _Computed(function(style: TextStyle): Color3
+								Color = _Computed(function(style: Style): Color3
 									return style.BorderColor3
 								end, currentStyleState),
 								LineJoinMode = Enum.LineJoinMode.Round,
 								Thickness = _Computed(function(s: number): number
 									return math.max(s * 1, 1)
 								end, scaleState),
-								Transparency = _Computed(function(style: TextStyle): number
+								Transparency = _Computed(function(style: Style): number
 									return style.BorderTransparency
 								end, currentStyleState),
 							}),
@@ -322,10 +330,10 @@ return function(
 								AutomaticSize = Enum.AutomaticSize.X,
 								FontFace = fontState,
 								LayoutOrder = 2,
-								TextColor3 = _Computed(function(style: TextStyle): Color3
+								TextColor3 = _Computed(function(style: Style): Color3
 									return style.TextColor3
 								end, currentStyleState),
-								TextTransparency = _Computed(function(style: TextStyle): number
+								TextTransparency = _Computed(function(style: Style): number
 									return style.TextTransparency
 								end, currentStyleState),
 								Size = _Computed(function(s: number): UDim2
@@ -342,7 +350,7 @@ return function(
 								Image = _Computed(function(icon: ImageData?): string
 									return if icon then icon.Image else ""
 								end, iconState),
-								ImageColor3 = _Computed(function(icon: ImageData?, style: TextStyle?): Color3
+								ImageColor3 = _Computed(function(icon: ImageData?, style: Style?): Color3
 									return if icon and style then style.TextColor3 else Color3.new(1, 1, 1)
 								end, iconState, currentStyleState),
 								ImageRectOffset = _Computed(function(icon: ImageData?): Vector2
@@ -351,7 +359,7 @@ return function(
 								ImageRectSize = _Computed(function(icon: ImageData?): Vector2
 									return if icon then icon.ImageRectSize else Vector2.zero
 								end, iconState),
-								ImageTransparency = _Computed(function(icon: ImageData?, style: TextStyle?): number
+								ImageTransparency = _Computed(function(icon: ImageData?, style: Style?): number
 									return if icon and style then style.TextTransparency else 1
 								end, iconState, currentStyleState),
 								SizeConstraint = Enum.SizeConstraint.RelativeYY,

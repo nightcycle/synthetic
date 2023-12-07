@@ -3,40 +3,32 @@
 -- Packages
 -- Modules
 -- Types
-export type ThemeData = {
-	Elevation: number,
-	IsDarkMode: boolean,
-	Color3: Color3,
-	SelectionColor3: Color3,
-	Font: Font,
-	BackgroundColor3: Color3?,
+export type Style = {
 	Scale: number,
+	Font: Font,
+	TextColor3: Color3,
+	TextTransparency: number,
+	BorderColor3: Color3,
+	BorderTransparency: number,
+	BackgroundColor3: Color3,
+	BackgroundTransparency: number,
+	SoundId: string,
+	SoundVolume: number,
 }
+
 export type ImageData = {
 	Image: string,
 	ImageRectOffset: Vector2,
 	ImageRectSize: Vector2,
 }
-export type Style = {
-	BorderColor3: Color3,
-	BorderTransparency: number,
-	BackgroundColor3: Color3,
-	BackgroundTransparency: number,
-}
-export type TextStyle = {
-	TextColor3: Color3,
-	TextTransparency: number,
-} & Style
-export type ToggleTextStyle = {
-	Selected: TextStyle,
-	Unselected: TextStyle,
-}
+
 export type ButtonData = {
 	Icon: ImageData?,
 	Text: string?,
 	Enabled: boolean,
 	OnClick: () -> ()
 }
+
 export type OptionData = {
 	Text: string,
 	Icon: ImageData?,
@@ -96,61 +88,28 @@ function Types.newImageData(image: string, rectOffset: Vector2?, rectSize: Vecto
 end
 
 function Types.newStyle(
-	backgroundColor3: Color3,
-	backgroundTransparency: number,
-	borderColor3: Color3,
-	borderTransparency: number
+	scale: number?,
+	font: Font?,
+	textColor3: Color3?,
+	textTransparency: number?,
+	borderColor3: Color3?,
+	borderTransparency: number?,
+	backgroundColor3: Color3?,
+	backgroundTransparency: number?,
+	soundId: string?,
+	soundVolume: number?
 ): Style
 	return {
-		BackgroundColor3 = backgroundColor3,
-		BackgroundTransparency = backgroundTransparency,
-		BorderColor3 = borderColor3,
-		BorderTransparency = borderTransparency,
-	}
-end
-
-function Types.newTextStyle(
-	textColor3: Color3,
-	textTransparency: number,
-	backgroundColor: Color3,
-	backgroundTransparency: number,
-	borderColor3: Color3,
-	borderTransparency: number
-): TextStyle
-	return {
-		TextColor3 = textColor3,
-		TextTransparency = textTransparency,
-		BackgroundColor3 = backgroundColor,
-		BackgroundTransparency = backgroundTransparency,
-		BorderColor3 = borderColor3,
-		BorderTransparency = borderTransparency,
-	}
-end
-
-function Types.newToggleTextStyle(selected: TextStyle, unselected: TextStyle): ToggleTextStyle
-	return {
-		Selected = selected,
-		Unselected = unselected,
-	}
-end
-
-function Types.newThemeData(
-	elevation: number,
-	isDarkMode: boolean,
-	scale: number,
-	font: Font,
-	color3: Color3,
-	backgroundColor3: Color3?,
-	selectionColor3: Color3?
-): ThemeData
-	return {
-		Color3 = color3,
-		SelectionColor3 = selectionColor3 or color3,
-		BackgroundColor3 = backgroundColor3,
-		Elevation = elevation,
-		IsDarkMode = isDarkMode,
-		Font = font,
-		Scale = scale,
+		Scale = scale or 1,
+		Font = font or Font.fromEnum(Enum.Font.SourceSans),
+		TextColor3 = textColor3 or Color3.new(0.15,0.15,0.15),
+		TextTransparency = textTransparency or 0,
+		BorderColor3 = borderColor3 or Color3.new(0.15,0.15,0.15),
+		BorderTransparency = borderTransparency or 0,
+		BackgroundColor3 = backgroundColor3 or Color3.new(0.85,0.85,0.85),
+		BackgroundTransparency = backgroundTransparency or 0,
+		SoundId = soundId or "",
+		SoundVolume = soundVolume or 0,
 	}
 end
 

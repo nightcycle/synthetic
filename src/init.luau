@@ -9,11 +9,8 @@ local Util = require(ReplicatedStorage.Packages.synthetic.Util)
 local Types = require(_Package:WaitForChild("Types"))
 
 -- Types
-export type ThemeData = Types.ThemeData
 export type ImageData = Types.ImageData
 export type Style = Types.Style
-export type TextStyle = Types.TextStyle
-export type ToggleTextStyle = Types.ToggleTextStyle
 export type OptionData = Types.OptionData
 -- Constants
 -- Variables
