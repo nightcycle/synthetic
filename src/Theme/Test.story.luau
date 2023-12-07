@@ -5,6 +5,37 @@ local Maid = require(game:GetService("ReplicatedStorage"):WaitForChild("Packages
 -- Modules
 -- Types
 -- Constants
+local ORDER = {
+	"Primary",
+	"OnPrimary",
+	"PrimaryContainer",
+	"OnPrimaryContainer",
+	"Secondary",
+	"OnSecondary",
+	"SecondaryContainer",
+	"OnSecondaryContainer",
+	"Tertiary",
+	"OnTertiary",
+	"TertiaryContainer",
+	"OnTertiaryContainer",
+	"Error",
+	"OnError",
+	"ErrorContainer",
+	"OnErrorContainer",
+	"Background",
+	"OnBackground",
+	"Surface",
+	"OnSurface",
+	"SurfaceVariant",
+	"OnSurfaceVariant",
+	"Outline",
+	"OutlineVariant",
+	"Shadow",
+	"Scrim",
+	"InverseSurface",
+	'InverseOnSurface',
+	"InversePrimary",
+}
 -- Variables
 -- References
 -- Class
@@ -13,7 +44,7 @@ return function(frame: Frame)
 	task.spawn(function()
 		local Theme = require(script.Parent)
 		local theme = Theme.new(
-			Color3.new(0,0.5,0.15),
+			Color3.new(0.8,0,0.8),
 			{}
 		)
 		
@@ -23,6 +54,7 @@ return function(frame: Frame)
 			local listLayout = maid:GiveTask(Instance.new("UIListLayout"))
 			listLayout.FillDirection = Enum.FillDirection.Vertical
 			listLayout.Padding = UDim.new(0.01, 0)
+			listLayout.SortOrder = Enum.SortOrder.LayoutOrder
 			listLayout.VerticalAlignment = Enum.VerticalAlignment.Center
 			listLayout.HorizontalAlignment = Enum.HorizontalAlignment.Center
 			listLayout.Parent = halfFrame
@@ -32,7 +64,10 @@ return function(frame: Frame)
 				label.TextColor3 = Color3.new(0.5,0.5,0.5)
 				label.Text = k
 				label.BackgroundColor3 = v
-				label.Size = UDim2.fromScale(0.9, 1/30)
+				local i = table.find(ORDER, k)
+				assert(i, `bad order for {k}`)
+				label.LayoutOrder = i
+				label.Size = UDim2.fromScale(0.9, 1/50)
 				label.TextScaled = true
 				label.Parent = halfFrame
 			end
