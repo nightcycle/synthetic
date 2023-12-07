@@ -1,6 +1,6 @@
 --!strict
 -- https://github.com/material-foundation/material-color-utilities/blob/f5d03da60c268b43928f3a24d6bf499e2564d39a/typescript/hct/cam16.ts
-local ColorUtils = require(script.Parent.Parent:WaitForChild("ColorUtils"))
+local ColorUtil = require(script.Parent.Parent:WaitForChild("ColorUtil"))
 local ViewingConditions = require(script.Parent.Parent:WaitForChild("ViewingConditions"))
 
 -- Types
@@ -67,9 +67,9 @@ function Cam16.fromIntInViewingConditions(argb: number, viewingConditions: Viewi
 	local green = bit32.rshift(bit32.band(argb, 0x0000ff00), 8)
 	local blue = bit32.band(argb, 0x000000ff)
 
-	local redL = ColorUtils.linearized(red)
-	local greenL = ColorUtils.linearized(green)
-	local blueL = ColorUtils.linearized(blue)
+	local redL = ColorUtil.linearized(red)
+	local greenL = ColorUtil.linearized(green)
+	local blueL = ColorUtil.linearized(blue)
 
 	local x = 0.41233895 * redL + 0.35762064 * greenL + 0.18051042 * blueL
 	local y = 0.2126 * redL + 0.7152 * greenL + 0.0722 * blueL
@@ -168,7 +168,7 @@ function Cam16.fromUcsInViewingConditions(jstar: number, astar: number, bstar: n
 end
 
 function Cam16:toInt(): number
-	return self.viewed(ViewingConditions.DEFAULT)
+	return self:viewed(ViewingConditions.DEFAULT)
 end
 
 function Cam16:viewed(viewingConditions: ViewingConditions): number
@@ -212,8 +212,8 @@ function Cam16:viewed(viewingConditions: ViewingConditions): number
 	local y = 0.38752654 * rF + 0.62144744 * gF - 0.00897398 * bF
 	local z = -0.01584150 * rF - 0.03412294 * gF + 1.04996444 * bF
 
-	-- Assuming ColorUtils.argbFromXyz is a function that converts XYZ to ARGB.
-	local argb = ColorUtils.argbFromXyz(x, y, z)
+	-- Assuming ColorUtil.argbFromXyz is a function that converts XYZ to ARGB.
+	local argb = ColorUtil.argbFromXyz(x, y, z)
 	return argb
 end
 
@@ -327,7 +327,11 @@ function Cam16:xyzInViewingConditions(viewingConditions: ViewingConditions): { n
 	local y = 0.38752654 * rF + 0.62144744 * gF - 0.00897398 * bF
 	local z = -0.01584150 * rF - 0.03412294 * gF + 1.04996444 * bF
 
-	return { x, y, z }
+	return { 
+		[0]=x, 
+		[1]=y, 
+		[2]=z
+	}
 end
 
 return Cam16
