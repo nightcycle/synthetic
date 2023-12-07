@@ -31,6 +31,12 @@ export type ToggleTextStyle = {
 	Selected: TextStyle,
 	Unselected: TextStyle,
 }
+export type ButtonData = {
+	Icon: ImageData?,
+	Text: string?,
+	Enabled: boolean,
+	OnClick: () -> ()
+}
 export type OptionData = {
 	Text: string,
 	Icon: ImageData?,
@@ -46,6 +52,20 @@ export type OptionData = {
 -- Private Functions
 -- Class
 local Types = {}
+
+function Types.newButtonData(
+	onClick: () -> (),
+	icon: ImageData?,
+	text: string?,
+	enabled: boolean?
+): ButtonData
+	return {
+		Icon = icon,
+		Text = text,
+		OnClick = onClick,
+		Enabled = if enabled == nil then true else enabled
+	}
+end
 
 function Types.newOptionData(
 	onSelect: (isSelected: boolean) -> (),

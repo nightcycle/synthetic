@@ -19,7 +19,7 @@ local MIN_HEX_DIFFERENCE = 100 / 255
 local DEFAULT_CONTRAST_RATIO = 4.5
 local BLACK_COLOR = Color3.new(0, 0, 0)
 local WHITE_COLOR = Color3.new(1, 1, 1)
-local MAX_ELEVATION = 16
+local MAX_ELEVATION = 8
 -- Variables
 -- References
 -- Private Functions
@@ -142,12 +142,12 @@ end
 
 function Util.getElevatedColor(color: Color3, elevation: number, isDarkMode: boolean): Color3
 	elevation = math.clamp(elevation, 0, MAX_ELEVATION)
-	local alpha = 1 - CurveUtil.ease(elevation / MAX_ELEVATION, Enum.EasingStyle.Quad, Enum.EasingDirection.In)
+	local alpha = CurveUtil.ease(elevation / MAX_ELEVATION, Enum.EasingStyle.Quad, Enum.EasingDirection.In)
 
 	if isDarkMode then
-		return CurveUtil.lerp(color, Color3.new(1, 1, 1), alpha * 0.1)
+		return CurveUtil.lerp(color, Color3.new(1, 1, 1), alpha*0.75)
 	else
-		return CurveUtil.lerp(color, Color3.new(1, 1, 1), alpha * 0.25)
+		return CurveUtil.lerp(color, Color3.new(1, 1, 1), alpha*0.95)
 	end
 end
 
