@@ -15,6 +15,7 @@ export type HCT = {
 	_internalTone: number,
 	from: (hue: number, chroma: number, tone: number) -> HCT,
 	fromInt: (argb: number) -> HCT,
+	fromColor3: (color3: Color3) -> HCT,
 	new: (argb: number) -> HCT,
 	setHue: (self: HCT, newHue: number) -> (),
 	setChroma: (self: HCT, newChroma: number) -> (),
@@ -23,6 +24,7 @@ export type HCT = {
 	getChroma: (self: HCT) -> number,
 	getTone: (self: HCT) -> number,
 	toInt: (self: HCT) -> number,
+	toColor3: (self: HCT) -> Color3,
 	_setInternalState: (self: HCT, argb: number) -> (),
 	inViewingConditions: (self: HCT, vc: ViewingConditions) -> (),
 }
@@ -90,6 +92,102 @@ end
 
 function HCT.fromInt(argb: number): HCT
 	return HCT.new(argb)
+end
+
+function HCT.fromColor3(color3: Color3): HCT
+	local function rgbToXyz(r: number, g: number, b: number): (number, number, number)
+		-- Assuming sRGB color space and using a common conversion formula
+		r = (r > 0.04045) and ((r + 0.055) / 1.055) ^ 2.4 or r / 12.92
+		g = (g > 0.04045) and ((g + 0.055) / 1.055) ^ 2.4 or g / 12.92
+		b = (b > 0.04045) and ((b + 0.055) / 1.055) ^ 2.4 or b / 12.92
+
+		-- Convert to XYZ using the RGB to XYZ matrix for sRGB
+		local x = r * 0.4124564 + g * 0.3575761 + b * 0.1804375
+		local y = r * 0.2126729 + g * 0.7151522 + b * 0.0721750
+		local z = r * 0.0193339 + g * 0.1191920 + b * 0.9503041
+
+		return x, y, z
+	end
+
+	local function xyzToLab(x: number, y: number, z: number): (number, number, number)
+		-- Observer = 2°, Illuminant = D65
+		local refX, refY, refZ = 0.95047, 1.00000, 1.08883
+		x = x / refX
+		y = y / refY
+		z = z / refZ
+
+		x = (x > 0.008856) and x ^ (1 / 3) or (7.787 * x) + (16 / 116)
+		y = (y > 0.008856) and y ^ (1 / 3) or (7.787 * y) + (16 / 116)
+		z = (z > 0.008856) and z ^ (1 / 3) or (7.787 * z) + (16 / 116)
+
+		local l = (116 * y) - 16
+		local a = 500 * (x - y)
+		local b = 200 * (y - z)
+
+		return l, a, b
+	end
+
+	local function labToHct(l: number, a: number, b: number): (number, number, number)
+		-- Convert LAB to HCT (Hue, Chroma, Tone)
+		local hue = math.deg(math.atan2(b, a))
+		if hue < 0 then
+			hue = hue + 360
+		end
+
+		local chroma = math.sqrt(a ^ 2 + b ^ 2)
+		local tone = l -- In LAB, L* represents lightness which is analogous to tone
+
+		return hue, chroma, tone
+	end
+
+	return HCT.from(labToHct(xyzToLab(rgbToXyz(color3.R, color3.G, color3.B))))
+end
+
+function HCT:toColor3(): Color3
+	local function hctToLab(hue: number, chroma: number, tone: number): (number, number, number)
+		-- Convert HCT back to LAB
+		local a = chroma * math.cos(math.rad(hue))
+		local b = chroma * math.sin(math.rad(hue))
+		local l = tone -- In LAB, L* represents lightness which is analogous to tone
+		return l, a, b
+	end
+
+	local function labToXyz(l: number, a: number, b: number): (number, number, number)
+		local y = (l + 16) / 116
+		local x = a / 500 + y
+		local z = y - b / 200
+
+		-- Observer= 2°, Illuminant= D65
+		local refX, refY, refZ = 0.95047, 1.00000, 1.08883
+		x = (x ^ 3 > 0.008856) and x ^ 3 or (x - 16 / 116) / 7.787
+		y = (y ^ 3 > 0.008856) and y ^ 3 or (y - 16 / 116) / 7.787
+		z = (z ^ 3 > 0.008856) and z ^ 3 or (z - 16 / 116) / 7.787
+
+		x = refX * x
+		y = refY * y
+		z = refZ * z
+
+		return x, y, z
+	end
+
+	local function xyzToRgb(x: number, y: number, z: number): (number, number, number)
+		-- Convert XYZ to RGB
+		local r = x * 3.2406 + y * -1.5372 + z * -0.4986
+		local g = x * -0.9689 + y * 1.8758 + z * 0.0415
+		local b = x * 0.0557 + y * -0.2040 + z * 1.0570
+
+		r = (r > 0.0031308) and 1.055 * (r ^ (1 / 2.4)) - 0.055 or 12.92 * r
+		g = (g > 0.0031308) and 1.055 * (g ^ (1 / 2.4)) - 0.055 or 12.92 * g
+		b = (b > 0.0031308) and 1.055 * (b ^ (1 / 2.4)) - 0.055 or 12.92 * b
+
+		-- Clamp the values to the 0-1 range
+		r = math.max(0, math.min(1, r))
+		g = math.max(0, math.min(1, g))
+		b = math.max(0, math.min(1, b))
+
+		return r, g, b
+	end
+	return Color3.new(xyzToRgb(labToXyz(hctToLab(self:getHue(), self:getChroma(), self:getTone()))))
 end
 
 return HCT

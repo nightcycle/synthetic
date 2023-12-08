@@ -34,6 +34,15 @@ export type SchemeData = {
 	inverseSurface: number,
 	inverseOnSurface: number,
 	inversePrimary: number,
+
+	surfaceDim: number,
+	surfaceBright: number,
+	surfaceContainerLowest: number,
+	surfaceContainerLow: number,
+	surfaceContainer: number,
+	surfaceContainerHigh: number,
+	surfaceContainerHighest: number,
+	surfaceTint: number,
 }
 
 export type Scheme = {
@@ -103,7 +112,16 @@ function Scheme.lightFromCorePalette(core: CorePalette): Scheme
 		scrim= core.n1:getTone(0),
 		inverseSurface= core.n1:getTone(20),
 		inverseOnSurface= core.n1:getTone(95),
-		inversePrimary= core.a1:getTone(80)
+		inversePrimary= core.a1:getTone(80),
+
+		surfaceDim= core.n1:getTone(87),
+		surfaceBright= core.n1:getTone(98),
+		surfaceContainerLowest= core.n1:getTone(100),
+		surfaceContainerLow= core.n1:getTone(96),
+		surfaceContainer= core.n1:getTone(94),
+		surfaceContainerHigh= core.n1:getTone(92),
+		surfaceContainerHighest= core.n1:getTone(90),
+		surfaceTint= core.n1:getTone(40),
 	});
 end
 
@@ -137,7 +155,16 @@ function Scheme.darkFromCorePalette(core: CorePalette): Scheme
 		scrim= core.n1:getTone(0),
 		inverseSurface= core.n1:getTone(90),
 		inverseOnSurface= core.n1:getTone(20),
-		inversePrimary= core.a1:getTone(40)
+		inversePrimary= core.a1:getTone(40),
+
+		surfaceDim= core.n1:getTone(6),
+		surfaceBright= core.n1:getTone(24),
+		surfaceContainerLowest= core.n1:getTone(4),
+		surfaceContainerLow= core.n1:getTone(10),
+		surfaceContainer= core.n1:getTone(12),
+		surfaceContainerHigh= core.n1:getTone(17),
+		surfaceContainerHighest= core.n1:getTone(22),
+		surfaceTint= core.n1:getTone(80),
 	});
 end
 

@@ -5,13 +5,15 @@ local _Packages = _Package.Parent
 -- Services
 -- Packages
 -- Modules
-local Util = require(ReplicatedStorage.Packages.synthetic.Util)
 local Types = require(_Package:WaitForChild("Types"))
+local Theme = require(_Package:WaitForChild("Theme"))
+local Typography = require(_Package:WaitForChild("Typography"))
 
 -- Types
 export type ImageData = Types.ImageData
-export type Style = Types.Style
 export type OptionData = Types.OptionData
+export type Theme = Theme.Theme
+export type Typography = Typography.Typography
 -- Constants
 -- Variables
 -- References
@@ -23,7 +25,8 @@ local Synthetic = {}
 Synthetic.Enums = require(_Package:WaitForChild("Enums"))
 Synthetic.Sounds = require(_Package:WaitForChild("Sounds"))
 Synthetic.Types = Types
-Synthetic.Util = require(_Package:WaitForChild("Util"))
+Synthetic.Typography = Typography
+Synthetic.Themes = Theme
 Synthetic.Components = {
 	Bar = {
 		Bottom = require(Component:WaitForChild("Bar"):WaitForChild("Bottom")),

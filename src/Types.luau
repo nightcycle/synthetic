@@ -3,23 +3,36 @@
 -- Packages
 -- Modules
 -- Types
-export type Style = {
+export type AppearanceData = {
+	Color3: Color3,
+	Transparency: number,
+}
+
+export type ShadowData = {
+	Offset: Vector2,
+	Appearance: AppearanceData,
+}
+
+export type RenderData = {
 	Scale: number,
-	Font: Font,
-	TextColor3: Color3,
-	TextTransparency: number,
-	BorderColor3: Color3,
-	BorderTransparency: number,
-	BackgroundColor3: Color3,
-	BackgroundTransparency: number,
-	SoundId: string,
-	SoundVolume: number,
+	Border: AppearanceData,
+	Background: AppearanceData,
+	Sound: SoundData?,
+	Image: ImageData?,
+	Font: FontData?,
+	Text: AppearanceData?,
+	Shadow: ShadowData?
 }
 
 export type ImageData = {
 	Image: string,
 	ImageRectOffset: Vector2,
 	ImageRectSize: Vector2,
+}
+
+export type SoundData = {
+	SoundId: string,
+	Volume: number,
 }
 
 export type ButtonData = {
@@ -38,12 +51,34 @@ export type OptionData = {
 	SelectedIcon: ImageData?,
 	OnSelect: (isSelected: boolean) -> (),
 }
+
+export type FontData = {
+	Font: Font,
+	Size: number,
+	Tracking: number,
+	LineHeight: number,
+}
+
 -- Constants
 -- Variables
 -- References
 -- Private Functions
 -- Class
 local Types = {}
+
+function Types.newFontData(
+	font: Font,
+	size: number,
+	lineHeight: number?,
+	tracking: number?
+): FontData
+	return {
+		Font = font,
+		Size = size,
+		Tracking = tracking or 0,
+		LineHeight = lineHeight or size,
+	}
+end
 
 function Types.newButtonData(
 	onClick: () -> (),
@@ -78,6 +113,29 @@ function Types.newOptionData(
 		OnSelect = onSelect,
 	}
 end
+function Types.newSoundData(soundId: string, volume: number?): SoundData
+	return {
+		SoundId = soundId,
+		Volume = volume or 1
+	}
+end
+
+function Types.newShadow(
+	appearance: AppearanceData,
+	offset: Vector2
+): ShadowData
+	return {
+		Appearance = appearance,
+		Offset = offset
+	}
+end
+
+function Types.newAppearanceData(color3: Color3, transparency: number?): AppearanceData
+	return {
+		Color3 = color3,
+		Transparency = transparency or 0,
+	}
+end
 
 function Types.newImageData(image: string, rectOffset: Vector2?, rectSize: Vector2?): ImageData
 	return {
@@ -87,29 +145,23 @@ function Types.newImageData(image: string, rectOffset: Vector2?, rectSize: Vecto
 	}
 end
 
-function Types.newStyle(
-	scale: number?,
-	font: Font?,
-	textColor3: Color3?,
-	textTransparency: number?,
-	borderColor3: Color3?,
-	borderTransparency: number?,
-	backgroundColor3: Color3?,
-	backgroundTransparency: number?,
-	soundId: string?,
-	soundVolume: number?
-): Style
+function Types.newRenderData(
+	scale: number,
+	border: AppearanceData,
+	background: AppearanceData,
+	text: AppearanceData?,
+	font: FontData?,
+	image: ImageData?,
+	sound: SoundData?
+): RenderData
 	return {
-		Scale = scale or 1,
-		Font = font or Font.fromEnum(Enum.Font.SourceSans),
-		TextColor3 = textColor3 or Color3.new(0.15,0.15,0.15),
-		TextTransparency = textTransparency or 0,
-		BorderColor3 = borderColor3 or Color3.new(0.15,0.15,0.15),
-		BorderTransparency = borderTransparency or 0,
-		BackgroundColor3 = backgroundColor3 or Color3.new(0.85,0.85,0.85),
-		BackgroundTransparency = backgroundTransparency or 0,
-		SoundId = soundId or "",
-		SoundVolume = soundVolume or 0,
+		Scale = scale,
+		Border = border,
+		Background = background,
+		Sound = sound,
+		Image = image,
+		Font = font,
+		Text = text,
 	}
 end
 

@@ -13,14 +13,18 @@ local CurveUtil = require(_Packages:WaitForChild("CurveUtil"))
 -- Modules
 local Enums = require(_Package:WaitForChild("Enums"))
 local Types = require(_Package:WaitForChild("Types"))
-
+local Theme = require(_Package:WaitForChild("Theme"))
+local StyleUtil = require(_Package:WaitForChild("StyleUtil"))
 -- Types
 type Maid = Maid.Maid
+type Fuse = ColdFusion.Fuse
 type State<V> = ColdFusion.State<V>
 type ValueState<V> = ColdFusion.ValueState<V>
 type CanBeState<V> = ColdFusion.CanBeState<V>
 type ImageData = Types.ImageData
-type Style = Types.Style
+type RenderData = Types.RenderData
+type FontData = Types.FontData
+type AppearanceData = Types.AppearanceData
 -- Constants
 local HEIGHT_DP = 40
 local SHAPE_DP = 20
@@ -34,29 +38,33 @@ local LABEL_TEXT_ALIGNMENT = Enum.TextXAlignment.Center
 local IMAGE_SIZE = 500
 local RIP_STEP = 0.005
 local HALF_IMAGE_SIZE = IMAGE_SIZE / 2
-return function(
+
+local sAssert = StyleUtil.assert
+local isNil = StyleUtil.isNil
+local flip = StyleUtil.inverse
+
+local Util = {}
+
+Util.component = function(
 	maid: Maid,
 	onClick: CanBeState<() -> ()>,
 	text: CanBeState<string>,
-	font: CanBeState<Font>,
-	styles: CanBeState<{ [Enums.ButtonStateType]: Style }>,
-	textIcon: CanBeState<ImageData?>,
 	isEnabled: CanBeState<boolean>,
-	isDropShadow: CanBeState<boolean>,
+	renderDatas: CanBeState<{ [Enums.ButtonStateType]: RenderData }>,
 	hasMinimumSize: CanBeState<boolean>?,
 	cornerRadius: CanBeState<number>?,
 	paddingScale: CanBeState<number>?,
 	useRipple: CanBeState<boolean>?
 ): Frame
-	local _fuse = ColdFusion.fuse(maid)
+	local fuse = ColdFusion.fuse(maid)
 
-	local _new = _fuse.new
-	local _bind = _fuse.bind
-	local _clone = _fuse.clone
-	local _import = _fuse.import
+	local _new = fuse.new
+	local _bind = fuse.bind
+	local _clone = fuse.clone
+	local _import = fuse.import
 
-	local _Value = _fuse.Value
-	local _Computed = _fuse.Computed
+	local _Value = fuse.Value
+	local _Computed = fuse.Computed
 	local isEnabledState = _import(isEnabled, true)
 	local isFocusedState = _Value(false)
 	local isPressedState = _Value(false)
@@ -92,43 +100,53 @@ return function(
 		isHoveredState
 	) :: State<any>
 
-	local stylesState = _import(styles, {}) :: any
-	local currentStyleState = _Computed(
-		function(state: Enums.ButtonStateType, styles: { [Enums.ButtonStateType]: Style }): Style
-			local style = styles[state]
-			assert(style ~= nil, `no style for {state}`)
-			return style
+	local renderDatasState = _import(renderDatas, {}) :: any
+	local currentRenderDataState = _Computed(
+		function(state: Enums.ButtonStateType, renderDatas: { [Enums.ButtonStateType]: RenderData }): RenderData
+			local renderData = renderDatas[state]
+			assert(renderData ~= nil, `no renderData for {state}`)
+			return renderData
 		end,
 		currentStateState,
-		stylesState
+		renderDatasState
 	)
 	local sound = _new("Sound")({
-		SoundId = _Computed(function(st: Style): string
-			return st.SoundId
-		end, currentStyleState),
-		Volume = _Computed(function(st: Style): number
-			return st.SoundVolume
-		end, currentStyleState)
+		SoundId = _Computed(function(st: RenderData): string
+			return if st.Sound then st.Sound.SoundId else ""
+		end, currentRenderDataState),
+		Volume = _Computed(function(st: RenderData): number
+			return if st.Sound then st.Sound.Volume else 0
+		end, currentRenderDataState)
 	}) :: Sound
 
-	currentStyleState:Connect(function()
+	currentRenderDataState:Connect(function()
 		task.wait()
 		SoundService:PlayLocalSound(sound)
 	end)
 
-	local scaleState = _Computed(function(st: Style): number
+	local scaleState = _Computed(function(st: RenderData): number
 		return st.Scale
-	end, currentStyleState)
+	end, currentRenderDataState)
 	local onClickState = _import(onClick, function() end)
 	local textState = _import(text, "")
-	local fontState = _import(font, Font.fromEnum(Enum.Font.SourceSansSemibold))
-	local iconState = _import(textIcon, nil :: ImageData?) :: any
+	local fontState = _Computed(function(st: RenderData): Font
+		return if st.Font then st.Font.Font else Font.fromEnum(Enum.Font.Roboto)
+	end, currentRenderDataState)
+	local iconState = _Computed(function(st: RenderData): ImageData?
+		return if st.Image then st.Image else nil
+	end, currentRenderDataState)
 
-	local isDropShadowState = _import(isDropShadow, false)
+	local isDropShadowState = _Computed(function(st: RenderData): boolean
+		return st.Shadow ~= nil
+	end, currentRenderDataState)
 	local hasMinState = _import(hasMinimumSize, true)
 	local cornerRadiusState = _import(cornerRadius, SHAPE_DP)
 	local paddingScaleState = _import(paddingScale, 1)
 	local useRippleState = _import(useRipple, false)
+	local currentTextRenderData: State<AppearanceData> = sAssert(
+		fuse, 
+		StyleUtil.getTextAppearanceData(fuse, currentRenderDataState) :: any
+	)
 
 	local inst: Frame
 
@@ -156,7 +174,7 @@ return function(
 				Enum.EasingDirection.In
 			)
 
-			local baseColor = (stylesState:Get()[Enums.ButtonStateType.Enabled] :: Style).BackgroundColor3
+			local baseColor = (renderDatasState:Get()[Enums.ButtonStateType.Enabled] :: RenderData).Background.Color3
 			local rippleColor = (Color3.new(1, 1, 1):Lerp(baseColor, 0.8)):Lerp(baseColor, fadeAlpha)
 
 			local leftOffset =
@@ -199,9 +217,9 @@ return function(
 				Image = "rbxassetid://15549395120",
 				ImageColor3 = Color3.new(0, 0, 0),
 				BackgroundTransparency = 1,
-				ImageTransparency = _Computed(function(style: Style, isDrop: boolean): number
-					return if style.BackgroundTransparency == 0 and isDrop then 0 else 1
-				end, currentStyleState, isDropShadowState),
+				ImageTransparency = _Computed(function(renderData: RenderData, isDrop: boolean): number
+					return if renderData.Text and renderData.Text.Transparency == 0 and isDrop then 0 else 1
+				end, currentRenderDataState, isDropShadowState),
 				ScaleType = Enum.ScaleType.Slice,
 				AutomaticSize = Enum.AutomaticSize.XY,
 				SliceCenter = Rect.new(HALF_IMAGE_SIZE, HALF_IMAGE_SIZE, HALF_IMAGE_SIZE, HALF_IMAGE_SIZE),
@@ -221,15 +239,15 @@ return function(
 					_new("TextButton")({
 						Name = "TextButton",
 						Text = "",
-						BackgroundTransparency = _Computed(function(style: Style): number
-							return style.BackgroundTransparency
-						end, currentStyleState),
-						BackgroundColor3 = _Computed(function(style: Style, useRip: boolean): Color3
+						BackgroundTransparency = _Computed(function(renderData: RenderData): number
+							return renderData.Background.Transparency
+						end, currentRenderDataState),
+						BackgroundColor3 = _Computed(function(renderData: RenderData, useRip: boolean): Color3
 							if useRip then
 								return Color3.new(1, 1, 1)
 							end
-							return style.BackgroundColor3
-						end, currentStyleState, useRippleState),
+							return renderData.Background.Color3
+						end, currentRenderDataState, useRippleState),
 						Active = isEnabledState,
 						AutomaticSize = Enum.AutomaticSize.X,
 						Size = _Computed(function(s: number): UDim2
@@ -279,34 +297,34 @@ return function(
 							}),
 							_new("UIGradient")({
 								Color = _Computed(
-									function(useRip: boolean, style: Style, seq: ColorSequence?): ColorSequence
+									function(useRip: boolean, renderData: RenderData, seq: ColorSequence?): ColorSequence
 										if useRip then
 											if seq then
 												return seq
 											else
-												return ColorSequence.new(style.BackgroundColor3)
+												return ColorSequence.new(renderData.Background.Color3)
 											end
 										else
 											return ColorSequence.new(Color3.new(1, 1, 1))
 										end
 									end,
 									useRippleState,
-									currentStyleState,
+									currentRenderDataState,
 									rippleColorState
 								),
 							}),
 							_new("UIStroke")({
 								ApplyStrokeMode = Enum.ApplyStrokeMode.Border,
-								Color = _Computed(function(style: Style): Color3
-									return style.BorderColor3
-								end, currentStyleState),
+								Color = _Computed(function(renderData: RenderData): Color3
+									return renderData.Border.Color3
+								end, currentRenderDataState),
 								LineJoinMode = Enum.LineJoinMode.Round,
 								Thickness = _Computed(function(s: number): number
 									return math.max(s * 1, 1)
 								end, scaleState),
-								Transparency = _Computed(function(style: Style): number
-									return style.BorderTransparency
-								end, currentStyleState),
+								Transparency = _Computed(function(renderData: RenderData): number
+									return renderData.Border.Transparency
+								end, currentRenderDataState),
 							}),
 							_new("UIListLayout")({
 								Padding = _Computed(function(s: number): UDim
@@ -330,12 +348,12 @@ return function(
 								AutomaticSize = Enum.AutomaticSize.X,
 								FontFace = fontState,
 								LayoutOrder = 2,
-								TextColor3 = _Computed(function(style: Style): Color3
-									return style.TextColor3
-								end, currentStyleState),
-								TextTransparency = _Computed(function(style: Style): number
-									return style.TextTransparency
-								end, currentStyleState),
+								TextColor3 = _Computed(function(renderData: AppearanceData): Color3
+									return renderData.Color3
+								end, currentTextRenderData),
+								TextTransparency = _Computed(function(renderData: AppearanceData): number
+									return renderData.Transparency
+								end, currentTextRenderData),
 								Size = _Computed(function(s: number): UDim2
 									return UDim2.fromOffset(0, s * ICON_SIZE_DP)
 								end, scaleState),
@@ -350,18 +368,18 @@ return function(
 								Image = _Computed(function(icon: ImageData?): string
 									return if icon then icon.Image else ""
 								end, iconState),
-								ImageColor3 = _Computed(function(icon: ImageData?, style: Style?): Color3
-									return if icon and style then style.TextColor3 else Color3.new(1, 1, 1)
-								end, iconState, currentStyleState),
+								ImageColor3 = _Computed(function(icon: ImageData?, renderData: AppearanceData?): Color3
+									return if icon and renderData then renderData.Color3 else Color3.new(1, 1, 1)
+								end, iconState, currentTextRenderData),
 								ImageRectOffset = _Computed(function(icon: ImageData?): Vector2
 									return if icon then icon.ImageRectOffset else Vector2.zero
 								end, iconState),
 								ImageRectSize = _Computed(function(icon: ImageData?): Vector2
 									return if icon then icon.ImageRectSize else Vector2.zero
 								end, iconState),
-								ImageTransparency = _Computed(function(icon: ImageData?, style: Style?): number
-									return if icon and style then style.TextTransparency else 1
-								end, iconState, currentStyleState),
+								ImageTransparency = _Computed(function(icon: ImageData?, renderData: AppearanceData?): number
+									return if icon and renderData then renderData.Transparency else 1
+								end, iconState, currentTextRenderData),
 								SizeConstraint = Enum.SizeConstraint.RelativeYY,
 								Size = _Computed(function(s: number): UDim2
 									return UDim2.fromScale(1, 1)
@@ -430,3 +448,5 @@ return function(
 
 	return inst
 end
+
+return Util

@@ -3,5 +3,60 @@ use_union_types_for_tree = false
 use_union_types_for_export = true
 
 [enums]
+FontType = [
+	"DisplayLarge",
+	"DisplayMedium",
+	"DisplaySmall",
+	"HeadlineLarge",
+	"HeadlineMedium",
+	"HeadlineSmall",
+	"TitleLarge",
+	"TitleMedium",
+	"TitleSmall",
+	"BodyLarge",
+	"BodyMedium",
+	"BodySmall",
+	"LabelLarge",
+	"LabelMedium",
+	"LabelSmall",
+]
 ButtonStateType = ["Enabled", "Disabled", "Hovered", "Focused", "Pressed"]
+SchemeType = ["Light", "Dark"]
+ColorRoleType = [
+	"Primary",
+	"Secondary",
+	"Tertiary",
+	"Error",
+	"Background",
+	"Surface",
+	"Outline",
+	"Shadow",
+	"Scrim"
+]
+ColorContextType = [
+	"Default",
+	"On",
+	"Container",
+	"OnContainer",
+	"Surface",
+	"Dim",
+	"Bright",
+	"Lowest",
+	"Low",
+	"High",
+	"Highest",
+	"Tint",
+	"Variant",
+	"OnVariant",
+	"Inverse",
+	"InverseOn",
+]
 
+PaletteType = [
+	"Primary",
+	"Secondary",
+	"Tertiary",
+	"Neutral",
+	"NeutralVariant",
+	"Error",
+]
