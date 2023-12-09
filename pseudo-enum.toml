@@ -22,36 +22,51 @@ FontType = [
 ]
 ButtonStateType = ["Enabled", "Disabled", "Hovered", "Focused", "Pressed"]
 SchemeType = ["Light", "Dark"]
+CustomColorType = [
+	"Custom",
+	"OnCustom",
+	"CustomContainer",
+	"OnCustomContainer"
+]
 ColorRoleType = [
 	"Primary",
+	"OnPrimary",
+	"PrimaryContainer",
+	"OnPrimaryContainer",
 	"Secondary",
+	"OnSecondary",
+	"SecondaryContainer",
+	"OnSecondaryContainer",
 	"Tertiary",
+	"OnTertiary",
+	"TertiaryContainer",
+	"OnTertiaryContainer",
 	"Error",
+	"OnError",
+	"ErrorContainer",
+	"OnErrorContainer",
 	"Background",
+	"OnBackground",
 	"Surface",
+	"OnSurface",
+	"SurfaceVariant",
+	"OnSurfaceVariant",
 	"Outline",
+	"OutlineVariant",
 	"Shadow",
-	"Scrim"
+	"Scrim",
+	"InverseSurface",
+	"InverseOnSurface",
+	"InversePrimary",
+	"SurfaceDim",
+	"SurfaceBright",
+	"SurfaceContainerLowest",
+	"SurfaceContainerLow",
+	"SurfaceContainer",
+	"SurfaceContainerHigh",
+	"SurfaceContainerHighest",
+	"SurfaceTint",
 ]
-ColorContextType = [
-	"Default",
-	"On",
-	"Container",
-	"OnContainer",
-	"Surface",
-	"Dim",
-	"Bright",
-	"Lowest",
-	"Low",
-	"High",
-	"Highest",
-	"Tint",
-	"Variant",
-	"OnVariant",
-	"Inverse",
-	"InverseOn",
-]
-
 PaletteType = [
 	"Primary",
 	"Secondary",

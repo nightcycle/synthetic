@@ -16,6 +16,7 @@ local Base = require(script.Parent:WaitForChild("Base"))
 local StyleUtil = require(_Package:WaitForChild("StyleUtil"))
 local Typography = require(_Package:WaitForChild("Typography"))
 local Theme = require(_Package:WaitForChild("Theme"))
+local Style = require(_Package:WaitForChild("Style"))
 
 -- Types
 type Maid = Maid.Maid
@@ -25,14 +26,10 @@ type CanBeState<V> = ColdFusion.CanBeState<V>
 type RenderData = Types.RenderData
 type Typography = Typography.Typography
 type Theme = Theme.Theme
+type Style = Style.Style
+type ImageData = Types.ImageData
 
 -- Constants
-local DEFAULT_VOLUME = Config.Sound.Volume
-local HOVER_TRANSPARENCY = Config.Transparency.Background.Hovered
-local FOCUS_TRANSPARENCY = Config.Transparency.Background.Focused
-local PRESS_TRANSPARENCY = Config.Transparency.Background.Pressed
-local DISABLE_TRANSPARENCY = Config.Transparency.Text.Disabled
-
 -- Variables
 -- References
 -- Private Functions
@@ -42,11 +39,16 @@ local Interface = {}
 
 Interface.ColdFusion = {}
 
-function Interface.ColdFusion._new(
+function Interface.ColdFusion.new(
 	onClick: CanBeState<() -> ()>,
 	text: CanBeState<string>,
+	icon: CanBeState<ImageData?>,
+	style: CanBeState<Style>,
+	textColor: CanBeState<Color3>,
+	disabledTextColor: CanBeState<Color3>,
+	hoverSurfaceColor: CanBeState<Color3>,
 	isEnabled: CanBeState<boolean>,
-	renderStates: CanBeState<{[Enums.ButtonStateType]: RenderData}>
+	elevation: CanBeState<number>
 ): GuiObject
 	local maid = Maid.new()
 
@@ -59,57 +61,129 @@ function Interface.ColdFusion._new(
 
 	local _Value = _fuse.Value
 	local _Computed = _fuse.Computed
+
+	local styleState: State<Style> = _import(style, nil :: any)
+
+	local elevationState: State<number> = _import(elevation, 0)
+	local textColorState: State<Color3> = _import(textColor, Color3.new(1,1,1))
+	local hoverColorState: State<Color3> = _import(hoverSurfaceColor, Color3.new(1,1,1))
+	local disabledColorState: State<Color3> = _import(disabledTextColor, Color3.new(1,1,1))
+
+	local iconState: State<ImageData?> = _import(icon, nil :: ImageData?)
 
 	local button = Base.component(
 		maid,
 		onClick,
 		text,
-		isEnabled,
-		renderStates,
-		nil,
-		nil,
-		nil
+		if isEnabled == nil then true else isEnabled,
+		_Computed(function(
+			style: Style, 
+			e: number,
+			hC: Color3,
+			tC: Color3,
+			dC: Color3,
+			i: ImageData?
+		): {[Enums.ButtonStateType]: RenderData}
+			e += 1
+			return {
+				[Enums.ButtonStateType.Enabled] = Types.newRenderData(
+					style.Scale,
+					Types.newAppearanceData(
+						style:GetElevatedColor(hC, e), 
+						1
+					),
+					Types.newAppearanceData(
+						style:GetElevatedColor(hC, e), 
+						1
+					),
+					Types.newAppearanceData(
+						style:GetElevatedColor(tC, e), 
+						0
+					),
+					style.Typography:Get(Enums.FontType.LabelLarge),
+					i,
+					nil,
+					nil
+				),
+				[Enums.ButtonStateType.Disabled] = Types.newRenderData(
+					style.Scale,
+					Types.newAppearanceData(
+						style:GetElevatedColor(hC, e), 
+						1
+					),
+					Types.newAppearanceData(
+						style:GetElevatedColor(hC, e), 
+						1
+					),
+					Types.newAppearanceData(
+						style:GetElevatedColor(dC, e), 
+						1-0.38
+					),
+					style.Typography:Get(Enums.FontType.LabelLarge),
+					i,
+					nil,
+					nil
+				),
+				[Enums.ButtonStateType.Hovered] = Types.newRenderData(
+					style.Scale,
+					Types.newAppearanceData(
+						style:GetElevatedColor(hC, e), 
+						1
+					),
+					Types.newAppearanceData(
+						style:GetElevatedColor(hC, e+1), 
+						1-0.08
+					),
+					Types.newAppearanceData(
+						style:GetElevatedColor(tC, e+1), 
+						0
+					),
+					style.Typography:Get(Enums.FontType.LabelLarge),
+					i,
+					nil,
+					nil
+				),
+				[Enums.ButtonStateType.Focused] = Types.newRenderData(
+					style.Scale,
+					Types.newAppearanceData(
+						style:GetElevatedColor(hC, e), 
+						1
+					),
+					Types.newAppearanceData(
+						style:GetElevatedColor(hC, e), 
+						1-0.1
+					),
+					Types.newAppearanceData(
+						style:GetElevatedColor(tC, e), 
+						0
+					),
+					style.Typography:Get(Enums.FontType.LabelLarge),
+					i,
+					nil,
+					nil
+				),
+				[Enums.ButtonStateType.Pressed] = Types.newRenderData(
+					style.Scale,
+					Types.newAppearanceData(
+						style:GetElevatedColor(hC, e), 
+						1
+					),
+					Types.newAppearanceData(
+						style:GetElevatedColor(hC, e-1), 
+						1-0.1
+					),
+					Types.newAppearanceData(
+						style:GetElevatedColor(tC, e-1), 
+						0
+					),
+					style.Typography:Get(Enums.FontType.LabelLarge),
+					i,
+					nil,
+					nil
+				),
+			}
+		end, styleState, elevationState, hoverColorState, textColorState, disabledColorState, iconState)
 	)
-	maid.bind(button)
-
-	return button
-end
-
-
-function Interface.ColdFusion.new(
-	onClick: CanBeState<() -> ()>,
-	text: CanBeState<string>,
-	elevation: CanBeState<number>,
-	theme: CanBeState<Typography>,
-	typography: CanBeState<Typography>
-): GuiObject
-	local maid = Maid.new()
-
-	local _fuse = ColdFusion.fuse(maid)
-
-	local _new = _fuse.new
-	local _bind = _fuse.bind
-	local _clone = _fuse.clone
-	local _import = _fuse.import
-
-	local _Value = _fuse.Value
-	local _Computed = _fuse.Computed
-
-	local onClickState = _import(onClick, function() end)
-	local textState = _import(text, "")
-
-	local enabledStyleState = StyleUtil.newRenderData(
-		_fuse,
-		nil,
-		nil,
-		nil,
-		nil,
-		nil,
-		nil,
-		nil,
-		nil
-	) 
-
 	maid.bind(button)
 
 	return button

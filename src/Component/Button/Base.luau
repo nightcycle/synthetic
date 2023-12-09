@@ -13,8 +13,6 @@ local CurveUtil = require(_Packages:WaitForChild("CurveUtil"))
 -- Modules
 local Enums = require(_Package:WaitForChild("Enums"))
 local Types = require(_Package:WaitForChild("Types"))
-local Theme = require(_Package:WaitForChild("Theme"))
-local StyleUtil = require(_Package:WaitForChild("StyleUtil"))
 -- Types
 type Maid = Maid.Maid
 type Fuse = ColdFusion.Fuse
@@ -39,9 +37,6 @@ local IMAGE_SIZE = 500
 local RIP_STEP = 0.005
 local HALF_IMAGE_SIZE = IMAGE_SIZE / 2
 
-local sAssert = StyleUtil.assert
-local isNil = StyleUtil.isNil
-local flip = StyleUtil.inverse
 
 local Util = {}
 
@@ -101,6 +96,7 @@ Util.component = function(
 	) :: State<any>
 
 	local renderDatasState = _import(renderDatas, {}) :: any
+
 	local currentRenderDataState = _Computed(
 		function(state: Enums.ButtonStateType, renderDatas: { [Enums.ButtonStateType]: RenderData }): RenderData
 			local renderData = renderDatas[state]
@@ -143,10 +139,11 @@ Util.component = function(
 	local cornerRadiusState = _import(cornerRadius, SHAPE_DP)
 	local paddingScaleState = _import(paddingScale, 1)
 	local useRippleState = _import(useRipple, false)
-	local currentTextRenderData: State<AppearanceData> = sAssert(
-		fuse, 
-		StyleUtil.getTextAppearanceData(fuse, currentRenderDataState) :: any
-	)
+	local currentTextRenderData: State<AppearanceData> = _Computed(function(rData: RenderData): AppearanceData
+		local tData = rData.Text
+		assert(tData, `bad text data`)
+		return tData
+	end, currentRenderDataState)
 
 	local inst: Frame
 
@@ -202,9 +199,9 @@ Util.component = function(
 		maid._ripple = runMaid
 	end
 
-	local shadowSizeState = _Computed(function(s: number, isDrop: boolean): UDim
-		return if isDrop then UDim.new(0, s * 5) else UDim.new(0, 0)
-	end, scaleState, isDropShadowState)
+	local shadowSizeState = _Computed(function(s: number, renderData: RenderData): UDim
+		return if renderData and renderData.Shadow then UDim.new(renderData.Shadow.Offset.X * 5, renderData.Shadow.Offset.Y * 5) else UDim.new(0, 0)
+	end, scaleState, currentRenderDataState)
 
 	inst = _new("Frame")({
 		BackgroundTransparency = 1,
@@ -215,11 +212,13 @@ Util.component = function(
 			}),
 			_new("ImageLabel")({
 				Image = "rbxassetid://15549395120",
-				ImageColor3 = Color3.new(0, 0, 0),
+				ImageColor3 = _Computed(function(renderData: RenderData): Color3
+					return if renderData.Shadow and renderData.Shadow.Appearance then renderData.Shadow.Appearance.Color3 else Color3.new(0,0,0)
+				end, currentRenderDataState),
 				BackgroundTransparency = 1,
-				ImageTransparency = _Computed(function(renderData: RenderData, isDrop: boolean): number
-					return if renderData.Text and renderData.Text.Transparency == 0 and isDrop then 0 else 1
-				end, currentRenderDataState, isDropShadowState),
+				ImageTransparency = _Computed(function(renderData: RenderData): number
+					return if renderData.Shadow and renderData.Shadow.Appearance then renderData.Shadow.Appearance.Transparency else 1
+				end, currentRenderDataState),
 				ScaleType = Enum.ScaleType.Slice,
 				AutomaticSize = Enum.AutomaticSize.XY,
 				SliceCenter = Rect.new(HALF_IMAGE_SIZE, HALF_IMAGE_SIZE, HALF_IMAGE_SIZE, HALF_IMAGE_SIZE),

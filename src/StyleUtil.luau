@@ -36,24 +36,21 @@ function Util.newColor(
 	elevation: CanBeState<number>,
 	schemeType: CanBeState<Enums.SchemeType>,
 	role: CanBeState<Enums.ColorRoleType>,
-	context: CanBeState<Enums.ColorContextType>,
 	theme: CanBeState<Theme>
 ): State<Color3>
 
 	local elevationState = fuse.import(elevation, 1)
 	local schemeTypeState = fuse.import(schemeType, Enums.SchemeType.Dark)
 	local roleState = fuse.import(role, Enums.ColorRoleType.Primary)
-	local contextState = fuse.import(context, Enums.ColorContextType.Default)
 	local themeState: State<Theme> = fuse.import(theme, nil :: any)
 
-	return fuse.Computed(function(elev: number, scheme: Enums.SchemeType, r: Enums.ColorRoleType, c: Enums.ColorContextType, th: Theme): Color3
+	return fuse.Computed(function(elev: number, scheme: Enums.SchemeType, r: Enums.ColorRoleType, th: Theme): Color3
 		return th:Get(
 			r, 
-			c, 
 			scheme, 
 			elev
 		)
-	end, elevationState, schemeTypeState, roleState, contextState, themeState)
+	end, elevationState, schemeTypeState, roleState, themeState)
 end
 
 function Util.newFontData(
@@ -79,6 +76,18 @@ function Util.newFont(
 	return fuse.Computed(function(data: FontData): Font
 		return data.Font
 	end, fontDataState)
+end
+
+function Util.newAppearanceData(
+	fuse: Fuse,
+	color3: CanBeState<Color3>,
+	transparency: CanBeState<number>?
+): State<AppearanceData>
+
+	local colorState = fuse.import(color3, Color3.new(1,1,1))
+	local transparencyState = fuse.import(transparency, 0)
+
+	return fuse.Computed(Types.newAppearanceData, colorState, transparencyState)
 end
 
 function Util.newLineHeight(
@@ -169,102 +178,6 @@ function Util.getScale(
 	return fuse.Computed(function(st: RenderData): number
 		return st.Scale
 	end, renderDataState)
-end
-
-function Util.getBorderAppearanceData(
-	fuse: Fuse,
-	renderData: CanBeState<RenderData>
-): State<AppearanceData>
-	local renderDataState = fuse.import(renderData, nil :: RenderData?)
-	return fuse.Computed(function(st: RenderData): AppearanceData
-		return st.Border
-	end, renderDataState)
-end
-
-function Util.getBackgroundAppearanceData(
-	fuse: Fuse,
-	renderData: CanBeState<RenderData>
-): State<AppearanceData>
-	local renderDataState = fuse.import(renderData, nil :: RenderData?)
-	return fuse.Computed(function(st: RenderData): AppearanceData
-		return st.Background
-	end, renderDataState)
-end
-
-function Util.getTextAppearanceData(
-	fuse: Fuse,
-	renderData: CanBeState<RenderData>
-): State<AppearanceData?>
-	local renderDataState = fuse.import(renderData, nil :: RenderData?)
-	
-	return fuse.Computed(function(st: RenderData): AppearanceData?
-		return st.Text
-	end, renderDataState)
-end
-
-function Util.getImageData(
-	fuse: Fuse,
-	renderData: CanBeState<RenderData>
-): State<ImageData?>
-	local renderDataState = fuse.import(renderData, nil :: RenderData?)
-	
-	return fuse.Computed(function(st: RenderData): ImageData?
-		return st.Image
-	end, renderDataState)
-end
-
-function Util.getFontData(
-	fuse: Fuse,
-	renderData: CanBeState<RenderData>
-): State<FontData?>
-	local renderDataState = fuse.import(renderData, nil :: RenderData?)
-	
-	return fuse.Computed(function(st: RenderData): FontData?
-		return st.Font
-	end, renderDataState)
-end
-
-function Util.getSoundData(
-	fuse: Fuse,
-	renderData: CanBeState<RenderData>
-): State<SoundData?>
-
-	local renderDataState = fuse.import(renderData, nil :: RenderData?)
-	
-	return fuse.Computed(function(st: RenderData): SoundData?
-		return st.Sound
-	end, renderDataState)
-end
-
-function Util.getShadowData(
-	fuse: Fuse,
-	renderData: CanBeState<RenderData>
-): State<ShadowData?>
-
-	local renderDataState = fuse.import(renderData, nil :: RenderData?)
-	
-	return fuse.Computed(function(st: RenderData): ShadowData?
-		return st.Shadow
-	end, renderDataState)
-end
-
-function Util.assert<T>(fuse: Fuse, state: State<T?>): State<T>
-	return fuse.Computed(function(t: T?): T
-		assert(t ~= nil)
-		return t
-	end, state)
-end
-
-function Util.isNil<T>(fuse: Fuse, state: State<T?>): State<boolean>
-	return fuse.Computed(function(t: T?): boolean
-		return t == nil
-	end, state)
-end
-
-function Util.inverse(fuse: Fuse, state: State<boolean>): State<boolean>
-	return fuse.Computed(function(v: boolean): boolean
-		return not v
-	end, state)
 end
 
 return Util

@@ -113,7 +113,6 @@ function Scheme.lightFromCorePalette(core: CorePalette): Scheme
 		inverseSurface= core.n1:getTone(20),
 		inverseOnSurface= core.n1:getTone(95),
 		inversePrimary= core.a1:getTone(80),
-
 		surfaceDim= core.n1:getTone(87),
 		surfaceBright= core.n1:getTone(98),
 		surfaceContainerLowest= core.n1:getTone(100),

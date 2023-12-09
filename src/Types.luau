@@ -152,7 +152,8 @@ function Types.newRenderData(
 	text: AppearanceData?,
 	font: FontData?,
 	image: ImageData?,
-	sound: SoundData?
+	sound: SoundData?,
+	shadow: ShadowData?
 ): RenderData
 	return {
 		Scale = scale,
@@ -162,6 +163,7 @@ function Types.newRenderData(
 		Image = image,
 		Font = font,
 		Text = text,
+		Shadow = shadow,
 	}
 end
 

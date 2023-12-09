@@ -58,63 +58,95 @@ export type SchemeType = ("Light"
 
 local SchemeTypeList = {"Light","Dark",}
 
+export type CustomColorType = ("Custom"
+
+| "OnCustom"
+
+| "CustomContainer"
+
+| "OnCustomContainer"
+
+)
+
+local CustomColorTypeList = {"Custom","OnCustom","CustomContainer","OnCustomContainer",}
+
 export type ColorRoleType = ("Primary"
+
+| "OnPrimary"
+
+| "PrimaryContainer"
+
+| "OnPrimaryContainer"
 
 | "Secondary"
 
+| "OnSecondary"
+
+| "SecondaryContainer"
+
+| "OnSecondaryContainer"
+
 | "Tertiary"
+
+| "OnTertiary"
+
+| "TertiaryContainer"
+
+| "OnTertiaryContainer"
 
 | "Error"
 
+| "OnError"
+
+| "ErrorContainer"
+
+| "OnErrorContainer"
+
 | "Background"
+
+| "OnBackground"
 
 | "Surface"
 
+| "OnSurface"
+
+| "SurfaceVariant"
+
+| "OnSurfaceVariant"
+
 | "Outline"
+
+| "OutlineVariant"
 
 | "Shadow"
 
 | "Scrim"
 
-)
+| "InverseSurface"
 
-local ColorRoleTypeList = {"Primary","Secondary","Tertiary","Error","Background","Surface","Outline","Shadow","Scrim",}
+| "InverseOnSurface"
 
-export type ColorContextType = ("Default"
+| "InversePrimary"
 
-| "On"
+| "SurfaceDim"
 
-| "Container"
+| "SurfaceBright"
 
-| "OnContainer"
+| "SurfaceContainerLowest"
 
-| "Surface"
+| "SurfaceContainerLow"
 
-| "Dim"
+| "SurfaceContainer"
 
-| "Bright"
+| "SurfaceContainerHigh"
 
-| "Lowest"
+| "SurfaceContainerHighest"
 
-| "Low"
-
-| "High"
-
-| "Highest"
-
-| "Tint"
-
-| "Variant"
-
-| "OnVariant"
-
-| "Inverse"
-
-| "InverseOn"
+| "SurfaceTint"
 
 )
 
-local ColorContextTypeList = {"Default","On","Container","OnContainer","Surface","Dim","Bright","Lowest","Low","High","Highest","Tint","Variant","OnVariant","Inverse","InverseOn",}
+local ColorRoleTypeList = {"Primary","OnPrimary","PrimaryContainer","OnPrimaryContainer","Secondary","OnSecondary","SecondaryContainer","OnSecondaryContainer","Tertiary","OnTertiary","TertiaryContainer","OnTertiaryContainer","Error","OnError","ErrorContainer","OnErrorContainer","Background","OnBackground","Surface","OnSurface","SurfaceVariant","OnSurfaceVariant","Outline","OutlineVariant","Shadow","Scrim","InverseSurface","InverseOnSurface","InversePrimary","SurfaceDim","SurfaceBright","SurfaceContainerLowest","SurfaceContainerLow","SurfaceContainer","SurfaceContainerHigh","SurfaceContainerHighest","SurfaceTint",}
 
 export type PaletteType = ("Primary"
 
@@ -137,9 +169,9 @@ export type EnumName = ("FontType"
 
 | "SchemeType"
 
-| "ColorRoleType"
+| "CustomColorType"
 
-| "ColorContextType"
+| "ColorRoleType"
 
 | "PaletteType"
 
@@ -152,10 +184,10 @@ return {
 			return table.clone(ButtonStateTypeList)
 		elseif enumName == "SchemeType" then
 			return table.clone(SchemeTypeList)
+		elseif enumName == "CustomColorType" then
+			return table.clone(CustomColorTypeList)
 		elseif enumName == "ColorRoleType" then
 			return table.clone(ColorRoleTypeList)
-		elseif enumName == "ColorContextType" then
-			return table.clone(ColorContextTypeList)
 		elseif enumName == "PaletteType" then
 			return table.clone(PaletteTypeList)
 		end
@@ -168,10 +200,10 @@ return {
 			if ButtonStateTypeList[value] then return ButtonStateTypeList[value] else error("no enum item of value "..tostring(value).." in enum "..tostring(enumName)) end
 		elseif enumName == "SchemeType" then
 			if SchemeTypeList[value] then return SchemeTypeList[value] else error("no enum item of value "..tostring(value).." in enum "..tostring(enumName)) end
+		elseif enumName == "CustomColorType" then
+			if CustomColorTypeList[value] then return CustomColorTypeList[value] else error("no enum item of value "..tostring(value).." in enum "..tostring(enumName)) end
 		elseif enumName == "ColorRoleType" then
 			if ColorRoleTypeList[value] then return ColorRoleTypeList[value] else error("no enum item of value "..tostring(value).." in enum "..tostring(enumName)) end
-		elseif enumName == "ColorContextType" then
-			if ColorContextTypeList[value] then return ColorContextTypeList[value] else error("no enum item of value "..tostring(value).." in enum "..tostring(enumName)) end
 		elseif enumName == "PaletteType" then
 			if PaletteTypeList[value] then return PaletteTypeList[value] else error("no enum item of value "..tostring(value).." in enum "..tostring(enumName)) end
 		end
@@ -203,6 +235,14 @@ getValueFromEnumItem = function(enumName: EnumName, enumItem: string): number
 			else
 				error("no enumItem "..enumItem.." in SchemeType")
 			end
+		elseif enumName == "CustomColorType" then
+			local index = table.find(CustomColorTypeList, enumItem)
+			if index then
+				assert(index)
+				return index
+			else
+				error("no enumItem "..enumItem.." in CustomColorType")
+			end
 		elseif enumName == "ColorRoleType" then
 			local index = table.find(ColorRoleTypeList, enumItem)
 			if index then
@@ -210,14 +250,6 @@ getValueFromEnumItem = function(enumName: EnumName, enumItem: string): number
 				return index
 			else
 				error("no enumItem "..enumItem.." in ColorRoleType")
-			end
-		elseif enumName == "ColorContextType" then
-			local index = table.find(ColorContextTypeList, enumItem)
-			if index then
-				assert(index)
-				return index
-			else
-				error("no enumItem "..enumItem.." in ColorContextType")
 			end
 		elseif enumName == "PaletteType" then
 			local index = table.find(PaletteTypeList, enumItem)
@@ -258,34 +290,50 @@ SchemeType = {
 	["Light"] = "Light",
 	["Dark"] = "Dark",
 },
+CustomColorType = {
+	["Custom"] = "Custom",
+	["OnCustom"] = "OnCustom",
+	["CustomContainer"] = "CustomContainer",
+	["OnCustomContainer"] = "OnCustomContainer",
+},
 ColorRoleType = {
 	["Primary"] = "Primary",
+	["OnPrimary"] = "OnPrimary",
+	["PrimaryContainer"] = "PrimaryContainer",
+	["OnPrimaryContainer"] = "OnPrimaryContainer",
 	["Secondary"] = "Secondary",
+	["OnSecondary"] = "OnSecondary",
+	["SecondaryContainer"] = "SecondaryContainer",
+	["OnSecondaryContainer"] = "OnSecondaryContainer",
 	["Tertiary"] = "Tertiary",
+	["OnTertiary"] = "OnTertiary",
+	["TertiaryContainer"] = "TertiaryContainer",
+	["OnTertiaryContainer"] = "OnTertiaryContainer",
 	["Error"] = "Error",
+	["OnError"] = "OnError",
+	["ErrorContainer"] = "ErrorContainer",
+	["OnErrorContainer"] = "OnErrorContainer",
 	["Background"] = "Background",
+	["OnBackground"] = "OnBackground",
 	["Surface"] = "Surface",
+	["OnSurface"] = "OnSurface",
+	["SurfaceVariant"] = "SurfaceVariant",
+	["OnSurfaceVariant"] = "OnSurfaceVariant",
 	["Outline"] = "Outline",
+	["OutlineVariant"] = "OutlineVariant",
 	["Shadow"] = "Shadow",
 	["Scrim"] = "Scrim",
-},
-ColorContextType = {
-	["Default"] = "Default",
-	["On"] = "On",
-	["Container"] = "Container",
-	["OnContainer"] = "OnContainer",
-	["Surface"] = "Surface",
-	["Dim"] = "Dim",
-	["Bright"] = "Bright",
-	["Lowest"] = "Lowest",
-	["Low"] = "Low",
-	["High"] = "High",
-	["Highest"] = "Highest",
-	["Tint"] = "Tint",
-	["Variant"] = "Variant",
-	["OnVariant"] = "OnVariant",
-	["Inverse"] = "Inverse",
-	["InverseOn"] = "InverseOn",
+	["InverseSurface"] = "InverseSurface",
+	["InverseOnSurface"] = "InverseOnSurface",
+	["InversePrimary"] = "InversePrimary",
+	["SurfaceDim"] = "SurfaceDim",
+	["SurfaceBright"] = "SurfaceBright",
+	["SurfaceContainerLowest"] = "SurfaceContainerLowest",
+	["SurfaceContainerLow"] = "SurfaceContainerLow",
+	["SurfaceContainer"] = "SurfaceContainer",
+	["SurfaceContainerHigh"] = "SurfaceContainerHigh",
+	["SurfaceContainerHighest"] = "SurfaceContainerHighest",
+	["SurfaceTint"] = "SurfaceTint",
 },
 PaletteType = {
 	["Primary"] = "Primary",
