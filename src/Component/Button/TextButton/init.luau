@@ -178,7 +178,10 @@ function Interface.ColdFusion.new(
 					),
 					style.Typography:Get(Enums.FontType.LabelLarge),
 					i,
-					nil,
+					Types.newSoundData(
+						Sounds.ui_tap_variant_01,
+						1
+					),
 					nil
 				),
 			}

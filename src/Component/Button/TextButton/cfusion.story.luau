@@ -53,7 +53,7 @@ return function(frame: Frame)
 						nil,
 						style,
 						style:GetColor(Enums.ColorRoleType.Primary),
-						style:GetColor(Enums.ColorRoleType.Surface),
+						style:GetColor(Enums.ColorRoleType.OnSurface),
 						style:GetColor(Enums.ColorRoleType.Primary),
 						true,
 						0
@@ -72,7 +72,7 @@ return function(frame: Frame)
 						nil,
 						style,
 						style:GetColor(Enums.ColorRoleType.Primary),
-						style:GetColor(Enums.ColorRoleType.Surface),
+						style:GetColor(Enums.ColorRoleType.OnSurface),
 						style:GetColor(Enums.ColorRoleType.Primary),
 						false,
 						0
@@ -91,7 +91,7 @@ return function(frame: Frame)
 						Icons.waterfall_chart,
 						style,
 						style:GetColor(Enums.ColorRoleType.Primary),
-						style:GetColor(Enums.ColorRoleType.Surface),
+						style:GetColor(Enums.ColorRoleType.OnSurface),
 						style:GetColor(Enums.ColorRoleType.Primary),
 						true,
 						0
