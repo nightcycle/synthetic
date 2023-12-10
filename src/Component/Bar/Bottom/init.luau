@@ -6,7 +6,6 @@ local _Packages = _Package.Parent
 local Maid = require(_Packages:WaitForChild("Maid"))
 local ColdFusion = require(_Packages:WaitForChild("ColdFusion"))
 local MaterialIcons = require(_Packages:WaitForChild("MaterialIcons"))
-local TableUtil = require(_Packages:WaitForChild("TableUtil"))
 
 -- Modules
 local Types = require(_Package:WaitForChild("Types"))
@@ -46,8 +45,10 @@ function Interface.ColdFusion.new(
 		[number]: ButtonData
 	}>,
 	fab: CanBeState<ButtonData?>,
-	textColor: CanBeState<Color3>,
 	backgroundColor: CanBeState<Color3>,
+	iconColor: CanBeState<Color3>,
+	fabColor: CanBeState<Color3>,
+	fabIconColor: CanBeState<Color3>,
 	elevation: CanBeState<number>,
 	style: CanBeState<Style>
 ): Frame
@@ -72,14 +73,17 @@ function Interface.ColdFusion.new(
 	local scaleState: State<number> = _Computed(function(s: Style): number
 		return s.Scale
 	end, styleState)
-	
+
+	local backgroundColorState: State<Color3> = _import(backgroundColor, Color3.new(1,1,1)) 
+	local elevationState: State<number> = _import(elevation, 0) 
+
 	local fabState: State<ButtonData?> = _import(fab, nil :: ButtonData?)
 
 	local inst = _new("Frame")({
 		AutomaticSize = Enum.AutomaticSize.XY,
-		BackgroundColor3 = _Computed(function(th: ThemeData): Color3
-			return Util.getElevatedColor(th.BackgroundColor3 or th.Color3, th.Elevation, th.IsDarkMode)
-		end, themeState),
+		BackgroundColor3 = _Computed(function(color: Color3, e: number, s: Style): Color3
+			return s:GetElevatedColor(color, e)
+		end, backgroundColorState, elevationState, styleState),
 		Children = {
 			_new("UIListLayout")({
 				Padding = _Computed(function(s: number): UDim
@@ -109,7 +113,6 @@ function Interface.ColdFusion.new(
 		}
 	}) :: Frame
 
-
 	_new("Frame")({
 		AutomaticSize = Enum.AutomaticSize.XY,
 		Parent = inst,
@@ -126,20 +129,27 @@ function Interface.ColdFusion.new(
 				VerticalAlignment = Enum.VerticalAlignment.Center,
 				HorizontalAlignment = Enum.HorizontalAlignment.Right,
 			}),
-			_bind(FAB.cfusion(
+			_bind(FAB.ColdFusion.new(
 				_Computed(function(fData: ButtonData?)
 					return if fData then fData.OnClick else function() end
 				end, fabState),
 				_Computed(function(fData: ButtonData?): ImageData
 					return if fData and fData.Icon then fData.Icon else ERROR_ICON
 				end, fabState),
-				elevatedThemeState,
+				style,
+				fabIconColor,
+				fabColor,
+				fabIconColor,
+				fabColor,
 				_Computed(function(fData: ButtonData?): boolean
-					return if fData then fData.Enabled else true
-				end, fabState)
+					return if fData then fData.Enabled else false
+				end, fabState),
+				_Computed(function(e: number): number
+					return e + 1
+				end, elevationState)
 			))({
 				Visible = _Computed(function(fData: ButtonData?): boolean
-					return fData ~= nil
+					return if fData then fData.Enabled else false
 				end, fabState),
 				Parent = inst,
 			})
@@ -171,21 +181,24 @@ function Interface.ColdFusion.new(
 			return bs[i]
 		end, buttonsState)
 
-		_bind(IconButton.cfusion(
+		_bind(IconButton.ColdFusion.new(
 			_Computed(function(bData: ButtonData?)
 				return if bData then bData.OnClick else function() end
 			end, buttonData),
 			_Computed(function(bData: ButtonData?): ImageData
 				return if bData and bData.Icon then bData.Icon else ERROR_ICON
 			end, buttonData),
-			contrastThemeState,
+			style,
+			iconColor,
+			iconColor,
 			_Computed(function(bData: ButtonData?): boolean
-				return if bData then bData.Enabled else true
-			end, buttonData)
+				return if bData then bData.Enabled else false
+			end, buttonData),
+			elevation
 		))({
 			LayoutOrder = i,
 			Visible = _Computed(function(bData: ButtonData?): boolean
-				return bData ~= nil
+				return if bData then bData.Enabled else false
 			end, buttonData),
 			Parent = buttonContainer,
 		})

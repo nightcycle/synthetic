@@ -8,10 +8,12 @@ local MaterialIcons = require(_Packages:WaitForChild("MaterialIcons"))
 
 -- Modules
 local Types = require(_Package:WaitForChild("Types"))
+local Style = require(_Package:WaitForChild("Style"))
+local Enums = require(_Package:WaitForChild("Enums"))
 
 -- Types
+type ButtonData = Types.ButtonData
 -- Constants
-local SCALE = 1
 -- Variables
 -- References
 local Icons = MaterialIcons.default.dp_48.scale_1
@@ -20,65 +22,136 @@ local Icons = MaterialIcons.default.dp_48.scale_1
 return function(frame: Frame)
 	local maid = Maid.new()
 	task.spawn(function()
-		local Module = require(script.Parent)
+		local function makeHalfFrame(isDarkMode: boolean, color: Color3): Frame
 
-		local listLayout = maid:GiveTask(Instance.new("UIListLayout"))
-		listLayout.FillDirection = Enum.FillDirection.Vertical
-		listLayout.Padding = UDim.new(0, 10)
-		listLayout.VerticalAlignment = Enum.VerticalAlignment.Center
-		listLayout.HorizontalAlignment = Enum.HorizontalAlignment.Center
-		listLayout.Parent = frame
-
-		local function build(isDarkMode: boolean, color: Color3)
-			local selectionColor = nil --Color3.new(1,0.75,0)
-			-- local frameColor = Color3.new(0, 0, 0)
-
-			local theme = Types.newThemeData(
-				0,
-				isDarkMode,
-				SCALE,
-				Font.fromEnum(Enum.Font.SourceSans),
-				color,
-				nil, --frameColor,
-				selectionColor
+			local style = Style.new(
+				1,
+				"Roboto",
+				if isDarkMode then Enums.SchemeType.Dark else Enums.SchemeType.Light,
+				color
 			)
-	
-			local out = maid:GiveTask(Module.cfusion(
-				{
-					Types.newButtonData(
-						function() 
-							print("save click")
-						end,
-						Icons.save
-					),
-					Types.newButtonData(
-						function() 
-							print("publish click")
-						end,
-						Icons.publish
-					),
-				},
-				Types.newButtonData(
-					function() 
-						print("FAB click")
-					end,
-					Icons.plus_one
-				),
-				theme
-			))
 
-			out.Position = UDim2.fromScale(0.5, 0.5)
-			out.AnchorPoint = Vector2.new(0.5, 0.5)
-			out.Size=  UDim2.fromScale(1,0)
-			out.Parent = frame
+			local halfFrame = maid:GiveTask(Instance.new("Frame"))
+			halfFrame.BackgroundColor3 = style:GetColor(Enums.ColorRoleType.Background)
+			halfFrame.BorderSizePixel = 0
 
+			local listLayout = maid:GiveTask(Instance.new("UIListLayout"))
+			listLayout.FillDirection = Enum.FillDirection.Vertical
+			listLayout.Padding = UDim.new(0, 10)
+			listLayout.VerticalAlignment = Enum.VerticalAlignment.Center
+			listLayout.HorizontalAlignment = Enum.HorizontalAlignment.Center
+			listLayout.HorizontalFlex = Enum.UIFlexAlignment.Fill
+			listLayout.Parent = halfFrame
+
+			local Module = require(script.Parent)
+
+			do
+				local button = maid:GiveTask(
+					Module.ColdFusion.new(
+						{
+							Types.newButtonData(
+								function()
+									print("click 1")
+								end,
+								Icons.gamepad,
+								nil,
+								true
+							),
+							Types.newButtonData(
+								function()
+									print("click 2")
+								end,
+								Icons.waves,
+								nil,
+								true
+							),
+							Types.newButtonData(
+								function()
+									print("click 3")
+								end,
+								Icons.work_off,
+								nil,
+								true
+							),
+						},
+						Types.newButtonData(
+							function()
+								print("click fab")
+							end,
+							Icons.plus_one,
+							nil,
+							true
+						),
+						style:GetColor(Enums.ColorRoleType.Primary),
+						style:GetColor(Enums.ColorRoleType.OnPrimary),
+						style:GetColor(Enums.ColorRoleType.OnSurface),
+						style:GetColor(Enums.ColorRoleType.PrimaryContainer),
+						1,
+						style
+					)
+				)
+				button.Parent = halfFrame
+			end
+
+			do
+				local button = maid:GiveTask(
+					Module.ColdFusion.new(
+						{
+							Types.newButtonData(
+								function()
+									print("click 1")
+								end,
+								Icons.gamepad,
+								nil,
+								true
+							),
+							Types.newButtonData(
+								function()
+									print("click 2")
+								end,
+								Icons.waves,
+								nil,
+								false
+							),
+						},
+						nil,
+						style:GetColor(Enums.ColorRoleType.Primary),
+						style:GetColor(Enums.ColorRoleType.OnPrimary),
+						style:GetColor(Enums.ColorRoleType.OnSurface),
+						style:GetColor(Enums.ColorRoleType.PrimaryContainer),
+						1,
+						style
+					)
+				)
+				button.Parent = halfFrame
+			end
+
+			return halfFrame
 		end
-		build(false, Color3.fromHSV(0.5, 0.3, 0.95))
-		build(true, Color3.fromHSV(0.5, 0.5, 0.4))
-		build(false, Color3.fromHSV(0.1, 0.3, 0.95))
-		build(true, Color3.fromHSV(0.1, 0.5, 0.4))
-		build(false, Color3.fromHSV(0.7, 0.3, 0.95))
-		build(true, Color3.fromHSV(0.7, 0.5, 0.4))
+
+		local COLORS: { [number]: Color3 } = {
+			Color3.fromHSV(0, 0.9, 0.8),
+			-- Color3.fromHSV(0, 0.25, 0.8),
+			-- Color3.fromHSV(0, 0.9, 0.5),
+			Color3.fromHSV(0.6, 0.9, 0.7),
+			-- Color3.fromHSV(0.35, 0.9, 0.7),
+			-- Color3.fromHSV(0.1, 0.9, 0.7),
+		}
+
+		for i, color in ipairs(COLORS) do
+			local x = (i - 1) / #COLORS
+			local width = 1 / #COLORS
+			local dark = makeHalfFrame(true, color)
+			
+			dark.Size = UDim2.fromScale(1, width*0.5)
+			dark.Position = UDim2.fromScale(0, x)
+			dark.Parent = frame
+
+			local bright = makeHalfFrame(false, color)
+			bright.Size = UDim2.fromScale(1, width*0.5)
+			bright.Position = UDim2.fromScale(0, x+width*0.5)
+			bright.Parent = frame
+		end
 	end)
 	return function()
 		maid:Destroy()
