@@ -61,9 +61,9 @@ function Interface.ColdFusion.new(
 	local styleState: State<Style> = _import(style, nil :: any)
 
 	local elevationState: State<number> = _import(elevation, 0)
-	local textColorState: State<Color3> = _import(textColor, Color3.new(1,1,1))
-	local hoverColorState: State<Color3> = _import(textColor, Color3.new(1,1,1))
-	local disabledColorState: State<Color3> = _import(disabledTextColor, Color3.new(1,1,1))
+	local textColorState: State<Color3> = _import(textColor, Color3.new(1, 1, 1))
+	local hoverColorState: State<Color3> = _import(textColor, Color3.new(1, 1, 1))
+	local disabledColorState: State<Color3> = _import(disabledTextColor, Color3.new(1, 1, 1))
 
 	local iconState: State<ImageData?> = _import(icon, nil :: ImageData?)
 
@@ -72,30 +72,14 @@ function Interface.ColdFusion.new(
 		onClick,
 		"",
 		if isEnabled == nil then true else isEnabled,
-		_Computed(function(
-			style: Style, 
-			e: number,
-			hC: Color3,
-			tC: Color3,
-			dC: Color3,
-			i: ImageData?
-		): {[Enums.ButtonStateType]: RenderData}
+		_Computed(function(style: Style, e: number, hC: Color3, tC: Color3, dC: Color3, i: ImageData?): { [Enums.ButtonStateType]: RenderData }
 			e += 1
 			return {
 				[Enums.ButtonStateType.Enabled] = Types.newRenderData(
 					style.Scale,
-					Types.newAppearanceData(
-						style:GetElevatedColor(hC, e), 
-						1
-					),
-					Types.newAppearanceData(
-						style:GetElevatedColor(hC, e), 
-						1
-					),
-					Types.newAppearanceData(
-						style:GetElevatedColor(tC, e), 
-						0
-					),
+					Types.newAppearanceData(style:GetElevatedColor(hC, e), 1),
+					Types.newAppearanceData(style:GetElevatedColor(hC, e), 1),
+					Types.newAppearanceData(style:GetElevatedColor(tC, e), 0),
 					style.Typography:Get(Enums.FontType.LabelLarge),
 					i,
 					nil,
@@ -103,18 +87,9 @@ function Interface.ColdFusion.new(
 				),
 				[Enums.ButtonStateType.Disabled] = Types.newRenderData(
 					style.Scale,
-					Types.newAppearanceData(
-						style:GetElevatedColor(hC, e), 
-						1
-					),
-					Types.newAppearanceData(
-						style:GetElevatedColor(hC, e), 
-						1
-					),
-					Types.newAppearanceData(
-						style:GetElevatedColor(dC, e), 
-						1-0.38
-					),
+					Types.newAppearanceData(style:GetElevatedColor(hC, e), 1),
+					Types.newAppearanceData(style:GetElevatedColor(hC, e), 1),
+					Types.newAppearanceData(style:GetElevatedColor(dC, e), 1 - 0.38),
 					style.Typography:Get(Enums.FontType.LabelLarge),
 					i,
 					nil,
@@ -122,18 +97,9 @@ function Interface.ColdFusion.new(
 				),
 				[Enums.ButtonStateType.Hovered] = Types.newRenderData(
 					style.Scale,
-					Types.newAppearanceData(
-						style:GetElevatedColor(hC, e), 
-						1
-					),
-					Types.newAppearanceData(
-						style:GetElevatedColor(hC, e+1), 
-						1-0.08
-					),
-					Types.newAppearanceData(
-						style:GetElevatedColor(tC, e+1), 
-						0
-					),
+					Types.newAppearanceData(style:GetElevatedColor(hC, e), 1),
+					Types.newAppearanceData(style:GetElevatedColor(hC, e + 1), 1 - 0.08),
+					Types.newAppearanceData(style:GetElevatedColor(tC, e + 1), 0),
 					style.Typography:Get(Enums.FontType.LabelLarge),
 					i,
 					nil,
@@ -141,18 +107,9 @@ function Interface.ColdFusion.new(
 				),
 				[Enums.ButtonStateType.Focused] = Types.newRenderData(
 					style.Scale,
-					Types.newAppearanceData(
-						style:GetElevatedColor(hC, e), 
-						1
-					),
-					Types.newAppearanceData(
-						style:GetElevatedColor(hC, e), 
-						1-0.1
-					),
-					Types.newAppearanceData(
-						style:GetElevatedColor(tC, e), 
-						0
-					),
+					Types.newAppearanceData(style:GetElevatedColor(hC, e), 1),
+					Types.newAppearanceData(style:GetElevatedColor(hC, e), 1 - 0.1),
+					Types.newAppearanceData(style:GetElevatedColor(tC, e), 0),
 					style.Typography:Get(Enums.FontType.LabelLarge),
 					i,
 					nil,
@@ -160,24 +117,12 @@ function Interface.ColdFusion.new(
 				),
 				[Enums.ButtonStateType.Pressed] = Types.newRenderData(
 					style.Scale,
-					Types.newAppearanceData(
-						style:GetElevatedColor(hC, e), 
-						1
-					),
-					Types.newAppearanceData(
-						style:GetElevatedColor(hC, e-1), 
-						1-0.1
-					),
-					Types.newAppearanceData(
-						style:GetElevatedColor(tC, e-1), 
-						0
-					),
+					Types.newAppearanceData(style:GetElevatedColor(hC, e), 1),
+					Types.newAppearanceData(style:GetElevatedColor(hC, e - 1), 1 - 0.1),
+					Types.newAppearanceData(style:GetElevatedColor(tC, e - 1), 0),
 					style.Typography:Get(Enums.FontType.LabelLarge),
 					i,
-					Types.newSoundData(
-						Sounds.ui_tap_variant_01,
-						1
-					),
+					Types.newSoundData(Sounds.ui_tap_variant_01, 1),
 					nil
 				),
 			}
@@ -191,6 +136,5 @@ function Interface.ColdFusion.new(
 
 	return button
 end
-
 
 return Interface

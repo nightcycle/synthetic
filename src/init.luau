@@ -49,5 +49,4 @@ Synthetic.Components = {
 	},
 }
 
-
 return Synthetic

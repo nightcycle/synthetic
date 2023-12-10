@@ -32,7 +32,7 @@ Interface.ColdFusion = {}
 function Interface.ColdFusion.new(
 	title: CanBeState<string>,
 	buttons: CanBeState<{
-		[number]: ButtonData
+		[number]: ButtonData,
 	}>,
 	navigation: CanBeState<ButtonData?>,
 	backgroundColor: CanBeState<Color3>,
@@ -40,17 +40,7 @@ function Interface.ColdFusion.new(
 	elevation: CanBeState<number>,
 	style: CanBeState<Style>
 ): GuiObject
-
-	return TopBase.component(
-		title,
-		buttons,
-		navigation,
-		"Small",
-		backgroundColor,
-		textColor,
-		elevation,
-		style
-	)
+	return TopBase.component(title, buttons, navigation, "Small", backgroundColor, textColor, elevation, style)
 end
 
 return Interface

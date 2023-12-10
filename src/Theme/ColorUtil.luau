@@ -11,19 +11,19 @@ export type Rgba = {
 
 local SRGB_TO_XYZ = {
 	[0] = {
-		[0] = 0.41233895, 
-		[1] = 0.35762064, 
-		[2] = 0.18051042 
+		[0] = 0.41233895,
+		[1] = 0.35762064,
+		[2] = 0.18051042,
 	},
-	[1] = { 
-		[0] = 0.2126, 
-		[1] = 0.7152, 
-		[2] = 0.0722
+	[1] = {
+		[0] = 0.2126,
+		[1] = 0.7152,
+		[2] = 0.0722,
 	},
-	[2] = { 
-		[0] = 0.01932141, 
-		[1] = 0.11916382, 
-		[2] = 0.95034478 
+	[2] = {
+		[0] = 0.01932141,
+		[1] = 0.11916382,
+		[2] = 0.95034478,
 	},
 }
 
@@ -45,10 +45,10 @@ local XYZ_TO_SRGB = {
 	},
 }
 
-local WHITE_POINT_D65 = { 
-	[0] = 95.047, 
-	[1] = 100.0, 
-	[2] = 108.883 
+local WHITE_POINT_D65 = {
+	[0] = 95.047,
+	[1] = 100.0,
+	[2] = 108.883,
 }
 
 function clampComponent(value: number)
@@ -129,10 +129,10 @@ function Util.xyzFromArgb(argb: number): { number }
 	local r = Util.linearized(Util.redFromArgb(argb))
 	local g = Util.linearized(Util.greenFromArgb(argb))
 	local b = Util.linearized(Util.blueFromArgb(argb))
-	return MathUtil.matrixMultiply({ 
-		[0]=r,
-		[1]=g, 
-		[2]=b 
+	return MathUtil.matrixMultiply({
+		[0] = r,
+		[1] = g,
+		[2] = b,
 	}, SRGB_TO_XYZ)
 end
 
@@ -168,10 +168,10 @@ function Util.labFromArgb(argb: number): { number }
 	local l = 116.0 * fy - 16
 	local a = 500.0 * (fx - fy)
 	local b = 200.0 * (fy - fz)
-	return { 
-		[0]=l, 
-		[1]=a, 
-		[2]=b 
+	return {
+		[0] = l,
+		[1] = a,
+		[2] = b,
 	}
 end
 

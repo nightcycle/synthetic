@@ -22,13 +22,7 @@ return function(frame: Frame)
 	local maid = Maid.new()
 	task.spawn(function()
 		local function makeHalfFrame(isDarkMode: boolean, color: Color3): Frame
-
-			local style = Style.new(
-				1,
-				"Roboto",
-				if isDarkMode then Enums.SchemeType.Dark else Enums.SchemeType.Light,
-				color
-			)
+			local style = Style.new(1, "Roboto", if isDarkMode then Enums.SchemeType.Dark else Enums.SchemeType.Light, color)
 
 			local halfFrame = maid:GiveTask(Instance.new("Frame"))
 			halfFrame.BackgroundColor3 = style:GetColor(Enums.ColorRoleType.Surface)
@@ -43,54 +37,21 @@ return function(frame: Frame)
 			local Module = require(script.Parent)
 
 			local options = {
-				Types.newOptionData(
-					function(onSelected: boolean)
-						print("select 1", onSelected)
-					end,
-					false,
-					true, 
-					"Unselected 1",
-					Icons.gamepad,
-					"Selected 1",
-					Icons.handyman
-				),
-				Types.newOptionData(
-					function(onSelected: boolean)
-						print("select 2", onSelected)
-					end,
-					false,
-					false, 
-					"Button 2",
-					Icons.track_changes
-				),
-				Types.newOptionData(
-					function(onSelected: boolean)
-						print("select 3", onSelected)
-					end,
-					true,
-					false, 
-					"Button 3",
-					Icons.badge
-				),
-				Types.newOptionData(
-					function(onSelected: boolean)
-						print("select 4", onSelected)
-					end,
-					false,
-					false, 
-					"Button 4"
-				),
-				Types.newOptionData(
-					function(onSelected: boolean)
-						print("select 5", onSelected)
-					end,
-					false,
-					false, 
-					"Unselected 5",
-					nil,
-					"Selected 5",
-					nil
-				)
+				Types.newOptionData(function(onSelected: boolean)
+					print("select 1", onSelected)
+				end, false, true, "Unselected 1", Icons.gamepad, "Selected 1", Icons.handyman),
+				Types.newOptionData(function(onSelected: boolean)
+					print("select 2", onSelected)
+				end, false, false, "Button 2", Icons.track_changes),
+				Types.newOptionData(function(onSelected: boolean)
+					print("select 3", onSelected)
+				end, true, false, "Button 3", Icons.badge),
+				Types.newOptionData(function(onSelected: boolean)
+					print("select 4", onSelected)
+				end, false, false, "Button 4"),
+				Types.newOptionData(function(onSelected: boolean)
+					print("select 5", onSelected)
+				end, false, false, "Unselected 5", nil, "Selected 5", nil),
 			}
 
 			do
@@ -161,13 +122,13 @@ return function(frame: Frame)
 			local width = 1 / #COLORS
 			local dark = makeHalfFrame(true, color)
 
-			dark.Size = UDim2.fromScale(1, width*0.5)
+			dark.Size = UDim2.fromScale(1, width * 0.5)
 			dark.Position = UDim2.fromScale(0, x)
 			dark.Parent = frame
 
 			local bright = makeHalfFrame(false, color)
-			bright.Size = UDim2.fromScale(1, width*0.5)
-			bright.Position = UDim2.fromScale(0, x+width*0.5)
+			bright.Size = UDim2.fromScale(1, width * 0.5)
+			bright.Position = UDim2.fromScale(0, x + width * 0.5)
 			bright.Parent = frame
 		end
 	end)

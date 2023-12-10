@@ -66,10 +66,10 @@ function Util.matrixMultiply(row: { number }, matrix: { { number } }): { number 
 	local a = row[0] * matrix[0][0] + row[1] * matrix[0][1] + row[2] * matrix[0][2]
 	local b = row[0] * matrix[1][0] + row[1] * matrix[1][1] + row[2] * matrix[1][2]
 	local c = row[0] * matrix[2][0] + row[1] * matrix[2][1] + row[2] * matrix[2][2]
-	return { 
-		[0]=a, 
-		[1]=b, 
-		[2]=c
+	return {
+		[0] = a,
+		[1] = b,
+		[2] = c,
 	}
 end
 

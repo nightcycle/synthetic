@@ -70,15 +70,11 @@ function Util.themeFromSourceColor(source: number, customColors: { CustomColor }
 	}
 end
 
-function Util.customColor(
-	value: number,
-	name: string,
-	blend: boolean
-): CustomColor
+function Util.customColor(value: number, name: string, blend: boolean): CustomColor
 	return {
 		value = value,
 		name = name,
-		blend = blend
+		blend = blend,
 	}
 end
 

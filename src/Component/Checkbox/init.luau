@@ -53,24 +53,23 @@ function Interface.ColdFusion.new(
 	elevation: CanBeState<number>,
 	style: CanBeState<Style>
 ): GuiObject
-
 	local maid = Maid.new()
 
 	local _fuse = ColdFusion.fuse(maid)
-	
+
 	local _new = _fuse.new
 	local _bind = _fuse.bind
 	local _clone = _fuse.clone
 	local _import = _fuse.import
-	
+
 	local _Value = _fuse.Value
 	local _Computed = _fuse.Computed
 
 	local initialSelectionState = _import(initialSelection, nil :: boolean?)
-	local outlineColorState = _import(outlineColor, Color3.new(1,1,1))
-	local fillColorState = _import(fillColor, Color3.new(1,1,1))
-	local disabledColorState = _import(disabledColor, Color3.new(1,1,1))
-	local iconColorState = _import(iconColor, Color3.new(1,1,1))
+	local outlineColorState = _import(outlineColor, Color3.new(1, 1, 1))
+	local fillColorState = _import(fillColor, Color3.new(1, 1, 1))
+	local disabledColorState = _import(disabledColor, Color3.new(1, 1, 1))
+	local iconColorState = _import(iconColor, Color3.new(1, 1, 1))
 	local elevationState = _import(elevation, 0)
 	local isEnabledState = _import(isEnabled, true)
 	local onSelectState = _import(onSelect, function(isSelected: boolean?) end)
@@ -98,157 +97,68 @@ function Interface.ColdFusion.new(
 
 	local styleState: State<Style> = _import(style, nil :: any)
 
-	local renderDatasState = _Computed(function(
-		s: Style,
-		oC: Color3,
-		fC: Color3,
-		iC: Color3,
-		dC: Color3,
-		e: number
-	): {[Enums.ButtonStateType]: RenderData}
-		return {
-			[Enums.ButtonStateType.Enabled] = Types.newRenderData(
-				s.Scale,
-				Types.newAppearanceData(
-					s:GetElevatedColor(
-						oC,
-						e
-					),
-					0
+	local renderDatasState = _Computed(
+		function(s: Style, oC: Color3, fC: Color3, iC: Color3, dC: Color3, e: number): { [Enums.ButtonStateType]: RenderData }
+			return {
+				[Enums.ButtonStateType.Enabled] = Types.newRenderData(
+					s.Scale,
+					Types.newAppearanceData(s:GetElevatedColor(oC, e), 0),
+					Types.newAppearanceData(s:GetElevatedColor(fC, e), 1),
+					Types.newAppearanceData(s:GetElevatedColor(iC, e), 0),
+					nil,
+					nil,
+					nil,
+					nil
 				),
-				Types.newAppearanceData(
-					s:GetElevatedColor(
-						fC,
-						e
-					),
-					1
+				[Enums.ButtonStateType.Disabled] = Types.newRenderData(
+					s.Scale,
+					Types.newAppearanceData(s:GetElevatedColor(dC, e), 1 - 0.38),
+					Types.newAppearanceData(s:GetElevatedColor(dC, e), 1),
+					Types.newAppearanceData(s:GetElevatedColor(dC, e), 1 - 0.38),
+					nil,
+					nil,
+					nil,
+					nil
 				),
-				Types.newAppearanceData(
-					s:GetElevatedColor(
-						iC,
-						e
-					),
-					0
+				[Enums.ButtonStateType.Hovered] = Types.newRenderData(
+					s.Scale,
+					Types.newAppearanceData(s:GetElevatedColor(oC, e + 1), 0),
+					Types.newAppearanceData(s:GetElevatedColor(fC, e + 1), 1 - 0.08),
+					Types.newAppearanceData(s:GetElevatedColor(iC, e + 1), 0),
+					nil,
+					nil,
+					nil,
+					nil
 				),
-				nil,
-				nil,
-				nil,
-				nil
-			),
-			[Enums.ButtonStateType.Disabled] = Types.newRenderData(
-				s.Scale,
-				Types.newAppearanceData(
-					s:GetElevatedColor(
-						dC,
-						e
-					),
-					1-0.38
+				[Enums.ButtonStateType.Focused] = Types.newRenderData(
+					s.Scale,
+					Types.newAppearanceData(s:GetElevatedColor(oC, e), 0),
+					Types.newAppearanceData(s:GetElevatedColor(fC, e), 1 - 0.1),
+					Types.newAppearanceData(s:GetElevatedColor(iC, e), 0),
+					nil,
+					nil,
+					nil,
+					nil
 				),
-				Types.newAppearanceData(
-					s:GetElevatedColor(
-						dC,
-						e
-					),
-					1
+				[Enums.ButtonStateType.Pressed] = Types.newRenderData(
+					s.Scale,
+					Types.newAppearanceData(s:GetElevatedColor(oC, e - 1), 0),
+					Types.newAppearanceData(s:GetElevatedColor(fC, e - 1), 1 - 0.1),
+					Types.newAppearanceData(s:GetElevatedColor(iC, e - 1), 0),
+					nil,
+					nil,
+					nil,
+					nil
 				),
-				Types.newAppearanceData(
-					s:GetElevatedColor(
-						dC,
-						e
-					),
-					1-0.38
-				),
-				nil,
-				nil,
-				nil,
-				nil
-			),
-			[Enums.ButtonStateType.Hovered] = Types.newRenderData(
-				s.Scale,
-				Types.newAppearanceData(
-					s:GetElevatedColor(
-						oC,
-						e+1
-					),
-					0
-				),
-				Types.newAppearanceData(
-					s:GetElevatedColor(
-						fC,
-						e+1
-					),
-					1-0.08
-				),
-				Types.newAppearanceData(
-					s:GetElevatedColor(
-						iC,
-						e+1
-					),
-					0
-				),
-				nil,
-				nil,
-				nil,
-				nil
-			),
-			[Enums.ButtonStateType.Focused] = Types.newRenderData(
-				s.Scale,
-				Types.newAppearanceData(
-					s:GetElevatedColor(
-						oC,
-						e
-					),
-					0
-				),
-				Types.newAppearanceData(
-					s:GetElevatedColor(
-						fC,
-						e
-					),
-					1-0.1
-				),
-				Types.newAppearanceData(
-					s:GetElevatedColor(
-						iC,
-						e
-					),
-					0
-				),
-				nil,
-				nil,
-				nil,
-				nil
-			),
-			[Enums.ButtonStateType.Pressed] = Types.newRenderData(
-				s.Scale,
-				Types.newAppearanceData(
-					s:GetElevatedColor(
-						oC,
-						e-1
-					),
-					0
-				),
-				Types.newAppearanceData(
-					s:GetElevatedColor(
-						fC,
-						e-1
-					),
-					1-0.1
-				),
-				Types.newAppearanceData(
-					s:GetElevatedColor(
-						iC,
-						e-1
-					),
-					0
-				),
-				nil,
-				nil,
-				nil,
-				nil
-			),
-		}
-	end, styleState, outlineColorState, fillColorState, iconColorState, disabledColorState, elevationState)
+			}
+		end,
+		styleState,
+		outlineColorState,
+		fillColorState,
+		iconColorState,
+		disabledColorState,
+		elevationState
+	)
 
 	local isFocusedState = _Value(false)
 	local isPressedState = _Value(false)
@@ -264,38 +174,27 @@ function Interface.ColdFusion.new(
 		end
 	end, valueState)
 
-	local currentStateState = _Computed(
-		function(
-			isEnab: boolean,
-			isFocused: boolean,
-			isPressed: boolean,
-			isHovered: boolean
-		): Enums.ButtonStateType
-			if isEnab then
-				if isPressed then
-					return Enums.ButtonStateType.Pressed
+	local currentStateState = _Computed(function(isEnab: boolean, isFocused: boolean, isPressed: boolean, isHovered: boolean): Enums.ButtonStateType
+		if isEnab then
+			if isPressed then
+				return Enums.ButtonStateType.Pressed
+			else
+				if isHovered then
+					return Enums.ButtonStateType.Hovered
 				else
-					if isHovered then
-						return Enums.ButtonStateType.Hovered
+					if isFocused then
+						return Enums.ButtonStateType.Focused
 					else
-						if isFocused then
-							return Enums.ButtonStateType.Focused
-						else
-							return Enums.ButtonStateType.Enabled
-						end
+						return Enums.ButtonStateType.Enabled
 					end
 				end
-			else
-				return Enums.ButtonStateType.Disabled
 			end
-		end,
-		isEnabledState,
-		isFocusedState,
-		isPressedState,
-		isHoveredState
-	) :: State<any>
+		else
+			return Enums.ButtonStateType.Disabled
+		end
+	end, isEnabledState, isFocusedState, isPressedState, isHoveredState) :: State<any>
 
-	local renderDataState = _Computed(function(renderDatas: {[Enums.ButtonStateType]: RenderData}, bState: Enums.ButtonStateType): RenderData
+	local renderDataState = _Computed(function(renderDatas: { [Enums.ButtonStateType]: RenderData }, bState: Enums.ButtonStateType): RenderData
 		return renderDatas[bState]
 	end, renderDatasState, currentStateState)
 
@@ -360,7 +259,7 @@ function Interface.ColdFusion.new(
 		},
 		Children = {
 			_new("UICorner")({
-				CornerRadius = UDim.new(0.5,0)
+				CornerRadius = UDim.new(0.5, 0),
 			}),
 			_new("UIListLayout")({
 				Padding = UDim.new(0, 0),
@@ -385,7 +284,7 @@ function Interface.ColdFusion.new(
 					return renderData.Background.Color3
 				end, renderDataState),
 				ImageColor3 = _Computed(function(renderData: RenderData, enab: boolean): Color3
-					return if not enab then renderData.Border.Color3 else if renderData.Text then renderData.Text.Color3 else Color3.new(1,1,1)
+					return if not enab then renderData.Border.Color3 else if renderData.Text then renderData.Text.Color3 else Color3.new(1, 1, 1)
 				end, renderDataState, isEnabledState),
 				Image = _Computed(function(i: ImageData?): string
 					if i then
@@ -419,16 +318,14 @@ function Interface.ColdFusion.new(
 							return renderData.Border.Transparency
 						end, renderDataState),
 					}),
-
-				}
-			})
+				},
+			}),
 		},
 	}) :: GuiObject
 
 	maid.bind(inst)
 
 	return inst
-
 end
 
 return Interface

@@ -21,7 +21,7 @@ export type RenderData = {
 	Image: ImageData?,
 	Font: FontData?,
 	Text: AppearanceData?,
-	Shadow: ShadowData?
+	Shadow: ShadowData?,
 }
 
 export type ImageData = {
@@ -39,7 +39,7 @@ export type ButtonData = {
 	Icon: ImageData?,
 	Text: string?,
 	Enabled: boolean,
-	OnClick: () -> ()
+	OnClick: () -> (),
 }
 
 export type OptionData = {
@@ -66,12 +66,7 @@ export type FontData = {
 -- Class
 local Types = {}
 
-function Types.newFontData(
-	font: Font,
-	size: number,
-	lineHeight: number?,
-	tracking: number?
-): FontData
+function Types.newFontData(font: Font, size: number, lineHeight: number?, tracking: number?): FontData
 	return {
 		Font = font,
 		Size = size,
@@ -80,17 +75,12 @@ function Types.newFontData(
 	}
 end
 
-function Types.newButtonData(
-	onClick: () -> (),
-	icon: ImageData?,
-	text: string?,
-	enabled: boolean?
-): ButtonData
+function Types.newButtonData(onClick: () -> (), icon: ImageData?, text: string?, enabled: boolean?): ButtonData
 	return {
 		Icon = icon,
 		Text = text,
 		OnClick = onClick,
-		Enabled = if enabled == nil then true else enabled
+		Enabled = if enabled == nil then true else enabled,
 	}
 end
 
@@ -116,17 +106,14 @@ end
 function Types.newSoundData(soundId: string, volume: number?): SoundData
 	return {
 		SoundId = soundId,
-		Volume = volume or 1
+		Volume = volume or 1,
 	}
 end
 
-function Types.newShadow(
-	appearance: AppearanceData,
-	offset: Vector2
-): ShadowData
+function Types.newShadow(appearance: AppearanceData, offset: Vector2): ShadowData
 	return {
 		Appearance = appearance,
-		Offset = offset
+		Offset = offset,
 	}
 end
 

@@ -14,8 +14,7 @@ function Blend.harmonize(designColor: number, sourceColor: number): number
 	local toHct: HCT = HCT.fromInt(sourceColor)
 	local differenceDegrees = MathUtil.differenceDegrees(fromHct:getHue(), toHct:getHue())
 	local rotationDegrees = math.min(differenceDegrees * 0.5, 15.0)
-	local outputHue =
-		MathUtil.sanitizeDegreesDouble(fromHct:getHue() + rotationDegrees * MathUtil.rotationDirection(fromHct:getHue(), toHct:getHue()))
+	local outputHue = MathUtil.sanitizeDegreesDouble(fromHct:getHue() + rotationDegrees * MathUtil.rotationDirection(fromHct:getHue(), toHct:getHue()))
 	return HCT.from(outputHue, fromHct:getChroma(), fromHct:getTone()):toInt()
 end
 

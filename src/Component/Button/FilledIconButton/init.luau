@@ -64,11 +64,11 @@ function Interface.ColdFusion.new(
 
 	local elevationState: State<number> = _import(elevation, 0)
 
-	local textColorState: State<Color3> = _import(textColor, Color3.new(1,1,1))
-	local surfaceColorState: State<Color3> = _import(surfaceColor, Color3.new(1,1,1))
+	local textColorState: State<Color3> = _import(textColor, Color3.new(1, 1, 1))
+	local surfaceColorState: State<Color3> = _import(surfaceColor, Color3.new(1, 1, 1))
 
-	local disabledTextColorState: State<Color3> = _import(disabledTextColor, Color3.new(1,1,1))
-	local disabledSurfaceColorState: State<Color3> = _import(disabledSurfaceColor, Color3.new(1,1,1))
+	local disabledTextColorState: State<Color3> = _import(disabledTextColor, Color3.new(1, 1, 1))
+	local disabledSurfaceColorState: State<Color3> = _import(disabledSurfaceColor, Color3.new(1, 1, 1))
 
 	local iconState: State<ImageData?> = _import(icon, nil :: ImageData?)
 
@@ -77,117 +77,70 @@ function Interface.ColdFusion.new(
 		onClick,
 		"",
 		if isEnabled == nil then true else isEnabled,
-		_Computed(function(
-			style: Style, 
-			e: number,
-			tC: Color3,
-			sC: Color3,
-			dTC: Color3,
-			dSC: Color3,
-			i: ImageData?
-		): {[Enums.ButtonStateType]: RenderData}
-			e += 1
-			return {
-				[Enums.ButtonStateType.Enabled] = Types.newRenderData(
-					style.Scale,
-					Types.newAppearanceData(
-						style:GetElevatedColor(sC, e), 
-						1
+		_Computed(
+			function(style: Style, e: number, tC: Color3, sC: Color3, dTC: Color3, dSC: Color3, i: ImageData?): { [Enums.ButtonStateType]: RenderData }
+				e += 1
+				return {
+					[Enums.ButtonStateType.Enabled] = Types.newRenderData(
+						style.Scale,
+						Types.newAppearanceData(style:GetElevatedColor(sC, e), 1),
+						Types.newAppearanceData(style:GetElevatedColor(sC, e), 0),
+						Types.newAppearanceData(style:GetElevatedColor(tC, e), 0),
+						style.Typography:Get(Enums.FontType.LabelLarge),
+						i,
+						nil,
+						nil
 					),
-					Types.newAppearanceData(
-						style:GetElevatedColor(sC, e), 
-						0
+					[Enums.ButtonStateType.Disabled] = Types.newRenderData(
+						style.Scale,
+						Types.newAppearanceData(style:GetElevatedColor(dSC, e), 1),
+						Types.newAppearanceData(style:GetElevatedColor(dSC, e), 0.12),
+						Types.newAppearanceData(style:GetElevatedColor(dTC, e), 0.12),
+						style.Typography:Get(Enums.FontType.LabelLarge),
+						i,
+						nil,
+						nil
 					),
-					Types.newAppearanceData(
-						style:GetElevatedColor(tC, e), 
-						0
+					[Enums.ButtonStateType.Hovered] = Types.newRenderData(
+						style.Scale,
+						Types.newAppearanceData(style:GetElevatedColor(sC, e), 1),
+						Types.newAppearanceData(style:GetElevatedColor(sC, e + 1), 0.08),
+						Types.newAppearanceData(style:GetElevatedColor(tC, e + 1), 0.08),
+						style.Typography:Get(Enums.FontType.LabelLarge),
+						i,
+						nil,
+						nil
 					),
-					style.Typography:Get(Enums.FontType.LabelLarge),
-					i,
-					nil,
-					nil
-				),
-				[Enums.ButtonStateType.Disabled] = Types.newRenderData(
-					style.Scale,
-					Types.newAppearanceData(
-						style:GetElevatedColor(dSC, e), 
-						1
+					[Enums.ButtonStateType.Focused] = Types.newRenderData(
+						style.Scale,
+						Types.newAppearanceData(style:GetElevatedColor(sC, e), 1),
+						Types.newAppearanceData(style:GetElevatedColor(sC, e), 0.1),
+						Types.newAppearanceData(style:GetElevatedColor(tC, e), 0.1),
+						style.Typography:Get(Enums.FontType.LabelLarge),
+						i,
+						nil,
+						nil
 					),
-					Types.newAppearanceData(
-						style:GetElevatedColor(dSC, e), 
-						0.12
+					[Enums.ButtonStateType.Pressed] = Types.newRenderData(
+						style.Scale,
+						Types.newAppearanceData(style:GetElevatedColor(sC, e), 1),
+						Types.newAppearanceData(style:GetElevatedColor(sC, e - 1), 0.1),
+						Types.newAppearanceData(style:GetElevatedColor(tC, e - 1), 0.1),
+						style.Typography:Get(Enums.FontType.LabelLarge),
+						i,
+						Types.newSoundData(Sounds.ui_tap_variant_01, 0),
+						nil
 					),
-					Types.newAppearanceData(
-						style:GetElevatedColor(dTC, e), 
-						0.12
-					),
-					style.Typography:Get(Enums.FontType.LabelLarge),
-					i,
-					nil,
-					nil
-				),
-				[Enums.ButtonStateType.Hovered] = Types.newRenderData(
-					style.Scale,
-					Types.newAppearanceData(
-						style:GetElevatedColor(sC, e), 
-						1
-					),
-					Types.newAppearanceData(
-						style:GetElevatedColor(sC, e+1), 
-						0.08
-					),
-					Types.newAppearanceData(
-						style:GetElevatedColor(tC, e+1), 
-						0.08
-					),
-					style.Typography:Get(Enums.FontType.LabelLarge),
-					i,
-					nil,
-					nil
-				),
-				[Enums.ButtonStateType.Focused] = Types.newRenderData(
-					style.Scale,
-					Types.newAppearanceData(
-						style:GetElevatedColor(sC, e), 
-						1
-					),
-					Types.newAppearanceData(
-						style:GetElevatedColor(sC, e), 
-						0.1
-					),
-					Types.newAppearanceData(
-						style:GetElevatedColor(tC, e), 
-						0.1
-					),
-					style.Typography:Get(Enums.FontType.LabelLarge),
-					i,
-					nil,
-					nil
-				),
-				[Enums.ButtonStateType.Pressed] = Types.newRenderData(
-					style.Scale,
-					Types.newAppearanceData(
-						style:GetElevatedColor(sC, e), 
-						1
-					),
-					Types.newAppearanceData(
-						style:GetElevatedColor(sC, e-1), 
-						0.1
-					),
-					Types.newAppearanceData(
-						style:GetElevatedColor(tC, e-1), 
-						0.1
-					),
-					style.Typography:Get(Enums.FontType.LabelLarge),
-					i,
-					Types.newSoundData(
-						Sounds.ui_tap_variant_01,
-						0
-					),
-					nil
-				),
-			}
-		end, styleState, elevationState, textColorState, surfaceColorState, disabledTextColorState, disabledSurfaceColorState, iconState),
+				}
+			end,
+			styleState,
+			elevationState,
+			textColorState,
+			surfaceColorState,
+			disabledTextColorState,
+			disabledSurfaceColorState,
+			iconState
+		),
 		false,
 		nil,
 		0.8,
@@ -197,6 +150,5 @@ function Interface.ColdFusion.new(
 
 	return button
 end
-
 
 return Interface

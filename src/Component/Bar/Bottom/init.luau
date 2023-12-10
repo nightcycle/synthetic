@@ -42,7 +42,7 @@ Interface.ColdFusion = {}
 
 function Interface.ColdFusion.new(
 	buttons: CanBeState<{
-		[number]: ButtonData
+		[number]: ButtonData,
 	}>,
 	fab: CanBeState<ButtonData?>,
 	backgroundColor: CanBeState<Color3>,
@@ -65,17 +65,17 @@ function Interface.ColdFusion.new(
 	local _Computed = _fuse.Computed
 
 	local buttonsState: State<{
-		[number]: ButtonData
+		[number]: ButtonData,
 	}> = _import(buttons, {})
 
-	local styleState: State<Style> = _import(style, nil :: any) 
+	local styleState: State<Style> = _import(style, nil :: any)
 
 	local scaleState: State<number> = _Computed(function(s: Style): number
 		return s.Scale
 	end, styleState)
 
-	local backgroundColorState: State<Color3> = _import(backgroundColor, Color3.new(1,1,1)) 
-	local elevationState: State<number> = _import(elevation, 0) 
+	local backgroundColorState: State<Color3> = _import(backgroundColor, Color3.new(1, 1, 1))
+	local elevationState: State<number> = _import(elevation, 0)
 
 	local fabState: State<ButtonData?> = _import(fab, nil :: ButtonData?)
 
@@ -110,7 +110,7 @@ function Interface.ColdFusion.new(
 					return UDim.new(0, BAR_TOP_BOTTOM_PADDING_DP * s)
 				end, scaleState),
 			}),
-		}
+		},
 	}) :: Frame
 
 	_new("Frame")({
@@ -152,10 +152,9 @@ function Interface.ColdFusion.new(
 					return if fData then fData.Enabled else false
 				end, fabState),
 				Parent = inst,
-			})
-		}
+			}),
+		},
 	})
-
 
 	local buttonContainer = _new("Frame")({
 		AutomaticSize = Enum.AutomaticSize.XY,
@@ -173,11 +172,11 @@ function Interface.ColdFusion.new(
 				VerticalAlignment = Enum.VerticalAlignment.Center,
 				HorizontalAlignment = Enum.HorizontalAlignment.Left,
 			}),
-		}
+		},
 	}) :: Frame
 
-	for i=1, MAX_BUTTONS do
-		local buttonData = _Computed(function(bs: {[number]: ButtonData}): ButtonData?
+	for i = 1, MAX_BUTTONS do
+		local buttonData = _Computed(function(bs: { [number]: ButtonData }): ButtonData?
 			return bs[i]
 		end, buttonsState)
 
@@ -202,11 +201,9 @@ function Interface.ColdFusion.new(
 			end, buttonData),
 			Parent = buttonContainer,
 		})
-
 	end
 
 	return inst
-
 end
 
 return Interface

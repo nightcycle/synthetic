@@ -16,30 +16,25 @@ type GoogleTheme = ThemeUtil.Theme
 type GoogleScheme = ThemeUtil.Scheme
 type GoogleTonalPalette = ThemeUtil.TonalPalette
 type GoogleColorGroup = ThemeUtil.ColorGroup
-export type Scheme = {[Enums.ColorRoleType]: Color3}
+export type Scheme = { [Enums.ColorRoleType]: Color3 }
 export type TonalPalette = (alpha: number, noClamp: boolean?) -> Color3
 export type CustomColorGroup = {
 	Name: string,
 	Value: number,
 	IsBlended: boolean,
 	Schemes: {
-		[Enums.SchemeType]: {[Enums.CustomColorType]: Color3},
+		[Enums.SchemeType]: { [Enums.CustomColorType]: Color3 },
 	},
 }
 export type Theme = {
 	__index: Theme,
 	Source: Color3,
-	_Schemes: {[Enums.SchemeType]: Scheme},
-	Palettes: {[Enums.PaletteType]: TonalPalette},
+	_Schemes: { [Enums.SchemeType]: Scheme },
+	Palettes: { [Enums.PaletteType]: TonalPalette },
 	_CustomColors: {
-		[string]: CustomColorGroup
+		[string]: CustomColorGroup,
 	},
-	Get: (
-		self: Theme,
-		role: Enums.ColorRoleType,
-		schemeType: Enums.SchemeType,
-		elevation: number?
-	) -> Color3,
+	Get: (self: Theme, role: Enums.ColorRoleType, schemeType: Enums.SchemeType, elevation: number?) -> Color3,
 	GetCustom: (
 		self: Theme,
 		name: string,
@@ -47,19 +42,11 @@ export type Theme = {
 		schemeType: Enums.SchemeType,
 		elevation: number?
 	) -> Color3,
-	getElevatedColor: (
-		color: Color3, 
-		elevation: number, 
-		schemeType: Enums.SchemeType
-	) -> Color3,
-	new: (
-		source: Color3, 
-		custom: {[string]: Color3}?
-	) -> Theme,
-
+	getElevatedColor: (color: Color3, elevation: number, schemeType: Enums.SchemeType) -> Color3,
+	new: (source: Color3, custom: { [string]: Color3 }?) -> Theme,
 }
 -- Constants
-local ELEVATION_TINTS = {0.05, 0.08, 0.11, 0.12, 0.14}
+local ELEVATION_TINTS = { 0.05, 0.08, 0.11, 0.12, 0.14 }
 -- Variables
 -- References
 -- Private Functions
@@ -68,29 +55,17 @@ local ELEVATION_TINTS = {0.05, 0.08, 0.11, 0.12, 0.14}
 local Theme = {} :: Theme
 Theme.__index = Theme
 
-function Theme.new(
-	source: Color3, 
-	custom: {[string]: Color3}?
-): Theme
-	
+function Theme.new(source: Color3, custom: { [string]: Color3 }?): Theme
 	local googleTheme: GoogleTheme
 	do
-		local customColors: {[number]: GoogleCustomColor} = {}
+		local customColors: { [number]: GoogleCustomColor } = {}
 		if custom then
 			for k, color in pairs(custom) do
-				table.insert(customColors, ThemeUtil.customColor(
-					HCT.fromColor3(source):toInt(),
-					k,
-					false
-				))
+				table.insert(customColors, ThemeUtil.customColor(HCT.fromColor3(source):toInt(), k, false))
 			end
 		end
 
-		googleTheme = ThemeUtil.themeFromSourceColor(
-			HCT.fromColor3(source):toInt(),
-			customColors
-		)
-
+		googleTheme = ThemeUtil.themeFromSourceColor(HCT.fromColor3(source):toInt(), customColors)
 	end
 
 	local lightScheme: Scheme
@@ -106,15 +81,15 @@ function Theme.new(
 				[Enums.ColorRoleType.Secondary] = HCT.fromInt(scheme.secondary):toColor3(),
 				[Enums.ColorRoleType.OnSecondary] = HCT.fromInt(scheme.onSecondary):toColor3(),
 				[Enums.ColorRoleType.SecondaryContainer] = HCT.fromInt(scheme.secondaryContainer):toColor3(),
-				[Enums.ColorRoleType.OnSecondaryContainer] = HCT.fromInt(scheme.onSecondaryContainer):toColor3(),	
+				[Enums.ColorRoleType.OnSecondaryContainer] = HCT.fromInt(scheme.onSecondaryContainer):toColor3(),
 				[Enums.ColorRoleType.Tertiary] = HCT.fromInt(scheme.tertiary):toColor3(),
 				[Enums.ColorRoleType.OnTertiary] = HCT.fromInt(scheme.onTertiary):toColor3(),
 				[Enums.ColorRoleType.TertiaryContainer] = HCT.fromInt(scheme.tertiaryContainer):toColor3(),
-				[Enums.ColorRoleType.OnTertiaryContainer] = HCT.fromInt(scheme.onTertiaryContainer):toColor3(),	
+				[Enums.ColorRoleType.OnTertiaryContainer] = HCT.fromInt(scheme.onTertiaryContainer):toColor3(),
 				[Enums.ColorRoleType.Error] = HCT.fromInt(scheme.error):toColor3(),
 				[Enums.ColorRoleType.OnError] = HCT.fromInt(scheme.onError):toColor3(),
 				[Enums.ColorRoleType.ErrorContainer] = HCT.fromInt(scheme.errorContainer):toColor3(),
-				[Enums.ColorRoleType.OnErrorContainer] = HCT.fromInt(scheme.onErrorContainer):toColor3(),	
+				[Enums.ColorRoleType.OnErrorContainer] = HCT.fromInt(scheme.onErrorContainer):toColor3(),
 				[Enums.ColorRoleType.Background] = HCT.fromInt(scheme.background):toColor3(),
 				[Enums.ColorRoleType.OnBackground] = HCT.fromInt(scheme.onBackground):toColor3(),
 				[Enums.ColorRoleType.Surface] = HCT.fromInt(scheme.surface):toColor3(),
@@ -150,8 +125,7 @@ function Theme.new(
 	do
 		local function fromPalette(tonalPalette: GoogleTonalPalette): TonalPalette
 			return function(alpha: number, noClamp: boolean?): Color3
-
-				return HCT.fromInt(tonalPalette:getTone(if noClamp then alpha*100 else math.clamp(alpha, 0.05, 0.9)*100)):toColor3()
+				return HCT.fromInt(tonalPalette:getTone(if noClamp then alpha * 100 else math.clamp(alpha, 0.05, 0.9) * 100)):toColor3()
 			end
 		end
 		primaryPalette = fromPalette(googleTheme.palettes.primary)
@@ -162,9 +136,9 @@ function Theme.new(
 		errorPalette = fromPalette(googleTheme.palettes.error)
 	end
 
-	local customColors: {[string]: CustomColorGroup} = {}
+	local customColors: { [string]: CustomColorGroup } = {}
 	do
-		local function fromColorGroup(group: GoogleColorGroup): {[Enums.ColorRoleType]: Color3}
+		local function fromColorGroup(group: GoogleColorGroup): { [Enums.ColorRoleType]: Color3 }
 			return table.freeze({
 				[Enums.CustomColorType.Custom] = HCT.fromInt(group.color):toColor3(),
 				[Enums.CustomColorType.OnCustom] = HCT.fromInt(group.onColor):toColor3(),
@@ -189,9 +163,9 @@ function Theme.new(
 
 	local theme: Theme = setmetatable({
 		Source = source,
-		_Schemes = table.freeze({ 
-			Light = lightScheme, 
-			Dark = darkScheme
+		_Schemes = table.freeze({
+			Light = lightScheme,
+			Dark = darkScheme,
 		}),
 		Palettes = table.freeze({
 			Primary = primaryPalette,
@@ -207,11 +181,7 @@ function Theme.new(
 	return theme
 end
 
-function Theme.getElevatedColor(
-	color: Color3, 
-	elevation: number, 
-	schemeType: Enums.SchemeType
-): Color3
+function Theme.getElevatedColor(color: Color3, elevation: number, schemeType: Enums.SchemeType): Color3
 	local hct = HCT.fromColor3(color)
 	local tone = hct:getTone()
 	elevation = math.clamp(elevation, 1, #ELEVATION_TINTS)
@@ -229,21 +199,11 @@ function Theme.getElevatedColor(
 		local upColor = HCT.fromColor3(color)
 		upColor:setTone(tone + (tone * ELEVATION_TINTS[up]))
 
-		return HCT.fromInt(Blend.cam16Ucs(
-			downColor:toInt(),
-			upColor:toInt(),
-			(elevation - down)
-		)):toColor3()
+		return HCT.fromInt(Blend.cam16Ucs(downColor:toInt(), upColor:toInt(), (elevation - down))):toColor3()
 	end
 end
 
-function Theme:GetCustom(
-	name: string,
-	customType: Enums.CustomColorType,
-	schemeType: Enums.SchemeType,
-	elevation: number?
-): Color3
-
+function Theme:GetCustom(name: string, customType: Enums.CustomColorType, schemeType: Enums.SchemeType, elevation: number?): Color3
 	local customColorGroup: CustomColorGroup = self._CustomColors[name]
 	assert(customColorGroup, `no custom color group at {name}`)
 
@@ -256,12 +216,7 @@ function Theme:GetCustom(
 	end
 end
 
-function Theme:Get(
-	role: Enums.ColorRoleType,
-	schemeType: Enums.SchemeType,
-	elevation: number?
-): Color3
-
+function Theme:Get(role: Enums.ColorRoleType, schemeType: Enums.SchemeType, elevation: number?): Color3
 	local scheme: Scheme = self._Schemes[schemeType]
 
 	local color: Color3 = scheme[role :: Enums.ColorRoleType]

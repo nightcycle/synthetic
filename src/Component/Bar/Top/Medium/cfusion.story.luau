@@ -31,35 +31,21 @@ return function(frame: Frame)
 		listLayout.Parent = frame
 
 		local function build(isDarkMode: boolean, color: Color3)
-			local style = Style.new(
-				1,
-				"Roboto",
-				if isDarkMode then Enums.SchemeType.Dark else Enums.SchemeType.Light,
-				color
-			)
+			local style = Style.new(1, "Roboto", if isDarkMode then Enums.SchemeType.Dark else Enums.SchemeType.Light, color)
 
 			local out = maid:GiveTask(Module.ColdFusion.new(
 				"Title",
 				{
-					Types.newButtonData(
-						function() 
-							print("save click")
-						end,
-						Icons.save
-					),
-					Types.newButtonData(
-						function() 
-							print("publish click")
-						end,
-						Icons.publish
-					),
+					Types.newButtonData(function()
+						print("save click")
+					end, Icons.save),
+					Types.newButtonData(function()
+						print("publish click")
+					end, Icons.publish),
 				},
-				Types.newButtonData(
-					function() 
-						print("nav click")
-					end,
-					Icons.arrow_back
-				),
+				Types.newButtonData(function()
+					print("nav click")
+				end, Icons.arrow_back),
 				style:GetColor(Enums.ColorRoleType.Primary),
 				style:GetColor(Enums.ColorRoleType.OnPrimary),
 				1,
@@ -68,9 +54,8 @@ return function(frame: Frame)
 
 			out.Position = UDim2.fromScale(0.5, 0.5)
 			out.AnchorPoint = Vector2.new(0.5, 0.5)
-			out.Size=  UDim2.fromScale(1,0)
+			out.Size = UDim2.fromScale(1, 0)
 			out.Parent = frame
-
 		end
 		build(false, Color3.fromHSV(0.5, 0.3, 0.95))
 		build(true, Color3.fromHSV(0.5, 0.5, 0.4))

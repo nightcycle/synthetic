@@ -52,10 +52,10 @@ Solver.LINRGB_FROM_SCALED_DISCOUNT = {
 	},
 }
 
-Solver.Y_FROM_LINRGB = { 
-	[0] = 0.2126, 
+Solver.Y_FROM_LINRGB = {
+	[0] = 0.2126,
 	[1] = 0.7152,
-	[2] = 0.0722
+	[2] = 0.0722,
 }
 
 local CRITICAL_PLANES_OFFSET = {
@@ -315,9 +315,9 @@ local CRITICAL_PLANES_OFFSET = {
 	98.6670533535366,
 	99.55452497210776,
 }
-Solver.CRITICAL_PLANES = {} :: {[number]: number}
+Solver.CRITICAL_PLANES = {} :: { [number]: number }
 for i, v in ipairs(CRITICAL_PLANES_OFFSET) do
-	Solver.CRITICAL_PLANES[i-1] = v
+	Solver.CRITICAL_PLANES[i - 1] = v
 end
 
 function Solver._sanitizeRadians(angle: number): number
@@ -364,9 +364,9 @@ end
 
 function Solver._lerpPoint(source: { number }, t: number, target: { number }): { number }
 	return {
-		[0]=source[0] + (target[0] - source[0]) * t,
-		[1]=source[1] + (target[1] - source[1]) * t,
-		[2]=source[2] + (target[2] - source[2]) * t,
+		[0] = source[0] + (target[0] - source[0]) * t,
+		[1] = source[1] + (target[1] - source[1]) * t,
+		[2] = source[2] + (target[2] - source[2]) * t,
 	}
 end
 
@@ -390,16 +390,16 @@ function Solver._nthVertex(y: number, n: number): { number }
 		local b = coordB
 		local r = (y - g * kG - b * kB) / kR
 		if Solver._isBounded(r) then
-			return { 
-				[0]=r, 
-				[1]=g, 
-				[2]=b 
+			return {
+				[0] = r,
+				[1] = g,
+				[2] = b,
 			}
 		else
-			return { 
-				[0]=-1.0, 
-				[1]=-1.0, 
-				[2]=-1.0 
+			return {
+				[0] = -1.0,
+				[1] = -1.0,
+				[2] = -1.0,
 			}
 		end
 	elseif n < 8 then
@@ -407,16 +407,16 @@ function Solver._nthVertex(y: number, n: number): { number }
 		local r = coordB
 		local g = (y - r * kR - b * kB) / kG
 		if Solver._isBounded(g) then
-			return { 
-				[0]=r, 
-				[1]=g,
-				[2]=b
+			return {
+				[0] = r,
+				[1] = g,
+				[2] = b,
 			}
 		else
-			return { 
-				[0]=-1.0, 
-				[1]=-1.0, 
-				[2]=-1.0 
+			return {
+				[0] = -1.0,
+				[1] = -1.0,
+				[2] = -1.0,
 			}
 		end
 	else
@@ -425,25 +425,25 @@ function Solver._nthVertex(y: number, n: number): { number }
 		local b = (y - r * kR - g * kG) / kB
 		if Solver._isBounded(b) then
 			return {
-				[0]=r,
-				[1]=g, 
-				[2]=b
+				[0] = r,
+				[1] = g,
+				[2] = b,
 			}
 		else
-			return { 
-				[0]=-1.0, 
-				[1]=-1.0, 
-				[2]=-1.0 
+			return {
+				[0] = -1.0,
+				[1] = -1.0,
+				[2] = -1.0,
 			}
 		end
 	end
 end
 
 function Solver._bisectToSegment(y: number, targetHue: number): { { number } }
-	local left = { 
-		[0]=-1.0, 
-		[1]=-1.0, 
-		[2]=-1.0 
+	local left = {
+		[0] = -1.0,
+		[1] = -1.0,
+		[2] = -1.0,
 	}
 	local right = left
 	local leftHue = 0.0
@@ -475,17 +475,17 @@ function Solver._bisectToSegment(y: number, targetHue: number): { { number } }
 			end
 		end
 	end
-	return { 
-		[0]=left, 
-		[1]=right 
+	return {
+		[0] = left,
+		[1] = right,
 	}
 end
 
 function Solver._midpoint(a: { number }, b: { number }): { number }
 	return {
-		[0]=(a[0] + b[0]) / 2,
-		[1]=(a[1] + b[1]) / 2,
-		[2]=(a[2] + b[2]) / 2,
+		[0] = (a[0] + b[0]) / 2,
+		[1] = (a[1] + b[1]) / 2,
+		[2] = (a[2] + b[2]) / 2,
 	}
 end
 
@@ -579,9 +579,9 @@ function Solver._findResultByJ(hueRadians: number, chroma: number, y: number): n
 		local bCScaled = Solver._inverseChromaticAdaptation(bA)
 
 		local linrgb = MathUtil.matrixMultiply({
-			[0]=rCScaled, 
-			[1]=gCScaled, 
-			[2]=bCScaled
+			[0] = rCScaled,
+			[1] = gCScaled,
+			[2] = bCScaled,
 		}, Solver.LINRGB_FROM_SCALED_DISCOUNT)
 		-- ========================================
 		-- Operations inlined from Cam16 to avoid repeated calculation

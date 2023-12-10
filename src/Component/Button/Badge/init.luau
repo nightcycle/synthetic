@@ -44,14 +44,13 @@ function component(
 	elevation: CanBeState<number?>,
 	style: CanBeState<Style>
 ): TextButton
-	
 	local _fuse = ColdFusion.fuse(maid)
-	
+
 	local _new = _fuse.new
 	local _bind = _fuse.bind
 	local _clone = _fuse.clone
 	local _import = _fuse.import
-	
+
 	local _Value = _fuse.Value
 	local _Computed = _fuse.Computed
 
@@ -69,51 +68,36 @@ function component(
 	local isFocusedState = _Value(false)
 	local isPressedState = _Value(false)
 	local isHoveredState = _Value(false)
-	local currentStateState = _Computed(
-		function(
-			isEnab: boolean,
-			isFocused: boolean,
-			isPressed: boolean,
-			isHovered: boolean
-		): Enums.ButtonStateType
-			if isEnab then
-				if isPressed then
-					return Enums.ButtonStateType.Pressed
+	local currentStateState = _Computed(function(isEnab: boolean, isFocused: boolean, isPressed: boolean, isHovered: boolean): Enums.ButtonStateType
+		if isEnab then
+			if isPressed then
+				return Enums.ButtonStateType.Pressed
+			else
+				if isHovered then
+					return Enums.ButtonStateType.Hovered
 				else
-					if isHovered then
-						return Enums.ButtonStateType.Hovered
+					if isFocused then
+						return Enums.ButtonStateType.Focused
 					else
-						if isFocused then
-							return Enums.ButtonStateType.Focused
-						else
-							return Enums.ButtonStateType.Enabled
-						end
+						return Enums.ButtonStateType.Enabled
 					end
 				end
-			else
-				return Enums.ButtonStateType.Disabled
 			end
-		end,
-		isEnabledState,
-		isFocusedState,
-		isPressedState,
-		isHoveredState
-	) :: State<any>
+		else
+			return Enums.ButtonStateType.Disabled
+		end
+	end, isEnabledState, isFocusedState, isPressedState, isHoveredState) :: State<any>
 
 	local renderDatasState = _import(renderDatas, {}) :: any
 
-	local currentRenderDataState = _Computed(
-		function(state: Enums.ButtonStateType, renderDatas: { [Enums.ButtonStateType]: RenderData }): RenderData
-			local data = renderDatas[state]
-			assert(data ~= nil, `no renderData for {state}`)
-			return data
-		end,
-		currentStateState,
-		renderDatasState
-	)
+	local currentRenderDataState = _Computed(function(state: Enums.ButtonStateType, renderDatas: { [Enums.ButtonStateType]: RenderData }): RenderData
+		local data = renderDatas[state]
+		assert(data ~= nil, `no renderData for {state}`)
+		return data
+	end, currentStateState, renderDatasState)
 	local inst = _new("TextButton")({
 		Text = "",
-		Size = UDim2.new(0,0),
+		Size = UDim2.new(0, 0),
 		AutomaticSize = Enum.AutomaticSize.XY,
 		BackgroundTransparency = 1,
 		Events = {
@@ -163,7 +147,7 @@ function component(
 		Children = {
 			_new("UIListLayout")({
 				Padding = _Computed(function(s: number): UDim
-					return UDim.new(0, s*PAD_DP)
+					return UDim.new(0, s * PAD_DP)
 				end, scaleState),
 				SortOrder = Enum.SortOrder.LayoutOrder,
 				FillDirection = Enum.FillDirection.Vertical,
@@ -186,7 +170,7 @@ function component(
 				end, styleState),
 				LayoutOrder = 2,
 				TextColor3 = _Computed(function(data: RenderData): Color3
-					return if data.Text then data.Text.Color3 else Color3.new(1,1,1)
+					return if data.Text then data.Text.Color3 else Color3.new(1, 1, 1)
 				end, currentRenderDataState),
 				TextTransparency = _Computed(function(data: RenderData): number
 					return if data.Text then data.Text.Transparency else 1
@@ -205,20 +189,20 @@ function component(
 					return style.Background.Transparency
 				end, currentRenderDataState),
 				AutomaticSize = Enum.AutomaticSize.XY,
-				Size = UDim2.fromOffset(0,0),
+				Size = UDim2.fromOffset(0, 0),
 				Children = {
 					_new("UIPadding")({
 						PaddingLeft = _Computed(function(s: number): UDim
-							return UDim.new(0, s*ICON_PAD_DP*3)
+							return UDim.new(0, s * ICON_PAD_DP * 3)
 						end, scaleState),
 						PaddingRight = _Computed(function(s: number): UDim
-							return UDim.new(0, s*ICON_PAD_DP*3)
+							return UDim.new(0, s * ICON_PAD_DP * 3)
 						end, scaleState),
 						PaddingTop = _Computed(function(s: number): UDim
-							return UDim.new(0, s*ICON_PAD_DP)
+							return UDim.new(0, s * ICON_PAD_DP)
 						end, scaleState),
 						PaddingBottom = _Computed(function(s: number): UDim
-							return UDim.new(0, s*ICON_PAD_DP)
+							return UDim.new(0, s * ICON_PAD_DP)
 						end, scaleState),
 					}),
 					_new("UIListLayout")({
@@ -230,14 +214,14 @@ function component(
 						HorizontalAlignment = Enum.HorizontalAlignment.Center,
 					}),
 					_new("UICorner")({
-						CornerRadius = UDim.new(0.5,0)
+						CornerRadius = UDim.new(0.5, 0),
 					}),
 					_new("ImageLabel")({
 						Name = "Icon",
 						LayoutOrder = 1,
 						BackgroundTransparency = 1,
 						ImageColor3 = _Computed(function(data: RenderData): Color3
-							return if data.Text then data.Text.Color3 else Color3.new(1,1,1)
+							return if data.Text then data.Text.Color3 else Color3.new(1, 1, 1)
 						end, currentRenderDataState),
 						ImageTransparency = _Computed(function(data: RenderData): number
 							return if data.Text then data.Text.Transparency else 1
@@ -259,12 +243,12 @@ function component(
 								Name = "Badge",
 								Position = _Computed(function(s: number, c: number?): UDim2
 									if c == nil then
-										return UDim2.new(1, -0.25*BADGE_TXT_HEIGHT_DP, 0, 0)
+										return UDim2.new(1, -0.25 * BADGE_TXT_HEIGHT_DP, 0, 0)
 									else
 										return UDim2.new(0.5, s, 0, 0)
 									end
 								end, scaleState, countState),
-								AnchorPoint = Vector2.new(0,0.5),
+								AnchorPoint = Vector2.new(0, 0.5),
 								AutomaticSize = Enum.AutomaticSize.None,
 								Visible = _Computed(function(c: number?): boolean
 									return c ~= 0
@@ -279,13 +263,10 @@ function component(
 										elseif c > 9 then
 											x += 5
 										end
-									else 
+									else
 										s *= 0.5
 									end
-									return UDim2.fromOffset(
-										s * x, 
-										s * BADGE_TXT_HEIGHT_DP
-									)
+									return UDim2.fromOffset(s * x, s * BADGE_TXT_HEIGHT_DP)
 								end, countState, scaleState),
 								TextScaled = true,
 								RichText = true,
@@ -304,33 +285,32 @@ function component(
 									return style.Typography:Get(Enums.FontType.LabelSmall).Font
 								end, styleState),
 								BackgroundColor3 = _Computed(function(style: Style, e: number): Color3
-									return style:GetColor(Enums.ColorRoleType.Error, e+1)
+									return style:GetColor(Enums.ColorRoleType.Error, e + 1)
 								end, styleState, elevationState),
 								TextColor3 = _Computed(function(style: Style, e: number): Color3
-									return style:GetColor(Enums.ColorRoleType.OnError, e+1)
+									return style:GetColor(Enums.ColorRoleType.OnError, e + 1)
 								end, styleState, elevationState),
 								Children = {
 									_new("UIPadding")({
 										PaddingLeft = _Computed(function(s: number): UDim
-											return UDim.new(0, s*BADGE_PAD_DP)
+											return UDim.new(0, s * BADGE_PAD_DP)
 										end, scaleState),
 										PaddingRight = _Computed(function(s: number): UDim
-											return UDim.new(0, s*BADGE_PAD_DP)
+											return UDim.new(0, s * BADGE_PAD_DP)
 										end, scaleState),
 										PaddingBottom = _Computed(function(s: number): UDim
-											return UDim.new(0, s*BADGE_PAD_DP)
+											return UDim.new(0, s * BADGE_PAD_DP)
 										end, scaleState),
 									}),
 									_new("UICorner")({
-										CornerRadius = UDim.new(0.5,0)
+										CornerRadius = UDim.new(0.5, 0),
 									}),
 								},
-							})
-						}
+							}),
+						},
 					}),
-				}
+				},
 			}),
-			
 		},
 	}) :: TextButton
 	return inst
@@ -366,8 +346,8 @@ function Interface.ColdFusion.new(
 	local styleState: State<Style> = _import(style, nil :: any)
 
 	local elevationState: State<number> = _import(elevation, 0)
-	local textColorState: State<Color3> = _import(textColor, Color3.new(1,1,1))
-	local hoverColorState: State<Color3> = _import(hoverColor, Color3.new(1,1,1))
+	local textColorState: State<Color3> = _import(textColor, Color3.new(1, 1, 1))
+	local hoverColorState: State<Color3> = _import(hoverColor, Color3.new(1, 1, 1))
 
 	local iconState: State<ImageData> = _import(icon, nil :: any)
 
@@ -377,29 +357,14 @@ function Interface.ColdFusion.new(
 		_import(label, ""),
 		icon,
 		count,
-		_Computed(function(
-			style: Style, 
-			e: number,
-			hC: Color3,
-			tC: Color3,
-			i: ImageData?
-		): {[Enums.ButtonStateType]: RenderData}
+		_Computed(function(style: Style, e: number, hC: Color3, tC: Color3, i: ImageData?): { [Enums.ButtonStateType]: RenderData }
 			e += 1
 			return {
 				[Enums.ButtonStateType.Enabled] = Types.newRenderData(
 					style.Scale,
-					Types.newAppearanceData(
-						style:GetElevatedColor(hC, e), 
-						1
-					),
-					Types.newAppearanceData(
-						style:GetElevatedColor(hC, e), 
-						1
-					),
-					Types.newAppearanceData(
-						style:GetElevatedColor(tC, e), 
-						0
-					),
+					Types.newAppearanceData(style:GetElevatedColor(hC, e), 1),
+					Types.newAppearanceData(style:GetElevatedColor(hC, e), 1),
+					Types.newAppearanceData(style:GetElevatedColor(tC, e), 0),
 					style.Typography:Get(Enums.FontType.LabelLarge),
 					i,
 					nil,
@@ -407,18 +372,9 @@ function Interface.ColdFusion.new(
 				),
 				[Enums.ButtonStateType.Hovered] = Types.newRenderData(
 					style.Scale,
-					Types.newAppearanceData(
-						style:GetElevatedColor(hC, e), 
-						1
-					),
-					Types.newAppearanceData(
-						style:GetElevatedColor(hC, e+1), 
-						1-0.08
-					),
-					Types.newAppearanceData(
-						style:GetElevatedColor(tC, e+1), 
-						0
-					),
+					Types.newAppearanceData(style:GetElevatedColor(hC, e), 1),
+					Types.newAppearanceData(style:GetElevatedColor(hC, e + 1), 1 - 0.08),
+					Types.newAppearanceData(style:GetElevatedColor(tC, e + 1), 0),
 					style.Typography:Get(Enums.FontType.LabelLarge),
 					i,
 					nil,
@@ -426,18 +382,9 @@ function Interface.ColdFusion.new(
 				),
 				[Enums.ButtonStateType.Focused] = Types.newRenderData(
 					style.Scale,
-					Types.newAppearanceData(
-						style:GetElevatedColor(hC, e), 
-						1
-					),
-					Types.newAppearanceData(
-						style:GetElevatedColor(hC, e), 
-						1-0.1
-					),
-					Types.newAppearanceData(
-						style:GetElevatedColor(tC, e), 
-						0
-					),
+					Types.newAppearanceData(style:GetElevatedColor(hC, e), 1),
+					Types.newAppearanceData(style:GetElevatedColor(hC, e), 1 - 0.1),
+					Types.newAppearanceData(style:GetElevatedColor(tC, e), 0),
 					style.Typography:Get(Enums.FontType.LabelLarge),
 					i,
 					nil,
@@ -445,24 +392,12 @@ function Interface.ColdFusion.new(
 				),
 				[Enums.ButtonStateType.Pressed] = Types.newRenderData(
 					style.Scale,
-					Types.newAppearanceData(
-						style:GetElevatedColor(hC, e), 
-						1
-					),
-					Types.newAppearanceData(
-						style:GetElevatedColor(hC, e-1), 
-						1-0.1
-					),
-					Types.newAppearanceData(
-						style:GetElevatedColor(tC, e-1), 
-						0
-					),
+					Types.newAppearanceData(style:GetElevatedColor(hC, e), 1),
+					Types.newAppearanceData(style:GetElevatedColor(hC, e - 1), 1 - 0.1),
+					Types.newAppearanceData(style:GetElevatedColor(tC, e - 1), 0),
 					style.Typography:Get(Enums.FontType.LabelLarge),
 					i,
-					Types.newSoundData(
-						Sounds.ui_tap_variant_01,
-						1
-					),
+					Types.newSoundData(Sounds.ui_tap_variant_01, 1),
 					nil
 				),
 			}

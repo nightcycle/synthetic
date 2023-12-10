@@ -23,13 +23,7 @@ return function(frame: Frame)
 	local maid = Maid.new()
 	task.spawn(function()
 		local function makeHalfFrame(isDarkMode: boolean, color: Color3): Frame
-
-			local style = Style.new(
-				1,
-				"Roboto",
-				if isDarkMode then Enums.SchemeType.Dark else Enums.SchemeType.Light,
-				color
-			)
+			local style = Style.new(1, "Roboto", if isDarkMode then Enums.SchemeType.Dark else Enums.SchemeType.Light, color)
 
 			local halfFrame = maid:GiveTask(Instance.new("Frame"))
 			halfFrame.BackgroundColor3 = style:GetColor(Enums.ColorRoleType.Background)
@@ -49,39 +43,19 @@ return function(frame: Frame)
 				local button = maid:GiveTask(
 					Module.ColdFusion.new(
 						{
-							Types.newButtonData(
-								function()
-									print("click 1")
-								end,
-								Icons.gamepad,
-								nil,
-								true
-							),
-							Types.newButtonData(
-								function()
-									print("click 2")
-								end,
-								Icons.waves,
-								nil,
-								true
-							),
-							Types.newButtonData(
-								function()
-									print("click 3")
-								end,
-								Icons.work_off,
-								nil,
-								true
-							),
+							Types.newButtonData(function()
+								print("click 1")
+							end, Icons.gamepad, nil, true),
+							Types.newButtonData(function()
+								print("click 2")
+							end, Icons.waves, nil, true),
+							Types.newButtonData(function()
+								print("click 3")
+							end, Icons.work_off, nil, true),
 						},
-						Types.newButtonData(
-							function()
-								print("click fab")
-							end,
-							Icons.plus_one,
-							nil,
-							true
-						),
+						Types.newButtonData(function()
+							print("click fab")
+						end, Icons.plus_one, nil, true),
 						style:GetColor(Enums.ColorRoleType.Primary),
 						style:GetColor(Enums.ColorRoleType.OnPrimary),
 						style:GetColor(Enums.ColorRoleType.OnSurface),
@@ -97,22 +71,12 @@ return function(frame: Frame)
 				local button = maid:GiveTask(
 					Module.ColdFusion.new(
 						{
-							Types.newButtonData(
-								function()
-									print("click 1")
-								end,
-								Icons.gamepad,
-								nil,
-								true
-							),
-							Types.newButtonData(
-								function()
-									print("click 2")
-								end,
-								Icons.waves,
-								nil,
-								false
-							),
+							Types.newButtonData(function()
+								print("click 1")
+							end, Icons.gamepad, nil, true),
+							Types.newButtonData(function()
+								print("click 2")
+							end, Icons.waves, nil, false),
 						},
 						nil,
 						style:GetColor(Enums.ColorRoleType.Primary),
@@ -142,14 +106,14 @@ return function(frame: Frame)
 			local x = (i - 1) / #COLORS
 			local width = 1 / #COLORS
 			local dark = makeHalfFrame(true, color)
-			
-			dark.Size = UDim2.fromScale(1, width*0.5)
+
+			dark.Size = UDim2.fromScale(1, width * 0.5)
 			dark.Position = UDim2.fromScale(0, x)
 			dark.Parent = frame
 
 			local bright = makeHalfFrame(false, color)
-			bright.Size = UDim2.fromScale(1, width*0.5)
-			bright.Position = UDim2.fromScale(0, x+width*0.5)
+			bright.Size = UDim2.fromScale(1, width * 0.5)
+			bright.Position = UDim2.fromScale(0, x + width * 0.5)
 			bright.Parent = frame
 		end
 	end)

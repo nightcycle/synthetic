@@ -38,26 +38,17 @@ function Util.newColor(
 	role: CanBeState<Enums.ColorRoleType>,
 	theme: CanBeState<Theme>
 ): State<Color3>
-
 	local elevationState = fuse.import(elevation, 1)
 	local schemeTypeState = fuse.import(schemeType, Enums.SchemeType.Dark)
 	local roleState = fuse.import(role, Enums.ColorRoleType.Primary)
 	local themeState: State<Theme> = fuse.import(theme, nil :: any)
 
 	return fuse.Computed(function(elev: number, scheme: Enums.SchemeType, r: Enums.ColorRoleType, th: Theme): Color3
-		return th:Get(
-			r, 
-			scheme, 
-			elev
-		)
+		return th:Get(r, scheme, elev)
 	end, elevationState, schemeTypeState, roleState, themeState)
 end
 
-function Util.newFontData(
-	fuse: Fuse,
-	fontType: CanBeState<Enums.FontType>,
-	typography: CanBeState<Typography>
-): State<FontData>
+function Util.newFontData(fuse: Fuse, fontType: CanBeState<Enums.FontType>, typography: CanBeState<Typography>): State<FontData>
 	local fontTypeState = fuse.import(fontType, "BodyMedium" :: Enums.FontType)
 	local typographyState = fuse.import(typography, nil :: any)
 
@@ -67,10 +58,7 @@ function Util.newFontData(
 	end, fontTypeState, typographyState)
 end
 
-function Util.newFont(
-	fuse: Fuse,
-	fontData: CanBeState<Enums.FontType>
-): State<Font>
+function Util.newFont(fuse: Fuse, fontData: CanBeState<Enums.FontType>): State<Font>
 	local fontDataState = fuse.import(fontData, FALLBACK_FONT_DATA)
 
 	return fuse.Computed(function(data: FontData): Font
@@ -78,24 +66,14 @@ function Util.newFont(
 	end, fontDataState)
 end
 
-function Util.newAppearanceData(
-	fuse: Fuse,
-	color3: CanBeState<Color3>,
-	transparency: CanBeState<number>?
-): State<AppearanceData>
-
-	local colorState = fuse.import(color3, Color3.new(1,1,1))
+function Util.newAppearanceData(fuse: Fuse, color3: CanBeState<Color3>, transparency: CanBeState<number>?): State<AppearanceData>
+	local colorState = fuse.import(color3, Color3.new(1, 1, 1))
 	local transparencyState = fuse.import(transparency, 0)
 
 	return fuse.Computed(Types.newAppearanceData, colorState, transparencyState)
 end
 
-function Util.newLineHeight(
-	fuse: Fuse,
-	fontData: CanBeState<Enums.FontType>,
-	scale: CanBeState<number>
-): State<number>
-
+function Util.newLineHeight(fuse: Fuse, fontData: CanBeState<Enums.FontType>, scale: CanBeState<number>): State<number>
 	local fontDataState = fuse.import(fontData, FALLBACK_FONT_DATA)
 
 	local scaleState = fuse.import(scale, 1)
@@ -105,12 +83,7 @@ function Util.newLineHeight(
 	end, fontDataState, scaleState)
 end
 
-function Util.newTextSize(
-	fuse: Fuse,
-	fontData: CanBeState<Enums.FontType>,
-	scale: CanBeState<number>
-): State<number>
-
+function Util.newTextSize(fuse: Fuse, fontData: CanBeState<Enums.FontType>, scale: CanBeState<number>): State<number>
 	local fontDataState = fuse.import(fontData, FALLBACK_FONT_DATA)
 	local scaleState = fuse.import(scale, 1)
 
@@ -119,12 +92,7 @@ function Util.newTextSize(
 	end, fontDataState, scaleState)
 end
 
-function Util.newSoundData(
-	fuse: Fuse,
-	soundId: CanBeState<string?>,
-	volume: CanBeState<number?>
-): State<SoundData>
-
+function Util.newSoundData(fuse: Fuse, soundId: CanBeState<string?>, volume: CanBeState<number?>): State<SoundData>
 	local soundIdState = fuse.import(soundId, "")
 	local volumeState = fuse.import(volume, nil :: number?)
 
@@ -133,12 +101,7 @@ function Util.newSoundData(
 	end, soundIdState, volumeState)
 end
 
-function Util.newShadowData(
-	fuse: Fuse,
-	appearanceData: CanBeState<AppearanceData>,
-	offset: CanBeState<Vector2>
-): State<ShadowData>
-
+function Util.newShadowData(fuse: Fuse, appearanceData: CanBeState<AppearanceData>, offset: CanBeState<Vector2>): State<ShadowData>
 	local appearanceDataState: State<AppearanceData> = fuse.import(appearanceData, nil :: any)
 	local offsetState: State<Vector2> = fuse.import(offset, nil :: Vector2?)
 
@@ -156,7 +119,6 @@ function Util.newRenderData(
 	sound: CanBeState<SoundData?>,
 	shadow: CanBeState<ShadowData?>
 ): State<RenderData>
-
 	local borderState: State<AppearanceData> = fuse.import(border, nil :: any)
 	local backgroundState: State<AppearanceData> = fuse.import(background, nil :: any)
 	local textState: State<AppearanceData?> = fuse.import(text, nil :: any)
@@ -170,10 +132,7 @@ function Util.newRenderData(
 	return fuse.Computed(Types.newRenderData, scaleState, borderState, backgroundState, textState, fontState, imageState, soundState, shadowState)
 end
 
-function Util.getScale(
-	fuse: Fuse,
-	renderData: CanBeState<RenderData>
-): State<number>
+function Util.getScale(fuse: Fuse, renderData: CanBeState<RenderData>): State<number>
 	local renderDataState = fuse.import(renderData, nil :: RenderData?)
 	return fuse.Computed(function(st: RenderData): number
 		return st.Scale

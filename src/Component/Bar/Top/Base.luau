@@ -48,7 +48,7 @@ local Interface = {}
 function Interface.component(
 	title: CanBeState<string>,
 	buttons: CanBeState<{
-		[number]: ButtonData
+		[number]: ButtonData,
 	}>,
 	navigationButton: CanBeState<ButtonData?>,
 	variant: CanBeState<BarVariant>,
@@ -70,7 +70,7 @@ function Interface.component(
 	local _Computed = _fuse.Computed
 
 	local buttonsState: State<{
-		[number]: ButtonData
+		[number]: ButtonData,
 	}> = _import(buttons, {})
 
 	local styleState: State<Style> = _import(style, nil :: Style?)
@@ -79,9 +79,9 @@ function Interface.component(
 	end, styleState)
 	local navState: State<ButtonData?> = _import(navigationButton, nil :: ButtonData?)
 	local variantState: State<BarVariant> = _import(variant, "Center" :: BarVariant)
-	local backgroundColorState: State<Color3> = _import(backgroundColor, Color3.new(1,1,1))
+	local backgroundColorState: State<Color3> = _import(backgroundColor, Color3.new(1, 1, 1))
 	local elevationState: State<number> = _import(elevation, 1)
-	local textColorState: State<Color3> = _import(textColor, Color3.new(1,1,1))
+	local textColorState: State<Color3> = _import(textColor, Color3.new(1, 1, 1))
 
 	local inst = _new("Frame")({
 		AutomaticSize = Enum.AutomaticSize.XY,
@@ -96,7 +96,7 @@ function Interface.component(
 					elseif var == "Large" then
 						return UDim.new(0, LOWER_TEXT_LARGE_PADDING_DP * s)
 					else
-						return UDim.new(0,0)
+						return UDim.new(0, 0)
 					end
 				end, scaleState, variantState),
 				HorizontalFlex = Enum.UIFlexAlignment.Fill,
@@ -146,10 +146,10 @@ function Interface.component(
 						return s.Typography:Get(Enums.FontType.HeadlineSmall).Font
 					else
 						return s.Typography:Get(Enums.FontType.HeadlineMedium).Font
-					end	
+					end
 				end, styleState, variantState),
 			}),
-		}
+		},
 	}) :: Frame
 
 	local main = _new("Frame")({
@@ -251,10 +251,10 @@ function Interface.component(
 						Visible = _Computed(function(nData: ButtonData?): boolean
 							return if nData then nData.Enabled else false
 						end, navState),
-					})		
-				}
-			})
-		}
+					}),
+				},
+			}),
+		},
 	})
 
 	local buttonContainer = _new("Frame")({
@@ -273,14 +273,14 @@ function Interface.component(
 				VerticalAlignment = Enum.VerticalAlignment.Center,
 				HorizontalAlignment = Enum.HorizontalAlignment.Right,
 			}),
-		}
+		},
 	}) :: Frame
 
-	for i=1, MAX_BUTTONS do
-		local buttonData = _Computed(function(bs: {[number]: ButtonData}): ButtonData?
+	for i = 1, MAX_BUTTONS do
+		local buttonData = _Computed(function(bs: { [number]: ButtonData }): ButtonData?
 			return bs[i]
 		end, buttonsState)
-		
+
 		_bind(IconButton.ColdFusion.new(
 			_Computed(function(nData: ButtonData?)
 				return if nData then nData.OnClick else function() end
@@ -300,13 +300,11 @@ function Interface.component(
 			Visible = _Computed(function(nData: ButtonData?): boolean
 				return if nData then nData.Enabled else false
 			end, buttonData),
-			Parent = buttonContainer
-		})		
-
+			Parent = buttonContainer,
+		})
 	end
 
 	return inst
-
 end
 
 return Interface

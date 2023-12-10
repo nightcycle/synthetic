@@ -37,7 +37,6 @@ local IMAGE_SIZE = 500
 local RIP_STEP = 0.005
 local HALF_IMAGE_SIZE = IMAGE_SIZE / 2
 
-
 local Util = {}
 
 Util.component = function(
@@ -64,55 +63,40 @@ Util.component = function(
 	local isFocusedState = _Value(false)
 	local isPressedState = _Value(false)
 	local isHoveredState = _Value(false)
-	local currentStateState = _Computed(
-		function(
-			isEnab: boolean,
-			isFocused: boolean,
-			isPressed: boolean,
-			isHovered: boolean
-		): Enums.ButtonStateType
-			if isEnab then
-				if isPressed then
-					return Enums.ButtonStateType.Pressed
+	local currentStateState = _Computed(function(isEnab: boolean, isFocused: boolean, isPressed: boolean, isHovered: boolean): Enums.ButtonStateType
+		if isEnab then
+			if isPressed then
+				return Enums.ButtonStateType.Pressed
+			else
+				if isHovered then
+					return Enums.ButtonStateType.Hovered
 				else
-					if isHovered then
-						return Enums.ButtonStateType.Hovered
+					if isFocused then
+						return Enums.ButtonStateType.Focused
 					else
-						if isFocused then
-							return Enums.ButtonStateType.Focused
-						else
-							return Enums.ButtonStateType.Enabled
-						end
+						return Enums.ButtonStateType.Enabled
 					end
 				end
-			else
-				return Enums.ButtonStateType.Disabled
 			end
-		end,
-		isEnabledState,
-		isFocusedState,
-		isPressedState,
-		isHoveredState
-	) :: State<any>
+		else
+			return Enums.ButtonStateType.Disabled
+		end
+	end, isEnabledState, isFocusedState, isPressedState, isHoveredState) :: State<any>
 
 	local renderDatasState = _import(renderDatas, {}) :: any
 
-	local currentRenderDataState = _Computed(
-		function(state: Enums.ButtonStateType, renderDatas: { [Enums.ButtonStateType]: RenderData }): RenderData
-			local renderData = renderDatas[state]
-			assert(renderData ~= nil, `no renderData for {state}`)
-			return renderData
-		end,
-		currentStateState,
-		renderDatasState
-	)
+	local currentRenderDataState = _Computed(function(state: Enums.ButtonStateType, renderDatas: { [Enums.ButtonStateType]: RenderData }): RenderData
+		local renderData = renderDatas[state]
+		assert(renderData ~= nil, `no renderData for {state}`)
+		return renderData
+	end, currentStateState, renderDatasState)
 	local sound = _new("Sound")({
 		SoundId = _Computed(function(st: RenderData): string
 			return if st.Sound then st.Sound.SoundId else ""
 		end, currentRenderDataState),
 		Volume = _Computed(function(st: RenderData): number
 			return if st.Sound then st.Sound.Volume else 0
-		end, currentRenderDataState)
+		end, currentRenderDataState),
 	}) :: Sound
 
 	currentRenderDataState:Connect(function()
@@ -156,28 +140,14 @@ Util.component = function(
 		runMaid:GiveTask(RunService.RenderStepped:Connect(function(deltaTime: number)
 			alpha += deltaTime / 0.6
 
-			local moveAlpha = 1
-				- CurveUtil.ease(
-					1 - math.clamp(alpha / 0.5, 0, 1),
-					Enum.EasingStyle.Quad,
-					Enum.EasingDirection.In
-				)
-			local fadeAlpha = CurveUtil.ease(
-				math.clamp((alpha - 0.1) / 0.7, 0, 1),
-				Enum.EasingStyle.Quad,
-				Enum.EasingDirection.In
-			)
+			local moveAlpha = 1 - CurveUtil.ease(1 - math.clamp(alpha / 0.5, 0, 1), Enum.EasingStyle.Quad, Enum.EasingDirection.In)
+			local fadeAlpha = CurveUtil.ease(math.clamp((alpha - 0.1) / 0.7, 0, 1), Enum.EasingStyle.Quad, Enum.EasingDirection.In)
 
 			local baseColor = (renderDatasState:Get()[Enums.ButtonStateType.Enabled] :: RenderData).Background.Color3
 			local rippleColor = (Color3.new(1, 1, 1):Lerp(baseColor, 0.8)):Lerp(baseColor, fadeAlpha)
 
-			local leftOffset =
-				math.clamp(initialAlpha - moveAlpha, RIP_STEP, math.max(initialAlpha - RIP_STEP, RIP_STEP * 1.5))
-			local rightOffset = math.clamp(
-				initialAlpha + moveAlpha,
-				math.min(initialAlpha + RIP_STEP, 1 - RIP_STEP * 1.5),
-				1 - RIP_STEP
-			)
+			local leftOffset = math.clamp(initialAlpha - moveAlpha, RIP_STEP, math.max(initialAlpha - RIP_STEP, RIP_STEP * 1.5))
+			local rightOffset = math.clamp(initialAlpha + moveAlpha, math.min(initialAlpha + RIP_STEP, 1 - RIP_STEP * 1.5), 1 - RIP_STEP)
 
 			rippleColorState:Set(ColorSequence.new({
 				ColorSequenceKeypoint.new(0, baseColor),
@@ -213,14 +183,14 @@ Util.component = function(
 			}),
 			_new("CanvasGroup")({
 				AutomaticSize = Enum.AutomaticSize.XY,
-				Size = UDim2.fromScale(0,0),
+				Size = UDim2.fromScale(0, 0),
 				BackgroundTransparency = 1,
 				GroupTransparency = _Computed(function(renderData: RenderData): number
 					if renderData.Shadow then
 						return renderData.Background.Transparency
 					end
 					return 0
-				end, currentRenderDataState),	
+				end, currentRenderDataState),
 				Children = {
 					_new("UIPadding")({
 						PaddingTop = _Computed(function(renderData: RenderData, thickness: number): UDim
@@ -263,7 +233,7 @@ Util.component = function(
 					_new("ImageLabel")({
 						Image = "rbxassetid://15549395120",
 						ImageColor3 = _Computed(function(renderData: RenderData): Color3
-							return if renderData.Shadow and renderData.Shadow.Appearance then renderData.Shadow.Appearance.Color3 else Color3.new(0,0,0)
+							return if renderData.Shadow and renderData.Shadow.Appearance then renderData.Shadow.Appearance.Color3 else Color3.new(0, 0, 0)
 						end, currentRenderDataState),
 						BackgroundTransparency = 1,
 						ImageTransparency = _Computed(function(renderData: RenderData): number
@@ -349,22 +319,17 @@ Util.component = function(
 										end, scaleState, cornerRadiusState),
 									}),
 									_new("UIGradient")({
-										Color = _Computed(
-											function(useRip: boolean, renderData: RenderData, seq: ColorSequence?): ColorSequence
-												if useRip then
-													if seq then
-														return seq
-													else
-														return ColorSequence.new(renderData.Background.Color3)
-													end
+										Color = _Computed(function(useRip: boolean, renderData: RenderData, seq: ColorSequence?): ColorSequence
+											if useRip then
+												if seq then
+													return seq
 												else
-													return ColorSequence.new(Color3.new(1, 1, 1))
+													return ColorSequence.new(renderData.Background.Color3)
 												end
-											end,
-											useRippleState,
-											currentRenderDataState,
-											rippleColorState
-										),
+											else
+												return ColorSequence.new(Color3.new(1, 1, 1))
+											end
+										end, useRippleState, currentRenderDataState, rippleColorState),
 									}),
 									_new("UIStroke")({
 										ApplyStrokeMode = Enum.ApplyStrokeMode.Border,
@@ -438,40 +403,28 @@ Util.component = function(
 										end, scaleState),
 									}),
 									_new("UIPadding")({
-										PaddingLeft = _Computed(
-											function(s: number, icon: ImageData?, txt: string, padScale: number): UDim
-												if icon then
-													if txt:len() > 0 then
-														return UDim.new(0, padScale * LEFT_PADDING_WITH_ICON_DP * s)
-													else
-														return UDim.new(0, padScale * s * (HEIGHT_DP - ICON_SIZE_DP) / 2)
-													end
+										PaddingLeft = _Computed(function(s: number, icon: ImageData?, txt: string, padScale: number): UDim
+											if icon then
+												if txt:len() > 0 then
+													return UDim.new(0, padScale * LEFT_PADDING_WITH_ICON_DP * s)
 												else
-													return UDim.new(0, padScale * LEFT_RIGHT_PADDING_DP * s)
+													return UDim.new(0, padScale * s * (HEIGHT_DP - ICON_SIZE_DP) / 2)
 												end
-											end,
-											scaleState,
-											iconState,
-											textState,
-											paddingScaleState
-										),
-										PaddingRight = _Computed(
-											function(s: number, icon: ImageData?, txt: string, padScale: number): UDim
-												if icon then
-													if txt:len() > 0 then
-														return UDim.new(0, padScale * RIGHT_PADDING_WITH_ICON_DP * s)
-													else
-														return UDim.new(0, padScale * s * (HEIGHT_DP - ICON_SIZE_DP) / 2)
-													end
+											else
+												return UDim.new(0, padScale * LEFT_RIGHT_PADDING_DP * s)
+											end
+										end, scaleState, iconState, textState, paddingScaleState),
+										PaddingRight = _Computed(function(s: number, icon: ImageData?, txt: string, padScale: number): UDim
+											if icon then
+												if txt:len() > 0 then
+													return UDim.new(0, padScale * RIGHT_PADDING_WITH_ICON_DP * s)
 												else
-													return UDim.new(0, padScale * LEFT_RIGHT_PADDING_DP * s)
+													return UDim.new(0, padScale * s * (HEIGHT_DP - ICON_SIZE_DP) / 2)
 												end
-											end,
-											scaleState,
-											iconState,
-											textState,
-											paddingScaleState
-										),
+											else
+												return UDim.new(0, padScale * LEFT_RIGHT_PADDING_DP * s)
+											end
+										end, scaleState, iconState, textState, paddingScaleState),
 										PaddingTop = _Computed(function(s: number, padScale: number): UDim
 											return UDim.new(0, padScale * s * (HEIGHT_DP - ICON_SIZE_DP) / 2)
 										end, scaleState, paddingScaleState),
@@ -492,12 +445,11 @@ Util.component = function(
 								},
 							}) :: TextButton,
 						},
-					})
-				}
+					}),
+				},
 			}),
-		}
+		},
 	}) :: Frame
-	
 
 	return inst
 end

@@ -327,10 +327,10 @@ function Cam16:xyzInViewingConditions(viewingConditions: ViewingConditions): { n
 	local y = 0.38752654 * rF + 0.62144744 * gF - 0.00897398 * bF
 	local z = -0.01584150 * rF - 0.03412294 * gF + 1.04996444 * bF
 
-	return { 
-		[0]=x, 
-		[1]=y, 
-		[2]=z
+	return {
+		[0] = x,
+		[1] = y,
+		[2] = z,
 	}
 end
 
