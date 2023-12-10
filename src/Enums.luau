@@ -70,6 +70,14 @@ export type CustomColorType = ("Custom"
 
 local CustomColorTypeList = {"Custom","OnCustom","CustomContainer","OnCustomContainer",}
 
+export type SelectionState = ("Selected"
+
+| "Unselected"
+
+)
+
+local SelectionStateList = {"Selected","Unselected",}
+
 export type ColorRoleType = ("Primary"
 
 | "OnPrimary"
@@ -171,6 +179,8 @@ export type EnumName = ("FontType"
 
 | "CustomColorType"
 
+| "SelectionState"
+
 | "ColorRoleType"
 
 | "PaletteType"
@@ -186,6 +196,8 @@ return {
 			return table.clone(SchemeTypeList)
 		elseif enumName == "CustomColorType" then
 			return table.clone(CustomColorTypeList)
+		elseif enumName == "SelectionState" then
+			return table.clone(SelectionStateList)
 		elseif enumName == "ColorRoleType" then
 			return table.clone(ColorRoleTypeList)
 		elseif enumName == "PaletteType" then
@@ -202,6 +214,8 @@ return {
 			if SchemeTypeList[value] then return SchemeTypeList[value] else error("no enum item of value "..tostring(value).." in enum "..tostring(enumName)) end
 		elseif enumName == "CustomColorType" then
 			if CustomColorTypeList[value] then return CustomColorTypeList[value] else error("no enum item of value "..tostring(value).." in enum "..tostring(enumName)) end
+		elseif enumName == "SelectionState" then
+			if SelectionStateList[value] then return SelectionStateList[value] else error("no enum item of value "..tostring(value).." in enum "..tostring(enumName)) end
 		elseif enumName == "ColorRoleType" then
 			if ColorRoleTypeList[value] then return ColorRoleTypeList[value] else error("no enum item of value "..tostring(value).." in enum "..tostring(enumName)) end
 		elseif enumName == "PaletteType" then
@@ -242,6 +256,14 @@ getValueFromEnumItem = function(enumName: EnumName, enumItem: string): number
 				return index
 			else
 				error("no enumItem "..enumItem.." in CustomColorType")
+			end
+		elseif enumName == "SelectionState" then
+			local index = table.find(SelectionStateList, enumItem)
+			if index then
+				assert(index)
+				return index
+			else
+				error("no enumItem "..enumItem.." in SelectionState")
 			end
 		elseif enumName == "ColorRoleType" then
 			local index = table.find(ColorRoleTypeList, enumItem)
@@ -295,6 +317,10 @@ CustomColorType = {
 	["OnCustom"] = "OnCustom",
 	["CustomContainer"] = "CustomContainer",
 	["OnCustomContainer"] = "OnCustomContainer",
+},
+SelectionState = {
+	["Selected"] = "Selected",
+	["Unselected"] = "Unselected",
 },
 ColorRoleType = {
 	["Primary"] = "Primary",

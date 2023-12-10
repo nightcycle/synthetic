@@ -11,9 +11,7 @@ local ColdFusion = require(_Packages:WaitForChild("ColdFusion"))
 local Sounds = require(_Package:WaitForChild("Sounds"))
 local Enums = require(_Package:WaitForChild("Enums"))
 local Types = require(_Package:WaitForChild("Types"))
-local Config = require(_Package:WaitForChild("Config"))
 local Base = require(script.Parent:WaitForChild("Base"))
-local StyleUtil = require(_Package:WaitForChild("StyleUtil"))
 local Typography = require(_Package:WaitForChild("Typography"))
 local Theme = require(_Package:WaitForChild("Theme"))
 local Style = require(_Package:WaitForChild("Style"))
@@ -46,7 +44,6 @@ function Interface.ColdFusion.new(
 	style: CanBeState<Style>,
 	textColor: CanBeState<Color3>,
 	disabledTextColor: CanBeState<Color3>,
-	hoverSurfaceColor: CanBeState<Color3>,
 	isEnabled: CanBeState<boolean>,
 	elevation: CanBeState<number>
 ): GuiObject
@@ -66,7 +63,7 @@ function Interface.ColdFusion.new(
 
 	local elevationState: State<number> = _import(elevation, 0)
 	local textColorState: State<Color3> = _import(textColor, Color3.new(1,1,1))
-	local hoverColorState: State<Color3> = _import(hoverSurfaceColor, Color3.new(1,1,1))
+	local hoverColorState: State<Color3> = _import(textColor, Color3.new(1,1,1))
 	local disabledColorState: State<Color3> = _import(disabledTextColor, Color3.new(1,1,1))
 
 	local iconState: State<ImageData?> = _import(icon, nil :: ImageData?)
@@ -185,7 +182,11 @@ function Interface.ColdFusion.new(
 					nil
 				),
 			}
-		end, styleState, elevationState, hoverColorState, textColorState, disabledColorState, iconState)
+		end, styleState, elevationState, hoverColorState, textColorState, disabledColorState, iconState),
+		nil,
+		nil,
+		nil,
+		nil
 	)
 	maid.bind(button)
 

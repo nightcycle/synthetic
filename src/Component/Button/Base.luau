@@ -132,9 +132,6 @@ Util.component = function(
 		return if st.Image then st.Image else nil
 	end, currentRenderDataState)
 
-	local isDropShadowState = _Computed(function(st: RenderData): boolean
-		return st.Shadow ~= nil
-	end, currentRenderDataState)
 	local hasMinState = _import(hasMinimumSize, true)
 	local cornerRadiusState = _import(cornerRadius, SHAPE_DP)
 	local paddingScaleState = _import(paddingScale, 1)
@@ -203,6 +200,10 @@ Util.component = function(
 		return if renderData and renderData.Shadow then UDim.new(renderData.Shadow.Offset.X * 5, renderData.Shadow.Offset.Y * 5) else UDim.new(0, 0)
 	end, scaleState, currentRenderDataState)
 
+	local borderThicknessState = _Computed(function(s: number): number
+		return math.max(s * 1, 1)
+	end, scaleState)
+
 	inst = _new("Frame")({
 		BackgroundTransparency = 1,
 		AutomaticSize = Enum.AutomaticSize.XY,
@@ -210,20 +211,47 @@ Util.component = function(
 			_new("UIPadding")({
 				PaddingTop = shadowSizeState,
 			}),
-			_new("ImageLabel")({
-				Image = "rbxassetid://15549395120",
-				ImageColor3 = _Computed(function(renderData: RenderData): Color3
-					return if renderData.Shadow and renderData.Shadow.Appearance then renderData.Shadow.Appearance.Color3 else Color3.new(0,0,0)
-				end, currentRenderDataState),
-				BackgroundTransparency = 1,
-				ImageTransparency = _Computed(function(renderData: RenderData): number
-					return if renderData.Shadow and renderData.Shadow.Appearance then renderData.Shadow.Appearance.Transparency else 1
-				end, currentRenderDataState),
-				ScaleType = Enum.ScaleType.Slice,
+			_new("CanvasGroup")({
 				AutomaticSize = Enum.AutomaticSize.XY,
-				SliceCenter = Rect.new(HALF_IMAGE_SIZE, HALF_IMAGE_SIZE, HALF_IMAGE_SIZE, HALF_IMAGE_SIZE),
-				SliceScale = 1,
+				Size = UDim2.fromScale(0,0),
+				BackgroundTransparency = 1,
+				GroupTransparency = _Computed(function(renderData: RenderData): number
+					if renderData.Shadow then
+						return renderData.Background.Transparency
+					end
+					return 0
+				end, currentRenderDataState),	
 				Children = {
+					_new("UIPadding")({
+						PaddingTop = _Computed(function(renderData: RenderData, thickness: number): UDim
+							if renderData.Border.Transparency >= 1 then
+								return UDim.new(0, 0)
+							else
+								return UDim.new(0, thickness)
+							end
+						end, currentRenderDataState, borderThicknessState),
+						PaddingBottom = _Computed(function(renderData: RenderData, thickness: number): UDim
+							if renderData.Border.Transparency >= 1 then
+								return UDim.new(0, 0)
+							else
+								return UDim.new(0, thickness)
+							end
+						end, currentRenderDataState, borderThicknessState),
+						PaddingLeft = _Computed(function(renderData: RenderData, thickness: number): UDim
+							if renderData.Border.Transparency >= 1 then
+								return UDim.new(0, 0)
+							else
+								return UDim.new(0, thickness)
+							end
+						end, currentRenderDataState, borderThicknessState),
+						PaddingRight = _Computed(function(renderData: RenderData, thickness: number): UDim
+							if renderData.Border.Transparency >= 1 then
+								return UDim.new(0, 0)
+							else
+								return UDim.new(0, thickness)
+							end
+						end, currentRenderDataState, borderThicknessState),
+					}),
 					_new("UIListLayout")({
 						Padding = UDim.new(0, 0),
 						SortOrder = Enum.SortOrder.LayoutOrder,
@@ -232,215 +260,241 @@ Util.component = function(
 						VerticalAlignment = Enum.VerticalAlignment.Center,
 						HorizontalAlignment = Enum.HorizontalAlignment.Center,
 					}),
-					_new("UIPadding")({
-						PaddingBottom = shadowSizeState,
-					}),
-					_new("TextButton")({
-						Name = "TextButton",
-						Text = "",
-						BackgroundTransparency = _Computed(function(renderData: RenderData): number
-							return renderData.Background.Transparency
+					_new("ImageLabel")({
+						Image = "rbxassetid://15549395120",
+						ImageColor3 = _Computed(function(renderData: RenderData): Color3
+							return if renderData.Shadow and renderData.Shadow.Appearance then renderData.Shadow.Appearance.Color3 else Color3.new(0,0,0)
 						end, currentRenderDataState),
-						BackgroundColor3 = _Computed(function(renderData: RenderData, useRip: boolean): Color3
-							if useRip then
-								return Color3.new(1, 1, 1)
-							end
-							return renderData.Background.Color3
-						end, currentRenderDataState, useRippleState),
-						Active = isEnabledState,
-						AutomaticSize = Enum.AutomaticSize.X,
-						Size = _Computed(function(s: number): UDim2
-							return UDim2.fromOffset(0, s * HEIGHT_DP)
-						end, scaleState),
-						Events = {
-							Activated = function()
-								if isEnabledState:Get() == false then
-									return
-								end
-								local click = onClickState:Get()
-								click()
-							end,
-							MouseButton1Down = function(x: number, y: number)
-								if isEnabledState:Get() == false then
-									return
-								end
-								isPressedState:Set(true)
-							end,
-							MouseButton1Up = function(x: number, y: number)
-								if isEnabledState:Get() == false then
-									return
-								end
-								if useRippleState:Get() then
-									ripple(Vector2.new(x, y))
-								end
-								isPressedState:Set(false)
-							end,
-							MouseEnter = function()
-								isHoveredState:Set(true)
-							end,
-							MouseLeave = function()
-								isHoveredState:Set(false)
-							end,
-							SelectionGained = function()
-								isFocusedState:Set(true)
-							end,
-							SelectionLost = function()
-								isFocusedState:Set(false)
-							end,
-						},
+						BackgroundTransparency = 1,
+						ImageTransparency = _Computed(function(renderData: RenderData): number
+							return if renderData.Shadow and renderData.Shadow.Appearance then renderData.Shadow.Appearance.Transparency else 1
+						end, currentRenderDataState),
+						ScaleType = Enum.ScaleType.Slice,
+						AutomaticSize = Enum.AutomaticSize.XY,
+						SliceCenter = Rect.new(HALF_IMAGE_SIZE, HALF_IMAGE_SIZE, HALF_IMAGE_SIZE, HALF_IMAGE_SIZE),
+						SliceScale = 1,
 						Children = {
-							_new("UICorner")({
-								CornerRadius = _Computed(function(s: number, cornerRad: number): UDim
-									return UDim.new(0, s * cornerRad)
-								end, scaleState, cornerRadiusState),
-							}),
-							_new("UIGradient")({
-								Color = _Computed(
-									function(useRip: boolean, renderData: RenderData, seq: ColorSequence?): ColorSequence
-										if useRip then
-											if seq then
-												return seq
-											else
-												return ColorSequence.new(renderData.Background.Color3)
-											end
-										else
-											return ColorSequence.new(Color3.new(1, 1, 1))
-										end
-									end,
-									useRippleState,
-									currentRenderDataState,
-									rippleColorState
-								),
-							}),
-							_new("UIStroke")({
-								ApplyStrokeMode = Enum.ApplyStrokeMode.Border,
-								Color = _Computed(function(renderData: RenderData): Color3
-									return renderData.Border.Color3
-								end, currentRenderDataState),
-								LineJoinMode = Enum.LineJoinMode.Round,
-								Thickness = _Computed(function(s: number): number
-									return math.max(s * 1, 1)
-								end, scaleState),
-								Transparency = _Computed(function(renderData: RenderData): number
-									return renderData.Border.Transparency
-								end, currentRenderDataState),
-							}),
 							_new("UIListLayout")({
-								Padding = _Computed(function(s: number): UDim
-									return UDim.new(0, s * PADDING_BETWEEN_ELEMENTS_DP)
-								end, scaleState),
+								Padding = UDim.new(0, 0),
 								SortOrder = Enum.SortOrder.LayoutOrder,
 								FillDirection = Enum.FillDirection.Horizontal,
 								ItemLineAlignment = Enum.ItemLineAlignment.Center,
 								VerticalAlignment = Enum.VerticalAlignment.Center,
 								HorizontalAlignment = Enum.HorizontalAlignment.Center,
 							}),
-							_new("TextLabel")({
-								Text = textState,
-								Visible = _Computed(function(txt: string): boolean
-									return txt:len() > 0
-								end, textState),
-								TextScaled = true,
-								TextXAlignment = LABEL_TEXT_ALIGNMENT,
-								TextYAlignment = Enum.TextYAlignment.Center,
-								BackgroundTransparency = 1,
-								AutomaticSize = Enum.AutomaticSize.X,
-								FontFace = fontState,
-								LayoutOrder = 2,
-								TextColor3 = _Computed(function(renderData: AppearanceData): Color3
-									return renderData.Color3
-								end, currentTextRenderData),
-								TextTransparency = _Computed(function(renderData: AppearanceData): number
-									return renderData.Transparency
-								end, currentTextRenderData),
-								Size = _Computed(function(s: number): UDim2
-									return UDim2.fromOffset(0, s * ICON_SIZE_DP)
-								end, scaleState),
-							}),
-							_new("ImageLabel")({
-								Name = "Icon",
-								LayoutOrder = 1,
-								BackgroundTransparency = 1,
-								Visible = _Computed(function(icon: ImageData?): boolean
-									return icon ~= nil
-								end, iconState),
-								Image = _Computed(function(icon: ImageData?): string
-									return if icon then icon.Image else ""
-								end, iconState),
-								ImageColor3 = _Computed(function(icon: ImageData?, renderData: AppearanceData?): Color3
-									return if icon and renderData then renderData.Color3 else Color3.new(1, 1, 1)
-								end, iconState, currentTextRenderData),
-								ImageRectOffset = _Computed(function(icon: ImageData?): Vector2
-									return if icon then icon.ImageRectOffset else Vector2.zero
-								end, iconState),
-								ImageRectSize = _Computed(function(icon: ImageData?): Vector2
-									return if icon then icon.ImageRectSize else Vector2.zero
-								end, iconState),
-								ImageTransparency = _Computed(function(icon: ImageData?, renderData: AppearanceData?): number
-									return if icon and renderData then renderData.Transparency else 1
-								end, iconState, currentTextRenderData),
-								SizeConstraint = Enum.SizeConstraint.RelativeYY,
-								Size = _Computed(function(s: number): UDim2
-									return UDim2.fromScale(1, 1)
-									-- return UDim2.fromOffset(s * ICON_SIZE_DP, s * ICON_SIZE_DP)
-								end, scaleState),
-							}),
 							_new("UIPadding")({
-								PaddingLeft = _Computed(
-									function(s: number, icon: ImageData?, txt: string, padScale: number): UDim
-										if icon then
-											if txt:len() > 0 then
-												return UDim.new(0, padScale * LEFT_PADDING_WITH_ICON_DP * s)
-											else
-												return UDim.new(0, padScale * s * (HEIGHT_DP - ICON_SIZE_DP) / 2)
-											end
-										else
-											return UDim.new(0, padScale * LEFT_RIGHT_PADDING_DP * s)
-										end
-									end,
-									scaleState,
-									iconState,
-									textState,
-									paddingScaleState
-								),
-								PaddingRight = _Computed(
-									function(s: number, icon: ImageData?, txt: string, padScale: number): UDim
-										if icon then
-											if txt:len() > 0 then
-												return UDim.new(0, padScale * RIGHT_PADDING_WITH_ICON_DP * s)
-											else
-												return UDim.new(0, padScale * s * (HEIGHT_DP - ICON_SIZE_DP) / 2)
-											end
-										else
-											return UDim.new(0, padScale * LEFT_RIGHT_PADDING_DP * s)
-										end
-									end,
-									scaleState,
-									iconState,
-									textState,
-									paddingScaleState
-								),
-								PaddingTop = _Computed(function(s: number, padScale: number): UDim
-									return UDim.new(0, padScale * s * (HEIGHT_DP - ICON_SIZE_DP) / 2)
-								end, scaleState, paddingScaleState),
-								PaddingBottom = _Computed(function(s: number, padScale: number): UDim
-									return UDim.new(0, padScale * s * (HEIGHT_DP - ICON_SIZE_DP) / 2)
-								end, scaleState, paddingScaleState),
+								PaddingBottom = shadowSizeState,
 							}),
-							_new("UISizeConstraint")({
-								MaxSize = Vector2.new(math.huge, math.huge),
-								MinSize = _Computed(function(s: number, hasMin: boolean): Vector2
-									if hasMin then
-										return Vector2.new(s * CONTAINER_WIDTH_MIN_DP, 0)
+							_new("TextButton")({
+								Name = "TextButton",
+								Text = "",
+								BackgroundTransparency = _Computed(function(renderData: RenderData): number
+									if renderData.Shadow then
+										return 0
 									else
-										return Vector2.new(0, 0)
+										return renderData.Background.Transparency
 									end
-								end, scaleState, hasMinState),
-							}),
+								end, currentRenderDataState),
+								BackgroundColor3 = _Computed(function(renderData: RenderData, useRip: boolean): Color3
+									if useRip then
+										return Color3.new(1, 1, 1)
+									end
+									return renderData.Background.Color3
+								end, currentRenderDataState, useRippleState),
+								Active = isEnabledState,
+								AutomaticSize = Enum.AutomaticSize.X,
+								Size = _Computed(function(s: number): UDim2
+									return UDim2.fromOffset(0, s * HEIGHT_DP)
+								end, scaleState),
+								Events = {
+									Activated = function()
+										if isEnabledState:Get() == false then
+											return
+										end
+										local click = onClickState:Get()
+										click()
+									end,
+									MouseButton1Down = function(x: number, y: number)
+										if isEnabledState:Get() == false then
+											return
+										end
+										isPressedState:Set(true)
+									end,
+									MouseButton1Up = function(x: number, y: number)
+										if isEnabledState:Get() == false then
+											return
+										end
+										if useRippleState:Get() then
+											ripple(Vector2.new(x, y))
+										end
+										isPressedState:Set(false)
+									end,
+									MouseEnter = function()
+										isHoveredState:Set(true)
+									end,
+									MouseLeave = function()
+										isHoveredState:Set(false)
+									end,
+									SelectionGained = function()
+										isFocusedState:Set(true)
+									end,
+									SelectionLost = function()
+										isFocusedState:Set(false)
+									end,
+								},
+								Children = {
+									_new("UICorner")({
+										CornerRadius = _Computed(function(s: number, cornerRad: number): UDim
+											return UDim.new(0, s * cornerRad)
+										end, scaleState, cornerRadiusState),
+									}),
+									_new("UIGradient")({
+										Color = _Computed(
+											function(useRip: boolean, renderData: RenderData, seq: ColorSequence?): ColorSequence
+												if useRip then
+													if seq then
+														return seq
+													else
+														return ColorSequence.new(renderData.Background.Color3)
+													end
+												else
+													return ColorSequence.new(Color3.new(1, 1, 1))
+												end
+											end,
+											useRippleState,
+											currentRenderDataState,
+											rippleColorState
+										),
+									}),
+									_new("UIStroke")({
+										ApplyStrokeMode = Enum.ApplyStrokeMode.Border,
+										Color = _Computed(function(renderData: RenderData): Color3
+											return renderData.Border.Color3
+										end, currentRenderDataState),
+										LineJoinMode = Enum.LineJoinMode.Round,
+										Thickness = borderThicknessState,
+										Transparency = _Computed(function(renderData: RenderData): number
+											return renderData.Border.Transparency
+										end, currentRenderDataState),
+									}),
+									_new("UIListLayout")({
+										Padding = _Computed(function(s: number): UDim
+											return UDim.new(0, s * PADDING_BETWEEN_ELEMENTS_DP)
+										end, scaleState),
+										SortOrder = Enum.SortOrder.LayoutOrder,
+										FillDirection = Enum.FillDirection.Horizontal,
+										ItemLineAlignment = Enum.ItemLineAlignment.Center,
+										VerticalAlignment = Enum.VerticalAlignment.Center,
+										HorizontalAlignment = Enum.HorizontalAlignment.Center,
+									}),
+									_new("TextLabel")({
+										Text = textState,
+										Visible = _Computed(function(txt: string): boolean
+											return txt:len() > 0
+										end, textState),
+										TextScaled = true,
+										TextXAlignment = LABEL_TEXT_ALIGNMENT,
+										TextYAlignment = Enum.TextYAlignment.Center,
+										BackgroundTransparency = 1,
+										AutomaticSize = Enum.AutomaticSize.X,
+										FontFace = fontState,
+										LayoutOrder = 2,
+										TextColor3 = _Computed(function(renderData: AppearanceData): Color3
+											return renderData.Color3
+										end, currentTextRenderData),
+										TextTransparency = _Computed(function(renderData: AppearanceData): number
+											return renderData.Transparency
+										end, currentTextRenderData),
+										Size = _Computed(function(s: number): UDim2
+											return UDim2.fromOffset(0, s * ICON_SIZE_DP)
+										end, scaleState),
+									}),
+									_new("ImageLabel")({
+										Name = "Icon",
+										LayoutOrder = 1,
+										BackgroundTransparency = 1,
+										Visible = _Computed(function(icon: ImageData?): boolean
+											return icon ~= nil
+										end, iconState),
+										Image = _Computed(function(icon: ImageData?): string
+											return if icon then icon.Image else ""
+										end, iconState),
+										ImageColor3 = _Computed(function(icon: ImageData?, renderData: AppearanceData?): Color3
+											return if icon and renderData then renderData.Color3 else Color3.new(1, 1, 1)
+										end, iconState, currentTextRenderData),
+										ImageRectOffset = _Computed(function(icon: ImageData?): Vector2
+											return if icon then icon.ImageRectOffset else Vector2.zero
+										end, iconState),
+										ImageRectSize = _Computed(function(icon: ImageData?): Vector2
+											return if icon then icon.ImageRectSize else Vector2.zero
+										end, iconState),
+										ImageTransparency = _Computed(function(icon: ImageData?, renderData: AppearanceData?): number
+											return if icon and renderData then renderData.Transparency else 1
+										end, iconState, currentTextRenderData),
+										SizeConstraint = Enum.SizeConstraint.RelativeYY,
+										Size = _Computed(function(s: number): UDim2
+											return UDim2.fromScale(1, 1)
+											-- return UDim2.fromOffset(s * ICON_SIZE_DP, s * ICON_SIZE_DP)
+										end, scaleState),
+									}),
+									_new("UIPadding")({
+										PaddingLeft = _Computed(
+											function(s: number, icon: ImageData?, txt: string, padScale: number): UDim
+												if icon then
+													if txt:len() > 0 then
+														return UDim.new(0, padScale * LEFT_PADDING_WITH_ICON_DP * s)
+													else
+														return UDim.new(0, padScale * s * (HEIGHT_DP - ICON_SIZE_DP) / 2)
+													end
+												else
+													return UDim.new(0, padScale * LEFT_RIGHT_PADDING_DP * s)
+												end
+											end,
+											scaleState,
+											iconState,
+											textState,
+											paddingScaleState
+										),
+										PaddingRight = _Computed(
+											function(s: number, icon: ImageData?, txt: string, padScale: number): UDim
+												if icon then
+													if txt:len() > 0 then
+														return UDim.new(0, padScale * RIGHT_PADDING_WITH_ICON_DP * s)
+													else
+														return UDim.new(0, padScale * s * (HEIGHT_DP - ICON_SIZE_DP) / 2)
+													end
+												else
+													return UDim.new(0, padScale * LEFT_RIGHT_PADDING_DP * s)
+												end
+											end,
+											scaleState,
+											iconState,
+											textState,
+											paddingScaleState
+										),
+										PaddingTop = _Computed(function(s: number, padScale: number): UDim
+											return UDim.new(0, padScale * s * (HEIGHT_DP - ICON_SIZE_DP) / 2)
+										end, scaleState, paddingScaleState),
+										PaddingBottom = _Computed(function(s: number, padScale: number): UDim
+											return UDim.new(0, padScale * s * (HEIGHT_DP - ICON_SIZE_DP) / 2)
+										end, scaleState, paddingScaleState),
+									}),
+									_new("UISizeConstraint")({
+										MaxSize = Vector2.new(math.huge, math.huge),
+										MinSize = _Computed(function(s: number, hasMin: boolean): Vector2
+											if hasMin then
+												return Vector2.new(s * CONTAINER_WIDTH_MIN_DP, 0)
+											else
+												return Vector2.new(0, 0)
+											end
+										end, scaleState, hasMinState),
+									}),
+								},
+							}) :: TextButton,
 						},
-					}) :: TextButton,
-				},
-			})
+					})
+				}
+			}),
 		}
 	}) :: Frame
 	

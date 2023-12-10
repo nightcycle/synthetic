@@ -8,9 +8,11 @@ local MaterialIcons = require(_Packages:WaitForChild("MaterialIcons"))
 
 -- Modules
 local Types = require(_Package:WaitForChild("Types"))
+local Style = require(_Package:WaitForChild("Style"))
+local Enums = require(_Package:WaitForChild("Enums"))
+
 -- Types
 -- Constants
-local SCALE = 1
 -- Variables
 -- References
 local Icons = MaterialIcons.default.dp_48.scale_1
@@ -20,11 +22,17 @@ return function(frame: Frame)
 	local maid = Maid.new()
 	task.spawn(function()
 		local function makeHalfFrame(isDarkMode: boolean, color: Color3): Frame
-			local halfFrame = maid:GiveTask(Instance.new("Frame"))
-			halfFrame.BackgroundColor3 = if isDarkMode
-				then Color3.new(0.15, 0.15, 0.15)
-				else Color3.new(0.85, 0.85, 0.85)
 
+			local style = Style.new(
+				1,
+				"Roboto",
+				if isDarkMode then Enums.SchemeType.Dark else Enums.SchemeType.Light,
+				color
+			)
+
+			local halfFrame = maid:GiveTask(Instance.new("Frame"))
+			halfFrame.BackgroundColor3 = style:GetColor(Enums.ColorRoleType.Surface)
+			halfFrame.BorderSizePixel = 0
 			local listLayout = maid:GiveTask(Instance.new("UIListLayout"))
 			listLayout.FillDirection = Enum.FillDirection.Vertical
 			listLayout.Padding = UDim.new(0, 10)
@@ -33,43 +41,62 @@ return function(frame: Frame)
 			listLayout.Parent = halfFrame
 
 			local Module = require(script.Parent)
-			local theme = Types.newThemeData(
-				1,
-				isDarkMode,
-				SCALE,
-				Font.fromEnum(Enum.Font.SourceSans),
-				color,
-				halfFrame.BackgroundColor3
-			)
 
 			do
-				local button = maid:GiveTask(Module.cfusion(function()
-					print("click")
-				end, "Button", theme, nil, nil))
-				button.Parent = halfFrame
-			end
-
-			do
-				local button = maid:GiveTask(Module.cfusion(function()
-					print("click")
-				end, "Disabled", theme, nil, false))
+				local button = maid:GiveTask(
+					Module.ColdFusion.new(
+						function()
+							print("click")
+						end,
+						"Button",
+						nil,
+						style,
+						style:GetColor(Enums.ColorRoleType.OnPrimary),
+						style:GetColor(Enums.ColorRoleType.Primary),
+						style:GetColor(Enums.ColorRoleType.OnSurfaceVariant),
+						style:GetColor(Enums.ColorRoleType.SurfaceVariant),
+						true,
+						0
+					)
+				)
 				button.Parent = halfFrame
 			end
 
 			do
 				local button = maid:GiveTask(
-					Module.cfusion(
+					Module.ColdFusion.new(
+						function()
+							print("click")
+						end,
+						"Disabled",
+						nil,
+						style,
+						style:GetColor(Enums.ColorRoleType.OnPrimary),
+						style:GetColor(Enums.ColorRoleType.Primary),
+						style:GetColor(Enums.ColorRoleType.OnSurfaceVariant),
+						style:GetColor(Enums.ColorRoleType.SurfaceVariant),
+						false,
+						0
+					)
+				)
+				button.Parent = halfFrame
+			end
+
+			do
+				local button = maid:GiveTask(
+					Module.ColdFusion.new(
 						function()
 							print("click")
 						end,
 						"Icon",
-						theme,
-						Types.newImageData(
-							Icons.voice_chat.Image,
-							Icons.voice_chat.ImageRectOffset,
-							Icons.voice_chat.ImageRectSize
-						),
-						true
+						Icons.waterfall_chart,
+						style,
+						style:GetColor(Enums.ColorRoleType.OnPrimary),
+						style:GetColor(Enums.ColorRoleType.Primary),
+						style:GetColor(Enums.ColorRoleType.OnSurfaceVariant),
+						style:GetColor(Enums.ColorRoleType.SurfaceVariant),
+						true,
+						0
 					)
 				)
 				button.Parent = halfFrame

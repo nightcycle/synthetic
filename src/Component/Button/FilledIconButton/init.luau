@@ -11,23 +11,23 @@ local ColdFusion = require(_Packages:WaitForChild("ColdFusion"))
 local Sounds = require(_Package:WaitForChild("Sounds"))
 local Enums = require(_Package:WaitForChild("Enums"))
 local Types = require(_Package:WaitForChild("Types"))
-local Config = require(_Package:WaitForChild("Config"))
-local Util = require(_Package:WaitForChild("Util"))
 local Base = require(script.Parent:WaitForChild("Base"))
+local Typography = require(_Package:WaitForChild("Typography"))
+local Theme = require(_Package:WaitForChild("Theme"))
+local Style = require(_Package:WaitForChild("Style"))
 
 -- Types
 type Maid = Maid.Maid
 type State<V> = ColdFusion.State<V>
 type ValueState<V> = ColdFusion.ValueState<V>
 type CanBeState<V> = ColdFusion.CanBeState<V>
-type TextStyle = Types.TextStyle
+type RenderData = Types.RenderData
+type Typography = Typography.Typography
+type Theme = Theme.Theme
+type Style = Style.Style
 type ImageData = Types.ImageData
-type ThemeData = Types.ThemeData
--- Constants
-local DEFAULT_VOLUME = Config.Sound.Volume
-local DISABLE_TRANSPARENCY = Config.Transparency.Text.Disabled
-local DISABLE_BACK_TRANS = Config.Transparency.Background.Disabled
 
+-- Constants
 -- Variables
 -- References
 -- Private Functions
@@ -35,12 +35,19 @@ local DISABLE_BACK_TRANS = Config.Transparency.Background.Disabled
 -- Class
 local Interface = {}
 
-function Interface.cfusion(
+Interface.ColdFusion = {}
+
+function Interface.ColdFusion.new(
 	onClick: CanBeState<() -> ()>,
 	icon: CanBeState<ImageData>,
-	theme: CanBeState<ThemeData>,
-	isEnabled: CanBeState<boolean>?
-): ImageLabel
+	style: CanBeState<Style>,
+	textColor: CanBeState<Color3>,
+	surfaceColor: CanBeState<Color3>,
+	disabledTextColor: CanBeState<Color3>,
+	disabledSurfaceColor: CanBeState<Color3>,
+	isEnabled: CanBeState<boolean>,
+	elevation: CanBeState<number>
+): GuiObject
 	local maid = Maid.new()
 
 	local _fuse = ColdFusion.fuse(maid)
@@ -53,100 +60,143 @@ function Interface.cfusion(
 	local _Value = _fuse.Value
 	local _Computed = _fuse.Computed
 
-	local onClickState = _import(onClick, function() end)
-	local themeState = _import(
-		theme,
-		Types.newThemeData(
-			1,
-			false,
-			1,
-			Font.fromEnum(Enum.Font.SourceSansSemibold),
-			Color3.fromHSV(0.8, 0.4, 0.8)
-		)
-	)
+	local styleState: State<Style> = _import(style, nil :: any)
 
-	local sound = maid:GiveTask(Instance.new("Sound"))
-	sound.Volume = DEFAULT_VOLUME
-	sound.SoundId = Sounds.ui_tap_variant_01
+	local elevationState: State<number> = _import(elevation, 0)
 
-	local styles = _Computed(function(thm: ThemeData): { [Enums.ButtonStateType]: TextStyle }
-		local backColor: Color3?
-		local textColor: Color3?
+	local textColorState: State<Color3> = _import(textColor, Color3.new(1,1,1))
+	local surfaceColorState: State<Color3> = _import(surfaceColor, Color3.new(1,1,1))
 
-		if thm.IsDarkMode then
-			backColor = Util.getReadableColor(
-				thm.Color3,
-				if thm.BackgroundColor3 then thm.BackgroundColor3 else Util.DARK_SURFACE
-			)
-			assert(backColor)
+	local disabledTextColorState: State<Color3> = _import(disabledTextColor, Color3.new(1,1,1))
+	local disabledSurfaceColorState: State<Color3> = _import(disabledSurfaceColor, Color3.new(1,1,1))
 
-			textColor = Util.DARK_SURFACE
-		else
-			backColor = Util.getReadableColor(
-				thm.Color3,
-				if thm.BackgroundColor3 then thm.BackgroundColor3 else Util.LIGHT_SURFACE
-			)
-			assert(backColor)
+	local iconState: State<ImageData?> = _import(icon, nil :: ImageData?)
 
-			textColor = Util.LIGHT_SURFACE
-		end
-		assert(backColor)
-		assert(textColor)
-
-		backColor = Util.getElevatedColor(backColor, thm.Elevation, thm.IsDarkMode)
-
-		textColor = Util.getElevatedColor(textColor, thm.Elevation, thm.IsDarkMode)
-
-		local disableBackColor = (function(): Color3
-			local h, s, v = backColor:ToHSV()
-			return Color3.fromHSV(h, s * 0, v)
-		end)()
-
-		local data = {
-			[Enums.ButtonStateType.Enabled] = Types.newTextStyle(textColor, 0, backColor, 0, textColor, 1),
-			[Enums.ButtonStateType.Disabled] = Types.newTextStyle(
-				(function(): Color3
-					if thm.IsDarkMode then
-						return Util.LIGHT_SURFACE
-					else
-						return Util.DARK_SURFACE
-					end
-				end)(),
-				DISABLE_TRANSPARENCY,
-				disableBackColor,
-				DISABLE_BACK_TRANS,
-				textColor,
-				1
-			),
-			[Enums.ButtonStateType.Focused] = Types.newTextStyle(textColor, 0, backColor, 0, textColor, 1),
-			[Enums.ButtonStateType.Hovered] = Types.newTextStyle(textColor, 0, backColor, 0, textColor, 1),
-			[Enums.ButtonStateType.Pressed] = Types.newTextStyle(textColor, 0, backColor, 0, textColor, 1),
-		}
-		return data
-	end, themeState)
-
-	local button = Base(
+	local button = Base.component(
 		maid,
-		onClickState,
+		onClick,
 		"",
-		_Computed(function(t: ThemeData): Font
-			return t.Font
-		end, themeState),
-		styles,
-		icon,
 		if isEnabled == nil then true else isEnabled,
-		false,
-		_Computed(function(t: ThemeData): number
-			return t.Scale * 0.85
-		end, themeState),
-		sound,
+		_Computed(function(
+			style: Style, 
+			e: number,
+			tC: Color3,
+			sC: Color3,
+			dTC: Color3,
+			dSC: Color3,
+			i: ImageData?
+		): {[Enums.ButtonStateType]: RenderData}
+			e += 1
+			return {
+				[Enums.ButtonStateType.Enabled] = Types.newRenderData(
+					style.Scale,
+					Types.newAppearanceData(
+						style:GetElevatedColor(sC, e), 
+						1
+					),
+					Types.newAppearanceData(
+						style:GetElevatedColor(sC, e), 
+						0
+					),
+					Types.newAppearanceData(
+						style:GetElevatedColor(tC, e), 
+						0
+					),
+					style.Typography:Get(Enums.FontType.LabelLarge),
+					i,
+					nil,
+					nil
+				),
+				[Enums.ButtonStateType.Disabled] = Types.newRenderData(
+					style.Scale,
+					Types.newAppearanceData(
+						style:GetElevatedColor(dSC, e), 
+						1
+					),
+					Types.newAppearanceData(
+						style:GetElevatedColor(dSC, e), 
+						0.12
+					),
+					Types.newAppearanceData(
+						style:GetElevatedColor(dTC, e), 
+						0.12
+					),
+					style.Typography:Get(Enums.FontType.LabelLarge),
+					i,
+					nil,
+					nil
+				),
+				[Enums.ButtonStateType.Hovered] = Types.newRenderData(
+					style.Scale,
+					Types.newAppearanceData(
+						style:GetElevatedColor(sC, e), 
+						1
+					),
+					Types.newAppearanceData(
+						style:GetElevatedColor(sC, e+1), 
+						0.08
+					),
+					Types.newAppearanceData(
+						style:GetElevatedColor(tC, e+1), 
+						0.08
+					),
+					style.Typography:Get(Enums.FontType.LabelLarge),
+					i,
+					nil,
+					nil
+				),
+				[Enums.ButtonStateType.Focused] = Types.newRenderData(
+					style.Scale,
+					Types.newAppearanceData(
+						style:GetElevatedColor(sC, e), 
+						1
+					),
+					Types.newAppearanceData(
+						style:GetElevatedColor(sC, e), 
+						0.1
+					),
+					Types.newAppearanceData(
+						style:GetElevatedColor(tC, e), 
+						0.1
+					),
+					style.Typography:Get(Enums.FontType.LabelLarge),
+					i,
+					nil,
+					nil
+				),
+				[Enums.ButtonStateType.Pressed] = Types.newRenderData(
+					style.Scale,
+					Types.newAppearanceData(
+						style:GetElevatedColor(sC, e), 
+						1
+					),
+					Types.newAppearanceData(
+						style:GetElevatedColor(sC, e-1), 
+						0.1
+					),
+					Types.newAppearanceData(
+						style:GetElevatedColor(tC, e-1), 
+						0.1
+					),
+					style.Typography:Get(Enums.FontType.LabelLarge),
+					i,
+					Types.newSoundData(
+						Sounds.ui_tap_variant_01,
+						0
+					),
+					nil
+				),
+			}
+		end, styleState, elevationState, textColorState, surfaceColorState, disabledTextColorState, disabledSurfaceColorState, iconState),
 		false,
 		nil,
-		0.75,
+		0.8,
 		true
 	)
 	maid.bind(button)
+
 	return button
 end
+
 
 return Interface

@@ -7,13 +7,11 @@ local Maid = require(_Packages:WaitForChild("Maid"))
 local MaterialIcons = require(_Packages:WaitForChild("MaterialIcons"))
 
 -- Modules
-local Types = require(_Package:WaitForChild("Types"))
 local Style = require(_Package:WaitForChild("Style"))
 local Enums = require(_Package:WaitForChild("Enums"))
 
 -- Types
 -- Constants
-local SCALE = 1
 -- Variables
 -- References
 local Icons = MaterialIcons.default.dp_48.scale_1
@@ -54,7 +52,6 @@ return function(frame: Frame)
 						style,
 						style:GetColor(Enums.ColorRoleType.Primary),
 						style:GetColor(Enums.ColorRoleType.OnSurface),
-						style:GetColor(Enums.ColorRoleType.Primary),
 						true,
 						0
 					)
@@ -73,7 +70,6 @@ return function(frame: Frame)
 						style,
 						style:GetColor(Enums.ColorRoleType.Primary),
 						style:GetColor(Enums.ColorRoleType.OnSurface),
-						style:GetColor(Enums.ColorRoleType.Primary),
 						false,
 						0
 					)
@@ -92,7 +88,6 @@ return function(frame: Frame)
 						style,
 						style:GetColor(Enums.ColorRoleType.Primary),
 						style:GetColor(Enums.ColorRoleType.OnSurface),
-						style:GetColor(Enums.ColorRoleType.Primary),
 						true,
 						0
 					)

@@ -98,16 +98,16 @@ function Types.newOptionData(
 	onSelect: (isSelected: boolean) -> (),
 	disabled: boolean,
 	isInitiallySelected: boolean,
-	text: string,
+	text: string?,
 	icon: ImageData?,
 	selectedText: string?,
 	selectedIcon: ImageData?
 ): OptionData
 	return {
-		Text = text,
+		Text = text or "",
 		Icon = icon,
 		Disabled = disabled,
-		SelectedText = selectedText or text,
+		SelectedText = selectedText or text or "",
 		SelectedIcon = selectedIcon or icon,
 		IsInitiallySelected = isInitiallySelected,
 		OnSelect = onSelect,

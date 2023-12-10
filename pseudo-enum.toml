@@ -28,6 +28,10 @@ CustomColorType = [
 	"CustomContainer",
 	"OnCustomContainer"
 ]
+SelectionState = [
+	"Selected",
+	"Unselected"
+]
 ColorRoleType = [
 	"Primary",
 	"OnPrimary",
