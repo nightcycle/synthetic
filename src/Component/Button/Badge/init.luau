@@ -11,23 +11,18 @@ local ColdFusion = require(_Packages:WaitForChild("ColdFusion"))
 local Sounds = require(_Package:WaitForChild("Sounds"))
 local Enums = require(_Package:WaitForChild("Enums"))
 local Types = require(_Package:WaitForChild("Types"))
-local Config = require(_Package:WaitForChild("Config"))
-local Util = require(_Package:WaitForChild("Util"))
+local Style = require(_Package:WaitForChild("Style"))
 
 -- Types
 type Maid = Maid.Maid
 type State<V> = ColdFusion.State<V>
 type ValueState<V> = ColdFusion.ValueState<V>
 type CanBeState<V> = ColdFusion.CanBeState<V>
-type TextStyle = Types.TextStyle
 type ImageData = Types.ImageData
-type ThemeData = Types.ThemeData
+type RenderData = Types.RenderData
+type Style = Style.Style
+
 -- Constants
-local DEFAULT_VOLUME = Config.Sound.Volume
-local HOVER_TRANSPARENCY = Config.Transparency.Background.Hovered
-local FOCUS_TRANSPARENCY = Config.Transparency.Background.Focused
-local PRESS_TRANSPARENCY = Config.Transparency.Background.Pressed
-local DISABLE_TRANSPARENCY = Config.Transparency.Text.Disabled
 local LABEL_TEXT_ALIGNMENT = Enum.TextXAlignment.Center
 local ICON_SIZE_DP = 20
 local ICON_PAD_DP = 6
@@ -39,16 +34,15 @@ local BADGE_TXT_HEIGHT_DP = 18
 -- Variables
 -- References
 -- Private Functions
-function new(
+function component(
 	maid: Maid,
 	onClick: CanBeState<() -> ()>,
-	font: CanBeState<Font>,
 	label: CanBeState<string>,
-	styles: CanBeState<{ [Enums.ButtonStateType]: TextStyle }>,
 	icon: CanBeState<ImageData>,
 	count: CanBeState<number?>,
-	scale: CanBeState<number>,
-	sound: CanBeState<Sound?>
+	renderDatas: CanBeState<{ [Enums.ButtonStateType]: RenderData }>,
+	elevation: CanBeState<number?>,
+	style: CanBeState<Style>
 ): TextButton
 	
 	local _fuse = ColdFusion.fuse(maid)
@@ -61,10 +55,13 @@ function new(
 	local _Value = _fuse.Value
 	local _Computed = _fuse.Computed
 
-	local scaleState = _import(scale, 1)
-	local fontState = _import(font, Font.fromEnum(Enum.Font.SourceSans))
+	local styleState: State<Style> = _import(style, nil :: any)
+	local elevationState = _import(elevation, 0)
+
+	local scaleState = _Computed(function(style: Style): number
+		return style.Scale
+	end, styleState)
 	local labelState = _import(label, "")
-	local soundState = _import(sound, nil :: Sound?)
 	local countState = _import(count, nil :: number?)
 	local iconState: State<ImageData> = _import(icon, nil :: any)
 	local onClickState = _import(onClick, function() end)
@@ -103,17 +100,17 @@ function new(
 		isHoveredState
 	) :: State<any>
 
-	local stylesState = _import(styles, {}) :: any
-	local currentStyleState = _Computed(
-		function(state: Enums.ButtonStateType, styles: { [Enums.ButtonStateType]: TextStyle }): TextStyle
-			local style = styles[state]
-			assert(style ~= nil, `no style for {state}`)
-			return style
+	local renderDatasState = _import(renderDatas, {}) :: any
+
+	local currentRenderDataState = _Computed(
+		function(state: Enums.ButtonStateType, renderDatas: { [Enums.ButtonStateType]: RenderData }): RenderData
+			local data = renderDatas[state]
+			assert(data ~= nil, `no renderData for {state}`)
+			return data
 		end,
 		currentStateState,
-		stylesState
+		renderDatasState
 	)
-
 	local inst = _new("TextButton")({
 		Text = "",
 		Size = UDim2.new(0,0),
@@ -125,10 +122,17 @@ function new(
 					return
 				end
 				local click = onClickState:Get()
-				local s = soundState:Get()
-				if s then
-					SoundService:PlayLocalSound(s)
+				do
+					local data: Types.RenderData = currentRenderDataState:Get()
+					if data.Sound then
+						local sound = Instance.new("Sound")
+						sound.Volume = data.Sound.Volume
+						sound.SoundId = data.Sound.SoundId
+						SoundService:PlayLocalSound(sound)
+						sound:Destroy()
+					end
 				end
+
 				click()
 			end,
 			MouseButton1Down = function(x: number, y: number)
@@ -177,27 +181,29 @@ function new(
 				TextYAlignment = Enum.TextYAlignment.Center,
 				BackgroundTransparency = 1,
 				AutomaticSize = Enum.AutomaticSize.X,
-				FontFace = fontState,
+				FontFace = _Computed(function(style: Style): Font
+					return style.Typography:Get(Enums.FontType.LabelMedium).Font
+				end, styleState),
 				LayoutOrder = 2,
-				TextColor3 = _Computed(function(style: TextStyle): Color3
-					return style.TextColor3
-				end, currentStyleState),
-				TextTransparency = _Computed(function(style: TextStyle): number
-					return style.TextTransparency
-				end, currentStyleState),
+				TextColor3 = _Computed(function(data: RenderData): Color3
+					return if data.Text then data.Text.Color3 else Color3.new(1,1,1)
+				end, currentRenderDataState),
+				TextTransparency = _Computed(function(data: RenderData): number
+					return if data.Text then data.Text.Transparency else 1
+				end, currentRenderDataState),
 				Size = _Computed(function(s: number): UDim2
 					return UDim2.fromOffset(0, s * TXT_HEIGHT_DP)
 				end, scaleState),
 			}),
 			_new("Frame")({
-				Name = "Icon",
+				Name = "Badge",
 				LayoutOrder = 1,
-				BackgroundColor3 = _Computed(function(style: TextStyle): Color3
-					return style.BackgroundColor3
-				end, currentStyleState),
-				BackgroundTransparency = _Computed(function(style: TextStyle): number
-					return style.BackgroundTransparency
-				end, currentStyleState),
+				BackgroundColor3 = _Computed(function(style: RenderData): Color3
+					return style.Background.Color3
+				end, currentRenderDataState),
+				BackgroundTransparency = _Computed(function(style: RenderData): number
+					return style.Background.Transparency
+				end, currentRenderDataState),
 				AutomaticSize = Enum.AutomaticSize.XY,
 				Size = UDim2.fromOffset(0,0),
 				Children = {
@@ -230,12 +236,12 @@ function new(
 						Name = "Icon",
 						LayoutOrder = 1,
 						BackgroundTransparency = 1,
-						ImageColor3 = _Computed(function(style: TextStyle): Color3
-							return style.BorderColor3
-						end, currentStyleState),
-						ImageTransparency = _Computed(function(style: TextStyle): number
-							return style.BorderTransparency
-						end, currentStyleState),
+						ImageColor3 = _Computed(function(data: RenderData): Color3
+							return if data.Text then data.Text.Color3 else Color3.new(1,1,1)
+						end, currentRenderDataState),
+						ImageTransparency = _Computed(function(data: RenderData): number
+							return if data.Text then data.Text.Transparency else 1
+						end, currentRenderDataState),
 						Image = _Computed(function(icon: ImageData): string
 							return icon.Image
 						end, iconState),
@@ -250,6 +256,7 @@ function new(
 						end, scaleState),
 						Children = {
 							_new("TextLabel")({
+								Name = "Badge",
 								Position = _Computed(function(s: number, c: number?): UDim2
 									if c == nil then
 										return UDim2.new(1, -0.25*BADGE_TXT_HEIGHT_DP, 0, 0)
@@ -293,11 +300,15 @@ function new(
 										return ""
 									end
 								end, countState),
-								FontFace = fontState,
-								BackgroundColor3 = _Computed(function(style: TextStyle): Color3
-									return Util.getReadableColor(style.BackgroundColor3, Util.LIGHT_SURFACE)
-								end, currentStyleState),
-								TextColor3 = Util.LIGHT_SURFACE,
+								FontFace = _Computed(function(style: Style): Font
+									return style.Typography:Get(Enums.FontType.LabelSmall).Font
+								end, styleState),
+								BackgroundColor3 = _Computed(function(style: Style, e: number): Color3
+									return style:GetColor(Enums.ColorRoleType.Error, e+1)
+								end, styleState, elevationState),
+								TextColor3 = _Computed(function(style: Style, e: number): Color3
+									return style:GetColor(Enums.ColorRoleType.OnError, e+1)
+								end, styleState, elevationState),
 								Children = {
 									_new("UIPadding")({
 										PaddingLeft = _Computed(function(s: number): UDim
@@ -328,13 +339,18 @@ end
 -- Class
 local Interface = {}
 
-function Interface.cfusion(
+Interface.ColdFusion = {}
+
+function Interface.ColdFusion.new(
 	onClick: CanBeState<() -> ()>,
 	icon: CanBeState<ImageData>,
-	label: CanBeState<string>,
+	label: CanBeState<string?>,
 	count: CanBeState<number?>,
-	theme: CanBeState<ThemeData>
-): TextButton
+	textColor: CanBeState<Color3>,
+	hoverColor: CanBeState<Color3>,
+	elevation: CanBeState<number>,
+	style: CanBeState<Style>
+): GuiObject
 	local maid = Maid.new()
 
 	local _fuse = ColdFusion.fuse(maid)
@@ -347,120 +363,113 @@ function Interface.cfusion(
 	local _Value = _fuse.Value
 	local _Computed = _fuse.Computed
 
-	local onClickState = _import(onClick, function() end)
-	local themeState = _import(
-		theme,
-		Types.newThemeData(
-			1,
-			false,
-			1,
-			Font.fromEnum(Enum.Font.SourceSansSemibold),
-			Color3.fromHSV(0.8, 0.4, 0.8)
-		)
-	)
+	local styleState: State<Style> = _import(style, nil :: any)
 
-	local sound = maid:GiveTask(Instance.new("Sound"))
-	sound.Volume = DEFAULT_VOLUME
-	sound.SoundId = Sounds.ui_tap_variant_01
+	local elevationState: State<number> = _import(elevation, 0)
+	local textColorState: State<Color3> = _import(textColor, Color3.new(1,1,1))
+	local hoverColorState: State<Color3> = _import(hoverColor, Color3.new(1,1,1))
 
-	local styles = _Computed(function(thm: ThemeData): { [Enums.ButtonStateType]: TextStyle }
-		local color: Color3 = thm.Color3
-		local textColor: Color3
-		-- local borderColor: Color3
-		if thm.IsDarkMode then
-			-- borderColor = Util.getReadableColor(
-			-- 	Util.LIGHT_SURFACE,
-			-- 	color,
-			-- 	1
-			-- )
-			textColor = color:Lerp(Util.LIGHT_SURFACE, 0.8)
-		else
-			-- borderColor = Util.getReadableColor(
-			-- 	Util.LIGHT_SURFACE,
-			-- 	color,
-			-- 	1
-			-- )
-			textColor = color:Lerp(Util.DARK_SURFACE, 0.8)
-		end
-		color = Util.getElevatedColor(color, thm.Elevation, thm.IsDarkMode)
-		-- borderColor = Util.getElevatedColor(borderColor, thm.Elevation, thm.IsDarkMode)
-		textColor = Util.getElevatedColor(textColor, thm.Elevation, thm.IsDarkMode)
+	local iconState: State<ImageData> = _import(icon, nil :: any)
 
-		local data = {
-			[Enums.ButtonStateType.Enabled] = Types.newTextStyle(
-				textColor, 
-				0, 
-				color, 
-				1, 
-				textColor, 
-				0
-			),
-			[Enums.ButtonStateType.Disabled] = Types.newTextStyle(
-				textColor,
-				DISABLE_TRANSPARENCY,
-				(function(): Color3
-					if thm.IsDarkMode then
-						local h, _s, v = color:ToHSV()
-						return Util.getReadableColor(
-							Color3.fromHSV(h, 0, v),
-							if thm.BackgroundColor3 then thm.BackgroundColor3 else Color3.new(0.15, 0.15, 0.15)
-						)
-					else
-						local h, _s, v = color:ToHSV()
-						return Util.getReadableColor(
-							Color3.fromHSV(h, 0, v),
-							if thm.BackgroundColor3 then thm.BackgroundColor3 else Color3.new(0.85, 0.85, 0.85)
-						)
-					end
-				end)(),
-				1,
-				textColor,
-				DISABLE_TRANSPARENCY
-			),
-			[Enums.ButtonStateType.Focused] = Types.newTextStyle(
-				textColor,
-				0,
-				color,
-				FOCUS_TRANSPARENCY,
-				textColor,
-				0
-			),
-			[Enums.ButtonStateType.Hovered] = Types.newTextStyle(
-				textColor,
-				0,
-				color,
-				HOVER_TRANSPARENCY,
-				textColor,
-				0
-			),
-			[Enums.ButtonStateType.Pressed] = Types.newTextStyle(
-				textColor,
-				0,
-				color,
-				PRESS_TRANSPARENCY,
-				textColor,
-				0
-			),
-		}
-		return data
-	end, themeState)
-
-	local button = new(
+	local button = component(
 		maid,
-		onClickState,
-		_Computed(function(t: ThemeData): Font
-			return t.Font
-		end, themeState),
-		label,
-		styles,
+		onClick,
+		_import(label, ""),
 		icon,
 		count,
-		_Computed(function(t: ThemeData): number
-			return t.Scale
-		end, themeState),
-		sound
+		_Computed(function(
+			style: Style, 
+			e: number,
+			hC: Color3,
+			tC: Color3,
+			i: ImageData?
+		): {[Enums.ButtonStateType]: RenderData}
+			e += 1
+			return {
+				[Enums.ButtonStateType.Enabled] = Types.newRenderData(
+					style.Scale,
+					Types.newAppearanceData(
+						style:GetElevatedColor(hC, e), 
+						1
+					),
+					Types.newAppearanceData(
+						style:GetElevatedColor(hC, e), 
+						1
+					),
+					Types.newAppearanceData(
+						style:GetElevatedColor(tC, e), 
+						0
+					),
+					style.Typography:Get(Enums.FontType.LabelLarge),
+					i,
+					nil,
+					nil
+				),
+				[Enums.ButtonStateType.Hovered] = Types.newRenderData(
+					style.Scale,
+					Types.newAppearanceData(
+						style:GetElevatedColor(hC, e), 
+						1
+					),
+					Types.newAppearanceData(
+						style:GetElevatedColor(hC, e+1), 
+						1-0.08
+					),
+					Types.newAppearanceData(
+						style:GetElevatedColor(tC, e+1), 
+						0
+					),
+					style.Typography:Get(Enums.FontType.LabelLarge),
+					i,
+					nil,
+					nil
+				),
+				[Enums.ButtonStateType.Focused] = Types.newRenderData(
+					style.Scale,
+					Types.newAppearanceData(
+						style:GetElevatedColor(hC, e), 
+						1
+					),
+					Types.newAppearanceData(
+						style:GetElevatedColor(hC, e), 
+						1-0.1
+					),
+					Types.newAppearanceData(
+						style:GetElevatedColor(tC, e), 
+						0
+					),
+					style.Typography:Get(Enums.FontType.LabelLarge),
+					i,
+					nil,
+					nil
+				),
+				[Enums.ButtonStateType.Pressed] = Types.newRenderData(
+					style.Scale,
+					Types.newAppearanceData(
+						style:GetElevatedColor(hC, e), 
+						1
+					),
+					Types.newAppearanceData(
+						style:GetElevatedColor(hC, e-1), 
+						1-0.1
+					),
+					Types.newAppearanceData(
+						style:GetElevatedColor(tC, e-1), 
+						0
+					),
+					style.Typography:Get(Enums.FontType.LabelLarge),
+					i,
+					Types.newSoundData(
+						Sounds.ui_tap_variant_01,
+						1
+					),
+					nil
+				),
+			}
+		end, styleState, elevationState, hoverColorState, textColorState, iconState),
+		elevation,
+		style
 	)
-
 	maid.bind(button)
 
 	return button

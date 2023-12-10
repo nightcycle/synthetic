@@ -7,10 +7,11 @@ local Maid = require(_Packages:WaitForChild("Maid"))
 local MaterialIcons = require(_Packages:WaitForChild("MaterialIcons"))
 
 -- Modules
-local Types = require(_Package:WaitForChild("Types"))
+local Style = require(_Package:WaitForChild("Style"))
+local Enums = require(_Package:WaitForChild("Enums"))
+
 -- Types
 -- Constants
-local SCALE = 1.2
 -- Variables
 -- References
 local Icons = MaterialIcons.default.dp_48.scale_1
@@ -20,11 +21,17 @@ return function(frame: Frame)
 	local maid = Maid.new()
 	task.spawn(function()
 		local function makeHalfFrame(isDarkMode: boolean, color: Color3): Frame
-			local halfFrame = maid:GiveTask(Instance.new("Frame"))
-			halfFrame.BackgroundColor3 = if isDarkMode
-				then Color3.new(0.15, 0.15, 0.15)
-				else Color3.new(0.85, 0.85, 0.85)
 
+			local style = Style.new(
+				1,
+				"Roboto",
+				if isDarkMode then Enums.SchemeType.Dark else Enums.SchemeType.Light,
+				color
+			)
+
+			local halfFrame = maid:GiveTask(Instance.new("Frame"))
+			halfFrame.BackgroundColor3 = style:GetColor(Enums.ColorRoleType.Primary)
+			halfFrame.BorderSizePixel = 0
 			local listLayout = maid:GiveTask(Instance.new("UIListLayout"))
 			listLayout.FillDirection = Enum.FillDirection.Vertical
 			listLayout.Padding = UDim.new(0, 10)
@@ -32,56 +39,59 @@ return function(frame: Frame)
 			listLayout.HorizontalAlignment = Enum.HorizontalAlignment.Center
 			listLayout.Parent = halfFrame
 
-			local img = Types.newImageData(
-				Icons.voice_chat.Image,
-				Icons.voice_chat.ImageRectOffset,
-				Icons.voice_chat.ImageRectSize
-			)
-
 			local Module = require(script.Parent)
-			local theme = Types.newThemeData(
-				1,
-				isDarkMode,
-				SCALE,
-				Font.fromEnum(Enum.Font.SourceSans),
-				color,
-				halfFrame.BackgroundColor3
-			)
 
 			do
-				local button = maid:GiveTask(Module.cfusion(function()
-					print("click nil")
-				end, img, "Badge nil", nil, theme))
+				local button = maid:GiveTask(
+					Module.ColdFusion.new(
+						function()
+							print("click 1 ")
+						end,
+						Icons.add_comment,
+						"test",
+						1,
+						style:GetColor(Enums.ColorRoleType.OnPrimary),
+						style:GetColor(Enums.ColorRoleType.InversePrimary),
+						0,
+						style
+					)
+				)
 				button.Parent = halfFrame
 			end
+
 			do
-				local button = maid:GiveTask(Module.cfusion(function()
-					print("click 0")
-				end, img, "Badge 0", 0, theme))
+				local button = maid:GiveTask(
+					Module.ColdFusion.new(
+						function()
+							print("click 2")
+						end,
+						Icons.add_comment,
+						nil,
+						0,
+						style:GetColor(Enums.ColorRoleType.OnPrimary),
+						style:GetColor(Enums.ColorRoleType.InversePrimary),
+						0,
+						style
+					)
+				)
 				button.Parent = halfFrame
 			end
+
 			do
-				local button = maid:GiveTask(Module.cfusion(function()
-					print("click 1")
-				end, img, "Badge 1", 1, theme))
-				button.Parent = halfFrame
-			end
-			do
-				local button = maid:GiveTask(Module.cfusion(function()
-					print("click 64")
-				end, img, "Badge 64", 64, theme))
-				button.Parent = halfFrame
-			end
-			do
-				local button = maid:GiveTask(Module.cfusion(function()
-					print("click 360")
-				end, img, "Badge 360", 360, theme))
-				button.Parent = halfFrame
-			end
-			do
-				local button = maid:GiveTask(Module.cfusion(function()
-					print("click 1024")
-				end, img, "Badge 1024", 1024, theme))
+				local button = maid:GiveTask(
+					Module.ColdFusion.new(
+						function()
+							print("click 3")
+						end,
+						Icons.add_comment,
+						nil,
+						nil,
+						style:GetColor(Enums.ColorRoleType.OnPrimary),
+						style:GetColor(Enums.ColorRoleType.InversePrimary),
+						0,
+						style
+					)
+				)
 				button.Parent = halfFrame
 			end
 			return halfFrame
