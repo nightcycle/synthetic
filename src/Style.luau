@@ -26,7 +26,13 @@ export type Style = {
 	GetElevatedColor: (self: Style, color: Color3, elevation: number) -> Color3,
 	GetColor: (self: Style, role: Enums.ColorRoleType, elevation: number?) -> Color3,
 	GetCustom: (self: Style, name: string, customType: Enums.CustomColorType, elevation: number?) -> Color3,
-	new: (scale: number, fontFamily: string, schemeType: Enums.SchemeType, source: Color3, custom: { [string]: Color3 }?) -> Style,
+	new: (
+		scale: number,
+		fontFamily: string,
+		schemeType: Enums.SchemeType,
+		source: Color3,
+		custom: { [string]: Color3 }?
+	) -> Style,
 }
 
 -- Class
@@ -45,7 +51,13 @@ function Style:GetCustom(name: string, customType: Enums.CustomColorType, elevat
 	return self._Theme:GetCustom(name, customType, self.SchemeType, elevation)
 end
 
-function Style.new(scale: number, fontFamily: string, schemeType: Enums.SchemeType, source: Color3, additions: { [string]: Color3 }?): Style
+function Style.new(
+	scale: number,
+	fontFamily: string,
+	schemeType: Enums.SchemeType,
+	source: Color3,
+	additions: { [string]: Color3 }?
+): Style
 	local self: Style = setmetatable({}, Style) :: any
 	self.Scale = scale
 	self.SchemeType = schemeType

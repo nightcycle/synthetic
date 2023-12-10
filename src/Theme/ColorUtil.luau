@@ -92,7 +92,10 @@ function Util.argbFromLinrgb(linrgb: { number }): number
 end
 
 function Util.argbFromRgb(red: number, green: number, blue: number): number
-	return bit32.lshift(255, 24) + bit32.lshift(bit32.band(red, 255), 16) + bit32.lshift(bit32.band(green, 255), 8) + bit32.band(blue, 255)
+	return bit32.lshift(255, 24)
+		+ bit32.lshift(bit32.band(red, 255), 16)
+		+ bit32.lshift(bit32.band(green, 255), 8)
+		+ bit32.band(blue, 255)
 end
 
 function Util.alphaFromArgb(argb: number): number

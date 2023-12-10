@@ -73,61 +73,76 @@ function Interface.ColdFusion.new(
 		onClick,
 		text,
 		if isEnabled == nil then true else isEnabled,
-		_Computed(function(style: Style, e: number, hC: Color3, tC: Color3, dC: Color3, i: ImageData?): { [Enums.ButtonStateType]: RenderData }
-			e += 1
-			return {
-				[Enums.ButtonStateType.Enabled] = Types.newRenderData(
-					style.Scale,
-					Types.newAppearanceData(style:GetElevatedColor(hC, e), 1),
-					Types.newAppearanceData(style:GetElevatedColor(hC, e), 1),
-					Types.newAppearanceData(style:GetElevatedColor(tC, e), 0),
-					style.Typography:Get(Enums.FontType.LabelLarge),
-					i,
-					nil,
-					nil
-				),
-				[Enums.ButtonStateType.Disabled] = Types.newRenderData(
-					style.Scale,
-					Types.newAppearanceData(style:GetElevatedColor(hC, e), 1),
-					Types.newAppearanceData(style:GetElevatedColor(hC, e), 1),
-					Types.newAppearanceData(style:GetElevatedColor(dC, e), 1 - 0.38),
-					style.Typography:Get(Enums.FontType.LabelLarge),
-					i,
-					nil,
-					nil
-				),
-				[Enums.ButtonStateType.Hovered] = Types.newRenderData(
-					style.Scale,
-					Types.newAppearanceData(style:GetElevatedColor(hC, e), 1),
-					Types.newAppearanceData(style:GetElevatedColor(hC, e + 1), 1 - 0.08),
-					Types.newAppearanceData(style:GetElevatedColor(tC, e + 1), 0),
-					style.Typography:Get(Enums.FontType.LabelLarge),
-					i,
-					nil,
-					nil
-				),
-				[Enums.ButtonStateType.Focused] = Types.newRenderData(
-					style.Scale,
-					Types.newAppearanceData(style:GetElevatedColor(hC, e), 1),
-					Types.newAppearanceData(style:GetElevatedColor(hC, e), 1 - 0.1),
-					Types.newAppearanceData(style:GetElevatedColor(tC, e), 0),
-					style.Typography:Get(Enums.FontType.LabelLarge),
-					i,
-					nil,
-					nil
-				),
-				[Enums.ButtonStateType.Pressed] = Types.newRenderData(
-					style.Scale,
-					Types.newAppearanceData(style:GetElevatedColor(hC, e), 1),
-					Types.newAppearanceData(style:GetElevatedColor(hC, e - 1), 1 - 0.1),
-					Types.newAppearanceData(style:GetElevatedColor(tC, e - 1), 0),
-					style.Typography:Get(Enums.FontType.LabelLarge),
-					i,
-					Types.newSoundData(Sounds.ui_tap_variant_01, 1),
-					nil
-				),
-			}
-		end, styleState, elevationState, hoverColorState, textColorState, disabledColorState, iconState),
+		_Computed(
+			function(
+				style: Style,
+				e: number,
+				hC: Color3,
+				tC: Color3,
+				dC: Color3,
+				i: ImageData?
+			): { [Enums.ButtonStateType]: RenderData }
+				e += 1
+				return {
+					[Enums.ButtonStateType.Enabled] = Types.newRenderData(
+						style.Scale,
+						Types.newAppearanceData(style:GetElevatedColor(hC, e), 1),
+						Types.newAppearanceData(style:GetElevatedColor(hC, e), 1),
+						Types.newAppearanceData(style:GetElevatedColor(tC, e), 0),
+						style.Typography:Get(Enums.FontType.LabelLarge),
+						i,
+						nil,
+						nil
+					),
+					[Enums.ButtonStateType.Disabled] = Types.newRenderData(
+						style.Scale,
+						Types.newAppearanceData(style:GetElevatedColor(hC, e), 1),
+						Types.newAppearanceData(style:GetElevatedColor(hC, e), 1),
+						Types.newAppearanceData(style:GetElevatedColor(dC, e), 1 - 0.38),
+						style.Typography:Get(Enums.FontType.LabelLarge),
+						i,
+						nil,
+						nil
+					),
+					[Enums.ButtonStateType.Hovered] = Types.newRenderData(
+						style.Scale,
+						Types.newAppearanceData(style:GetElevatedColor(hC, e), 1),
+						Types.newAppearanceData(style:GetElevatedColor(hC, e + 1), 1 - 0.08),
+						Types.newAppearanceData(style:GetElevatedColor(tC, e + 1), 0),
+						style.Typography:Get(Enums.FontType.LabelLarge),
+						i,
+						nil,
+						nil
+					),
+					[Enums.ButtonStateType.Focused] = Types.newRenderData(
+						style.Scale,
+						Types.newAppearanceData(style:GetElevatedColor(hC, e), 1),
+						Types.newAppearanceData(style:GetElevatedColor(hC, e), 1 - 0.1),
+						Types.newAppearanceData(style:GetElevatedColor(tC, e), 0),
+						style.Typography:Get(Enums.FontType.LabelLarge),
+						i,
+						nil,
+						nil
+					),
+					[Enums.ButtonStateType.Pressed] = Types.newRenderData(
+						style.Scale,
+						Types.newAppearanceData(style:GetElevatedColor(hC, e), 1),
+						Types.newAppearanceData(style:GetElevatedColor(hC, e - 1), 1 - 0.1),
+						Types.newAppearanceData(style:GetElevatedColor(tC, e - 1), 0),
+						style.Typography:Get(Enums.FontType.LabelLarge),
+						i,
+						Types.newSoundData(Sounds.ui_tap_variant_01, 1),
+						nil
+					),
+				}
+			end,
+			styleState,
+			elevationState,
+			hoverColorState,
+			textColorState,
+			disabledColorState,
+			iconState
+		),
 		nil,
 		nil,
 		nil,

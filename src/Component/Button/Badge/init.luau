@@ -68,33 +68,43 @@ function component(
 	local isFocusedState = _Value(false)
 	local isPressedState = _Value(false)
 	local isHoveredState = _Value(false)
-	local currentStateState = _Computed(function(isEnab: boolean, isFocused: boolean, isPressed: boolean, isHovered: boolean): Enums.ButtonStateType
-		if isEnab then
-			if isPressed then
-				return Enums.ButtonStateType.Pressed
-			else
-				if isHovered then
-					return Enums.ButtonStateType.Hovered
+	local currentStateState = _Computed(
+		function(isEnab: boolean, isFocused: boolean, isPressed: boolean, isHovered: boolean): Enums.ButtonStateType
+			if isEnab then
+				if isPressed then
+					return Enums.ButtonStateType.Pressed
 				else
-					if isFocused then
-						return Enums.ButtonStateType.Focused
+					if isHovered then
+						return Enums.ButtonStateType.Hovered
 					else
-						return Enums.ButtonStateType.Enabled
+						if isFocused then
+							return Enums.ButtonStateType.Focused
+						else
+							return Enums.ButtonStateType.Enabled
+						end
 					end
 				end
+			else
+				return Enums.ButtonStateType.Disabled
 			end
-		else
-			return Enums.ButtonStateType.Disabled
-		end
-	end, isEnabledState, isFocusedState, isPressedState, isHoveredState) :: State<any>
+		end,
+		isEnabledState,
+		isFocusedState,
+		isPressedState,
+		isHoveredState
+	) :: State<any>
 
 	local renderDatasState = _import(renderDatas, {}) :: any
 
-	local currentRenderDataState = _Computed(function(state: Enums.ButtonStateType, renderDatas: { [Enums.ButtonStateType]: RenderData }): RenderData
-		local data = renderDatas[state]
-		assert(data ~= nil, `no renderData for {state}`)
-		return data
-	end, currentStateState, renderDatasState)
+	local currentRenderDataState = _Computed(
+		function(state: Enums.ButtonStateType, renderDatas: { [Enums.ButtonStateType]: RenderData }): RenderData
+			local data = renderDatas[state]
+			assert(data ~= nil, `no renderData for {state}`)
+			return data
+		end,
+		currentStateState,
+		renderDatasState
+	)
 	local inst = _new("TextButton")({
 		Text = "",
 		Size = UDim2.new(0, 0),
@@ -357,51 +367,64 @@ function Interface.ColdFusion.new(
 		_import(label, ""),
 		icon,
 		count,
-		_Computed(function(style: Style, e: number, hC: Color3, tC: Color3, i: ImageData?): { [Enums.ButtonStateType]: RenderData }
-			e += 1
-			return {
-				[Enums.ButtonStateType.Enabled] = Types.newRenderData(
-					style.Scale,
-					Types.newAppearanceData(style:GetElevatedColor(hC, e), 1),
-					Types.newAppearanceData(style:GetElevatedColor(hC, e), 1),
-					Types.newAppearanceData(style:GetElevatedColor(tC, e), 0),
-					style.Typography:Get(Enums.FontType.LabelLarge),
-					i,
-					nil,
-					nil
-				),
-				[Enums.ButtonStateType.Hovered] = Types.newRenderData(
-					style.Scale,
-					Types.newAppearanceData(style:GetElevatedColor(hC, e), 1),
-					Types.newAppearanceData(style:GetElevatedColor(hC, e + 1), 1 - 0.08),
-					Types.newAppearanceData(style:GetElevatedColor(tC, e + 1), 0),
-					style.Typography:Get(Enums.FontType.LabelLarge),
-					i,
-					nil,
-					nil
-				),
-				[Enums.ButtonStateType.Focused] = Types.newRenderData(
-					style.Scale,
-					Types.newAppearanceData(style:GetElevatedColor(hC, e), 1),
-					Types.newAppearanceData(style:GetElevatedColor(hC, e), 1 - 0.1),
-					Types.newAppearanceData(style:GetElevatedColor(tC, e), 0),
-					style.Typography:Get(Enums.FontType.LabelLarge),
-					i,
-					nil,
-					nil
-				),
-				[Enums.ButtonStateType.Pressed] = Types.newRenderData(
-					style.Scale,
-					Types.newAppearanceData(style:GetElevatedColor(hC, e), 1),
-					Types.newAppearanceData(style:GetElevatedColor(hC, e - 1), 1 - 0.1),
-					Types.newAppearanceData(style:GetElevatedColor(tC, e - 1), 0),
-					style.Typography:Get(Enums.FontType.LabelLarge),
-					i,
-					Types.newSoundData(Sounds.ui_tap_variant_01, 1),
-					nil
-				),
-			}
-		end, styleState, elevationState, hoverColorState, textColorState, iconState),
+		_Computed(
+			function(
+				style: Style,
+				e: number,
+				hC: Color3,
+				tC: Color3,
+				i: ImageData?
+			): { [Enums.ButtonStateType]: RenderData }
+				e += 1
+				return {
+					[Enums.ButtonStateType.Enabled] = Types.newRenderData(
+						style.Scale,
+						Types.newAppearanceData(style:GetElevatedColor(hC, e), 1),
+						Types.newAppearanceData(style:GetElevatedColor(hC, e), 1),
+						Types.newAppearanceData(style:GetElevatedColor(tC, e), 0),
+						style.Typography:Get(Enums.FontType.LabelLarge),
+						i,
+						nil,
+						nil
+					),
+					[Enums.ButtonStateType.Hovered] = Types.newRenderData(
+						style.Scale,
+						Types.newAppearanceData(style:GetElevatedColor(hC, e), 1),
+						Types.newAppearanceData(style:GetElevatedColor(hC, e + 1), 1 - 0.08),
+						Types.newAppearanceData(style:GetElevatedColor(tC, e + 1), 0),
+						style.Typography:Get(Enums.FontType.LabelLarge),
+						i,
+						nil,
+						nil
+					),
+					[Enums.ButtonStateType.Focused] = Types.newRenderData(
+						style.Scale,
+						Types.newAppearanceData(style:GetElevatedColor(hC, e), 1),
+						Types.newAppearanceData(style:GetElevatedColor(hC, e), 1 - 0.1),
+						Types.newAppearanceData(style:GetElevatedColor(tC, e), 0),
+						style.Typography:Get(Enums.FontType.LabelLarge),
+						i,
+						nil,
+						nil
+					),
+					[Enums.ButtonStateType.Pressed] = Types.newRenderData(
+						style.Scale,
+						Types.newAppearanceData(style:GetElevatedColor(hC, e), 1),
+						Types.newAppearanceData(style:GetElevatedColor(hC, e - 1), 1 - 0.1),
+						Types.newAppearanceData(style:GetElevatedColor(tC, e - 1), 0),
+						style.Typography:Get(Enums.FontType.LabelLarge),
+						i,
+						Types.newSoundData(Sounds.ui_tap_variant_01, 1),
+						nil
+					),
+				}
+			end,
+			styleState,
+			elevationState,
+			hoverColorState,
+			textColorState,
+			iconState
+		),
 		elevation,
 		style
 	)

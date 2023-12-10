@@ -79,7 +79,15 @@ function Interface.ColdFusion.new(
 		"",
 		if isEnabled == nil then true else isEnabled,
 		_Computed(
-			function(style: Style, e: number, tC: Color3, sC: Color3, dTC: Color3, dSC: Color3, i: ImageData?): { [Enums.ButtonStateType]: RenderData }
+			function(
+				style: Style,
+				e: number,
+				tC: Color3,
+				sC: Color3,
+				dTC: Color3,
+				dSC: Color3,
+				i: ImageData?
+			): { [Enums.ButtonStateType]: RenderData }
 				e += 1
 
 				return {
@@ -91,7 +99,10 @@ function Interface.ColdFusion.new(
 						style.Typography:Get(Enums.FontType.LabelLarge),
 						i,
 						nil,
-						Types.newShadow(Types.newAppearanceData(style:GetColor(Enums.ColorRoleType.Shadow, e), 0), Vector2.new(0, 1))
+						Types.newShadow(
+							Types.newAppearanceData(style:GetColor(Enums.ColorRoleType.Shadow, e), 0),
+							Vector2.new(0, 1)
+						)
 					),
 					[Enums.ButtonStateType.Disabled] = Types.newRenderData(
 						style.Scale * UP_SCALE,
@@ -101,7 +112,10 @@ function Interface.ColdFusion.new(
 						style.Typography:Get(Enums.FontType.LabelLarge),
 						i,
 						nil,
-						Types.newShadow(Types.newAppearanceData(style:GetColor(Enums.ColorRoleType.Shadow, e), 0), Vector2.new(0, 1))
+						Types.newShadow(
+							Types.newAppearanceData(style:GetColor(Enums.ColorRoleType.Shadow, e), 0),
+							Vector2.new(0, 1)
+						)
 					),
 					[Enums.ButtonStateType.Hovered] = Types.newRenderData(
 						style.Scale * UP_SCALE,
@@ -111,7 +125,10 @@ function Interface.ColdFusion.new(
 						style.Typography:Get(Enums.FontType.LabelLarge),
 						i,
 						nil,
-						Types.newShadow(Types.newAppearanceData(style:GetColor(Enums.ColorRoleType.Shadow, e), 0), Vector2.new(0, 1))
+						Types.newShadow(
+							Types.newAppearanceData(style:GetColor(Enums.ColorRoleType.Shadow, e), 0),
+							Vector2.new(0, 1)
+						)
 					),
 					[Enums.ButtonStateType.Focused] = Types.newRenderData(
 						style.Scale * UP_SCALE,
@@ -121,7 +138,10 @@ function Interface.ColdFusion.new(
 						style.Typography:Get(Enums.FontType.LabelLarge),
 						i,
 						nil,
-						Types.newShadow(Types.newAppearanceData(style:GetColor(Enums.ColorRoleType.Shadow, e), 0), Vector2.new(0, 1))
+						Types.newShadow(
+							Types.newAppearanceData(style:GetColor(Enums.ColorRoleType.Shadow, e), 0),
+							Vector2.new(0, 1)
+						)
 					),
 					[Enums.ButtonStateType.Pressed] = Types.newRenderData(
 						style.Scale * UP_SCALE,
@@ -131,7 +151,10 @@ function Interface.ColdFusion.new(
 						style.Typography:Get(Enums.FontType.LabelLarge),
 						i,
 						Types.newSoundData(Sounds.ui_tap_variant_01, 0),
-						Types.newShadow(Types.newAppearanceData(style:GetColor(Enums.ColorRoleType.Shadow, e), 0), Vector2.new(0, 1))
+						Types.newShadow(
+							Types.newAppearanceData(style:GetColor(Enums.ColorRoleType.Shadow, e), 0),
+							Vector2.new(0, 1)
+						)
 					),
 				}
 			end,

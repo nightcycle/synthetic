@@ -98,7 +98,14 @@ function Interface.ColdFusion.new(
 	local styleState: State<Style> = _import(style, nil :: any)
 
 	local renderDatasState = _Computed(
-		function(s: Style, oC: Color3, fC: Color3, iC: Color3, dC: Color3, e: number): { [Enums.ButtonStateType]: RenderData }
+		function(
+			s: Style,
+			oC: Color3,
+			fC: Color3,
+			iC: Color3,
+			dC: Color3,
+			e: number
+		): { [Enums.ButtonStateType]: RenderData }
 			return {
 				[Enums.ButtonStateType.Enabled] = Types.newRenderData(
 					s.Scale,
@@ -174,29 +181,39 @@ function Interface.ColdFusion.new(
 		end
 	end, valueState)
 
-	local currentStateState = _Computed(function(isEnab: boolean, isFocused: boolean, isPressed: boolean, isHovered: boolean): Enums.ButtonStateType
-		if isEnab then
-			if isPressed then
-				return Enums.ButtonStateType.Pressed
-			else
-				if isHovered then
-					return Enums.ButtonStateType.Hovered
+	local currentStateState = _Computed(
+		function(isEnab: boolean, isFocused: boolean, isPressed: boolean, isHovered: boolean): Enums.ButtonStateType
+			if isEnab then
+				if isPressed then
+					return Enums.ButtonStateType.Pressed
 				else
-					if isFocused then
-						return Enums.ButtonStateType.Focused
+					if isHovered then
+						return Enums.ButtonStateType.Hovered
 					else
-						return Enums.ButtonStateType.Enabled
+						if isFocused then
+							return Enums.ButtonStateType.Focused
+						else
+							return Enums.ButtonStateType.Enabled
+						end
 					end
 				end
+			else
+				return Enums.ButtonStateType.Disabled
 			end
-		else
-			return Enums.ButtonStateType.Disabled
-		end
-	end, isEnabledState, isFocusedState, isPressedState, isHoveredState) :: State<any>
+		end,
+		isEnabledState,
+		isFocusedState,
+		isPressedState,
+		isHoveredState
+	) :: State<any>
 
-	local renderDataState = _Computed(function(renderDatas: { [Enums.ButtonStateType]: RenderData }, bState: Enums.ButtonStateType): RenderData
-		return renderDatas[bState]
-	end, renderDatasState, currentStateState)
+	local renderDataState = _Computed(
+		function(renderDatas: { [Enums.ButtonStateType]: RenderData }, bState: Enums.ButtonStateType): RenderData
+			return renderDatas[bState]
+		end,
+		renderDatasState,
+		currentStateState
+	)
 
 	local inst = _new("ImageButton")({
 		Size = _Computed(function(s: Style): UDim2
@@ -284,7 +301,9 @@ function Interface.ColdFusion.new(
 					return renderData.Background.Color3
 				end, renderDataState),
 				ImageColor3 = _Computed(function(renderData: RenderData, enab: boolean): Color3
-					return if not enab then renderData.Border.Color3 else if renderData.Text then renderData.Text.Color3 else Color3.new(1, 1, 1)
+					return if not enab
+						then renderData.Border.Color3
+						else if renderData.Text then renderData.Text.Color3 else Color3.new(1, 1, 1)
 				end, renderDataState, isEnabledState),
 				Image = _Computed(function(i: ImageData?): string
 					if i then

@@ -36,7 +36,8 @@ return function(frame: Frame)
 				label.TextColor3 = Color3.new(0.5, 0.5, 0.5)
 				label.Text = `{role}`
 				label.BackgroundColor3 = v
-				label.LayoutOrder = (Enums.getValueFromEnumItem("ColorRoleType", role) * i) + Enums.getValueFromEnumItem("ColorRoleType", role)
+				label.LayoutOrder = (Enums.getValueFromEnumItem("ColorRoleType", role) * i)
+					+ Enums.getValueFromEnumItem("ColorRoleType", role)
 				label.Size = UDim2.fromScale(0.9, 1 / 50)
 				label.TextScaled = true
 				label.Parent = halfFrame

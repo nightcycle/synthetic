@@ -65,7 +65,8 @@ function component(
 
 	local isMultiSelectState: State<boolean> = _import(isMultiSelect, false)
 
-	local renderDatasState: State<{ [Enums.ButtonStateType]: { [Enums.SelectionState]: RenderData } }> = _import(renderDatas, {})
+	local renderDatasState: State<{ [Enums.ButtonStateType]: { [Enums.SelectionState]: RenderData } }> =
+		_import(renderDatas, {})
 	local styleState: State<Style> = _import(style, nil :: any)
 
 	local scaleState = _Computed(function(st: Style): number
@@ -110,16 +111,22 @@ function component(
 			}),
 			_new("UIStroke")({
 				ApplyStrokeMode = Enum.ApplyStrokeMode.Border,
-				Color = _Computed(function(rDatas: { [Enums.ButtonStateType]: { [Enums.SelectionState]: RenderData } }): Color3
-					return rDatas[Enums.ButtonStateType.Enabled][Enums.SelectionState.Unselected].Border.Color3
-				end, renderDatasState),
+				Color = _Computed(
+					function(rDatas: { [Enums.ButtonStateType]: { [Enums.SelectionState]: RenderData } }): Color3
+						return rDatas[Enums.ButtonStateType.Enabled][Enums.SelectionState.Unselected].Border.Color3
+					end,
+					renderDatasState
+				),
 				LineJoinMode = Enum.LineJoinMode.Round,
 				Thickness = _Computed(function(s: number): number
 					return math.max(s * OUTLINE_WIDTH_DP * 1, 1)
 				end, scaleState),
-				Transparency = _Computed(function(rDatas: { [Enums.ButtonStateType]: { [Enums.SelectionState]: RenderData } }): number
-					return rDatas[Enums.ButtonStateType.Enabled][Enums.SelectionState.Unselected].Border.Transparency
-				end, renderDatasState),
+				Transparency = _Computed(
+					function(rDatas: { [Enums.ButtonStateType]: { [Enums.SelectionState]: RenderData } }): number
+						return rDatas[Enums.ButtonStateType.Enabled][Enums.SelectionState.Unselected].Border.Transparency
+					end,
+					renderDatasState
+				),
 			}),
 			_new("UISizeConstraint")({
 				MaxSize = Vector2.new(math.huge, math.huge),
@@ -180,7 +187,12 @@ function component(
 		end))
 
 		local currentStateState = _Computed(
-			function(isEnabled: boolean, isFocused: boolean, isPressed: boolean, isHovered: boolean): Enums.ButtonStateType
+			function(
+				isEnabled: boolean,
+				isFocused: boolean,
+				isPressed: boolean,
+				isHovered: boolean
+			): Enums.ButtonStateType
 				if isEnabled then
 					if isPressed then
 						return Enums.ButtonStateType.Pressed
@@ -243,12 +255,18 @@ function component(
 			LayoutOrder = i - 0.5,
 			Size = barSizeState,
 			BorderSizePixel = 0,
-			BackgroundTransparency = _Computed(function(styleList: { [Enums.ButtonStateType]: { [Enums.SelectionState]: RenderData } }): number
-				return styleList[Enums.ButtonStateType.Enabled][Enums.SelectionState.Unselected].Border.Transparency
-			end, renderDatasState),
-			BackgroundColor3 = _Computed(function(styleList: { [Enums.ButtonStateType]: { [Enums.SelectionState]: RenderData } }): Color3
-				return styleList[Enums.ButtonStateType.Enabled][Enums.SelectionState.Unselected].Border.Color3
-			end, renderDatasState),
+			BackgroundTransparency = _Computed(
+				function(styleList: { [Enums.ButtonStateType]: { [Enums.SelectionState]: RenderData } }): number
+					return styleList[Enums.ButtonStateType.Enabled][Enums.SelectionState.Unselected].Border.Transparency
+				end,
+				renderDatasState
+			),
+			BackgroundColor3 = _Computed(
+				function(styleList: { [Enums.ButtonStateType]: { [Enums.SelectionState]: RenderData } }): Color3
+					return styleList[Enums.ButtonStateType.Enabled][Enums.SelectionState.Unselected].Border.Color3
+				end,
+				renderDatasState
+			),
 			Parent = inst,
 		})
 

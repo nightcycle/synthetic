@@ -71,7 +71,8 @@ end
 function HCT:inViewingConditions(vc: ViewingConditions): HCT
 	local cam = Cam16.fromInt(self:toInt())
 	local viewedInVc = cam:xyzInViewingConditions(vc)
-	local recastInVc = Cam16.fromXyzInViewingConditions(viewedInVc[0], viewedInVc[1], viewedInVc[2], ViewingConditions.make())
+	local recastInVc =
+		Cam16.fromXyzInViewingConditions(viewedInVc[0], viewedInVc[1], viewedInVc[2], ViewingConditions.make())
 	local recastHct = HCT.from(recastInVc.hue, recastInVc.chroma, ColorUtil.lstarFromY(viewedInVc[1]))
 	return recastHct
 end

@@ -48,7 +48,11 @@ function Util.newColor(
 	end, elevationState, schemeTypeState, roleState, themeState)
 end
 
-function Util.newFontData(fuse: Fuse, fontType: CanBeState<Enums.FontType>, typography: CanBeState<Typography>): State<FontData>
+function Util.newFontData(
+	fuse: Fuse,
+	fontType: CanBeState<Enums.FontType>,
+	typography: CanBeState<Typography>
+): State<FontData>
 	local fontTypeState = fuse.import(fontType, "BodyMedium" :: Enums.FontType)
 	local typographyState = fuse.import(typography, nil :: any)
 
@@ -66,7 +70,11 @@ function Util.newFont(fuse: Fuse, fontData: CanBeState<Enums.FontType>): State<F
 	end, fontDataState)
 end
 
-function Util.newAppearanceData(fuse: Fuse, color3: CanBeState<Color3>, transparency: CanBeState<number>?): State<AppearanceData>
+function Util.newAppearanceData(
+	fuse: Fuse,
+	color3: CanBeState<Color3>,
+	transparency: CanBeState<number>?
+): State<AppearanceData>
 	local colorState = fuse.import(color3, Color3.new(1, 1, 1))
 	local transparencyState = fuse.import(transparency, 0)
 
@@ -101,7 +109,11 @@ function Util.newSoundData(fuse: Fuse, soundId: CanBeState<string?>, volume: Can
 	end, soundIdState, volumeState)
 end
 
-function Util.newShadowData(fuse: Fuse, appearanceData: CanBeState<AppearanceData>, offset: CanBeState<Vector2>): State<ShadowData>
+function Util.newShadowData(
+	fuse: Fuse,
+	appearanceData: CanBeState<AppearanceData>,
+	offset: CanBeState<Vector2>
+): State<ShadowData>
 	local appearanceDataState: State<AppearanceData> = fuse.import(appearanceData, nil :: any)
 	local offsetState: State<Vector2> = fuse.import(offset, nil :: Vector2?)
 
@@ -129,7 +141,17 @@ function Util.newRenderData(
 
 	local scaleState = fuse.import(scale, 1)
 
-	return fuse.Computed(Types.newRenderData, scaleState, borderState, backgroundState, textState, fontState, imageState, soundState, shadowState)
+	return fuse.Computed(
+		Types.newRenderData,
+		scaleState,
+		borderState,
+		backgroundState,
+		textState,
+		fontState,
+		imageState,
+		soundState,
+		shadowState
+	)
 end
 
 function Util.getScale(fuse: Fuse, renderData: CanBeState<RenderData>): State<number>

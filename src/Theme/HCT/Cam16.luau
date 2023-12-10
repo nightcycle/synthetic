@@ -16,13 +16,28 @@ export type Cam16 = {
 	jstar: number,
 	astar: number,
 	bstar: number,
-	new: (hue: number, chroma: number, j: number, q: number, m: number, s: number, jstar: number, astar: number, bstar: number) -> Cam16,
+	new: (
+		hue: number,
+		chroma: number,
+		j: number,
+		q: number,
+		m: number,
+		s: number,
+		jstar: number,
+		astar: number,
+		bstar: number
+	) -> Cam16,
 	fromInt: (argb: number) -> Cam16,
 	fromIntInViewingConditions: (argb: number, viewingConditions: ViewingConditions) -> Cam16,
 	fromJchInViewingConditions: (j: number, c: number, h: number, viewingConditions: ViewingConditions) -> Cam16,
 	fromUcs: (jstar: number, astar: number, bstar: number) -> Cam16,
 	fromJch: (j: number, c: number, h: number) -> Cam16,
-	fromUcsInViewingConditions: (jstar: number, astar: number, bstar: number, viewingConditions: ViewingConditions) -> Cam16,
+	fromUcsInViewingConditions: (
+		jstar: number,
+		astar: number,
+		bstar: number,
+		viewingConditions: ViewingConditions
+	) -> Cam16,
 	distance: (self: Cam16, other: Cam16) -> number,
 	toInt: (self: Cam16) -> number,
 	viewed: (self: Cam16, viewingConditions: ViewingConditions) -> number,
@@ -34,7 +49,17 @@ export type Cam16 = {
 local Cam16 = {} :: Cam16
 Cam16.__index = Cam16
 
-function Cam16.new(hue: number, chroma: number, j: number, q: number, m: number, s: number, jstar: number, astar: number, bstar: number)
+function Cam16.new(
+	hue: number,
+	chroma: number,
+	j: number,
+	q: number,
+	m: number,
+	s: number,
+	jstar: number,
+	astar: number,
+	bstar: number
+)
 	local self: Cam16 = setmetatable({}, Cam16) :: any
 	self.hue = hue
 	self.chroma = chroma
@@ -108,7 +133,10 @@ function Cam16.fromIntInViewingConditions(argb: number, viewingConditions: Viewi
 
 	local ac = p2 * viewingConditions.nbb
 	local j = 100.0 * math.pow(ac / viewingConditions.aw, viewingConditions.c * viewingConditions.z)
-	local q = (4.0 / viewingConditions.c) * math.sqrt(j / 100.0) * (viewingConditions.aw + 4.0) * viewingConditions.fLRoot
+	local q = (4.0 / viewingConditions.c)
+		* math.sqrt(j / 100.0)
+		* (viewingConditions.aw + 4.0)
+		* viewingConditions.fLRoot
 
 	local huePrime
 	if hue < 20.14 then
@@ -137,7 +165,10 @@ function Cam16.fromJch(j: number, c: number, h: number): Cam16
 end
 
 function Cam16.fromJchInViewingConditions(j: number, c: number, h: number, viewingConditions: ViewingConditions): Cam16
-	local q = (4.0 / viewingConditions.c) * math.sqrt(j / 100.0) * (viewingConditions.aw + 4.0) * viewingConditions.fLRoot
+	local q = (4.0 / viewingConditions.c)
+		* math.sqrt(j / 100.0)
+		* (viewingConditions.aw + 4.0)
+		* viewingConditions.fLRoot
 	local m = c * viewingConditions.fLRoot
 	local alpha = c / math.sqrt(j / 100.0)
 	local s = 50.0 * math.sqrt((alpha * viewingConditions.c) / (viewingConditions.aw + 4.0))
@@ -153,7 +184,12 @@ function Cam16.fromUcs(jstar: number, astar: number, bstar: number): Cam16
 	return Cam16.fromUcsInViewingConditions(jstar, astar, bstar, ViewingConditions.DEFAULT)
 end
 
-function Cam16.fromUcsInViewingConditions(jstar: number, astar: number, bstar: number, viewingConditions: ViewingConditions): Cam16
+function Cam16.fromUcsInViewingConditions(
+	jstar: number,
+	astar: number,
+	bstar: number,
+	viewingConditions: ViewingConditions
+): Cam16
 	local a = astar
 	local b = bstar
 	local m = math.sqrt(a * a + b * b)
@@ -263,7 +299,10 @@ function Cam16.fromXyzInViewingConditions(x: number, y: number, z: number, viewi
 
 	--CAM16 lightness and brightness
 	local J = 100.0 * math.pow(ac / viewingConditions.aw, viewingConditions.c * viewingConditions.z)
-	local Q = (4.0 / viewingConditions.c) * math.sqrt(J / 100.0) * (viewingConditions.aw + 4.0) * viewingConditions.fLRoot
+	local Q = (4.0 / viewingConditions.c)
+		* math.sqrt(J / 100.0)
+		* (viewingConditions.aw + 4.0)
+		* viewingConditions.fLRoot
 
 	local huePrime = hue < 20.14 and hue + 360 or hue
 	local eHue = 0.25 * (math.cos(huePrime * math.pi / 180.0 + 2.0) + 3.8)

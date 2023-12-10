@@ -125,7 +125,10 @@ function Theme.new(source: Color3, custom: { [string]: Color3 }?): Theme
 	do
 		local function fromPalette(tonalPalette: GoogleTonalPalette): TonalPalette
 			return function(alpha: number, noClamp: boolean?): Color3
-				return HCT.fromInt(tonalPalette:getTone(if noClamp then alpha * 100 else math.clamp(alpha, 0.05, 0.9) * 100)):toColor3()
+				return HCT.fromInt(
+					tonalPalette:getTone(if noClamp then alpha * 100 else math.clamp(alpha, 0.05, 0.9) * 100)
+				)
+					:toColor3()
 			end
 		end
 		primaryPalette = fromPalette(googleTheme.palettes.primary)
@@ -203,7 +206,12 @@ function Theme.getElevatedColor(color: Color3, elevation: number, schemeType: En
 	end
 end
 
-function Theme:GetCustom(name: string, customType: Enums.CustomColorType, schemeType: Enums.SchemeType, elevation: number?): Color3
+function Theme:GetCustom(
+	name: string,
+	customType: Enums.CustomColorType,
+	schemeType: Enums.SchemeType,
+	elevation: number?
+): Color3
 	local customColorGroup: CustomColorGroup = self._CustomColors[name]
 	assert(customColorGroup, `no custom color group at {name}`)
 

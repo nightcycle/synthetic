@@ -64,8 +64,12 @@ function ViewingConditions.make(
 	local bW = xyz[0] * -0.002079 + xyz[1] * 0.048952 + xyz[2] * 0.953127
 	local f = 0.8 + surround / 10.0
 
-	local c = if f >= 0.9 then MathUtil.lerp(0.59, 0.69, (f - 0.9) * 10.0) else MathUtil.lerp(0.525, 0.59, (f - 0.8) * 10.0)
-	local d = if discountingIlluminant then 1.0 else f * (1.0 - (1.0 / 3.6) * math.exp((-adaptingLuminance - 42.0) / 92.0))
+	local c = if f >= 0.9
+		then MathUtil.lerp(0.59, 0.69, (f - 0.9) * 10.0)
+		else MathUtil.lerp(0.525, 0.59, (f - 0.8) * 10.0)
+	local d = if discountingIlluminant
+		then 1.0
+		else f * (1.0 - (1.0 / 3.6) * math.exp((-adaptingLuminance - 42.0) / 92.0))
 
 	d = if d > 1.0 then 1.0 elseif d < 0.0 then 0.0 else d
 

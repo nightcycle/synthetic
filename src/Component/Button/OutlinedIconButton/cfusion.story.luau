@@ -21,7 +21,8 @@ return function(frame: Frame)
 	local maid = Maid.new()
 	task.spawn(function()
 		local function makeHalfFrame(isDarkMode: boolean, color: Color3): Frame
-			local style = Style.new(1, "Roboto", if isDarkMode then Enums.SchemeType.Dark else Enums.SchemeType.Light, color)
+			local style =
+				Style.new(1, "Roboto", if isDarkMode then Enums.SchemeType.Dark else Enums.SchemeType.Light, color)
 
 			local halfFrame = maid:GiveTask(Instance.new("Frame"))
 			halfFrame.BackgroundColor3 = style:GetColor(Enums.ColorRoleType.Surface)
@@ -36,16 +37,36 @@ return function(frame: Frame)
 			local Module = require(script.Parent)
 
 			do
-				local button = maid:GiveTask(Module.ColdFusion.new(function()
-					print("click")
-				end, Icons.settings, style, style:GetColor(Enums.ColorRoleType.Primary), style:GetColor(Enums.ColorRoleType.OnSurface), true, 0))
+				local button = maid:GiveTask(
+					Module.ColdFusion.new(
+						function()
+							print("click")
+						end,
+						Icons.settings,
+						style,
+						style:GetColor(Enums.ColorRoleType.Primary),
+						style:GetColor(Enums.ColorRoleType.OnSurface),
+						true,
+						0
+					)
+				)
 				button.Parent = halfFrame
 			end
 
 			do
-				local button = maid:GiveTask(Module.ColdFusion.new(function()
-					print("click")
-				end, Icons.settings, style, style:GetColor(Enums.ColorRoleType.Primary), style:GetColor(Enums.ColorRoleType.OnSurface), false, 0))
+				local button = maid:GiveTask(
+					Module.ColdFusion.new(
+						function()
+							print("click")
+						end,
+						Icons.settings,
+						style,
+						style:GetColor(Enums.ColorRoleType.Primary),
+						style:GetColor(Enums.ColorRoleType.OnSurface),
+						false,
+						0
+					)
+				)
 				button.Parent = halfFrame
 			end
 

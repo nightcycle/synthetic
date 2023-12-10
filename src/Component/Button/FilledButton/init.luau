@@ -79,7 +79,15 @@ function Interface.ColdFusion.new(
 		text,
 		if isEnabled == nil then true else isEnabled,
 		_Computed(
-			function(style: Style, e: number, tC: Color3, sC: Color3, dTC: Color3, dSC: Color3, i: ImageData?): { [Enums.ButtonStateType]: RenderData }
+			function(
+				style: Style,
+				e: number,
+				tC: Color3,
+				sC: Color3,
+				dTC: Color3,
+				dSC: Color3,
+				i: ImageData?
+			): { [Enums.ButtonStateType]: RenderData }
 				e += 1
 				return {
 					[Enums.ButtonStateType.Enabled] = Types.newRenderData(
