@@ -5,13 +5,13 @@ local _Packages = _Package.Parent
 -- Packages
 -- Modules
 local Types = require(_Package:WaitForChild("Types"))
-local Theme = require(_Package:WaitForChild("Theme"))
+local Style = require(_Package:WaitForChild("Style"))
 local Typography = require(_Package:WaitForChild("Typography"))
 
 -- Types
 export type ImageData = Types.ImageData
 export type OptionData = Types.OptionData
-export type Theme = Theme.Theme
+export type Style = Style.Style
 export type Typography = Typography.Typography
 -- Constants
 -- Variables
@@ -23,9 +23,13 @@ local Synthetic = {}
 
 Synthetic.Enums = require(_Package:WaitForChild("Enums"))
 Synthetic.Sounds = require(_Package:WaitForChild("Sounds"))
-Synthetic.Types = Types
+Synthetic.Types = {
+	newButtonData = Types.newButtonData,
+	newOptionData = Types.newOptionData,
+	newImageData = Types.newImageData,
+}
 Synthetic.Typography = Typography
-Synthetic.Themes = Theme
+Synthetic.Style = Style
 Synthetic.Components = {
 	Bar = {
 		Bottom = require(Component:WaitForChild("Bar"):WaitForChild("Bottom")),
