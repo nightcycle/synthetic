@@ -7,11 +7,12 @@ local Maid = require(_Packages:WaitForChild("Maid"))
 local ColdFusion = require(_Packages:WaitForChild("ColdFusion"))
 local Signal = require(_Packages:WaitForChild("Signal"))
 local MaterialIcons = require(_Packages:WaitForChild("MaterialIcons"))
-local TableUtil = require(_Packages:WaitForChild("TableUtil"))
 
 -- Modules
 local Types = require(_Package:WaitForChild("Types"))
 local IconButton = require(_Package:WaitForChild("Component"):WaitForChild("Button"):WaitForChild("IconButton"))
+local Style = require(_Package:WaitForChild("Style"))
+local Enums = require(_Package:WaitForChild("Enums"))
 
 -- Types
 type Maid = Maid.Maid
@@ -22,6 +23,8 @@ type ImageData = Types.ImageData
 type OptionData = Types.OptionData
 type Signal = Signal.Signal
 type ButtonData = Types.ButtonData
+type Style = Style.Style
+
 export type BarVariant = "Center" | "Small" | "Medium" | "Large"
 -- Constants
 local MAX_BUTTONS = 3
@@ -42,14 +45,17 @@ local UPPER_TEXT_HEIGHT_DP = 36
 -- Class
 local Interface = {}
 
-function Interface.cfusion(
+function Interface.component(
 	title: CanBeState<string>,
 	buttons: CanBeState<{
 		[number]: ButtonData
 	}>,
-	navigationButton: CanBeState<ButtonData>,
-	theme: CanBeState<ThemeData>,
-	variant: CanBeState<BarVariant>
+	navigationButton: CanBeState<ButtonData?>,
+	variant: CanBeState<BarVariant>,
+	backgroundColor: CanBeState<Color3>,
+	textColor: CanBeState<Color3>,
+	elevation: CanBeState<number>,
+	style: CanBeState<Style>
 ): Frame
 	local maid = Maid.new()
 
@@ -67,33 +73,21 @@ function Interface.cfusion(
 		[number]: ButtonData
 	}> = _import(buttons, {})
 
-	local themeState: State<ThemeData> = _import(theme, nil :: ThemeData?)
-	local elevatedThemeState = _Computed(function(th: ThemeData): ThemeData
-		local cth: ThemeData = TableUtil.deepCopy(th)
-		cth.Elevation += 1
-		return cth
-	end, themeState)
-	local contrastThemeState = _Computed(function(th: ThemeData): ThemeData
-		local cth: ThemeData = TableUtil.deepCopy(th)
-		cth.Color3 = Util.getReadableColor(cth.Color3, Util.getElevatedColor(cth.BackgroundColor3 or cth.Color3, cth.Elevation, cth.IsDarkMode))
-		return cth
-	end, themeState)
-	local elevatedContrastThemeState = _Computed(function(th: ThemeData): ThemeData
-		local cth: ThemeData = TableUtil.deepCopy(th)
-		cth.Color3 = Util.getReadableColor(cth.Color3, Util.getElevatedColor(cth.BackgroundColor3 or cth.Color3, cth.Elevation, cth.IsDarkMode))
-		return cth
-	end, elevatedThemeState)
-	local scaleState: State<number> = _Computed(function(th: ThemeData): number
-		return th.Scale
-	end, themeState)
-	local navState: State<ButtonData> = _import(navigationButton, nil :: ButtonData?)
+	local styleState: State<Style> = _import(style, nil :: Style?)
+	local scaleState: State<number> = _Computed(function(s: Style): number
+		return s.Scale
+	end, styleState)
+	local navState: State<ButtonData?> = _import(navigationButton, nil :: ButtonData?)
 	local variantState: State<BarVariant> = _import(variant, "Center" :: BarVariant)
+	local backgroundColorState: State<Color3> = _import(backgroundColor, Color3.new(1,1,1))
+	local elevationState: State<number> = _import(elevation, 1)
+	local textColorState: State<Color3> = _import(textColor, Color3.new(1,1,1))
 
 	local inst = _new("Frame")({
 		AutomaticSize = Enum.AutomaticSize.XY,
-		BackgroundColor3 = _Computed(function(th: ThemeData): Color3
-			return Util.getElevatedColor(th.BackgroundColor3 or th.Color3, th.Elevation, th.IsDarkMode)
-		end, themeState),
+		BackgroundColor3 = _Computed(function(color: Color3, e: number, s: Style): Color3
+			return s:GetElevatedColor(color, e)
+		end, backgroundColorState, elevationState, styleState),
 		Children = {
 			_new("UIListLayout")({
 				Padding = _Computed(function(s: number, var: BarVariant): UDim
@@ -133,9 +127,9 @@ function Interface.cfusion(
 				AutomaticSize = Enum.AutomaticSize.X,
 				LayoutOrder = 2,
 				BackgroundTransparency = 1,
-				TextColor3 = _Computed(function(th: ThemeData): Color3
-					return th.Color3
-				end, contrastThemeState),
+				TextColor3 = _Computed(function(color: Color3, e: number, s: Style): Color3
+					return s:GetElevatedColor(color, e)
+				end, textColorState, elevationState, styleState),
 				Visible = _Computed(function(var: BarVariant): boolean
 					return var == "Medium" or var == "Large"
 				end, variantState),
@@ -147,9 +141,13 @@ function Interface.cfusion(
 					end
 				end, scaleState, variantState),
 				TextScaled = true,
-				FontFace = _Computed(function(th: ThemeData): Font
-					return th.Font
-				end, themeState),
+				FontFace = _Computed(function(s: Style, var: BarVariant): Font
+					if var == "Medium" then
+						return s.Typography:Get(Enums.FontType.HeadlineSmall).Font
+					else
+						return s.Typography:Get(Enums.FontType.HeadlineMedium).Font
+					end	
+				end, styleState, variantState),
 			}),
 		}
 	}) :: Frame
@@ -187,16 +185,16 @@ function Interface.cfusion(
 				Visible = _Computed(function(var: BarVariant): boolean
 					return var == "Center"
 				end, variantState),
-				TextColor3 = _Computed(function(th: ThemeData): Color3
-					return th.Color3
-				end, contrastThemeState),
+				TextColor3 = _Computed(function(color: Color3, e: number, s: Style): Color3
+					return s:GetElevatedColor(color, e)
+				end, textColorState, elevationState, styleState),
 				Size = _Computed(function(s: number): UDim2
 					return UDim2.fromOffset(0, UPPER_TEXT_HEIGHT_DP * s)
 				end, scaleState),
 				TextScaled = true,
-				FontFace = _Computed(function(th: ThemeData): Font
-					return th.Font
-				end, themeState),
+				FontFace = _Computed(function(s: Style): Font
+					return s.Typography:Get(Enums.FontType.TitleLarge).Font
+				end, styleState),
 			}),
 			_new("Frame")({
 				AutomaticSize = Enum.AutomaticSize.XY,
@@ -223,35 +221,37 @@ function Interface.cfusion(
 						Visible = _Computed(function(var: BarVariant): boolean
 							return var == "Small"
 						end, variantState),
-						TextColor3 = _Computed(function(th: ThemeData): Color3
-							return th.Color3
-						end, contrastThemeState),
+						TextColor3 = _Computed(function(color: Color3, e: number, s: Style): Color3
+							return s:GetElevatedColor(color, e)
+						end, textColorState, elevationState, styleState),
 						Size = _Computed(function(s: number): UDim2
 							return UDim2.fromOffset(0, UPPER_TEXT_HEIGHT_DP * s)
 						end, scaleState),
 						TextScaled = true,
-						FontFace = _Computed(function(th: ThemeData): Font
-							return th.Font
-						end, themeState),
+						FontFace = _Computed(function(s: Style): Font
+							return s.Typography:Get(Enums.FontType.TitleLarge).Font
+						end, styleState),
 					}),
-					_bind(IconButton.cfusion(
+					_bind(IconButton.ColdFusion.new(
 						_Computed(function(nData: ButtonData?)
 							return if nData then nData.OnClick else function() end
 						end, navState),
 						_Computed(function(nData: ButtonData?): ImageData
 							return if nData and nData.Icon then nData.Icon else ERROR_ICON
 						end, navState),
-						elevatedThemeState,
+						style,
+						textColor,
+						textColor,
 						_Computed(function(nData: ButtonData?): boolean
-							return if nData then nData.Enabled else true
-						end, navState)
-					))({
-						Visible = _Computed(function(nData: ButtonData?): boolean
-							return nData ~= nil
+							return if nData then nData.Enabled else false
 						end, navState),
-						Parent = inst,
+						elevation
+					))({
 						LayoutOrder = 1,
-					})
+						Visible = _Computed(function(nData: ButtonData?): boolean
+							return if nData then nData.Enabled else false
+						end, navState),
+					})		
 				}
 			})
 		}
@@ -280,25 +280,28 @@ function Interface.cfusion(
 		local buttonData = _Computed(function(bs: {[number]: ButtonData}): ButtonData?
 			return bs[i]
 		end, buttonsState)
-
-		_bind(IconButton.cfusion(
-			_Computed(function(bData: ButtonData?)
-				return if bData then bData.OnClick else function() end
+		
+		_bind(IconButton.ColdFusion.new(
+			_Computed(function(nData: ButtonData?)
+				return if nData then nData.OnClick else function() end
 			end, buttonData),
-			_Computed(function(bData: ButtonData?): ImageData
-				return if bData and bData.Icon then bData.Icon else ERROR_ICON
+			_Computed(function(nData: ButtonData?): ImageData
+				return if nData and nData.Icon then nData.Icon else ERROR_ICON
 			end, buttonData),
-			elevatedContrastThemeState,
-			_Computed(function(bData: ButtonData?): boolean
-				return if bData then bData.Enabled else true
-			end, buttonData)
+			style,
+			textColor,
+			textColor,
+			_Computed(function(nData: ButtonData?): boolean
+				return if nData then nData.Enabled else false
+			end, buttonData),
+			elevation
 		))({
 			LayoutOrder = i,
-			Visible = _Computed(function(bData: ButtonData?): boolean
-				return bData ~= nil
+			Visible = _Computed(function(nData: ButtonData?): boolean
+				return if nData then nData.Enabled else false
 			end, buttonData),
-			Parent = buttonContainer,
-		})
+			Parent = buttonContainer
+		})		
 
 	end
 

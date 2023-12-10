@@ -9,6 +9,7 @@ local ColdFusion = require(_Packages:WaitForChild("ColdFusion"))
 
 -- Modules
 local Types = require(_Package:WaitForChild("Types"))
+local Style = require(_Package:WaitForChild("Style"))
 local TopBase = require(script.Parent:WaitForChild("Base"))
 
 -- Types
@@ -19,6 +20,7 @@ type CanBeState<V> = ColdFusion.CanBeState<V>
 type ImageData = Types.ImageData
 type OptionData = Types.OptionData
 type ButtonData = Types.ButtonData
+type Style = Style.Style
 -- Constants
 -- Variables
 -- References
@@ -26,22 +28,28 @@ type ButtonData = Types.ButtonData
 
 -- Class
 local Interface = {}
-
-function Interface.cfusion(
+Interface.ColdFusion = {}
+function Interface.ColdFusion.new(
 	title: CanBeState<string>,
 	buttons: CanBeState<{
 		[number]: ButtonData
 	}>,
-	fab: CanBeState<ButtonData>,
-	theme: CanBeState<ThemeData>
+	navigation: CanBeState<ButtonData?>,
+	backgroundColor: CanBeState<Color3>,
+	textColor: CanBeState<Color3>,
+	elevation: CanBeState<number>,
+	style: CanBeState<Style>
 ): Frame
 
-	return TopBase.cfusion(
+	return TopBase.component(
 		title,
 		buttons,
-		fab,
-		theme,
-		"Center"
+		navigation,
+		"Center",
+		backgroundColor,
+		textColor,
+		elevation,
+		style
 	)
 end
 

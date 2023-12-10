@@ -8,10 +8,11 @@ local MaterialIcons = require(_Packages:WaitForChild("MaterialIcons"))
 
 -- Modules
 local Types = require(_Package:WaitForChild("Types"))
+local Style = require(_Package:WaitForChild("Style"))
+local Enums = require(_Package:WaitForChild("Enums"))
 
 -- Types
 -- Constants
-local SCALE = 1
 -- Variables
 -- References
 local Icons = MaterialIcons.default.dp_48.scale_1
@@ -30,20 +31,14 @@ return function(frame: Frame)
 		listLayout.Parent = frame
 
 		local function build(isDarkMode: boolean, color: Color3)
-			local selectionColor = nil --Color3.new(1,0.75,0)
-			-- local frameColor = Color3.new(0, 0, 0)
-
-			local theme = Types.newThemeData(
-				0,
-				isDarkMode,
-				SCALE,
-				Font.fromEnum(Enum.Font.SourceSans),
-				color,
-				nil, --frameColor,
-				selectionColor
+			local style = Style.new(
+				1,
+				"Roboto",
+				if isDarkMode then Enums.SchemeType.Dark else Enums.SchemeType.Light,
+				color
 			)
-	
-			local out = maid:GiveTask(Module.cfusion(
+
+			local out = maid:GiveTask(Module.ColdFusion.new(
 				"Title",
 				{
 					Types.newButtonData(
@@ -65,7 +60,10 @@ return function(frame: Frame)
 					end,
 					Icons.arrow_back
 				),
-				theme
+				style:GetColor(Enums.ColorRoleType.Primary),
+				style:GetColor(Enums.ColorRoleType.OnPrimary),
+				1,
+				style
 			))
 
 			out.Position = UDim2.fromScale(0.5, 0.5)
