@@ -50,7 +50,7 @@ Util.component = function(
 	cornerRadius: CanBeState<number>?,
 	paddingScale: CanBeState<number>?,
 	useRipple: CanBeState<boolean>?
-): Frame
+): GuiObject
 	local fuse = ColdFusion.fuse(maid)
 
 	local _new = fuse.new

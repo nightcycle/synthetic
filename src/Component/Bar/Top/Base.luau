@@ -56,7 +56,7 @@ function Interface.component(
 	textColor: CanBeState<Color3>,
 	elevation: CanBeState<number>,
 	style: CanBeState<Style>
-): Frame
+): GuiObject
 	local maid = Maid.new()
 
 	local _fuse = ColdFusion.fuse(maid)

@@ -39,7 +39,7 @@ function Interface.ColdFusion.new(
 	textColor: CanBeState<Color3>,
 	elevation: CanBeState<number>,
 	style: CanBeState<Style>
-): Frame
+): GuiObject
 
 	return TopBase.component(
 		title,
