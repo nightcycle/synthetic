@@ -10,22 +10,21 @@ local TableUtil = require(_Packages:WaitForChild("TableUtil"))
 
 -- Modules
 local Types = require(_Package:WaitForChild("Types"))
-local Util = require(_Package:WaitForChild("Util"))
-
 local IconButton = require(_Package:WaitForChild("Component"):WaitForChild("Button"):WaitForChild("IconButton"))
 local FAB = require(_Package:WaitForChild("Component"):WaitForChild("Button"):WaitForChild("FAB"))
+local Style = require(_Package:WaitForChild("Style"))
 
 -- Types
 type Maid = Maid.Maid
 type State<V> = ColdFusion.State<V>
 type ValueState<V> = ColdFusion.ValueState<V>
 type CanBeState<V> = ColdFusion.CanBeState<V>
-type TextStyle = Types.TextStyle
-type ToggleTextStyle = Types.ToggleTextStyle
+type RenderData = Types.RenderData
 type ImageData = Types.ImageData
-type ThemeData = Types.ThemeData
 type OptionData = Types.OptionData
 type ButtonData = Types.ButtonData
+type Style = Style.Style
+
 -- Constants
 local MAX_BUTTONS = 4
 local ICONS = MaterialIcons.default.dp_48.scale_1
@@ -40,12 +39,17 @@ local BAR_LEFT_RIGHT_PADDING_DP = 10
 -- Class
 local Interface = {}
 
-function Interface.cfusion(
+Interface.ColdFusion = {}
+
+function Interface.ColdFusion.new(
 	buttons: CanBeState<{
 		[number]: ButtonData
 	}>,
-	fab: CanBeState<ButtonData>,
-	theme: CanBeState<ThemeData>
+	fab: CanBeState<ButtonData?>,
+	textColor: CanBeState<Color3>,
+	backgroundColor: CanBeState<Color3>,
+	elevation: CanBeState<number>,
+	style: CanBeState<Style>
 ): Frame
 	local maid = Maid.new()
 
@@ -63,21 +67,13 @@ function Interface.cfusion(
 		[number]: ButtonData
 	}> = _import(buttons, {})
 
-	local themeState: State<ThemeData> = _import(theme, nil :: ThemeData?)
-	local elevatedThemeState = _Computed(function(th: ThemeData): ThemeData
-		local cth: ThemeData = TableUtil.deepCopy(th)
-		cth.Elevation += 1
-		return cth
-	end, themeState)
-	local contrastThemeState = _Computed(function(th: ThemeData): ThemeData
-		local cth: ThemeData = TableUtil.deepCopy(th)
-		cth.Color3 = Util.getReadableColor(cth.Color3, Util.getElevatedColor(cth.BackgroundColor3 or cth.Color3, cth.Elevation, cth.IsDarkMode))
-		return cth
-	end, elevatedThemeState)
-	local scaleState: State<number> = _Computed(function(th: ThemeData): number
-		return th.Scale
-	end, themeState)
-	local fabState: State<ButtonData> = _import(fab, nil :: ButtonData?)
+	local styleState: State<Style> = _import(style, nil :: any) 
+
+	local scaleState: State<number> = _Computed(function(s: Style): number
+		return s.Scale
+	end, styleState)
+	
+	local fabState: State<ButtonData?> = _import(fab, nil :: ButtonData?)
 
 	local inst = _new("Frame")({
 		AutomaticSize = Enum.AutomaticSize.XY,

@@ -80,6 +80,7 @@ function Style.new(
 	self._Theme = Theme.new(source, additions)
 	self.Typography = Typography.new(fontFamily)
 
+	table.freeze(self)
 	return self
 end
 

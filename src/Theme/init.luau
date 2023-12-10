@@ -97,7 +97,7 @@ function Theme.new(
 	local darkScheme: Scheme
 	do
 		local function fromScheme(scheme: GoogleScheme): Scheme
-			return {
+			return table.freeze({
 				[Enums.ColorRoleType.Primary] = HCT.fromInt(scheme.primary):toColor3(),
 				[Enums.ColorRoleType.OnPrimary] = HCT.fromInt(scheme.onPrimary):toColor3(),
 				[Enums.ColorRoleType.PrimaryContainer] = HCT.fromInt(scheme.primaryContainer):toColor3(),
@@ -135,7 +135,7 @@ function Theme.new(
 				[Enums.ColorRoleType.OutlineVariant] = HCT.fromInt(scheme.outlineVariant):toColor3(),
 				[Enums.ColorRoleType.Shadow] = HCT.fromInt(scheme.shadow):toColor3(),
 				[Enums.ColorRoleType.Scrim] = HCT.fromInt(scheme.scrim):toColor3(),
-			} :: Scheme
+			}) :: Scheme
 		end
 		lightScheme = fromScheme(googleTheme.schemes.light)
 		darkScheme = fromScheme(googleTheme.schemes.dark)
@@ -165,15 +165,15 @@ function Theme.new(
 	local customColors: {[string]: CustomColorGroup} = {}
 	do
 		local function fromColorGroup(group: GoogleColorGroup): {[Enums.ColorRoleType]: Color3}
-			return {
+			return table.freeze({
 				[Enums.CustomColorType.Custom] = HCT.fromInt(group.color):toColor3(),
 				[Enums.CustomColorType.OnCustom] = HCT.fromInt(group.onColor):toColor3(),
 				[Enums.CustomColorType.CustomContainer] = HCT.fromInt(group.colorContainer):toColor3(),
 				[Enums.CustomColorType.OnCustomContainer] = HCT.fromInt(group.onColorContainer):toColor3(),
-			}
+			})
 		end
 		for i, colorGroup in pairs(googleTheme.customColors) do
-			customColors[colorGroup.color.name] = {
+			local cGroup: CustomColorGroup = {
 				Name = colorGroup.color.name,
 				Value = colorGroup.value,
 				IsBlended = colorGroup.color.blend,
@@ -182,26 +182,28 @@ function Theme.new(
 					Dark = fromColorGroup(colorGroup.dark),
 				},
 			}
+			table.freeze(cGroup)
+			customColors[colorGroup.color.name] = cGroup
 		end
 	end
 
 	local theme: Theme = setmetatable({
 		Source = source,
-		_Schemes = { 
+		_Schemes = table.freeze({ 
 			Light = lightScheme, 
 			Dark = darkScheme
-		},
-		Palettes = {
+		}),
+		Palettes = table.freeze({
 			Primary = primaryPalette,
 			Secondary = secondaryPalette,
 			Tertiary = tertiaryPalette,
 			Neutral = neutralPalette,
 			NeutralVariant = neutralVariantPalette,
 			Error = errorPalette,
-		},
-		CustomColors = customColors,
+		}),
+		CustomColors = table.freeze(customColors),
 	}, Theme) :: any
-
+	table.freeze(theme)
 	return theme
 end
 

@@ -11,8 +11,6 @@ local TableUtil = require(_Packages:WaitForChild("TableUtil"))
 
 -- Modules
 local Types = require(_Package:WaitForChild("Types"))
-local Util = require(_Package:WaitForChild("Util"))
-
 local IconButton = require(_Package:WaitForChild("Component"):WaitForChild("Button"):WaitForChild("IconButton"))
 
 -- Types
@@ -20,10 +18,7 @@ type Maid = Maid.Maid
 type State<V> = ColdFusion.State<V>
 type ValueState<V> = ColdFusion.ValueState<V>
 type CanBeState<V> = ColdFusion.CanBeState<V>
-type TextStyle = Types.TextStyle
-type ToggleTextStyle = Types.ToggleTextStyle
 type ImageData = Types.ImageData
-type ThemeData = Types.ThemeData
 type OptionData = Types.OptionData
 type Signal = Signal.Signal
 type ButtonData = Types.ButtonData

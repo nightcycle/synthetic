@@ -13,7 +13,6 @@ local Signal = require(_Packages:WaitForChild("Signal"))
 local Sounds = require(_Package:WaitForChild("Sounds"))
 local Enums = require(_Package:WaitForChild("Enums"))
 local Types = require(_Package:WaitForChild("Types"))
-local Config = require(_Package:WaitForChild("Config"))
 local Style = require(_Package:WaitForChild("Style"))
 
 -- Types

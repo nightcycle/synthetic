@@ -46,8 +46,8 @@ function Typography.new(fontFamily: string?)
 	fontFamily = fontFamily or DEFAULT_FONT_FAMILY
 	assert(fontFamily)
 	local self: Typography = setmetatable({}, Typography) :: any
-	self._Styles = {
-		[Enums.FontType.DisplayLarge] = {
+	self._Styles = table.freeze({
+		[Enums.FontType.DisplayLarge] = table.freeze({
 			Font = Font.new(
 				fontFamily, 
 				WEIGHT[400],
@@ -56,8 +56,8 @@ function Typography.new(fontFamily: string?)
 			Size = 57,
 			Tracking = -0.25,
 			LineHeight = 64,
-		},
-		[Enums.FontType.DisplayMedium] = {
+		}),
+		[Enums.FontType.DisplayMedium] = table.freeze({
 			Font = Font.new(
 				fontFamily, 
 				WEIGHT[400],
@@ -66,8 +66,8 @@ function Typography.new(fontFamily: string?)
 			Size = 45,
 			Tracking = 0,
 			LineHeight = 52,
-		},
-		[Enums.FontType.DisplaySmall] = {
+		}),
+		[Enums.FontType.DisplaySmall] = table.freeze({
 			Font = Font.new(
 				fontFamily, 
 				WEIGHT[400],
@@ -76,8 +76,8 @@ function Typography.new(fontFamily: string?)
 			Size = 36,
 			Tracking = 0,
 			LineHeight = 44,
-		},
-		[Enums.FontType.HeadlineLarge] = {
+		}),
+		[Enums.FontType.HeadlineLarge] = table.freeze({
 			Font = Font.new(
 				fontFamily, 
 				WEIGHT[400],
@@ -86,8 +86,8 @@ function Typography.new(fontFamily: string?)
 			Size = 32,
 			Tracking = 0,
 			LineHeight = 40,
-		},
-		[Enums.FontType.HeadlineMedium] = {
+		}),
+		[Enums.FontType.HeadlineMedium] = table.freeze({
 			Font = Font.new(
 				fontFamily, 
 				WEIGHT[400],
@@ -96,8 +96,8 @@ function Typography.new(fontFamily: string?)
 			Size = 28,
 			Tracking = 0,
 			LineHeight = 36,
-		},
-		[Enums.FontType.HeadlineSmall] = {
+		}),
+		[Enums.FontType.HeadlineSmall] = table.freeze({
 			Font = Font.new(
 				fontFamily, 
 				WEIGHT[400],
@@ -106,8 +106,8 @@ function Typography.new(fontFamily: string?)
 			Size = 24,
 			Tracking = 0,
 			LineHeight = 32,
-		},
-		[Enums.FontType.TitleLarge] = {
+		}),
+		[Enums.FontType.TitleLarge] = table.freeze({
 			Font = Font.new(
 				fontFamily, 
 				WEIGHT[400],
@@ -116,8 +116,8 @@ function Typography.new(fontFamily: string?)
 			Size = 22,
 			Tracking = 0,
 			LineHeight = 28,
-		},
-		[Enums.FontType.TitleMedium] = {
+		}),
+		[Enums.FontType.TitleMedium] = table.freeze({
 			Font = Font.new(
 				fontFamily, 
 				WEIGHT[500],
@@ -126,8 +126,8 @@ function Typography.new(fontFamily: string?)
 			Size = 16,
 			Tracking = 0.15,
 			LineHeight = 24,
-		},
-		[Enums.FontType.TitleSmall] = {
+		}),
+		[Enums.FontType.TitleSmall] = table.freeze({
 			Font = Font.new(
 				fontFamily, 
 				WEIGHT[500],
@@ -136,8 +136,8 @@ function Typography.new(fontFamily: string?)
 			Size = 14,
 			Tracking = 0.1,
 			LineHeight = 20,
-		},
-		[Enums.FontType.BodyLarge] = {
+		}),
+		[Enums.FontType.BodyLarge] = table.freeze({
 			Font = Font.new(
 				fontFamily, 
 				WEIGHT[400],
@@ -146,8 +146,8 @@ function Typography.new(fontFamily: string?)
 			Size = 16,
 			Tracking = 0.5,
 			LineHeight = 24,
-		},
-		[Enums.FontType.BodyMedium] = {
+		}),
+		[Enums.FontType.BodyMedium] = table.freeze({
 			Font = Font.new(
 				fontFamily, 
 				WEIGHT[400],
@@ -156,8 +156,8 @@ function Typography.new(fontFamily: string?)
 			Size = 14,
 			Tracking = 0.25,
 			LineHeight = 20,
-		},
-		[Enums.FontType.BodySmall] = {
+		}),
+		[Enums.FontType.BodySmall] = table.freeze({
 			Font = Font.new(
 				fontFamily, 
 				WEIGHT[400],
@@ -166,8 +166,8 @@ function Typography.new(fontFamily: string?)
 			Size = 12,
 			Tracking = 0.4,
 			LineHeight = 16,
-		},
-		[Enums.FontType.LabelLarge] = {
+		}),
+		[Enums.FontType.LabelLarge] = table.freeze({
 			Font = Font.new(
 				fontFamily, 
 				WEIGHT[500],
@@ -176,8 +176,8 @@ function Typography.new(fontFamily: string?)
 			Size = 14,
 			Tracking = 0.1,
 			LineHeight = 20,
-		},
-		[Enums.FontType.LabelMedium] = {
+		}),
+		[Enums.FontType.LabelMedium] = table.freeze({
 			Font = Font.new(
 				fontFamily, 
 				WEIGHT[700],
@@ -186,8 +186,8 @@ function Typography.new(fontFamily: string?)
 			Size = 12,
 			Tracking = 0.5,
 			LineHeight = 16,
-		},
-		[Enums.FontType.LabelSmall] = {
+		}),
+		[Enums.FontType.LabelSmall] = table.freeze({
 			Font = Font.new(
 				fontFamily, 
 				WEIGHT[500],
@@ -196,8 +196,10 @@ function Typography.new(fontFamily: string?)
 			Size = 11,
 			Tracking = 0.5,
 			LineHeight = 16,
-		},
-	}
+		}),
+	})
+
+	table.freeze(self)
 
 	return self
 end
