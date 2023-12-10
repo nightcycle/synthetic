@@ -4,13 +4,13 @@ local _Packages = _Package.Parent
 -- Services
 -- Packages
 -- Modules
-local Typography = require(_Package:WaitForChild("Typography"))
-local Theme = require(_Package:WaitForChild("Theme"))
+local Typography = require(script:WaitForChild("Typography"))
+local Theme = require(script:WaitForChild("Theme"))
 local Enums = require(_Package:WaitForChild("Enums"))
 
 -- Types
-type Theme = Theme.Theme
-type Typography = Typography.Typography
+export type Theme = Theme.Theme
+export type Typography = Typography.Typography
 -- Constants
 -- Variables
 -- References

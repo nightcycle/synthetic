@@ -1,12 +1,12 @@
 --!strict
-local _Package = script.Parent
+local _Package = script.Parent.Parent
 local _Packages = _Package.Parent
 -- Services
 -- Packages
 -- Modules
 local ThemeUtil = require(script:WaitForChild("ThemeUtil"))
 local HCT = require(script:WaitForChild("HCT"))
-local Enums = require(script.Parent:WaitForChild("Enums"))
+local Enums = require(_Package:WaitForChild("Enums"))
 local Blend = require(script:WaitForChild("Blend"))
 
 -- Types

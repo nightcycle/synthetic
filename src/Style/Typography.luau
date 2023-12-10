@@ -1,5 +1,5 @@
 --!strict
-local _Package = script.Parent
+local _Package = script.Parent.Parent
 local _Packages = _Package.Parent
 -- Services
 -- Packages

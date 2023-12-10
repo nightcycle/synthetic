@@ -6,13 +6,12 @@ local _Packages = _Package.Parent
 -- Modules
 local Types = require(_Package:WaitForChild("Types"))
 local Style = require(_Package:WaitForChild("Style"))
-local Typography = require(_Package:WaitForChild("Typography"))
 
 -- Types
 export type ImageData = Types.ImageData
 export type OptionData = Types.OptionData
 export type Style = Style.Style
-export type Typography = Typography.Typography
+export type Typography = Style.Typography
 -- Constants
 -- Variables
 -- References
@@ -28,7 +27,6 @@ Synthetic.Types = {
 	newOptionData = Types.newOptionData,
 	newImageData = Types.newImageData,
 }
-Synthetic.Typography = Typography
 Synthetic.Style = Style
 Synthetic.Components = {
 	Bar = {
