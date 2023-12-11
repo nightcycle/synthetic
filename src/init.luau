@@ -31,6 +31,12 @@ Synthetic.Style = Style
 Synthetic.Components = {
 	Bar = {
 		Bottom = require(Component:WaitForChild("Bar"):WaitForChild("Bottom")),
+		Top = {
+			Center = require(Component:WaitForChild("Bar"):WaitForChild("Top"):WaitForChild("Center")),
+			Large = require(Component:WaitForChild("Bar"):WaitForChild("Top"):WaitForChild("Large")),
+			Medium = require(Component:WaitForChild("Bar"):WaitForChild("Top"):WaitForChild("Medium")),
+			Small = require(Component:WaitForChild("Bar"):WaitForChild("Top"):WaitForChild("Small")),
+		}
 	},
 	Button = {
 		Badge = require(Component:WaitForChild("Button"):WaitForChild("Badge")),
@@ -45,6 +51,7 @@ Synthetic.Components = {
 		Segmented = require(Component:WaitForChild("Button"):WaitForChild("Segmented")),
 		Text = require(Component:WaitForChild("Button"):WaitForChild("TextButton")),
 	},
+	Checkbox = require(Component:WaitForChild("Checkbox")),
 }
 
 return Synthetic

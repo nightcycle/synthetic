@@ -3,7 +3,7 @@
 -- Packages
 local Maid = require(game:GetService("ReplicatedStorage"):WaitForChild("Packages"):WaitForChild("Maid"))
 -- Modules
-local Enums = require(script.Parent.Parent:WaitForChild("Enums"))
+local Enums = require(script.Parent.Parent.Parent:WaitForChild("Enums"))
 -- Types
 -- Constants
 -- Variables
@@ -23,7 +23,7 @@ return function(frame: Frame)
 			listLayout.FillDirection = Enum.FillDirection.Vertical
 			listLayout.Padding = UDim.new(0, 0)
 			listLayout.SortOrder = Enum.SortOrder.LayoutOrder
-			listLayout.VerticalAlignment = Enum.VerticalAlignment.Center
+			listLayout.VerticalAlignment = Enum.VerticalAlignment.Top
 			listLayout.HorizontalAlignment = Enum.HorizontalAlignment.Center
 			listLayout.Parent = halfFrame
 

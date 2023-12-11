@@ -14,7 +14,6 @@ local Types = require(_Package:WaitForChild("Types"))
 local Style = require(_Package:WaitForChild("Style"))
 local Enums = require(_Package:WaitForChild("Enums"))
 local Sounds = require(_Package:WaitForChild("Sounds"))
-local Sounds = require(_Package:WaitForChild("Sounds"))
 
 -- Types
 type Maid = Maid.Maid
@@ -82,9 +81,19 @@ function Interface.ColdFusion.new(
 	local scrimColorState: State<Color3> = _import(scrimColor, Color3.new())
 
 	local inst = _new("Frame")({
-		Size = _Computed(function(isFull: boolean): UDim2
-			return if isFull then UDim2.fromScale(1,1) else UDim2.fromScale(0,0)
-		end, isFullScreenState),
+		Size = UDim2.fromScale(0,0),
+		BackgroundTransparency = _Computed(
+			function(isFull: boolean)
+				return if isFull then 0.5 else 1
+			end, 
+			isFullScreenState
+		),
+		AnchorPoint = Vector2.new(0.5,0.5),
+		Position = UDim2.fromScale(1,1),
+		AutomaticSize = Enum.AutomaticSize.XY,
+		Children = {
+			
+		},
 	}) :: GuiObject
 
 	maid.bind(inst)

@@ -171,6 +171,22 @@ export type PaletteType = ("Primary"
 )
 
 local PaletteTypeList = {"Primary","Secondary","Tertiary","Neutral","NeutralVariant","Error",}
+
+export type TransitionType = ("Emphasized"
+
+| "EmphasizedDecelerate"
+
+| "EmphasizedAccelerate"
+
+| "Standard"
+
+| "StandardDecelerate"
+
+| "StandardAccelerate"
+
+)
+
+local TransitionTypeList = {"Emphasized","EmphasizedDecelerate","EmphasizedAccelerate","Standard","StandardDecelerate","StandardAccelerate",}
 export type EnumName = ("FontType"
 
 | "ButtonStateType"
@@ -184,6 +200,8 @@ export type EnumName = ("FontType"
 | "ColorRoleType"
 
 | "PaletteType"
+
+| "TransitionType"
 
 )
 return {
@@ -202,6 +220,8 @@ return {
 			return table.clone(ColorRoleTypeList)
 		elseif enumName == "PaletteType" then
 			return table.clone(PaletteTypeList)
+		elseif enumName == "TransitionType" then
+			return table.clone(TransitionTypeList)
 		end
 		error("bad enum name: "..tostring(enumName))
 	end,
@@ -220,6 +240,8 @@ return {
 			if ColorRoleTypeList[value] then return ColorRoleTypeList[value] else error("no enum item of value "..tostring(value).." in enum "..tostring(enumName)) end
 		elseif enumName == "PaletteType" then
 			if PaletteTypeList[value] then return PaletteTypeList[value] else error("no enum item of value "..tostring(value).." in enum "..tostring(enumName)) end
+		elseif enumName == "TransitionType" then
+			if TransitionTypeList[value] then return TransitionTypeList[value] else error("no enum item of value "..tostring(value).." in enum "..tostring(enumName)) end
 		end
 		error("bad enum name: "..tostring(enumName))
 	end,
@@ -280,6 +302,14 @@ getValueFromEnumItem = function(enumName: EnumName, enumItem: string): number
 				return index
 			else
 				error("no enumItem "..enumItem.." in PaletteType")
+			end
+		elseif enumName == "TransitionType" then
+			local index = table.find(TransitionTypeList, enumItem)
+			if index then
+				assert(index)
+				return index
+			else
+				error("no enumItem "..enumItem.." in TransitionType")
 			end
 		end
 		error("bad enum name: "..tostring(enumName))
@@ -368,5 +398,13 @@ PaletteType = {
 	["Neutral"] = "Neutral",
 	["NeutralVariant"] = "NeutralVariant",
 	["Error"] = "Error",
+},
+TransitionType = {
+	["Emphasized"] = "Emphasized",
+	["EmphasizedDecelerate"] = "EmphasizedDecelerate",
+	["EmphasizedAccelerate"] = "EmphasizedAccelerate",
+	["Standard"] = "Standard",
+	["StandardDecelerate"] = "StandardDecelerate",
+	["StandardAccelerate"] = "StandardAccelerate",
 },
 }

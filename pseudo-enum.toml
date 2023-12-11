@@ -79,3 +79,11 @@ PaletteType = [
 	"NeutralVariant",
 	"Error",
 ]
+TransitionType = [
+	"Emphasized",
+	"EmphasizedDecelerate",
+	"EmphasizedAccelerate",
+	"Standard",
+	"StandardDecelerate",
+	"StandardAccelerate",
+]
