@@ -187,6 +187,42 @@ export type TransitionType = ("Emphasized"
 )
 
 local TransitionTypeList = {"Emphasized","EmphasizedDecelerate","EmphasizedAccelerate","Standard","StandardDecelerate","StandardAccelerate",}
+
+export type TransitionDuration = ("Short1"
+
+| "Short2"
+
+| "Short3"
+
+| "Short4"
+
+| "Medium1"
+
+| "Medium2"
+
+| "Medium3"
+
+| "Medium4"
+
+| "Long1"
+
+| "Long2"
+
+| "Long3"
+
+| "Long4"
+
+| "ExtraLong1"
+
+| "ExtraLong2"
+
+| "ExtraLong3"
+
+| "ExtraLong4"
+
+)
+
+local TransitionDurationList = {"Short1","Short2","Short3","Short4","Medium1","Medium2","Medium3","Medium4","Long1","Long2","Long3","Long4","ExtraLong1","ExtraLong2","ExtraLong3","ExtraLong4",}
 export type EnumName = ("FontType"
 
 | "ButtonStateType"
@@ -202,6 +238,8 @@ export type EnumName = ("FontType"
 | "PaletteType"
 
 | "TransitionType"
+
+| "TransitionDuration"
 
 )
 return {
@@ -222,6 +260,8 @@ return {
 			return table.clone(PaletteTypeList)
 		elseif enumName == "TransitionType" then
 			return table.clone(TransitionTypeList)
+		elseif enumName == "TransitionDuration" then
+			return table.clone(TransitionDurationList)
 		end
 		error("bad enum name: "..tostring(enumName))
 	end,
@@ -242,6 +282,8 @@ return {
 			if PaletteTypeList[value] then return PaletteTypeList[value] else error("no enum item of value "..tostring(value).." in enum "..tostring(enumName)) end
 		elseif enumName == "TransitionType" then
 			if TransitionTypeList[value] then return TransitionTypeList[value] else error("no enum item of value "..tostring(value).." in enum "..tostring(enumName)) end
+		elseif enumName == "TransitionDuration" then
+			if TransitionDurationList[value] then return TransitionDurationList[value] else error("no enum item of value "..tostring(value).." in enum "..tostring(enumName)) end
 		end
 		error("bad enum name: "..tostring(enumName))
 	end,
@@ -310,6 +352,14 @@ getValueFromEnumItem = function(enumName: EnumName, enumItem: string): number
 				return index
 			else
 				error("no enumItem "..enumItem.." in TransitionType")
+			end
+		elseif enumName == "TransitionDuration" then
+			local index = table.find(TransitionDurationList, enumItem)
+			if index then
+				assert(index)
+				return index
+			else
+				error("no enumItem "..enumItem.." in TransitionDuration")
 			end
 		end
 		error("bad enum name: "..tostring(enumName))
@@ -406,5 +456,23 @@ TransitionType = {
 	["Standard"] = "Standard",
 	["StandardDecelerate"] = "StandardDecelerate",
 	["StandardAccelerate"] = "StandardAccelerate",
+},
+TransitionDuration = {
+	["Short1"] = "Short1",
+	["Short2"] = "Short2",
+	["Short3"] = "Short3",
+	["Short4"] = "Short4",
+	["Medium1"] = "Medium1",
+	["Medium2"] = "Medium2",
+	["Medium3"] = "Medium3",
+	["Medium4"] = "Medium4",
+	["Long1"] = "Long1",
+	["Long2"] = "Long2",
+	["Long3"] = "Long3",
+	["Long4"] = "Long4",
+	["ExtraLong1"] = "ExtraLong1",
+	["ExtraLong2"] = "ExtraLong2",
+	["ExtraLong3"] = "ExtraLong3",
+	["ExtraLong4"] = "ExtraLong4",
 },
 }

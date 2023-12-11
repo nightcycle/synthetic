@@ -87,3 +87,22 @@ TransitionType = [
 	"StandardDecelerate",
 	"StandardAccelerate",
 ]
+TransitionDuration = [
+	"Short1",
+	"Short2",
+	"Short3",
+	"Short4",
+	"Medium1",
+	"Medium2",
+	"Medium3",
+	"Medium4",
+	"Long1",
+	"Long2",
+	"Long3",
+	"Long4",
+	"ExtraLong1",
+	"ExtraLong2",
+	"ExtraLong3",
+	"ExtraLong4",
+	
+]

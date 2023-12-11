@@ -20,7 +20,7 @@ local PAD = 10
 local IN_PAD = 2
 local X_COUNT = 3
 local Y_COUNT = 4
-local DURATION = 2
+local DURATION = 0.75
 -- Variables
 -- References
 -- Class
@@ -253,54 +253,37 @@ return function(frame: Frame)
 		end
 
 		do
-			do
-				local FLIP_POINT = 0.2
-				local WEIGHT = 0.45
-				graphTransition(
-					"emphasized",
-					function(x: number): number
-						if x < FLIP_POINT then
-							return CurveUtil.ease(
-								x / FLIP_POINT,
-								Enum.EasingStyle.Exponential,
-								Enum.EasingDirection.In
-							) * WEIGHT
-						else
-							return WEIGHT + (1-WEIGHT) * CurveUtil.ease(
-								(x - FLIP_POINT) / (1-FLIP_POINT),
-								Enum.EasingStyle.Exponential,
-								Enum.EasingDirection.Out
-							)
-						end
-					end
-				)
-			end
-		
-			do
-				graphTransition(
-					"emphasized-deaccel",
-					function(x: number): number
-						return (CurveUtil.ease(
-							x,
-							Enum.EasingStyle.Exponential,
-							Enum.EasingDirection.Out
-						) ^ 0.5)
-					end
-				)
-			end
+			graphTransition(
+				"emphasized",
+				Module.Easing[Enums.TransitionType.Emphasized]
+			)
 
-			do
-				graphTransition(
-					"emphasized-accel",
-					function(x: number): number
-						return (CurveUtil.ease(
-							x,
-							Enum.EasingStyle.Exponential,
-							Enum.EasingDirection.In
-						) ^ 1.25)
-					end
-				)
-			end
+			graphTransition(
+				"emphasized-decel",
+				Module.Easing[Enums.TransitionType.EmphasizedDecelerate]
+			)
+
+			graphTransition(
+				"emphasized-accel",
+				Module.Easing[Enums.TransitionType.EmphasizedAccelerate]
+			)
+		end
+
+		do
+			graphTransition(
+				"standard",
+				Module.Easing[Enums.TransitionType.Standard]
+			)
+
+			graphTransition(
+				"standard-decel",
+				Module.Easing[Enums.TransitionType.StandardDecelerate]
+			)
+
+			graphTransition(
+				"standard-accel",
+				Module.Easing[Enums.TransitionType.StandardAccelerate]
+			)
 		end
 	end)
 	return function()
