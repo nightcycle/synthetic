@@ -175,8 +175,8 @@ function component(
 				TextYAlignment = Enum.TextYAlignment.Center,
 				BackgroundTransparency = 1,
 				AutomaticSize = Enum.AutomaticSize.X,
-				FontFace = _Computed(function(style: Style): Font
-					return style.Typography:Get(Enums.FontType.LabelMedium).Font
+				FontFace = _Computed(function(s: Style): Font
+					return s:GetFont(Enums.FontType.LabelMedium)
 				end, styleState),
 				LayoutOrder = 2,
 				TextColor3 = _Computed(function(data: RenderData): Color3
@@ -292,7 +292,7 @@ function component(
 									end
 								end, countState),
 								FontFace = _Computed(function(style: Style): Font
-									return style.Typography:Get(Enums.FontType.LabelSmall).Font
+									return style:GetFontData(Enums.FontType.LabelSmall).Font
 								end, styleState),
 								BackgroundColor3 = _Computed(function(style: Style, e: number): Color3
 									return style:GetColor(Enums.ColorRoleType.Error, e + 1)
@@ -382,7 +382,7 @@ function Interface.ColdFusion.new(
 						Types.newAppearanceData(style:GetElevatedColor(hC, e), 1),
 						Types.newAppearanceData(style:GetElevatedColor(hC, e), 1),
 						Types.newAppearanceData(style:GetElevatedColor(tC, e), 0),
-						style.Typography:Get(Enums.FontType.LabelLarge),
+						style:GetFontData(Enums.FontType.LabelLarge),
 						i,
 						nil,
 						nil
@@ -392,7 +392,7 @@ function Interface.ColdFusion.new(
 						Types.newAppearanceData(style:GetElevatedColor(hC, e), 1),
 						Types.newAppearanceData(style:GetElevatedColor(hC, e + 1), 1 - 0.08),
 						Types.newAppearanceData(style:GetElevatedColor(tC, e + 1), 0),
-						style.Typography:Get(Enums.FontType.LabelLarge),
+						style:GetFontData(Enums.FontType.LabelLarge),
 						i,
 						nil,
 						nil
@@ -402,7 +402,7 @@ function Interface.ColdFusion.new(
 						Types.newAppearanceData(style:GetElevatedColor(hC, e), 1),
 						Types.newAppearanceData(style:GetElevatedColor(hC, e), 1 - 0.1),
 						Types.newAppearanceData(style:GetElevatedColor(tC, e), 0),
-						style.Typography:Get(Enums.FontType.LabelLarge),
+						style:GetFontData(Enums.FontType.LabelLarge),
 						i,
 						nil,
 						nil
@@ -412,7 +412,7 @@ function Interface.ColdFusion.new(
 						Types.newAppearanceData(style:GetElevatedColor(hC, e), 1),
 						Types.newAppearanceData(style:GetElevatedColor(hC, e - 1), 1 - 0.1),
 						Types.newAppearanceData(style:GetElevatedColor(tC, e - 1), 0),
-						style.Typography:Get(Enums.FontType.LabelLarge),
+						style:GetFontData(Enums.FontType.LabelLarge),
 						i,
 						Types.newSoundData(Sounds.ui_tap_variant_01, 1),
 						nil

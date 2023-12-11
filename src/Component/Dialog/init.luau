@@ -28,6 +28,10 @@ type Style = Style.Style
 -- Constants
 local ICONS = MaterialIcons.default.dp_48.scale_1
 local ELEVATION = 6
+local LIST_PAD_DP = 16
+local ICON_SIZE_DP = 24
+local SHAPE_DP = 28
+local PADDING_DP = 24
 -- Variables
 -- References
 -- Private Functions
@@ -37,12 +41,13 @@ local Interface = {}
 Interface.ColdFusion = {}
 
 function Interface.ColdFusion.new(
+	
+	buttons: CanBeState<{[number]: ButtonData}>,
+
 	isFullScreen: CanBeState<boolean>,
 	icon: CanBeState<ImageData?>,
 	headline: CanBeState<string?>,
 	description: CanBeState<string?>,
-
-	buttons: CanBeState<{[number]: ButtonData}>,
 
 	surfaceColor: CanBeState<Color3>,
 	buttonTextColor: CanBeState<Color3>,
@@ -67,6 +72,7 @@ function Interface.ColdFusion.new(
 
 	local isFullScreenState = _import(isFullScreen, true)
 	local iconState = _import(icon, nil :: ImageData?)
+	local styleState: State<Style> = _import(style, nil :: any)
 
 	local headlineState: State<string?> = _import(headline, nil :: string?)
 	local descriptionState: State<string?> = _import(description, nil :: string?)
@@ -88,11 +94,117 @@ function Interface.ColdFusion.new(
 			end, 
 			isFullScreenState
 		),
+		BackgroundColor3 = scrimColorState,
 		AnchorPoint = Vector2.new(0.5,0.5),
 		Position = UDim2.fromScale(1,1),
 		AutomaticSize = Enum.AutomaticSize.XY,
 		Children = {
-			
+			_new("UIListLayout")({
+				Padding = UDim.new(0, 0),
+				SortOrder = Enum.SortOrder.LayoutOrder,
+				FillDirection = Enum.FillDirection.Vertical,
+				ItemLineAlignment = Enum.ItemLineAlignment.Center,
+				VerticalAlignment = Enum.VerticalAlignment.Center,
+				HorizontalAlignment = Enum.HorizontalAlignment.Center,
+			}),
+			_new("Frame")({
+				AutomaticSize = Enum.AutomaticSize.XY,
+				Size = UDim2.fromScale(0,0),
+				BackgroundColor3 = surfaceColorState,
+				Children = {
+
+					_new("UIListLayout")({
+						Padding = _Computed(function(s: Style): UDim
+							return UDim.new(0, s.Scale * LIST_PAD_DP)
+						end, styleState),
+						SortOrder = Enum.SortOrder.LayoutOrder,
+						FillDirection = Enum.FillDirection.Vertical,
+						ItemLineAlignment = Enum.ItemLineAlignment.Center,
+						VerticalAlignment = Enum.VerticalAlignment.Center,
+						HorizontalAlignment = Enum.HorizontalAlignment.Center,
+					}),
+					_new("UICorner")({
+						CornerRadius = _Computed(function(s: Style): UDim
+							return UDim.new(0, s.Scale * SHAPE_DP)
+						end, styleState),
+					}),
+					_new("ImageLabel")({
+						Size = _Computed(function(s: Style): UDim2
+							return UDim2.fromOffset(s.Scale * ICON_SIZE_DP, s.Scale * ICON_SIZE_DP)
+						end, styleState),
+						Visible = _Computed(function(i: ImageData?): boolean
+							return i ~= nil
+						end, iconState),
+						BackgroundTransparency = 1,
+						ImageColor3 = headlineColorState,
+						Image = _Computed(function(i: ImageData?): string
+							return if i then i.Image else ""
+						end, iconState),
+						ImageRectOffset = _Computed(function(i: ImageData?): Vector2
+							return if i then i.ImageRectOffset else Vector2.zero
+						end, iconState),
+						ImageRectSize = _Computed(function(i: ImageData?): Vector2
+							return if i then i.ImageRectSize else Vector2.zero
+						end, iconState),
+					}),
+					_new("UIPadding")({
+						PaddingTop = _Computed(function(s: Style): UDim
+							return UDim.new(0, s.Scale * PADDING_DP)
+						end, styleState),
+						PaddingBottom = _Computed(function(s: Style): UDim
+							return UDim.new(0, s.Scale * PADDING_DP)
+						end, styleState),
+						PaddingLeft = _Computed(function(s: Style): UDim
+							return UDim.new(0, s.Scale * PADDING_DP)
+						end, styleState),
+						PaddingRight = _Computed(function(s: Style): UDim
+							return UDim.new(0, s.Scale * PADDING_DP)
+						end, styleState),
+					}),
+					_new("TextLabel")({
+						Text = headlineState,
+						LayoutOrder = 1,
+						Visible = _Computed(function(h: string?): boolean
+							return not (h == nil or h:len() == 0)
+						end, headlineState),
+						TextColor3 = headlineColorState,
+						BackgroundTransparency = 1,
+						AutomaticSize = Enum.AutomaticSize.XY,
+						TextSize = _Computed(function(s: Style): number
+							return s:GetTextSize(Enums.FontType.HeadlineSmall)
+						end, styleState),
+						LineHeight = _Computed(function(s: Style): number
+							return s:GetLineHeight(Enums.FontType.HeadlineSmall)
+						end, styleState),
+						FontFace = _Computed(function(s: Style): Font
+							return s:GetFont(Enums.FontType.HeadlineSmall)
+						end, styleState),
+						Size = UDim2.fromOffset(0,0),
+
+					}),
+					_new("TextLabel")({
+						Text = descriptionState,
+						LayoutOrder = 2,
+						Visible = _Computed(function(d: string?): boolean
+							return not (d == nil or d:len() == 0)
+						end, descriptionState),
+						TextColor3 = descriptionColorState,
+						BackgroundTransparency = 1,
+						AutomaticSize = Enum.AutomaticSize.XY,
+						TextSize = _Computed(function(s: Style): number
+							return s:GetTextSize(Enums.FontType.BodyMedium)
+						end, styleState),
+						LineHeight = _Computed(function(s: Style): number
+							return s:GetLineHeight(Enums.FontType.BodyMedium)
+						end, styleState),
+						FontFace = _Computed(function(s: Style): Font
+							return s:GetFont(Enums.FontType.BodyMedium)
+						end, styleState),
+						Size = UDim2.fromOffset(0,0),
+
+					}),
+				},
+			}),
 		},
 	}) :: GuiObject
 

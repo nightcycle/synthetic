@@ -97,7 +97,7 @@ function Interface.ColdFusion.new(
 						Types.newAppearanceData(style:GetElevatedColor(sC, e), 1),
 						Types.newAppearanceData(style:GetElevatedColor(sC, e), 0),
 						Types.newAppearanceData(style:GetElevatedColor(tC, e), 0),
-						style.Typography:Get(Enums.FontType.LabelLarge),
+						style:GetFontData(Enums.FontType.LabelLarge),
 						i,
 						nil,
 						Types.newShadow(
@@ -110,7 +110,7 @@ function Interface.ColdFusion.new(
 						Types.newAppearanceData(style:GetElevatedColor(dSC, e), 1),
 						Types.newAppearanceData(style:GetElevatedColor(dSC, e), 0.12),
 						Types.newAppearanceData(style:GetElevatedColor(dTC, e), 0.12),
-						style.Typography:Get(Enums.FontType.LabelLarge),
+						style:GetFontData(Enums.FontType.LabelLarge),
 						i,
 						nil,
 						Types.newShadow(
@@ -123,7 +123,7 @@ function Interface.ColdFusion.new(
 						Types.newAppearanceData(style:GetElevatedColor(sC, e), 1),
 						Types.newAppearanceData(style:GetElevatedColor(sC, e + 1), 0.08),
 						Types.newAppearanceData(style:GetElevatedColor(tC, e + 1), 0.08),
-						style.Typography:Get(Enums.FontType.LabelLarge),
+						style:GetFontData(Enums.FontType.LabelLarge),
 						i,
 						nil,
 						Types.newShadow(
@@ -136,7 +136,7 @@ function Interface.ColdFusion.new(
 						Types.newAppearanceData(style:GetElevatedColor(sC, e), 1),
 						Types.newAppearanceData(style:GetElevatedColor(sC, e), 0.1),
 						Types.newAppearanceData(style:GetElevatedColor(tC, e), 0.1),
-						style.Typography:Get(Enums.FontType.LabelLarge),
+						style:GetFontData(Enums.FontType.LabelLarge),
 						i,
 						nil,
 						Types.newShadow(
@@ -149,7 +149,7 @@ function Interface.ColdFusion.new(
 						Types.newAppearanceData(style:GetElevatedColor(sC, e), 1),
 						Types.newAppearanceData(style:GetElevatedColor(sC, e - 1), 0.1),
 						Types.newAppearanceData(style:GetElevatedColor(tC, e - 1), 0.1),
-						style.Typography:Get(Enums.FontType.LabelLarge),
+						style:GetFontData(Enums.FontType.LabelLarge),
 						i,
 						Types.newSoundData(Sounds.ui_tap_variant_01, 0),
 						Types.newShadow(

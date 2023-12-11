@@ -4,13 +4,16 @@ local _Packages = _Package.Parent
 -- Services
 -- Packages
 local Maid = require(_Packages:WaitForChild("Maid"))
+local MaterialIcons = require(_Packages:WaitForChild("MaterialIcons"))
 
 -- Modules
 local Style = require(_Package:WaitForChild("Style"))
 local Enums = require(_Package:WaitForChild("Enums"))
+local Types = require(_Package:WaitForChild("Types"))
 
 -- Types
 -- Constants
+local Icons = MaterialIcons.default.dp_48.scale_2
 -- Variables
 -- References
 
@@ -23,7 +26,7 @@ return function(frame: Frame)
 				Style.new(1, "Roboto", if isDarkMode then Enums.SchemeType.Dark else Enums.SchemeType.Light, color)
 
 			local halfFrame = maid:GiveTask(Instance.new("Frame"))
-			halfFrame.BackgroundColor3 = style:GetColor(Enums.ColorRoleType.Surface)
+			halfFrame.BackgroundColor3 = style:GetColor(Enums.ColorRoleType.Background)
 			halfFrame.BorderSizePixel = 0
 			local listLayout = maid:GiveTask(Instance.new("UIListLayout"))
 			listLayout.FillDirection = Enum.FillDirection.Vertical
@@ -37,19 +40,46 @@ return function(frame: Frame)
 			do
 				local button = maid:GiveTask(
 					Module.ColdFusion.new(
-						function(isSelected: boolean?)
-							print("is selected", isSelected)
-						end,
-						nil,
+						{
+							Types.newButtonData(
+								function()
+									print("Click 1")
+								end,
+								nil,
+								"Button 1",
+								true
+							),
+							Types.newButtonData(
+								function()
+									print("Click 2")
+								end,
+								nil,
+								"Button 2",
+								false
+							),
+							Types.newButtonData(
+								function()
+									print("Click 3")
+								end,
+								nil,
+								"Button 3",
+								true
+							),
+						},
 						true,
-						style:GetColor(Enums.ColorRoleType.OnSurfaceVariant),
+						Icons.usb,
+						"Dialog",
+						"Lorem ipsum or whatever",
+						style:GetColor(Enums.ColorRoleType.SurfaceContainerHigh),
 						style:GetColor(Enums.ColorRoleType.Primary),
-						style:GetColor(Enums.ColorRoleType.OnPrimary),
 						style:GetColor(Enums.ColorRoleType.OnSurface),
-						1,
+						style:GetColor(Enums.ColorRoleType.OnSurfaceVariant),
+						style:GetColor(Enums.ColorRoleType.Outline),
+						style:GetColor(Enums.ColorRoleType.SurfaceTint),
 						style
 					)
 				)
+				button.Size = UDim2.fromScale(1,1)
 				button.Parent = halfFrame
 			end
 

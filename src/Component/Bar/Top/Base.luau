@@ -143,9 +143,9 @@ function Interface.component(
 				TextScaled = true,
 				FontFace = _Computed(function(s: Style, var: BarVariant): Font
 					if var == "Medium" then
-						return s.Typography:Get(Enums.FontType.HeadlineSmall).Font
+						return s:GetFont(Enums.FontType.HeadlineSmall)
 					else
-						return s.Typography:Get(Enums.FontType.HeadlineMedium).Font
+						return s:GetFont(Enums.FontType.HeadlineMedium)
 					end
 				end, styleState, variantState),
 			}),
@@ -193,7 +193,7 @@ function Interface.component(
 				end, scaleState),
 				TextScaled = true,
 				FontFace = _Computed(function(s: Style): Font
-					return s.Typography:Get(Enums.FontType.TitleLarge).Font
+					return s:GetFont(Enums.FontType.TitleLarge)
 				end, styleState),
 			}),
 			_new("Frame")({
@@ -229,7 +229,7 @@ function Interface.component(
 						end, scaleState),
 						TextScaled = true,
 						FontFace = _Computed(function(s: Style): Font
-							return s.Typography:Get(Enums.FontType.TitleLarge).Font
+							return s:GetFont(Enums.FontType.TitleLarge)
 						end, styleState),
 					}),
 					_bind(IconButton.ColdFusion.new(
