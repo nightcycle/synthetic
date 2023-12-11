@@ -28,7 +28,7 @@ return function(frame: Frame)
 	local maid = Maid.new()
 	task.spawn(function()
 		local Module = require(script.Parent)
-		local style = Style.new(1, "Roboto", Enums.SchemeType.Dark, Color3.new(1,0,0))
+		local style = Style.new(1, "Roboto", Enums.SchemeType.Dark, Color3.fromHSV(math.random(), 0.7, 0.7))
 
 		local gridLayout = maid:GiveTask(Instance.new("UIGridLayout"))
 		gridLayout.CellPadding = UDim2.fromOffset(PAD, PAD)
@@ -79,7 +79,16 @@ return function(frame: Frame)
 				BackgroundColor3 = style:GetColor(Enums.ColorRoleType.Surface),
 				LayoutOrder = 2,
 				Children = {
-					image
+					image :: any,
+					_new("Frame")({
+						BackgroundColor3 = style:GetColor(Enums.ColorRoleType.Surface),
+						BorderSizePixel = 0,
+						Size = UDim2.new(1,0,0,5),
+						AnchorPoint = Vector2.new(0,0.5),
+						Position = _Computed(function(y: number): UDim2
+							return UDim2.fromScale(0, 1-y)
+						end, yState)
+					})
 				},
 			}) :: ImageLabel
 
@@ -242,7 +251,57 @@ return function(frame: Frame)
 				end
 			)
 		end
+
+		do
+			do
+				local FLIP_POINT = 0.2
+				local WEIGHT = 0.45
+				graphTransition(
+					"emphasized",
+					function(x: number): number
+						if x < FLIP_POINT then
+							return CurveUtil.ease(
+								x / FLIP_POINT,
+								Enum.EasingStyle.Exponential,
+								Enum.EasingDirection.In
+							) * WEIGHT
+						else
+							return WEIGHT + (1-WEIGHT) * CurveUtil.ease(
+								(x - FLIP_POINT) / (1-FLIP_POINT),
+								Enum.EasingStyle.Exponential,
+								Enum.EasingDirection.Out
+							)
+						end
+					end
+				)
+			end
 		
+			do
+				graphTransition(
+					"emphasized-deaccel",
+					function(x: number): number
+						return (CurveUtil.ease(
+							x,
+							Enum.EasingStyle.Exponential,
+							Enum.EasingDirection.Out
+						) ^ 0.5)
+					end
+				)
+			end
+
+			do
+				graphTransition(
+					"emphasized-accel",
+					function(x: number): number
+						return (CurveUtil.ease(
+							x,
+							Enum.EasingStyle.Exponential,
+							Enum.EasingDirection.In
+						) ^ 1.25)
+					end
+				)
+			end
+		end
 	end)
 	return function()
 		maid:Destroy()
