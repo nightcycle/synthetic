@@ -22,6 +22,7 @@ local Synthetic = {}
 
 Synthetic.Enums = require(_Package:WaitForChild("Enums"))
 Synthetic.Sounds = require(_Package:WaitForChild("Sounds"))
+Synthetic.Util = require(_Package:WaitForChild("Util"))
 Synthetic.Types = {
 	newButtonData = Types.newButtonData,
 	newOptionData = Types.newOptionData,
@@ -38,6 +39,7 @@ Synthetic.Components = {
 			Small = require(Component:WaitForChild("Bar"):WaitForChild("Top"):WaitForChild("Small")),
 		}
 	},
+	Dialog = require(Component:WaitForChild("Dialog")),
 	Button = {
 		Badge = require(Component:WaitForChild("Button"):WaitForChild("Badge")),
 		ElevatedButton = require(Component:WaitForChild("Button"):WaitForChild("ElevatedButton")),
@@ -50,6 +52,9 @@ Synthetic.Components = {
 		OutlinedIcon = require(Component:WaitForChild("Button"):WaitForChild("OutlinedIconButton")),
 		Segmented = require(Component:WaitForChild("Button"):WaitForChild("Segmented")),
 		Text = require(Component:WaitForChild("Button"):WaitForChild("TextButton")),
+		Chip = {
+			Filter = require(Component:WaitForChild("Button"):WaitForChild("Chip"):WaitForChild("Filter"))
+		}
 	},
 	Checkbox = require(Component:WaitForChild("Checkbox")),
 }

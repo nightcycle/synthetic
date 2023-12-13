@@ -45,7 +45,8 @@ function Interface.new(
 	fillColor: CanBeState<Color3>,
 	disabledFillColor: CanBeState<Color3>,
 	isEnabled: CanBeState<boolean>,
-	elevation: CanBeState<number>
+	elevation: CanBeState<number>,
+	isButton: CanBeState<boolean>?
 ): GuiObject
 	local maid = Maid.new()
 
@@ -65,6 +66,7 @@ function Interface.new(
 	local textColorState: State<Color3> = _import(textColor, Color3.new(1, 1, 1))
 	local fillTextColorState: State<Color3> = _import(fillTextColor, Color3.new(1, 1, 1))
 	local disabledFillTextColorState: State<Color3> = _import(disabledFillTextColor, Color3.new(1, 1, 1))
+	local isButtonState: State<boolean> = _import(isButton, false)
 
 	
 	local fillColorState: State<Color3> = _import(fillColor, Color3.new(1, 1, 1))
@@ -244,9 +246,9 @@ function Interface.new(
 		end,
 		text,
 		if isEnabled == nil then true else isEnabled,
-		_Computed(function(isSel: boolean, fDatas: {[Enums.ButtonStateType]: RenderData}, oDatas: {[Enums.ButtonStateType]: RenderData}): {[Enums.ButtonStateType]: RenderData}
-			return if isSel then fDatas else oDatas
-		end, isSelectedState, filledRenderDatasState, outlineRenderDatasState),
+		_Computed(function(isSel: boolean, isButton: boolean, fDatas: {[Enums.ButtonStateType]: RenderData}, oDatas: {[Enums.ButtonStateType]: RenderData}): {[Enums.ButtonStateType]: RenderData}
+			return if isSel and not isButton then fDatas else oDatas
+		end, isSelectedState, isButtonState, filledRenderDatasState, outlineRenderDatasState),
 		nil,
 		_Computed(function(s: Style): number
 			return s.Scale * 8
