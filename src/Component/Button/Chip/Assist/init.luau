@@ -21,11 +21,9 @@ type CanBeState<V> = ColdFusion.CanBeState<V>
 type RenderData = Types.RenderData
 type Style = Style.Style
 type ImageData = Types.ImageData
-
 -- Constants
 -- Variables
 -- References
-local Icons = MaterialIcons.default.dp_48.scale_1
 
 -- Private Functions
 
@@ -36,8 +34,8 @@ Interface.ColdFusion = {}
 
 function Interface.ColdFusion.new(
 	onClick: CanBeState<() -> ()>,
-	isInitiallySelected: CanBeState<boolean>,
 	text: CanBeState<string>,
+	icon: CanBeState<ImageData?>,
 	style: CanBeState<Style>,
 	textColor: CanBeState<Color3>,
 	disabledTextColor: CanBeState<Color3>,
@@ -56,18 +54,15 @@ function Interface.ColdFusion.new(
 	local _Value = _fuse.Value
 	local _Computed = _fuse.Computed
 
-	local isInitiallySelectedState = _import(isInitiallySelected, true)
-	local isSelectedState = _Value(isInitiallySelectedState:Get())
 	local onClickState = _import(onClick, function() end)
 	local button = Base.new(
 		function(isSelected: boolean)
 			local click = onClickState:Get()
-			isSelectedState:Set(isSelected)
 			click()
 		end,
-		isInitiallySelectedState,
+		false,
 		text,
-		nil,
+		icon,
 		style,
 		textColor,
 		disabledTextColor,

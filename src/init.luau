@@ -53,7 +53,8 @@ Synthetic.Components = {
 		Segmented = require(Component:WaitForChild("Button"):WaitForChild("Segmented")),
 		Text = require(Component:WaitForChild("Button"):WaitForChild("TextButton")),
 		Chip = {
-			Filter = require(Component:WaitForChild("Button"):WaitForChild("Chip"):WaitForChild("Filter"))
+			Filter = require(Component:WaitForChild("Button"):WaitForChild("Chip"):WaitForChild("Filter")),
+			Assist = require(Component:WaitForChild("Button"):WaitForChild("Chip"):WaitForChild("Assist")),
 		}
 	},
 	Checkbox = require(Component:WaitForChild("Checkbox")),

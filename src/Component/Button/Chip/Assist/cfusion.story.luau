@@ -42,8 +42,8 @@ return function(frame: Frame)
 						function()
 							print(`click 1`)
 						end,
-						false,
-						"Filter chip",
+						"Assist chip",
+						Icons.umbrella,
 						style,
 						style:GetColor(Enums.ColorRoleType.Primary),
 						style:GetColor(Enums.ColorRoleType.OnSurface),
@@ -58,28 +58,10 @@ return function(frame: Frame)
 				local button = maid:GiveTask(
 					Module.ColdFusion.new(
 						function()
-							print(`click 1`)
+							print(`click 2`)
 						end,
-						false,
-						"Disabled chip",
-						style,
-						style:GetColor(Enums.ColorRoleType.Primary),
-						style:GetColor(Enums.ColorRoleType.OnSurface),
-						false,
-						0
-					)
-				)
-				button.Parent = halfFrame
-			end
-
-			do
-				local button = maid:GiveTask(
-					Module.ColdFusion.new(
-						function()
-							print(`click 1`)
-						end,
-						true,
-						"Disabled chip",
+						"Assist chip",
+						Icons.umbrella,
 						style,
 						style:GetColor(Enums.ColorRoleType.Primary),
 						style:GetColor(Enums.ColorRoleType.OnSurface),
