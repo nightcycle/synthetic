@@ -67,21 +67,21 @@ export type FontData = {
 local Types = {}
 
 function Types.newFontData(font: Font, size: number, lineHeight: number?, tracking: number?): FontData
-	return {
+	return table.freeze({
 		Font = font,
 		Size = size,
 		Tracking = tracking or 0,
 		LineHeight = lineHeight or size,
-	}
+	})
 end
 
 function Types.newButtonData(onClick: () -> (), icon: ImageData?, text: string?, enabled: boolean?): ButtonData
-	return {
+	return table.freeze({
 		Icon = icon,
 		Text = text,
 		OnClick = onClick,
 		Enabled = if enabled == nil then true else enabled,
-	}
+	})
 end
 
 function Types.newOptionData(
@@ -93,7 +93,7 @@ function Types.newOptionData(
 	selectedText: string?,
 	selectedIcon: ImageData?
 ): OptionData
-	return {
+	return table.freeze({
 		Text = text or "",
 		Icon = icon,
 		Disabled = disabled,
@@ -101,35 +101,35 @@ function Types.newOptionData(
 		SelectedIcon = selectedIcon or icon,
 		IsInitiallySelected = isInitiallySelected,
 		OnSelect = onSelect,
-	}
+	})
 end
 function Types.newSoundData(soundId: string, volume: number?): SoundData
-	return {
+	return table.freeze({
 		SoundId = soundId,
 		Volume = volume or 1,
-	}
+	})
 end
 
 function Types.newShadow(appearance: AppearanceData, offset: Vector2): ShadowData
-	return {
+	return table.freeze({
 		Appearance = appearance,
 		Offset = offset,
-	}
+	})
 end
 
 function Types.newAppearanceData(color3: Color3, transparency: number?): AppearanceData
-	return {
+	return table.freeze({
 		Color3 = color3,
 		Transparency = transparency or 0,
-	}
+	})
 end
 
 function Types.newImageData(image: string, rectOffset: Vector2?, rectSize: Vector2?): ImageData
-	return {
+	return table.freeze({
 		Image = image,
 		ImageRectOffset = rectOffset or Vector2.zero,
 		ImageRectSize = rectSize or Vector2.zero,
-	}
+	})
 end
 
 function Types.newRenderData(
@@ -142,7 +142,7 @@ function Types.newRenderData(
 	sound: SoundData?,
 	shadow: ShadowData?
 ): RenderData
-	return {
+	return table.freeze({
 		Scale = scale,
 		Border = border,
 		Background = background,
@@ -151,7 +151,7 @@ function Types.newRenderData(
 		Font = font,
 		Text = text,
 		Shadow = shadow,
-	}
+	})
 end
 
 return Types

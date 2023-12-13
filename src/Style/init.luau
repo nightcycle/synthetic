@@ -72,7 +72,7 @@ function Style:GetTextSize(fontType: Enums.FontType): number
 end
 
 function Style:GetLineHeight(fontType: Enums.FontType): number
-	return self._Typography:Get(fontType).LineHeight * self.Scale
+	return self._Typography:Get(fontType).LineHeight / self._Typography:Get(fontType).Size
 end
 
 

@@ -12,8 +12,6 @@ local Sounds = require(_Package:WaitForChild("Sounds"))
 local Enums = require(_Package:WaitForChild("Enums"))
 local Types = require(_Package:WaitForChild("Types"))
 local Base = require(script.Parent:WaitForChild("Base"))
-local Typography = require(_Package:WaitForChild("Typography"))
-local Theme = require(_Package:WaitForChild("Theme"))
 local Style = require(_Package:WaitForChild("Style"))
 
 -- Types
@@ -22,8 +20,6 @@ type State<V> = ColdFusion.State<V>
 type ValueState<V> = ColdFusion.ValueState<V>
 type CanBeState<V> = ColdFusion.CanBeState<V>
 type RenderData = Types.RenderData
-type Typography = Typography.Typography
-type Theme = Theme.Theme
 type Style = Style.Style
 type ImageData = Types.ImageData
 

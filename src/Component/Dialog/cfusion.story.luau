@@ -56,25 +56,16 @@ return function(frame: Frame)
 								nil,
 								"Button 2",
 								false
-							),
-							Types.newButtonData(
-								function()
-									print("Click 3")
-								end,
-								nil,
-								"Button 3",
-								true
-							),
+							)
 						},
-						true,
 						Icons.usb,
 						"Dialog",
-						"Lorem ipsum or whatever",
+						"Material Design is an adaptable system of guidelines, components, and tools that support the best practices of user interface design.",
 						style:GetColor(Enums.ColorRoleType.SurfaceContainerHigh),
 						style:GetColor(Enums.ColorRoleType.Primary),
 						style:GetColor(Enums.ColorRoleType.OnSurface),
+						style:GetColor(Enums.ColorRoleType.OnSurface),
 						style:GetColor(Enums.ColorRoleType.OnSurfaceVariant),
-						style:GetColor(Enums.ColorRoleType.Outline),
 						style:GetColor(Enums.ColorRoleType.SurfaceTint),
 						style
 					)
