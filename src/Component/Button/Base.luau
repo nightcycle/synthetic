@@ -48,7 +48,8 @@ Util.component = function(
 	hasMinimumSize: CanBeState<boolean>?,
 	cornerRadius: CanBeState<number>?,
 	paddingScale: CanBeState<number>?,
-	useRipple: CanBeState<boolean>?
+	useRipple: CanBeState<boolean>?,
+	textScale: CanBeState<number>?
 ): GuiObject
 	local fuse = ColdFusion.fuse(maid)
 
@@ -63,6 +64,8 @@ Util.component = function(
 	local isFocusedState = _Value(false)
 	local isPressedState = _Value(false)
 	local isHoveredState = _Value(false)
+	local textScaleState = _import(textScale, 1)
+
 	local currentStateState = _Computed(
 		function(isEnab: boolean, isFocused: boolean, isPressed: boolean, isHovered: boolean): Enums.ButtonStateType
 			if isEnab then
@@ -296,9 +299,9 @@ Util.component = function(
 								end, currentRenderDataState, useRippleState),
 								Active = isEnabledState,
 								AutomaticSize = Enum.AutomaticSize.X,
-								Size = _Computed(function(s: number): UDim2
-									return UDim2.fromOffset(0, s * HEIGHT_DP)
-								end, scaleState),
+								Size = _Computed(function(s: number, ts: number): UDim2
+									return UDim2.fromOffset(0, s * HEIGHT_DP * ts)
+								end, scaleState, textScaleState),
 								Events = {
 									Activated = function()
 										if isEnabledState:Get() == false then
@@ -402,9 +405,9 @@ Util.component = function(
 										TextTransparency = _Computed(function(renderData: AppearanceData): number
 											return renderData.Transparency
 										end, currentTextRenderData),
-										Size = _Computed(function(s: number): UDim2
-											return UDim2.fromOffset(0, s * ICON_SIZE_DP)
-										end, scaleState),
+										Size = _Computed(function(s: number, ts: number): UDim2
+											return UDim2.fromOffset(0, s * ICON_SIZE_DP * ts)
+										end, scaleState, textScaleState),
 									}),
 									_new("ImageLabel")({
 										Name = "Icon",
