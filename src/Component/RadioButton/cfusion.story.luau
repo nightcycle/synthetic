@@ -1,5 +1,5 @@
 --!strict
-local _Package = script.Parent.Parent.Parent.Parent.Parent
+local _Package = script.Parent.Parent.Parent
 local _Packages = _Package.Parent
 -- Services
 -- Packages
@@ -25,6 +25,7 @@ return function(frame: Frame)
 			local halfFrame = maid:GiveTask(Instance.new("Frame"))
 			halfFrame.BackgroundColor3 = style:GetColor(Enums.ColorRoleType.Surface)
 			halfFrame.BorderSizePixel = 0
+
 			local listLayout = maid:GiveTask(Instance.new("UIListLayout"))
 			listLayout.FillDirection = Enum.FillDirection.Vertical
 			listLayout.Padding = UDim.new(0, 10)
@@ -37,42 +38,17 @@ return function(frame: Frame)
 			do
 				local button = maid:GiveTask(
 					Module.ColdFusion.new(
-						function(isSel: boolean)
-							print(`is selected 1: {isSel}`)
+						function(isSelected: boolean?)
+							print("is selected", isSelected)
 						end,
-						false,
-						"Filter chip",
-						style,
-						style:GetColor(Enums.ColorRoleType.Primary),
-						style:GetColor(Enums.ColorRoleType.OnSurface),
-						style:GetColor(Enums.ColorRoleType.OnPrimary),
-						style:GetColor(Enums.ColorRoleType.OnSurfaceVariant),
-						style:GetColor(Enums.ColorRoleType.SurfaceVariant),
+						nil,
 						true,
-						0
-					)
-				)
-				button.Parent = halfFrame
-			end
-
-					
-
-			do
-				local button = maid:GiveTask(
-					Module.ColdFusion.new(
-						function(isSel: boolean)
-							print(`is selected 2: {isSel}`)
-						end,
-						false,
-						"Disabled chip",
-						style,
-						style:GetColor(Enums.ColorRoleType.Primary),
-						style:GetColor(Enums.ColorRoleType.OnSurface),
-						style:GetColor(Enums.ColorRoleType.OnPrimary),
 						style:GetColor(Enums.ColorRoleType.OnSurfaceVariant),
-						style:GetColor(Enums.ColorRoleType.SurfaceVariant),
-						false,
-						0
+						style:GetColor(Enums.ColorRoleType.Primary),
+						style:GetColor(Enums.ColorRoleType.OnPrimary),
+						style:GetColor(Enums.ColorRoleType.OnSurface),
+						1,
+						style
 					)
 				)
 				button.Parent = halfFrame
@@ -81,28 +57,81 @@ return function(frame: Frame)
 			do
 				local button = maid:GiveTask(
 					Module.ColdFusion.new(
-						function(isSel: boolean)
-							print(`is selected 3: {isSel}`)
+						function(isSelected: boolean?)
+							print("is selected", isSelected)
 						end,
-						true,
-						"Disabled chip",
-						style,
-						style:GetColor(Enums.ColorRoleType.Primary),
-						style:GetColor(Enums.ColorRoleType.OnSurface),
-						style:GetColor(Enums.ColorRoleType.OnPrimary),
-						style:GetColor(Enums.ColorRoleType.OnSurfaceVariant),
-						style:GetColor(Enums.ColorRoleType.SurfaceVariant),
+						nil,
 						false,
-						0
+						style:GetColor(Enums.ColorRoleType.OnSurfaceVariant),
+						style:GetColor(Enums.ColorRoleType.Primary),
+						style:GetColor(Enums.ColorRoleType.OnPrimary),
+						style:GetColor(Enums.ColorRoleType.OnSurface),
+						1,
+						style
 					)
 				)
 				button.Parent = halfFrame
 			end
 
+			do
+				local button = maid:GiveTask(
+					Module.ColdFusion.new(
+						function(isSelected: boolean?)
+							print("is selected", isSelected)
+						end,
+						true,
+						false,
+						style:GetColor(Enums.ColorRoleType.OnSurfaceVariant),
+						style:GetColor(Enums.ColorRoleType.Primary),
+						style:GetColor(Enums.ColorRoleType.OnPrimary),
+						style:GetColor(Enums.ColorRoleType.OnSurface),
+						1,
+						style
+					)
+				)
+				button.Parent = halfFrame
+			end
+
+			do
+				local button = maid:GiveTask(
+					Module.ColdFusion.new(
+						function(isSelected: boolean?)
+							print("is selected", isSelected)
+						end,
+						false,
+						false,
+						style:GetColor(Enums.ColorRoleType.OnSurfaceVariant),
+						style:GetColor(Enums.ColorRoleType.Primary),
+						style:GetColor(Enums.ColorRoleType.OnPrimary),
+						style:GetColor(Enums.ColorRoleType.OnSurface),
+						1,
+						style
+					)
+				)
+				button.Parent = halfFrame
+			end
+
+			do
+				local button = maid:GiveTask(
+					Module.ColdFusion.new(
+						function(isSelected: boolean?)
+							print("is selected", isSelected)
+						end,
+						false,
+						true,
+						style:GetColor(Enums.ColorRoleType.OnSurfaceVariant),
+						style:GetColor(Enums.ColorRoleType.Primary),
+						style:GetColor(Enums.ColorRoleType.OnPrimary),
+						style:GetColor(Enums.ColorRoleType.OnSurface),
+						1,
+						style
+					)
+				)
+				button.Parent = halfFrame
+			end
 
 			return halfFrame
 		end
-		
 
 		local COLORS: { [number]: Color3 } = {
 			Color3.fromHSV(0, 0.9, 0.8),
