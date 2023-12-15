@@ -43,13 +43,13 @@ return function(frame: Frame)
 				end, false, true, "Unselected 1", Icons.gamepad, "Selected 1", Icons.handyman),
 				Types.newOptionData(function(onSelected: boolean)
 					print("select 2", onSelected)
-				end, false, false, "Button 2", Icons.track_changes),
+				end, false, false, "Selected 2", Icons.track_changes),
 				Types.newOptionData(function(onSelected: boolean)
 					print("select 3", onSelected)
-				end, true, false, "Button 3", Icons.badge),
+				end, true, false, "Selected 3", Icons.badge),
 				Types.newOptionData(function(onSelected: boolean)
 					print("select 4", onSelected)
-				end, false, false, "Button 4"),
+				end, false, false, "Selected 4"),
 				Types.newOptionData(function(onSelected: boolean)
 					print("select 5", onSelected)
 				end, false, false, "Unselected 5", nil, "Selected 5", nil),
