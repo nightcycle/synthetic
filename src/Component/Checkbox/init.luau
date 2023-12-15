@@ -331,7 +331,7 @@ function Interface.ColdFusion.new(
 						end, renderDataState, valueState),
 						LineJoinMode = Enum.LineJoinMode.Round,
 						Thickness = _Computed(function(s: Style): number
-							return s.Scale * CHECKBOX_SHAPE_DP
+							return s.Scale * UNSELECT_OUTLINE_WIDTH_DP
 						end, styleState),
 						Transparency = _Computed(function(renderData: RenderData): number
 							return renderData.Border.Transparency

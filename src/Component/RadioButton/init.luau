@@ -26,8 +26,7 @@ type Style = Style.Style
 
 -- Constants
 local LAYER_SIZE_DP = 40
-local CHECKBOX_SIZE_DP = 18
-local CHECKBOX_SHAPE_DP = 2
+local BUTTON_SIZE_DP = 18
 local UNSELECT_OUTLINE_WIDTH_DP = 2
 -- Variables
 -- References
@@ -274,7 +273,7 @@ function Interface.ColdFusion.new(
 			}),
 			_new("Frame")({
 				Size = _Computed(function(s: Style): UDim2
-					local dpWidth = CHECKBOX_SIZE_DP - (UNSELECT_OUTLINE_WIDTH_DP * 2)
+					local dpWidth = BUTTON_SIZE_DP - (UNSELECT_OUTLINE_WIDTH_DP * 2)
 					dpWidth /= 2
 					dpWidth = math.round(dpWidth)
 					dpWidth *= 2
@@ -300,7 +299,7 @@ function Interface.ColdFusion.new(
 						end, renderDataState, valueState),
 						LineJoinMode = Enum.LineJoinMode.Round,
 						Thickness = _Computed(function(s: Style): number
-							return s.Scale * CHECKBOX_SHAPE_DP
+							return s.Scale * UNSELECT_OUTLINE_WIDTH_DP
 						end, styleState),
 						Transparency = _Computed(function(renderData: RenderData): number
 							return renderData.Border.Transparency
@@ -312,7 +311,7 @@ function Interface.ColdFusion.new(
 						end, valueState),
 						AnchorPoint = Vector2.new(0.5,0.5),
 						Size = _Computed(function(s: Style): UDim2
-							local dpWidth = 0.5*(CHECKBOX_SIZE_DP - (UNSELECT_OUTLINE_WIDTH_DP * 2))
+							local dpWidth = 0.5*(BUTTON_SIZE_DP - (UNSELECT_OUTLINE_WIDTH_DP * 2))
 							dpWidth /= 2
 							dpWidth = math.round(dpWidth)
 							dpWidth *= 2
