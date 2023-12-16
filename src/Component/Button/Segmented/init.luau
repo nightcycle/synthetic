@@ -595,7 +595,7 @@ function Interface.ColdFusion.new(
 							Types.newAppearanceData(style:GetElevatedColor(fTC, e - 1), 0),
 							style:GetFontData(Enums.FontType.LabelLarge),
 							nil,
-							Types.newSoundData(Sounds.Library.ui_tap_variant_01, 1),
+							Types.newSoundData(Sounds.Library[Enums.SoundType.ui_tap_variant_01], 1),
 							nil
 						),
 						[Enums.SelectionState.Unselected] = Types.newRenderData(
@@ -605,7 +605,7 @@ function Interface.ColdFusion.new(
 							Types.newAppearanceData(style:GetElevatedColor(tC, e - 1), 0),
 							style:GetFontData(Enums.FontType.LabelLarge),
 							nil,
-							Types.newSoundData(Sounds.Library.ui_tap_variant_01, 1),
+							Types.newSoundData(Sounds.Library[Enums.SoundType.ui_tap_variant_01], 1),
 							nil
 						),
 					},
