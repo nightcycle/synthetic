@@ -1,29 +1,32 @@
 --!strict
-local _Package = script.Parent.Parent.Parent.Parent
+local _Package = script.Parent.Parent.Parent
 local _Packages = _Package.Parent
 -- Services
 -- Packages
-local Maid = require(game:GetService("ReplicatedStorage"):WaitForChild("Packages"):WaitForChild("Maid"))
+local Maid = require(_Packages:WaitForChild("Maid"))
+local MaterialIcons = require(_Packages:WaitForChild("MaterialIcons"))
 
 -- Modules
 local Style = require(_Package:WaitForChild("Style"))
 local Enums = require(_Package:WaitForChild("Enums"))
+local Types = require(_Package:WaitForChild("Types"))
 
 -- Types
 -- Constants
+local Icons = MaterialIcons.default.dp_48.scale_2
 -- Variables
 -- References
 
--- Private Functions
 -- Class
 return function(frame: Frame)
 	local maid = Maid.new()
 	task.spawn(function()
 		local function makeHalfFrame(isDarkMode: boolean, color: Color3): Frame
-			local style = Style.new(1, "Source Sans", if isDarkMode then Enums.SchemeType.Dark else Enums.SchemeType.Light, color)
+			local style =
+				Style.new(1, "Source Sans", if isDarkMode then Enums.SchemeType.Dark else Enums.SchemeType.Light, color)
 
 			local halfFrame = maid:GiveTask(Instance.new("Frame"))
-			halfFrame.BackgroundColor3 = style:GetColor(Enums.ColorRoleType.Surface)
+			halfFrame.BackgroundColor3 = style:GetColor(Enums.ColorRoleType.Background)
 			halfFrame.BorderSizePixel = 0
 
 			local listLayout = maid:GiveTask(Instance.new("UIListLayout"))
@@ -39,55 +42,40 @@ return function(frame: Frame)
 				local button = maid:GiveTask(
 					Module.ColdFusion.primary(
 						style,
-						function(input: string?): string?
-							print(`submit: {input}`)
-							return input
-						end,
-						"primary"
+						{
+							Types.newButtonData(
+								function()
+									print("Click 1")
+								end,
+								nil,
+								"Primary 1",
+								true
+							),
+							Types.newButtonData(
+								function()
+									print("Click 2")
+								end,
+								nil,
+								"Primary 2",
+								false
+							)
+						},
+						Icons.usb,
+						"Dialog",
+						"Material Design is an adaptable system of guidelines, components, and tools that support the best practices of user interface design."
 					)
 				)
+				button.Size = UDim2.fromScale(1,1)
 				button.Parent = halfFrame
 			end
-			
-			do
-				local button = maid:GiveTask(
-					Module.ColdFusion.secondary(
-						style,
-						function(input: string?): string?
-							print(`submit: {input}`)
-							return input
-						end,
-						"secondary"
-					)
-				)
-				button.Parent = halfFrame
-			end
-
-			do
-				local button = maid:GiveTask(
-					Module.ColdFusion.tertiary(
-						style,
-						function(input: string?): string?
-							print(`submit: {input}`)
-							return input
-						end,
-						"tertiary"
-					)
-				)
-				button.Parent = halfFrame
-			end
-
 
 			return halfFrame
 		end
 
 		local COLORS: { [number]: Color3 } = {
 			Color3.fromHSV(0, 0.9, 0.8),
-			-- Color3.fromHSV(0, 0.25, 0.8),
-			-- Color3.fromHSV(0, 0.9, 0.5),
 			Color3.fromHSV(0.6, 0.9, 0.7),
 			Color3.fromHSV(0.35, 0.9, 0.7),
-			Color3.fromHSV(0.1, 0.9, 0.7),
 		}
 
 		for i, color in ipairs(COLORS) do
@@ -105,7 +93,6 @@ return function(frame: Frame)
 			bright.Parent = frame
 		end
 	end)
-
 	return function()
 		maid:Destroy()
 	end

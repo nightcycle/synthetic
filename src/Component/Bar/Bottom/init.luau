@@ -12,6 +12,7 @@ local Types = require(_Package:WaitForChild("Types"))
 local IconButton = require(_Package:WaitForChild("Component"):WaitForChild("Button"):WaitForChild("IconButton"))
 local FAB = require(_Package:WaitForChild("Component"):WaitForChild("Button"):WaitForChild("FAB"))
 local Style = require(_Package:WaitForChild("Style"))
+local Enums = require(_Package:WaitForChild("Enums"))
 
 -- Types
 type Maid = Maid.Maid
@@ -38,7 +39,119 @@ local BAR_LEFT_RIGHT_PADDING_DP = 10
 -- Class
 local Interface = {}
 
+function newThemedComponent(
+	style: CanBeState<Style>,
+
+	backgroundColor: Enums.ColorRoleType,
+	iconColor: Enums.ColorRoleType,
+	fabColor: Enums.ColorRoleType,
+	fabIconColor: Enums.ColorRoleType,
+
+	buttons: CanBeState<{
+		[number]: ButtonData,
+	}>,
+	fab: CanBeState<ButtonData?>,
+	elevation: CanBeState<number?>
+): GuiObject
+	local maid = Maid.new()	
+
+	local _fuse = ColdFusion.fuse(maid)
+	
+	local _new = _fuse.new
+	local _bind = _fuse.bind
+	local _clone = _fuse.clone
+	local _import = _fuse.import
+	
+	local _Value = _fuse.Value
+	local _Computed = _fuse.Computed
+
+	local styleState: State<Style> = _import(style, nil :: any)
+
+	local out = Interface.ColdFusion.new(
+		buttons,
+		fab,
+		_Computed(function(s: Style): Color3
+			return s:GetColor(backgroundColor)
+		end, styleState),
+		_Computed(function(s: Style): Color3
+			return s:GetColor(iconColor)
+		end, styleState),
+		_Computed(function(s: Style): Color3
+			return s:GetColor(fabColor)
+		end, styleState),
+		_Computed(function(s: Style): Color3
+			return s:GetColor(fabIconColor)
+		end, styleState),
+		_import(elevation, 0),
+		style
+	)
+
+	maid.bind(out)
+
+	return out
+end
+
 Interface.ColdFusion = {}
+
+function Interface.ColdFusion.primary(
+	style: CanBeState<Style>,
+	buttons: CanBeState<{
+		[number]: ButtonData,
+	}>,
+	fab: CanBeState<ButtonData?>,
+	elevation: CanBeState<number?>
+): GuiObject
+	return newThemedComponent(
+		style,
+		Enums.ColorRoleType.Primary,
+		Enums.ColorRoleType.OnPrimary,
+		Enums.ColorRoleType.OnSurface,
+		Enums.ColorRoleType.PrimaryContainer,
+		buttons,
+		fab,
+		elevation
+	)
+end
+
+function Interface.ColdFusion.secondary(
+	style: CanBeState<Style>,
+	buttons: CanBeState<{
+		[number]: ButtonData,
+	}>,
+	fab: CanBeState<ButtonData?>,
+	elevation: CanBeState<number?>
+): GuiObject
+	return newThemedComponent(
+		style,
+		Enums.ColorRoleType.Secondary,
+		Enums.ColorRoleType.OnSecondary,
+		Enums.ColorRoleType.OnSurface,
+		Enums.ColorRoleType.SecondaryContainer,
+		buttons,
+		fab,
+		elevation
+	)
+end
+
+function Interface.ColdFusion.tertiary(
+	style: CanBeState<Style>,
+	buttons: CanBeState<{
+		[number]: ButtonData,
+	}>,
+	fab: CanBeState<ButtonData?>,
+	elevation: CanBeState<number?>
+): GuiObject
+	return newThemedComponent(
+		style,
+		Enums.ColorRoleType.Tertiary,
+		Enums.ColorRoleType.OnTertiary,
+		Enums.ColorRoleType.OnSurface,
+		Enums.ColorRoleType.TertiaryContainer,
+		buttons,
+		fab,
+		elevation
+	)
+end
 
 function Interface.ColdFusion.new(
 	buttons: CanBeState<{

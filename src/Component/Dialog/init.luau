@@ -39,7 +39,133 @@ local MIN_DESC_WIDTH_DP = 225
 -- Class
 local Interface = {}
 
+function newThemedComponent(
+	style: CanBeState<Style>,
+
+	surfaceColor: Enums.ColorRoleType,
+	buttonTextColor: Enums.ColorRoleType,
+	disabledTextColor: Enums.ColorRoleType,
+	headlineColor: Enums.ColorRoleType,
+	descriptionColor: Enums.ColorRoleType,
+	scrimColor: Enums.ColorRoleType,
+
+	buttons: CanBeState<{[number]: ButtonData}>,
+	icon: CanBeState<ImageData?>,
+	headline: CanBeState<string?>,
+	description: CanBeState<string?>
+): GuiObject
+	local maid = Maid.new()	
+
+	local _fuse = ColdFusion.fuse(maid)
+	
+	local _new = _fuse.new
+	local _bind = _fuse.bind
+	local _clone = _fuse.clone
+	local _import = _fuse.import
+	
+	local _Value = _fuse.Value
+	local _Computed = _fuse.Computed
+
+	local styleState: State<Style> = _import(style, nil :: any)
+
+	local out = Interface.ColdFusion.new(
+		buttons,
+		icon,
+		headline,
+		description,
+		_Computed(function(s: Style): Color3
+			return s:GetColor(surfaceColor)
+		end, styleState),
+		_Computed(function(s: Style): Color3
+			return s:GetColor(buttonTextColor)
+		end, styleState),
+		_Computed(function(s: Style): Color3
+			return s:GetColor(disabledTextColor)
+		end, styleState),
+		_Computed(function(s: Style): Color3
+			return s:GetColor(headlineColor)
+		end, styleState),
+		_Computed(function(s: Style): Color3
+			return s:GetColor(descriptionColor)
+		end, styleState),
+		_Computed(function(s: Style): Color3
+			return s:GetColor(scrimColor)
+		end, styleState),
+		styleState
+	)
+
+	maid.bind(out)
+
+	return out
+end
+
 Interface.ColdFusion = {}
+
+function Interface.ColdFusion.primary(
+	style: CanBeState<Style>,
+	buttons: CanBeState<{[number]: ButtonData}>,
+	icon: CanBeState<ImageData?>,
+	headline: CanBeState<string?>,
+	description: CanBeState<string?>
+): GuiObject
+	return newThemedComponent(
+		style,
+		Enums.ColorRoleType.SurfaceContainerHigh,
+		Enums.ColorRoleType.Primary,
+		Enums.ColorRoleType.OnSurface,
+		Enums.ColorRoleType.OnSurface,
+		Enums.ColorRoleType.OnSurfaceVariant,
+		Enums.ColorRoleType.SurfaceTint,
+		buttons,
+		icon,
+		headline,
+		description
+	)
+end
+
+function Interface.ColdFusion.secondary(
+	style: CanBeState<Style>,
+	buttons: CanBeState<{[number]: ButtonData}>,
+	icon: CanBeState<ImageData?>,
+	headline: CanBeState<string?>,
+	description: CanBeState<string?>
+): GuiObject
+	return newThemedComponent(
+		style,
+		Enums.ColorRoleType.SurfaceContainerHigh,
+		Enums.ColorRoleType.Secondary,
+		Enums.ColorRoleType.OnSurface,
+		Enums.ColorRoleType.OnSurface,
+		Enums.ColorRoleType.OnSurfaceVariant,
+		Enums.ColorRoleType.SurfaceTint,
+		buttons,
+		icon,
+		headline,
+		description
+	)
+end
+
+function Interface.ColdFusion.tertiary(
+	style: CanBeState<Style>,
+	buttons: CanBeState<{[number]: ButtonData}>,
+	icon: CanBeState<ImageData?>,
+	headline: CanBeState<string?>,
+	description: CanBeState<string?>
+): GuiObject
+	return newThemedComponent(
+		style,
+		Enums.ColorRoleType.SurfaceContainerHigh,
+		Enums.ColorRoleType.Tertiary,
+		Enums.ColorRoleType.OnSurface,
+		Enums.ColorRoleType.OnSurface,
+		Enums.ColorRoleType.OnSurfaceVariant,
+		Enums.ColorRoleType.SurfaceTint,
+		buttons,
+		icon,
+		headline,
+		description
+	)
+end
 
 function Interface.ColdFusion.new(
 	
@@ -52,7 +178,6 @@ function Interface.ColdFusion.new(
 	surfaceColor: CanBeState<Color3>,
 	buttonTextColor: CanBeState<Color3>,
 	disabledTextColor: CanBeState<Color3>,
-
 	headlineColor: CanBeState<Color3>,
 	descriptionColor: CanBeState<Color3>,
 	scrimColor: CanBeState<Color3>,
