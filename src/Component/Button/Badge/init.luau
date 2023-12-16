@@ -329,7 +329,92 @@ end
 -- Class
 local Interface = {}
 
+function newThemedComponent(
+	style: CanBeState<Style>,
+	textColor: Enums.ColorRoleType,
+	hoverColor: Enums.ColorRoleType,
+	onClick: CanBeState<() -> ()>,
+	icon: CanBeState<ImageData>,
+	label: CanBeState<string?>,
+	count: CanBeState<number?>,
+	elevation: CanBeState<number?>
+): GuiObject
+	local maid = Maid.new()	
+
+	local _fuse = ColdFusion.fuse(maid)
+	
+	local _new = _fuse.new
+	local _bind = _fuse.bind
+	local _clone = _fuse.clone
+	local _import = _fuse.import
+	
+	local _Value = _fuse.Value
+	local _Computed = _fuse.Computed
+
+	local styleState: State<Style> = _import(style, nil :: any)
+
+	local out = Interface.ColdFusion.new(
+		onClick,
+		icon,
+		label,
+		count,
+		_Computed(function(s: Style): Color3
+			return s:GetColor(textColor)
+		end, styleState),
+		_Computed(function(s: Style): Color3
+			return s:GetColor(hoverColor)
+		end, styleState),
+		_import(elevation, 0),
+		style
+	)
+
+	maid.bind(out)
+
+	return out
+end
+
 Interface.ColdFusion = {}
+
+function Interface.ColdFusion.onPrimary(
+	style: CanBeState<Style>,
+	onClick: CanBeState<() -> ()>,
+	icon: CanBeState<ImageData>,
+	label: CanBeState<string?>,
+	count: CanBeState<number?>,
+	elevation: CanBeState<number?>
+): GuiObject
+	return newThemedComponent(
+		style,
+		Enums.ColorRoleType.OnPrimary,
+		Enums.ColorRoleType.InversePrimary,
+		onClick,
+		icon,
+		label,
+		count,
+		elevation
+	)
+end
+
+
+function Interface.ColdFusion.onSurface(
+	style: CanBeState<Style>,
+	onClick: CanBeState<() -> ()>,
+	icon: CanBeState<ImageData>,
+	label: CanBeState<string?>,
+	count: CanBeState<number?>,
+	elevation: CanBeState<number?>
+): GuiObject
+	return newThemedComponent(
+		style,
+		Enums.ColorRoleType.OnSurface,
+		Enums.ColorRoleType.InverseSurface,
+		onClick,
+		icon,
+		label,
+		count,
+		elevation
+	)
+end
 
 function Interface.ColdFusion.new(
 	onClick: CanBeState<() -> ()>,

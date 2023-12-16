@@ -187,6 +187,9 @@ end
 function Theme.getElevatedColor(color: Color3, elevation: number, schemeType: Enums.SchemeType): Color3
 	local hct = HCT.fromColor3(color)
 	local tone = hct:getTone()
+	if elevation == 0 then
+		return color
+	end
 	elevation = math.clamp(elevation, 1, #ELEVATION_TINTS)
 	if ELEVATION_TINTS[elevation] then
 		local newColor = HCT.fromColor3(color)

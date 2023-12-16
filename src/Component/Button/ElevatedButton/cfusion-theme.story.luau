@@ -4,7 +4,6 @@ local _Packages = _Package.Parent
 -- Services
 -- Packages
 local Maid = require(_Packages:WaitForChild("Maid"))
-local MaterialIcons = require(_Packages:WaitForChild("MaterialIcons"))
 
 -- Modules
 local Style = require(_Package:WaitForChild("Style"))
@@ -14,7 +13,6 @@ local Enums = require(_Package:WaitForChild("Enums"))
 -- Constants
 -- Variables
 -- References
-local Icons = MaterialIcons.default.dp_48.scale_1
 
 -- Class
 return function(frame: Frame)
@@ -37,62 +35,74 @@ return function(frame: Frame)
 			local Module = require(script.Parent)
 
 			do
-				local button = maid:GiveTask(
-					Module.ColdFusion.new(
-						function()
-							print("click")
-						end,
-						"Button",
-						nil,
-						style,
-						style:GetColor(Enums.ColorRoleType.OnPrimary),
-						style:GetColor(Enums.ColorRoleType.Primary),
-						style:GetColor(Enums.ColorRoleType.OnSurfaceVariant),
-						style:GetColor(Enums.ColorRoleType.SurfaceVariant),
-						true,
-						0
-					)
-				)
+				local button = maid:GiveTask(Module.ColdFusion.primary(
+					style,
+					function()
+						print("click")
+					end,
+					"primary",
+					nil
+				))
 				button.Parent = halfFrame
 			end
 
 			do
-				local button = maid:GiveTask(
-					Module.ColdFusion.new(
-						function()
-							print("click")
-						end,
-						"Disabled",
-						nil,
-						style,
-						style:GetColor(Enums.ColorRoleType.OnPrimary),
-						style:GetColor(Enums.ColorRoleType.Primary),
-						style:GetColor(Enums.ColorRoleType.OnSurfaceVariant),
-						style:GetColor(Enums.ColorRoleType.SurfaceVariant),
-						false,
-						0
-					)
-				)
+				local button = maid:GiveTask(Module.ColdFusion.secondary(
+					style,	
+					function()
+						print("click")
+					end,
+					"secondary",
+					nil
+				))
 				button.Parent = halfFrame
 			end
 
 			do
-				local button = maid:GiveTask(
-					Module.ColdFusion.new(
-						function()
-							print("click")
-						end,
-						"Icon",
-						Icons.waterfall_chart,
-						style,
-						style:GetColor(Enums.ColorRoleType.OnPrimary),
-						style:GetColor(Enums.ColorRoleType.Primary),
-						style:GetColor(Enums.ColorRoleType.OnSurfaceVariant),
-						style:GetColor(Enums.ColorRoleType.SurfaceVariant),
-						true,
-						0
-					)
-				)
+				local button = maid:GiveTask(Module.ColdFusion.tertiary(
+					style,
+					function()
+						print("click")
+					end,
+					"tertiary",
+					nil
+				))
+				button.Parent = halfFrame
+			end
+
+			do
+				local button = maid:GiveTask(Module.ColdFusion.primaryContainer(
+					style,
+					function()
+						print("click")
+					end,
+					"primary-container",
+					nil
+				))
+				button.Parent = halfFrame
+			end
+
+			do
+				local button = maid:GiveTask(Module.ColdFusion.secondaryContainer(
+					style,
+					function()
+						print("click")
+					end,
+					"secondary-container",
+					nil
+				))
+				button.Parent = halfFrame
+			end
+
+			do
+				local button = maid:GiveTask(Module.ColdFusion.tertiaryContainer(
+					style,		
+					function()
+						print("click")
+					end,
+					"tertiary-container",
+					nil
+				))
 				button.Parent = halfFrame
 			end
 

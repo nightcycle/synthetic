@@ -29,7 +29,7 @@ Synthetic.Types = {
 	newImageData = Types.newImageData,
 }
 Synthetic.Style = Style
-Synthetic.Components = {
+Synthetic.Component = {
 	Bar = {
 		Bottom = require(Component:WaitForChild("Bar"):WaitForChild("Bottom")),
 		Top = {
