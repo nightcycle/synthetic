@@ -56,8 +56,8 @@ local OutlineIcons = MaterialIcons.outlined.dp_48.scale_1
 local Interface = {}
 
 function Interface.new(
-	onSubmit: (text: string?) -> string?,
-	onInput: (text: string?) -> string?,
+	onSubmit: CanBeState<(text: string?) -> string?>,
+	onInput: CanBeState<(text: string?) -> string?>,
 	initialText: CanBeState<string?>,
 	isEnabled: CanBeState<boolean>,
 	isError: CanBeState<boolean>,
@@ -65,6 +65,7 @@ function Interface.new(
 	characterLimit: CanBeState<number?>,
 	supportingText: CanBeState<string?>,
 	leadingIcon: CanBeState<ImageData?>,
+
 	textColor: CanBeState<Color3>,
 	labelColor: CanBeState<Color3>,
 	hightlightColor: CanBeState<Color3>,
@@ -72,6 +73,7 @@ function Interface.new(
 	backgroundColor: CanBeState<Color3>,
 	borderColor: CanBeState<Color3>,
 	supportingTextColor: CanBeState<Color3>,
+
 	elevation: CanBeState<number>,
 	style: CanBeState<Style>,
 	isOutlined: CanBeState<boolean>
@@ -96,9 +98,9 @@ function Interface.new(
 	local initialTextState = _import(initialText, nil :: string?)
 	local labelTextState = _import(label, nil :: string?)
 	
-	local characterLimitState = _import(characterLimit, nil :: number?)
+	local characterLimitState: State<number?> = _import(characterLimit, nil :: number?)
 
-	local supportingTextState = _import(supportingText, nil :: string?)
+	local supportingTextState: State<string?> = _import(supportingText, nil :: string?)
 	local leadingIconState = _import(leadingIcon, nil :: ImageData?)
 	local dropdownOptionsState: State<{[number]: string}?> = _import(nil, nil :: {[number]: string}?)
 
@@ -550,7 +552,9 @@ function Interface.new(
 						UDim.new(0,0)
 					)) :: Instance,
 					_bind(maid:GiveTask(Util.TextLabel.ColdFusion.new(
-						supportingTextState,
+						_Computed(function(txt: string?): string
+							return if txt then txt else ""
+						end, supportingTextState),
 						_Computed(function(sCol: Color3, eCol: Color3, isErr: boolean): Color3
 							return if isErr then eCol else sCol
 						end, supportingTextColorState, errorColorState, isErrorState),

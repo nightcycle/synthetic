@@ -35,11 +35,181 @@ local UNSELECT_OUTLINE_WIDTH_DP = 2
 -- Class
 local Interface = {}
 
+function newThemedComponent(
+	style: CanBeState<Style>,
+	outlineColor: Enums.ColorRoleType,
+	fillColor: Enums.ColorRoleType,
+	iconColor: Enums.ColorRoleType,
+	disabledColor: Enums.ColorRoleType,
+	onSelect: CanBeState<(isSelected: boolean) -> ()>,
+	initialSelection: CanBeState<boolean>,
+	elevation: CanBeState<number?>,
+	isEnabled: CanBeState<boolean?>
+): GuiObject
+	local maid = Maid.new()	
+
+	local _fuse = ColdFusion.fuse(maid)
+	
+	local _new = _fuse.new
+	local _bind = _fuse.bind
+	local _clone = _fuse.clone
+	local _import = _fuse.import
+	
+	local _Value = _fuse.Value
+	local _Computed = _fuse.Computed
+
+	local styleState: State<Style> = _import(style, nil :: any)
+
+	local out = Interface.ColdFusion.new(
+		onSelect,
+		initialSelection,
+		_import(isEnabled, true),
+		_Computed(function(s: Style): Color3
+			return s:GetColor(outlineColor)
+		end, styleState),
+		_Computed(function(s: Style): Color3
+			return s:GetColor(fillColor)
+		end, styleState),
+		_Computed(function(s: Style): Color3
+			return s:GetColor(iconColor)
+		end, styleState),
+		_Computed(function(s: Style): Color3
+			return s:GetColor(disabledColor)
+		end, styleState),
+		_import(elevation, 0),
+		styleState
+	)
+
+	maid.bind(out)
+
+	return out
+end
+
 Interface.ColdFusion = {}
 
+function Interface.ColdFusion.primary(
+	style: CanBeState<Style>,
+	onSelect: CanBeState<(isSelected: boolean) -> ()>,
+	initialSelection: CanBeState<boolean>,
+	elevation: CanBeState<number?>,
+	isEnabled: CanBeState<boolean?>
+): GuiObject
+	return newThemedComponent(
+		style,
+		Enums.ColorRoleType.OnSurfaceVariant,
+		Enums.ColorRoleType.Primary,
+		Enums.ColorRoleType.OnPrimary,
+		Enums.ColorRoleType.OnSurface,
+		onSelect,
+		initialSelection,
+		elevation,
+		isEnabled
+	)
+end
+
+function Interface.ColdFusion.secondary(
+	style: CanBeState<Style>,
+	onSelect: CanBeState<(isSelected: boolean) -> ()>,
+	initialSelection: CanBeState<boolean>,
+	elevation: CanBeState<number?>,
+	isEnabled: CanBeState<boolean?>
+): GuiObject
+	return newThemedComponent(
+		style,
+		Enums.ColorRoleType.OnSurfaceVariant,
+		Enums.ColorRoleType.Secondary,
+		Enums.ColorRoleType.OnSecondary,
+		Enums.ColorRoleType.OnSurface,
+		onSelect,
+		initialSelection,
+		elevation,
+		isEnabled
+	)
+end
+
+function Interface.ColdFusion.tertiary(
+	style: CanBeState<Style>,
+	onSelect: CanBeState<(isSelected: boolean) -> ()>,
+	initialSelection: CanBeState<boolean>,
+	elevation: CanBeState<number?>,
+	isEnabled: CanBeState<boolean?>
+): GuiObject
+	return newThemedComponent(
+		style,
+		Enums.ColorRoleType.OnSurfaceVariant,
+		Enums.ColorRoleType.Tertiary,
+		Enums.ColorRoleType.OnTertiary,
+		Enums.ColorRoleType.OnSurface,
+		onSelect,
+		initialSelection,
+		elevation,
+		isEnabled
+	)
+end
+
+
+function Interface.ColdFusion.primaryContainer(
+	style: CanBeState<Style>,
+	onSelect: CanBeState<(isSelected: boolean) -> ()>,
+	initialSelection: CanBeState<boolean>,
+	elevation: CanBeState<number?>,
+	isEnabled: CanBeState<boolean?>
+): GuiObject
+	return newThemedComponent(
+		style,
+		Enums.ColorRoleType.OnSurfaceVariant,
+		Enums.ColorRoleType.PrimaryContainer,
+		Enums.ColorRoleType.OnPrimaryContainer,
+		Enums.ColorRoleType.OnSurface,
+		onSelect,
+		initialSelection,
+		elevation,
+		isEnabled
+	)
+end
+
+function Interface.ColdFusion.secondaryContainer(
+	style: CanBeState<Style>,
+	onSelect: CanBeState<(isSelected: boolean) -> ()>,
+	initialSelection: CanBeState<boolean>,
+	elevation: CanBeState<number?>,
+	isEnabled: CanBeState<boolean?>
+): GuiObject
+	return newThemedComponent(
+		style,
+		Enums.ColorRoleType.OnSurfaceVariant,
+		Enums.ColorRoleType.SecondaryContainer,
+		Enums.ColorRoleType.OnSecondaryContainer,
+		Enums.ColorRoleType.OnSurface,
+		onSelect,
+		initialSelection,
+		elevation,
+		isEnabled
+	)
+end
+
+function Interface.ColdFusion.tertiaryContainer(
+	style: CanBeState<Style>,
+	onSelect: CanBeState<(isSelected: boolean) -> ()>,
+	initialSelection: CanBeState<boolean>,
+	elevation: CanBeState<number?>,
+	isEnabled: CanBeState<boolean?>
+): GuiObject
+	return newThemedComponent(
+		style,
+		Enums.ColorRoleType.OnSurfaceVariant,
+		Enums.ColorRoleType.TertiaryContainer,
+		Enums.ColorRoleType.OnTertiaryContainer,
+		Enums.ColorRoleType.OnSurface,
+		onSelect,
+		initialSelection,
+		elevation,
+		isEnabled
+	)
+end
 function Interface.ColdFusion.new(
-	onSelect: (isSelected: boolean?) -> (),
-	initialSelection: CanBeState<boolean?>,
+	onSelect: CanBeState<(isSelected: boolean) -> ()>,
+	initialSelection: CanBeState<boolean>,
 	isEnabled: CanBeState<boolean>,
 	outlineColor: CanBeState<Color3>,
 	fillColor: CanBeState<Color3>,
@@ -60,7 +230,7 @@ function Interface.ColdFusion.new(
 	local _Value = _fuse.Value
 	local _Computed = _fuse.Computed
 
-	local initialSelectionState = _import(initialSelection, nil :: boolean?)
+	local initialSelectionState = _import(initialSelection, false)
 	local outlineColorState = _import(outlineColor, Color3.new(1, 1, 1))
 	local fillColorState = _import(fillColor, Color3.new(1, 1, 1))
 	local disabledColorState = _import(disabledColor, Color3.new(1, 1, 1))
@@ -76,13 +246,7 @@ function Interface.ColdFusion.new(
 		hasClicked:Set(false)
 	end)
 
-	local valueState = _Computed(function(initial: boolean?, count: number, hasClick: boolean): boolean?
-		if initial == nil then
-			initial = false
-			if count == 0 and hasClick == false then
-				return nil
-			end
-		end
+	local valueState = _Computed(function(initial: boolean, count: number, hasClick: boolean): boolean
 		if count % 2 == 0 then
 			return initial
 		else
@@ -224,9 +388,9 @@ function Interface.ColdFusion.new(
 					local sound = Instance.new("Sound")
 					sound.Volume = 1
 					if valueState:Get() == true then
-						sound.SoundId = Sounds.Library.navigation_forward_selection_minimal
+						sound.SoundId = Sounds.Library[Enums.SoundType.navigation_forward_selection_minimal]
 					else
-						sound.SoundId = Sounds.Library.navigation_backward_selection_minimal
+						sound.SoundId = Sounds.Library[Enums.SoundType.navigation_backward_selection_minimal]
 					end
 					SoundService:PlayLocalSound(sound)
 					sound:Destroy()

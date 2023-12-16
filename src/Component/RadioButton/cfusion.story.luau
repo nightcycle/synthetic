@@ -20,7 +20,7 @@ return function(frame: Frame)
 	task.spawn(function()
 		local function makeHalfFrame(isDarkMode: boolean, color: Color3): Frame
 			local style =
-				Style.new(1, "Roboto", if isDarkMode then Enums.SchemeType.Dark else Enums.SchemeType.Light, color)
+				Style.new(1, "Source Sans", if isDarkMode then Enums.SchemeType.Dark else Enums.SchemeType.Light, color)
 
 			local halfFrame = maid:GiveTask(Instance.new("Frame"))
 			halfFrame.BackgroundColor3 = style:GetColor(Enums.ColorRoleType.Surface)
@@ -38,10 +38,10 @@ return function(frame: Frame)
 			do
 				local button = maid:GiveTask(
 					Module.ColdFusion.new(
-						function(isSelected: boolean?)
+						function(isSelected: boolean)
 							print("is selected", isSelected)
 						end,
-						nil,
+						true,
 						true,
 						style:GetColor(Enums.ColorRoleType.OnSurfaceVariant),
 						style:GetColor(Enums.ColorRoleType.Primary),
@@ -57,10 +57,10 @@ return function(frame: Frame)
 			do
 				local button = maid:GiveTask(
 					Module.ColdFusion.new(
-						function(isSelected: boolean?)
+						function(isSelected: boolean)
 							print("is selected", isSelected)
 						end,
-						nil,
+						true,
 						false,
 						style:GetColor(Enums.ColorRoleType.OnSurfaceVariant),
 						style:GetColor(Enums.ColorRoleType.Primary),
@@ -76,7 +76,7 @@ return function(frame: Frame)
 			do
 				local button = maid:GiveTask(
 					Module.ColdFusion.new(
-						function(isSelected: boolean?)
+						function(isSelected: boolean)
 							print("is selected", isSelected)
 						end,
 						true,

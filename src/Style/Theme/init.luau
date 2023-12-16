@@ -46,7 +46,7 @@ export type Theme = {
 	new: (source: Color3, custom: { [string]: Color3 }?) -> Theme,
 }
 -- Constants
-local ELEVATION_TINTS = { 0.05, 0.08, 0.11, 0.12, 0.14 }
+local ELEVATION_TINTS = {0, 0.05, 0.08, 0.11, 0.12, 0.14 }
 -- Variables
 -- References
 -- Private Functions
@@ -187,9 +187,7 @@ end
 function Theme.getElevatedColor(color: Color3, elevation: number, schemeType: Enums.SchemeType): Color3
 	local hct = HCT.fromColor3(color)
 	local tone = hct:getTone()
-	if elevation == 0 then
-		return color
-	end
+	elevation += 1
 	elevation = math.clamp(elevation, 1, #ELEVATION_TINTS)
 	if ELEVATION_TINTS[elevation] then
 		local newColor = HCT.fromColor3(color)

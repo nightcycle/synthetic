@@ -60,10 +60,157 @@ end
 -- Class
 local Interface = {}
 
+function newThemedComponent(
+	style: CanBeState<Style>,
+	backgroundColor: Enums.ColorRoleType,
+	onBackgroundColor: Enums.ColorRoleType,
+	fillColor: Enums.ColorRoleType,
+	buttonColor: Enums.ColorRoleType,
+	onButtonColor: Enums.ColorRoleType,
+	disabledColor: Enums.ColorRoleType,
+	onDisabledColor: Enums.ColorRoleType,
+	onSelect: CanBeState<(isSelected: boolean) -> ()>,
+	initialSelection: CanBeState<boolean>,
+	includeIconOnSelected: CanBeState<boolean?>,
+	includeIconOnDeselected: CanBeState<boolean?>,
+	elevation: CanBeState<number?>,
+	isEnabled: CanBeState<boolean?>
+): GuiObject
+	local maid = Maid.new()	
+
+	local _fuse = ColdFusion.fuse(maid)
+	
+	local _new = _fuse.new
+	local _bind = _fuse.bind
+	local _clone = _fuse.clone
+	local _import = _fuse.import
+	
+	local _Value = _fuse.Value
+	local _Computed = _fuse.Computed
+
+	local styleState: State<Style> = _import(style, nil :: any)
+
+	local out = Interface.ColdFusion.new(
+		onSelect,
+		initialSelection,
+		_import(isEnabled, true),
+		_import(includeIconOnSelected, true),
+		_import(includeIconOnDeselected, true),
+		_Computed(function(s: Style): Color3
+			return s:GetColor(backgroundColor)
+		end, styleState),
+		_Computed(function(s: Style): Color3
+			return s:GetColor(onBackgroundColor)
+		end, styleState),
+		_Computed(function(s: Style): Color3
+			return s:GetColor(fillColor)
+		end, styleState),
+		_Computed(function(s: Style): Color3
+			return s:GetColor(buttonColor)
+		end, styleState),
+		_Computed(function(s: Style): Color3
+			return s:GetColor(onButtonColor)
+		end, styleState),
+		_Computed(function(s: Style): Color3
+			return s:GetColor(disabledColor)
+		end, styleState),
+		_Computed(function(s: Style): Color3
+			return s:GetColor(onDisabledColor)
+		end, styleState),
+		_import(elevation, 0),
+		styleState
+	)
+
+	maid.bind(out)
+
+	return out
+end
+
 Interface.ColdFusion = {}
 
+function Interface.ColdFusion.primary(
+	style: CanBeState<Style>,
+	onSelect: CanBeState<(isSelected: boolean) -> ()>,
+	initialSelection: CanBeState<boolean>,
+	includeIconOnSelected: CanBeState<boolean?>,
+	includeIconOnDeselected: CanBeState<boolean?>,
+	elevation: CanBeState<number?>,
+	isEnabled: CanBeState<boolean?>
+): GuiObject
+	return newThemedComponent(
+		style,
+		Enums.ColorRoleType.SurfaceContainerHighest,
+		Enums.ColorRoleType.Outline,
+		Enums.ColorRoleType.Primary,
+		Enums.ColorRoleType.PrimaryContainer,
+		Enums.ColorRoleType.OnPrimaryContainer,
+		Enums.ColorRoleType.Surface,
+		Enums.ColorRoleType.OnSurface,
+		onSelect,
+		initialSelection,
+		includeIconOnSelected,
+		includeIconOnDeselected,
+		elevation,
+		isEnabled
+	)
+end
+
+function Interface.ColdFusion.secondary(
+	style: CanBeState<Style>,
+	onSelect: CanBeState<(isSelected: boolean) -> ()>,
+	initialSelection: CanBeState<boolean>,
+	includeIconOnSelected: CanBeState<boolean?>,
+	includeIconOnDeselected: CanBeState<boolean?>,
+	elevation: CanBeState<number?>,
+	isEnabled: CanBeState<boolean?>
+): GuiObject
+	return newThemedComponent(
+		style,
+		Enums.ColorRoleType.SurfaceContainerHighest,
+		Enums.ColorRoleType.Outline,
+		Enums.ColorRoleType.Secondary,
+		Enums.ColorRoleType.SecondaryContainer,
+		Enums.ColorRoleType.OnSecondaryContainer,
+		Enums.ColorRoleType.Surface,
+		Enums.ColorRoleType.OnSurface,
+		onSelect,
+		initialSelection,
+		includeIconOnSelected,
+		includeIconOnDeselected,
+		elevation,
+		isEnabled
+	)
+end
+
+function Interface.ColdFusion.tertiary(
+	style: CanBeState<Style>,
+	onSelect: CanBeState<(isSelected: boolean) -> ()>,
+	initialSelection: CanBeState<boolean>,
+	includeIconOnSelected: CanBeState<boolean?>,
+	includeIconOnDeselected: CanBeState<boolean?>,
+	elevation: CanBeState<number?>,
+	isEnabled: CanBeState<boolean?>
+): GuiObject
+	return newThemedComponent(
+		style,
+		Enums.ColorRoleType.SurfaceContainerHighest,
+		Enums.ColorRoleType.Outline,
+		Enums.ColorRoleType.Tertiary,
+		Enums.ColorRoleType.TertiaryContainer,
+		Enums.ColorRoleType.OnTertiaryContainer,
+		Enums.ColorRoleType.Surface,
+		Enums.ColorRoleType.OnSurface,
+		onSelect,
+		initialSelection,
+		includeIconOnSelected,
+		includeIconOnDeselected,
+		elevation,
+		isEnabled
+	)
+end
+
 function Interface.ColdFusion.new(
-	onSelect: (isSelected: boolean?) -> (),
+	onSelect: CanBeState<(isSelected: boolean) -> ()>,
 	initialSelection: CanBeState<boolean>,
 	isEnabled: CanBeState<boolean>,
 	includeIconOnSelected: CanBeState<boolean>,
@@ -75,7 +222,6 @@ function Interface.ColdFusion.new(
 	onButtonColor: CanBeState<Color3>,
 	disabledColor: CanBeState<Color3>,
 	onDisabledColor: CanBeState<Color3>,
-
 	elevation: CanBeState<number>,
 	style: CanBeState<Style>
 ): GuiObject
@@ -448,9 +594,9 @@ function Interface.ColdFusion.new(
 					local sound = Instance.new("Sound")
 					sound.Volume = 1
 					if valueState:Get() == true then
-						sound.SoundId = Sounds.Library.navigation_forward_selection_minimal
+						sound.SoundId = Sounds.Library[Enums.SoundType.navigation_forward_selection_minimal]
 					else
-						sound.SoundId = Sounds.Library.navigation_backward_selection_minimal
+						sound.SoundId = Sounds.Library[Enums.SoundType.navigation_backward_selection_minimal]
 					end
 					SoundService:PlayLocalSound(sound)
 					sound:Destroy()

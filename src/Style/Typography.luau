@@ -9,7 +9,7 @@ local Types = require(_Package:WaitForChild("Types"))
 
 -- Types
 -- Constants
-local DEFAULT_FONT_FAMILY = "Roboto"
+local DEFAULT_FONT_FAMILY = "Source Sans"
 local WEIGHT = {
 	[100] = Enum.FontWeight.Thin,
 	[200] = Enum.FontWeight.ExtraLight,
