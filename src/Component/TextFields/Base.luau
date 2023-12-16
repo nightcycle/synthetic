@@ -2,8 +2,6 @@
 local _Package = script.Parent.Parent.Parent
 local _Packages = _Package.Parent
 -- Services
-local SoundService = game:GetService("SoundService")
-
 -- Packages
 local Maid = require(_Packages:WaitForChild("Maid"))
 local ColdFusion = require(_Packages:WaitForChild("ColdFusion"))
@@ -38,8 +36,6 @@ local LEFT_RIGHT_NO_ICONS_PADDING_DP = 16
 local LEFT_RIGHT_YES_ICONS_PADDING_DP = 12
 local TEXT_AND_ICON_PADDING_DP = 16
 local SUPPORTING_TEXT_PADDING_DP = 4
-local CHARACTER_COUNT_PADDING = 16
-local LEFT_RIGHT_LABEL_PADDING_DP = 12
 local MIN_WIDTH_DP = CONTAINER_HEIGHT_DP * 1.5
 local DEFAULT_OUTLINE_THICKNESS_DP = 1
 local FOCUSED_OUTLINE_THICKNESS_DP = 2
@@ -66,11 +62,9 @@ function Interface.new(
 	isEnabled: CanBeState<boolean>,
 	isError: CanBeState<boolean>,
 	label: CanBeState<string>,
-	isMultiLine: CanBeState<boolean>,
 	characterLimit: CanBeState<number?>,
 	supportingText: CanBeState<string?>,
 	leadingIcon: CanBeState<ImageData?>,
-	dropdownOptions: CanBeState<{[number]: string}?>,
 	textColor: CanBeState<Color3>,
 	labelColor: CanBeState<Color3>,
 	hightlightColor: CanBeState<Color3>,
@@ -102,20 +96,27 @@ function Interface.new(
 	local initialTextState = _import(initialText, nil :: string?)
 	local labelTextState = _import(label, nil :: string?)
 	
-	local isMultiLineState = _import(isMultiLine, false)
 	local characterLimitState = _import(characterLimit, nil :: number?)
 
 	local supportingTextState = _import(supportingText, nil :: string?)
 	local leadingIconState = _import(leadingIcon, nil :: ImageData?)
-	local dropdownOptionsState = _import(dropdownOptions, nil :: {[number]: string}?)
+	local dropdownOptionsState: State<{[number]: string}?> = _import(nil, nil :: {[number]: string}?)
 
-	local textColorState = _import(textColor, Color3.new())
-	local borderColorState = _import(borderColor, Color3.new())
-	local backgroundColorState = _import(backgroundColor, Color3.new())
-	local labelColorState = _import(labelColor, Color3.new())
-	local inputHighlightColorState = _import(hightlightColor, Color3.new())
-	local errorColorState = _import(errorColor, Color3.new())
-	local supportingTextColorState = _import(supportingTextColor, Color3.new())
+	local styleState: State<Style> = _import(style, nil :: any)
+
+	local function applyElevation(state: State<Color3>): State<Color3>
+		return _Computed(function(c: Color3, e: number, s: Style): Color3
+			return s:GetElevatedColor(c, e)
+		end, state, elevationState, styleState)
+	end
+
+	local textColorState = applyElevation(_import(textColor, Color3.new()))
+	local borderColorState = applyElevation(_import(borderColor, Color3.new()))
+	local backgroundColorState = applyElevation(_import(backgroundColor, Color3.new()))
+	local labelColorState = applyElevation(_import(labelColor, Color3.new()))
+	local inputHighlightColorState = applyElevation(_import(hightlightColor, Color3.new()))
+	local errorColorState = applyElevation(_import(errorColor, Color3.new()))
+	local supportingTextColorState = applyElevation(_import(supportingTextColor, Color3.new()))
 
 
 	local isOutlinedState = _import(isOutlined, true)
@@ -124,8 +125,6 @@ function Interface.new(
 	local highlightColorState = _Computed(function(isErr: boolean, hCol: Color3, eCol: Color3): Color3
 		return if isErr then eCol else hCol
 	end, isErrorState, inputHighlightColorState, errorColorState)
-
-	local styleState: State<Style> = _import(style, nil :: any)
 
 	local isFocusedState = _Value(false)
 	local isPressedState = _Value(false)
@@ -381,7 +380,9 @@ function Interface.new(
 						Enabled = isOutlinedState,
 						LineJoinMode = Enum.LineJoinMode.Round,
 						Thickness = outlineThicknessState,
-						Transparency = 0,
+						Transparency = _Computed(function(isEnab: boolean): number
+							return if isEnab then 0 else DISABLED_OUTLINE_TRANSPARENCY
+						end, isEnabledState),
 					}),
 					_new("UICorner")({
 						CornerRadius = _Computed(function(s: Style): UDim

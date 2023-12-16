@@ -5,7 +5,6 @@ local _Packages = _Package.Parent
 -- Packages
 local Maid = require(_Packages:WaitForChild("Maid"))
 local ColdFusion = require(_Packages:WaitForChild("ColdFusion"))
-local MaterialIcons = require(_Packages:WaitForChild("MaterialIcons"))
 
 -- Modules
 local Types = require(_Package:WaitForChild("Types"))
@@ -40,11 +39,9 @@ function Interface.ColdFusion.new(
 	isEnabled: CanBeState<boolean>,
 	isError: CanBeState<boolean>,
 	label: CanBeState<string>,
-	isMultiLine: CanBeState<boolean>,
 	characterLimit: CanBeState<number?>,
 	supportingText: CanBeState<string?>,
 	leadingIcon: CanBeState<ImageData?>,
-	dropdownOptions: CanBeState<{[number]: string}?>,
 	hightlightColor: CanBeState<Color3>,
 	errorColor: CanBeState<Color3>,
 	borderColor: CanBeState<Color3>,
@@ -61,11 +58,9 @@ function Interface.ColdFusion.new(
 		isEnabled,
 		isError,
 		label,
-		isMultiLine,
 		characterLimit,
 		supportingText,
 		leadingIcon,
-		dropdownOptions,
 		textColor,
 		labelColor,
 		hightlightColor,
