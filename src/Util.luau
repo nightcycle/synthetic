@@ -261,7 +261,9 @@ function Util.TextLabel.ColdFusion.new(
 	leftIcon: CanBeState<ImageData?>,
 	rightIcon: CanBeState<ImageData?>,
 	paddingDp: CanBeState<number>,
-	style: CanBeState<Style>
+	style: CanBeState<Style>,
+	ignoreLineHeight: CanBeState<boolean?>,
+	textXAlignment: CanBeState<Enum.TextXAlignment?>
 ): Frame
 	local maid = Maid.new()
 	local _fuse = ColdFusion.fuse(maid)
@@ -280,16 +282,19 @@ function Util.TextLabel.ColdFusion.new(
 	local textState = _import(text, "")
 	local textColor3State = _import(textColor3, Color3.new(1,1,1))
 	local textTransparencyState = _import(textTransparency, 0)
+	local textXAlignmentState = _import(textXAlignment, Enum.TextXAlignment.Left)
+
+	local ignoreLineHeightState = _import(ignoreLineHeight, false)
 
 	local styleState: State<Style> = _import(style, nil :: any)
 	
 	local fontTypeState: State<Enums.FontType> = _import(fontType, Enums.FontType.LabelMedium)
 	local paddingState: State<number> = _import(paddingDp, 0)
 
-	local iconSizeState = _Computed(function(s: Style, ft: Enums.FontType): UDim2
-		local dp = s:GetLineHeight(ft) * s:GetTextSize(ft)
+	local iconSizeState = _Computed(function(s: Style, ft: Enums.FontType, ign: boolean): UDim2
+		local dp = (if ign then 1 else s:GetLineHeight(ft)) * s:GetTextSize(ft)
 		return UDim2.fromOffset(dp, dp)
-	end, styleState, fontTypeState)
+	end, styleState, fontTypeState, ignoreLineHeightState)
 
 	local out = _bind(maid:GiveTask(Util.Container.ColdFusion.new()))({
 		Name = "TextLabel",
@@ -303,6 +308,7 @@ function Util.TextLabel.ColdFusion.new(
 				ItemLineAlignment = Enum.ItemLineAlignment.Center,
 				VerticalAlignment = Enum.VerticalAlignment.Center,
 				HorizontalAlignment = Enum.HorizontalAlignment.Center,
+				HorizontalFlex = Enum.UIFlexAlignment.Fill,
 			}),
 			_new("TextLabel")({
 				Text = textState,
@@ -313,21 +319,24 @@ function Util.TextLabel.ColdFusion.new(
 				end, textState),
 				TextColor3 = textColor3State,
 				TextTransparency = textTransparencyState,
+				TextXAlignment = textXAlignmentState,
 				BackgroundTransparency = 1,
 				TextXAlignment = _Computed(function(i: ImageData?): Enum.TextXAlignment
 					return if i then Enum.TextXAlignment.Center else Enum.TextXAlignment.Left
 				end, leftIconState),
-				AutomaticSize = Enum.AutomaticSize.XY,
-				TextSize = _Computed(function(s: Style): number
-					return s:GetTextSize(Enums.FontType.HeadlineSmall)
-				end, styleState),
-				LineHeight = _Computed(function(s: Style): number
-					return s:GetLineHeight(Enums.FontType.HeadlineSmall)
-				end, styleState),
-				FontFace = _Computed(function(s: Style): Font
-					return s:GetFont(Enums.FontType.HeadlineSmall)
-				end, styleState),
-				Size = UDim2.fromOffset(0,0),
+				AutomaticSize = Enum.AutomaticSize.X,
+				TextSize = _Computed(function(s: Style, f: Enums.FontType): number
+					return s:GetTextSize(f)
+				end, styleState, fontTypeState),
+				LineHeight = _Computed(function(s: Style, f: Enums.FontType): number
+					return s:GetLineHeight(f)
+				end, styleState, fontTypeState),
+				FontFace = _Computed(function(s: Style, f: Enums.FontType): Font
+					return s:GetFont(f)
+				end, styleState, fontTypeState),
+				Size = _Computed(function(s: Style, f: Enums.FontType, ign: boolean): UDim2
+					return UDim2.fromOffset(0, (if ign then 1 else s:GetLineHeight(f)) * s:GetTextSize(f))
+				end, styleState, fontTypeState, ignoreLineHeightState),
 			}),
 			_new("ImageLabel")({
 				Name = "LeftIcon",

@@ -38,6 +38,7 @@ function Interface.ColdFusion.new(
 	onInput: (text: string?) -> string?,
 	initialText: CanBeState<string?>,
 	isEnabled: CanBeState<boolean>,
+	isError: CanBeState<boolean>,
 	label: CanBeState<string>,
 	isMultiLine: CanBeState<boolean>,
 	characterLimit: CanBeState<number?>,
@@ -45,9 +46,11 @@ function Interface.ColdFusion.new(
 	leadingIcon: CanBeState<ImageData?>,
 	dropdownOptions: CanBeState<{[number]: string}?>,
 	backgroundColor: CanBeState<Color3>,
+	hightlightColor: CanBeState<Color3>,
+	errorColor: CanBeState<Color3>,
 	borderColor: CanBeState<Color3>,
 	textColor: CanBeState<Color3>,
-
+	labelColor: CanBeState<Color3>,
 	elevation: CanBeState<number>,
 	style: CanBeState<Style>
 ): GuiObject
@@ -57,6 +60,7 @@ function Interface.ColdFusion.new(
 		onInput,
 		initialText,
 		isEnabled,
+		isError,
 		label,
 		isMultiLine,
 		characterLimit,
@@ -64,8 +68,12 @@ function Interface.ColdFusion.new(
 		leadingIcon,
 		dropdownOptions,
 		textColor,
+		labelColor,
+		hightlightColor,
+		errorColor,
+		backgroundColor,
 		borderColor,
-		borderColor,
+		labelColor,
 		elevation,
 		style,
 		false

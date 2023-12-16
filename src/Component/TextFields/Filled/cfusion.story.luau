@@ -22,7 +22,7 @@ return function(frame: Frame)
 	local maid = Maid.new()
 	task.spawn(function()
 		local function makeHalfFrame(isDarkMode: boolean, color: Color3): Frame
-			local style = Style.new(1, "Roboto", if isDarkMode then Enums.SchemeType.Dark else Enums.SchemeType.Light, color)
+			local style = Style.new(0.75, "Roboto", if isDarkMode then Enums.SchemeType.Dark else Enums.SchemeType.Light, color)
 
 			local halfFrame = maid:GiveTask(Instance.new("Frame"))
 			halfFrame.BackgroundColor3 = style:GetColor(Enums.ColorRoleType.Surface)
@@ -50,15 +50,158 @@ return function(frame: Frame)
 						end,
 						nil,
 						true,
+						false,
 						"Label",
 						false,
 						20,
 						"Supporting Text",
 						Icons.settings,
 						nil,
-						style:GetColor(Enums.ColorRoleType.PrimaryContainer, 1),
+						style:GetColor(Enums.ColorRoleType.SurfaceContainerHighest, 1),
+						style:GetColor(Enums.ColorRoleType.Primary, 1),
+						style:GetColor(Enums.ColorRoleType.Error, 1),
 						style:GetColor(Enums.ColorRoleType.Outline, 1),
-						style:GetColor(Enums.ColorRoleType.OnPrimary, 1),
+						style:GetColor(Enums.ColorRoleType.OnSurface, 1),
+						style:GetColor(Enums.ColorRoleType.OnSurfaceVariant, 1),
+						1,
+						style
+					)
+				)
+				button.Parent = halfFrame
+			end
+			do
+				local button = maid:GiveTask(
+					Module.ColdFusion.new(
+						function(input: string?): string?
+							print(`submit: {input}`)
+							return input
+						end,
+						function(input: string?): string?
+							print(`input: {input}`)
+							return input
+						end,
+						nil,
+						true,
+						false,
+						"Label",
+						false,
+						20,
+						"Supporting Text",
+						nil,
+						nil,
+						style:GetColor(Enums.ColorRoleType.SurfaceContainerHighest, 1),
+						style:GetColor(Enums.ColorRoleType.Primary, 1),
+						style:GetColor(Enums.ColorRoleType.Error, 1),
+						style:GetColor(Enums.ColorRoleType.Outline, 1),
+						style:GetColor(Enums.ColorRoleType.OnSurface, 1),
+						style:GetColor(Enums.ColorRoleType.OnSurfaceVariant, 1),
+
+
+						1,
+						style
+					)
+				)
+				button.Parent = halfFrame
+			end
+			do
+				local button = maid:GiveTask(
+					Module.ColdFusion.new(
+						function(input: string?): string?
+							print(`submit: {input}`)
+							return input
+						end,
+						function(input: string?): string?
+							print(`input: {input}`)
+							return input
+						end,
+						nil,
+						false,
+						false,
+						"Label",
+						false,
+						20,
+						"Supporting Text",
+						nil,
+						nil,
+						style:GetColor(Enums.ColorRoleType.SurfaceContainerHighest, 1),
+						style:GetColor(Enums.ColorRoleType.Primary, 1),
+						style:GetColor(Enums.ColorRoleType.Error, 1),
+						style:GetColor(Enums.ColorRoleType.Outline, 1),
+						style:GetColor(Enums.ColorRoleType.OnSurface, 1),
+						style:GetColor(Enums.ColorRoleType.OnSurfaceVariant, 1),
+
+
+						1,
+						style
+					)
+				)
+				button.Parent = halfFrame
+			end
+			do
+				local button = maid:GiveTask(
+					Module.ColdFusion.new(
+						function(input: string?): string?
+							print(`submit: {input}`)
+							return input
+						end,
+						function(input: string?): string?
+							print(`input: {input}`)
+							return input
+						end,
+						nil,
+						true,
+						true,
+						"Label",
+						false,
+						20,
+						"Supporting Text",
+						Icons.settings,
+						nil,
+						style:GetColor(Enums.ColorRoleType.SurfaceContainerHighest, 1),
+						style:GetColor(Enums.ColorRoleType.Primary, 1),
+						style:GetColor(Enums.ColorRoleType.Error, 1),
+						style:GetColor(Enums.ColorRoleType.Outline, 1),
+						style:GetColor(Enums.ColorRoleType.OnSurface, 1),
+						style:GetColor(Enums.ColorRoleType.OnSurfaceVariant, 1),
+
+						1,
+						style
+					)
+				)
+				button.Parent = halfFrame
+			end
+
+			do
+				local button = maid:GiveTask(
+					Module.ColdFusion.new(
+						function(input: string?): string?
+							print(`submit: {input}`)
+							return input
+						end,
+						function(input: string?): string?
+							print(`input: {input}`)
+							return input
+						end,
+						nil,
+						true,
+						false,
+						"Label",
+						false,
+						20,
+						"Supporting Text",
+						Icons.settings,
+						{
+							"test 1",
+							"test 2",
+							"test 3"
+						},
+						style:GetColor(Enums.ColorRoleType.SurfaceContainerHighest, 1),
+						style:GetColor(Enums.ColorRoleType.Primary, 1),
+						style:GetColor(Enums.ColorRoleType.Error, 1),
+						style:GetColor(Enums.ColorRoleType.Outline, 1),
+						style:GetColor(Enums.ColorRoleType.OnSurface, 1),
+						style:GetColor(Enums.ColorRoleType.OnSurfaceVariant, 1),
+
 						1,
 						style
 					)
