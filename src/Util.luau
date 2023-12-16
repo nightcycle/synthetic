@@ -319,11 +319,10 @@ function Util.TextLabel.ColdFusion.new(
 				end, textState),
 				TextColor3 = textColor3State,
 				TextTransparency = textTransparencyState,
-				TextXAlignment = textXAlignmentState,
 				BackgroundTransparency = 1,
-				TextXAlignment = _Computed(function(i: ImageData?): Enum.TextXAlignment
-					return if i then Enum.TextXAlignment.Center else Enum.TextXAlignment.Left
-				end, leftIconState),
+				TextXAlignment = _Computed(function(i: ImageData?, alignment: Enum.TextXAlignment): Enum.TextXAlignment
+					return if i then Enum.TextXAlignment.Center else alignment
+				end, leftIconState, textXAlignmentState),
 				AutomaticSize = Enum.AutomaticSize.X,
 				TextSize = _Computed(function(s: Style, f: Enums.FontType): number
 					return s:GetTextSize(f)
