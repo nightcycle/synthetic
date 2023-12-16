@@ -171,7 +171,7 @@ function component(
 		local clickCount = _Value(0)
 		local isInitiallySelected = _Computed(function(optionData: OptionData?)
 			clickCount:Set(0)
-			return if optionData then not optionData.IsInitiallySelected else false
+			return if optionData then optionData.IsInitiallySelected else false
 		end, optionDataState)
 
 		local isSelectedState = _Computed(function(count: number, initial: boolean): boolean
@@ -450,16 +450,134 @@ end
 -- Class
 local Interface = {}
 
+function newThemedComponent(
+	style: CanBeState<Style>,
+
+	textColor: Enums.ColorRoleType,
+	fillTextColor: Enums.ColorRoleType,
+	fillBackgroundColor: Enums.ColorRoleType,
+	outlineColor: Enums.ColorRoleType,
+
+	options: CanBeState<{ [number]: OptionData }>,
+
+	density: CanBeState<number?>,
+	isMultiSelect: CanBeState<boolean?>,
+	elevation: CanBeState<number?>
+): GuiObject
+	local maid = Maid.new()	
+
+	local _fuse = ColdFusion.fuse(maid)
+	
+	local _new = _fuse.new
+	local _bind = _fuse.bind
+	local _clone = _fuse.clone
+	local _import = _fuse.import
+	
+	local _Value = _fuse.Value
+	local _Computed = _fuse.Computed
+
+	local styleState: State<Style> = _import(style, nil :: any)
+
+	local out = Interface.ColdFusion.new(
+		options,
+		_import(density, 0),
+		_import(isMultiSelect, false),
+		_Computed(function(s: Style): Color3
+			return s:GetColor(textColor)
+		end, styleState),
+		_Computed(function(s: Style): Color3
+			return s:GetColor(fillTextColor)
+		end, styleState),
+		_Computed(function(s: Style): Color3
+			return s:GetColor(fillBackgroundColor)
+		end, styleState),
+		_Computed(function(s: Style): Color3
+			return s:GetColor(outlineColor)
+		end, styleState),
+		_import(elevation, 0),
+		styleState
+	)
+
+	maid.bind(out)
+
+	return out
+end
+
 Interface.ColdFusion = {}
+
+
+function Interface.ColdFusion.primaryContainer(
+	style: CanBeState<Style>,
+	options: CanBeState<{ [number]: OptionData }>,
+	density: CanBeState<number?>,
+	isMultiSelect: CanBeState<boolean?>,
+	elevation: CanBeState<number?>
+): GuiObject
+	return newThemedComponent(
+		style,
+		Enums.ColorRoleType.OnSurface,
+		Enums.ColorRoleType.OnPrimaryContainer,
+		Enums.ColorRoleType.PrimaryContainer,
+		Enums.ColorRoleType.Outline,
+		options,
+		density, 
+		isMultiSelect,
+		elevation
+	)
+end
+
+
+function Interface.ColdFusion.secondaryContainer(
+	style: CanBeState<Style>,
+	options: CanBeState<{ [number]: OptionData }>,
+	density: CanBeState<number?>,
+	isMultiSelect: CanBeState<boolean?>,
+	elevation: CanBeState<number?>
+): GuiObject
+	return newThemedComponent(
+		style,
+		Enums.ColorRoleType.OnSurface,
+		Enums.ColorRoleType.OnSecondaryContainer,
+		Enums.ColorRoleType.SecondaryContainer,
+		Enums.ColorRoleType.Outline,
+		options,
+		density, 
+		isMultiSelect,
+		elevation
+	)
+end
+
+
+function Interface.ColdFusion.tertiaryContainer(
+	style: CanBeState<Style>,
+	options: CanBeState<{ [number]: OptionData }>,
+	density: CanBeState<number?>,
+	isMultiSelect: CanBeState<boolean?>,
+	elevation: CanBeState<number?>
+): GuiObject
+	return newThemedComponent(
+		style,
+		Enums.ColorRoleType.OnSurface,
+		Enums.ColorRoleType.OnTertiaryContainer,
+		Enums.ColorRoleType.TertiaryContainer,
+		Enums.ColorRoleType.Outline,
+		options,
+		density, 
+		isMultiSelect,
+		elevation
+	)
+end
 
 function Interface.ColdFusion.new(
 	options: CanBeState<{ [number]: OptionData }>,
 	density: CanBeState<number>,
 	isMultiSelect: CanBeState<boolean>,
+
 	textColor: CanBeState<Color3>,
 	fillTextColor: CanBeState<Color3>,
 	fillBackgroundColor: CanBeState<Color3>,
 	outlineColor: CanBeState<Color3>,
+
 	elevation: CanBeState<number>,
 	style: CanBeState<Style>
 ): GuiObject

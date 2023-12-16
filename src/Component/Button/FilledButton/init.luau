@@ -31,7 +31,192 @@ type ImageData = Types.ImageData
 -- Class
 local Interface = {}
 
+-- Private Functions
+function newThemedComponent(
+	textColor: Enums.ColorRoleType,
+	surfaceColor: Enums.ColorRoleType,
+	disabledTextColor: Enums.ColorRoleType,
+	disabledSurfaceColor: Enums.ColorRoleType,
+	onClick: CanBeState<() -> ()>,
+	text: CanBeState<string>,
+	icon: CanBeState<ImageData?>,
+	style: CanBeState<Style>,
+	elevation: CanBeState<number?>,
+	isEnabled: CanBeState<boolean?>
+): GuiObject
+	local maid = Maid.new()	
+
+	local _fuse = ColdFusion.fuse(maid)
+	
+	local _new = _fuse.new
+	local _bind = _fuse.bind
+	local _clone = _fuse.clone
+	local _import = _fuse.import
+	
+	local _Value = _fuse.Value
+	local _Computed = _fuse.Computed
+
+	local styleState: State<Style> = _import(style, nil :: any)
+
+	local out = Interface.ColdFusion.new(
+		onClick,
+		text,
+		icon,
+		style,
+		_Computed(function(s: Style): Color3
+			return s:GetColor(textColor)
+		end, styleState),
+		_Computed(function(s: Style): Color3
+			return s:GetColor(surfaceColor)
+		end, styleState),
+		_Computed(function(s: Style): Color3
+			return s:GetColor(disabledTextColor)
+		end, styleState),
+		_Computed(function(s: Style): Color3
+			return s:GetColor(disabledSurfaceColor)
+		end, styleState),
+		_import(isEnabled, true),
+		_import(elevation, 0)
+	)
+
+	maid.bind(out)
+
+	return out
+end
+
 Interface.ColdFusion = {}
+
+function Interface.ColdFusion.primary(
+	style: CanBeState<Style>,
+	onClick: CanBeState<() -> ()>,
+	text: CanBeState<string>,
+	icon: CanBeState<ImageData?>,
+	elevation: CanBeState<number?>,
+	isEnabled: CanBeState<boolean?>
+): GuiObject
+	return newThemedComponent(
+		Enums.ColorRoleType.OnPrimary,
+		Enums.ColorRoleType.Primary,
+		Enums.ColorRoleType.OnSurfaceVariant,
+		Enums.ColorRoleType.SurfaceVariant,
+		onClick,
+		text,
+		icon,
+		style,
+		elevation,
+		isEnabled
+	)
+end
+
+function Interface.ColdFusion.secondary(
+	style: CanBeState<Style>,
+	onClick: CanBeState<() -> ()>,
+	text: CanBeState<string>,
+	icon: CanBeState<ImageData?>,
+	elevation: CanBeState<number?>,
+	isEnabled: CanBeState<boolean?>
+): GuiObject
+	return newThemedComponent(
+		Enums.ColorRoleType.OnSecondary,
+		Enums.ColorRoleType.Secondary,
+		Enums.ColorRoleType.OnSurfaceVariant,
+		Enums.ColorRoleType.SurfaceVariant,
+		onClick,
+		text,
+		icon,
+		style,
+		elevation,
+		isEnabled
+	)
+end
+
+function Interface.ColdFusion.tertiary(
+	style: CanBeState<Style>,
+	onClick: CanBeState<() -> ()>,
+	text: CanBeState<string>,
+	icon: CanBeState<ImageData?>,
+	elevation: CanBeState<number?>,
+	isEnabled: CanBeState<boolean?>
+): GuiObject
+	return newThemedComponent(
+		Enums.ColorRoleType.OnTertiary,
+		Enums.ColorRoleType.Tertiary,
+		Enums.ColorRoleType.OnSurfaceVariant,
+		Enums.ColorRoleType.SurfaceVariant,
+		onClick,
+		text,
+		icon,
+		style,
+		elevation,
+		isEnabled
+	)
+end
+
+function Interface.ColdFusion.primaryContainer(
+	style: CanBeState<Style>,
+	onClick: CanBeState<() -> ()>,
+	text: CanBeState<string>,
+	icon: CanBeState<ImageData?>,
+	elevation: CanBeState<number?>,
+	isEnabled: CanBeState<boolean?>
+): GuiObject
+	return newThemedComponent(
+		Enums.ColorRoleType.OnPrimaryContainer,
+		Enums.ColorRoleType.PrimaryContainer,
+		Enums.ColorRoleType.OnSecondaryContainer,
+		Enums.ColorRoleType.SurfaceContainer,
+		onClick,
+		text,
+		icon,
+		style,
+		elevation,
+		isEnabled
+	)
+end
+
+function Interface.ColdFusion.secondaryContainer(
+	style: CanBeState<Style>,
+	onClick: CanBeState<() -> ()>,
+	text: CanBeState<string>,
+	icon: CanBeState<ImageData?>,
+	elevation: CanBeState<number?>,
+	isEnabled: CanBeState<boolean?>
+): GuiObject
+	return newThemedComponent(
+		Enums.ColorRoleType.OnSecondaryContainer,
+		Enums.ColorRoleType.SecondaryContainer,
+		Enums.ColorRoleType.OnSecondaryContainer,
+		Enums.ColorRoleType.SurfaceContainer,
+		onClick,
+		text,
+		icon,
+		style,
+		elevation,
+		isEnabled
+	)
+end
+
+function Interface.ColdFusion.tertiaryContainer(
+	style: CanBeState<Style>,
+	onClick: CanBeState<() -> ()>,
+	text: CanBeState<string>,
+	icon: CanBeState<ImageData?>,
+	elevation: CanBeState<number?>,
+	isEnabled: CanBeState<boolean?>
+): GuiObject
+	return newThemedComponent(
+		Enums.ColorRoleType.OnTertiaryContainer,
+		Enums.ColorRoleType.TertiaryContainer,
+		Enums.ColorRoleType.OnSecondaryContainer,
+		Enums.ColorRoleType.SurfaceContainer,
+		onClick,
+		text,
+		icon,
+		style,
+		elevation,
+		isEnabled
+	)
+end
 
 function Interface.ColdFusion.new(
 	onClick: CanBeState<() -> ()>,

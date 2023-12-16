@@ -395,7 +395,6 @@ function Interface.ColdFusion.onPrimary(
 	)
 end
 
-
 function Interface.ColdFusion.onSurface(
 	style: CanBeState<Style>,
 	onClick: CanBeState<() -> ()>,
