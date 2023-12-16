@@ -68,7 +68,6 @@ function Interface.new(
 	local disabledFillTextColorState: State<Color3> = _import(disabledFillTextColor, Color3.new(1, 1, 1))
 	local isButtonState: State<boolean> = _import(isButton, false)
 
-	
 	local fillColorState: State<Color3> = _import(fillColor, Color3.new(1, 1, 1))
 	local disabledFillColorState: State<Color3> = _import(disabledFillColor, Color3.new(1, 1, 1))
 
@@ -88,9 +87,9 @@ function Interface.new(
 
 	local isSelectedState = _Computed(function(i: boolean, c: number): boolean
 		if i then
-			return c%2==0
+			return c % 2 == 0
 		else
-			return c%2==1
+			return c % 2 == 1
 		end
 	end, isInitiallySelectedState, clickCountState)
 
@@ -241,14 +240,25 @@ function Interface.new(
 	local button = Base.component(
 		maid,
 		function()
-			clickCountState:Set(clickCountState:Get()+1)
+			clickCountState:Set(clickCountState:Get() + 1)
 			onClickState:Get()(isSelectedState:Get())
 		end,
 		text,
 		if isEnabled == nil then true else isEnabled,
-		_Computed(function(isSel: boolean, isButton: boolean, fDatas: {[Enums.ButtonStateType]: RenderData}, oDatas: {[Enums.ButtonStateType]: RenderData}): {[Enums.ButtonStateType]: RenderData}
-			return if isSel and not isButton then fDatas else oDatas
-		end, isSelectedState, isButtonState, filledRenderDatasState, outlineRenderDatasState),
+		_Computed(
+			function(
+				isSel: boolean,
+				isButton: boolean,
+				fDatas: { [Enums.ButtonStateType]: RenderData },
+				oDatas: { [Enums.ButtonStateType]: RenderData }
+			): { [Enums.ButtonStateType]: RenderData }
+				return if isSel and not isButton then fDatas else oDatas
+			end,
+			isSelectedState,
+			isButtonState,
+			filledRenderDatasState,
+			outlineRenderDatasState
+		),
 		nil,
 		_Computed(function(s: Style): number
 			return s.Scale * 8

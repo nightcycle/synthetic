@@ -21,8 +21,12 @@ return function(frame: Frame)
 	local maid = Maid.new()
 	task.spawn(function()
 		local function makeHalfFrame(isDarkMode: boolean, color: Color3): Frame
-			local style =
-				Style.new(0.75, "Source Sans", if isDarkMode then Enums.SchemeType.Dark else Enums.SchemeType.Light, color)
+			local style = Style.new(
+				0.75,
+				"Source Sans",
+				if isDarkMode then Enums.SchemeType.Dark else Enums.SchemeType.Light,
+				color
+			)
 
 			local halfFrame = maid:GiveTask(Instance.new("Frame"))
 			halfFrame.BackgroundColor3 = style:GetColor(Enums.ColorRoleType.Surface)
@@ -37,68 +41,44 @@ return function(frame: Frame)
 			local Module = require(script.Parent)
 
 			do
-				local button = maid:GiveTask(Module.ColdFusion.primary(
-					style,
-					function()
-						print("click")
-					end,
-					Icons["1k"]
-				))
+				local button = maid:GiveTask(Module.ColdFusion.primary(style, function()
+					print("click")
+				end, Icons["1k"]))
 				button.Parent = halfFrame
 			end
 
 			do
-				local button = maid:GiveTask(Module.ColdFusion.secondary(
-					style,	
-					function()
-						print("click")
-					end,
-					Icons["2k"]
-				))
+				local button = maid:GiveTask(Module.ColdFusion.secondary(style, function()
+					print("click")
+				end, Icons["2k"]))
 				button.Parent = halfFrame
 			end
 
 			do
-				local button = maid:GiveTask(Module.ColdFusion.tertiary(
-					style,
-					function()
-						print("click")
-					end,
-					Icons["3k"]
-				))
+				local button = maid:GiveTask(Module.ColdFusion.tertiary(style, function()
+					print("click")
+				end, Icons["3k"]))
 				button.Parent = halfFrame
 			end
 
 			do
-				local button = maid:GiveTask(Module.ColdFusion.primaryContainer(
-					style,
-					function()
-						print("click")
-					end,
-					Icons["1k_plus"]
-				))
+				local button = maid:GiveTask(Module.ColdFusion.primaryContainer(style, function()
+					print("click")
+				end, Icons["1k_plus"]))
 				button.Parent = halfFrame
 			end
 
 			do
-				local button = maid:GiveTask(Module.ColdFusion.secondaryContainer(
-					style,
-					function()
-						print("click")
-					end,
-					Icons["2k_plus"]
-				))
+				local button = maid:GiveTask(Module.ColdFusion.secondaryContainer(style, function()
+					print("click")
+				end, Icons["2k_plus"]))
 				button.Parent = halfFrame
 			end
 
 			do
-				local button = maid:GiveTask(Module.ColdFusion.tertiaryContainer(
-					style,		
-					function()
-						print("click")
-					end,
-					Icons["3k_plus"]
-				))
+				local button = maid:GiveTask(Module.ColdFusion.tertiaryContainer(style, function()
+					print("click")
+				end, Icons["3k_plus"]))
 				button.Parent = halfFrame
 			end
 

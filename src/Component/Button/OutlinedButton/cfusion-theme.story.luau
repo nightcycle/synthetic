@@ -37,38 +37,23 @@ return function(frame: Frame)
 			local Module = require(script.Parent)
 
 			do
-				local button = maid:GiveTask(Module.ColdFusion.primary(
-					style,
-					function()
-						print("click")
-					end,
-					"primary",
-					Icons.call
-				))
+				local button = maid:GiveTask(Module.ColdFusion.primary(style, function()
+					print("click")
+				end, "primary", Icons.call))
 				button.Parent = halfFrame
 			end
 
 			do
-				local button = maid:GiveTask(Module.ColdFusion.secondary(
-					style,	
-					function()
-						print("click")
-					end,
-					"secondary",
-					Icons.call
-				))
+				local button = maid:GiveTask(Module.ColdFusion.secondary(style, function()
+					print("click")
+				end, "secondary", Icons.call))
 				button.Parent = halfFrame
 			end
 
 			do
-				local button = maid:GiveTask(Module.ColdFusion.tertiary(
-					style,
-					function()
-						print("click")
-					end,
-					"tertiary",
-					Icons.call
-				))
+				local button = maid:GiveTask(Module.ColdFusion.tertiary(style, function()
+					print("click")
+				end, "tertiary", Icons.call))
 				button.Parent = halfFrame
 			end
 

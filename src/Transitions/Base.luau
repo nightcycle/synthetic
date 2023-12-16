@@ -10,8 +10,6 @@
 -- Class
 local Interface = {}
 
-function Interface.new()
-
-end
+function Interface.new() end
 
 return Interface

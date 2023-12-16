@@ -46,7 +46,7 @@ export type Theme = {
 	new: (source: Color3, custom: { [string]: Color3 }?) -> Theme,
 }
 -- Constants
-local ELEVATION_TINTS = {0, 0.05, 0.08, 0.11, 0.12, 0.14 }
+local ELEVATION_TINTS = { 0, 0.05, 0.08, 0.11, 0.12, 0.14 }
 -- Variables
 -- References
 -- Private Functions

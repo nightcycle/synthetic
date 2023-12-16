@@ -15,6 +15,4 @@ luau-lsp analyze $content_dir_path \
 --flag:LuauTypeInferTypePackLoopLimit=0 \
 --flag:LuauVisitRecursionLimit=0 \
 --flag:LuauParseDeclareClassIndexer=true \
---definitions=types/globalTypes.d.lua \
- > tests/lsp/$content_dir_path.txt 2>&1
-echo "${content_dir_path} lsp errors: $(wc -l < tests/lsp/${content_dir_path}.txt)"
+--definitions=types/globalTypes.d.lua

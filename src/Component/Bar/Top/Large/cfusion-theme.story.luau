@@ -31,53 +31,30 @@ return function(frame: Frame)
 		listLayout.Parent = frame
 
 		local function build(isDarkMode: boolean, color: Color3)
-			local style =
-				Style.new(0.75, "Source Sans", if isDarkMode then Enums.SchemeType.Dark else Enums.SchemeType.Light, color)
+			local style = Style.new(
+				0.75,
+				"Source Sans",
+				if isDarkMode then Enums.SchemeType.Dark else Enums.SchemeType.Light,
+				color
+			)
 
 			do
-				local out = maid:GiveTask(
-					Module.ColdFusion.primary(
-						style,
-						"Primary",
-						{
-							Types.newButtonData(function()
-								print("save click")
-							end, Icons.save),
-							Types.newButtonData(function()
-								print("publish click")
-							end, Icons.publish),
-						},
+				local out = maid:GiveTask(Module.ColdFusion.primary(
+					style,
+					"Primary",
+					{
 						Types.newButtonData(function()
-							print("nav click")
-						end, Icons.arrow_back)						
-					)
-				)
-	
-				out.Position = UDim2.fromScale(0.5, 0.5)
-				out.AnchorPoint = Vector2.new(0.5, 0.5)
-				out.Size = UDim2.fromScale(1, 0)
-				out.Parent = frame
-			end
-		
-			do
-				local out = maid:GiveTask(
-					Module.ColdFusion.secondary(
-						style,
-						"Secondary",
-						{
-							Types.newButtonData(function()
-								print("save click")
-							end, Icons.save),
-							Types.newButtonData(function()
-								print("publish click")
-							end, Icons.publish),
-						},
+							print("save click")
+						end, Icons.save),
 						Types.newButtonData(function()
-							print("nav click")
-						end, Icons.arrow_back)						
-					)
-				)
-	
+							print("publish click")
+						end, Icons.publish),
+					},
+					Types.newButtonData(function()
+						print("nav click")
+					end, Icons.arrow_back)
+				))
+
 				out.Position = UDim2.fromScale(0.5, 0.5)
 				out.AnchorPoint = Vector2.new(0.5, 0.5)
 				out.Size = UDim2.fromScale(1, 0)
@@ -85,34 +62,55 @@ return function(frame: Frame)
 			end
 
 			do
-				local out = maid:GiveTask(
-					Module.ColdFusion.tertiary(
-						style,
-						"Tertiary",
-						{
-							Types.newButtonData(function()
-								print("save click")
-							end, Icons.save),
-							Types.newButtonData(function()
-								print("publish click")
-							end, Icons.publish),
-						},
+				local out = maid:GiveTask(Module.ColdFusion.secondary(
+					style,
+					"Secondary",
+					{
 						Types.newButtonData(function()
-							print("nav click")
-						end, Icons.arrow_back)						
-					)
-				)
-	
+							print("save click")
+						end, Icons.save),
+						Types.newButtonData(function()
+							print("publish click")
+						end, Icons.publish),
+					},
+					Types.newButtonData(function()
+						print("nav click")
+					end, Icons.arrow_back)
+				))
+
+				out.Position = UDim2.fromScale(0.5, 0.5)
+				out.AnchorPoint = Vector2.new(0.5, 0.5)
+				out.Size = UDim2.fromScale(1, 0)
+				out.Parent = frame
+			end
+
+			do
+				local out = maid:GiveTask(Module.ColdFusion.tertiary(
+					style,
+					"Tertiary",
+					{
+						Types.newButtonData(function()
+							print("save click")
+						end, Icons.save),
+						Types.newButtonData(function()
+							print("publish click")
+						end, Icons.publish),
+					},
+					Types.newButtonData(function()
+						print("nav click")
+					end, Icons.arrow_back)
+				))
+
 				out.Position = UDim2.fromScale(0.5, 0.5)
 				out.AnchorPoint = Vector2.new(0.5, 0.5)
 				out.Size = UDim2.fromScale(1, 0)
 				out.Parent = frame
 			end
 		end
-		build(false, Color3.new(1,0,0))
-		build(true, Color3.new(1,0,0))
-		build(false, Color3.new(0,0,1))
-		build(true, Color3.new(0,0,1))
+		build(false, Color3.new(1, 0, 0))
+		build(true, Color3.new(1, 0, 0))
+		build(false, Color3.new(0, 0, 1))
+		build(true, Color3.new(0, 0, 1))
 	end)
 	return function()
 		maid:Destroy()

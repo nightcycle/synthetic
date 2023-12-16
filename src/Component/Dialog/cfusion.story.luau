@@ -41,22 +41,12 @@ return function(frame: Frame)
 				local button = maid:GiveTask(
 					Module.ColdFusion.new(
 						{
-							Types.newButtonData(
-								function()
-									print("Click 1")
-								end,
-								nil,
-								"Button 1",
-								true
-							),
-							Types.newButtonData(
-								function()
-									print("Click 2")
-								end,
-								nil,
-								"Button 2",
-								false
-							)
+							Types.newButtonData(function()
+								print("Click 1")
+							end, nil, "Button 1", true),
+							Types.newButtonData(function()
+								print("Click 2")
+							end, nil, "Button 2", false),
 						},
 						Icons.usb,
 						"Dialog",
@@ -70,7 +60,7 @@ return function(frame: Frame)
 						style
 					)
 				)
-				button.Size = UDim2.fromScale(1,1)
+				button.Size = UDim2.fromScale(1, 1)
 				button.Parent = halfFrame
 			end
 

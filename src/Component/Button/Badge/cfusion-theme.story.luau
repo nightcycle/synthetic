@@ -38,31 +38,18 @@ return function(frame: Frame)
 			local Module = require(script.Parent)
 
 			do
-				local button = maid:GiveTask(Module.ColdFusion.onPrimary(
-					style,
-					function()
-						print("click")
-					end,
-					Icons.waterfall_chart,
-					"on-primary",
-					123
-				))
+				local button = maid:GiveTask(Module.ColdFusion.onPrimary(style, function()
+					print("click")
+				end, Icons.waterfall_chart, "on-primary", 123))
 				button.Parent = halfFrame
 			end
 
 			do
-				local button = maid:GiveTask(Module.ColdFusion.onSurface(
-					style,
-					function()
-						print("click")
-					end,
-					Icons.waterfall_chart,
-					"on-surface",
-					123
-				))
+				local button = maid:GiveTask(Module.ColdFusion.onSurface(style, function()
+					print("click")
+				end, Icons.waterfall_chart, "on-surface", 123))
 				button.Parent = halfFrame
 			end
-
 
 			return halfFrame
 		end

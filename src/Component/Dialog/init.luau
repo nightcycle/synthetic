@@ -49,20 +49,20 @@ function newThemedComponent(
 	descriptionColor: Enums.ColorRoleType,
 	scrimColor: Enums.ColorRoleType,
 
-	buttons: CanBeState<{[number]: ButtonData}>,
+	buttons: CanBeState<{ [number]: ButtonData }>,
 	icon: CanBeState<ImageData?>,
 	headline: CanBeState<string?>,
 	description: CanBeState<string?>
 ): GuiObject
-	local maid = Maid.new()	
+	local maid = Maid.new()
 
 	local _fuse = ColdFusion.fuse(maid)
-	
+
 	local _new = _fuse.new
 	local _bind = _fuse.bind
 	local _clone = _fuse.clone
 	local _import = _fuse.import
-	
+
 	local _Value = _fuse.Value
 	local _Computed = _fuse.Computed
 
@@ -103,7 +103,7 @@ Interface.ColdFusion = {}
 
 function Interface.ColdFusion.primary(
 	style: CanBeState<Style>,
-	buttons: CanBeState<{[number]: ButtonData}>,
+	buttons: CanBeState<{ [number]: ButtonData }>,
 	icon: CanBeState<ImageData?>,
 	headline: CanBeState<string?>,
 	description: CanBeState<string?>
@@ -125,7 +125,7 @@ end
 
 function Interface.ColdFusion.secondary(
 	style: CanBeState<Style>,
-	buttons: CanBeState<{[number]: ButtonData}>,
+	buttons: CanBeState<{ [number]: ButtonData }>,
 	icon: CanBeState<ImageData?>,
 	headline: CanBeState<string?>,
 	description: CanBeState<string?>
@@ -147,7 +147,7 @@ end
 
 function Interface.ColdFusion.tertiary(
 	style: CanBeState<Style>,
-	buttons: CanBeState<{[number]: ButtonData}>,
+	buttons: CanBeState<{ [number]: ButtonData }>,
 	icon: CanBeState<ImageData?>,
 	headline: CanBeState<string?>,
 	description: CanBeState<string?>
@@ -168,8 +168,8 @@ function Interface.ColdFusion.tertiary(
 end
 
 function Interface.ColdFusion.new(
-	
-	buttons: CanBeState<{[number]: ButtonData}>,
+
+	buttons: CanBeState<{ [number]: ButtonData }>,
 
 	icon: CanBeState<ImageData?>,
 	headline: CanBeState<string?>,
@@ -184,15 +184,14 @@ function Interface.ColdFusion.new(
 
 	style: CanBeState<Style>
 )
-
 	local maid = Maid.new()
 	local _fuse = ColdFusion.fuse(maid)
-	
+
 	local _new = _fuse.new
 	local _bind = _fuse.bind
 	local _clone = _fuse.clone
 	local _import = _fuse.import
-	
+
 	local _Value = _fuse.Value
 	local _Computed = _fuse.Computed
 
@@ -202,7 +201,7 @@ function Interface.ColdFusion.new(
 	local headlineState: State<string?> = _import(headline, nil :: string?)
 	local descriptionState: State<string?> = _import(description, nil :: string?)
 
-	local buttonsState: State<{[number]: ButtonData}> = _import(buttons, {})
+	local buttonsState: State<{ [number]: ButtonData }> = _import(buttons, {})
 
 	local surfaceColorState: State<Color3> = _import(surfaceColor, Color3.new())
 	local buttonTextColorState: State<Color3> = _import(buttonTextColor, Color3.new())
@@ -229,11 +228,11 @@ function Interface.ColdFusion.new(
 	})
 
 	local inst = _new("Frame")({
-		Size = UDim2.fromScale(0,0),
+		Size = UDim2.fromScale(0, 0),
 		BackgroundTransparency = 0.5,
 		BackgroundColor3 = scrimColorState,
-		AnchorPoint = Vector2.new(0.5,0.5),
-		Position = UDim2.fromScale(1,1),
+		AnchorPoint = Vector2.new(0.5, 0.5),
+		Position = UDim2.fromScale(1, 1),
 		AutomaticSize = Enum.AutomaticSize.XY,
 		Children = {
 			_new("UIListLayout")({
@@ -246,21 +245,23 @@ function Interface.ColdFusion.new(
 			}),
 			_new("Frame")({
 				AutomaticSize = Enum.AutomaticSize.XY,
-				Size = UDim2.fromScale(0,0),
+				Size = UDim2.fromScale(0, 0),
 				BackgroundColor3 = surfaceColorState,
 				Children = {
-					maid:GiveTask(Util.List.ColdFusion.new(
-						Enum.VerticalAlignment.Center,
-						Enum.HorizontalAlignment.Center,
-						Enum.FillDirection.Vertical,
-						_Computed(function(s: Style): UDim
-							return UDim.new(0, s.Scale * LIST_PAD_DP)
-						end, styleState),
-						Enum.UIFlexAlignment.None,
-						Enum.UIFlexAlignment.Fill,
-						Enum.ItemLineAlignment.Stretch,
-						false
-					)) :: Instance,
+					maid:GiveTask(
+						Util.List.ColdFusion.new(
+							Enum.VerticalAlignment.Center,
+							Enum.HorizontalAlignment.Center,
+							Enum.FillDirection.Vertical,
+							_Computed(function(s: Style): UDim
+								return UDim.new(0, s.Scale * LIST_PAD_DP)
+							end, styleState),
+							Enum.UIFlexAlignment.None,
+							Enum.UIFlexAlignment.Fill,
+							Enum.ItemLineAlignment.Stretch,
+							false
+						)
+					) :: Instance,
 					_new("UICorner")({
 						CornerRadius = _Computed(function(s: Style): UDim
 							return UDim.new(0, s.Scale * SHAPE_DP)
@@ -288,13 +289,10 @@ function Interface.ColdFusion.new(
 									return if i then i.ImageRectSize else Vector2.zero
 								end, iconState),
 							}),
-							maid:GiveTask(Util.List.ColdFusion.center())
-						}
+							maid:GiveTask(Util.List.ColdFusion.center()),
+						},
 					}),
-					maid:GiveTask(Util.Padding.ColdFusion.fromStyleSimple(
-						PADDING_DP,
-						styleState
-					)),
+					maid:GiveTask(Util.Padding.ColdFusion.fromStyleSimple(PADDING_DP, styleState)),
 					_new("TextLabel")({
 						Text = headlineState,
 						LayoutOrder = 1,
@@ -316,7 +314,7 @@ function Interface.ColdFusion.new(
 						FontFace = _Computed(function(s: Style): Font
 							return s:GetFont(Enums.FontType.HeadlineSmall)
 						end, styleState),
-						Size = UDim2.fromOffset(0,0),
+						Size = UDim2.fromOffset(0, 0),
 					}),
 					_new("TextLabel")({
 						Text = descriptionState,
@@ -338,14 +336,14 @@ function Interface.ColdFusion.new(
 						FontFace = _Computed(function(s: Style): Font
 							return s:GetFont(Enums.FontType.BodyMedium)
 						end, styleState),
-						Size = UDim2.fromOffset(0,0),
+						Size = UDim2.fromOffset(0, 0),
 						Children = {
 							_new("UISizeConstraint")({
 								MinSize = _Computed(function(s: Style): Vector2
-									return Vector2.new(s.Scale*MIN_DESC_WIDTH_DP,0)
+									return Vector2.new(s.Scale * MIN_DESC_WIDTH_DP, 0)
 								end, styleState),
-							})
-						}
+							}),
+						},
 					}),
 					buttonContainer,
 				},
@@ -353,8 +351,8 @@ function Interface.ColdFusion.new(
 		},
 	}) :: GuiObject
 
-	for i=1, MAX_BUTTON_COUNT do
-		local buttonDataState = _Computed(function(bList: {[number]: ButtonData}): ButtonData?
+	for i = 1, MAX_BUTTON_COUNT do
+		local buttonDataState = _Computed(function(bList: { [number]: ButtonData }): ButtonData?
 			if #bList > MAX_BUTTON_COUNT then
 				warn("dialogs have a max limit of 2 buttons")
 			end
@@ -385,7 +383,6 @@ function Interface.ColdFusion.new(
 			end, buttonDataState),
 			Parent = buttonContainer,
 		})
-		
 	end
 
 	maid.bind(inst)

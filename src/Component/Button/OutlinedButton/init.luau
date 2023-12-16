@@ -35,21 +35,21 @@ function newThemedComponent(
 	textColor: Enums.ColorRoleType,
 	disabledTextColor: Enums.ColorRoleType,
 	onClick: CanBeState<() -> ()>,
-	text:CanBeState<string>,
+	text: CanBeState<string>,
 	icon: CanBeState<ImageData?>,
 	style: CanBeState<Style>,
 	elevation: CanBeState<number?>,
 	isEnabled: CanBeState<boolean?>
 ): GuiObject
-local maid = Maid.new()	
+	local maid = Maid.new()
 
 	local _fuse = ColdFusion.fuse(maid)
-	
+
 	local _new = _fuse.new
 	local _bind = _fuse.bind
 	local _clone = _fuse.clone
 	local _import = _fuse.import
-	
+
 	local _Value = _fuse.Value
 	local _Computed = _fuse.Computed
 
@@ -77,11 +77,10 @@ end
 
 Interface.ColdFusion = {}
 
-
 function Interface.ColdFusion.primary(
 	style: CanBeState<Style>,
 	onClick: CanBeState<() -> ()>,
-	text:CanBeState<string>,
+	text: CanBeState<string>,
 	icon: CanBeState<ImageData?>,
 	elevation: CanBeState<number?>,
 	isEnabled: CanBeState<boolean?>
@@ -101,7 +100,7 @@ end
 function Interface.ColdFusion.secondary(
 	style: CanBeState<Style>,
 	onClick: CanBeState<() -> ()>,
-	text:CanBeState<string>,
+	text: CanBeState<string>,
 	icon: CanBeState<ImageData>,
 	elevation: CanBeState<number?>,
 	isEnabled: CanBeState<boolean?>
@@ -121,7 +120,7 @@ end
 function Interface.ColdFusion.tertiary(
 	style: CanBeState<Style>,
 	onClick: CanBeState<() -> ()>,
-	text:CanBeState<string>,
+	text: CanBeState<string>,
 	icon: CanBeState<ImageData?>,
 	elevation: CanBeState<number?>,
 	isEnabled: CanBeState<boolean?>

@@ -22,8 +22,12 @@ return function(frame: Frame)
 	local maid = Maid.new()
 	task.spawn(function()
 		local function makeHalfFrame(isDarkMode: boolean, color: Color3): Frame
-			local style =
-				Style.new(0.75, "Source Sans", if isDarkMode then Enums.SchemeType.Dark else Enums.SchemeType.Light, color)
+			local style = Style.new(
+				0.75,
+				"Source Sans",
+				if isDarkMode then Enums.SchemeType.Dark else Enums.SchemeType.Light,
+				color
+			)
 
 			local halfFrame = maid:GiveTask(Instance.new("Frame"))
 			halfFrame.BackgroundColor3 = style:GetColor(Enums.ColorRoleType.Surface)
@@ -55,36 +59,19 @@ return function(frame: Frame)
 				end, false, false, "Unselected 5", nil, "Selected 5", nil),
 			}
 
-
 			do
-				local button = maid:GiveTask(
-					Module.ColdFusion.primaryContainer(
-						style,
-						options
-					)
-				)
+				local button = maid:GiveTask(Module.ColdFusion.primaryContainer(style, options))
 				button.Parent = halfFrame
 			end
 			do
-				local button = maid:GiveTask(
-					Module.ColdFusion.secondaryContainer(
-						style,
-						options
-					)
-				)
+				local button = maid:GiveTask(Module.ColdFusion.secondaryContainer(style, options))
 				button.Parent = halfFrame
 			end
 
 			do
-				local button = maid:GiveTask(
-					Module.ColdFusion.tertiaryContainer(
-						style,
-						options
-					)
-				)
+				local button = maid:GiveTask(Module.ColdFusion.tertiaryContainer(style, options))
 				button.Parent = halfFrame
 			end
-
 
 			return halfFrame
 		end

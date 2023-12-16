@@ -42,15 +42,15 @@ function newThemedComponent(
 	elevation: CanBeState<number?>,
 	isEnabled: CanBeState<boolean?>
 ): GuiObject
-	local maid = Maid.new()	
+	local maid = Maid.new()
 
 	local _fuse = ColdFusion.fuse(maid)
-	
+
 	local _new = _fuse.new
 	local _bind = _fuse.bind
 	local _clone = _fuse.clone
 	local _import = _fuse.import
-	
+
 	local _Value = _fuse.Value
 	local _Computed = _fuse.Computed
 

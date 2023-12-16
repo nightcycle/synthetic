@@ -22,7 +22,12 @@ return function(frame: Frame)
 	local maid = Maid.new()
 	task.spawn(function()
 		local function makeHalfFrame(isDarkMode: boolean, color: Color3): Frame
-			local style = Style.new(0.75, "Source Sans", if isDarkMode then Enums.SchemeType.Dark else Enums.SchemeType.Light, color)
+			local style = Style.new(
+				0.75,
+				"Source Sans",
+				if isDarkMode then Enums.SchemeType.Dark else Enums.SchemeType.Light,
+				color
+			)
 
 			local halfFrame = maid:GiveTask(Instance.new("Frame"))
 			halfFrame.BackgroundColor3 = style:GetColor(Enums.ColorRoleType.Surface)
@@ -92,7 +97,6 @@ return function(frame: Frame)
 						style:GetColor(Enums.ColorRoleType.OnSurface, 1),
 						style:GetColor(Enums.ColorRoleType.OnSurfaceVariant, 1),
 
-
 						0,
 						style
 					)
@@ -123,7 +127,6 @@ return function(frame: Frame)
 						style:GetColor(Enums.ColorRoleType.Outline, 1),
 						style:GetColor(Enums.ColorRoleType.OnSurface, 1),
 						style:GetColor(Enums.ColorRoleType.OnSurfaceVariant, 1),
-
 
 						0,
 						style

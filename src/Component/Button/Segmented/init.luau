@@ -464,15 +464,15 @@ function newThemedComponent(
 	isMultiSelect: CanBeState<boolean?>,
 	elevation: CanBeState<number?>
 ): GuiObject
-	local maid = Maid.new()	
+	local maid = Maid.new()
 
 	local _fuse = ColdFusion.fuse(maid)
-	
+
 	local _new = _fuse.new
 	local _bind = _fuse.bind
 	local _clone = _fuse.clone
 	local _import = _fuse.import
-	
+
 	local _Value = _fuse.Value
 	local _Computed = _fuse.Computed
 
@@ -505,7 +505,6 @@ end
 
 Interface.ColdFusion = {}
 
-
 function Interface.ColdFusion.primaryContainer(
 	style: CanBeState<Style>,
 	options: CanBeState<{ [number]: OptionData }>,
@@ -520,12 +519,11 @@ function Interface.ColdFusion.primaryContainer(
 		Enums.ColorRoleType.PrimaryContainer,
 		Enums.ColorRoleType.Outline,
 		options,
-		density, 
+		density,
 		isMultiSelect,
 		elevation
 	)
 end
-
 
 function Interface.ColdFusion.secondaryContainer(
 	style: CanBeState<Style>,
@@ -541,12 +539,11 @@ function Interface.ColdFusion.secondaryContainer(
 		Enums.ColorRoleType.SecondaryContainer,
 		Enums.ColorRoleType.Outline,
 		options,
-		density, 
+		density,
 		isMultiSelect,
 		elevation
 	)
 end
-
 
 function Interface.ColdFusion.tertiaryContainer(
 	style: CanBeState<Style>,
@@ -562,7 +559,7 @@ function Interface.ColdFusion.tertiaryContainer(
 		Enums.ColorRoleType.TertiaryContainer,
 		Enums.ColorRoleType.Outline,
 		options,
-		density, 
+		density,
 		isMultiSelect,
 		elevation
 	)

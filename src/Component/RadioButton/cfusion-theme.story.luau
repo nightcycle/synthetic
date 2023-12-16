@@ -35,82 +35,44 @@ return function(frame: Frame)
 			local Module = require(script.Parent)
 
 			do
-				local button = maid:GiveTask(
-					Module.ColdFusion.primary(
-						style,
-						function(isSelected: boolean)
-							print("is selected", isSelected)
-						end,
-						true
-					)
-				)
+				local button = maid:GiveTask(Module.ColdFusion.primary(style, function(isSelected: boolean)
+					print("is selected", isSelected)
+				end, true))
 				button.Parent = halfFrame
 			end
 
 			do
-				local button = maid:GiveTask(
-					Module.ColdFusion.secondary(
-						style,
-						function(isSelected: boolean)
-							print("is selected", isSelected)
-						end,
-						true
-					)
-				)
+				local button = maid:GiveTask(Module.ColdFusion.secondary(style, function(isSelected: boolean)
+					print("is selected", isSelected)
+				end, true))
 				button.Parent = halfFrame
 			end
 
 			do
-				local button = maid:GiveTask(
-					Module.ColdFusion.tertiary(
-						style,
-						function(isSelected: boolean)
-							print("is selected", isSelected)
-						end,
-						true
-					)
-				)
+				local button = maid:GiveTask(Module.ColdFusion.tertiary(style, function(isSelected: boolean)
+					print("is selected", isSelected)
+				end, true))
 				button.Parent = halfFrame
 			end
 
-			
 			do
-				local button = maid:GiveTask(
-					Module.ColdFusion.primaryContainer(
-						style,
-						function(isSelected: boolean)
-							print("is selected", isSelected)
-						end,
-						true
-					)
-				)
+				local button = maid:GiveTask(Module.ColdFusion.primaryContainer(style, function(isSelected: boolean)
+					print("is selected", isSelected)
+				end, true))
 				button.Parent = halfFrame
 			end
 
-			
 			do
-				local button = maid:GiveTask(
-					Module.ColdFusion.secondaryContainer(
-						style,
-						function(isSelected: boolean)
-							print("is selected", isSelected)
-						end,
-						true
-					)
-				)
+				local button = maid:GiveTask(Module.ColdFusion.secondaryContainer(style, function(isSelected: boolean)
+					print("is selected", isSelected)
+				end, true))
 				button.Parent = halfFrame
 			end
-	
+
 			do
-				local button = maid:GiveTask(
-					Module.ColdFusion.tertiaryContainer(
-						style,
-						function(isSelected: boolean)
-							print("is selected", isSelected)
-						end,
-						true
-					)
-				)
+				local button = maid:GiveTask(Module.ColdFusion.tertiaryContainer(style, function(isSelected: boolean)
+					print("is selected", isSelected)
+				end, true))
 				button.Parent = halfFrame
 			end
 			return halfFrame

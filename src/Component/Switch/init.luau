@@ -44,16 +44,16 @@ local OUTLINE_WIDTH_DP = 2
 -- References
 -- Private Functions
 function newSwitchRenderData(
-	text: AppearanceData, 
-	button: AppearanceData, 
-	background: AppearanceData, 
+	text: AppearanceData,
+	button: AppearanceData,
+	background: AppearanceData,
 	outline: AppearanceData
 ): SwitchRenderData
 	return {
 		Text = text,
 		Button = button,
 		Background = background,
-		Outline = outline
+		Outline = outline,
 	}
 end
 
@@ -76,15 +76,15 @@ function newThemedComponent(
 	elevation: CanBeState<number?>,
 	isEnabled: CanBeState<boolean?>
 ): GuiObject
-	local maid = Maid.new()	
+	local maid = Maid.new()
 
 	local _fuse = ColdFusion.fuse(maid)
-	
+
 	local _new = _fuse.new
 	local _bind = _fuse.bind
 	local _clone = _fuse.clone
 	local _import = _fuse.import
-	
+
 	local _Value = _fuse.Value
 	local _Computed = _fuse.Computed
 
@@ -236,19 +236,19 @@ function Interface.ColdFusion.new(
 
 	local _Value = _fuse.Value
 	local _Computed = _fuse.Computed
-	
+
 	local disabledColorState = _import(disabledColor, Color3.new(1, 1, 1))
 	local onDisabledColorState = _import(onDisabledColor, Color3.new(1, 1, 1))
 
 	local initialSelectionState = _import(initialSelection, false)
 	local fillColorState = _import(fillColor, Color3.new(1, 1, 1))
-	
+
 	local backgroundColorState = _import(backgroundColor, Color3.new(1, 1, 1))
 	local onBackgroundColorState = _import(onBackgroundColor, Color3.new(1, 1, 1))
-	
+
 	local buttonColorState = _import(buttonColor, Color3.new(1, 1, 1))
 	local onButtonColorState = _import(onButtonColor, Color3.new(1, 1, 1))
-			
+
 	local elevationState = _import(elevation, 0)
 	local isEnabledState = _import(isEnabled, true)
 	local includeSelectedIconState = _import(includeIconOnSelected, true)
@@ -295,94 +295,34 @@ function Interface.ColdFusion.new(
 		): { [Enums.ButtonStateType]: SwitchRenderData }
 			return {
 				[Enums.ButtonStateType.Enabled] = newSwitchRenderData(
-					Types.newAppearanceData(
-						s:GetElevatedColor(oC, e), 
-						0
-					),
-					Types.newAppearanceData(
-						s:GetElevatedColor(oOC, e),
-						0
-					),
-					Types.newAppearanceData(
-						s:GetElevatedColor(oC, e), 
-						0
-					),
-					Types.newAppearanceData(
-						s:GetElevatedColor(oOC, e), 
-						0
-					)
+					Types.newAppearanceData(s:GetElevatedColor(oC, e), 0),
+					Types.newAppearanceData(s:GetElevatedColor(oOC, e), 0),
+					Types.newAppearanceData(s:GetElevatedColor(oC, e), 0),
+					Types.newAppearanceData(s:GetElevatedColor(oOC, e), 0)
 				),
 				[Enums.ButtonStateType.Disabled] = newSwitchRenderData(
-					Types.newAppearanceData(
-						s:GetElevatedColor(oOC, e), 
-						1-0.38
-					),
-					Types.newAppearanceData(
-						s:GetElevatedColor(oOC, e),
-						1-0.38
-					),
-					Types.newAppearanceData(
-						s:GetElevatedColor(oOC, e), 
-						1
-					),
-					Types.newAppearanceData(
-						s:GetElevatedColor(oOC, e), 
-						1-0.38
-					)
+					Types.newAppearanceData(s:GetElevatedColor(oOC, e), 1 - 0.38),
+					Types.newAppearanceData(s:GetElevatedColor(oOC, e), 1 - 0.38),
+					Types.newAppearanceData(s:GetElevatedColor(oOC, e), 1),
+					Types.newAppearanceData(s:GetElevatedColor(oOC, e), 1 - 0.38)
 				),
 				[Enums.ButtonStateType.Hovered] = newSwitchRenderData(
-					Types.newAppearanceData(
-						s:GetElevatedColor(oC, e), 
-						0
-					),
-					Types.newAppearanceData(
-						s:GetElevatedColor(oOC, e),
-						0
-					),
-					Types.newAppearanceData(
-						s:GetElevatedColor(oC, e), 
-						1-0.08
-					),
-					Types.newAppearanceData(
-						s:GetElevatedColor(oOC, e), 
-						0
-					)
+					Types.newAppearanceData(s:GetElevatedColor(oC, e), 0),
+					Types.newAppearanceData(s:GetElevatedColor(oOC, e), 0),
+					Types.newAppearanceData(s:GetElevatedColor(oC, e), 1 - 0.08),
+					Types.newAppearanceData(s:GetElevatedColor(oOC, e), 0)
 				),
 				[Enums.ButtonStateType.Focused] = newSwitchRenderData(
-					Types.newAppearanceData(
-						s:GetElevatedColor(oC, e), 
-						0
-					),
-					Types.newAppearanceData(
-						s:GetElevatedColor(oOC, e),
-						0
-					),
-					Types.newAppearanceData(
-						s:GetElevatedColor(oC, e), 
-						1-0.1
-					),
-					Types.newAppearanceData(
-						s:GetElevatedColor(oOC, e), 
-						0
-					)
+					Types.newAppearanceData(s:GetElevatedColor(oC, e), 0),
+					Types.newAppearanceData(s:GetElevatedColor(oOC, e), 0),
+					Types.newAppearanceData(s:GetElevatedColor(oC, e), 1 - 0.1),
+					Types.newAppearanceData(s:GetElevatedColor(oOC, e), 0)
 				),
 				[Enums.ButtonStateType.Pressed] = newSwitchRenderData(
-					Types.newAppearanceData(
-						s:GetElevatedColor(oC, e), 
-						0
-					),
-					Types.newAppearanceData(
-						s:GetElevatedColor(oOC, e),
-						0
-					),
-					Types.newAppearanceData(
-						s:GetElevatedColor(oC, e), 
-						1-0.1
-					),
-					Types.newAppearanceData(
-						s:GetElevatedColor(oOC, e), 
-						0
-					)
+					Types.newAppearanceData(s:GetElevatedColor(oC, e), 0),
+					Types.newAppearanceData(s:GetElevatedColor(oOC, e), 0),
+					Types.newAppearanceData(s:GetElevatedColor(oC, e), 1 - 0.1),
+					Types.newAppearanceData(s:GetElevatedColor(oOC, e), 0)
 				),
 			}
 		end,
@@ -411,94 +351,34 @@ function Interface.ColdFusion.new(
 		): { [Enums.ButtonStateType]: SwitchRenderData }
 			return {
 				[Enums.ButtonStateType.Enabled] = newSwitchRenderData(
-					Types.newAppearanceData(
-						s:GetElevatedColor(oBC, e), 
-						0
-					),
-					Types.newAppearanceData(
-						s:GetElevatedColor(bC, e),
-						0
-					),
-					Types.newAppearanceData(
-						s:GetElevatedColor(fC, e), 
-						0
-					),
-					Types.newAppearanceData(
-						s:GetElevatedColor(fC, e), 
-						0
-					)
+					Types.newAppearanceData(s:GetElevatedColor(oBC, e), 0),
+					Types.newAppearanceData(s:GetElevatedColor(bC, e), 0),
+					Types.newAppearanceData(s:GetElevatedColor(fC, e), 0),
+					Types.newAppearanceData(s:GetElevatedColor(fC, e), 0)
 				),
 				[Enums.ButtonStateType.Disabled] = newSwitchRenderData(
-					Types.newAppearanceData(
-						s:GetElevatedColor(oDC, e), 
-						1-0.38
-					),
-					Types.newAppearanceData(
-						s:GetElevatedColor(dC, e),
-						0
-					),
-					Types.newAppearanceData(
-						s:GetElevatedColor(oDC, e), 
-						1-0.38
-					),
-					Types.newAppearanceData(
-						s:GetElevatedColor(oDC, e), 
-						1-0.38
-					)
+					Types.newAppearanceData(s:GetElevatedColor(oDC, e), 1 - 0.38),
+					Types.newAppearanceData(s:GetElevatedColor(dC, e), 0),
+					Types.newAppearanceData(s:GetElevatedColor(oDC, e), 1 - 0.38),
+					Types.newAppearanceData(s:GetElevatedColor(oDC, e), 1 - 0.38)
 				),
 				[Enums.ButtonStateType.Hovered] = newSwitchRenderData(
-					Types.newAppearanceData(
-						s:GetElevatedColor(oBC, e), 
-						0
-					),
-					Types.newAppearanceData(
-						s:GetElevatedColor(bC, e),
-						0
-					),
-					Types.newAppearanceData(
-						s:GetElevatedColor(fC, e), 
-						0.08
-					),
-					Types.newAppearanceData(
-						s:GetElevatedColor(fC, e), 
-						0
-					)
+					Types.newAppearanceData(s:GetElevatedColor(oBC, e), 0),
+					Types.newAppearanceData(s:GetElevatedColor(bC, e), 0),
+					Types.newAppearanceData(s:GetElevatedColor(fC, e), 0.08),
+					Types.newAppearanceData(s:GetElevatedColor(fC, e), 0)
 				),
 				[Enums.ButtonStateType.Focused] = newSwitchRenderData(
-					Types.newAppearanceData(
-						s:GetElevatedColor(oBC, e), 
-						0
-					),
-					Types.newAppearanceData(
-						s:GetElevatedColor(bC, e),
-						0
-					),
-					Types.newAppearanceData(
-						s:GetElevatedColor(fC, e), 
-						0.1
-					),
-					Types.newAppearanceData(
-						s:GetElevatedColor(fC, e), 
-						0
-					)
+					Types.newAppearanceData(s:GetElevatedColor(oBC, e), 0),
+					Types.newAppearanceData(s:GetElevatedColor(bC, e), 0),
+					Types.newAppearanceData(s:GetElevatedColor(fC, e), 0.1),
+					Types.newAppearanceData(s:GetElevatedColor(fC, e), 0)
 				),
 				[Enums.ButtonStateType.Pressed] = newSwitchRenderData(
-					Types.newAppearanceData(
-						s:GetElevatedColor(oBC, e), 
-						0
-					),
-					Types.newAppearanceData(
-						s:GetElevatedColor(bC, e),
-						0
-					),
-					Types.newAppearanceData(
-						s:GetElevatedColor(fC, e), 
-						0.1
-					),
-					Types.newAppearanceData(
-						s:GetElevatedColor(fC, e), 
-						0
-					)
+					Types.newAppearanceData(s:GetElevatedColor(oBC, e), 0),
+					Types.newAppearanceData(s:GetElevatedColor(bC, e), 0),
+					Types.newAppearanceData(s:GetElevatedColor(fC, e), 0.1),
+					Types.newAppearanceData(s:GetElevatedColor(fC, e), 0)
 				),
 			}
 		end,
@@ -543,13 +423,13 @@ function Interface.ColdFusion.new(
 		isHoveredState
 	) :: State<any>
 
-
 	local renderDataState = _Computed(
 		function(
-			selRenderDatas: { [Enums.ButtonStateType]: SwitchRenderData }, 
+			selRenderDatas: { [Enums.ButtonStateType]: SwitchRenderData },
 			unselRenderDatas: { [Enums.ButtonStateType]: SwitchRenderData },
 			v: boolean?,
-			bState: Enums.ButtonStateType): SwitchRenderData
+			bState: Enums.ButtonStateType
+		): SwitchRenderData
 			if v then
 				return selRenderDatas[bState]
 			else
@@ -563,14 +443,16 @@ function Interface.ColdFusion.new(
 	)
 
 	local buttonSizeState = _Computed(function(s: Style, i: ImageData?, v: boolean): number
-		local size = if i then INNER_BUTTON_YES_ICON_SIZE_DP else if v then INNER_BUTTON_NO_ICON_SELECTED_SIZE_DP else INNER_BUTTON_NO_ICON_UNSELECTED_SIZE_DP
+		local size = if i
+			then INNER_BUTTON_YES_ICON_SIZE_DP
+			else if v then INNER_BUTTON_NO_ICON_SELECTED_SIZE_DP else INNER_BUTTON_NO_ICON_UNSELECTED_SIZE_DP
 		return size
 	end, styleState, iconState, valueState)
 
 	local inst = _new("ImageButton")({
 		Size = _Computed(function(s: Style): UDim2
 			return UDim2.fromOffset(
-				s.Scale * SWITCH_WIDTH_DP - (OUTLINE_WIDTH_DP * 2), 
+				s.Scale * SWITCH_WIDTH_DP - (OUTLINE_WIDTH_DP * 2),
 				s.Scale * SWITCH_HEIGHT_DP - (OUTLINE_WIDTH_DP * 2)
 			)
 		end, styleState),
@@ -648,34 +530,31 @@ function Interface.ColdFusion.new(
 			}),
 			_new("UIPadding")({
 				PaddingTop = _Computed(function(s: Style, buttonSize: number): UDim
-					local size = SWITCH_HEIGHT_DP - (OUTLINE_WIDTH_DP*2) - buttonSize
-					return UDim.new(0, s.Scale * size/2)
+					local size = SWITCH_HEIGHT_DP - (OUTLINE_WIDTH_DP * 2) - buttonSize
+					return UDim.new(0, s.Scale * size / 2)
 				end, styleState, buttonSizeState),
 				PaddingBottom = _Computed(function(s: Style, buttonSize: number): UDim
-					local size = SWITCH_HEIGHT_DP - (OUTLINE_WIDTH_DP*2) - buttonSize
-					return UDim.new(0, s.Scale * size/2)
+					local size = SWITCH_HEIGHT_DP - (OUTLINE_WIDTH_DP * 2) - buttonSize
+					return UDim.new(0, s.Scale * size / 2)
 				end, styleState, buttonSizeState),
 				PaddingLeft = _Computed(function(s: Style, buttonSize: number): UDim
-					local size = SWITCH_HEIGHT_DP - (OUTLINE_WIDTH_DP*2) - buttonSize
-					return UDim.new(0, s.Scale * size/2)
+					local size = SWITCH_HEIGHT_DP - (OUTLINE_WIDTH_DP * 2) - buttonSize
+					return UDim.new(0, s.Scale * size / 2)
 				end, styleState, buttonSizeState),
 				PaddingRight = _Computed(function(s: Style, buttonSize: number): UDim
-					local size = SWITCH_HEIGHT_DP - (OUTLINE_WIDTH_DP*2) - buttonSize
-					return UDim.new(0, s.Scale * size/2)
+					local size = SWITCH_HEIGHT_DP - (OUTLINE_WIDTH_DP * 2) - buttonSize
+					return UDim.new(0, s.Scale * size / 2)
 				end, styleState, buttonSizeState),
 			}),
 			_new("Frame")({
 				Size = _Computed(function(s: Style, size: number): UDim2
-					return UDim2.fromOffset(
-						s.Scale * size, 
-						s.Scale * size
-					)
+					return UDim2.fromOffset(s.Scale * size, s.Scale * size)
 				end, styleState, buttonSizeState),
 				Position = _Computed(function(v: boolean): UDim2
-					return if v then UDim2.fromScale(1,0.5) else UDim2.fromScale(0,0.5) 
+					return if v then UDim2.fromScale(1, 0.5) else UDim2.fromScale(0, 0.5)
 				end, valueState),
 				AnchorPoint = _Computed(function(v: boolean): Vector2
-					return if v then Vector2.new(1,0.5) else Vector2.new(0,0.5) 
+					return if v then Vector2.new(1, 0.5) else Vector2.new(0, 0.5)
 				end, valueState),
 				BackgroundTransparency = _Computed(function(renderData: SwitchRenderData, v: boolean?): number
 					return renderData.Button.Transparency
@@ -698,10 +577,7 @@ function Interface.ColdFusion.new(
 					}),
 					_new("ImageLabel")({
 						Size = _Computed(function(s: Style, i: ImageData?): UDim2
-							return UDim2.fromOffset(
-								s.Scale * ICON_SIZE_DP, 
-								s.Scale * ICON_SIZE_DP
-							)
+							return UDim2.fromOffset(s.Scale * ICON_SIZE_DP, s.Scale * ICON_SIZE_DP)
 						end, styleState, iconState),
 						BackgroundTransparency = 1,
 						ImageTransparency = _Computed(function(renderData: SwitchRenderData): number
@@ -730,7 +606,6 @@ function Interface.ColdFusion.new(
 							_new("UICorner")({
 								CornerRadius = UDim.new(0.5, 0),
 							}),
-							
 						},
 					}),
 				},

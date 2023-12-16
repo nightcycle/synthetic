@@ -46,15 +46,15 @@ function newThemedComponent(
 	elevation: CanBeState<number?>,
 	isEnabled: CanBeState<boolean?>
 ): GuiObject
-	local maid = Maid.new()	
+	local maid = Maid.new()
 
 	local _fuse = ColdFusion.fuse(maid)
-	
+
 	local _new = _fuse.new
 	local _bind = _fuse.bind
 	local _clone = _fuse.clone
 	local _import = _fuse.import
-	
+
 	local _Value = _fuse.Value
 	local _Computed = _fuse.Computed
 
@@ -146,7 +146,6 @@ function Interface.ColdFusion.tertiary(
 		isEnabled
 	)
 end
-
 
 function Interface.ColdFusion.primaryContainer(
 	style: CanBeState<Style>,
@@ -443,7 +442,7 @@ function Interface.ColdFusion.new(
 					dpWidth *= 2
 					return UDim2.fromOffset(s.Scale * dpWidth, s.Scale * dpWidth)
 				end, styleState),
-				BackgroundTransparency = 1,				
+				BackgroundTransparency = 1,
 				Children = {
 					_new("UICorner")({
 						CornerRadius = UDim.new(0.5, 0),
@@ -473,9 +472,9 @@ function Interface.ColdFusion.new(
 						BackgroundTransparency = _Computed(function(v: boolean?): number
 							return if v == false then 1 else 0
 						end, valueState),
-						AnchorPoint = Vector2.new(0.5,0.5),
+						AnchorPoint = Vector2.new(0.5, 0.5),
 						Size = _Computed(function(s: Style): UDim2
-							local dpWidth = 0.5*(BUTTON_SIZE_DP - (UNSELECT_OUTLINE_WIDTH_DP * 2))
+							local dpWidth = 0.5 * (BUTTON_SIZE_DP - (UNSELECT_OUTLINE_WIDTH_DP * 2))
 							dpWidth /= 2
 							dpWidth = math.round(dpWidth)
 							dpWidth *= 2
@@ -489,8 +488,8 @@ function Interface.ColdFusion.new(
 							_new("UICorner")({
 								CornerRadius = UDim.new(0.5, 0),
 							}),
-						}
-					})
+						},
+					}),
 				},
 			}),
 		},

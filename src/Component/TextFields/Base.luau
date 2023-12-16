@@ -41,9 +41,9 @@ local DEFAULT_OUTLINE_THICKNESS_DP = 1
 local FOCUSED_OUTLINE_THICKNESS_DP = 2
 local RADIUS_DP = 4
 local ICON_WIDTH_DP = 24
-local DISABLED_TEXT_TRANSPARENCY = 1-0.38
-local DISABLED_OUTLINE_TRANSPARENCY = 1-0.12
-local DISABLED_BACKGROUND_TRANSPARENCY = 1-0.04
+local DISABLED_TEXT_TRANSPARENCY = 1 - 0.38
+local DISABLED_OUTLINE_TRANSPARENCY = 1 - 0.12
+local DISABLED_BACKGROUND_TRANSPARENCY = 1 - 0.04
 
 -- Variables
 -- References
@@ -89,20 +89,24 @@ function Interface.new(
 
 	local _Value = _fuse.Value
 	local _Computed = _fuse.Computed
-				
-	local onSubmitState = _import(onSubmit, function(input: string?): string? return nil end)
-	local onInputState = _import(onInput, function(input: string?): string? return nil end)
+
+	local onSubmitState = _import(onSubmit, function(input: string?): string?
+		return nil
+	end)
+	local onInputState = _import(onInput, function(input: string?): string?
+		return nil
+	end)
 
 	local elevationState = _import(elevation, 0)
 	local isEnabledState = _import(isEnabled, true)
 	local initialTextState = _import(initialText, nil :: string?)
 	local labelTextState = _import(label, nil :: string?)
-	
+
 	local characterLimitState: State<number?> = _import(characterLimit, nil :: number?)
 
 	local supportingTextState: State<string?> = _import(supportingText, nil :: string?)
 	local leadingIconState = _import(leadingIcon, nil :: ImageData?)
-	local dropdownOptionsState: State<{[number]: string}?> = _import(nil, nil :: {[number]: string}?)
+	local dropdownOptionsState: State<{ [number]: string }?> = _import(nil, nil :: { [number]: string }?)
 
 	local styleState: State<Style> = _import(style, nil :: any)
 
@@ -119,7 +123,6 @@ function Interface.new(
 	local inputHighlightColorState = applyElevation(_import(hightlightColor, Color3.new()))
 	local errorColorState = applyElevation(_import(errorColor, Color3.new()))
 	local supportingTextColorState = applyElevation(_import(supportingTextColor, Color3.new()))
-
 
 	local isOutlinedState = _import(isOutlined, true)
 	local isErrorState = _import(isError, true)
@@ -173,7 +176,7 @@ function Interface.new(
 		end
 	end, isLabelMinimizedState)
 
-	local rightIconState = _Computed(function(iE: boolean, d: {[number]: string}?, v: string?): ImageData?
+	local rightIconState = _Computed(function(iE: boolean, d: { [number]: string }?, v: string?): ImageData?
 		if iE then
 			return Icons.error
 		elseif v ~= nil then
@@ -229,11 +232,11 @@ function Interface.new(
 		Size = _Computed(function(s: Style, isMin: boolean): UDim2
 			if isMin then
 				return UDim2.fromOffset(
-					0, 
+					0,
 					s.Scale * s:GetTextSize(Enums.FontType.BodyLarge) * s:GetLineHeight(Enums.FontType.BodyLarge)
 				)
 			else
-				return UDim2.fromOffset(0,0)
+				return UDim2.fromOffset(0, 0)
 			end
 		end, styleState, isLabelMinimizedState),
 		Events = {
@@ -281,60 +284,69 @@ function Interface.new(
 
 	local inst = _bind(maid:GiveTask(Util.Container.ColdFusion.new()))({
 		Children = {
-			maid:GiveTask(Util.List.ColdFusion.new(
-				Enum.VerticalAlignment.Center,
-				Enum.HorizontalAlignment.Left,
-				Enum.FillDirection.Vertical,
-				_Computed(function(s: Style): UDim
-					return UDim.new(0, s.Scale * SUPPORTING_TEXT_PADDING_DP)
-				end, styleState),
-				Enum.UIFlexAlignment.None,
-				Enum.UIFlexAlignment.Fill,
-				Enum.ItemLineAlignment.Stretch,
-				false
-			)) :: Instance,
+			maid:GiveTask(
+				Util.List.ColdFusion.new(
+					Enum.VerticalAlignment.Center,
+					Enum.HorizontalAlignment.Left,
+					Enum.FillDirection.Vertical,
+					_Computed(function(s: Style): UDim
+						return UDim.new(0, s.Scale * SUPPORTING_TEXT_PADDING_DP)
+					end, styleState),
+					Enum.UIFlexAlignment.None,
+					Enum.UIFlexAlignment.Fill,
+					Enum.ItemLineAlignment.Stretch,
+					false
+				)
+			) :: Instance,
 			_bind(maid:GiveTask(Util.Container.ColdFusion.new()))({
 				LayoutOrder = 1,
 				Children = {
-					maid:GiveTask(Util.List.ColdFusion.new(
-						Enum.VerticalAlignment.Center,
-						Enum.HorizontalAlignment.Center,
-						Enum.FillDirection.Horizontal,
-						_Computed(function(s: Style): UDim
-							return UDim.new(0, s.Scale * TEXT_AND_ICON_PADDING_DP)
-						end, styleState),
-						Enum.UIFlexAlignment.Fill,
-						Enum.UIFlexAlignment.Fill,
-						Enum.ItemLineAlignment.Center,
-						false
-					)) :: Instance,
+					maid:GiveTask(
+						Util.List.ColdFusion.new(
+							Enum.VerticalAlignment.Center,
+							Enum.HorizontalAlignment.Center,
+							Enum.FillDirection.Horizontal,
+							_Computed(function(s: Style): UDim
+								return UDim.new(0, s.Scale * TEXT_AND_ICON_PADDING_DP)
+							end, styleState),
+							Enum.UIFlexAlignment.Fill,
+							Enum.UIFlexAlignment.Fill,
+							Enum.ItemLineAlignment.Center,
+							false
+						)
+					) :: Instance,
 					maid:GiveTask(Util.Padding.ColdFusion.new(
 						_Computed(function(s: Style, l: ImageData?): UDim
-							return if l then UDim.new(0, s.Scale * LEFT_RIGHT_YES_ICONS_PADDING_DP) else UDim.new(0, s.Scale * LEFT_RIGHT_NO_ICONS_PADDING_DP)
+							return if l
+								then UDim.new(0, s.Scale * LEFT_RIGHT_YES_ICONS_PADDING_DP)
+								else UDim.new(0, s.Scale * LEFT_RIGHT_NO_ICONS_PADDING_DP)
 						end, styleState, leadingIconState),
-						UDim.new(0,0)
+						UDim.new(0, 0)
 					)) :: Instance,
-					_bind(maid:GiveTask(Util.TextLabel.ColdFusion.new(
-						labelTextState,
-						_Computed(function(lCol: Color3, hCol: Color3, isFoc: boolean, isErr: boolean): Color3
-							return if isFoc or isErr then hCol else lCol	
-						end, labelColorState, highlightColorState, isFocusedState, isErrorState),
-						_Computed(function(isMin: boolean, isOut: boolean): number
-							if isOut then
-								return if isMin == true then 0 else 1
-							else
-								return 1
-							end
-						end, isLabelMinimizedState, isOutlinedState),
-						Enums.FontType.BodySmall,
-						nil,
-						nil,
-						0,
-						styleState,
-						true
-					)))({
-					}),
-				}
+					_bind(
+						maid:GiveTask(
+							Util.TextLabel.ColdFusion.new(
+								labelTextState,
+								_Computed(function(lCol: Color3, hCol: Color3, isFoc: boolean, isErr: boolean): Color3
+									return if isFoc or isErr then hCol else lCol
+								end, labelColorState, highlightColorState, isFocusedState, isErrorState),
+								_Computed(function(isMin: boolean, isOut: boolean): number
+									if isOut then
+										return if isMin == true then 0 else 1
+									else
+										return 1
+									end
+								end, isLabelMinimizedState, isOutlinedState),
+								Enums.FontType.BodySmall,
+								nil,
+								nil,
+								0,
+								styleState,
+								true
+							)
+						)
+					)({}),
+				},
 			}),
 			_new("TextButton")({
 				LayoutOrder = 2,
@@ -376,9 +388,27 @@ function Interface.new(
 				Children = {
 					_new("UIStroke")({
 						ApplyStrokeMode = Enum.ApplyStrokeMode.Border,
-						Color = _Computed(function(bCol: Color3, hCol: Color3, isFoc: boolean, isErr: boolean, bState: Enums.ButtonStateType, tCol: Color3): Color3
-							return if isFoc or isErr then hCol elseif bState == Enums.ButtonStateType.Hovered then tCol else bCol	
-						end, borderColorState, highlightColorState, isFocusedState, isErrorState, buttonStateTypeState, textColorState),
+						Color = _Computed(
+							function(
+								bCol: Color3,
+								hCol: Color3,
+								isFoc: boolean,
+								isErr: boolean,
+								bState: Enums.ButtonStateType,
+								tCol: Color3
+							): Color3
+								return if isFoc or isErr
+									then hCol
+									elseif bState == Enums.ButtonStateType.Hovered then tCol
+									else bCol
+							end,
+							borderColorState,
+							highlightColorState,
+							isFocusedState,
+							isErrorState,
+							buttonStateTypeState,
+							textColorState
+						),
 						Enabled = isOutlinedState,
 						LineJoinMode = Enum.LineJoinMode.Round,
 						Thickness = outlineThicknessState,
@@ -389,7 +419,7 @@ function Interface.new(
 					_new("UICorner")({
 						CornerRadius = _Computed(function(s: Style): UDim
 							return UDim.new(0, s.Scale * RADIUS_DP)
-						end, styleState)
+						end, styleState),
 					}),
 					_new("UISizeConstraint")({
 						MaxSize = Vector2.new(math.huge, math.huge),
@@ -405,21 +435,25 @@ function Interface.new(
 						end, styleState),
 						Children = {
 							textBox :: Instance,
-							_bind(maid:GiveTask(Util.TextLabel.ColdFusion.new(
-								labelTextState,
-								_Computed(function(isMin: boolean, lab: Color3, high: Color3): Color3
-									return if isMin then high else lab
-								end, isLabelMinimizedState, labelColorState, highlightColorState),
-								_Computed(function(isEnab: boolean): number
-									return if isEnab then 0 else DISABLED_TEXT_TRANSPARENCY
-								end, isEnabledState),
-								labelFontState,
-								nil,
-								nil,
-								0,
-								styleState,
-								true
-							)))({
+							_bind(
+								maid:GiveTask(
+									Util.TextLabel.ColdFusion.new(
+										labelTextState,
+										_Computed(function(isMin: boolean, lab: Color3, high: Color3): Color3
+											return if isMin then high else lab
+										end, isLabelMinimizedState, labelColorState, highlightColorState),
+										_Computed(function(isEnab: boolean): number
+											return if isEnab then 0 else DISABLED_TEXT_TRANSPARENCY
+										end, isEnabledState),
+										labelFontState,
+										nil,
+										nil,
+										0,
+										styleState,
+										true
+									)
+								)
+							)({
 								Visible = _Computed(function(isMin: boolean, isOut: boolean): boolean
 									if isOut then
 										return isMin == false
@@ -428,28 +462,34 @@ function Interface.new(
 									end
 								end, isLabelMinimizedState, isOutlinedState),
 							}),
-							maid:GiveTask(Util.List.ColdFusion.new(
-								Enum.VerticalAlignment.Center,
-								Enum.HorizontalAlignment.Left,
-								Enum.FillDirection.Vertical,
-								UDim.new(0,0),
-								Enum.UIFlexAlignment.None,
-								Enum.UIFlexAlignment.Fill,
-								Enum.ItemLineAlignment.Stretch,
-								false
-							)) :: Instance,
-						}
+							maid:GiveTask(
+								Util.List.ColdFusion.new(
+									Enum.VerticalAlignment.Center,
+									Enum.HorizontalAlignment.Left,
+									Enum.FillDirection.Vertical,
+									UDim.new(0, 0),
+									Enum.UIFlexAlignment.None,
+									Enum.UIFlexAlignment.Fill,
+									Enum.ItemLineAlignment.Stretch,
+									false
+								)
+							) :: Instance,
+						},
 					}),
 					_bind(maid:GiveTask(Util.Container.ColdFusion.new()))({
 						LayoutOrder = 1,
 						Children = {
-							_bind(maid:GiveTask(Util.ImageLabel.ColdFusion.new(
-								leadingIcon,
-								textColorState,
-								_Computed(function(isEnab: boolean): number
-									return if isEnab then 0 else DISABLED_TEXT_TRANSPARENCY
-								end, isEnabledState)
-							)))({
+							_bind(
+								maid:GiveTask(
+									Util.ImageLabel.ColdFusion.new(
+										leadingIcon,
+										textColorState,
+										_Computed(function(isEnab: boolean): number
+											return if isEnab then 0 else DISABLED_TEXT_TRANSPARENCY
+										end, isEnabledState)
+									)
+								)
+							)({
 								Visible = _Computed(function(i: ImageData?): boolean
 									return i ~= nil
 								end, leadingIconState),
@@ -463,7 +503,7 @@ function Interface.new(
 								DominantAxis = Enum.DominantAxis.Height,
 							})),
 							maid:GiveTask(Util.List.ColdFusion.center()) :: Instance,
-						}
+						},
 					}),
 					_bind(maid:GiveTask(Util.Container.ColdFusion.new()))({
 						LayoutOrder = 3,
@@ -500,7 +540,7 @@ function Interface.new(
 											end
 										end
 									end,
-								}
+								},
 							}) :: Instance,
 							maid:GiveTask(_new("UIAspectRatioConstraint")({
 								AspectRatio = 1,
@@ -508,96 +548,114 @@ function Interface.new(
 								DominantAxis = Enum.DominantAxis.Height,
 							})),
 							maid:GiveTask(Util.List.ColdFusion.center()) :: Instance,
-						}
+						},
 					}),
-					maid:GiveTask(Util.List.ColdFusion.new(
-						Enum.VerticalAlignment.Center,
-						Enum.HorizontalAlignment.Center,
-						Enum.FillDirection.Horizontal,
-						_Computed(function(s: Style): UDim
-							return UDim.new(0, s.Scale * TEXT_AND_ICON_PADDING_DP)
-						end, styleState),
-						Enum.UIFlexAlignment.Fill,
-						Enum.UIFlexAlignment.Fill,
-						Enum.ItemLineAlignment.Center,
-						false
-					)) :: Instance,
+					maid:GiveTask(
+						Util.List.ColdFusion.new(
+							Enum.VerticalAlignment.Center,
+							Enum.HorizontalAlignment.Center,
+							Enum.FillDirection.Horizontal,
+							_Computed(function(s: Style): UDim
+								return UDim.new(0, s.Scale * TEXT_AND_ICON_PADDING_DP)
+							end, styleState),
+							Enum.UIFlexAlignment.Fill,
+							Enum.UIFlexAlignment.Fill,
+							Enum.ItemLineAlignment.Center,
+							false
+						)
+					) :: Instance,
 					maid:GiveTask(Util.Padding.ColdFusion.new(
 						_Computed(function(s: Style, l: ImageData?): UDim
-							return if l then UDim.new(0, s.Scale * LEFT_RIGHT_YES_ICONS_PADDING_DP) else UDim.new(0, s.Scale * LEFT_RIGHT_NO_ICONS_PADDING_DP)
+							return if l
+								then UDim.new(0, s.Scale * LEFT_RIGHT_YES_ICONS_PADDING_DP)
+								else UDim.new(0, s.Scale * LEFT_RIGHT_NO_ICONS_PADDING_DP)
 						end, styleState, leadingIconState),
-						UDim.new(0,0)
+						UDim.new(0, 0)
 					)) :: Instance,
 				},
 			}) :: Instance,
 			_bind(maid:GiveTask(Util.Container.ColdFusion.new()))({
 				LayoutOrder = 3,
 				Children = {
-					maid:GiveTask(Util.List.ColdFusion.new(
-						Enum.VerticalAlignment.Center,
-						Enum.HorizontalAlignment.Center,
-						Enum.FillDirection.Horizontal,
-						_Computed(function(s: Style): UDim
-							return UDim.new(0, s.Scale * TEXT_AND_ICON_PADDING_DP)
-						end, styleState),
-						Enum.UIFlexAlignment.Fill,
-						Enum.UIFlexAlignment.SpaceBetween,
-						Enum.ItemLineAlignment.Center,
-						false
-					)) :: Instance,
+					maid:GiveTask(
+						Util.List.ColdFusion.new(
+							Enum.VerticalAlignment.Center,
+							Enum.HorizontalAlignment.Center,
+							Enum.FillDirection.Horizontal,
+							_Computed(function(s: Style): UDim
+								return UDim.new(0, s.Scale * TEXT_AND_ICON_PADDING_DP)
+							end, styleState),
+							Enum.UIFlexAlignment.Fill,
+							Enum.UIFlexAlignment.SpaceBetween,
+							Enum.ItemLineAlignment.Center,
+							false
+						)
+					) :: Instance,
 					maid:GiveTask(Util.Padding.ColdFusion.new(
 						_Computed(function(s: Style, l: ImageData?): UDim
-							return if l then UDim.new(0, s.Scale * LEFT_RIGHT_YES_ICONS_PADDING_DP) else UDim.new(0, s.Scale * LEFT_RIGHT_NO_ICONS_PADDING_DP)
+							return if l
+								then UDim.new(0, s.Scale * LEFT_RIGHT_YES_ICONS_PADDING_DP)
+								else UDim.new(0, s.Scale * LEFT_RIGHT_NO_ICONS_PADDING_DP)
 						end, styleState, leadingIconState),
-						UDim.new(0,0)
+						UDim.new(0, 0)
 					)) :: Instance,
-					_bind(maid:GiveTask(Util.TextLabel.ColdFusion.new(
-						_Computed(function(txt: string?): string
-							return if txt then txt else ""
-						end, supportingTextState),
-						_Computed(function(sCol: Color3, eCol: Color3, isErr: boolean): Color3
-							return if isErr then eCol else sCol
-						end, supportingTextColorState, errorColorState, isErrorState),
-						_Computed(function(txt: string?, isEnab: boolean): number
-							return if txt and txt:len() > 0 then if isEnab then 0 else DISABLED_TEXT_TRANSPARENCY else 1
-						end, supportingTextState, isEnabledState),
-						Enums.FontType.BodySmall,
-						nil,
-						nil,
-						0,
-						styleState,
-						true
-					)))({
+					_bind(
+						maid:GiveTask(
+							Util.TextLabel.ColdFusion.new(
+								_Computed(function(txt: string?): string
+									return if txt then txt else ""
+								end, supportingTextState),
+								_Computed(function(sCol: Color3, eCol: Color3, isErr: boolean): Color3
+									return if isErr then eCol else sCol
+								end, supportingTextColorState, errorColorState, isErrorState),
+								_Computed(function(txt: string?, isEnab: boolean): number
+									return if txt and txt:len() > 0
+										then if isEnab then 0 else DISABLED_TEXT_TRANSPARENCY
+										else 1
+								end, supportingTextState, isEnabledState),
+								Enums.FontType.BodySmall,
+								nil,
+								nil,
+								0,
+								styleState,
+								true
+							)
+						)
+					)({
 						LayoutOrder = 1,
 					}),
-					_bind(maid:GiveTask(Util.TextLabel.ColdFusion.new(
-						_Computed(function(lim: number?, txt: string?): string
-							if lim then
-								local count = if txt then txt:len() else 0
-								return `{count}/{lim}`
-							else
-								return ""
-							end
-						end, characterLimitState, inputValueState),
-						supportingTextColorState,
-						_Computed(function(lim: number?, isEnab: boolean): number
-							return if lim then if isEnab then 0 else DISABLED_TEXT_TRANSPARENCY else 1
-						end, characterLimitState, isEnabledState),
-						Enums.FontType.BodySmall,
-						nil,
-						nil,
-						0,
-						styleState,
-						true,
-						Enum.TextXAlignment.Right
-					)))({
+					_bind(
+						maid:GiveTask(
+							Util.TextLabel.ColdFusion.new(
+								_Computed(function(lim: number?, txt: string?): string
+									if lim then
+										local count = if txt then txt:len() else 0
+										return `{count}/{lim}`
+									else
+										return ""
+									end
+								end, characterLimitState, inputValueState),
+								supportingTextColorState,
+								_Computed(function(lim: number?, isEnab: boolean): number
+									return if lim then if isEnab then 0 else DISABLED_TEXT_TRANSPARENCY else 1
+								end, characterLimitState, isEnabledState),
+								Enums.FontType.BodySmall,
+								nil,
+								nil,
+								0,
+								styleState,
+								true,
+								Enum.TextXAlignment.Right
+							)
+						)
+					)({
 						LayoutOrder = 2,
 					}),
-				}
+				},
 			}),
-		}
+		},
 	}) :: GuiObject
-	
+
 	maid.bind(inst)
 
 	return inst

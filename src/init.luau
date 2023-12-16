@@ -37,7 +37,7 @@ Synthetic.Component = {
 			Large = require(Component:WaitForChild("Bar"):WaitForChild("Top"):WaitForChild("Large")),
 			Medium = require(Component:WaitForChild("Bar"):WaitForChild("Top"):WaitForChild("Medium")),
 			Small = require(Component:WaitForChild("Bar"):WaitForChild("Top"):WaitForChild("Small")),
-		}
+		},
 	},
 	Dialog = require(Component:WaitForChild("Dialog")),
 	Button = {
@@ -55,7 +55,7 @@ Synthetic.Component = {
 		Chip = {
 			Filter = require(Component:WaitForChild("Button"):WaitForChild("Chip"):WaitForChild("Filter")),
 			Assist = require(Component:WaitForChild("Button"):WaitForChild("Chip"):WaitForChild("Assist")),
-		}
+		},
 	},
 	Checkbox = require(Component:WaitForChild("Checkbox")),
 	RadioButton = require(Component:WaitForChild("RadioButton")),

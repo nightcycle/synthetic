@@ -26,7 +26,6 @@ Util.Container = {}
 Util.Container.ColdFusion = {}
 
 function Util.Container.ColdFusion.new(): Frame
-
 	local maid = Maid.new()
 
 	local _fuse = ColdFusion.fuse(maid)
@@ -42,7 +41,7 @@ function Util.Container.ColdFusion.new(): Frame
 	local out = _new("Frame")({
 		Name = "Container",
 		AutomaticSize = Enum.AutomaticSize.XY,
-		Size = UDim2.fromScale(0,0),
+		Size = UDim2.fromScale(0, 0),
 		BackgroundTransparency = 1,
 		BorderSizePixel = 0,
 	}) :: Frame
@@ -65,7 +64,6 @@ function Util.List.ColdFusion.new(
 	itemLineAlignment: CanBeState<Enum.ItemLineAlignment>,
 	wraps: CanBeState<boolean>
 ): UIListLayout
-
 	local maid = Maid.new()
 
 	local _fuse = ColdFusion.fuse(maid)
@@ -93,7 +91,6 @@ function Util.List.ColdFusion.new(
 	maid.bind(out)
 
 	return out
-
 end
 
 function Util.List.ColdFusion.classic(
@@ -102,7 +99,6 @@ function Util.List.ColdFusion.classic(
 	fillDirection: CanBeState<Enum.FillDirection>,
 	listPadding: CanBeState<UDim>
 ): UIListLayout
-
 	local maid = Maid.new()
 
 	local _fuse = ColdFusion.fuse(maid)
@@ -130,12 +126,9 @@ function Util.List.ColdFusion.classic(
 	maid.bind(out)
 
 	return out
-
 end
 
-
 function Util.List.ColdFusion.center(): UIListLayout
-
 	local maid = Maid.new()
 
 	local _fuse = ColdFusion.fuse(maid)
@@ -149,7 +142,7 @@ function Util.List.ColdFusion.center(): UIListLayout
 	local _Computed = _fuse.Computed
 
 	local out = _new("UIListLayout")({
-		Padding = UDim.new(0,0),
+		Padding = UDim.new(0, 0),
 		SortOrder = Enum.SortOrder.LayoutOrder,
 		FillDirection = Enum.FillDirection.Vertical,
 		VerticalAlignment = Enum.VerticalAlignment.Center,
@@ -163,17 +156,12 @@ function Util.List.ColdFusion.center(): UIListLayout
 	maid.bind(out)
 
 	return out
-
 end
 
 Util.Padding = {}
 Util.Padding.ColdFusion = {}
 
-function Util.Padding.ColdFusion.new(
-	leftRight: CanBeState<UDim>,
-	topBottom: CanBeState<UDim>
-): UIPadding
-
+function Util.Padding.ColdFusion.new(leftRight: CanBeState<UDim>, topBottom: CanBeState<UDim>): UIPadding
 	local maid = Maid.new()
 
 	local _fuse = ColdFusion.fuse(maid)
@@ -203,7 +191,6 @@ function Util.Padding.ColdFusion.fromStyle(
 	topBottomDp: CanBeState<number>,
 	style: CanBeState<Style>
 ): UIPadding
-
 	local maid = Maid.new()
 
 	local _fuse = ColdFusion.fuse(maid)
@@ -240,15 +227,8 @@ function Util.Padding.ColdFusion.fromStyle(
 	return out
 end
 
-function Util.Padding.ColdFusion.fromStyleSimple(
-	dp: CanBeState<number>,
-	style: CanBeState<Style>
-): UIPadding
-	return Util.Padding.ColdFusion.fromStyle(
-		dp,
-		dp,
-		style
-	)
+function Util.Padding.ColdFusion.fromStyleSimple(dp: CanBeState<number>, style: CanBeState<Style>): UIPadding
+	return Util.Padding.ColdFusion.fromStyle(dp, dp, style)
 end
 
 Util.TextLabel = {}
@@ -267,12 +247,12 @@ function Util.TextLabel.ColdFusion.new(
 ): Frame
 	local maid = Maid.new()
 	local _fuse = ColdFusion.fuse(maid)
-	
+
 	local _new = _fuse.new
 	local _bind = _fuse.bind
 	local _clone = _fuse.clone
 	local _import = _fuse.import
-	
+
 	local _Value = _fuse.Value
 	local _Computed = _fuse.Computed
 
@@ -280,14 +260,14 @@ function Util.TextLabel.ColdFusion.new(
 	local rightIconState = _import(rightIcon, nil :: ImageData?)
 
 	local textState = _import(text, "")
-	local textColor3State = _import(textColor3, Color3.new(1,1,1))
+	local textColor3State = _import(textColor3, Color3.new(1, 1, 1))
 	local textTransparencyState = _import(textTransparency, 0)
 	local textXAlignmentState = _import(textXAlignment, Enum.TextXAlignment.Left)
 
 	local ignoreLineHeightState = _import(ignoreLineHeight, false)
 
 	local styleState: State<Style> = _import(style, nil :: any)
-	
+
 	local fontTypeState: State<Enums.FontType> = _import(fontType, Enums.FontType.LabelMedium)
 	local paddingState: State<number> = _import(paddingDp, 0)
 
@@ -347,13 +327,9 @@ function Util.TextLabel.ColdFusion.new(
 				Image = _Computed(function(icon: ImageData?): string
 					return if icon then icon.Image else ""
 				end, leftIconState),
-				ImageColor3 = _Computed(
-					function(icon: ImageData?, c: Color3): Color3
-						return if icon then c else Color3.new(1, 1, 1)
-					end,
-					leftIconState,
-					textColor3State
-				),
+				ImageColor3 = _Computed(function(icon: ImageData?, c: Color3): Color3
+					return if icon then c else Color3.new(1, 1, 1)
+				end, leftIconState, textColor3State),
 				ImageRectOffset = _Computed(function(icon: ImageData?): Vector2
 					return if icon then icon.ImageRectOffset else Vector2.zero
 				end, leftIconState),
@@ -373,13 +349,9 @@ function Util.TextLabel.ColdFusion.new(
 				Image = _Computed(function(icon: ImageData?): string
 					return if icon then icon.Image else ""
 				end, rightIconState),
-				ImageColor3 = _Computed(
-					function(icon: ImageData?, c: Color3): Color3
-						return if icon then c else Color3.new(1, 1, 1)
-					end,
-					rightIconState,
-					textColor3State
-				),
+				ImageColor3 = _Computed(function(icon: ImageData?, c: Color3): Color3
+					return if icon then c else Color3.new(1, 1, 1)
+				end, rightIconState, textColor3State),
 				ImageRectOffset = _Computed(function(icon: ImageData?): Vector2
 					return if icon then icon.ImageRectOffset else Vector2.zero
 				end, rightIconState),
@@ -388,8 +360,8 @@ function Util.TextLabel.ColdFusion.new(
 				end, rightIconState),
 				ImageTransparency = textTransparencyState,
 				Size = iconSizeState,
-			})
-		}
+			}),
+		},
 	}) :: Frame
 
 	maid.bind(out)
@@ -406,12 +378,12 @@ function Util.ImageLabel.ColdFusion.new(
 ): ImageLabel
 	local maid = Maid.new()
 	local _fuse = ColdFusion.fuse(maid)
-	
+
 	local _new = _fuse.new
 	local _bind = _fuse.bind
 	local _clone = _fuse.clone
 	local _import = _fuse.import
-	
+
 	local _Value = _fuse.Value
 	local _Computed = _fuse.Computed
 

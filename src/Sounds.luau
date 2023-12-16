@@ -8,7 +8,7 @@ local SoundService = game:GetService("SoundService")
 local Enums = require(_Package:WaitForChild("Enums"))
 -- Types
 -- Constants
-local LIBRARY: {[Enums.SoundType]: string} =  table.freeze({
+local LIBRARY: { [Enums.SoundType]: string } = table.freeze({
 	hero_simple_celebration_02 = "rbxassetid://15530172366",
 	navigation_cancel = "rbxassetid://15530082510",
 	ui_tap_variant_03 = "rbxassetid://15530107510",
@@ -54,7 +54,6 @@ local LIBRARY: {[Enums.SoundType]: string} =  table.freeze({
 -- References
 -- Private Functions
 -- Class
-
 
 return {
 	play = function(soundType: Enums.SoundType, volume: number)

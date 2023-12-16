@@ -41,70 +41,64 @@ return function(frame: Frame)
 			local Module = require(script.Parent)
 
 			do
-				local button = maid:GiveTask(
-					Module.ColdFusion.primary(
-						style,
-						{
-							Types.newButtonData(function()
-								print("click 1")
-							end, Icons.gamepad, nil, true),
-							Types.newButtonData(function()
-								print("click 2")
-							end, Icons.waves, nil, true),
-							Types.newButtonData(function()
-								print("click 3")
-							end, Icons.work_off, nil, true),
-						},
+				local button = maid:GiveTask(Module.ColdFusion.primary(
+					style,
+					{
 						Types.newButtonData(function()
-							print("click fab")
-						end, Icons.plus_one, nil, true)				
-					)
-				)
+							print("click 1")
+						end, Icons.gamepad, nil, true),
+						Types.newButtonData(function()
+							print("click 2")
+						end, Icons.waves, nil, true),
+						Types.newButtonData(function()
+							print("click 3")
+						end, Icons.work_off, nil, true),
+					},
+					Types.newButtonData(function()
+						print("click fab")
+					end, Icons.plus_one, nil, true)
+				))
 				button.Parent = halfFrame
 			end
 
 			do
-				local button = maid:GiveTask(
-					Module.ColdFusion.secondary(
-						style,
-						{
-							Types.newButtonData(function()
-								print("click 1")
-							end, Icons.gamepad, nil, true),
-							Types.newButtonData(function()
-								print("click 2")
-							end, Icons.waves, nil, true),
-							Types.newButtonData(function()
-								print("click 3")
-							end, Icons.work_off, nil, true),
-						},
+				local button = maid:GiveTask(Module.ColdFusion.secondary(
+					style,
+					{
 						Types.newButtonData(function()
-							print("click fab")
-						end, Icons.plus_one, nil, true)				
-					)
-				)
+							print("click 1")
+						end, Icons.gamepad, nil, true),
+						Types.newButtonData(function()
+							print("click 2")
+						end, Icons.waves, nil, true),
+						Types.newButtonData(function()
+							print("click 3")
+						end, Icons.work_off, nil, true),
+					},
+					Types.newButtonData(function()
+						print("click fab")
+					end, Icons.plus_one, nil, true)
+				))
 				button.Parent = halfFrame
 			end
 			do
-				local button = maid:GiveTask(
-					Module.ColdFusion.tertiary(
-						style,
-						{
-							Types.newButtonData(function()
-								print("click 1")
-							end, Icons.gamepad, nil, true),
-							Types.newButtonData(function()
-								print("click 2")
-							end, Icons.waves, nil, true),
-							Types.newButtonData(function()
-								print("click 3")
-							end, Icons.work_off, nil, true),
-						},
+				local button = maid:GiveTask(Module.ColdFusion.tertiary(
+					style,
+					{
 						Types.newButtonData(function()
-							print("click fab")
-						end, Icons.plus_one, nil, true)				
-					)
-				)
+							print("click 1")
+						end, Icons.gamepad, nil, true),
+						Types.newButtonData(function()
+							print("click 2")
+						end, Icons.waves, nil, true),
+						Types.newButtonData(function()
+							print("click 3")
+						end, Icons.work_off, nil, true),
+					},
+					Types.newButtonData(function()
+						print("click fab")
+					end, Icons.plus_one, nil, true)
+				))
 				button.Parent = halfFrame
 			end
 

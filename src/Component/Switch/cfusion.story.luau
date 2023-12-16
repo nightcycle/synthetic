@@ -42,7 +42,7 @@ return function(frame: Frame)
 						end,
 						true,
 						true,
-						true, 
+						true,
 						true,
 						style:GetColor(Enums.ColorRoleType.SurfaceContainerHighest),
 						style:GetColor(Enums.ColorRoleType.Outline),
@@ -66,7 +66,7 @@ return function(frame: Frame)
 						end,
 						true,
 						false,
-						true, 
+						true,
 						true,
 						style:GetColor(Enums.ColorRoleType.SurfaceContainerHighest),
 						style:GetColor(Enums.ColorRoleType.Outline),
@@ -90,7 +90,7 @@ return function(frame: Frame)
 						end,
 						false,
 						false,
-						true, 
+						true,
 						true,
 						style:GetColor(Enums.ColorRoleType.SurfaceContainerHighest),
 						style:GetColor(Enums.ColorRoleType.Outline),
@@ -106,7 +106,6 @@ return function(frame: Frame)
 				button.Parent = halfFrame
 			end
 
-			
 			do
 				local button = maid:GiveTask(
 					Module.ColdFusion.new(
@@ -115,7 +114,7 @@ return function(frame: Frame)
 						end,
 						false,
 						false,
-						false, 
+						false,
 						false,
 						style:GetColor(Enums.ColorRoleType.SurfaceContainerHighest),
 						style:GetColor(Enums.ColorRoleType.Outline),
@@ -131,7 +130,6 @@ return function(frame: Frame)
 				button.Parent = halfFrame
 			end
 
-
 			do
 				local button = maid:GiveTask(
 					Module.ColdFusion.new(
@@ -140,7 +138,7 @@ return function(frame: Frame)
 						end,
 						false,
 						true,
-						false, 
+						false,
 						false,
 						style:GetColor(Enums.ColorRoleType.SurfaceContainerHighest),
 						style:GetColor(Enums.ColorRoleType.Outline),

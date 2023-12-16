@@ -55,8 +55,6 @@ return function(frame: Frame)
 				button.Parent = halfFrame
 			end
 
-					
-
 			do
 				local button = maid:GiveTask(
 					Module.ColdFusion.new(
@@ -99,10 +97,8 @@ return function(frame: Frame)
 				button.Parent = halfFrame
 			end
 
-
 			return halfFrame
 		end
-		
 
 		local COLORS: { [number]: Color3 } = {
 			Color3.fromHSV(0, 0.9, 0.8),

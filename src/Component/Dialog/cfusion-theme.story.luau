@@ -43,29 +43,19 @@ return function(frame: Frame)
 					Module.ColdFusion.primary(
 						style,
 						{
-							Types.newButtonData(
-								function()
-									print("Click 1")
-								end,
-								nil,
-								"Primary 1",
-								true
-							),
-							Types.newButtonData(
-								function()
-									print("Click 2")
-								end,
-								nil,
-								"Primary 2",
-								false
-							)
+							Types.newButtonData(function()
+								print("Click 1")
+							end, nil, "Primary 1", true),
+							Types.newButtonData(function()
+								print("Click 2")
+							end, nil, "Primary 2", false),
 						},
 						Icons.usb,
 						"Dialog",
 						"Material Design is an adaptable system of guidelines, components, and tools that support the best practices of user interface design."
 					)
 				)
-				button.Size = UDim2.fromScale(1,1)
+				button.Size = UDim2.fromScale(1, 1)
 				button.Parent = halfFrame
 			end
 

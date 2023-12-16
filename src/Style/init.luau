@@ -57,11 +57,9 @@ function Style:GetCustomColor(name: string, customType: Enums.CustomColorType, e
 	return self._Theme:GetCustom(name, customType, self.SchemeType, elevation)
 end
 
-
 function Style:GetFont(fontType: Enums.FontType): Font
 	return self._Typography:Get(fontType).Font
 end
-
 
 function Style:GetFontData(fontType: Enums.FontType): FontData
 	return table.clone(self._Typography:Get(fontType))
@@ -74,7 +72,6 @@ end
 function Style:GetLineHeight(fontType: Enums.FontType): number
 	return self._Typography:Get(fontType).LineHeight / self._Typography:Get(fontType).Size
 end
-
 
 function Style.new(
 	scale: number,

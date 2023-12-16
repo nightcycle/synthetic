@@ -36,74 +36,44 @@ return function(frame: Frame)
 			local Module = require(script.Parent)
 
 			do
-				local button = maid:GiveTask(Module.ColdFusion.primary(
-					style,
-					function()
-						print("click")
-					end,
-					"primary",
-					nil
-				))
+				local button = maid:GiveTask(Module.ColdFusion.primary(style, function()
+					print("click")
+				end, "primary", nil))
 				button.Parent = halfFrame
 			end
 
 			do
-				local button = maid:GiveTask(Module.ColdFusion.secondary(
-					style,	
-					function()
-						print("click")
-					end,
-					"secondary",
-					nil
-				))
+				local button = maid:GiveTask(Module.ColdFusion.secondary(style, function()
+					print("click")
+				end, "secondary", nil))
 				button.Parent = halfFrame
 			end
 
 			do
-				local button = maid:GiveTask(Module.ColdFusion.tertiary(
-					style,
-					function()
-						print("click")
-					end,
-					"tertiary",
-					nil
-				))
+				local button = maid:GiveTask(Module.ColdFusion.tertiary(style, function()
+					print("click")
+				end, "tertiary", nil))
 				button.Parent = halfFrame
 			end
 
 			do
-				local button = maid:GiveTask(Module.ColdFusion.primaryContainer(
-					style,
-					function()
-						print("click")
-					end,
-					"primary-container",
-					nil
-				))
+				local button = maid:GiveTask(Module.ColdFusion.primaryContainer(style, function()
+					print("click")
+				end, "primary-container", nil))
 				button.Parent = halfFrame
 			end
 
 			do
-				local button = maid:GiveTask(Module.ColdFusion.secondaryContainer(
-					style,
-					function()
-						print("click")
-					end,
-					"secondary-container",
-					nil
-				))
+				local button = maid:GiveTask(Module.ColdFusion.secondaryContainer(style, function()
+					print("click")
+				end, "secondary-container", nil))
 				button.Parent = halfFrame
 			end
 
 			do
-				local button = maid:GiveTask(Module.ColdFusion.tertiaryContainer(
-					style,		
-					function()
-						print("click")
-					end,
-					"tertiary-container",
-					nil
-				))
+				local button = maid:GiveTask(Module.ColdFusion.tertiaryContainer(style, function()
+					print("click")
+				end, "tertiary-container", nil))
 				button.Parent = halfFrame
 			end
 
