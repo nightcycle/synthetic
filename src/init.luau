@@ -58,6 +58,12 @@ Synthetic.Components = {
 		}
 	},
 	Checkbox = require(Component:WaitForChild("Checkbox")),
+	RadioButton = require(Component:WaitForChild("RadioButton")),
+	Switch = require(Component:WaitForChild("Switch")),
+	TextField = {
+		Filled = require(Component:WaitForChild("TextFields"):WaitForChild("Filled")),
+		Outlined = require(Component:WaitForChild("TextFields"):WaitForChild("Outlined")),
+	},
 }
 
 return Synthetic

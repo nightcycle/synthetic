@@ -152,7 +152,7 @@ function Interface.new(
 					Types.newAppearanceData(style:GetElevatedColor(tC, e - 1), 0),
 					style:GetFontData(Enums.FontType.LabelLarge),
 					i,
-					Types.newSoundData(Sounds.ui_tap_variant_01, 1),
+					Types.newSoundData(Sounds.Library.ui_tap_variant_01, 1),
 					nil
 				),
 			}
@@ -224,7 +224,7 @@ function Interface.new(
 					Types.newAppearanceData(style:GetElevatedColor(tC, e - 1), 0.1),
 					style:GetFontData(Enums.FontType.LabelLarge),
 					i,
-					Types.newSoundData(Sounds.ui_tap_variant_01, 0),
+					Types.newSoundData(Sounds.Library.ui_tap_variant_01, 0),
 					nil
 				),
 			}

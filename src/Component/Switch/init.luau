@@ -448,9 +448,9 @@ function Interface.ColdFusion.new(
 					local sound = Instance.new("Sound")
 					sound.Volume = 1
 					if valueState:Get() == true then
-						sound.SoundId = Sounds.navigation_forward_selection_minimal
+						sound.SoundId = Sounds.Library.navigation_forward_selection_minimal
 					else
-						sound.SoundId = Sounds.navigation_backward_selection_minimal
+						sound.SoundId = Sounds.Library.navigation_backward_selection_minimal
 					end
 					SoundService:PlayLocalSound(sound)
 					sound:Destroy()
