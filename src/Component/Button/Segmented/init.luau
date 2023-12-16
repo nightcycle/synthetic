@@ -140,15 +140,15 @@ function component(
 	local deselectAll = maid:GiveTask(Signal.new())
 
 	for i = 1, MAX_BUTTON_COUNT do
-		local optionDataState: State<OptionData?> = _Computed(function(options: { [number]: OptionData }): OptionData?
-			return options[i]
+		local optionDataState: State<OptionData?> = _Computed(function(o: { [number]: OptionData }): OptionData?
+			return o[i]
 		end, optionsState)
 
-		local backgroundImageState = _Computed(function(options: { [number]: OptionData }): string
-			if #options > MAX_BUTTON_COUNT then
-				warn(`max of 5 buttons for segmented button bar, currently {#options} are defined`)
+		local backgroundImageState = _Computed(function(o: { [number]: OptionData }): string
+			if #o > MAX_BUTTON_COUNT then
+				warn(`max of 5 buttons for segmented button bar, currently {#o} are defined`)
 			end
-			if #options == i then
+			if #o == i then
 				return RIGHT_CIRCLE_IMAGE
 			elseif i == 1 then
 				return LEFT_CIRCLE_IMAGE
@@ -274,20 +274,20 @@ function component(
 			Visible = _Computed(function(data: OptionData?): boolean
 				return data ~= nil
 			end, optionDataState),
-			Size = _Computed(function(options: { [number]: OptionData }, barSize: UDim2): UDim2
-				local buttonCount = #options
-				local avgBarReduction = barSize.X.Offset * (buttonCount - 1) / buttonCount
+			Size = _Computed(function(o: { [number]: OptionData }, b: UDim2): UDim2
+				local buttonCount = #o
+				local avgBarReduction = b.X.Offset * (buttonCount - 1) / buttonCount
 				return UDim2.new(1 / buttonCount, -avgBarReduction, 1, 0)
 			end, optionsState, barSizeState),
 			LayoutOrder = i,
 			Parent = inst,
 			BackgroundTransparency = 1,
 			Image = backgroundImageState,
-			ImageTransparency = _Computed(function(style: RenderData): number
-				return style.Background.Transparency
+			ImageTransparency = _Computed(function(s: RenderData): number
+				return s.Background.Transparency
 			end, currentStyleState),
-			ImageColor3 = _Computed(function(style: RenderData): Color3
-				return style.Background.Color3
+			ImageColor3 = _Computed(function(s: RenderData): Color3
+				return s.Background.Color3
 			end, currentStyleState),
 			SliceCenter = CIRCLE_IMAGE_RECT,
 			SliceScale = 1,
@@ -377,11 +377,11 @@ function component(
 					AutomaticSize = Enum.AutomaticSize.X,
 					FontFace = fontState,
 					LayoutOrder = 2,
-					TextColor3 = _Computed(function(style: RenderData): Color3
-						return if style.Text then style.Text.Color3 else Color3.new(1, 1, 1)
+					TextColor3 = _Computed(function(s: RenderData): Color3
+						return if s.Text then s.Text.Color3 else Color3.new(1, 1, 1)
 					end, currentStyleState),
-					TextTransparency = _Computed(function(style: RenderData): number
-						return if style.Text then style.Text.Transparency else 1
+					TextTransparency = _Computed(function(s: RenderData): number
+						return if s.Text then s.Text.Transparency else 1
 					end, currentStyleState),
 
 					SizeConstraint = Enum.SizeConstraint.RelativeYY,
@@ -400,8 +400,8 @@ function component(
 					Image = _Computed(function(icon: ImageData?): string
 						return if icon then icon.Image else ""
 					end, iconState),
-					ImageColor3 = _Computed(function(icon: ImageData?, style: RenderData?): Color3
-						return if icon and style and style.Text then style.Text.Color3 else Color3.new(1, 1, 1)
+					ImageColor3 = _Computed(function(icon: ImageData?, s: RenderData?): Color3
+						return if icon and s and s.Text then s.Text.Color3 else Color3.new(1, 1, 1)
 					end, iconState, currentStyleState),
 					ImageRectOffset = _Computed(function(icon: ImageData?): Vector2
 						return if icon then icon.ImageRectOffset else Vector2.zero
@@ -409,8 +409,8 @@ function component(
 					ImageRectSize = _Computed(function(icon: ImageData?): Vector2
 						return if icon then icon.ImageRectSize else Vector2.zero
 					end, iconState),
-					ImageTransparency = _Computed(function(icon: ImageData?, style: RenderData?): number
-						return if icon and style and style.Text then style.Text.Transparency else 1
+					ImageTransparency = _Computed(function(icon: ImageData?, s: RenderData?): number
+						return if icon and s and s.Text then s.Text.Transparency else 1
 					end, iconState, currentStyleState),
 					SizeConstraint = Enum.SizeConstraint.RelativeYY,
 					Size = _Computed(function(s: number): UDim2
@@ -605,7 +605,7 @@ function Interface.ColdFusion.new(
 		isMultiSelect,
 		_Computed(
 			function(
-				style: Style,
+				s: Style,
 				e: number,
 				tC: Color3,
 				fTC: Color3,
@@ -616,21 +616,21 @@ function Interface.ColdFusion.new(
 				return {
 					[Enums.ButtonStateType.Enabled] = {
 						[Enums.SelectionState.Selected] = Types.newRenderData(
-							style.Scale,
-							Types.newAppearanceData(style:GetElevatedColor(oC, e), 0),
-							Types.newAppearanceData(style:GetElevatedColor(fBC, e), 0),
-							Types.newAppearanceData(style:GetElevatedColor(fTC, e), 0),
-							style:GetFontData(Enums.FontType.LabelLarge),
+							s.Scale,
+							Types.newAppearanceData(s:GetElevatedColor(oC, e), 0),
+							Types.newAppearanceData(s:GetElevatedColor(fBC, e), 0),
+							Types.newAppearanceData(s:GetElevatedColor(fTC, e), 0),
+							s:GetFontData(Enums.FontType.LabelLarge),
 							nil,
 							nil,
 							nil
 						),
 						[Enums.SelectionState.Unselected] = Types.newRenderData(
-							style.Scale,
-							Types.newAppearanceData(style:GetElevatedColor(oC, e), 0),
-							Types.newAppearanceData(style:GetElevatedColor(fBC, e), 1),
-							Types.newAppearanceData(style:GetElevatedColor(tC, e), 0),
-							style:GetFontData(Enums.FontType.LabelLarge),
+							s.Scale,
+							Types.newAppearanceData(s:GetElevatedColor(oC, e), 0),
+							Types.newAppearanceData(s:GetElevatedColor(fBC, e), 1),
+							Types.newAppearanceData(s:GetElevatedColor(tC, e), 0),
+							s:GetFontData(Enums.FontType.LabelLarge),
 							nil,
 							nil,
 							nil
@@ -638,21 +638,21 @@ function Interface.ColdFusion.new(
 					},
 					[Enums.ButtonStateType.Disabled] = {
 						[Enums.SelectionState.Selected] = Types.newRenderData(
-							style.Scale,
-							Types.newAppearanceData(style:GetElevatedColor(tC, e), 1 - 0.38),
-							Types.newAppearanceData(style:GetElevatedColor(tC, e), 1 - 0.12),
-							Types.newAppearanceData(style:GetElevatedColor(tC, e), 1 - 0.38),
-							style:GetFontData(Enums.FontType.LabelLarge),
+							s.Scale,
+							Types.newAppearanceData(s:GetElevatedColor(tC, e), 1 - 0.38),
+							Types.newAppearanceData(s:GetElevatedColor(tC, e), 1 - 0.12),
+							Types.newAppearanceData(s:GetElevatedColor(tC, e), 1 - 0.38),
+							s:GetFontData(Enums.FontType.LabelLarge),
 							nil,
 							nil,
 							nil
 						),
 						[Enums.SelectionState.Unselected] = Types.newRenderData(
-							style.Scale,
-							Types.newAppearanceData(style:GetElevatedColor(tC, e), 1 - 0.38),
-							Types.newAppearanceData(style:GetElevatedColor(tC, e), 1 - 0.12),
-							Types.newAppearanceData(style:GetElevatedColor(tC, e), 1 - 0.38),
-							style:GetFontData(Enums.FontType.LabelLarge),
+							s.Scale,
+							Types.newAppearanceData(s:GetElevatedColor(tC, e), 1 - 0.38),
+							Types.newAppearanceData(s:GetElevatedColor(tC, e), 1 - 0.12),
+							Types.newAppearanceData(s:GetElevatedColor(tC, e), 1 - 0.38),
+							s:GetFontData(Enums.FontType.LabelLarge),
 							nil,
 							nil,
 							nil
@@ -660,21 +660,21 @@ function Interface.ColdFusion.new(
 					},
 					[Enums.ButtonStateType.Hovered] = {
 						[Enums.SelectionState.Selected] = Types.newRenderData(
-							style.Scale,
-							Types.newAppearanceData(style:GetElevatedColor(oC, e + 1), 0),
-							Types.newAppearanceData(style:GetElevatedColor(fBC, e + 1), 1 - 0.08),
-							Types.newAppearanceData(style:GetElevatedColor(fTC, e + 1), 0),
-							style:GetFontData(Enums.FontType.LabelLarge),
+							s.Scale,
+							Types.newAppearanceData(s:GetElevatedColor(oC, e + 1), 0),
+							Types.newAppearanceData(s:GetElevatedColor(fBC, e + 1), 1 - 0.08),
+							Types.newAppearanceData(s:GetElevatedColor(fTC, e + 1), 0),
+							s:GetFontData(Enums.FontType.LabelLarge),
 							nil,
 							nil,
 							nil
 						),
 						[Enums.SelectionState.Unselected] = Types.newRenderData(
-							style.Scale,
-							Types.newAppearanceData(style:GetElevatedColor(oC, e + 1), 0),
-							Types.newAppearanceData(style:GetElevatedColor(fBC, e + 1), 1 - 0.08),
-							Types.newAppearanceData(style:GetElevatedColor(tC, e + 1), 0),
-							style:GetFontData(Enums.FontType.LabelLarge),
+							s.Scale,
+							Types.newAppearanceData(s:GetElevatedColor(oC, e + 1), 0),
+							Types.newAppearanceData(s:GetElevatedColor(fBC, e + 1), 1 - 0.08),
+							Types.newAppearanceData(s:GetElevatedColor(tC, e + 1), 0),
+							s:GetFontData(Enums.FontType.LabelLarge),
 							nil,
 							nil,
 							nil
@@ -682,21 +682,21 @@ function Interface.ColdFusion.new(
 					},
 					[Enums.ButtonStateType.Focused] = {
 						[Enums.SelectionState.Selected] = Types.newRenderData(
-							style.Scale,
-							Types.newAppearanceData(style:GetElevatedColor(oC, e + 1), 0),
-							Types.newAppearanceData(style:GetElevatedColor(fBC, e + 1), 1 - 0.1),
-							Types.newAppearanceData(style:GetElevatedColor(fTC, e + 1), 0),
-							style:GetFontData(Enums.FontType.LabelLarge),
+							s.Scale,
+							Types.newAppearanceData(s:GetElevatedColor(oC, e + 1), 0),
+							Types.newAppearanceData(s:GetElevatedColor(fBC, e + 1), 1 - 0.1),
+							Types.newAppearanceData(s:GetElevatedColor(fTC, e + 1), 0),
+							s:GetFontData(Enums.FontType.LabelLarge),
 							nil,
 							nil,
 							nil
 						),
 						[Enums.SelectionState.Unselected] = Types.newRenderData(
-							style.Scale,
-							Types.newAppearanceData(style:GetElevatedColor(oC, e + 1), 0),
-							Types.newAppearanceData(style:GetElevatedColor(fBC, e + 1), 1 - 0.1),
-							Types.newAppearanceData(style:GetElevatedColor(tC, e + 1), 0),
-							style:GetFontData(Enums.FontType.LabelLarge),
+							s.Scale,
+							Types.newAppearanceData(s:GetElevatedColor(oC, e + 1), 0),
+							Types.newAppearanceData(s:GetElevatedColor(fBC, e + 1), 1 - 0.1),
+							Types.newAppearanceData(s:GetElevatedColor(tC, e + 1), 0),
+							s:GetFontData(Enums.FontType.LabelLarge),
 							nil,
 							nil,
 							nil
@@ -704,21 +704,21 @@ function Interface.ColdFusion.new(
 					},
 					[Enums.ButtonStateType.Pressed] = {
 						[Enums.SelectionState.Selected] = Types.newRenderData(
-							style.Scale,
-							Types.newAppearanceData(style:GetElevatedColor(oC, e - 1), 0),
-							Types.newAppearanceData(style:GetElevatedColor(fBC, e - 1), 1 - 0.1),
-							Types.newAppearanceData(style:GetElevatedColor(fTC, e - 1), 0),
-							style:GetFontData(Enums.FontType.LabelLarge),
+							s.Scale,
+							Types.newAppearanceData(s:GetElevatedColor(oC, e - 1), 0),
+							Types.newAppearanceData(s:GetElevatedColor(fBC, e - 1), 1 - 0.1),
+							Types.newAppearanceData(s:GetElevatedColor(fTC, e - 1), 0),
+							s:GetFontData(Enums.FontType.LabelLarge),
 							nil,
 							Types.newSoundData(Sounds.Library[Enums.SoundType.ui_tap_variant_01], 1),
 							nil
 						),
 						[Enums.SelectionState.Unselected] = Types.newRenderData(
-							style.Scale,
-							Types.newAppearanceData(style:GetElevatedColor(oC, e - 1), 0),
-							Types.newAppearanceData(style:GetElevatedColor(fBC, e - 1), 1 - 0.1),
-							Types.newAppearanceData(style:GetElevatedColor(tC, e - 1), 0),
-							style:GetFontData(Enums.FontType.LabelLarge),
+							s.Scale,
+							Types.newAppearanceData(s:GetElevatedColor(oC, e - 1), 0),
+							Types.newAppearanceData(s:GetElevatedColor(fBC, e - 1), 1 - 0.1),
+							Types.newAppearanceData(s:GetElevatedColor(tC, e - 1), 0),
+							s:GetFontData(Enums.FontType.LabelLarge),
 							nil,
 							Types.newSoundData(Sounds.Library[Enums.SoundType.ui_tap_variant_01], 1),
 							nil

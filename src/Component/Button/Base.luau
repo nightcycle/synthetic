@@ -95,8 +95,8 @@ Util.component = function(
 	local renderDatasState = _import(renderDatas, {}) :: any
 
 	local currentRenderDataState = _Computed(
-		function(state: Enums.ButtonStateType, renderDatas: { [Enums.ButtonStateType]: RenderData }): RenderData
-			local renderData = renderDatas[state]
+		function(state: Enums.ButtonStateType, r: { [Enums.ButtonStateType]: RenderData }): RenderData
+			local renderData = r[state]
 			assert(renderData ~= nil, `no renderData for {state}`)
 			return renderData
 		end,

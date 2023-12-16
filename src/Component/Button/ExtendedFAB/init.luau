@@ -263,7 +263,7 @@ function Interface.ColdFusion.new(
 		if isEnabled == nil then true else isEnabled,
 		_Computed(
 			function(
-				style: Style,
+				s: Style,
 				e: number,
 				tC: Color3,
 				sC: Color3,
@@ -274,67 +274,67 @@ function Interface.ColdFusion.new(
 				e += 1
 				return {
 					[Enums.ButtonStateType.Enabled] = Types.newRenderData(
-						style.Scale * UP_SCALE,
-						Types.newAppearanceData(style:GetElevatedColor(sC, e), 1),
-						Types.newAppearanceData(style:GetElevatedColor(sC, e), 0),
-						Types.newAppearanceData(style:GetElevatedColor(tC, e), 0),
-						style:GetFontData(Enums.FontType.LabelLarge),
+						s.Scale * UP_SCALE,
+						Types.newAppearanceData(s:GetElevatedColor(sC, e), 1),
+						Types.newAppearanceData(s:GetElevatedColor(sC, e), 0),
+						Types.newAppearanceData(s:GetElevatedColor(tC, e), 0),
+						s:GetFontData(Enums.FontType.LabelLarge),
 						i,
 						nil,
 						Types.newShadow(
-							Types.newAppearanceData(style:GetColor(Enums.ColorRoleType.Shadow, e), 0),
+							Types.newAppearanceData(s:GetColor(Enums.ColorRoleType.Shadow, e), 0),
 							Vector2.new(0, 1)
 						)
 					),
 					[Enums.ButtonStateType.Disabled] = Types.newRenderData(
-						style.Scale * UP_SCALE,
-						Types.newAppearanceData(style:GetElevatedColor(dSC, e), 1),
-						Types.newAppearanceData(style:GetElevatedColor(dSC, e), 0.12),
-						Types.newAppearanceData(style:GetElevatedColor(dTC, e), 0.12),
-						style:GetFontData(Enums.FontType.LabelLarge),
+						s.Scale * UP_SCALE,
+						Types.newAppearanceData(s:GetElevatedColor(dSC, e), 1),
+						Types.newAppearanceData(s:GetElevatedColor(dSC, e), 0.12),
+						Types.newAppearanceData(s:GetElevatedColor(dTC, e), 0.12),
+						s:GetFontData(Enums.FontType.LabelLarge),
 						i,
 						nil,
 						Types.newShadow(
-							Types.newAppearanceData(style:GetColor(Enums.ColorRoleType.Shadow, e), 0),
+							Types.newAppearanceData(s:GetColor(Enums.ColorRoleType.Shadow, e), 0),
 							Vector2.new(0, 1)
 						)
 					),
 					[Enums.ButtonStateType.Hovered] = Types.newRenderData(
-						style.Scale * UP_SCALE,
-						Types.newAppearanceData(style:GetElevatedColor(sC, e), 1),
-						Types.newAppearanceData(style:GetElevatedColor(sC, e + 1), 0.08),
-						Types.newAppearanceData(style:GetElevatedColor(tC, e + 1), 0.08),
-						style:GetFontData(Enums.FontType.LabelLarge),
+						s.Scale * UP_SCALE,
+						Types.newAppearanceData(s:GetElevatedColor(sC, e), 1),
+						Types.newAppearanceData(s:GetElevatedColor(sC, e + 1), 0.08),
+						Types.newAppearanceData(s:GetElevatedColor(tC, e + 1), 0.08),
+						s:GetFontData(Enums.FontType.LabelLarge),
 						i,
 						nil,
 						Types.newShadow(
-							Types.newAppearanceData(style:GetColor(Enums.ColorRoleType.Shadow, e), 0),
+							Types.newAppearanceData(s:GetColor(Enums.ColorRoleType.Shadow, e), 0),
 							Vector2.new(0, 1)
 						)
 					),
 					[Enums.ButtonStateType.Focused] = Types.newRenderData(
-						style.Scale * UP_SCALE,
-						Types.newAppearanceData(style:GetElevatedColor(sC, e), 1),
-						Types.newAppearanceData(style:GetElevatedColor(sC, e), 0.1),
-						Types.newAppearanceData(style:GetElevatedColor(tC, e), 0.1),
-						style:GetFontData(Enums.FontType.LabelLarge),
+						s.Scale * UP_SCALE,
+						Types.newAppearanceData(s:GetElevatedColor(sC, e), 1),
+						Types.newAppearanceData(s:GetElevatedColor(sC, e), 0.1),
+						Types.newAppearanceData(s:GetElevatedColor(tC, e), 0.1),
+						s:GetFontData(Enums.FontType.LabelLarge),
 						i,
 						nil,
 						Types.newShadow(
-							Types.newAppearanceData(style:GetColor(Enums.ColorRoleType.Shadow, e), 0),
+							Types.newAppearanceData(s:GetColor(Enums.ColorRoleType.Shadow, e), 0),
 							Vector2.new(0, 1)
 						)
 					),
 					[Enums.ButtonStateType.Pressed] = Types.newRenderData(
-						style.Scale * UP_SCALE,
-						Types.newAppearanceData(style:GetElevatedColor(sC, e), 1),
-						Types.newAppearanceData(style:GetElevatedColor(sC, e - 1), 0.1),
-						Types.newAppearanceData(style:GetElevatedColor(tC, e - 1), 0.1),
-						style:GetFontData(Enums.FontType.LabelLarge),
+						s.Scale * UP_SCALE,
+						Types.newAppearanceData(s:GetElevatedColor(sC, e), 1),
+						Types.newAppearanceData(s:GetElevatedColor(sC, e - 1), 0.1),
+						Types.newAppearanceData(s:GetElevatedColor(tC, e - 1), 0.1),
+						s:GetFontData(Enums.FontType.LabelLarge),
 						i,
 						Types.newSoundData(Sounds.Library[Enums.SoundType.ui_tap_variant_01], 0),
 						Types.newShadow(
-							Types.newAppearanceData(style:GetColor(Enums.ColorRoleType.Shadow, e), 0),
+							Types.newAppearanceData(s:GetColor(Enums.ColorRoleType.Shadow, e), 0),
 							Vector2.new(0, 1)
 						)
 					),

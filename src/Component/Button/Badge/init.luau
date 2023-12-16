@@ -57,8 +57,8 @@ function component(
 	local styleState: State<Style> = _import(style, nil :: any)
 	local elevationState = _import(elevation, 0)
 
-	local scaleState = _Computed(function(style: Style): number
-		return style.Scale
+	local scaleState = _Computed(function(s: Style): number
+		return s.Scale
 	end, styleState)
 	local labelState = _import(label, "")
 	local countState = _import(count, nil :: number?)
@@ -97,8 +97,8 @@ function component(
 	local renderDatasState = _import(renderDatas, {}) :: any
 
 	local currentRenderDataState = _Computed(
-		function(state: Enums.ButtonStateType, renderDatas: { [Enums.ButtonStateType]: RenderData }): RenderData
-			local data = renderDatas[state]
+		function(state: Enums.ButtonStateType, rDatas: { [Enums.ButtonStateType]: RenderData }): RenderData
+			local data = rDatas[state]
 			assert(data ~= nil, `no renderData for {state}`)
 			return data
 		end,
@@ -192,11 +192,11 @@ function component(
 			_new("Frame")({
 				Name = "Badge",
 				LayoutOrder = 1,
-				BackgroundColor3 = _Computed(function(style: RenderData): Color3
-					return style.Background.Color3
+				BackgroundColor3 = _Computed(function(s: RenderData): Color3
+					return s.Background.Color3
 				end, currentRenderDataState),
-				BackgroundTransparency = _Computed(function(style: RenderData): number
-					return style.Background.Transparency
+				BackgroundTransparency = _Computed(function(s: RenderData): number
+					return s.Background.Transparency
 				end, currentRenderDataState),
 				AutomaticSize = Enum.AutomaticSize.XY,
 				Size = UDim2.fromOffset(0, 0),
@@ -236,14 +236,14 @@ function component(
 						ImageTransparency = _Computed(function(data: RenderData): number
 							return if data.Text then data.Text.Transparency else 1
 						end, currentRenderDataState),
-						Image = _Computed(function(icon: ImageData): string
-							return icon.Image
+						Image = _Computed(function(i: ImageData): string
+							return i.Image
 						end, iconState),
-						ImageRectOffset = _Computed(function(icon: ImageData): Vector2
-							return icon.ImageRectOffset
+						ImageRectOffset = _Computed(function(i: ImageData): Vector2
+							return i.ImageRectOffset
 						end, iconState),
-						ImageRectSize = _Computed(function(icon: ImageData): Vector2
-							return icon.ImageRectSize
+						ImageRectSize = _Computed(function(i: ImageData): Vector2
+							return i.ImageRectSize
 						end, iconState),
 						Size = _Computed(function(s: number): UDim2
 							return UDim2.fromOffset(s * ICON_SIZE_DP, s * ICON_SIZE_DP)
@@ -291,14 +291,14 @@ function component(
 										return ""
 									end
 								end, countState),
-								FontFace = _Computed(function(style: Style): Font
-									return style:GetFontData(Enums.FontType.LabelSmall).Font
+								FontFace = _Computed(function(s: Style): Font
+									return s:GetFontData(Enums.FontType.LabelSmall).Font
 								end, styleState),
-								BackgroundColor3 = _Computed(function(style: Style, e: number): Color3
-									return style:GetColor(Enums.ColorRoleType.Error, e + 1)
+								BackgroundColor3 = _Computed(function(s: Style, e: number): Color3
+									return s:GetColor(Enums.ColorRoleType.Error, e + 1)
 								end, styleState, elevationState),
-								TextColor3 = _Computed(function(style: Style, e: number): Color3
-									return style:GetColor(Enums.ColorRoleType.OnError, e + 1)
+								TextColor3 = _Computed(function(s: Style, e: number): Color3
+									return s:GetColor(Enums.ColorRoleType.OnError, e + 1)
 								end, styleState, elevationState),
 								Children = {
 									_new("UIPadding")({
@@ -453,7 +453,7 @@ function Interface.ColdFusion.new(
 		count,
 		_Computed(
 			function(
-				style: Style,
+				s: Style,
 				e: number,
 				hC: Color3,
 				tC: Color3,
@@ -462,41 +462,41 @@ function Interface.ColdFusion.new(
 				e += 1
 				return {
 					[Enums.ButtonStateType.Enabled] = Types.newRenderData(
-						style.Scale,
-						Types.newAppearanceData(style:GetElevatedColor(hC, e), 1),
-						Types.newAppearanceData(style:GetElevatedColor(hC, e), 1),
-						Types.newAppearanceData(style:GetElevatedColor(tC, e), 0),
-						style:GetFontData(Enums.FontType.LabelLarge),
+						s.Scale,
+						Types.newAppearanceData(s:GetElevatedColor(hC, e), 1),
+						Types.newAppearanceData(s:GetElevatedColor(hC, e), 1),
+						Types.newAppearanceData(s:GetElevatedColor(tC, e), 0),
+						s:GetFontData(Enums.FontType.LabelLarge),
 						i,
 						nil,
 						nil
 					),
 					[Enums.ButtonStateType.Hovered] = Types.newRenderData(
-						style.Scale,
-						Types.newAppearanceData(style:GetElevatedColor(hC, e), 1),
-						Types.newAppearanceData(style:GetElevatedColor(hC, e + 1), 1 - 0.08),
-						Types.newAppearanceData(style:GetElevatedColor(tC, e + 1), 0),
-						style:GetFontData(Enums.FontType.LabelLarge),
+						s.Scale,
+						Types.newAppearanceData(s:GetElevatedColor(hC, e), 1),
+						Types.newAppearanceData(s:GetElevatedColor(hC, e + 1), 1 - 0.08),
+						Types.newAppearanceData(s:GetElevatedColor(tC, e + 1), 0),
+						s:GetFontData(Enums.FontType.LabelLarge),
 						i,
 						nil,
 						nil
 					),
 					[Enums.ButtonStateType.Focused] = Types.newRenderData(
-						style.Scale,
-						Types.newAppearanceData(style:GetElevatedColor(hC, e), 1),
-						Types.newAppearanceData(style:GetElevatedColor(hC, e), 1 - 0.1),
-						Types.newAppearanceData(style:GetElevatedColor(tC, e), 0),
-						style:GetFontData(Enums.FontType.LabelLarge),
+						s.Scale,
+						Types.newAppearanceData(s:GetElevatedColor(hC, e), 1),
+						Types.newAppearanceData(s:GetElevatedColor(hC, e), 1 - 0.1),
+						Types.newAppearanceData(s:GetElevatedColor(tC, e), 0),
+						s:GetFontData(Enums.FontType.LabelLarge),
 						i,
 						nil,
 						nil
 					),
 					[Enums.ButtonStateType.Pressed] = Types.newRenderData(
-						style.Scale,
-						Types.newAppearanceData(style:GetElevatedColor(hC, e), 1),
-						Types.newAppearanceData(style:GetElevatedColor(hC, e - 1), 1 - 0.1),
-						Types.newAppearanceData(style:GetElevatedColor(tC, e - 1), 0),
-						style:GetFontData(Enums.FontType.LabelLarge),
+						s.Scale,
+						Types.newAppearanceData(s:GetElevatedColor(hC, e), 1),
+						Types.newAppearanceData(s:GetElevatedColor(hC, e - 1), 1 - 0.1),
+						Types.newAppearanceData(s:GetElevatedColor(tC, e - 1), 0),
+						s:GetFontData(Enums.FontType.LabelLarge),
 						i,
 						Types.newSoundData(Sounds.Library[Enums.SoundType.ui_tap_variant_01], 1),
 						nil
