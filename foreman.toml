@@ -3,7 +3,8 @@ wally = 	{source = "UpliftGames/wally", 		version = "0.3.2" }
 wally-package-types = {source = "JohnnyMorganz/wally-package-types", version = "1.2.0"}
 selene = {source = "kampfkarren/selene", version = "0.25.0"}
 rojo = {source = "rojo-rbx/rojo", 	version = "7.3.0" }
-luau-lsp = {source="JohnnyMorganz/luau-lsp", version="1.22.1"}
+luau-lsp = {source="JohnnyMorganz/luau-lsp", version="1.26.0"}
 run-in-roblox = { source = "rojo-rbx/run-in-roblox", version = "0.3.0" }
 stylua = {source = "JohnnyMorganz/StyLua", version = "0.18.0"}
 wally-update = {source = "nightcycle/wally-update", version = "0.1.2"}
+pseudo-enum = {source = "nightcycle/pseudo-enum", version = "0.2.2"}

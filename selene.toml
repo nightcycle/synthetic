@@ -1,4 +1,4 @@
-std = "lints/roblox"
+std = "lints/luau+roblox"
 exclude = [
 	"out/*", 
 	"*.spec.lua",

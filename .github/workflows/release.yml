@@ -84,7 +84,6 @@ jobs:
           fi
           curl -L "https://gist.github.com/nightcycle/a57e04de443dfa89bd08c8eb001b03c6/raw" > "lints/lua51.yml"
           curl -L "https://gist.github.com/nightcycle/93c4b9af5bbf4ed09f39aa908dffccd0/raw" > "lints/luau.yml"
-          curl -L "https://gist.github.com/nightcycle/e8c4a9a1d71cfd1a1fff59cad84156d1/raw" > "lints/roblox.yml"
 
       # apply code styling
       - name: style src scripts
@@ -103,7 +102,7 @@ jobs:
 
       # Test validity
       - name: typecheck src files
-        run: luau-lsp analyze src --sourcemap=sourcemap.json --ignore="Packages/**" --ignore="**/Packages/**" --ignore="*.spec.luau" --flag:LuauTypeInferIterationLimit=0 --flag:LuauCheckRecursionLimit=0 --flag:LuauTypeInferRecursionLimit=0 --flag:LuauTarjanChildLimit=0 --flag:LuauTypeInferTypePackLoopLimit=0 --flag:LuauVisitRecursionLimit=0 --definitions=types/globalTypes.d.lua --flag:LuauParseDeclareClassIndexer=true
+        run: luau-lsp analyze --sourcemap="sourcemap.json" --ignore="Packages/**" --ignore="src/Server/NPC/Animate.server.lua" --ignore="**/Packages/**" --ignore="*.spec.luau" --ignore="out/**" --flag:LuauTypeInferIterationLimit=0 --flag:LuauCheckRecursionLimit=0 --flag:LuauTypeInferRecursionLimit=0 --flag:LuauTarjanChildLimit=0 --flag:LuauTypeInferTypePackLoopLimit=0 --flag:LuauVisitRecursionLimit=0 --definitions=types/globalTypes.d.lua --flag:LuauParseDeclareClassIndexer=true src
 
       - name: lint src files
         run: selene src
