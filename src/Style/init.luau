@@ -3,6 +3,9 @@ local _Package = script.Parent
 local _Packages = _Package.Parent
 -- Services
 -- Packages
+local HashUtil = require(_Packages:WaitForChild("HashUtil"))
+local TableUtil = require(_Packages:WaitForChild("TableUtil"))
+
 -- Modules
 local Typography = require(script:WaitForChild("Typography"))
 local Theme = require(script:WaitForChild("Theme"))
@@ -12,12 +15,6 @@ local Enums = require(_Package:WaitForChild("Enums"))
 export type Theme = Theme.Theme
 export type Typography = Typography.Typography
 export type FontData = Typography.FontData
--- Constants
--- Variables
--- References
--- Private Functions
--- Class
--- Types
 export type Style = {
 	__index: Style,
 	Scale: number,
@@ -29,7 +26,6 @@ export type Style = {
 	GetCustomColor: (self: Style, name: string, customType: Enums.CustomColorType, elevation: number?) -> Color3,
 	GetFont: (self: Style, fontType: Enums.FontType) -> Font,
 	GetFontData: (self: Style, fontType: Enums.FontType) -> FontData,
-
 	GetTextSize: (self: Style, fontType: Enums.FontType) -> number,
 	GetLineHeight: (self: Style, fontType: Enums.FontType) -> number,
 	new: (
@@ -40,6 +36,13 @@ export type Style = {
 		custom: { [string]: Color3 }?
 	) -> Style,
 }
+
+-- Constants
+-- Variables
+local Cache: {[string]: Style} = {}
+
+-- References
+-- Private Functions
 
 -- Class
 local Style = {} :: Style
@@ -80,6 +83,23 @@ function Style.new(
 	source: Color3,
 	additions: { [string]: Color3 }?
 ): Style
+	local hash = ""
+	do
+		local hashInput = `{scale}+{fontFamily}+{schemeType}+{source:ToHex()}+`.."{"
+		if additions then
+			local keys = TableUtil.keys(additions)
+			table.sort(keys)
+			for i, k in ipairs(keys) do
+				hashInput..= `{k}={additions[k]:ToHex()},`
+			end
+		end
+		hashInput ..= "}"
+		hash = HashUtil.md5(hashInput)
+	end
+	if Cache[hash] then
+		return Cache[hash]
+	end
+
 	local self: Style = setmetatable({}, Style) :: any
 	self.Scale = scale
 	self.SchemeType = schemeType
@@ -87,6 +107,8 @@ function Style.new(
 	self._Typography = Typography.new(fontFamily)
 
 	table.freeze(self)
+	Cache[hash] = self
+	
 	return self
 end
 

@@ -8,6 +8,13 @@ local Enums = require(_Package:WaitForChild("Enums"))
 local Types = require(_Package:WaitForChild("Types"))
 
 -- Types
+export type FontData = Types.FontData
+export type Typography = {
+	__index: Typography,
+	_Styles: { [Enums.FontType]: FontData },
+	Get: (self: Typography, style: Enums.FontType) -> FontData,
+	new: (fontFamily: string?) -> Typography,
+}
 -- Constants
 local DEFAULT_FONT_FAMILY = "Source Sans"
 local WEIGHT = {
@@ -22,17 +29,9 @@ local WEIGHT = {
 	[900] = Enum.FontWeight.Heavy,
 }
 -- Variables
+local Cache: {[string]: Typography} = {}
 -- References
 -- Private Functions
--- Class
--- Types
-export type FontData = Types.FontData
-export type Typography = {
-	__index: Typography,
-	_Styles: { [Enums.FontType]: FontData },
-	Get: (self: Typography, style: Enums.FontType) -> FontData,
-	new: (fontFamily: string?) -> Typography,
-}
 
 -- Class
 local Typography = {} :: Typography
@@ -42,9 +41,14 @@ function Typography:Get(style: Enums.FontType): FontData
 	return self._Styles[style]
 end
 
-function Typography.new(fontFamily: string?)
+function Typography.new(fontFamily: string?): Typography
 	fontFamily = fontFamily or DEFAULT_FONT_FAMILY
 	assert(fontFamily)
+
+	if Cache[fontFamily] then
+		return Cache[fontFamily]
+	end
+
 	local self: Typography = setmetatable({}, Typography) :: any
 	self._Styles = table.freeze({
 		[Enums.FontType.DisplayLarge] = table.freeze({
@@ -140,7 +144,7 @@ function Typography.new(fontFamily: string?)
 	})
 
 	table.freeze(self)
-
+	Cache[fontFamily] = self
 	return self
 end
 

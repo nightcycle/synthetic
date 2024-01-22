@@ -3,6 +3,9 @@ local _Package = script.Parent.Parent
 local _Packages = _Package.Parent
 -- Services
 -- Packages
+local HashUtil = require(_Packages:WaitForChild("HashUtil"))
+local TableUtil = require(_Packages:WaitForChild("TableUtil"))
+
 -- Modules
 local ThemeUtil = require(script:WaitForChild("ThemeUtil"))
 local HCT = require(script:WaitForChild("HCT"))
@@ -34,6 +37,7 @@ export type Theme = {
 	_CustomColors: {
 		[string]: CustomColorGroup,
 	},
+	_Hash: string,
 	Get: (self: Theme, role: Enums.ColorRoleType, schemeType: Enums.SchemeType, elevation: number?) -> Color3,
 	GetCustom: (
 		self: Theme,
@@ -48,6 +52,7 @@ export type Theme = {
 -- Constants
 local ELEVATION_TINTS = { 0, 0.05, 0.08, 0.11, 0.12, 0.14 }
 -- Variables
+local Cache: {[string]: Theme} = {}
 -- References
 -- Private Functions
 
@@ -55,7 +60,25 @@ local ELEVATION_TINTS = { 0, 0.05, 0.08, 0.11, 0.12, 0.14 }
 local Theme = {} :: Theme
 Theme.__index = Theme
 
-function Theme.new(source: Color3, custom: { [string]: Color3 }?): Theme
+function Theme.new(source: Color3, custom: { [string]: Color3 }?): Theme	
+	
+	local hash = ""
+	do
+		local hashInput = `{source:ToHex()}+`.."{"
+		if custom then
+			local keys = TableUtil.keys(custom)
+			table.sort(keys)
+			for i, k in ipairs(keys) do
+				hashInput..= `{k}={custom[k]:ToHex()},`
+			end
+		end
+		hashInput ..= "}"
+		hash = HashUtil.md5(hashInput)
+	end
+	if Cache[hash] then
+		return Cache[hash]
+	end
+	
 	local googleTheme: GoogleTheme
 	do
 		local customColors: { [number]: GoogleCustomColor } = {}
@@ -164,6 +187,7 @@ function Theme.new(source: Color3, custom: { [string]: Color3 }?): Theme
 		end
 	end
 
+
 	local theme: Theme = setmetatable({
 		Source = source,
 		_Schemes = table.freeze({
@@ -181,6 +205,7 @@ function Theme.new(source: Color3, custom: { [string]: Color3 }?): Theme
 		CustomColors = table.freeze(customColors),
 	}, Theme) :: any
 	table.freeze(theme)
+	Cache[hash] = theme
 	return theme
 end
 
