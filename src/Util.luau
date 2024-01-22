@@ -233,6 +233,59 @@ end
 
 Util.TextLabel = {}
 Util.TextLabel.ColdFusion = {}
+
+function Util.TextLabel.ColdFusion.fromStyleSimple(
+	text: CanBeState<string>,
+	colorRoleType: CanBeState<Enums.ColorRoleType>,
+	fontType: CanBeState<Enums.FontType>,
+	style: CanBeState<Style>,
+	elevation: CanBeState<number?>
+): TextLabel
+	local maid = Maid.new()
+	local _fuse = ColdFusion.fuse(maid)
+
+	local _new = _fuse.new
+	local _bind = _fuse.bind
+	local _clone = _fuse.clone
+	local _import = _fuse.import
+
+	local _Value = _fuse.Value
+	local _Computed = _fuse.Computed
+
+	local elevationState: State<number?> = _import(elevation, nil)
+	local textState: State<string> = _import(text, "")
+	local styleState: State<Style> = _import(style, nil :: any)
+	local fontTypeState: State<Enums.FontType> = _import(fontType, Enums.FontType.LabelMedium)
+	local colorRoleTypeState: State<Enums.ColorRoleType> = _import(colorRoleType, Enums.ColorRoleType.OnBackground)
+
+	local out = _new("TextLabel")({
+		Text = textState,
+		RichText = true,
+		LayoutOrder = 1,
+		Visible = _Computed(function(h: string): boolean
+			return h:len() > 0
+		end, textState),
+		TextColor3 = _Computed(function(s: Style, colorRole: Enums.ColorRoleType, e: number?): Color3
+			return s:GetColor(colorRole, e)
+		end, styleState, colorRoleTypeState, elevationState),
+		TextTransparency = 0,
+		BackgroundTransparency = 1,
+		AutomaticSize = Enum.AutomaticSize.XY,
+		TextSize = _Computed(function(s: Style, f: Enums.FontType): number
+			return s:GetTextSize(f)
+		end, styleState, fontTypeState),
+		LineHeight = _Computed(function(s: Style, f: Enums.FontType): number
+			return s:GetLineHeight(f)
+		end, styleState, fontTypeState),
+		FontFace = _Computed(function(s: Style, f: Enums.FontType): Font
+			return s:GetFont(f)
+		end, styleState, fontTypeState),
+		Size = UDim2.fromOffset(0,0),
+	}) :: TextLabel
+	maid.bind(out)
+	return out
+end
+
 function Util.TextLabel.ColdFusion.new(
 	text: CanBeState<string>,
 	textColor3: CanBeState<Color3>,
