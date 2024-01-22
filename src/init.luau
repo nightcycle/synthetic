@@ -31,15 +31,30 @@ Synthetic.Types = {
 Synthetic.Style = Style
 Synthetic.Component = {
 	Bar = {
-		Bottom = require(Component:WaitForChild("Bar"):WaitForChild("Bottom")),
-		Top = {
-			Center = require(Component:WaitForChild("Bar"):WaitForChild("Top"):WaitForChild("Center")),
-			Large = require(Component:WaitForChild("Bar"):WaitForChild("Top"):WaitForChild("Large")),
-			Medium = require(Component:WaitForChild("Bar"):WaitForChild("Top"):WaitForChild("Medium")),
-			Small = require(Component:WaitForChild("Bar"):WaitForChild("Top"):WaitForChild("Small")),
-		},
+		
 	},
 	Dialog = require(Component:WaitForChild("Dialog")),
+	Menu = {
+		Row = {
+			Segmented = require(Component:WaitForChild("Menu"):WaitForChild("Row"):WaitForChild("Segmented")),
+			Tabs = require(Component:WaitForChild("Menu"):WaitForChild("Row"):WaitForChild("Tabs")),
+			Bar = {
+				Bottom = require(Component:WaitForChild("Menu"):WaitForChild("Row"):WaitForChild("Bar"):WaitForChild("Bottom")),
+				Navigation = require(Component:WaitForChild("Menu"):WaitForChild("Row"):WaitForChild("Bar"):WaitForChild("Navigation")),
+
+				Top = {
+					Center = require(Component:WaitForChild("Menu"):WaitForChild("Row"):WaitForChild("Bar"):WaitForChild("Top"):WaitForChild("Center")),
+					Large = require(Component:WaitForChild("Menu"):WaitForChild("Row"):WaitForChild("Bar"):WaitForChild("Top"):WaitForChild("Large")),
+					Medium = require(Component:WaitForChild("Menu"):WaitForChild("Row"):WaitForChild("Bar"):WaitForChild("Top"):WaitForChild("Medium")),
+					Small = require(Component:WaitForChild("Menu"):WaitForChild("Row"):WaitForChild("Bar"):WaitForChild("Top"):WaitForChild("Small")),
+				},
+			},
+		},
+		Column = {
+			Drawer = nil,
+			Rail = nil,
+		},
+	},
 	Button = {
 		Badge = require(Component:WaitForChild("Button"):WaitForChild("Badge")),
 		ElevatedButton = require(Component:WaitForChild("Button"):WaitForChild("ElevatedButton")),
@@ -50,7 +65,6 @@ Synthetic.Component = {
 		IconButton = require(Component:WaitForChild("Button"):WaitForChild("IconButton")),
 		Outlined = require(Component:WaitForChild("Button"):WaitForChild("OutlinedButton")),
 		OutlinedIcon = require(Component:WaitForChild("Button"):WaitForChild("OutlinedIconButton")),
-		Segmented = require(Component:WaitForChild("Button"):WaitForChild("Segmented")),
 		Text = require(Component:WaitForChild("Button"):WaitForChild("TextButton")),
 		Chip = {
 			Filter = require(Component:WaitForChild("Button"):WaitForChild("Chip"):WaitForChild("Filter")),

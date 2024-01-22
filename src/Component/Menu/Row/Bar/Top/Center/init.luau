@@ -1,5 +1,5 @@
 --!strict
-local _Package = script.Parent.Parent.Parent.Parent
+local _Package = script.Parent.Parent.Parent.Parent.Parent.Parent
 local _Packages = _Package.Parent
 -- Services
 
@@ -149,7 +149,7 @@ function Interface.ColdFusion.new(
 	elevation: CanBeState<number>,
 	style: CanBeState<Style>
 ): GuiObject
-	return TopBase.component(title, buttons, navigation, "Medium", backgroundColor, textColor, elevation, style)
+	return TopBase.component(title, buttons, navigation, "Center", backgroundColor, textColor, elevation, style)
 end
 
 return Interface
