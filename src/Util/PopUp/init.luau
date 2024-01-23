@@ -30,8 +30,7 @@ Util.ColdFusion = {}
 
 function Util.ColdFusion.new(
 	absolutePosition: CanBeState<Vector2>,
-	anchorHorizontalAlignment: CanBeState<Enum.HorizontalAlignment>,
-	anchorVerticalAlignment: CanBeState<Enum.VerticalAlignment>
+	anchorPoint: CanBeState<Vector2>
 ): Frame
 	local maid = Maid.new()
 	local _fuse = ColdFusion.fuse(maid)
@@ -45,17 +44,8 @@ function Util.ColdFusion.new(
 	local _Computed = _fuse.Computed
 
 	local goalAbsolutePositionState: State<Vector2> = _import(absolutePosition, Vector2.new(0,0))
-	local horizontalAlignmentState: State<Enum.HorizontalAlignment> = _import(anchorHorizontalAlignment, Enum.HorizontalAlignment.Left)
-	local verticalAlignmentState: State<Enum.VerticalAlignment> = _import(anchorVerticalAlignment, Enum.VerticalAlignment.Top)
-
+	local anchorPointState: State<Vector2> = _import(anchorPoint, Vector2.zero)
 	local finalPositionState: ValueState<Vector2> = _Value(goalAbsolutePositionState:Get())
-
-	local anchorPointState = _Computed(function(h: Enum.HorizontalAlignment, v: Enum.VerticalAlignment): Vector2
-		return Vector2.new(
-			1-if h == Enum.HorizontalAlignment.Left then 0 elseif h == Enum.HorizontalAlignment.Right then 1 else 0.5,
-			1-if v == Enum.VerticalAlignment.Top then 0 elseif v == Enum.VerticalAlignment.Bottom then 1 else 0.5
-		)
-	end, horizontalAlignmentState, verticalAlignmentState)
 
 	local screenGui = maid:GiveTask(_new("ScreenGui")({
 		Name = "PopUpGui",
@@ -95,8 +85,8 @@ end
 
 function Util.ColdFusion.fromGuiObject(
 	guiObject: CanBeState<GuiObject>,
-	anchorHorizontalAlignment: CanBeState<Enum.HorizontalAlignment?>,
-	anchorVerticalAlignment: CanBeState<Enum.VerticalAlignment?>
+	guiObjectAnchorPoint: CanBeState<Vector2>,
+	hintAnchorPoint: CanBeState<Vector2>
 ): Frame
 	local maid = Maid.new()
 	local _fuse = ColdFusion.fuse(maid)
@@ -110,28 +100,24 @@ function Util.ColdFusion.fromGuiObject(
 	local _Computed = _fuse.Computed
 
 	local guiObjectState: State<GuiObject> = _import(guiObject, nil :: any)
-	local horizontalAlignmentState: State<Enum.HorizontalAlignment> = _import(anchorHorizontalAlignment, Enum.HorizontalAlignment.Left)
-	local verticalAlignmentState: State<Enum.VerticalAlignment> = _import(anchorVerticalAlignment, Enum.VerticalAlignment.Top)
+	local guiAnchorPoint: State<Vector2> = _import(guiObjectAnchorPoint, Vector2.one)
 
 	local function getAbsolutePosition(): Vector2
 		local gui = guiObjectState:Get()
 		local absPosition = gui.AbsolutePosition
 		local absSize = gui.AbsoluteSize
-		local h = horizontalAlignmentState:Get()
-		local v = verticalAlignmentState:Get()
-		local xWeight = if h == Enum.HorizontalAlignment.Left then 0 elseif h == Enum.HorizontalAlignment.Right then 1 else 0.5
-		local yWeight = if v == Enum.VerticalAlignment.Top then 0 elseif v == Enum.VerticalAlignment.Bottom then 1 else 0.5
+		local gAnchor = guiAnchorPoint:Get()
+
 		return absPosition + Vector2.new(
-			absSize.X * xWeight,
-			absSize.Y * yWeight
+			absSize.X * gAnchor.X,
+			absSize.Y * gAnchor.Y
 		)
 	end
 	local absolutePosition = _Value(getAbsolutePosition())
 
 	local out = Util.ColdFusion.new(
 		absolutePosition,
-		horizontalAlignmentState,
-		verticalAlignmentState
+		hintAnchorPoint
 	)
 
 	maid.bind(out)

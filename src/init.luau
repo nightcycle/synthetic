@@ -23,6 +23,7 @@ local Synthetic = {}
 Synthetic.Enums = require(_Package:WaitForChild("Enums"))
 Synthetic.Sounds = require(_Package:WaitForChild("Sounds"))
 Synthetic.Util = require(_Package:WaitForChild("Util"))
+Synthetic.Transition = require(_Package:WaitForChild("Transition"))
 Synthetic.Types = {
 	newButtonData = Types.newButtonData,
 	newOptionData = Types.newOptionData,
@@ -30,18 +31,14 @@ Synthetic.Types = {
 }
 Synthetic.Style = Style
 Synthetic.Component = {
-	Bar = {
-		
-	},
 	Dialog = require(Component:WaitForChild("Dialog")),
 	Menu = {
 		Row = {
 			Segmented = require(Component:WaitForChild("Menu"):WaitForChild("Row"):WaitForChild("Segmented")),
-			Tabs = require(Component:WaitForChild("Menu"):WaitForChild("Row"):WaitForChild("Tabs")),
+			Tabs = nil,
 			Bar = {
 				Bottom = require(Component:WaitForChild("Menu"):WaitForChild("Row"):WaitForChild("Bar"):WaitForChild("Bottom")),
-				Navigation = require(Component:WaitForChild("Menu"):WaitForChild("Row"):WaitForChild("Bar"):WaitForChild("Navigation")),
-
+				Navigation = nil,
 				Top = {
 					Center = require(Component:WaitForChild("Menu"):WaitForChild("Row"):WaitForChild("Bar"):WaitForChild("Top"):WaitForChild("Center")),
 					Large = require(Component:WaitForChild("Menu"):WaitForChild("Row"):WaitForChild("Bar"):WaitForChild("Top"):WaitForChild("Large")),
@@ -53,6 +50,7 @@ Synthetic.Component = {
 		Column = {
 			Drawer = nil,
 			Rail = nil,
+			PopUp = nil,
 		},
 	},
 	Button = {
@@ -74,6 +72,7 @@ Synthetic.Component = {
 	Checkbox = require(Component:WaitForChild("Checkbox")),
 	RadioButton = require(Component:WaitForChild("RadioButton")),
 	Switch = require(Component:WaitForChild("Switch")),
+	Slider = nil,
 	TextField = {
 		Filled = require(Component:WaitForChild("TextFields"):WaitForChild("Filled")),
 		Outlined = require(Component:WaitForChild("TextFields"):WaitForChild("Outlined")),
