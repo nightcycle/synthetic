@@ -24,7 +24,7 @@ return function(frame: Frame)
 				Style.new(1, "Source Sans", if isDarkMode then Enums.SchemeType.Dark else Enums.SchemeType.Light, color)
 
 			local halfFrame = maid:GiveTask(Instance.new("Frame"))
-			halfFrame.BackgroundColor3 = style:GetColor(Enums.ColorRoleType.Surface)
+			halfFrame.BackgroundColor3 = style:GetColor(Enums.ColorRoleType.Background)
 			halfFrame.BorderSizePixel = 0
 
 			local listLayout = maid:GiveTask(Instance.new("UIListLayout"))
@@ -36,29 +36,19 @@ return function(frame: Frame)
 
 			local Module = require(script.Parent)
 
-			-- do
-			-- 	local button = maid:GiveTask(Module.ColdFusion.primary(style, function(input: string?): string?
-			-- 		print(`submit: {input}`)
-			-- 		return input
-			-- 	end, "primary"))
-			-- 	button.Parent = halfFrame
-			-- end
+			do
+				local indicator = maid:GiveTask(Module.ColdFusion.primary(style, nil))
+				indicator.Parent = halfFrame
+			end
+			do
+				local indicator = maid:GiveTask(Module.ColdFusion.secondary(style, nil))
+				indicator.Parent = halfFrame
+			end
+			do
+				local indicator = maid:GiveTask(Module.ColdFusion.tertiary(style, nil))
+				indicator.Parent = halfFrame
+			end
 
-			-- do
-			-- 	local button = maid:GiveTask(Module.ColdFusion.secondary(style, function(input: string?): string?
-			-- 		print(`submit: {input}`)
-			-- 		return input
-			-- 	end, "secondary"))
-			-- 	button.Parent = halfFrame
-			-- end
-
-			-- do
-			-- 	local button = maid:GiveTask(Module.ColdFusion.tertiary(style, function(input: string?): string?
-			-- 		print(`submit: {input}`)
-			-- 		return input
-			-- 	end, "tertiary"))
-			-- 	button.Parent = halfFrame
-			-- end
 
 			return halfFrame
 		end

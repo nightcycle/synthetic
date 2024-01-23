@@ -31,7 +31,6 @@ local DIAMETER_DP = 48
 local RING_ASSET_URL = "rbxassetid://3587367081"
 local ROTATION_OFFSET = 180
 local BUFFER = 10
-local WIDTH_PERIOD = 2
 -- Variables
 -- References
 -- Private Functions
@@ -163,6 +162,115 @@ end
 local Interface = {}
 
 Interface.ColdFusion = {}
+
+function Interface.ColdFusion.primary(
+	style: CanBeState<Style>,
+	progress: CanBeState<number?>,
+	isEnabled: CanBeState<boolean>?
+): GuiObject
+	local maid = Maid.new()
+
+	local _fuse = ColdFusion.fuse(maid)
+	
+	local _new = _fuse.new
+	local _bind = _fuse.bind
+	local _clone = _fuse.clone
+	local _import = _fuse.import
+	
+	local _Value = _fuse.Value
+	local _Computed = _fuse.Computed
+
+	local styleState: State<Style> = _import(style, nil :: any)
+
+	local out = Interface.ColdFusion.new(
+		progress,
+		if isEnabled == nil then true else isEnabled,
+		_Computed(function(s: Style): Color3
+			return s:GetColor(Enums.ColorRoleType.Primary)
+		end, styleState),
+		_Computed(function(s: Style): Color3
+			return s:GetColor(Enums.ColorRoleType.PrimaryContainer)
+		end, styleState),
+		styleState
+	)
+	
+	maid:GiveTask(out.Destroying:Connect(function() maid:Destroy() end))
+
+	return out
+end
+
+function Interface.ColdFusion.secondary(
+	style: CanBeState<Style>,
+	progress: CanBeState<number?>,
+	isEnabled: CanBeState<boolean>?
+): GuiObject
+	local maid = Maid.new()
+
+	local _fuse = ColdFusion.fuse(maid)
+	
+	local _new = _fuse.new
+	local _bind = _fuse.bind
+	local _clone = _fuse.clone
+	local _import = _fuse.import
+	
+	local _Value = _fuse.Value
+	local _Computed = _fuse.Computed
+
+	local styleState: State<Style> = _import(style, nil :: any)
+
+	local out = Interface.ColdFusion.new(
+		progress,
+		if isEnabled == nil then true else isEnabled,
+		_Computed(function(s: Style): Color3
+			return s:GetColor(Enums.ColorRoleType.Secondary)
+		end, styleState),
+		_Computed(function(s: Style): Color3
+			return s:GetColor(Enums.ColorRoleType.SecondaryContainer)
+		end, styleState),
+		styleState
+	)
+	
+	maid:GiveTask(out.Destroying:Connect(function() maid:Destroy() end))
+
+	return out
+end
+
+function Interface.ColdFusion.tertiary(
+	style: CanBeState<Style>,
+	progress: CanBeState<number?>,
+	isEnabled: CanBeState<boolean>?
+): GuiObject
+	local maid = Maid.new()
+
+	local _fuse = ColdFusion.fuse(maid)
+	
+	local _new = _fuse.new
+	local _bind = _fuse.bind
+	local _clone = _fuse.clone
+	local _import = _fuse.import
+	
+	local _Value = _fuse.Value
+	local _Computed = _fuse.Computed
+
+	local styleState: State<Style> = _import(style, nil :: any)
+
+	local out = Interface.ColdFusion.new(
+		progress,
+		if isEnabled == nil then true else isEnabled,
+		_Computed(function(s: Style): Color3
+			return s:GetColor(Enums.ColorRoleType.Tertiary)
+		end, styleState),
+		_Computed(function(s: Style): Color3
+			return s:GetColor(Enums.ColorRoleType.TertiaryContainer)
+		end, styleState),
+		styleState
+	)
+	
+	maid:GiveTask(out.Destroying:Connect(function() maid:Destroy() end))
+
+	return out
+end
+
 function Interface.ColdFusion.new(
 	progress: CanBeState<number?>,
 	isEnabled: CanBeState<boolean>,
@@ -196,7 +304,7 @@ function Interface.ColdFusion.new(
 	local progressWidthState = _Value(0)
 
 	local startSpring = Spring.new(30, 40, 0)
-	local widthSpring = Spring.new(20, 30, 0)
+	local widthSpring = Spring.new(70, 80, 0)
 
 	maid:GiveTask(RunService.RenderStepped:Connect(function(deltaTime: number)
 		if inputProgressState:Get() ~= nil then
@@ -206,7 +314,7 @@ function Interface.ColdFusion.new(
 			widthSpring:Set(inputProgress*360)
 		else
 			local start = (360*tickAlpha(2))%360
-			local width = (180+150*tickCycle(WIDTH_PERIOD))%360
+			local width = (180+140*tickCycle(5))%360
 
 			startSpring:Set(start)
 			widthSpring:Set(width)
