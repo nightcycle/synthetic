@@ -8,6 +8,7 @@ local RunService = game:GetService("RunService")
 -- Packages
 local Maid = require(_Packages:WaitForChild("Maid"))
 local ColdFusion = require(_Packages:WaitForChild("ColdFusion"))
+local Spring = require(_Packages:WaitForChild("Spring"))
 
 -- Modules
 local Types = require(_Package:WaitForChild("Types"))
@@ -29,21 +30,25 @@ type Style = Style.Style
 local DIAMETER_DP = 48
 local RING_ASSET_URL = "rbxassetid://3587367081"
 local ROTATION_OFFSET = 180
-
+local BUFFER = 10
+local WIDTH_PERIOD = 2
 -- Variables
 -- References
 -- Private Functions
-function tickAlpha(period: number): number
-	return (tick()%period)/period
+function tickAlpha(period: number, offset: number?): number
+	offset = offset or 0
+	assert(offset)
+	return ((tick()-offset)%period)/period
 end
-function tickCycle(period: number): number
-	return math.sin(math.rad(360)*tickAlpha(period))
+function tickCycle(period: number, offset: number?): number
+	return math.cos(math.rad(360)*tickAlpha(period,offset))
 end
-function newRotaryElement(
+function newSemiRotaryElement(
 	maid: Maid,
 	progressStartState: State<number>,
 	progressFinishState: State<number>,
-	colorState: State<Color3>
+	colorState: State<Color3>,
+	transparencyState: State<number>
 ): GuiObject
 	local _fuse = ColdFusion.fuse(maid)
 	
@@ -77,6 +82,7 @@ function newRotaryElement(
 			_new("ImageLabel")({
 				Image = RING_ASSET_URL,
 				ImageColor3 = colorState,
+				ImageTransparency = transparencyState,
 				BackgroundTransparency = 1,
 				Size = UDim2.fromScale(1,1),
 				Position = UDim2.fromScale(0.5,0.5),
@@ -103,6 +109,55 @@ function newRotaryElement(
 	return out
 end
 
+function newRotaryElement(
+	maid: Maid,
+	progressStartState: State<number>,
+	progressWidthState: State<number>,
+	colorState: State<Color3>,
+	transparencyState: State<number>
+): GuiObject
+	local _fuse = ColdFusion.fuse(maid)
+	
+	local _new = _fuse.new
+	local _bind = _fuse.bind
+	local _clone = _fuse.clone
+	local _import = _fuse.import
+	
+	local _Value = _fuse.Value
+	local _Computed = _fuse.Computed	
+
+	local progressFinishState = _Computed(function(start: number, width: number): number
+		return (start + width)%360
+	end, progressStartState, progressWidthState)
+	local progressMidState = _Computed(function(start: number, width: number): number
+		return (start + width*0.5)%360
+	end, progressStartState, progressWidthState)
+
+	return _new("Frame")({
+		Size = UDim2.fromScale(1,1),
+		AnchorPoint = Vector2.new(0.5,0.5),
+		Position = UDim2.fromScale(0.5,0.5),
+		BackgroundTransparency = 1,
+		Children = {
+			newSemiRotaryElement(
+				maid,
+				progressStartState, 
+				progressMidState, 
+				colorState,
+				transparencyState
+			),
+			newSemiRotaryElement(
+				maid,
+				progressMidState, 
+				progressFinishState, 
+				colorState,
+				transparencyState
+			)
+		}
+	}) :: GuiObject
+
+end
+
 
 -- Class
 local Interface = {}
@@ -112,7 +167,6 @@ function Interface.ColdFusion.new(
 	progress: CanBeState<number?>,
 	isEnabled: CanBeState<boolean>,
 	fillColor: CanBeState<Color3>,
-	dividerColor: CanBeState<Color3>,
 	emptyColor: CanBeState<Color3>,
 	style: CanBeState<Style>
 ): GuiObject
@@ -131,19 +185,48 @@ function Interface.ColdFusion.new(
 	local inputProgressState: State<number?> = _import(progress, nil :: number?)
 	local isEnabledState = _import(isEnabled, true)
 	local fillColorState = _import(fillColor, Color3.new())
-	local dividerColorState = _import(dividerColor, Color3.new())
 	local emptyColorState = _import(emptyColor, Color3.new())
 	local styleState: State<Style> = _import(style, nil :: any)
 
-	local progressStartState = _Value(0)
-	local progressWidthState = _Value(5)
-	local progressFinishState = _Computed(function(start: number, width: number): number
-		return (start + width)%360
-	end, progressStartState, progressWidthState)
+	local transparencyState = _Computed(function(isEnab: boolean): number
+		return if isEnab then 0 else 1
+	end, isEnabledState):Tween(0.3, Enum.EasingStyle.Cubic, Enum.EasingDirection.InOut)
 
-	maid:GiveTask(RunService.RenderStepped:Connect(function()
-		progressStartState:Set(360*tickAlpha(2))
-		progressWidthState:Set(90+60*tickCycle(3))
+	local progressStartState = _Value(0)
+	local progressWidthState = _Value(0)
+
+	local startSpring = Spring.new(30, 40, 0)
+	local widthSpring = Spring.new(20, 30, 0)
+
+	maid:GiveTask(RunService.RenderStepped:Connect(function(deltaTime: number)
+		if inputProgressState:Get() ~= nil then
+			local inputProgress = inputProgressState:Get()
+			assert(inputProgress)
+			startSpring:Set(0)
+			widthSpring:Set(inputProgress*360)
+		else
+			local start = (360*tickAlpha(2))%360
+			local width = (180+150*tickCycle(WIDTH_PERIOD))%360
+
+			startSpring:Set(start)
+			widthSpring:Set(width)
+		end
+
+		if startSpring.Position-180 > startSpring.Goal then
+			startSpring.Position -= 360
+		elseif startSpring.Position+180 < startSpring.Goal then
+			startSpring.Position += 360
+		end
+
+		-- if widthSpring.Position-180 > widthSpring.Goal then
+		-- 	widthSpring.Position -= 360
+		-- end
+
+		startSpring:Step(deltaTime)
+		widthSpring:Step(deltaTime)
+
+		progressStartState:Set(startSpring:Get()%360)
+		progressWidthState:Set(widthSpring:Get()%360)
 	end))
 
 	local out = _new("Frame")({
@@ -152,15 +235,33 @@ function Interface.ColdFusion.new(
 		end, styleState),
 		AnchorPoint = Vector2.new(0.5,0.5),
 		Position = UDim2.fromScale(0.5,0.5),
-		BackgroundTransparency = 0.5,
-		BackgroundColor3 = Color3.new(0.5,0.5,0.5),
+		BackgroundTransparency = 1,
+		-- BackgroundColor3 = Color3.new(0.5,0.5,0.5),
 		Children = {
-			newRotaryElement(
-				maid,
+			_bind(newRotaryElement(
+				maid, 
 				progressStartState, 
-				progressFinishState,
-				fillColorState
-			)
+				progressWidthState, 
+				fillColorState,
+				transparencyState
+			))({
+				ZIndex = 2,
+				Name = "Fill",
+			}),
+			_bind(newRotaryElement(
+				maid, 
+				_Computed(function(start: number, width: number): number
+					return (start + width+BUFFER)%360
+				end, progressStartState, progressWidthState), 
+				_Computed(function(width: number): number
+					return 360-width-BUFFER*2
+				end, progressWidthState), 
+				emptyColorState,
+				transparencyState
+			))({
+				ZIndex = 1,
+				Name = "Empty",
+			}),
 		}
 	}) :: GuiObject
 
