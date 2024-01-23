@@ -66,16 +66,16 @@ function Util.ColdFusion.new(
 		local viewportSize = workspace.CurrentCamera.ViewportSize
 		local absSize = out.AbsoluteSize
 		local goalPos = goalAbsolutePositionState:Get()
-		local anchorPoint = anchorPointState:Get()
+		local aPoint = anchorPointState:Get()
 		local x = math.clamp(
 			goalPos.X,
-			absSize.X * (anchorPoint.X), 
-			viewportSize.X - absSize.X * (1-anchorPoint.X)
+			absSize.X * (aPoint.X), 
+			viewportSize.X - absSize.X * (1-aPoint.X)
 		)
 		local y = math.clamp(
 			goalPos.Y,
-			absSize.Y * (anchorPoint.Y), 
-			viewportSize.Y - absSize.Y * (1-anchorPoint.Y)
+			absSize.Y * (aPoint.Y), 
+			viewportSize.Y - absSize.Y * (1-aPoint.Y)
 		)
 		finalPositionState:Set(Vector2.new(x,y))
 	end))
