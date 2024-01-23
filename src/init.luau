@@ -34,8 +34,8 @@ Synthetic.Component = {
 	Dialog = require(Component:WaitForChild("Dialog")),
 	Menu = {
 		Row = {
-			Segmented = require(Component:WaitForChild("Menu"):WaitForChild("Row"):WaitForChild("Segmented")),
 			Tabs = nil,
+			Segmented = require(Component:WaitForChild("Menu"):WaitForChild("Row"):WaitForChild("Segmented")),
 			Bar = {
 				Bottom = require(Component:WaitForChild("Menu"):WaitForChild("Row"):WaitForChild("Bar"):WaitForChild("Bottom")),
 				Navigation = nil,
@@ -52,6 +52,10 @@ Synthetic.Component = {
 			Rail = nil,
 			PopUp = nil,
 		},
+	},
+	ProgressIndicator = {
+		Circular = require(Component:WaitForChild("ProgressIndicator"):WaitForChild("Circular")),
+		Linear = nil,
 	},
 	Button = {
 		Badge = require(Component:WaitForChild("Button"):WaitForChild("Badge")),
