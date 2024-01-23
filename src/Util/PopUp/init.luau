@@ -10,7 +10,6 @@ local Maid = require(_Packages:WaitForChild("Maid"))
 -- Modules
 local Types = require(_Package:WaitForChild("Types"))
 local Style = require(_Package:WaitForChild("Style"))
-local Enums = require(_Package:WaitForChild("Enums"))
 local Container = require(_Package:WaitForChild("Util"):WaitForChild("Container"))
 
 -- Types

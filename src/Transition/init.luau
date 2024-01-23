@@ -4,7 +4,6 @@ local _Packages = _Package.Parent
 -- Services
 -- Packages
 local CurveUtil = require(_Packages:WaitForChild("CurveUtil"))
-local ColdFusion = require(_Packages:WaitForChild("ColdFusion"))
 -- Modules
 local Enums = require(_Package:WaitForChild("Enums"))
 
