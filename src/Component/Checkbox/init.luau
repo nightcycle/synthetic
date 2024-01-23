@@ -85,7 +85,7 @@ function newThemedComponent(
 		styleState
 	)
 
-	maid.bind(out)
+	maid:GiveTask(out.Destroying:Connect(function() maid:Destroy() end))
 
 	return out
 end
@@ -512,7 +512,7 @@ function Interface.ColdFusion.new(
 		},
 	}) :: GuiObject
 
-	maid.bind(inst)
+	maid:GiveTask(inst.Destroying:Connect(function() maid:Destroy() end))
 
 	return inst
 end

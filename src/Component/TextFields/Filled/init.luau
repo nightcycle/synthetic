@@ -103,7 +103,7 @@ function newThemedComponent(
 		styleState
 	)
 
-	maid.bind(out)
+	maid:GiveTask(out.Destroying:Connect(function() maid:Destroy() end))
 
 	return out
 end

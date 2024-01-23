@@ -45,7 +45,7 @@ function Util.ColdFusion.new(leftRight: CanBeState<UDim>, topBottom: CanBeState<
 		PaddingRight = leftRight,
 	}) :: UIPadding
 
-	maid.bind(out)
+	maid:GiveTask(out.Destroying:Connect(function() maid:Destroy() end))
 
 	return out
 end
@@ -86,7 +86,7 @@ function Util.ColdFusion.fromStyle(
 		PaddingRight = leftRight,
 	}) :: UIPadding
 
-	maid.bind(out)
+	maid:GiveTask(out.Destroying:Connect(function() maid:Destroy() end))
 
 	return out
 end

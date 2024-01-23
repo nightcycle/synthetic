@@ -368,7 +368,7 @@ function newThemedComponent(
 		style
 	)
 
-	maid.bind(out)
+	maid:GiveTask(out.Destroying:Connect(function() maid:Destroy() end))
 
 	return out
 end
@@ -512,7 +512,7 @@ function Interface.ColdFusion.new(
 		elevation,
 		style
 	)
-	maid.bind(button)
+	maid:GiveTask(button.Destroying:Connect(function() maid:Destroy() end))
 
 	return button
 end

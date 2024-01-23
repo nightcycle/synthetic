@@ -60,7 +60,7 @@ function Util.ColdFusion.new(
 		end, finalPositionState),
 		AnchorPoint = anchorPointState,
 	}) :: Frame
-	maid.bind(out)
+	maid:GiveTask(out.Destroying:Connect(function() maid:Destroy() end))
 
 	maid:GiveTask(RunService.RenderStepped:Connect(function(deltaTime: number)
 		local viewportSize = workspace.CurrentCamera.ViewportSize
@@ -120,7 +120,7 @@ function Util.ColdFusion.fromGuiObject(
 		hintAnchorPoint
 	)
 
-	maid.bind(out)
+	maid:GiveTask(out.Destroying:Connect(function() maid:Destroy() end))
 	maid:GiveTask(RunService.RenderStepped:Connect(function(deltaTime: number)
 		absolutePosition:Set(getAbsolutePosition())
 	end))

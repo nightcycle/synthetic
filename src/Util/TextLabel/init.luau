@@ -74,7 +74,7 @@ function Util.ColdFusion.fromStyleSimple(
 		end, styleState, fontTypeState),
 		Size = UDim2.fromOffset(0,0),
 	}) :: TextLabel
-	maid.bind(out)
+	maid:GiveTask(out.Destroying:Connect(function() maid:Destroy() end))
 	return out
 end
 
@@ -209,7 +209,7 @@ function Util.ColdFusion.new(
 		},
 	}) :: Frame
 
-	maid.bind(out)
+	maid:GiveTask(out.Destroying:Connect(function() maid:Destroy() end))
 
 	return out
 end
