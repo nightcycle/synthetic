@@ -7,6 +7,27 @@ A UI component framework for Roblox Front-End development with the goal of compi
 - Fusion: to-do
 - React: to-do
 
+# To-Do
+- util/scrolling-frame-container
+- util/async infinite-scroller
+- component/snackbar
+- component/list-feed
+- component/grid-feed
+- component/search bar
+- component/menu/row/tabs
+- component/menu/row/bar/navigation
+- component/menu/column/rail
+- component/menu/column/drawer
+- component/menu/column/popup
+- component/slider
+- component/dropdown
+- component/tooltip
+- component/card
+- component/carousel
+- component/progress-indicator/linear
+- service/transition
+- documentation
+
 # Done
 - service/style
 - component/button/badge
@@ -40,24 +61,3 @@ A UI component framework for Roblox Front-End development with the goal of compi
 - component/text-field/outlined
 - util/pop-up
 - component/progress-indicator/circular
-
-# To-Do
-- util/scrolling-frame-container
-- util/async infinite-scroller
-- component/snackbar
-- component/list-feed
-- component/grid-feed
-- component/search bar
-- component/menu/row/tabs
-- component/menu/row/bar/navigation
-- component/menu/column/rail
-- component/menu/column/drawer
-- component/menu/column/popup
-- component/slider
-- component/dropdown
-- component/tooltip
-- component/card
-- component/carousel
-- component/progress-indicator/linear
-- service/transition
-- documentation
