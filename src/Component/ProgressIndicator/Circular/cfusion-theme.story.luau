@@ -49,7 +49,6 @@ return function(frame: Frame)
 				indicator.Parent = halfFrame
 			end
 
-
 			return halfFrame
 		end
 

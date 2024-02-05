@@ -71,7 +71,9 @@ function newThemedComponent(
 		_import(elevation, 0)
 	)
 
-	maid:GiveTask(out.Destroying:Connect(function() maid:Destroy() end))
+	maid:GiveTask(out.Destroying:Connect(function()
+		maid:Destroy()
+	end))
 
 	return out
 end

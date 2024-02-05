@@ -656,7 +656,9 @@ function Interface.new(
 		},
 	}) :: GuiObject
 
-	maid:GiveTask(inst.Destroying:Connect(function() maid:Destroy() end))
+	maid:GiveTask(inst.Destroying:Connect(function()
+		maid:Destroy()
+	end))
 
 	return inst
 end

@@ -39,7 +39,7 @@ export type Style = {
 
 -- Constants
 -- Variables
-local Cache: {[string]: Style} = {}
+local Cache: { [string]: Style } = {}
 
 -- References
 -- Private Functions
@@ -85,12 +85,12 @@ function Style.new(
 ): Style
 	local hash = ""
 	do
-		local hashInput = `{scale}+{fontFamily}+{schemeType}+{source:ToHex()}+`.."{"
+		local hashInput = `{scale}+{fontFamily}+{schemeType}+{source:ToHex()}+` .. "{"
 		if additions then
 			local keys = TableUtil.keys(additions)
 			table.sort(keys)
 			for i, k in ipairs(keys) do
-				hashInput..= `{k}={additions[k]:ToHex()},`
+				hashInput ..= `{k}={additions[k]:ToHex()},`
 			end
 		end
 		hashInput ..= "}"
@@ -108,7 +108,7 @@ function Style.new(
 
 	table.freeze(self)
 	Cache[hash] = self
-	
+
 	return self
 end
 

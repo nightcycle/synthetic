@@ -86,7 +86,9 @@ function newThemedComponent(
 		style
 	)
 
-	maid:GiveTask(out.Destroying:Connect(function() maid:Destroy() end))
+	maid:GiveTask(out.Destroying:Connect(function()
+		maid:Destroy()
+	end))
 
 	return out
 end

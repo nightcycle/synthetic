@@ -59,7 +59,9 @@ function Util.ColdFusion.new(
 		Wraps = wraps,
 	}) :: UIListLayout
 
-	maid:GiveTask(out.Destroying:Connect(function() maid:Destroy() end))
+	maid:GiveTask(out.Destroying:Connect(function()
+		maid:Destroy()
+	end))
 
 	return out
 end
@@ -94,7 +96,9 @@ function Util.ColdFusion.classic(
 		Wraps = false,
 	}) :: UIListLayout
 
-	maid:GiveTask(out.Destroying:Connect(function() maid:Destroy() end))
+	maid:GiveTask(out.Destroying:Connect(function()
+		maid:Destroy()
+	end))
 
 	return out
 end
@@ -124,7 +128,9 @@ function Util.ColdFusion.center(): UIListLayout
 		Wraps = false,
 	}) :: UIListLayout
 
-	maid:GiveTask(out.Destroying:Connect(function() maid:Destroy() end))
+	maid:GiveTask(out.Destroying:Connect(function()
+		maid:Destroy()
+	end))
 
 	return out
 end

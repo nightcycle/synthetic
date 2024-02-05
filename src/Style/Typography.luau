@@ -29,7 +29,7 @@ local WEIGHT = {
 	[900] = Enum.FontWeight.Heavy,
 }
 -- Variables
-local Cache: {[string]: Typography} = {}
+local Cache: { [string]: Typography } = {}
 -- References
 -- Private Functions
 

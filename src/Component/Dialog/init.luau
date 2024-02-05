@@ -94,7 +94,9 @@ function newThemedComponent(
 		styleState
 	)
 
-	maid:GiveTask(out.Destroying:Connect(function() maid:Destroy() end))
+	maid:GiveTask(out.Destroying:Connect(function()
+		maid:Destroy()
+	end))
 
 	return out
 end
@@ -385,7 +387,9 @@ function Interface.ColdFusion.new(
 		})
 	end
 
-	maid:GiveTask(inst.Destroying:Connect(function() maid:Destroy() end))
+	maid:GiveTask(inst.Destroying:Connect(function()
+		maid:Destroy()
+	end))
 
 	return inst
 end

@@ -37,13 +37,39 @@ Synthetic.Component = {
 			Tabs = nil,
 			Segmented = require(Component:WaitForChild("Menu"):WaitForChild("Row"):WaitForChild("Segmented")),
 			Bar = {
-				Bottom = require(Component:WaitForChild("Menu"):WaitForChild("Row"):WaitForChild("Bar"):WaitForChild("Bottom")),
+				Bottom = require(
+					Component:WaitForChild("Menu"):WaitForChild("Row"):WaitForChild("Bar"):WaitForChild("Bottom")
+				),
 				Navigation = nil,
 				Top = {
-					Center = require(Component:WaitForChild("Menu"):WaitForChild("Row"):WaitForChild("Bar"):WaitForChild("Top"):WaitForChild("Center")),
-					Large = require(Component:WaitForChild("Menu"):WaitForChild("Row"):WaitForChild("Bar"):WaitForChild("Top"):WaitForChild("Large")),
-					Medium = require(Component:WaitForChild("Menu"):WaitForChild("Row"):WaitForChild("Bar"):WaitForChild("Top"):WaitForChild("Medium")),
-					Small = require(Component:WaitForChild("Menu"):WaitForChild("Row"):WaitForChild("Bar"):WaitForChild("Top"):WaitForChild("Small")),
+					Center = require(
+						Component:WaitForChild("Menu")
+							:WaitForChild("Row")
+							:WaitForChild("Bar")
+							:WaitForChild("Top")
+							:WaitForChild("Center")
+					),
+					Large = require(
+						Component:WaitForChild("Menu")
+							:WaitForChild("Row")
+							:WaitForChild("Bar")
+							:WaitForChild("Top")
+							:WaitForChild("Large")
+					),
+					Medium = require(
+						Component:WaitForChild("Menu")
+							:WaitForChild("Row")
+							:WaitForChild("Bar")
+							:WaitForChild("Top")
+							:WaitForChild("Medium")
+					),
+					Small = require(
+						Component:WaitForChild("Menu")
+							:WaitForChild("Row")
+							:WaitForChild("Bar")
+							:WaitForChild("Top")
+							:WaitForChild("Small")
+					),
 				},
 			},
 		},

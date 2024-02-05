@@ -72,9 +72,11 @@ function Util.ColdFusion.fromStyleSimple(
 		FontFace = _Computed(function(s: Style, f: Enums.FontType): Font
 			return s:GetFont(f)
 		end, styleState, fontTypeState),
-		Size = UDim2.fromOffset(0,0),
+		Size = UDim2.fromOffset(0, 0),
 	}) :: TextLabel
-	maid:GiveTask(out.Destroying:Connect(function() maid:Destroy() end))
+	maid:GiveTask(out.Destroying:Connect(function()
+		maid:Destroy()
+	end))
 	return out
 end
 
@@ -209,7 +211,9 @@ function Util.ColdFusion.new(
 		},
 	}) :: Frame
 
-	maid:GiveTask(out.Destroying:Connect(function() maid:Destroy() end))
+	maid:GiveTask(out.Destroying:Connect(function()
+		maid:Destroy()
+	end))
 
 	return out
 end

@@ -27,23 +27,20 @@ return function(frame: Frame)
 		hint.Parent = frame
 
 		local _fuse = ColdFusion.fuse(maid)
-		
+
 		local _new = _fuse.new
 		local _bind = _fuse.bind
 		local _clone = _fuse.clone
 		local _import = _fuse.import
-		
+
 		local _Value = _fuse.Value
 		local _Computed = _fuse.Computed
 
 		local anchorPointState = _Value(Vector2.one)
 		local hintAnchorPointState = _Value(Vector2.zero)
 
-		local container = maid:GiveTask(module.ColdFusion.fromGuiObject(
-			textLabel,
-			anchorPointState,
-			hintAnchorPointState
-		))
+		local container =
+			maid:GiveTask(module.ColdFusion.fromGuiObject(textLabel, anchorPointState, hintAnchorPointState))
 
 		container:SetAttribute(ANCHOR_POINT_KEY, anchorPointState:Get())
 		maid:GiveTask(container:GetAttributeChangedSignal(ANCHOR_POINT_KEY):Connect(function()

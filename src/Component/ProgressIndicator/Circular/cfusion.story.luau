@@ -22,12 +22,12 @@ return function(frame: Frame)
 	local isDead = false
 	task.spawn(function()
 		local _fuse = ColdFusion.fuse(maid)
-		
+
 		local _new = _fuse.new
 		local _bind = _fuse.bind
 		local _clone = _fuse.clone
 		local _import = _fuse.import
-		
+
 		local _Value = _fuse.Value
 		local _Computed = _fuse.Computed
 
@@ -59,16 +59,18 @@ return function(frame: Frame)
 			local Module = require(script.Parent)
 
 			do
-				local button = maid:GiveTask(Module.ColdFusion.new(
-					progressState,
-					true,
-					style:GetColor(Enums.ColorRoleType.Primary, 1),
-					style:GetColor(Enums.ColorRoleType.PrimaryContainer, 1),
-					style
-				))
+				local button = maid:GiveTask(
+					Module.ColdFusion.new(
+						progressState,
+						true,
+						style:GetColor(Enums.ColorRoleType.Primary, 1),
+						style:GetColor(Enums.ColorRoleType.PrimaryContainer, 1),
+						style
+					)
+				)
 				button.Parent = halfFrame
 			end
-			
+
 			return halfFrame
 		end
 
@@ -96,10 +98,12 @@ return function(frame: Frame)
 			bright.Parent = frame
 		end
 
-		for i=1, 1000 do
+		for i = 1, 1000 do
 			task.wait(6)
-			if isDead then break end
-			if i%2 == 0 then
+			if isDead then
+				break
+			end
+			if i % 2 == 0 then
 				frame:SetAttribute(KEY, nil)
 			else
 				frame:SetAttribute(KEY, math.random())

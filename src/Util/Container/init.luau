@@ -46,7 +46,9 @@ function Util.ColdFusion.new(): Frame
 		BorderSizePixel = 0,
 	}) :: Frame
 
-	maid:GiveTask(out.Destroying:Connect(function() maid:Destroy() end))
+	maid:GiveTask(out.Destroying:Connect(function()
+		maid:Destroy()
+	end))
 
 	return out
 end

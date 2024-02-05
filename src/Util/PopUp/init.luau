@@ -27,10 +27,7 @@ local Util = {}
 
 Util.ColdFusion = {}
 
-function Util.ColdFusion.new(
-	absolutePosition: CanBeState<Vector2>,
-	anchorPoint: CanBeState<Vector2>
-): Frame
+function Util.ColdFusion.new(absolutePosition: CanBeState<Vector2>, anchorPoint: CanBeState<Vector2>): Frame
 	local maid = Maid.new()
 	local _fuse = ColdFusion.fuse(maid)
 
@@ -42,14 +39,16 @@ function Util.ColdFusion.new(
 	local _Value = _fuse.Value
 	local _Computed = _fuse.Computed
 
-	local goalAbsolutePositionState: State<Vector2> = _import(absolutePosition, Vector2.new(0,0))
+	local goalAbsolutePositionState: State<Vector2> = _import(absolutePosition, Vector2.new(0, 0))
 	local anchorPointState: State<Vector2> = _import(anchorPoint, Vector2.zero)
 	local finalPositionState: ValueState<Vector2> = _Value(goalAbsolutePositionState:Get())
 
 	local screenGui = maid:GiveTask(_new("ScreenGui")({
 		Name = "PopUpGui",
 		DisplayOrder = 10000,
-		Parent = if RunService:IsRunning() and Players.LocalPlayer then Players.LocalPlayer:WaitForChild("PlayerGui") else game:GetService("CoreGui"),
+		Parent = if RunService:IsRunning() and Players.LocalPlayer
+			then Players.LocalPlayer:WaitForChild("PlayerGui")
+			else game:GetService("CoreGui"),
 	})) :: Frame
 
 	local out = _bind(Container.ColdFusion.new())({
@@ -59,24 +58,18 @@ function Util.ColdFusion.new(
 		end, finalPositionState),
 		AnchorPoint = anchorPointState,
 	}) :: Frame
-	maid:GiveTask(out.Destroying:Connect(function() maid:Destroy() end))
+	maid:GiveTask(out.Destroying:Connect(function()
+		maid:Destroy()
+	end))
 
 	maid:GiveTask(RunService.RenderStepped:Connect(function(deltaTime: number)
 		local viewportSize = workspace.CurrentCamera.ViewportSize
 		local absSize = out.AbsoluteSize
 		local goalPos = goalAbsolutePositionState:Get()
 		local aPoint = anchorPointState:Get()
-		local x = math.clamp(
-			goalPos.X,
-			absSize.X * (aPoint.X), 
-			viewportSize.X - absSize.X * (1-aPoint.X)
-		)
-		local y = math.clamp(
-			goalPos.Y,
-			absSize.Y * (aPoint.Y), 
-			viewportSize.Y - absSize.Y * (1-aPoint.Y)
-		)
-		finalPositionState:Set(Vector2.new(x,y))
+		local x = math.clamp(goalPos.X, absSize.X * aPoint.X, viewportSize.X - absSize.X * (1 - aPoint.X))
+		local y = math.clamp(goalPos.Y, absSize.Y * aPoint.Y, viewportSize.Y - absSize.Y * (1 - aPoint.Y))
+		finalPositionState:Set(Vector2.new(x, y))
 	end))
 
 	return out
@@ -107,19 +100,15 @@ function Util.ColdFusion.fromGuiObject(
 		local absSize = gui.AbsoluteSize
 		local gAnchor = guiAnchorPoint:Get()
 
-		return absPosition + Vector2.new(
-			absSize.X * gAnchor.X,
-			absSize.Y * gAnchor.Y
-		)
+		return absPosition + Vector2.new(absSize.X * gAnchor.X, absSize.Y * gAnchor.Y)
 	end
 	local absolutePosition = _Value(getAbsolutePosition())
 
-	local out = Util.ColdFusion.new(
-		absolutePosition,
-		hintAnchorPoint
-	)
+	local out = Util.ColdFusion.new(absolutePosition, hintAnchorPoint)
 
-	maid:GiveTask(out.Destroying:Connect(function() maid:Destroy() end))
+	maid:GiveTask(out.Destroying:Connect(function()
+		maid:Destroy()
+	end))
 	maid:GiveTask(RunService.RenderStepped:Connect(function(deltaTime: number)
 		absolutePosition:Set(getAbsolutePosition())
 	end))

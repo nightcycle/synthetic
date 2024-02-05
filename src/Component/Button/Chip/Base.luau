@@ -267,7 +267,9 @@ function Interface.new(
 		true,
 		0.8
 	)
-	maid:GiveTask(button.Destroying:Connect(function() maid:Destroy() end))
+	maid:GiveTask(button.Destroying:Connect(function()
+		maid:Destroy()
+	end))
 
 	return button
 end

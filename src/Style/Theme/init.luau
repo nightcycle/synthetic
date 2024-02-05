@@ -52,7 +52,7 @@ export type Theme = {
 -- Constants
 local ELEVATION_TINTS = { 0, 0.05, 0.08, 0.11, 0.12, 0.14 }
 -- Variables
-local Cache: {[string]: Theme} = {}
+local Cache: { [string]: Theme } = {}
 -- References
 -- Private Functions
 
@@ -60,16 +60,15 @@ local Cache: {[string]: Theme} = {}
 local Theme = {} :: Theme
 Theme.__index = Theme
 
-function Theme.new(source: Color3, custom: { [string]: Color3 }?): Theme	
-	
+function Theme.new(source: Color3, custom: { [string]: Color3 }?): Theme
 	local hash = ""
 	do
-		local hashInput = `{source:ToHex()}+`.."{"
+		local hashInput = `{source:ToHex()}+` .. "{"
 		if custom then
 			local keys = TableUtil.keys(custom)
 			table.sort(keys)
 			for i, k in ipairs(keys) do
-				hashInput..= `{k}={custom[k]:ToHex()},`
+				hashInput ..= `{k}={custom[k]:ToHex()},`
 			end
 		end
 		hashInput ..= "}"
@@ -78,7 +77,7 @@ function Theme.new(source: Color3, custom: { [string]: Color3 }?): Theme
 	if Cache[hash] then
 		return Cache[hash]
 	end
-	
+
 	local googleTheme: GoogleTheme
 	do
 		local customColors: { [number]: GoogleCustomColor } = {}
@@ -186,7 +185,6 @@ function Theme.new(source: Color3, custom: { [string]: Color3 }?): Theme
 			customColors[colorGroup.color.name] = cGroup
 		end
 	end
-
 
 	local theme: Theme = setmetatable({
 		Source = source,
