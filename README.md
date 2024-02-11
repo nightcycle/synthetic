@@ -8,8 +8,6 @@ A UI component framework for Roblox Front-End development with the goal of compi
 - React: to-do
 
 # To-Do
-- util/scrolling-frame-container
-- util/async infinite-scroller
 - component/snackbar
 - component/list-feed
 - component/grid-feed

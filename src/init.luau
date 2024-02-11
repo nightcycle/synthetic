@@ -99,6 +99,10 @@ Synthetic.Component = {
 			Assist = require(Component:WaitForChild("Button"):WaitForChild("Chip"):WaitForChild("Assist")),
 		},
 	},
+	Snackbar = {
+		Large = require(Component:WaitForChild("Snackbar"):WaitForChild("Large")),
+		Small = require(Component:WaitForChild("Snackbar"):WaitForChild("Small")),
+	},
 	Checkbox = require(Component:WaitForChild("Checkbox")),
 	RadioButton = require(Component:WaitForChild("RadioButton")),
 	Switch = require(Component:WaitForChild("Switch")),
