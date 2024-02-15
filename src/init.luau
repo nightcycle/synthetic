@@ -108,8 +108,8 @@ Synthetic.Component = {
 	Switch = require(Component:WaitForChild("Switch")),
 	Slider = nil,
 	TextField = {
-		Filled = require(Component:WaitForChild("TextFields"):WaitForChild("Filled")),
-		Outlined = require(Component:WaitForChild("TextFields"):WaitForChild("Outlined")),
+		Filled = require(Component:WaitForChild("TextField"):WaitForChild("Filled")),
+		Outlined = require(Component:WaitForChild("TextField"):WaitForChild("Outlined")),
 	},
 }
 

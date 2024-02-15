@@ -26,5 +26,7 @@ Util.List = require(script:WaitForChild("List"))
 Util.Padding = require(script:WaitForChild("Padding"))
 Util.TextLabel = require(script:WaitForChild("TextLabel"))
 Util.ImageLabel = require(script:WaitForChild("ImageLabel"))
+Util.PopUp = require(script:WaitForChild("PopUp"))
+Util.ScrollingContainer = require(script:WaitForChild("ScrollingContainer"))
 
 return Util
