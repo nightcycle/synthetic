@@ -10,16 +10,15 @@ A UI component framework for Roblox Front-End development with the goal of compi
 # To-Do
 - component/search/filled
 - component/search/text
+- component/slider
+- component/tooltip
+- component/dropdown
 
 - component/menu/row/tabs
 - component/menu/row/bar/navigation
 - component/menu/column/rail
 - component/menu/column/drawer
 - component/menu/column/popup
-
-- component/slider
-- component/dropdown
-- component/tooltip
 - component/card
 - component/carousel
 - component/progress-indicator/linear

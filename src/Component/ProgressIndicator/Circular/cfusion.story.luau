@@ -39,7 +39,7 @@ return function(frame: Frame)
 
 		local function makeHalfFrame(isDarkMode: boolean, color: Color3): Frame
 			local style = Style.new(
-				1.5,
+				1,
 				"Source Sans",
 				if isDarkMode then Enums.SchemeType.Dark else Enums.SchemeType.Light,
 				color
@@ -79,8 +79,8 @@ return function(frame: Frame)
 			-- Color3.fromHSV(0, 0.25, 0.8),
 			-- Color3.fromHSV(0, 0.9, 0.5),
 			Color3.fromHSV(0.6, 0.9, 0.7),
-			Color3.fromHSV(0.35, 0.9, 0.7),
-			Color3.fromHSV(0.1, 0.9, 0.7),
+			-- Color3.fromHSV(0.35, 0.9, 0.7),
+			-- Color3.fromHSV(0.1, 0.9, 0.7),
 		}
 
 		for i, color in ipairs(COLORS) do
@@ -99,7 +99,7 @@ return function(frame: Frame)
 		end
 
 		for i = 1, 1000 do
-			task.wait(6)
+			task.wait(4)
 			if isDead then
 				break
 			end
@@ -108,6 +108,7 @@ return function(frame: Frame)
 			else
 				frame:SetAttribute(KEY, math.random())
 			end
+			-- frame:SetAttribute(KEY, nil)
 		end
 	end)
 

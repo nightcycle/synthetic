@@ -28,11 +28,13 @@ type ButtonData = Types.ButtonData
 type Style = Style.Style
 
 -- Constants
-local DIAMETER_DP = 48
+local DIAMETER_DP = 36 --48
 local RING_ASSET_URL = "rbxassetid://3587367081"
 local ROTATION_OFFSET = 180
 local BUFFER = 10
 local USE_EDITABLE_IMAGE = RunService:IsStudio()
+local EDIT_IMG_WIDTH = 48
+local DEBUG_ENABLED = false
 -- Variables
 -- References
 -- Private Functions
@@ -331,15 +333,21 @@ function Interface.ColdFusion.new(
 	end))
 	local editableImage = maid:GiveTask(Instance.new("EditableImage"))
 
-	local imageLabel = _new("ImageLabel")({
-		Size = UDim2.fromScale(1, 1),
-		AnchorPoint = Vector2.new(0.5, 0.5),
-		Position = UDim2.fromScale(0.5, 0.5),
-		BackgroundTransparency = 1,
-		Children = {
-			editableImage
-		}
-	}) :: GuiObject
+	local imageLabel: GuiObject?
+
+	if USE_EDITABLE_IMAGE then
+		
+		imageLabel = _new("ImageLabel")({
+			Size = UDim2.fromScale(1, 1),
+			AnchorPoint = Vector2.new(0.5, 0.5),
+			Position = UDim2.fromScale(0.5, 0.5),
+			BackgroundTransparency = 1,
+			Children = {
+				editableImage
+			}
+		}) :: GuiObject
+
+	end
 
 	local out = _new("Frame")({
 		Size = _Computed(function(s: Style): UDim2
@@ -371,33 +379,64 @@ function Interface.ColdFusion.new(
 		},
 	}) :: GuiObject
 
+	if DEBUG_ENABLED then
+		_new("TextLabel")({
+			Text = _Computed(function(inputProgress: number?): string
+				return if inputProgress then tostring(math.round(inputProgress*100)) else "?"
+			end, inputProgressState),
+			TextSize = 16,
+			TextColor3 = fillColorState,
+			Parent = out,
+			BackgroundTransparency = 1,
+			Size = UDim2.fromScale(1,1),
+		})
+	end
+
 	if USE_EDITABLE_IMAGE then
+		assert(imageLabel)
+		
+
 		maid:GiveTask(RunService.RenderStepped:Connect(function(deltaTime: number)
-			editableImage.Size = imageLabel.AbsoluteSize
-			local outerRadius = editableImage.Size.X * 0.5
-			local innerRadius = outerRadius * 0.5
+			editableImage.Size = Vector2.new(
+				EDIT_IMG_WIDTH, --math.round(imageLabel.AbsoluteSize.X * 0.5),
+				EDIT_IMG_WIDTH --math.round(imageLabel.AbsoluteSize.Y * 0.5)
+			)
+			local outerRadius = math.ceil(editableImage.Size.X * 0.5 - 1)
+			local innerRadius = math.ceil(outerRadius * 0.5)
 			local center = editableImage.Size/2
 			local fCol = fillColorState:Get()
 			local eCol = emptyColorState:Get()
 
 			local trans = transparencyState:Get()
 			editableImage:DrawRectangle(Vector2.zero, editableImage.Size-Vector2.one, eCol, 1)
+		
+			local startAngle = progressStartState:Get()--+BUFFER
+			local widthAngle = progressWidthState:Get()
+			local midAngle = startAngle + widthAngle * 0.5
+			local finishAngle = startAngle + widthAngle---BUFFER
+
+			local fillCount = 0
+
+			local function getIfFilled(angle: number): boolean
+				return (angle >= startAngle and angle < (if midAngle > 360 or finishAngle > 360 then 360 else midAngle))
+					or (angle >= (if midAngle > 360 or finishAngle > 360 then 0 else midAngle) and angle < finishAngle%360)
+			end
+
 			for y=0, editableImage.Size.Y-1 do
 				for x=0, editableImage.Size.X-1 do
-					local offset = (Vector2.new(x,y)-center)*Vector2.new(1,-1)
+					local offset = (Vector2.new(x,y)-center)*Vector2.new(1,1)
 					local dist = offset.Magnitude
 					if dist > innerRadius and dist < outerRadius then
-						local startAngle = progressStartState:Get()+BUFFER
-						local widthAngle = progressWidthState:Get()
-						local finishAngle = startAngle + widthAngle-BUFFER
 
-						local angle = math.deg(math.atan2(offset.Y, offset.X))
+						local angle = math.deg(math.atan2(offset.Y, offset.X)+math.rad(90))
 						if angle < 0 then
-							angle = math.deg(360)-angle
+							angle = 360 + angle
 						end
-						local isFilled = angle > startAngle and angle < finishAngle
+						
+						local isFilled = getIfFilled(angle)
 
 						if isFilled then
+							fillCount += 1
 							editableImage:DrawRectangle(
 								Vector2.new(x,y),
 								Vector2.one,
@@ -415,6 +454,8 @@ function Interface.ColdFusion.new(
 					end
 				end
 			end
+			-- print(`{math.round(startAngle)}->{math.round(finishAngle)}={fillCount}`)
+
 		end))
 	end
 

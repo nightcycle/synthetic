@@ -79,7 +79,6 @@ function newPanel(
 		return s:GetElevatedColor(tC, e)
 	end, styleState, textColorState, elevationState)
 
-
 	local textBox = _new("TextBox")({
 		LayoutOrder = 2,
 		AutomaticSize = Enum.AutomaticSize.None,
@@ -108,6 +107,14 @@ function newPanel(
 	}) :: TextBox
 
 	textBox.TextTruncate = Enum.TextTruncate.None
+
+	local currentText = _Value(textBox.Text)
+	maid:GiveTask(textBox:GetPropertyChangedSignal("Text"):Connect(function(txt: string)
+		currentText:Set(textBox.Text)
+	end))
+
+	currentText:Destroy()
+
 	maid:GiveTask(textBox.FocusLost:Connect(function()
 		onBack(textBox.Text)
 	end))

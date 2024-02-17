@@ -28,14 +28,8 @@ type Method = () -> ()
 type OptionConstructor = Base.OptionConstructor
 
 -- Constants
-local PADDING_DP = 8
-local CORNER_DP = 4
-
-local TEXT_FONT_TYPE = Enums.FontType.LabelLarge
 -- Variables
 -- References
-local Icons = MaterialIcons.default.dp_48.scale_1
-
 -- Private Functions
 
 -- Class
