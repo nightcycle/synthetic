@@ -5,13 +5,14 @@ local _Packages = _Package.Parent
 -- Services
 local RunService = game:GetService("RunService")
 local SoundService = game:GetService("SoundService")
+local UserInputService = game:GetService("UserInputService")
+
 -- Packages
 local Maid = require(_Packages:WaitForChild("Maid"))
 local ColdFusion = require(_Packages:WaitForChild("ColdFusion"))
 local MaterialIcons = require(_Packages:WaitForChild("MaterialIcons"))
 
 -- Modules
-local BaseButton = require(_Package:WaitForChild("Component"):WaitForChild("Button"):WaitForChild("Base"))
 local IconButton = require(_Package:WaitForChild("Component"):WaitForChild("Button"):WaitForChild("IconButton"))
 
 local Util = require(_Package:WaitForChild("Util"))
@@ -45,15 +46,11 @@ local PADDING_BETWEEN_ELEMENTS_DP = 8
 local Icons = MaterialIcons.default.dp_48.scale_1
 
 -- Private Functions
-function newLabel(
-	key: string, 
-	onClick: (key: string) -> ()
-): GuiObject
-	return nil :: any
-end
+
 
 function newPanel(
-	onBack: (content: string) -> (),
+	onClick: (content: string) -> (),
+	initialText: string,
 	button: GuiObject,
 	textColorState: State<Color3>,
 	backgroundColorState: State<Color3>,
@@ -62,6 +59,7 @@ function newPanel(
 	elevationState: State<number>,
 	styleState: State<Style>
 ): GuiObject
+
 	local maid = Maid.new()
 
 	local _fuse = ColdFusion.fuse(maid)
@@ -85,6 +83,7 @@ function newPanel(
 		TextXAlignment = Enum.TextXAlignment.Left,
 		BackgroundTransparency = 1,
 		TextColor3 = elevatedTextColorState,
+		Text = initialText,
 		ClipsDescendants = false,
 		TextSize = _Computed(function(s: Style): number
 			return s:GetTextSize(Enums.FontType.LabelLarge)
@@ -108,20 +107,32 @@ function newPanel(
 
 	textBox.TextTruncate = Enum.TextTruncate.None
 
-	local currentText = _Value(textBox.Text)
-	maid:GiveTask(textBox:GetPropertyChangedSignal("Text"):Connect(function(txt: string)
-		currentText:Set(textBox.Text)
+	local currentTextState = _Value(textBox.Text)
+	maid:GiveTask(textBox:GetPropertyChangedSignal("Text"):Connect(function()
+		currentTextState:Set(textBox.Text)
 	end))
 
-	currentText:Destroy()
+	local optionsState = _Computed(function(solver: (input: string) -> {[number]: string}, txt: string): {[number]: string}
+		return solver(txt)
+	end, optionSolverState, currentTextState)
 
-	maid:GiveTask(textBox.FocusLost:Connect(function()
-		onBack(textBox.Text)
+	maid:GiveTask(textBox.ReturnPressedFromOnScreenKeyboard:Connect(function()
+		onClick(textBox.Text)
 	end))
+
+	maid:GiveTask(UserInputService.InputBegan:Connect(function(inputObj: InputObject)
+		if inputObj.KeyCode == Enum.KeyCode.KeypadEnter or inputObj.KeyCode == Enum.KeyCode.Return then
+			onClick(textBox.Text)
+		end
+	end))
+
+	-- maid:GiveTask(textBox.FocusLost:Connect(function()
+	-- 	onClick(textBox.Text)
+	-- end))
 
 	local backButton = _bind(IconButton.ColdFusion.new(
 		function()
-			onBack(textBox.Text)
+			onClick(textBox.Text)
 		end,
 		Icons.arrow_back,
 		styleState,
@@ -148,14 +159,64 @@ function newPanel(
 		LayoutOrder = 3,
 	}) :: GuiObject
 
-	local scrollingFrame = maid:GiveTask(Util.ScrollingContainer.ColdFusion.new(
+	local scrollingFrame = _bind(maid:GiveTask(Util.ScrollingContainer.ColdFusion.new(
 		0,
 		textColorState
-	)) :: ScrollingFrame
-	scrollingFrame.LayoutOrder = 1
-	scrollingFrame.Size = UDim2.fromScale(1,0)
-	scrollingFrame.AutomaticSize = Enum.AutomaticSize.Y
-	scrollingFrame.AutomaticCanvasSize = Enum.AutomaticSize.Y
+	)) :: ScrollingFrame)({
+		LayoutOrder = 1,
+		Size = UDim2.fromScale(1,0),
+		AutomaticSize = Enum.AutomaticSize.Y,
+		AutomaticCanvasSize = Enum.AutomaticSize.Y,
+		Children = {
+			maid:GiveTask(Util.List.ColdFusion.classic(
+				Enum.VerticalAlignment.Top,
+				Enum.HorizontalAlignment.Left,
+				Enum.FillDirection.Vertical,
+				UDim.new(0,0)-- _Computed(function(s: Style): UDim
+				-- 	return UDim.new(0, s.Scale * PADDING_DP * 0.5)
+				-- end, styleState)
+			)) :: Instance,
+			
+		},
+	}) :: ScrollingFrame
+
+
+	local optionRegistry: {[string]: GuiObject} = {}
+
+	local function updateOptions(opts: {[number]: string}, constructor: OptionConstructor)
+		local registry: {[string]: true?} = {}
+		for i, v in ipairs(opts) do
+			registry[v] = true
+			if not optionRegistry[v] then
+				local gui = constructor(v, function()
+					-- print(`on-click={v}`)
+					textBox.Text = v
+					onClick(v)
+				end)
+				gui.Parent = scrollingFrame
+
+				maid[`option={v}`] = gui
+				optionRegistry[v] = gui
+			end
+		end
+		for k, v in pairs(optionRegistry) do
+			if registry[k] == nil then
+				v:Destroy()
+			end
+		end
+		-- local rep = scrollingFrame:Clone()
+		-- rep.Name = `tick={tick()}`
+		-- rep.Parent = workspace
+
+	end
+
+	optionsState:Connect(function(cur: {[number]: string}, prev: {[number]: string}?)
+		updateOptions(cur, optionConstructorState:Get())
+	end)
+	
+	optionConstructorState:Connect(function(cur: OptionConstructor, prev: OptionConstructor?)
+		updateOptions(optionsState:Get(), cur)
+	end)
 
 	local inst = _bind(Util.PopUp.ColdFusion.new(
 		absolutePositionState,
@@ -172,7 +233,6 @@ function newPanel(
 					return UDim.new(0, s.Scale * CORNER_DP)
 				end, styleState),
 			}),
-			-- maid:GiveTask(Util.Padding.ColdFusion.fromStyleSimple(PADDING_DP, styleState)),
 			_new("Frame")({
 				LayoutOrder = 1,
 				BackgroundTransparency = 1,
@@ -221,7 +281,6 @@ function newPanel(
 							clearButton
 						},
 					}),
-					-- clearButton
 				},
 			}),
 			maid:GiveTask(Util.List.ColdFusion.classic(
@@ -271,7 +330,6 @@ function Base.newBar(
 	style: CanBeState<Style>
 ): GuiObject
 	local maid = Maid.new()
-
 	local _fuse = ColdFusion.fuse(maid)
 
 	local _new = _fuse.new
@@ -290,6 +348,79 @@ function Base.newBar(
 		end
 	)
 	local textColorState: State<Color3> = _import(textColor, Color3.new())
+	local elevationState = _import(elevation, 0)
+
+	local nextElevationState = _Computed(function(e: number): number
+		return e + 1
+	end, elevationState)
+
+
+	local function newLabel(
+		key: string,
+		onClick: (key: string) -> ()
+	): GuiObject
+
+		local labelMaid = Maid.new()
+		local fuse = ColdFusion.fuse(labelMaid)
+
+		local elevatedTextColorState = fuse.Computed(function(s: Style, tC: Color3, e: number): Color3
+			return s:GetElevatedColor(tC, e)
+		end, styleState, textColorState, nextElevationState)
+		local isHoveredState = fuse.Value(false)
+
+		local out = fuse.new("TextButton")({
+			Text = key,
+			AutomaticSize = Enum.AutomaticSize.Y,
+			TextXAlignment = Enum.TextXAlignment.Left,
+			Size = UDim2.fromScale(1,0),
+			BackgroundTransparency = 1,
+			TextColor3 = elevatedTextColorState,
+			ClipsDescendants = false,
+			TextSize = _Computed(function(s: Style): number
+				return s:GetTextSize(Enums.FontType.LabelLarge)
+			end, styleState),
+			LineHeight = _Computed(function(s: Style): number
+				return s:GetLineHeight(Enums.FontType.LabelLarge)
+			end, styleState),
+			FontFace = _Computed(function(s: Style): Font
+				return s:GetFont(Enums.FontType.LabelLarge)
+			end, styleState),
+			Events = {
+				Activated = function()
+					onClick(key)
+				end,
+				MouseEnter = function()
+					isHoveredState:Set(true)
+				end,
+				MouseLeave = function()
+					isHoveredState:Set(false)
+				end,
+				SelectionGained = function()
+					isFocusedState:Set(true)
+				end,
+				SelectionLost = function()
+					isFocusedState:Set(false)
+				end,
+			},
+			Children = {
+				labelMaid:GiveTask(Util.Padding.ColdFusion.new(
+					_Computed(function(s: Style): UDim
+						return UDim.new(0, s.Scale * PADDING_DP)
+					end, styleState),
+					_Computed(function(s: Style): UDim
+						return UDim.new(0, s.Scale * PADDING_DP * 0.25)
+					end, styleState)
+				)),
+			}
+		}) :: TextButton
+
+		labelMaid:GiveTask(out.Destroying:Connect(function()
+			labelMaid:Destroy()
+		end))
+
+		return out
+	end
+
 	local backgroundColorState: State<Color3> = _import(backgroundColor, Color3.new())
 	local optionSolverState = _import(optionSolver, function(input: string): {[number]: string}
 		return {}
@@ -303,10 +434,6 @@ function Base.newBar(
 	local buttonTextState = _Computed(function(l: string, i: string): string
 		return if i:len() == 0 then l else i
 	end, labelState, inputState)
-	local elevationState = _import(elevation, 0)
-	local nextElevationState = _Computed(function(e: number): number
-		return e + 1
-	end, elevationState)
 
 	local button: GuiObject
 
@@ -324,6 +451,7 @@ function Base.newBar(
 					inputState:Set(onEnter(content))
 				end
 			end,
+			inputState:Get(),
 			button,
 			textColorState,
 			backgroundColorState,
