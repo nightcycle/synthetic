@@ -8,9 +8,9 @@ A UI component framework for Roblox Front-End development with the goal of compi
 - React: to-do
 
 # To-Do
-- component/search/filled
-- component/search/text
+
 - component/slider
+
 - component/tooltip
 - component/dropdown
 
@@ -61,3 +61,5 @@ A UI component framework for Roblox Front-End development with the goal of compi
 - util/scrolling-frame-container
 - component/snackbar/small
 - component/snackbar/large
+- component/search/filled
+- component/search/text
