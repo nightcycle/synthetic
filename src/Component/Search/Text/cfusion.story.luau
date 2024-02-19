@@ -4,6 +4,7 @@ local _Packages = _Package.Parent
 -- Services
 -- Packages
 local Maid = require(_Packages:WaitForChild("Maid"))
+
 -- Modules
 local Style = require(_Package:WaitForChild("Style"))
 local Enums = require(_Package:WaitForChild("Enums"))
@@ -12,6 +13,7 @@ local Enums = require(_Package:WaitForChild("Enums"))
 -- Constants
 -- Variables
 -- References
+
 -- Class
 return function(frame: Frame)
 	local maid = Maid.new()

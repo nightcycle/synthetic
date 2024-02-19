@@ -103,6 +103,10 @@ Synthetic.Component = {
 		Large = require(Component:WaitForChild("Snackbar"):WaitForChild("Large")),
 		Small = require(Component:WaitForChild("Snackbar"):WaitForChild("Small")),
 	},
+	Search = {
+		Filled = require(Component:WaitForChild("Search"):WaitForChild("Filled")),
+		Text = require(Component:WaitForChild("Search"):WaitForChild("Text")),
+	},
 	Checkbox = require(Component:WaitForChild("Checkbox")),
 	RadioButton = require(Component:WaitForChild("RadioButton")),
 	Switch = require(Component:WaitForChild("Switch")),

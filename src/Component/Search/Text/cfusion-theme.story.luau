@@ -36,7 +36,7 @@ return function(frame: Frame)
 
 			do
 				local button = maid:GiveTask(
-					Module.ColdFusion.primaryContainer(
+					Module.ColdFusion.onPrimaryContainer(
 						function(input: string): string
 							print(`entered: {input}`)
 							return input
@@ -58,7 +58,7 @@ return function(frame: Frame)
 			end
 			do
 				local button = maid:GiveTask(
-					Module.ColdFusion.secondaryContainer(
+					Module.ColdFusion.onSecondaryContainer(
 						function(input: string): string
 							print(`entered: {input}`)
 							return input
@@ -80,7 +80,7 @@ return function(frame: Frame)
 			end
 			do
 				local button = maid:GiveTask(
-					Module.ColdFusion.tertiaryContainer(
+					Module.ColdFusion.onTertiaryContainer(
 						function(input: string): string
 							print(`entered: {input}`)
 							return input
@@ -102,7 +102,7 @@ return function(frame: Frame)
 			end
 			do
 				local button = maid:GiveTask(
-					Module.ColdFusion.primary(
+					Module.ColdFusion.onPrimary(
 						function(input: string): string
 							print(`entered: {input}`)
 							return input
@@ -124,7 +124,7 @@ return function(frame: Frame)
 			end
 			do
 				local button = maid:GiveTask(
-					Module.ColdFusion.secondary(
+					Module.ColdFusion.onSecondary(
 						function(input: string): string
 							print(`entered: {input}`)
 							return input
@@ -146,7 +146,7 @@ return function(frame: Frame)
 			end
 			do
 				local button = maid:GiveTask(
-					Module.ColdFusion.tertiary(
+					Module.ColdFusion.onTertiary(
 						function(input: string): string
 							print(`entered: {input}`)
 							return input

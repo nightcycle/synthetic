@@ -49,6 +49,7 @@ local Icons = MaterialIcons.default.dp_48.scale_1
 
 
 function newPanel(
+	isFilled: boolean,
 	onClick: (content: string) -> (),
 	initialText: string,
 	button: GuiObject,
@@ -225,7 +226,7 @@ function newPanel(
 		BackgroundColor3 = _Computed(function(s: Style, bC: Color3, e: number): Color3
 			return s:GetElevatedColor(bC, e)
 		end, styleState, backgroundColorState, elevationState),
-		BackgroundTransparency = 0,
+		BackgroundTransparency = if isFilled then 0 else 1,
 		AutomaticSize = Enum.AutomaticSize.Y,
 		Children = {
 			_new("UICorner")({
@@ -353,6 +354,7 @@ function Base.newBar(
 	local nextElevationState = _Computed(function(e: number): number
 		return e + 1
 	end, elevationState)
+	local backgroundColorState: State<Color3> = _import(backgroundColor, Color3.new())
 
 
 	local function newLabel(
@@ -366,6 +368,9 @@ function Base.newBar(
 		local elevatedTextColorState = fuse.Computed(function(s: Style, tC: Color3, e: number): Color3
 			return s:GetElevatedColor(tC, e)
 		end, styleState, textColorState, nextElevationState)
+		local elevatedBackgroundColorState = fuse.Computed(function(s: Style, tC: Color3, e: number): Color3
+			return s:GetElevatedColor(tC, e)
+		end, styleState, backgroundColorState, nextElevationState)
 		local isHoveredState = fuse.Value(false)
 
 		local out = fuse.new("TextButton")({
@@ -373,7 +378,9 @@ function Base.newBar(
 			AutomaticSize = Enum.AutomaticSize.Y,
 			TextXAlignment = Enum.TextXAlignment.Left,
 			Size = UDim2.fromScale(1,0),
-			BackgroundTransparency = 1,
+			AutoButtonColor = true,
+			BackgroundTransparency = if isFilled then 0 else 1,
+			BackgroundColor3 = elevatedBackgroundColorState,
 			TextColor3 = elevatedTextColorState,
 			ClipsDescendants = false,
 			TextSize = _Computed(function(s: Style): number
@@ -396,10 +403,10 @@ function Base.newBar(
 					isHoveredState:Set(false)
 				end,
 				SelectionGained = function()
-					isFocusedState:Set(true)
+					isHoveredState:Set(true)
 				end,
 				SelectionLost = function()
-					isFocusedState:Set(false)
+					isHoveredState:Set(false)
 				end,
 			},
 			Children = {
@@ -421,7 +428,6 @@ function Base.newBar(
 		return out
 	end
 
-	local backgroundColorState: State<Color3> = _import(backgroundColor, Color3.new())
 	local optionSolverState = _import(optionSolver, function(input: string): {[number]: string}
 		return {}
 	end)
@@ -443,6 +449,7 @@ function Base.newBar(
 	local function onClick()
 		panelMaid:DoCleaning()
 		local panel = newPanel(
+			isFilled,
 			function(content: string)
 				inputState:Set(content)
 				panelMaid:DoCleaning()
@@ -599,7 +606,7 @@ function Base.newBar(
 						s.Scale,
 						Types.newAppearanceData(s:GetElevatedColor(hC, e), 1),
 						Types.newAppearanceData(s:GetElevatedColor(hC, e), 1),
-						Types.newAppearanceData(s:GetElevatedColor(dC, e), 1 - 0.38),
+						Types.newAppearanceData(s:GetElevatedColor(dC, e), 1),
 						s:GetFontData(Enums.FontType.LabelLarge),
 						i,
 						nil,

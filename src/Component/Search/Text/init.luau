@@ -35,7 +35,8 @@ local Interface = {}
 
 Interface.ColdFusion = {}
 
-function Interface.ColdFusion.tertiaryContainer(
+
+function Interface.ColdFusion.onTertiaryContainer(
 	onInputEntered: CanBeState<(input: string) -> string>,
 	label: CanBeState<string?>,
 	optionSolver: CanBeState<(input: string) -> {[number]: string}>,
@@ -59,7 +60,7 @@ function Interface.ColdFusion.tertiaryContainer(
 	local elevationState = _import(elevation, 0)
 
 	local out = Base.newBar(
-		true,
+		false,
 		onInputEntered,
 		label,
 		optionSolver,
@@ -80,7 +81,7 @@ function Interface.ColdFusion.tertiaryContainer(
 	return out
 end
 
-function Interface.ColdFusion.tertiary(
+function Interface.ColdFusion.onTertiary(
 	onInputEntered: CanBeState<(input: string) -> string>,
 	label: CanBeState<string?>,
 	optionSolver: CanBeState<(input: string) -> {[number]: string}>,
@@ -104,7 +105,7 @@ function Interface.ColdFusion.tertiary(
 	local elevationState = _import(elevation, 0)
 
 	local out = Base.newBar(
-		true,
+		false,
 		onInputEntered,
 		label,
 		optionSolver,
@@ -125,7 +126,7 @@ function Interface.ColdFusion.tertiary(
 	return out
 end
 
-function Interface.ColdFusion.secondaryContainer(
+function Interface.ColdFusion.onSecondaryContainer(
 	onInputEntered: CanBeState<(input: string) -> string>,
 	label: CanBeState<string?>,
 	optionSolver: CanBeState<(input: string) -> {[number]: string}>,
@@ -149,7 +150,7 @@ function Interface.ColdFusion.secondaryContainer(
 	local elevationState = _import(elevation, 0)
 
 	local out = Base.newBar(
-		true,
+		false,
 		onInputEntered,
 		label,
 		optionSolver,
@@ -170,7 +171,7 @@ function Interface.ColdFusion.secondaryContainer(
 	return out
 end
 
-function Interface.ColdFusion.secondary(
+function Interface.ColdFusion.onSecondary(
 	onInputEntered: CanBeState<(input: string) -> string>,
 	label: CanBeState<string?>,
 	optionSolver: CanBeState<(input: string) -> {[number]: string}>,
@@ -194,7 +195,7 @@ function Interface.ColdFusion.secondary(
 	local elevationState = _import(elevation, 0)
 
 	local out = Base.newBar(
-		true,
+		false,
 		onInputEntered,
 		label,
 		optionSolver,
@@ -215,7 +216,7 @@ function Interface.ColdFusion.secondary(
 	return out
 end
 
-function Interface.ColdFusion.primaryContainer(
+function Interface.ColdFusion.onPrimaryContainer(
 	onInputEntered: CanBeState<(input: string) -> string>,
 	label: CanBeState<string?>,
 	optionSolver: CanBeState<(input: string) -> {[number]: string}>,
@@ -239,7 +240,7 @@ function Interface.ColdFusion.primaryContainer(
 	local elevationState = _import(elevation, 0)
 
 	local out = Base.newBar(
-		true,
+		false,
 		onInputEntered,
 		label,
 		optionSolver,
@@ -260,7 +261,7 @@ function Interface.ColdFusion.primaryContainer(
 	return out
 end
 
-function Interface.ColdFusion.primary(
+function Interface.ColdFusion.onPrimary(
 	onInputEntered: CanBeState<(input: string) -> string>,
 	label: CanBeState<string?>,
 	optionSolver: CanBeState<(input: string) -> {[number]: string}>,
@@ -284,7 +285,7 @@ function Interface.ColdFusion.primary(
 	local elevationState = _import(elevation, 0)
 
 	local out = Base.newBar(
-		true,
+		false,
 		onInputEntered,
 		label,
 		optionSolver,
@@ -305,8 +306,6 @@ function Interface.ColdFusion.primary(
 	return out
 end
 
-
-
 function Interface.ColdFusion.new(
 	onInputEntered: CanBeState<(input: string) -> string>,
 	label: CanBeState<string?>,
@@ -319,7 +318,7 @@ function Interface.ColdFusion.new(
 ): GuiObject
 
 	return Base.newBar(
-		true,
+		false,
 		onInputEntered,
 		label,
 		optionSolver,
