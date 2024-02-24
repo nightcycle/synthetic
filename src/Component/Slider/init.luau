@@ -2,17 +2,15 @@
 local _Package = script.Parent.Parent
 local _Packages = _Package.Parent
 -- Services
-local SoundService = game:GetService("SoundService")
+local RunService = game:GetService("RunService")
 -- Packages
 local Maid = require(_Packages:WaitForChild("Maid"))
 local ColdFusion = require(_Packages:WaitForChild("ColdFusion"))
-local MaterialIcons = require(_Packages:WaitForChild("MaterialIcons"))
 
 -- Modules
 local Types = require(_Package:WaitForChild("Types"))
 local Style = require(_Package:WaitForChild("Style"))
-local Enums = require(_Package:WaitForChild("Enums"))
-local Sounds = require(_Package:WaitForChild("Sounds"))
+local Util = require(_Package:WaitForChild("Util"))
 
 -- Types
 type Maid = Maid.Maid
@@ -32,14 +30,24 @@ type SwitchRenderData = {
 }
 
 -- Constants
-local ICONS = MaterialIcons.default.dp_48.scale_1
-local SWITCH_HEIGHT_DP = 32
-local SWITCH_WIDTH_DP = 52
-local INNER_BUTTON_YES_ICON_SIZE_DP = 28
-local INNER_BUTTON_NO_ICON_SELECTED_SIZE_DP = 24
-local INNER_BUTTON_NO_ICON_UNSELECTED_SIZE_DP = 16
-local ICON_SIZE_DP = 16
-local OUTLINE_WIDTH_DP = 2
+local ICON_WIDTH_DP = 20
+local BAR_HEIGHT_DP = 16
+local CURSOR_HEIGHT_DP= 44
+local CURSOR_WIDTH_PADDING_DP = 6
+local CURSOR_WIDTH_DP = 4
+local CURSOR_SELECTED_WIDTH_DP = 2
+
+local BAR_LEFT_RIGHT_INNER_PADDING_DP = 4
+local BAR_UP_DOWN_INNER_PADDING_DP = 6
+local BUBBLE_GAP_DP = 4
+local BUBBLE_UP_DOWN_PADDING = 12
+local BUBBLE_LEFT_RIGHT_PADDING = 16
+local ICON_PADDING_DP = 16
+local MIN_WIDTH_DP = CURSOR_HEIGHT_DP*4
+local RIGHT_CIRCLE_IMAGE = "rbxassetid://15562060748"
+local LEFT_CIRCLE_IMAGE = "rbxassetid://15562057345"
+local CIRCLE_IMAGE_RECT = Rect.new(256, 256, 256, 256)
+
 -- Variables
 -- References
 -- Private Functions
@@ -49,16 +57,18 @@ Interface.ColdFusion = {}
 
 
 function Interface.ColdFusion.new(
-	input: CanBeState<number>,
+	initialValue: CanBeState<number>,
+
 	minimum: CanBeState<number?>,
 	maximum: CanBeState<number?>,
 	increment: CanBeState<number?>,
-	includeTab: CanBeState<boolean>,
+	leftIcon: CanBeState<ImageData?>,
+	rightIcon: CanBeState<ImageData?>,
 
-	backgroundColor: CanBeState<Color3>,
 	onBackgroundColor: CanBeState<Color3>,
+	onBackgroundTextColor: CanBeState<Color3>,
 	fillColor: CanBeState<Color3>,
-	onFillColor: CanBeState<Color3>,
+	fillContainerColor: CanBeState<Color3>,
 
 	elevation: CanBeState<number>,
 	style: CanBeState<Style>
@@ -75,8 +85,165 @@ function Interface.ColdFusion.new(
 	local _Value = _fuse.Value
 	local _Computed = _fuse.Computed
 
-	local inst = _new("Frame")({
+	local styleState: State<Style> = _import(style, nil :: any)
 
+	local leftIconState: State<ImageData?> = _import(leftIcon, nil :: ImageData?)
+	local rightIconState: State<ImageData?> = _import(rightIcon, nil :: ImageData?)
+	local initialValueState: State<number> = _import(initialValue, 50)
+
+	local isSelectedState = _Value(false)
+
+	local iconSizeState = _Computed(function(s: Style): UDim2
+		return UDim2.fromOffset(s.Scale*ICON_WIDTH_DP, s.Scale*ICON_WIDTH_DP)
+	end, styleState)
+
+	local cursorFullWidthState = _Computed(function(s: Style, isSel: boolean): UDim
+		return UDim.new(0, s.Scale*((if isSel then CURSOR_SELECTED_WIDTH_DP else CURSOR_WIDTH_DP)+CURSOR_WIDTH_PADDING_DP*2))
+	end, styleState, isSelectedState)
+
+	local inputState: ValueState<number?> = _Value(nil :: number?)
+
+	local fillState = _Computed(function(initial: number, input: number?): number
+		return math.clamp(input or initial, 0, 100) / 100
+	end, initialValueState, inputState)
+
+	local leftBar = _new("ImageLabel")({
+		LayoutOrder = 1,
+		Position = UDim2.fromScale(0, 0.5),
+		AnchorPoint = Vector2.new(0, 0.5),
+		AutomaticSize = Enum.AutomaticSize.None,
+		Image = LEFT_CIRCLE_IMAGE,
+		BackgroundTransparency = 1,
+		ImageColor3 = fillColor,
+		SliceCenter = CIRCLE_IMAGE_RECT,
+		SliceScale = 1,
+		ScaleType = Enum.ScaleType.Slice,
+		Size = _Computed(function(s: Style, fill: number, fullWidth: UDim): UDim2
+			return UDim2.new(math.max(fill-fullWidth.Scale*0.5, 0), -fullWidth.Offset*0.5, 0, s.Scale*BAR_HEIGHT_DP)
+		end, styleState, fillState, cursorFullWidthState),
+	}) :: ImageLabel
+
+	local rightBar = _new("ImageLabel")({
+		LayoutOrder = 2,
+		Position = UDim2.fromScale(1, 0.5),
+		AnchorPoint = Vector2.new(1, 0.5),
+		AutomaticSize = Enum.AutomaticSize.None,
+		Image = RIGHT_CIRCLE_IMAGE,
+		BackgroundTransparency = 1,
+		ImageColor3 = fillContainerColor,
+		SliceCenter = CIRCLE_IMAGE_RECT,
+		SliceScale = 1,
+		ScaleType = Enum.ScaleType.Slice,
+		Size = _Computed(function(s: Style, fill: number, fullWidth: UDim): UDim2
+			return UDim2.new(math.max((1-fill)-fullWidth.Scale*0.5, 0), -fullWidth.Offset*0.5, 0, s.Scale*BAR_HEIGHT_DP)
+		end, styleState, fillState, cursorFullWidthState),
+	}) :: ImageLabel
+
+	maid:GiveTask(RunService.RenderStepped:Connect(function()
+		rightBar.Visible = rightBar.AbsoluteSize.X >= 0
+		leftBar.Visible = leftBar.AbsoluteSize.X >= 0
+	end))
+
+	local button = _new("TextButton")({
+		LayoutOrder = 2,
+		BackgroundTransparency = 1,
+		AutomaticSize = Enum.AutomaticSize.XY,
+		Text = "",
+		Events = {
+			MouseButton1Down = function(x: number, y: number)
+				isSelectedState:Set(true)
+			end,
+			MouseButton1Up = function(x: number, y: number)
+				isSelectedState:Set(false)
+			end,
+		},
+		Children = {
+			_new("UIFlexItem")({
+				FlexMode = Enum.UIFlexMode.Fill,
+				ItemLineAlignment = Enum.ItemLineAlignment.Automatic,
+			}),
+			_new("UISizeConstraint")({
+				MaxSize = Vector2.new(math.huge, math.huge),
+				MinSize = _Computed(function(s: Style): Vector2
+					return Vector2.new(s.Scale*MIN_WIDTH_DP, 0)
+				end, styleState)
+			}),
+			_new("Frame")({
+				LayoutOrder = 1,
+				ZIndex = 10,
+				Position = _Computed(function(fill: number): UDim2
+					return UDim2.fromScale(fill, 0.5)
+				end, fillState),
+				BackgroundColor3 = fillColor,
+				AnchorPoint = Vector2.new(0.5, 0.5),
+				AutomaticSize = Enum.AutomaticSize.None,
+				BackgroundTransparency = 0,
+				Size = _Computed(function(s: Style, fullWidth: UDim, isSel: boolean): UDim2
+					return UDim2.fromOffset(s.Scale*(if isSel then CURSOR_SELECTED_WIDTH_DP else CURSOR_WIDTH_DP), s.Scale*CURSOR_HEIGHT_DP)
+				end, styleState, cursorFullWidthState, isSelectedState),
+				Children = {
+					_new("UICorner")({
+						CornerRadius = UDim.new(0.5,0)
+					})
+				},
+			}),
+			leftBar,
+			rightBar,
+		},
+	}) :: TextButton
+	maid:GiveTask(button.MouseLeave:Connect(function()
+		isSelectedState:Set(false)
+	end))
+	maid:GiveTask(button.InputBegan:Connect(function(inputObject: InputObject)
+		if inputObject.UserInputType == Enum.UserInputType.MouseButton1 or inputObject.UserInputType == Enum.UserInputType.Touch then
+			inputState:Set(100*(inputObject.Position.X-button.AbsolutePosition.X)/(button.AbsoluteSize.X))
+		end
+	end))
+	maid:GiveTask(button.InputChanged:Connect(function(inputObject: InputObject)
+		if inputObject.UserInputType == Enum.UserInputType.MouseMovement and isSelectedState:Get() then
+			inputState:Set(100*(inputObject.Position.X-button.AbsolutePosition.X)/(button.AbsoluteSize.X))
+		end
+	end))
+	local inst = _new("Frame")({
+		AutomaticSize = Enum.AutomaticSize.None,
+		BackgroundTransparency = 0.85,
+		Children = {
+			_bind(maid:GiveTask(Util.ImageLabel.ColdFusion.new(
+				leftIconState,
+				onBackgroundColor,
+				nil
+			)))({
+				Visible = _Computed(function(icon: ImageData?): boolean
+					return icon ~= nil
+				end, leftIconState),
+				LayoutOrder = 1,
+				Size = iconSizeState,
+			}) :: Instance,
+			_bind(maid:GiveTask(Util.ImageLabel.ColdFusion.new(
+				rightIconState,
+				onBackgroundColor,
+				nil
+			)))({
+				Visible = _Computed(function(icon: ImageData?): boolean
+					return icon ~= nil
+				end, rightIconState),
+				LayoutOrder = 3,
+				Size = iconSizeState,
+			}) :: Instance,
+			button,
+			maid:GiveTask(Util.List.ColdFusion.new(
+				Enum.VerticalAlignment.Center,
+				Enum.HorizontalAlignment.Center,
+				Enum.FillDirection.Horizontal,
+				_Computed(function(s: Style): UDim
+					return UDim.new(0, s.Scale*ICON_PADDING_DP)
+				end, styleState),
+				Enum.UIFlexAlignment.Fill,
+				Enum.UIFlexAlignment.None,
+				Enum.ItemLineAlignment.Center,
+				false
+			)),
+		}
 	}) :: Frame
 
 	return inst
