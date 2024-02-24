@@ -622,9 +622,8 @@ function Interface.ColdFusion.new(
 	end))
 	updateIncrementMarks()
 	maid:GiveTask(fillState:Connect(function()
-		local onChange = onChangeState:Get()
 		updateIncrementMarks()
-		onChange(pointFillState:Get())
+		onChangeState:Get()(pointFillState:Get())
 	end))
 	_bind(maid:GiveTask(Util.PopUp.ColdFusion.fromGuiObject(
 		cursor,
