@@ -89,21 +89,349 @@ local Interface = {}
 Interface.ColdFusion = {}
 
 
-function Interface.ColdFusion.new(
+function Interface.ColdFusion.onTertiary(
+	style: CanBeState<Style>,
 	onChange: CanBeState<(onChange: number) -> ()>,
 	initialValue: CanBeState<number>,
-
 	minimum: CanBeState<number?>,
 	maximum: CanBeState<number?>,
 	increment: CanBeState<number?>,
 	leftTextOrIcon: CanBeState<string | ImageData | nil>,
 	rightTextOrIcon: CanBeState<string | ImageData | nil>,
+	elevation: CanBeState<number>
+): GuiObject
 
+	local maid = Maid.new()
+	local _fuse = ColdFusion.fuse(maid)
+	
+	local _new = _fuse.new
+	local _bind = _fuse.bind
+	local _clone = _fuse.clone
+	local _import = _fuse.import
+	
+	local _Value = _fuse.Value
+	local _Computed = _fuse.Computed
+
+	local styleState: State<Style> = _import(style, nil :: any)
+
+	local out = Interface.ColdFusion.new(
+		onChange,
+		initialValue,
+		minimum,
+		maximum,
+		increment,
+		leftTextOrIcon,
+		rightTextOrIcon,
+		_Computed(function(s: Style): Color3
+			return s:GetColor(Enums.ColorRoleType.OnTertiary)
+		end, styleState),
+		_Computed(function(s: Style): Color3
+			return s:GetColor(Enums.ColorRoleType.Tertiary)
+		end, styleState),
+		_Computed(function(s: Style): Color3
+			return s:GetColor(Enums.ColorRoleType.TertiaryContainer)
+		end, styleState),
+		_Computed(function(s: Style): Color3
+			return s:GetColor(Enums.ColorRoleType.OnTertiaryContainer)
+		end, styleState),
+		elevation,
+		style
+	)
+	maid:GiveTask(out.Destroying:Connect(function()
+		maid:Destroy()
+	end))
+
+	return out
+end
+
+function Interface.ColdFusion.onSecondary(
+	style: CanBeState<Style>,
+	onChange: CanBeState<(onChange: number) -> ()>,
+	initialValue: CanBeState<number>,
+	minimum: CanBeState<number?>,
+	maximum: CanBeState<number?>,
+	increment: CanBeState<number?>,
+	leftTextOrIcon: CanBeState<string | ImageData | nil>,
+	rightTextOrIcon: CanBeState<string | ImageData | nil>,
+	elevation: CanBeState<number>
+): GuiObject
+
+	local maid = Maid.new()
+	local _fuse = ColdFusion.fuse(maid)
+	
+	local _new = _fuse.new
+	local _bind = _fuse.bind
+	local _clone = _fuse.clone
+	local _import = _fuse.import
+	
+	local _Value = _fuse.Value
+	local _Computed = _fuse.Computed
+
+	local styleState: State<Style> = _import(style, nil :: any)
+
+	local out = Interface.ColdFusion.new(
+		onChange,
+		initialValue,
+		minimum,
+		maximum,
+		increment,
+		leftTextOrIcon,
+		rightTextOrIcon,
+		_Computed(function(s: Style): Color3
+			return s:GetColor(Enums.ColorRoleType.OnSecondary)
+		end, styleState),
+		_Computed(function(s: Style): Color3
+			return s:GetColor(Enums.ColorRoleType.Secondary)
+		end, styleState),
+		_Computed(function(s: Style): Color3
+			return s:GetColor(Enums.ColorRoleType.SecondaryContainer)
+		end, styleState),
+		_Computed(function(s: Style): Color3
+			return s:GetColor(Enums.ColorRoleType.OnSecondaryContainer)
+		end, styleState),
+		elevation,
+		style
+	)
+	maid:GiveTask(out.Destroying:Connect(function()
+		maid:Destroy()
+	end))
+
+	return out
+end
+
+function Interface.ColdFusion.onPrimary(
+	style: CanBeState<Style>,
+	onChange: CanBeState<(onChange: number) -> ()>,
+	initialValue: CanBeState<number>,
+	minimum: CanBeState<number?>,
+	maximum: CanBeState<number?>,
+	increment: CanBeState<number?>,
+	leftTextOrIcon: CanBeState<string | ImageData | nil>,
+	rightTextOrIcon: CanBeState<string | ImageData | nil>,
+	elevation: CanBeState<number>
+): GuiObject
+
+	local maid = Maid.new()
+	local _fuse = ColdFusion.fuse(maid)
+	
+	local _new = _fuse.new
+	local _bind = _fuse.bind
+	local _clone = _fuse.clone
+	local _import = _fuse.import
+	
+	local _Value = _fuse.Value
+	local _Computed = _fuse.Computed
+
+	local styleState: State<Style> = _import(style, nil :: any)
+
+	local out = Interface.ColdFusion.new(
+		onChange,
+		initialValue,
+		minimum,
+		maximum,
+		increment,
+		leftTextOrIcon,
+		rightTextOrIcon,
+		_Computed(function(s: Style): Color3
+			return s:GetColor(Enums.ColorRoleType.OnPrimary)
+		end, styleState),
+		_Computed(function(s: Style): Color3
+			return s:GetColor(Enums.ColorRoleType.Primary)
+		end, styleState),
+		_Computed(function(s: Style): Color3
+			return s:GetColor(Enums.ColorRoleType.PrimaryContainer)
+		end, styleState),
+		_Computed(function(s: Style): Color3
+			return s:GetColor(Enums.ColorRoleType.OnPrimaryContainer)
+		end, styleState),
+		elevation,
+		style
+	)
+	maid:GiveTask(out.Destroying:Connect(function()
+		maid:Destroy()
+	end))
+
+	return out
+end
+
+function Interface.ColdFusion.tertiary(
+	style: CanBeState<Style>,
+	onChange: CanBeState<(onChange: number) -> ()>,
+	initialValue: CanBeState<number>,
+	minimum: CanBeState<number?>,
+	maximum: CanBeState<number?>,
+	increment: CanBeState<number?>,
+	leftTextOrIcon: CanBeState<string | ImageData | nil>,
+	rightTextOrIcon: CanBeState<string | ImageData | nil>,
+	elevation: CanBeState<number>
+): GuiObject
+
+	local maid = Maid.new()
+	local _fuse = ColdFusion.fuse(maid)
+	
+	local _new = _fuse.new
+	local _bind = _fuse.bind
+	local _clone = _fuse.clone
+	local _import = _fuse.import
+	
+	local _Value = _fuse.Value
+	local _Computed = _fuse.Computed
+
+	local styleState: State<Style> = _import(style, nil :: any)
+
+	local out = Interface.ColdFusion.new(
+		onChange,
+		initialValue,
+		minimum,
+		maximum,
+		increment,
+		leftTextOrIcon,
+		rightTextOrIcon,
+		_Computed(function(s: Style): Color3
+			return s:GetColor(Enums.ColorRoleType.OnSurface)
+		end, styleState),
+		_Computed(function(s: Style): Color3
+			return s:GetColor(Enums.ColorRoleType.Surface)
+		end, styleState),
+		_Computed(function(s: Style): Color3
+			return s:GetColor(Enums.ColorRoleType.Tertiary)
+		end, styleState),
+		_Computed(function(s: Style): Color3
+			return s:GetColor(Enums.ColorRoleType.TertiaryContainer)
+		end, styleState),
+		elevation,
+		style
+	)
+	maid:GiveTask(out.Destroying:Connect(function()
+		maid:Destroy()
+	end))
+
+	return out
+end
+
+function Interface.ColdFusion.secondary(
+	style: CanBeState<Style>,
+	onChange: CanBeState<(onChange: number) -> ()>,
+	initialValue: CanBeState<number>,
+	minimum: CanBeState<number?>,
+	maximum: CanBeState<number?>,
+	increment: CanBeState<number?>,
+	leftTextOrIcon: CanBeState<string | ImageData | nil>,
+	rightTextOrIcon: CanBeState<string | ImageData | nil>,
+	elevation: CanBeState<number>
+): GuiObject
+
+	local maid = Maid.new()
+	local _fuse = ColdFusion.fuse(maid)
+	
+	local _new = _fuse.new
+	local _bind = _fuse.bind
+	local _clone = _fuse.clone
+	local _import = _fuse.import
+	
+	local _Value = _fuse.Value
+	local _Computed = _fuse.Computed
+
+	local styleState: State<Style> = _import(style, nil :: any)
+
+	local out = Interface.ColdFusion.new(
+		onChange,
+		initialValue,
+		minimum,
+		maximum,
+		increment,
+		leftTextOrIcon,
+		rightTextOrIcon,
+		_Computed(function(s: Style): Color3
+			return s:GetColor(Enums.ColorRoleType.OnSurface)
+		end, styleState),
+		_Computed(function(s: Style): Color3
+			return s:GetColor(Enums.ColorRoleType.Surface)
+		end, styleState),
+		_Computed(function(s: Style): Color3
+			return s:GetColor(Enums.ColorRoleType.Secondary)
+		end, styleState),
+		_Computed(function(s: Style): Color3
+			return s:GetColor(Enums.ColorRoleType.SecondaryContainer)
+		end, styleState),
+		elevation,
+		style
+	)
+	maid:GiveTask(out.Destroying:Connect(function()
+		maid:Destroy()
+	end))
+
+	return out
+end
+
+function Interface.ColdFusion.primary(
+	style: CanBeState<Style>,
+	onChange: CanBeState<(onChange: number) -> ()>,
+	initialValue: CanBeState<number>,
+	minimum: CanBeState<number?>,
+	maximum: CanBeState<number?>,
+	increment: CanBeState<number?>,
+	leftTextOrIcon: CanBeState<string | ImageData | nil>,
+	rightTextOrIcon: CanBeState<string | ImageData | nil>,
+	elevation: CanBeState<number>
+): GuiObject
+
+	local maid = Maid.new()
+	local _fuse = ColdFusion.fuse(maid)
+	
+	local _new = _fuse.new
+	local _bind = _fuse.bind
+	local _clone = _fuse.clone
+	local _import = _fuse.import
+	
+	local _Value = _fuse.Value
+	local _Computed = _fuse.Computed
+
+	local styleState: State<Style> = _import(style, nil :: any)
+
+	local out = Interface.ColdFusion.new(
+		onChange,
+		initialValue,
+		minimum,
+		maximum,
+		increment,
+		leftTextOrIcon,
+		rightTextOrIcon,
+		_Computed(function(s: Style): Color3
+			return s:GetColor(Enums.ColorRoleType.OnSurface)
+		end, styleState),
+		_Computed(function(s: Style): Color3
+			return s:GetColor(Enums.ColorRoleType.Surface)
+		end, styleState),
+		_Computed(function(s: Style): Color3
+			return s:GetColor(Enums.ColorRoleType.Primary)
+		end, styleState),
+		_Computed(function(s: Style): Color3
+			return s:GetColor(Enums.ColorRoleType.PrimaryContainer)
+		end, styleState),
+		elevation,
+		style
+	)
+	maid:GiveTask(out.Destroying:Connect(function()
+		maid:Destroy()
+	end))
+
+	return out
+end
+
+
+function Interface.ColdFusion.new(
+	onChange: CanBeState<(onChange: number) -> ()>,
+	initialValue: CanBeState<number>,
+	minimum: CanBeState<number?>,
+	maximum: CanBeState<number?>,
+	increment: CanBeState<number?>,
+	leftTextOrIcon: CanBeState<string | ImageData | nil>,
+	rightTextOrIcon: CanBeState<string | ImageData | nil>,
 	onBackgroundColor: CanBeState<Color3>,
 	onBackgroundTextColor: CanBeState<Color3>,
 	fillColor: CanBeState<Color3>,
 	fillContainerColor: CanBeState<Color3>,
-
 	elevation: CanBeState<number>,
 	style: CanBeState<Style>
 ): GuiObject
@@ -122,6 +450,24 @@ function Interface.ColdFusion.new(
 	local styleState: State<Style> = _import(style, nil :: any)
 	local onChangeState: State<(val: number) -> ()> = _import(onChange, nil :: any)
 
+	local elevationState = _import(elevation, 0)
+
+	local onBackgroundColorState = _Computed(function(c: Color3, e: number, s: Style): Color3
+		return s:GetElevatedColor(c, e)
+	end, _import(onBackgroundColor, Color3.new()), elevationState, styleState)
+
+	local onBackgroundTextColorState = _Computed(function(c: Color3, e: number, s: Style): Color3
+		return s:GetElevatedColor(c, e)
+	end, _import(onBackgroundTextColor, Color3.new()), elevationState, styleState)
+
+	local fillColorState = _Computed(function(c: Color3, e: number, s: Style): Color3
+		return s:GetElevatedColor(c, e)
+	end, _import(fillColor, Color3.new()), elevationState, styleState)
+
+	local fillContainerColorState = _Computed(function(c: Color3, e: number, s: Style): Color3
+		return s:GetElevatedColor(c, e)
+	end, _import(fillContainerColor, Color3.new()), elevationState, styleState)
+	
 	local leftLabelState: State<string | ImageData | nil> = _import(leftTextOrIcon, nil :: ImageData?)
 	local rightLabelState: State<string | ImageData | nil> = _import(rightTextOrIcon, nil :: ImageData?)
 	local initialValueState: State<number> = _import(initialValue, 50)
@@ -202,7 +548,9 @@ function Interface.ColdFusion.new(
 			return UDim2.fromScale(fill, 0.5)
 		end, fillState),
 		BackgroundColor3 = fillColor,
-		AnchorPoint = Vector2.new(0.5, 0.5),
+		AnchorPoint = _Computed(function(fill: number): Vector2
+			return Vector2.new(if fill == 1 then 1 elseif fill == 0 then 0 else 0.5, 0.5)
+		end, fillState),
 		AutomaticSize = Enum.AutomaticSize.None,
 		BackgroundTransparency = 0,
 		Size = _Computed(function(s: Style, fullWidth: UDim, isSel: boolean): UDim2
@@ -252,14 +600,14 @@ function Interface.ColdFusion.new(
 				local v = i*inc + min
 				if v < val then
 					local dot = incrementMaid:GiveTask(newDot(
-						fillContainerColor,
+						fillContainerColorState,
 						styleState
 					))
 					dot.Position = UDim2.fromScale(alpha, 0.5)
 					dot.Parent = dotContainer
 				elseif v > val then
 					local dot = incrementMaid:GiveTask(newDot(
-						fillColor,
+						fillColorState,
 						styleState
 					))
 					dot.Position = UDim2.fromScale(alpha, 0.5)
@@ -285,7 +633,7 @@ function Interface.ColdFusion.new(
 	)))({
 		Visible = isSelectedState,
 		BackgroundTransparency = 0,
-		BackgroundColor3 = onBackgroundColor,
+		BackgroundColor3 = onBackgroundColorState,
 		AutomaticSize = Enum.AutomaticSize.XY,
 		Children = {
 			maid:GiveTask(Util.List.ColdFusion.center()) :: Instance,
@@ -304,7 +652,7 @@ function Interface.ColdFusion.new(
 					return tostring(math.round(fill))
 				end, pointFillState),
 				RichText = true,
-				TextColor3 = onBackgroundTextColor,
+				TextColor3 = onBackgroundTextColorState,
 				TextTransparency = 0,
 				BackgroundTransparency = 1,
 				AutomaticSize = Enum.AutomaticSize.XY,
@@ -387,7 +735,7 @@ function Interface.ColdFusion.new(
 				Visible = _Computed(function(icon: ImageData | string | nil): boolean
 					return type(icon) == "string"
 				end, leftLabelState),
-				TextColor3 = onBackgroundColor,
+				TextColor3 = onBackgroundColorState,
 				TextTransparency = 0,
 				BackgroundTransparency = 1,
 				AutomaticSize = Enum.AutomaticSize.XY,
@@ -411,7 +759,7 @@ function Interface.ColdFusion.new(
 				Visible = _Computed(function(icon: ImageData | string | nil): boolean
 					return type(icon) == "string"
 				end, rightLabelState),
-				TextColor3 = onBackgroundColor,
+				TextColor3 = onBackgroundColorState,
 				TextTransparency = 0,
 				BackgroundTransparency = 1,
 				AutomaticSize = Enum.AutomaticSize.XY,
@@ -430,7 +778,7 @@ function Interface.ColdFusion.new(
 				_Computed(function(icon: ImageData | string | nil): ImageData | nil
 					return if type(icon) == "table" then icon else nil
 				end, leftLabelState),
-				onBackgroundColor,
+				onBackgroundColorState,
 				nil
 			)))({
 				Visible = _Computed(function(icon: ImageData | string | nil): boolean
@@ -443,7 +791,7 @@ function Interface.ColdFusion.new(
 				_Computed(function(icon: ImageData | string | nil): ImageData | nil
 					return if type(icon) == "table" then icon else nil
 				end, rightLabelState),
-				onBackgroundColor,
+				onBackgroundColorState,
 				nil
 			)))({
 				Visible = _Computed(function(icon: ImageData | string | nil): boolean
