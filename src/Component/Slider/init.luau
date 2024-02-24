@@ -48,10 +48,42 @@ local MIN_WIDTH_DP = CURSOR_HEIGHT_DP*4
 local RIGHT_CIRCLE_IMAGE = "rbxassetid://15562060748"
 local LEFT_CIRCLE_IMAGE = "rbxassetid://15562057345"
 local CIRCLE_IMAGE_RECT = Rect.new(256, 256, 256, 256)
+local DOT_DIAMETER_DP = BAR_HEIGHT_DP-(2*BAR_UP_DOWN_INNER_PADDING_DP)
 
 -- Variables
 -- References
 -- Private Functions
+function newDot(colorState: CanBeState<Color3>, styleState: State<Style>): GuiObject
+	local maid = Maid.new()
+	local _fuse = ColdFusion.fuse(maid)
+	
+	local _new = _fuse.new
+	local _bind = _fuse.bind
+	local _clone = _fuse.clone
+	local _import = _fuse.import
+	
+	local _Value = _fuse.Value
+	local _Computed = _fuse.Computed
+	local out = _new("Frame")({
+		BorderSizePixel = 0,
+		BackgroundColor3 = colorState,
+		Size = _Computed(function(s: Style): UDim2
+			return UDim2.fromOffset(DOT_DIAMETER_DP*s.Scale, DOT_DIAMETER_DP*s.Scale)
+		end, styleState),
+		AnchorPoint = Vector2.new(0.5,0.5),
+		Children = {
+			_new("UICorner")({
+				CornerRadius = UDim.new(0.5,0)
+			}),
+		}
+	}) :: GuiObject
+	maid:GiveTask(out.Destroying:Connect(function()
+		maid:Destroy()
+	end))
+	return out
+end
+
+
 local Interface = {}
 
 Interface.ColdFusion = {}
@@ -127,10 +159,9 @@ function Interface.ColdFusion.new(
 			return rawVal
 		end
 	end, pointFillState, minState, maxState, incrementState)
-	maid:GiveTask(fillState:Connect(function()
-		local onChange = onChangeState:Get()
-		onChange(pointFillState:Get())
-	end))
+
+
+	local incrementMaid = maid:GiveTask(Maid.new())
 
 	local leftBar = _new("ImageLabel")({
 		LayoutOrder = 1,
@@ -183,7 +214,70 @@ function Interface.ColdFusion.new(
 			})
 		},
 	}) :: Frame
+	local dotContainer = _new("Frame")({
+		ZIndex = 5,
+		Position = UDim2.fromScale(0.5,0.5),
+		AnchorPoint = Vector2.new(0.5, 0.5),
+		AutomaticSize = Enum.AutomaticSize.None,
+		BackgroundTransparency = 1,
+		Size = _Computed(function(s: Style): UDim2
+			return UDim2.new(1, 0, s.Scale*CURSOR_HEIGHT_DP, 0)
+		end, styleState),
+		Children = {
+			maid:GiveTask(Util.Padding.ColdFusion.fromStyle(
+				BAR_LEFT_RIGHT_INNER_PADDING_DP*2,
+				BAR_UP_DOWN_INNER_PADDING_DP*2,
+				styleState
+			)) :: Instance,
+			_new("UICorner")({
+				CornerRadius = UDim.new(0.5,0)
+			})
+		},
+	}) :: Frame
 
+	
+	local function updateIncrementMarks()
+		incrementMaid:DoCleaning()
+
+
+		local inc = incrementState:Get()
+		if inc then
+			local val = pointFillState:Get()
+			local min, max = minState:Get(), maxState:Get()
+			local count = (max-min)/inc
+			local limit = math.ceil(count)
+			for i=0, limit do
+				local alpha = (i/limit)
+
+				local v = i*inc + min
+				if v < val then
+					local dot = incrementMaid:GiveTask(newDot(
+						fillContainerColor,
+						styleState
+					))
+					dot.Position = UDim2.fromScale(alpha, 0.5)
+					dot.Parent = dotContainer
+				elseif v > val then
+					local dot = incrementMaid:GiveTask(newDot(
+						fillColor,
+						styleState
+					))
+					dot.Position = UDim2.fromScale(alpha, 0.5)
+					dot.Parent = dotContainer
+				end
+		
+			end
+		end
+	end
+	maid:GiveTask(incrementState:Connect(function()
+		updateIncrementMarks()
+	end))
+	updateIncrementMarks()
+	maid:GiveTask(fillState:Connect(function()
+		local onChange = onChangeState:Get()
+		updateIncrementMarks()
+		onChange(pointFillState:Get())
+	end))
 	_bind(maid:GiveTask(Util.PopUp.ColdFusion.fromGuiObject(
 		cursor,
 		Vector2.new(0.5, -(BUBBLE_GAP_DP/BAR_HEIGHT_DP)),
@@ -207,8 +301,8 @@ function Interface.ColdFusion.new(
 			}),
 			_new("TextLabel")({
 				Text = _Computed(function(fill: number): string
-					return tostring(math.round(100*fill))
-				end, fillState),
+					return tostring(math.round(fill))
+				end, pointFillState),
 				RichText = true,
 				TextColor3 = onBackgroundTextColor,
 				TextTransparency = 0,
@@ -247,6 +341,7 @@ function Interface.ColdFusion.new(
 			end,
 		},
 		Children = {
+
 			_new("UIFlexItem")({
 				FlexMode = Enum.UIFlexMode.Fill,
 				ItemLineAlignment = Enum.ItemLineAlignment.Automatic,
@@ -258,6 +353,7 @@ function Interface.ColdFusion.new(
 				end, styleState)
 			}),
 			cursor,
+			dotContainer,
 			leftBar,
 			rightBar,
 		},

@@ -64,10 +64,10 @@ return function(frame: Frame)
 						function(val: number)
 							print(`value={val}`)
 						end,
-						50,
+						40,
 						0,
 						100,
-						10,
+						20,
 						"Low",
 						"High",
 						style:GetColor(Enums.ColorRoleType.OnSurface),
