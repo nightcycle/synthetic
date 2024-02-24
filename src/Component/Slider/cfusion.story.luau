@@ -38,6 +38,9 @@ return function(frame: Frame)
 			do
 				local button = maid:GiveTask(
 					Module.ColdFusion.new(
+						function(val: number)
+							print(`value={val}`)
+						end,
 						50,
 						0,
 						100,
@@ -55,7 +58,74 @@ return function(frame: Frame)
 				button.Parent = halfFrame
 			end
 
-		
+			do
+				local button = maid:GiveTask(
+					Module.ColdFusion.new(
+						function(val: number)
+							print(`value={val}`)
+						end,
+						50,
+						0,
+						100,
+						10,
+						"Low",
+						"High",
+						style:GetColor(Enums.ColorRoleType.OnSurface),
+						style:GetColor(Enums.ColorRoleType.Surface),
+						style:GetColor(Enums.ColorRoleType.Primary),
+						style:GetColor(Enums.ColorRoleType.PrimaryContainer),
+						1,
+						style
+					)
+				)
+				button.Parent = halfFrame
+			end
+
+			do
+				local button = maid:GiveTask(
+					Module.ColdFusion.new(
+						function(val: number)
+							print(`value={val}`)
+						end,
+						50,
+						0,
+						100,
+						10,
+						Icons.remove,
+						Icons.add,
+						style:GetColor(Enums.ColorRoleType.OnSurface),
+						style:GetColor(Enums.ColorRoleType.Surface),
+						style:GetColor(Enums.ColorRoleType.Primary),
+						style:GetColor(Enums.ColorRoleType.PrimaryContainer),
+						1,
+						style
+					)
+				)
+				button.Parent = halfFrame
+			end
+
+			do
+				local button = maid:GiveTask(
+					Module.ColdFusion.new(
+						function(val: number)
+							print(`value={val}`)
+						end,
+						50,
+						0,
+						100,
+						nil,
+						nil,
+						nil,
+						style:GetColor(Enums.ColorRoleType.OnSurface),
+						style:GetColor(Enums.ColorRoleType.Surface),
+						style:GetColor(Enums.ColorRoleType.Primary),
+						style:GetColor(Enums.ColorRoleType.PrimaryContainer),
+						1,
+						style
+					)
+				)
+				button.Parent = halfFrame
+			end
 
 			return halfFrame
 		end
