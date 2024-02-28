@@ -36,12 +36,12 @@ local Interface = {}
 Interface.ColdFusion = {}
 
 function Interface.ColdFusion.tertiaryContainer(
+	style: CanBeState<Style>,
 	onInputEntered: CanBeState<(input: string) -> string>,
 	label: CanBeState<string?>,
 	optionSolver: CanBeState<(input: string) -> {[number]: string}>,
 	optionConstructor: CanBeState<OptionConstructor?>,
-	elevation: CanBeState<number?>,
-	style: CanBeState<Style>
+	elevation: CanBeState<number?>
 ): GuiObject
 
 	local maid = Maid.new()
@@ -81,12 +81,12 @@ function Interface.ColdFusion.tertiaryContainer(
 end
 
 function Interface.ColdFusion.tertiary(
+	style: CanBeState<Style>,
 	onInputEntered: CanBeState<(input: string) -> string>,
 	label: CanBeState<string?>,
 	optionSolver: CanBeState<(input: string) -> {[number]: string}>,
 	optionConstructor: CanBeState<OptionConstructor?>,
-	elevation: CanBeState<number?>,
-	style: CanBeState<Style>
+	elevation: CanBeState<number?>
 ): GuiObject
 
 	local maid = Maid.new()
@@ -126,12 +126,12 @@ function Interface.ColdFusion.tertiary(
 end
 
 function Interface.ColdFusion.secondaryContainer(
+	style: CanBeState<Style>,
 	onInputEntered: CanBeState<(input: string) -> string>,
 	label: CanBeState<string?>,
 	optionSolver: CanBeState<(input: string) -> {[number]: string}>,
 	optionConstructor: CanBeState<OptionConstructor?>,
-	elevation: CanBeState<number?>,
-	style: CanBeState<Style>
+	elevation: CanBeState<number?>
 ): GuiObject
 
 	local maid = Maid.new()
@@ -171,12 +171,12 @@ function Interface.ColdFusion.secondaryContainer(
 end
 
 function Interface.ColdFusion.secondary(
+	style: CanBeState<Style>,
 	onInputEntered: CanBeState<(input: string) -> string>,
 	label: CanBeState<string?>,
 	optionSolver: CanBeState<(input: string) -> {[number]: string}>,
 	optionConstructor: CanBeState<OptionConstructor?>,
-	elevation: CanBeState<number?>,
-	style: CanBeState<Style>
+	elevation: CanBeState<number?>
 ): GuiObject
 
 	local maid = Maid.new()
@@ -216,12 +216,12 @@ function Interface.ColdFusion.secondary(
 end
 
 function Interface.ColdFusion.primaryContainer(
+	style: CanBeState<Style>,
 	onInputEntered: CanBeState<(input: string) -> string>,
 	label: CanBeState<string?>,
 	optionSolver: CanBeState<(input: string) -> {[number]: string}>,
 	optionConstructor: CanBeState<OptionConstructor?>,
-	elevation: CanBeState<number?>,
-	style: CanBeState<Style>
+	elevation: CanBeState<number?>
 ): GuiObject
 
 	local maid = Maid.new()
@@ -261,12 +261,12 @@ function Interface.ColdFusion.primaryContainer(
 end
 
 function Interface.ColdFusion.primary(
+	style: CanBeState<Style>,
 	onInputEntered: CanBeState<(input: string) -> string>,
 	label: CanBeState<string?>,
 	optionSolver: CanBeState<(input: string) -> {[number]: string}>,
 	optionConstructor: CanBeState<OptionConstructor?>,
-	elevation: CanBeState<number?>,
-	style: CanBeState<Style>
+	elevation: CanBeState<number?>
 ): GuiObject
 
 	local maid = Maid.new()
