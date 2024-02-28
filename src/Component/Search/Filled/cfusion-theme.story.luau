@@ -37,6 +37,7 @@ return function(frame: Frame)
 			do
 				local button = maid:GiveTask(
 					Module.ColdFusion.primaryContainer(
+						style,
 						function(input: string): string
 							print(`entered: {input}`)
 							return input
@@ -50,8 +51,7 @@ return function(frame: Frame)
 							return options
 						end,
 						nil,
-						0,
-						style
+						0
 					)
 				)
 				button.Parent = halfFrame
@@ -59,6 +59,7 @@ return function(frame: Frame)
 			do
 				local button = maid:GiveTask(
 					Module.ColdFusion.secondaryContainer(
+						style,
 						function(input: string): string
 							print(`entered: {input}`)
 							return input
@@ -72,8 +73,7 @@ return function(frame: Frame)
 							return options
 						end,
 						nil,
-						0,
-						style
+						0
 					)
 				)
 				button.Parent = halfFrame
@@ -81,6 +81,7 @@ return function(frame: Frame)
 			do
 				local button = maid:GiveTask(
 					Module.ColdFusion.tertiaryContainer(
+						style,
 						function(input: string): string
 							print(`entered: {input}`)
 							return input
@@ -94,8 +95,7 @@ return function(frame: Frame)
 							return options
 						end,
 						nil,
-						0,
-						style
+						0
 					)
 				)
 				button.Parent = halfFrame
@@ -103,6 +103,7 @@ return function(frame: Frame)
 			do
 				local button = maid:GiveTask(
 					Module.ColdFusion.primary(
+						style,
 						function(input: string): string
 							print(`entered: {input}`)
 							return input
@@ -116,8 +117,7 @@ return function(frame: Frame)
 							return options
 						end,
 						nil,
-						0,
-						style
+						0
 					)
 				)
 				button.Parent = halfFrame
@@ -125,6 +125,7 @@ return function(frame: Frame)
 			do
 				local button = maid:GiveTask(
 					Module.ColdFusion.secondary(
+						style,
 						function(input: string): string
 							print(`entered: {input}`)
 							return input
@@ -138,8 +139,7 @@ return function(frame: Frame)
 							return options
 						end,
 						nil,
-						0,
-						style
+						0
 					)
 				)
 				button.Parent = halfFrame
@@ -147,6 +147,7 @@ return function(frame: Frame)
 			do
 				local button = maid:GiveTask(
 					Module.ColdFusion.tertiary(
+						style,
 						function(input: string): string
 							print(`entered: {input}`)
 							return input
@@ -160,8 +161,7 @@ return function(frame: Frame)
 							return options
 						end,
 						nil,
-						0,
-						style
+						0
 					)
 				)
 				button.Parent = halfFrame

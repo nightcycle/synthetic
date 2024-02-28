@@ -67,8 +67,11 @@ function Util.ColdFusion.new(absolutePosition: CanBeState<Vector2>, anchorPoint:
 		local absSize = out.AbsoluteSize
 		local goalPos = goalAbsolutePositionState:Get()
 		local aPoint = anchorPointState:Get()
-		local x = math.clamp(goalPos.X, absSize.X * aPoint.X, viewportSize.X - absSize.X * (1 - aPoint.X))
-		local y = math.clamp(goalPos.Y, absSize.Y * aPoint.Y, viewportSize.Y - absSize.Y * (1 - aPoint.Y))
+		local xMin = absSize.X * aPoint.X
+		local yMin = absSize.Y * aPoint.Y
+
+		local x = math.clamp(goalPos.X, xMin, math.max(xMin, viewportSize.X - absSize.X * (1 - aPoint.X)))
+		local y = math.clamp(goalPos.Y, yMin, math.max(yMin, viewportSize.Y - absSize.Y * (1 - aPoint.Y)))
 		finalPositionState:Set(Vector2.new(x, y))
 	end))
 
