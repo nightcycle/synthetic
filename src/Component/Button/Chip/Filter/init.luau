@@ -22,6 +22,7 @@ type CanBeState<V> = ColdFusion.CanBeState<V>
 type RenderData = Types.RenderData
 type Style = Style.Style
 type ImageData = Types.ImageData
+type FontData = Types.FontData
 
 -- Constants
 -- Variables
@@ -36,6 +37,7 @@ Interface.ColdFusion = {}
 
 function newThemedComponent(
 	style: CanBeState<Style>,
+	fontData: CanBeState<FontData>,
 	textColor: Enums.ColorRoleType,
 	disabledTextColor: Enums.ColorRoleType,
 	fillTextColor: Enums.ColorRoleType,
@@ -44,6 +46,8 @@ function newThemedComponent(
 	onClick: CanBeState<(isSelected: boolean) -> ()>,
 	isInitiallySelected: CanBeState<boolean>,
 	text: CanBeState<string>,
+	scale: CanBeState<number>,
+	schemeType: CanBeState<Enums.SchemeType>,
 	isEnabled: CanBeState<boolean?>,
 	elevation: CanBeState<number?>
 ): GuiObject
@@ -65,7 +69,6 @@ function newThemedComponent(
 		onClick,
 		isInitiallySelected,
 		text,
-		style,
 		_Computed(function(s: Style): Color3
 			return s:GetColor(textColor)
 		end, styleState),
@@ -199,7 +202,6 @@ function Interface.ColdFusion.new(
 		_Computed(function(isSel: boolean): ImageData?
 			return if isSel then Icons.check else nil
 		end, isSelectedState),
-		style,
 		textColor,
 		disabledTextColor,
 		fillTextColor,

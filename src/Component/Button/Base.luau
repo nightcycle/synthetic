@@ -60,6 +60,7 @@ Util.component = function(
 
 	local _Value = fuse.Value
 	local _Computed = fuse.Computed
+	
 	local isEnabledState = _import(isEnabled, true)
 	local isFocusedState = _Value(false)
 	local isPressedState = _Value(false)

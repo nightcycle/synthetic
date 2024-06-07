@@ -60,7 +60,6 @@ function newThemedComponent(
 		onClick,
 		text,
 		icon,
-		style,
 		_Computed(function(s: Style): Color3
 			return s:GetColor(textColor)
 		end, styleState),
@@ -168,7 +167,6 @@ function Interface.ColdFusion.new(
 		false,
 		text,
 		icon,
-		style,
 		textColor,
 		disabledTextColor,
 		textColor,
