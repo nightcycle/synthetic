@@ -148,8 +148,7 @@ function Interface.ColdFusion.new(
 	navigation: CanBeState<ButtonData?>,
 	backgroundColor: CanBeState<Color3>,
 	textColor: CanBeState<Color3>,
-	elevation: CanBeState<number>,
-	style: CanBeState<Style>
+	elevation: CanBeState<number>
 ): GuiObject
 	return TopBase.component(title, buttons, navigation, "Center", backgroundColor, textColor, elevation, style)
 end

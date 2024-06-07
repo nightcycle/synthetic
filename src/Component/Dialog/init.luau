@@ -182,9 +182,7 @@ function Interface.ColdFusion.new(
 	disabledTextColor: CanBeState<Color3>,
 	headlineColor: CanBeState<Color3>,
 	descriptionColor: CanBeState<Color3>,
-	scrimColor: CanBeState<Color3>,
-
-	style: CanBeState<Style>
+	scrimColor: CanBeState<Color3>
 )
 	local maid = Maid.new()
 	local _fuse = ColdFusion.fuse(maid)

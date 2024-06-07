@@ -249,8 +249,7 @@ function Interface.ColdFusion.new(
 	textColor: CanBeState<Color3>,
 	buttonTextColor: CanBeState<Color3>,
 	backgroundColor: CanBeState<Color3>,
-	elevation: CanBeState<number>,
-	style: CanBeState<Style>
+	elevation: CanBeState<number>
 ): GuiObject
 	local maid = Maid.new()
 

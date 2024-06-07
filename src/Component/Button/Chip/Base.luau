@@ -37,7 +37,6 @@ function Interface.new(
 	isInitiallySelected: CanBeState<boolean>,
 	text: CanBeState<string>,
 	icon: CanBeState<ImageData?>,
-	style: CanBeState<Style>,
 	textColor: CanBeState<Color3>,
 	disabledTextColor: CanBeState<Color3>,
 	fillTextColor: CanBeState<Color3>,

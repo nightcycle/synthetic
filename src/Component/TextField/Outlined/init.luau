@@ -222,8 +222,7 @@ function Interface.ColdFusion.new(
 	borderColor: CanBeState<Color3>,
 	textColor: CanBeState<Color3>,
 	labelColor: CanBeState<Color3>,
-	elevation: CanBeState<number>,
-	style: CanBeState<Style>
+	elevation: CanBeState<number>
 ): GuiObject
 	return Base.new(
 		onSubmit,

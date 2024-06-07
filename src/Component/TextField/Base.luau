@@ -75,7 +75,6 @@ function Interface.new(
 	supportingTextColor: CanBeState<Color3>,
 
 	elevation: CanBeState<number>,
-	style: CanBeState<Style>,
 	isOutlined: CanBeState<boolean>
 ): GuiObject
 	local maid = Maid.new()

@@ -54,8 +54,7 @@ function Interface.component(
 	variant: CanBeState<BarVariant>,
 	backgroundColor: CanBeState<Color3>,
 	textColor: CanBeState<Color3>,
-	elevation: CanBeState<number>,
-	style: CanBeState<Style>
+	elevation: CanBeState<number>
 ): GuiObject
 	local maid = Maid.new()
 

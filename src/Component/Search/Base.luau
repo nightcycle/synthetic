@@ -327,8 +327,7 @@ function Base.newBar(
 	optionConstructor: CanBeState<OptionConstructor?>,
 	textColor: CanBeState<Color3>,
 	backgroundColor: CanBeState<Color3>,
-	elevation: CanBeState<number>,
-	style: CanBeState<Style>
+	elevation: CanBeState<number>
 ): GuiObject
 	local maid = Maid.new()
 	local _fuse = ColdFusion.fuse(maid)

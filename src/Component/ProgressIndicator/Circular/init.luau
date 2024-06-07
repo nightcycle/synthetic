@@ -270,8 +270,7 @@ function Interface.ColdFusion.new(
 	progress: CanBeState<number?>,
 	isEnabled: CanBeState<boolean>,
 	fillColor: CanBeState<Color3>,
-	emptyColor: CanBeState<Color3>,
-	style: CanBeState<Style>
+	emptyColor: CanBeState<Color3>
 ): GuiObject
 	local maid = Maid.new()
 

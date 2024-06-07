@@ -142,7 +142,6 @@ function Interface.ColdFusion.new(
 	onClick: CanBeState<() -> ()>,
 	text: CanBeState<string>,
 	icon: CanBeState<ImageData?>,
-	style: CanBeState<Style>,
 	textColor: CanBeState<Color3>,
 	disabledTextColor: CanBeState<Color3>,
 	isEnabled: CanBeState<boolean>,

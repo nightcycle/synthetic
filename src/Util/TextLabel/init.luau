@@ -88,7 +88,6 @@ function Util.ColdFusion.new(
 	leftIcon: CanBeState<ImageData?>,
 	rightIcon: CanBeState<ImageData?>,
 	paddingDp: CanBeState<number>,
-	style: CanBeState<Style>,
 	ignoreLineHeight: CanBeState<boolean?>,
 	textXAlignment: CanBeState<Enum.TextXAlignment?>
 ): Frame

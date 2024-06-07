@@ -165,7 +165,6 @@ function Interface.ColdFusion.new(
 	onClick: CanBeState<(isSelected: boolean) -> ()>,
 	isInitiallySelected: CanBeState<boolean>,
 	text: CanBeState<string>,
-	style: CanBeState<Style>,
 	textColor: CanBeState<Color3>,
 	disabledTextColor: CanBeState<Color3>,
 	fillTextColor: CanBeState<Color3>,

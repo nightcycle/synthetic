@@ -424,8 +424,7 @@ function Interface.ColdFusion.new(
 	count: CanBeState<number?>,
 	textColor: CanBeState<Color3>,
 	hoverColor: CanBeState<Color3>,
-	elevation: CanBeState<number>,
-	style: CanBeState<Style>
+	elevation: CanBeState<number>
 ): GuiObject
 	local maid = Maid.new()
 
