@@ -42,12 +42,16 @@ return function(frame: Frame)
 						function()
 							print("click")
 						end,
-						Icons.add_comment,
-						style,
+						Icons.plus_one,
+						style:GetColor(Enums.ColorRoleType.OnPrimary),
 						style:GetColor(Enums.ColorRoleType.Primary),
-						style:GetColor(Enums.ColorRoleType.OnSurface),
+						style:GetColor(Enums.ColorRoleType.OnSurfaceVariant),
+						style:GetColor(Enums.ColorRoleType.SurfaceVariant),
 						true,
-						0
+						0,
+						style.SchemeType,
+						style:GetFontData(Enums.FontType.LabelLarge),
+						style.Scale
 					)
 				)
 				button.Parent = halfFrame
@@ -59,12 +63,16 @@ return function(frame: Frame)
 						function()
 							print("click")
 						end,
-						Icons.add_comment,
-						style,
+						Icons.waterfall_chart,
+						style:GetColor(Enums.ColorRoleType.OnPrimary),
 						style:GetColor(Enums.ColorRoleType.Primary),
-						style:GetColor(Enums.ColorRoleType.OnSurface),
-						false,
-						0
+						style:GetColor(Enums.ColorRoleType.OnSurfaceVariant),
+						style:GetColor(Enums.ColorRoleType.SurfaceVariant),
+						true,
+						0,
+						style.SchemeType,
+						style:GetFontData(Enums.FontType.LabelLarge),
+						style.Scale
 					)
 				)
 				button.Parent = halfFrame
