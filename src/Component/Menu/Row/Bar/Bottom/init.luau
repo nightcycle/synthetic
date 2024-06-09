@@ -13,6 +13,7 @@ local IconButton = require(_Package:WaitForChild("Component"):WaitForChild("Butt
 local FAB = require(_Package:WaitForChild("Component"):WaitForChild("Button"):WaitForChild("FAB"))
 local Style = require(_Package:WaitForChild("Style"))
 local Enums = require(_Package:WaitForChild("Enums"))
+local Theme = require(_Package:WaitForChild("Style"):WaitForChild("Theme"))
 
 -- Types
 type Maid = Maid.Maid
@@ -24,6 +25,7 @@ type ImageData = Types.ImageData
 type OptionData = Types.OptionData
 type ButtonData = Types.ButtonData
 type Style = Style.Style
+type FontData = Types.FontData
 
 -- Constants
 local MAX_BUTTONS = 4
@@ -82,8 +84,19 @@ function newThemedComponent(
 		_Computed(function(s: Style): Color3
 			return s:GetColor(fabIconColor)
 		end, styleState),
+		_Computed(function(s: Style): Color3
+			return s:GetColor(Enums.ColorRoleType.Shadow)
+		end, styleState),
 		_import(elevation, 0),
-		style
+		_Computed(function(s: Style): any
+			return s.SchemeType
+		end, styleState),
+		_Computed(function(s: Style): FontData
+			return s:GetFontData(Enums.FontType.LabelLarge)
+		end, styleState),
+		_Computed(function(s: Style): number
+			return s.Scale
+		end, styleState)
 	)
 
 	maid:GiveTask(out.Destroying:Connect(function()
@@ -164,7 +177,11 @@ function Interface.ColdFusion.new(
 	iconColor: CanBeState<Color3>,
 	fabColor: CanBeState<Color3>,
 	fabIconColor: CanBeState<Color3>,
-	elevation: CanBeState<number>
+	fabShadowColor: CanBeState<Color3>,
+	elevation: CanBeState<number>,
+	schemeType: CanBeState<Enums.SchemeType>,
+	fontData: CanBeState<FontData>,
+	scale: CanBeState<number>
 ): GuiObject
 	local maid = Maid.new()
 
@@ -182,11 +199,9 @@ function Interface.ColdFusion.new(
 		[number]: ButtonData,
 	}> = _import(buttons, {})
 
-	local styleState: State<Style> = _import(style, nil :: any)
-
-	local scaleState: State<number> = _Computed(function(s: Style): number
-		return s.Scale
-	end, styleState)
+	local scaleState: State<number> = _import(scale, 1)
+	local schemeTypeState: State<Enums.SchemeType> = _import(schemeType, Enums.SchemeType.Light)
+	local fontDataState: State<FontData> = _import(fontData, nil :: any)
 
 	local backgroundColorState: State<Color3> = _import(backgroundColor, Color3.new(1, 1, 1))
 	local elevationState: State<number> = _import(elevation, 0)
@@ -195,9 +210,9 @@ function Interface.ColdFusion.new(
 
 	local inst = _new("Frame")({
 		AutomaticSize = Enum.AutomaticSize.XY,
-		BackgroundColor3 = _Computed(function(color: Color3, e: number, s: Style): Color3
-			return s:GetElevatedColor(color, e)
-		end, backgroundColorState, elevationState, styleState),
+		BackgroundColor3 = _Computed(function(color: Color3, e: number, st: Enums.SchemeType): Color3
+			return Theme.getElevatedColor(color, e, st)
+		end, backgroundColorState, elevationState, schemeTypeState),
 		Children = {
 			_new("UIListLayout")({
 				Padding = _Computed(function(s: number): UDim
@@ -250,17 +265,20 @@ function Interface.ColdFusion.new(
 				_Computed(function(fData: ButtonData?): ImageData
 					return if fData and fData.Icon then fData.Icon else ERROR_ICON
 				end, fabState),
-				style,
 				fabIconColor,
 				fabColor,
 				fabIconColor,
 				fabColor,
+				fabShadowColor,
 				_Computed(function(fData: ButtonData?): boolean
 					return if fData then fData.Enabled else false
 				end, fabState),
 				_Computed(function(e: number): number
 					return e + 1
-				end, elevationState)
+				end, elevationState),
+				schemeTypeState,
+				fontDataState,
+				scaleState
 			))({
 				Visible = _Computed(function(fData: ButtonData?): boolean
 					return if fData then fData.Enabled else false
@@ -301,13 +319,15 @@ function Interface.ColdFusion.new(
 			_Computed(function(bData: ButtonData?): ImageData
 				return if bData and bData.Icon then bData.Icon else ERROR_ICON
 			end, buttonData),
-			style,
 			iconColor,
 			iconColor,
 			_Computed(function(bData: ButtonData?): boolean
 				return if bData then bData.Enabled else false
 			end, buttonData),
-			elevation
+			elevationState,
+			schemeTypeState,
+			fontDataState,
+			scaleState
 		))({
 			LayoutOrder = i,
 			Visible = _Computed(function(bData: ButtonData?): boolean
