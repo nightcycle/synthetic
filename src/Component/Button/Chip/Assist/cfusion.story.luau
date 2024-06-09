@@ -44,11 +44,13 @@ return function(frame: Frame)
 						end,
 						"Assist chip",
 						Icons.umbrella,
-						style,
 						style:GetColor(Enums.ColorRoleType.Primary),
 						style:GetColor(Enums.ColorRoleType.OnSurface),
 						true,
-						0
+						0,
+						style.SchemeType,
+						style:GetFontData(Enums.FontType.LabelLarge),
+						style.Scale
 					)
 				)
 				button.Parent = halfFrame
@@ -62,11 +64,13 @@ return function(frame: Frame)
 						end,
 						"Assist chip",
 						Icons.umbrella,
-						style,
 						style:GetColor(Enums.ColorRoleType.Primary),
 						style:GetColor(Enums.ColorRoleType.OnSurface),
 						false,
-						0
+						0,
+						style.SchemeType,
+						style:GetFontData(Enums.FontType.LabelLarge),
+						style.Scale
 					)
 				)
 				button.Parent = halfFrame

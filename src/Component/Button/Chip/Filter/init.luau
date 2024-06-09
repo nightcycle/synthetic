@@ -91,7 +91,7 @@ function newThemedComponent(
 		end, styleState),
 		_Computed(function(s: Style): number
 			return s.Scale
-		end, styleState),
+		end, styleState)
 	)
 
 	maid:GiveTask(out.Destroying:Connect(function()

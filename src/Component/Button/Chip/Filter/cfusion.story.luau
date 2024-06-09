@@ -42,14 +42,16 @@ return function(frame: Frame)
 						end,
 						false,
 						"Filter chip",
-						style,
 						style:GetColor(Enums.ColorRoleType.Primary),
 						style:GetColor(Enums.ColorRoleType.OnSurface),
 						style:GetColor(Enums.ColorRoleType.OnPrimary),
 						style:GetColor(Enums.ColorRoleType.OnSurfaceVariant),
 						style:GetColor(Enums.ColorRoleType.SurfaceVariant),
 						true,
-						0
+						0,
+						style.SchemeType,
+						style:GetFontData(Enums.FontType.LabelLarge),
+						style.Scale
 					)
 				)
 				button.Parent = halfFrame
@@ -63,14 +65,16 @@ return function(frame: Frame)
 						end,
 						false,
 						"Disabled chip",
-						style,
 						style:GetColor(Enums.ColorRoleType.Primary),
 						style:GetColor(Enums.ColorRoleType.OnSurface),
 						style:GetColor(Enums.ColorRoleType.OnPrimary),
 						style:GetColor(Enums.ColorRoleType.OnSurfaceVariant),
 						style:GetColor(Enums.ColorRoleType.SurfaceVariant),
 						false,
-						0
+						0,
+						style.SchemeType,
+						style:GetFontData(Enums.FontType.LabelLarge),
+						style.Scale
 					)
 				)
 				button.Parent = halfFrame
@@ -84,14 +88,16 @@ return function(frame: Frame)
 						end,
 						true,
 						"Disabled chip",
-						style,
 						style:GetColor(Enums.ColorRoleType.Primary),
 						style:GetColor(Enums.ColorRoleType.OnSurface),
 						style:GetColor(Enums.ColorRoleType.OnPrimary),
 						style:GetColor(Enums.ColorRoleType.OnSurfaceVariant),
 						style:GetColor(Enums.ColorRoleType.SurfaceVariant),
 						false,
-						0
+						0,
+						style.SchemeType,
+						style:GetFontData(Enums.FontType.LabelLarge),
+						style.Scale
 					)
 				)
 				button.Parent = halfFrame
