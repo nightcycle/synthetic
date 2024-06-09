@@ -13,6 +13,7 @@ local Enums = require(_Package:WaitForChild("Enums"))
 local Types = require(_Package:WaitForChild("Types"))
 local Base = require(script.Parent:WaitForChild("Base"))
 local Style = require(_Package:WaitForChild("Style"))
+local Theme = require(_Package:WaitForChild("Style"):WaitForChild("Theme"))
 
 -- Types
 type Maid = Maid.Maid
@@ -22,6 +23,7 @@ type CanBeState<V> = ColdFusion.CanBeState<V>
 type RenderData = Types.RenderData
 type Style = Style.Style
 type ImageData = Types.ImageData
+type FontData = Types.FontData
 
 -- Constants
 local UP_SCALE = 56 / 40
@@ -64,7 +66,6 @@ function newThemedComponent(
 		onClick,
 		text,
 		icon,
-		style,
 		_Computed(function(s: Style): Color3
 			return s:GetColor(textColor)
 		end, styleState),
@@ -77,8 +78,20 @@ function newThemedComponent(
 		_Computed(function(s: Style): Color3
 			return s:GetColor(disabledSurfaceColor)
 		end, styleState),
+		_Computed(function(s: Style): Color3
+			return s:GetColor(Enums.ColorRoleType.Shadow)
+		end, styleState),
 		_import(isEnabled, true),
-		_import(elevation, 0)
+		_import(elevation, 0),
+		_Computed(function(s: Style): any
+			return s.SchemeType
+		end, styleState),
+		_Computed(function(s: Style): FontData
+			return s:GetFontData(Enums.FontType.LabelLarge)
+		end, styleState),
+		_Computed(function(s: Style): number
+			return s.Scale
+		end, styleState)
 	)
 
 	maid:GiveTask(out.Destroying:Connect(function()
@@ -226,13 +239,16 @@ function Interface.ColdFusion.new(
 	onClick: CanBeState<() -> ()>,
 	text: CanBeState<string>,
 	icon: CanBeState<ImageData?>,
-	style: CanBeState<Style>,
 	textColor: CanBeState<Color3>,
 	surfaceColor: CanBeState<Color3>,
 	disabledTextColor: CanBeState<Color3>,
 	disabledSurfaceColor: CanBeState<Color3>,
+	shadowColor: CanBeState<Color3>,
 	isEnabled: CanBeState<boolean>,
-	elevation: CanBeState<number>
+	elevation: CanBeState<number>,
+	schemeType: CanBeState<Enums.SchemeType>,
+	fontData: CanBeState<FontData>,
+	scale: CanBeState<number>
 ): GuiObject
 	local maid = Maid.new()
 
@@ -246,8 +262,9 @@ function Interface.ColdFusion.new(
 	local _Value = _fuse.Value
 	local _Computed = _fuse.Computed
 
-	local styleState: State<Style> = _import(style, nil :: any)
-
+	local scaleState: State<number> = _import(scale, 1)
+	local schemeTypeState: State<Enums.SchemeType> = _import(schemeType, Enums.SchemeType.Light)
+	local fontDataState: State<FontData> = _import(fontData, nil :: any)
 	local elevationState: State<number> = _import(elevation, 0)
 
 	local textColorState: State<Color3> = _import(textColor, Color3.new(1, 1, 1))
@@ -255,6 +272,8 @@ function Interface.ColdFusion.new(
 
 	local disabledTextColorState: State<Color3> = _import(disabledTextColor, Color3.new(1, 1, 1))
 	local disabledSurfaceColorState: State<Color3> = _import(disabledSurfaceColor, Color3.new(1, 1, 1))
+
+	local shadowColorState: State<Color3> = _import(shadowColor, Color3.new(1, 1, 1))
 
 	local iconState: State<ImageData?> = _import(icon, nil :: ImageData?)
 
@@ -265,89 +284,95 @@ function Interface.ColdFusion.new(
 		if isEnabled == nil then true else isEnabled,
 		_Computed(
 			function(
-				s: Style,
+				st: Enums.SchemeType,
+				sc: number,
+				f: FontData,
 				e: number,
 				tC: Color3,
 				sC: Color3,
 				dTC: Color3,
 				dSC: Color3,
+				sHC: Color3,
 				i: ImageData?
 			): { [Enums.ButtonStateType]: RenderData }
 				e += 1
 				return {
 					[Enums.ButtonStateType.Enabled] = Types.newRenderData(
-						s.Scale * UP_SCALE,
-						Types.newAppearanceData(s:GetElevatedColor(sC, e), 1),
-						Types.newAppearanceData(s:GetElevatedColor(sC, e), 0),
-						Types.newAppearanceData(s:GetElevatedColor(tC, e), 0),
-						s:GetFontData(Enums.FontType.LabelLarge),
+						sc * UP_SCALE,
+						Types.newAppearanceData(Theme.getElevatedColor(sC, e, st), 1),
+						Types.newAppearanceData(Theme.getElevatedColor(sC, e, st), 0),
+						Types.newAppearanceData(Theme.getElevatedColor(tC, e, st), 0),
+						f,
 						i,
 						nil,
 						Types.newShadow(
-							Types.newAppearanceData(s:GetColor(Enums.ColorRoleType.Shadow, e), 0),
+							Types.newAppearanceData(Theme.getElevatedColor(sHC, e, st), 0),
 							Vector2.new(0, 1)
 						)
 					),
 					[Enums.ButtonStateType.Disabled] = Types.newRenderData(
-						s.Scale * UP_SCALE,
-						Types.newAppearanceData(s:GetElevatedColor(dSC, e), 1),
-						Types.newAppearanceData(s:GetElevatedColor(dSC, e), 0.12),
-						Types.newAppearanceData(s:GetElevatedColor(dTC, e), 0.12),
-						s:GetFontData(Enums.FontType.LabelLarge),
+						sc * UP_SCALE,
+						Types.newAppearanceData(Theme.getElevatedColor(dSC, e, st), 1),
+						Types.newAppearanceData(Theme.getElevatedColor(dSC, e, st), 0.12),
+						Types.newAppearanceData(Theme.getElevatedColor(dTC, e, st), 0.12),
+						f,
 						i,
 						nil,
 						Types.newShadow(
-							Types.newAppearanceData(s:GetColor(Enums.ColorRoleType.Shadow, e), 0),
+							Types.newAppearanceData(Theme.getElevatedColor(sHC, e, st), 0),
 							Vector2.new(0, 1)
 						)
 					),
 					[Enums.ButtonStateType.Hovered] = Types.newRenderData(
-						s.Scale * UP_SCALE,
-						Types.newAppearanceData(s:GetElevatedColor(sC, e), 1),
-						Types.newAppearanceData(s:GetElevatedColor(sC, e + 1), 0.08),
-						Types.newAppearanceData(s:GetElevatedColor(tC, e + 1), 0.08),
-						s:GetFontData(Enums.FontType.LabelLarge),
+						sc * UP_SCALE,
+						Types.newAppearanceData(Theme.getElevatedColor(sC, e, st), 1),
+						Types.newAppearanceData(Theme.getElevatedColor(sC, e + 1, st), 0.08),
+						Types.newAppearanceData(Theme.getElevatedColor(tC, e + 1, st), 0.08),
+						f,
 						i,
 						nil,
 						Types.newShadow(
-							Types.newAppearanceData(s:GetColor(Enums.ColorRoleType.Shadow, e), 0),
+							Types.newAppearanceData(Theme.getElevatedColor(sHC, e, st), 0),
 							Vector2.new(0, 1)
 						)
 					),
 					[Enums.ButtonStateType.Focused] = Types.newRenderData(
-						s.Scale * UP_SCALE,
-						Types.newAppearanceData(s:GetElevatedColor(sC, e), 1),
-						Types.newAppearanceData(s:GetElevatedColor(sC, e), 0.1),
-						Types.newAppearanceData(s:GetElevatedColor(tC, e), 0.1),
-						s:GetFontData(Enums.FontType.LabelLarge),
+						sc * UP_SCALE,
+						Types.newAppearanceData(Theme.getElevatedColor(sC, e, st), 1),
+						Types.newAppearanceData(Theme.getElevatedColor(sC, e, st), 0.1),
+						Types.newAppearanceData(Theme.getElevatedColor(tC, e, st), 0.1),
+						f,
 						i,
 						nil,
 						Types.newShadow(
-							Types.newAppearanceData(s:GetColor(Enums.ColorRoleType.Shadow, e), 0),
+							Types.newAppearanceData(Theme.getElevatedColor(sHC, e, st), 0),
 							Vector2.new(0, 1)
 						)
 					),
 					[Enums.ButtonStateType.Pressed] = Types.newRenderData(
-						s.Scale * UP_SCALE,
-						Types.newAppearanceData(s:GetElevatedColor(sC, e), 1),
-						Types.newAppearanceData(s:GetElevatedColor(sC, e - 1), 0.1),
-						Types.newAppearanceData(s:GetElevatedColor(tC, e - 1), 0.1),
-						s:GetFontData(Enums.FontType.LabelLarge),
+						sc * UP_SCALE,
+						Types.newAppearanceData(Theme.getElevatedColor(sC, e, st), 1),
+						Types.newAppearanceData(Theme.getElevatedColor(sC, e - 1, st), 0.1),
+						Types.newAppearanceData(Theme.getElevatedColor(tC, e - 1, st), 0.1),
+						f,
 						i,
 						Types.newSoundData(Sounds.Library[Enums.SoundType.ui_tap_variant_01], 0),
 						Types.newShadow(
-							Types.newAppearanceData(s:GetColor(Enums.ColorRoleType.Shadow, e), 0),
+							Types.newAppearanceData(Theme.getElevatedColor(sHC, e, st), 0),
 							Vector2.new(0, 1)
 						)
 					),
 				}
 			end,
-			styleState,
+			schemeTypeState,
+			scaleState,
+			fontDataState,
 			elevationState,
 			textColorState,
 			surfaceColorState,
 			disabledTextColorState,
 			disabledSurfaceColorState,
+			shadowColorState,
 			iconState
 		),
 		true,
