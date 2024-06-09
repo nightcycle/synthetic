@@ -12,6 +12,7 @@ local Sounds = require(_Package:WaitForChild("Sounds"))
 local Enums = require(_Package:WaitForChild("Enums"))
 local Types = require(_Package:WaitForChild("Types"))
 local Style = require(_Package:WaitForChild("Style"))
+local Theme = require(_Package:WaitForChild("Style"):WaitForChild("Theme"))
 
 -- Types
 type Maid = Maid.Maid
@@ -21,6 +22,7 @@ type CanBeState<V> = ColdFusion.CanBeState<V>
 type ImageData = Types.ImageData
 type RenderData = Types.RenderData
 type Style = Style.Style
+type FontData = Types.FontData
 
 -- Constants
 local LABEL_TEXT_ALIGNMENT = Enum.TextXAlignment.Center
@@ -34,16 +36,21 @@ local BADGE_TXT_HEIGHT_DP = 18
 -- Variables
 -- References
 -- Private Functions
-function component(
-	maid: Maid,
+-- Class
+local Interface = {}
+
+function newThemedComponent(
+	style: CanBeState<Style>,
+	textColor: Enums.ColorRoleType,
+	hoverColor: Enums.ColorRoleType,
 	onClick: CanBeState<() -> ()>,
-	label: CanBeState<string>,
 	icon: CanBeState<ImageData>,
+	label: CanBeState<string?>,
 	count: CanBeState<number?>,
-	renderDatas: CanBeState<{ [Enums.ButtonStateType]: RenderData }>,
-	elevation: CanBeState<number?>,
-	style: CanBeState<Style>
-): TextButton
+	elevation: CanBeState<number?>
+): GuiObject
+	local maid = Maid.new()
+
 	local _fuse = ColdFusion.fuse(maid)
 
 	local _new = _fuse.new
@@ -55,11 +62,122 @@ function component(
 	local _Computed = _fuse.Computed
 
 	local styleState: State<Style> = _import(style, nil :: any)
-	local elevationState = _import(elevation, 0)
 
-	local scaleState = _Computed(function(s: Style): number
-		return s.Scale
-	end, styleState)
+	local out = Interface.ColdFusion.new(
+		onClick,
+		icon,
+		label,
+		count,
+		_Computed(function(s: Style): Color3
+			return s:GetColor(textColor)
+		end, styleState),
+		_Computed(function(s: Style): Color3
+			return s:GetColor(hoverColor)
+		end, styleState),
+		_Computed(function(s: Style): Color3
+			return s:GetColor(Enums.ColorRoleType.Error)
+		end, styleState),
+		_Computed(function(s: Style): Color3
+			return s:GetColor(Enums.ColorRoleType.ErrorContainer)
+		end, styleState),
+		_import(elevation, 0),
+		_Computed(function(s: Style): any
+			return s.SchemeType
+		end, styleState),
+		_Computed(function(s: Style): FontData
+			return s:GetFontData(Enums.FontType.LabelLarge)
+		end, styleState),
+		_Computed(function(s: Style): number
+			return s.Scale
+		end, styleState)
+	)
+
+	maid:GiveTask(out.Destroying:Connect(function()
+		maid:Destroy()
+	end))
+
+	return out
+end
+
+Interface.ColdFusion = {}
+
+function Interface.ColdFusion.onPrimary(
+	style: CanBeState<Style>,
+	onClick: CanBeState<() -> ()>,
+	icon: CanBeState<ImageData>,
+	label: CanBeState<string?>,
+	count: CanBeState<number?>,
+	elevation: CanBeState<number?>
+): GuiObject
+	return newThemedComponent(
+		style,
+		Enums.ColorRoleType.OnPrimary,
+		Enums.ColorRoleType.InversePrimary,
+		onClick,
+		icon,
+		label,
+		count,
+		elevation
+	)
+end
+
+function Interface.ColdFusion.onSurface(
+	style: CanBeState<Style>,
+	onClick: CanBeState<() -> ()>,
+	icon: CanBeState<ImageData>,
+	label: CanBeState<string?>,
+	count: CanBeState<number?>,
+	elevation: CanBeState<number?>
+): GuiObject
+	return newThemedComponent(
+		style,
+		Enums.ColorRoleType.OnSurface,
+		Enums.ColorRoleType.InverseSurface,
+		onClick,
+		icon,
+		label,
+		count,
+		elevation
+	)
+end
+
+function Interface.ColdFusion.new(
+	onClick: CanBeState<() -> ()>,
+	icon: CanBeState<ImageData>,
+	label: CanBeState<string?>,
+	count: CanBeState<number?>,
+	textColor: CanBeState<Color3>,
+	hoverColor: CanBeState<Color3>,
+	errorTextColor: CanBeState<Color3>,
+	errorBackgroundColor: CanBeState<Color3>,
+	elevation: CanBeState<number>,
+	schemeType: CanBeState<Enums.SchemeType>,
+	fontData: CanBeState<FontData>,
+	scale: CanBeState<number>
+): GuiObject
+	local maid = Maid.new()
+
+	local _fuse = ColdFusion.fuse(maid)
+
+	local _new = _fuse.new
+	local _bind = _fuse.bind
+	local _clone = _fuse.clone
+	local _import = _fuse.import
+
+	local _Value = _fuse.Value
+	local _Computed = _fuse.Computed
+
+	local scaleState: State<number> = _import(scale, 1)
+	local schemeTypeState: State<Enums.SchemeType> = _import(schemeType, Enums.SchemeType.Light)
+	local fontDataState: State<FontData> = _import(fontData, nil :: any)
+
+	local elevationState: State<number> = _import(elevation, 0)
+	local textColorState: State<Color3> = _import(textColor, Color3.new(1, 1, 1))
+	local hoverColorState: State<Color3> = _import(hoverColor, Color3.new(1, 1, 1))
+
+	local errorTextColorState: State<Color3> = _import(errorTextColor, Color3.new(1, 1, 1))
+	local errorBackgroundColorState: State<Color3> = _import(errorBackgroundColor, Color3.new(1, 1, 1))
+
 	local labelState = _import(label, "")
 	local countState = _import(count, nil :: number?)
 	local iconState: State<ImageData> = _import(icon, nil :: any)
@@ -94,7 +212,68 @@ function component(
 		isHoveredState
 	) :: State<any>
 
-	local renderDatasState = _import(renderDatas, {}) :: any
+	local renderDatasState = _Computed(
+		function(
+			st: Enums.SchemeType,
+			sc: number,
+			f: FontData,
+			e: number,
+			hC: Color3,
+			tC: Color3,
+			i: ImageData?
+		): { [Enums.ButtonStateType]: RenderData }
+			e += 1
+			return {
+				[Enums.ButtonStateType.Enabled] = Types.newRenderData(
+					sc,
+					Types.newAppearanceData(Theme.getElevatedColor(hC, e, st), 1),
+					Types.newAppearanceData(Theme.getElevatedColor(hC, e, st), 1),
+					Types.newAppearanceData(Theme.getElevatedColor(tC, e, st), 0),
+					f,
+					i,
+					nil,
+					nil
+				),
+				[Enums.ButtonStateType.Hovered] = Types.newRenderData(
+					sc,
+					Types.newAppearanceData(Theme.getElevatedColor(hC, e, st), 1),
+					Types.newAppearanceData(Theme.getElevatedColor(hC, e + 1, st), 1 - 0.08),
+					Types.newAppearanceData(Theme.getElevatedColor(tC, e + 1, st), 0),
+					f,
+					i,
+					nil,
+					nil
+				),
+				[Enums.ButtonStateType.Focused] = Types.newRenderData(
+					sc,
+					Types.newAppearanceData(Theme.getElevatedColor(hC, e, st), 1),
+					Types.newAppearanceData(Theme.getElevatedColor(hC, e, st), 1 - 0.1),
+					Types.newAppearanceData(Theme.getElevatedColor(tC, e, st), 0),
+					f,
+					i,
+					nil,
+					nil
+				),
+				[Enums.ButtonStateType.Pressed] = Types.newRenderData(
+					sc,
+					Types.newAppearanceData(Theme.getElevatedColor(hC, e, st), 1),
+					Types.newAppearanceData(Theme.getElevatedColor(hC, e - 1, st), 1 - 0.1),
+					Types.newAppearanceData(Theme.getElevatedColor(tC, e - 1, st), 0),
+					f,
+					i,
+					Types.newSoundData(Sounds.Library[Enums.SoundType.ui_tap_variant_01], 1),
+					nil
+				),
+			}
+		end,
+		schemeTypeState,
+		scaleState,
+		fontDataState,
+		elevationState,
+		hoverColorState,
+		textColorState,
+		iconState
+	)
 
 	local currentRenderDataState = _Computed(
 		function(state: Enums.ButtonStateType, rDatas: { [Enums.ButtonStateType]: RenderData }): RenderData
@@ -105,6 +284,7 @@ function component(
 		currentStateState,
 		renderDatasState
 	)
+
 	local inst = _new("TextButton")({
 		Text = "",
 		Size = UDim2.new(0, 0),
@@ -175,9 +355,9 @@ function component(
 				TextYAlignment = Enum.TextYAlignment.Center,
 				BackgroundTransparency = 1,
 				AutomaticSize = Enum.AutomaticSize.X,
-				FontFace = _Computed(function(s: Style): Font
-					return s:GetFont(Enums.FontType.LabelMedium)
-				end, styleState),
+				FontFace = _Computed(function(f: FontData): Font
+					return f.Font
+				end, fontDataState),
 				LayoutOrder = 2,
 				TextColor3 = _Computed(function(data: RenderData): Color3
 					return if data.Text then data.Text.Color3 else Color3.new(1, 1, 1)
@@ -291,15 +471,20 @@ function component(
 										return ""
 									end
 								end, countState),
-								FontFace = _Computed(function(s: Style): Font
-									return s:GetFontData(Enums.FontType.LabelSmall).Font
-								end, styleState),
-								BackgroundColor3 = _Computed(function(s: Style, e: number): Color3
-									return s:GetColor(Enums.ColorRoleType.Error, e + 1)
-								end, styleState, elevationState),
-								TextColor3 = _Computed(function(s: Style, e: number): Color3
-									return s:GetColor(Enums.ColorRoleType.OnError, e + 1)
-								end, styleState, elevationState),
+								FontFace = _Computed(function(f: FontData): Font
+									return f.Font
+								end, fontDataState),
+								BackgroundColor3 = _Computed(
+									function(c: Color3, e: number, st: Enums.SchemeType): Color3
+										return Theme.getElevatedColor(c, e + 1, st)
+									end,
+									errorBackgroundColorState,
+									elevationState,
+									schemeTypeState
+								),
+								TextColor3 = _Computed(function(c: Color3, e: number, st: Enums.SchemeType): Color3
+									return Theme.getElevatedColor(c, e + 1, st)
+								end, errorTextColorState, elevationState, schemeTypeState),
 								Children = {
 									_new("UIPadding")({
 										PaddingLeft = _Computed(function(s: number): UDim
@@ -323,201 +508,12 @@ function component(
 			}),
 		},
 	}) :: TextButton
+
+	maid:GiveTask(inst.Destroying:Connect(function()
+		maid:Destroy()
+	end))
+
 	return inst
-end
-
--- Class
-local Interface = {}
-
-function newThemedComponent(
-	style: CanBeState<Style>,
-	textColor: Enums.ColorRoleType,
-	hoverColor: Enums.ColorRoleType,
-	onClick: CanBeState<() -> ()>,
-	icon: CanBeState<ImageData>,
-	label: CanBeState<string?>,
-	count: CanBeState<number?>,
-	elevation: CanBeState<number?>
-): GuiObject
-	local maid = Maid.new()
-
-	local _fuse = ColdFusion.fuse(maid)
-
-	local _new = _fuse.new
-	local _bind = _fuse.bind
-	local _clone = _fuse.clone
-	local _import = _fuse.import
-
-	local _Value = _fuse.Value
-	local _Computed = _fuse.Computed
-
-	local styleState: State<Style> = _import(style, nil :: any)
-
-	local out = Interface.ColdFusion.new(
-		onClick,
-		icon,
-		label,
-		count,
-		_Computed(function(s: Style): Color3
-			return s:GetColor(textColor)
-		end, styleState),
-		_Computed(function(s: Style): Color3
-			return s:GetColor(hoverColor)
-		end, styleState),
-		_import(elevation, 0),
-		style
-	)
-
-	maid:GiveTask(out.Destroying:Connect(function()
-		maid:Destroy()
-	end))
-
-	return out
-end
-
-Interface.ColdFusion = {}
-
-function Interface.ColdFusion.onPrimary(
-	style: CanBeState<Style>,
-	onClick: CanBeState<() -> ()>,
-	icon: CanBeState<ImageData>,
-	label: CanBeState<string?>,
-	count: CanBeState<number?>,
-	elevation: CanBeState<number?>
-): GuiObject
-	return newThemedComponent(
-		style,
-		Enums.ColorRoleType.OnPrimary,
-		Enums.ColorRoleType.InversePrimary,
-		onClick,
-		icon,
-		label,
-		count,
-		elevation
-	)
-end
-
-function Interface.ColdFusion.onSurface(
-	style: CanBeState<Style>,
-	onClick: CanBeState<() -> ()>,
-	icon: CanBeState<ImageData>,
-	label: CanBeState<string?>,
-	count: CanBeState<number?>,
-	elevation: CanBeState<number?>
-): GuiObject
-	return newThemedComponent(
-		style,
-		Enums.ColorRoleType.OnSurface,
-		Enums.ColorRoleType.InverseSurface,
-		onClick,
-		icon,
-		label,
-		count,
-		elevation
-	)
-end
-
-function Interface.ColdFusion.new(
-	onClick: CanBeState<() -> ()>,
-	icon: CanBeState<ImageData>,
-	label: CanBeState<string?>,
-	count: CanBeState<number?>,
-	textColor: CanBeState<Color3>,
-	hoverColor: CanBeState<Color3>,
-	elevation: CanBeState<number>
-): GuiObject
-	local maid = Maid.new()
-
-	local _fuse = ColdFusion.fuse(maid)
-
-	local _new = _fuse.new
-	local _bind = _fuse.bind
-	local _clone = _fuse.clone
-	local _import = _fuse.import
-
-	local _Value = _fuse.Value
-	local _Computed = _fuse.Computed
-
-	local styleState: State<Style> = _import(style, nil :: any)
-
-	local elevationState: State<number> = _import(elevation, 0)
-	local textColorState: State<Color3> = _import(textColor, Color3.new(1, 1, 1))
-	local hoverColorState: State<Color3> = _import(hoverColor, Color3.new(1, 1, 1))
-
-	local iconState: State<ImageData> = _import(icon, nil :: any)
-
-	local button = component(
-		maid,
-		onClick,
-		_import(label, ""),
-		icon,
-		count,
-		_Computed(
-			function(
-				s: Style,
-				e: number,
-				hC: Color3,
-				tC: Color3,
-				i: ImageData?
-			): { [Enums.ButtonStateType]: RenderData }
-				e += 1
-				return {
-					[Enums.ButtonStateType.Enabled] = Types.newRenderData(
-						s.Scale,
-						Types.newAppearanceData(s:GetElevatedColor(hC, e), 1),
-						Types.newAppearanceData(s:GetElevatedColor(hC, e), 1),
-						Types.newAppearanceData(s:GetElevatedColor(tC, e), 0),
-						s:GetFontData(Enums.FontType.LabelLarge),
-						i,
-						nil,
-						nil
-					),
-					[Enums.ButtonStateType.Hovered] = Types.newRenderData(
-						s.Scale,
-						Types.newAppearanceData(s:GetElevatedColor(hC, e), 1),
-						Types.newAppearanceData(s:GetElevatedColor(hC, e + 1), 1 - 0.08),
-						Types.newAppearanceData(s:GetElevatedColor(tC, e + 1), 0),
-						s:GetFontData(Enums.FontType.LabelLarge),
-						i,
-						nil,
-						nil
-					),
-					[Enums.ButtonStateType.Focused] = Types.newRenderData(
-						s.Scale,
-						Types.newAppearanceData(s:GetElevatedColor(hC, e), 1),
-						Types.newAppearanceData(s:GetElevatedColor(hC, e), 1 - 0.1),
-						Types.newAppearanceData(s:GetElevatedColor(tC, e), 0),
-						s:GetFontData(Enums.FontType.LabelLarge),
-						i,
-						nil,
-						nil
-					),
-					[Enums.ButtonStateType.Pressed] = Types.newRenderData(
-						s.Scale,
-						Types.newAppearanceData(s:GetElevatedColor(hC, e), 1),
-						Types.newAppearanceData(s:GetElevatedColor(hC, e - 1), 1 - 0.1),
-						Types.newAppearanceData(s:GetElevatedColor(tC, e - 1), 0),
-						s:GetFontData(Enums.FontType.LabelLarge),
-						i,
-						Types.newSoundData(Sounds.Library[Enums.SoundType.ui_tap_variant_01], 1),
-						nil
-					),
-				}
-			end,
-			styleState,
-			elevationState,
-			hoverColorState,
-			textColorState,
-			iconState
-		),
-		elevation,
-		style
-	)
-	maid:GiveTask(button.Destroying:Connect(function()
-		maid:Destroy()
-	end))
-
-	return button
 end
 
 return Interface

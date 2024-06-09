@@ -47,8 +47,12 @@ return function(frame: Frame)
 						1,
 						style:GetColor(Enums.ColorRoleType.OnPrimary),
 						style:GetColor(Enums.ColorRoleType.InversePrimary),
+						style:GetColor(Enums.ColorRoleType.Error),
+						style:GetColor(Enums.ColorRoleType.ErrorContainer),
 						0,
-						style
+						style.SchemeType,
+						style:GetFontData(Enums.FontType.LabelLarge),
+						style.Scale
 					)
 				)
 				button.Parent = halfFrame
@@ -65,8 +69,12 @@ return function(frame: Frame)
 						0,
 						style:GetColor(Enums.ColorRoleType.OnPrimary),
 						style:GetColor(Enums.ColorRoleType.InversePrimary),
+						style:GetColor(Enums.ColorRoleType.Error),
+						style:GetColor(Enums.ColorRoleType.ErrorContainer),
 						0,
-						style
+						style.SchemeType,
+						style:GetFontData(Enums.FontType.LabelLarge),
+						style.Scale
 					)
 				)
 				button.Parent = halfFrame
@@ -83,8 +91,12 @@ return function(frame: Frame)
 						nil,
 						style:GetColor(Enums.ColorRoleType.OnPrimary),
 						style:GetColor(Enums.ColorRoleType.InversePrimary),
+						style:GetColor(Enums.ColorRoleType.Error),
+						style:GetColor(Enums.ColorRoleType.ErrorContainer),
 						0,
-						style
+						style.SchemeType,
+						style:GetFontData(Enums.FontType.LabelLarge),
+						style.Scale
 					)
 				)
 				button.Parent = halfFrame
