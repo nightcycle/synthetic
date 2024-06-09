@@ -2,15 +2,15 @@
 name = "nightcycle/synthetic"
 description = "Material UI inspired elements made with Cold-Fusion"
 version = "5.0.0"
-authors = [ "CJ Oyer <coyer@nightcycle.us>",]
+authors = ["CJ Oyer <coyer@nightcycle.us>"]
 realm = "shared"
 registry = "https://github.com/upliftgames/wally-index"
-exclude = [ "Packages", ".vscode",]
+exclude = ["Packages", ".vscode"]
 
 [dependencies]
-ColdFusion = "nightcycle/cold-fusion@9.0.7"
+ColdFusion = "nightcycle/cold-fusion@9.1.1"
 Signal = "nightcycle/signal@1.0.2"
-Maid = "nightcycle/maid@1.1.4"
+Maid = "nightcycle/maid@2.0.0"
 Fusion = "elttob/fusion@0.2.0"
 MaterialIcons = "nightcycle/material-icons@1.0.1"
 CurveUtil = "nightcycle/curve-util@1.0.0"

@@ -37,7 +37,6 @@ Interface.ColdFusion = {}
 
 function newThemedComponent(
 	style: CanBeState<Style>,
-	fontData: CanBeState<FontData>,
 	textColor: Enums.ColorRoleType,
 	disabledTextColor: Enums.ColorRoleType,
 	fillTextColor: Enums.ColorRoleType,
@@ -46,8 +45,6 @@ function newThemedComponent(
 	onClick: CanBeState<(isSelected: boolean) -> ()>,
 	isInitiallySelected: CanBeState<boolean>,
 	text: CanBeState<string>,
-	scale: CanBeState<number>,
-	schemeType: CanBeState<Enums.SchemeType>,
 	isEnabled: CanBeState<boolean?>,
 	elevation: CanBeState<number?>
 ): GuiObject
@@ -85,7 +82,16 @@ function newThemedComponent(
 			return s:GetColor(disabledFillColor)
 		end, styleState),
 		_import(isEnabled, true),
-		_import(elevation, 0)
+		_import(elevation, 0),
+		_Computed(function(s: Style): any
+			return s.SchemeType
+		end, styleState),
+		_Computed(function(s: Style): FontData
+			return s:GetFontData(Enums.FontType.LabelLarge)
+		end, styleState),
+		_Computed(function(s: Style): number
+			return s.Scale
+		end, styleState),
 	)
 
 	maid:GiveTask(out.Destroying:Connect(function()
@@ -174,7 +180,10 @@ function Interface.ColdFusion.new(
 	disabledFillTextColor: CanBeState<Color3>,
 	disabledFillColor: CanBeState<Color3>,
 	isEnabled: CanBeState<boolean>,
-	elevation: CanBeState<number>
+	elevation: CanBeState<number>,
+	schemeType: CanBeState<Enums.SchemeType>,
+	fontData: CanBeState<FontData>,
+	scale: CanBeState<number>
 ): GuiObject
 	local maid = Maid.new()
 
@@ -202,6 +211,9 @@ function Interface.ColdFusion.new(
 		_Computed(function(isSel: boolean): ImageData?
 			return if isSel then Icons.check else nil
 		end, isSelectedState),
+		scale,
+		fontData,
+		schemeType,
 		textColor,
 		disabledTextColor,
 		fillTextColor,

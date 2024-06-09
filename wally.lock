@@ -14,8 +14,8 @@ dependencies = []
 
 [[package]]
 name = "nightcycle/cold-fusion"
-version = "9.0.7"
-dependencies = [["Maid", "nightcycle/maid@1.1.4"], ["ServiceProxy", "nightcycle/service-proxy@1.0.0"], ["Signal", "nightcycle/signal@1.0.2"], ["TableUtil", "nightcycle/table-util@1.1.0"]]
+version = "9.1.1"
+dependencies = [["Maid", "nightcycle/maid@2.0.0"], ["ServiceProxy", "nightcycle/service-proxy@1.0.0"], ["Signal", "nightcycle/signal@1.0.2"], ["TableUtil", "nightcycle/table-util@2.0.0"]]
 
 [[package]]
 name = "nightcycle/curve-util"
@@ -24,7 +24,7 @@ dependencies = [["Vector", "nightcycle/vector@1.0.2"]]
 
 [[package]]
 name = "nightcycle/maid"
-version = "1.1.4"
+version = "2.0.0"
 dependencies = []
 
 [[package]]
@@ -50,12 +50,7 @@ dependencies = []
 [[package]]
 name = "nightcycle/synthetic"
 version = "5.0.0"
-dependencies = [["ColdFusion", "nightcycle/cold-fusion@9.0.7"], ["CurveUtil", "nightcycle/curve-util@1.0.0"], ["Fusion", "elttob/fusion@0.2.0"], ["HashUtil", "boatbomber/hashlib@1.0.0"], ["Maid", "nightcycle/maid@1.1.4"], ["MaterialIcons", "nightcycle/material-icons@1.0.1"], ["Signal", "nightcycle/signal@1.0.2"], ["Spring", "nightcycle/spring@1.0.0"], ["TableUtil", "nightcycle/table-util@2.0.0"]]
-
-[[package]]
-name = "nightcycle/table-util"
-version = "1.1.0"
-dependencies = []
+dependencies = [["ColdFusion", "nightcycle/cold-fusion@9.1.1"], ["CurveUtil", "nightcycle/curve-util@1.0.0"], ["Fusion", "elttob/fusion@0.2.0"], ["HashUtil", "boatbomber/hashlib@1.0.0"], ["Maid", "nightcycle/maid@2.0.0"], ["MaterialIcons", "nightcycle/material-icons@1.0.1"], ["Signal", "nightcycle/signal@1.0.2"], ["Spring", "nightcycle/spring@1.0.0"], ["TableUtil", "nightcycle/table-util@2.0.0"]]
 
 [[package]]
 name = "nightcycle/table-util"

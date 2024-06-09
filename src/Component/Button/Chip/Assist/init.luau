@@ -21,6 +21,7 @@ type CanBeState<V> = ColdFusion.CanBeState<V>
 type RenderData = Types.RenderData
 type Style = Style.Style
 type ImageData = Types.ImageData
+type FontData = Types.FontData
 -- Constants
 -- Variables
 -- References
@@ -67,7 +68,16 @@ function newThemedComponent(
 			return s:GetColor(disabledTextColor)
 		end, styleState),
 		_import(isEnabled, true),
-		_import(elevation, 0)
+		_import(elevation, 0),
+		_Computed(function(s: Style): any
+			return s.SchemeType
+		end, styleState),
+		_Computed(function(s: Style): FontData
+			return s:GetFontData(Enums.FontType.LabelLarge)
+		end, styleState),
+		_Computed(function(s: Style): number
+			return s.Scale
+		end, styleState),
 	)
 
 	maid:GiveTask(out.Destroying:Connect(function()
@@ -144,7 +154,10 @@ function Interface.ColdFusion.new(
 	textColor: CanBeState<Color3>,
 	disabledTextColor: CanBeState<Color3>,
 	isEnabled: CanBeState<boolean>,
-	elevation: CanBeState<number>
+	elevation: CanBeState<number>,
+	schemeType: CanBeState<Enums.SchemeType>,
+	fontData: CanBeState<FontData>,
+	scale: CanBeState<number>
 ): GuiObject
 	local maid = Maid.new()
 
@@ -167,6 +180,9 @@ function Interface.ColdFusion.new(
 		false,
 		text,
 		icon,
+		scale,
+		fontData,
+		schemeType,
 		textColor,
 		disabledTextColor,
 		textColor,
