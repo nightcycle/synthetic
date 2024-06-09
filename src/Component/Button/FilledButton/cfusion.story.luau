@@ -44,13 +44,15 @@ return function(frame: Frame)
 						end,
 						"Button",
 						nil,
-						style,
 						style:GetColor(Enums.ColorRoleType.OnPrimary),
 						style:GetColor(Enums.ColorRoleType.Primary),
 						style:GetColor(Enums.ColorRoleType.OnSurfaceVariant),
 						style:GetColor(Enums.ColorRoleType.SurfaceVariant),
 						true,
-						0
+						0,
+						style.SchemeType,
+						style:GetFontData(Enums.FontType.LabelLarge),
+						style.Scale
 					)
 				)
 				button.Parent = halfFrame
@@ -64,13 +66,15 @@ return function(frame: Frame)
 						end,
 						"Disabled",
 						nil,
-						style,
 						style:GetColor(Enums.ColorRoleType.OnPrimary),
 						style:GetColor(Enums.ColorRoleType.Primary),
 						style:GetColor(Enums.ColorRoleType.OnSurfaceVariant),
 						style:GetColor(Enums.ColorRoleType.SurfaceVariant),
-						false,
-						0
+						true,
+						0,
+						style.SchemeType,
+						style:GetFontData(Enums.FontType.LabelLarge),
+						style.Scale
 					)
 				)
 				button.Parent = halfFrame
@@ -84,13 +88,15 @@ return function(frame: Frame)
 						end,
 						"Icon",
 						Icons.waterfall_chart,
-						style,
 						style:GetColor(Enums.ColorRoleType.OnPrimary),
 						style:GetColor(Enums.ColorRoleType.Primary),
 						style:GetColor(Enums.ColorRoleType.OnSurfaceVariant),
 						style:GetColor(Enums.ColorRoleType.SurfaceVariant),
 						true,
-						0
+						0,
+						style.SchemeType,
+						style:GetFontData(Enums.FontType.LabelLarge),
+						style.Scale
 					)
 				)
 				button.Parent = halfFrame
