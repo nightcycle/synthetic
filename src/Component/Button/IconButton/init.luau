@@ -36,9 +36,7 @@ local Interface = {}
 -- Private Functions
 function newThemedComponent(
 	textColor: Enums.ColorRoleType,
-	hoverColor: Enums.ColorRoleType,
 	disabledTextColor: Enums.ColorRoleType,
-	disabledHoverColor: Enums.ColorRoleType,
 	onClick: CanBeState<() -> ()>,
 	icon: CanBeState<ImageData>,
 	style: CanBeState<Style>,
@@ -66,13 +64,7 @@ function newThemedComponent(
 			return s:GetColor(textColor)
 		end, styleState),
 		_Computed(function(s: Style): Color3
-			return s:GetColor(hoverColor)
-		end, styleState),
-		_Computed(function(s: Style): Color3
 			return s:GetColor(disabledTextColor)
-		end, styleState),
-		_Computed(function(s: Style): Color3
-			return s:GetColor(disabledHoverColor)
 		end, styleState),
 		_import(isEnabled, true),
 		_import(elevation, 0),
@@ -104,10 +96,8 @@ function Interface.ColdFusion.primary(
 	isEnabled: CanBeState<boolean?>
 ): GuiObject
 	return newThemedComponent(
-		Enums.ColorRoleType.OnPrimary,
 		Enums.ColorRoleType.Primary,
 		Enums.ColorRoleType.OnSurfaceVariant,
-		Enums.ColorRoleType.SurfaceVariant,
 		onClick,
 		icon,
 		style,
@@ -124,10 +114,8 @@ function Interface.ColdFusion.secondary(
 	isEnabled: CanBeState<boolean?>
 ): GuiObject
 	return newThemedComponent(
-		Enums.ColorRoleType.OnSecondary,
 		Enums.ColorRoleType.Secondary,
 		Enums.ColorRoleType.OnSurfaceVariant,
-		Enums.ColorRoleType.SurfaceVariant,
 		onClick,
 		icon,
 		style,
@@ -144,10 +132,8 @@ function Interface.ColdFusion.tertiary(
 	isEnabled: CanBeState<boolean?>
 ): GuiObject
 	return newThemedComponent(
-		Enums.ColorRoleType.OnTertiary,
 		Enums.ColorRoleType.Tertiary,
 		Enums.ColorRoleType.OnSurfaceVariant,
-		Enums.ColorRoleType.SurfaceVariant,
 		onClick,
 		icon,
 		style,
@@ -164,10 +150,8 @@ function Interface.ColdFusion.primaryContainer(
 	isEnabled: CanBeState<boolean?>
 ): GuiObject
 	return newThemedComponent(
-		Enums.ColorRoleType.OnPrimaryContainer,
 		Enums.ColorRoleType.PrimaryContainer,
 		Enums.ColorRoleType.OnSecondaryContainer,
-		Enums.ColorRoleType.SurfaceContainer,
 		onClick,
 		icon,
 		style,
@@ -184,10 +168,8 @@ function Interface.ColdFusion.secondaryContainer(
 	isEnabled: CanBeState<boolean?>
 ): GuiObject
 	return newThemedComponent(
-		Enums.ColorRoleType.OnSecondaryContainer,
 		Enums.ColorRoleType.SecondaryContainer,
 		Enums.ColorRoleType.OnSecondaryContainer,
-		Enums.ColorRoleType.SurfaceContainer,
 		onClick,
 		icon,
 		style,
@@ -204,10 +186,8 @@ function Interface.ColdFusion.tertiaryContainer(
 	isEnabled: CanBeState<boolean?>
 ): GuiObject
 	return newThemedComponent(
-		Enums.ColorRoleType.OnTertiaryContainer,
 		Enums.ColorRoleType.TertiaryContainer,
 		Enums.ColorRoleType.OnSecondaryContainer,
-		Enums.ColorRoleType.SurfaceContainer,
 		onClick,
 		icon,
 		style,
@@ -220,9 +200,7 @@ function Interface.ColdFusion.new(
 	onClick: CanBeState<() -> ()>,
 	icon: CanBeState<ImageData>,
 	textColor: CanBeState<Color3>,
-	hoverColor: CanBeState<Color3>,
 	disabledTextColor: CanBeState<Color3>,
-	disabledHoverColor: CanBeState<Color3>,
 	isEnabled: CanBeState<boolean>,
 	elevation: CanBeState<number>,
 	schemeType: CanBeState<Enums.SchemeType>,
@@ -247,10 +225,10 @@ function Interface.ColdFusion.new(
 	local elevationState: State<number> = _import(elevation, 0)
 
 	local textColorState: State<Color3> = _import(textColor, Color3.new(1, 1, 1))
-	local hoverColorState: State<Color3> = _import(hoverColor, Color3.new(1, 1, 1))
+	local hoverColorState: State<Color3> = _import(textColor, Color3.new(1, 1, 1))
 
 	local disabledTextColorState: State<Color3> = _import(disabledTextColor, Color3.new(1, 1, 1))
-	local disabledHoverColorState: State<Color3> = _import(disabledHoverColor, Color3.new(1, 1, 1))
+	local disabledHoverColorState: State<Color3> = _import(disabledTextColor, Color3.new(1, 1, 1))
 
 	local iconState: State<ImageData?> = _import(icon, nil :: ImageData?)
 

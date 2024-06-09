@@ -43,10 +43,8 @@ return function(frame: Frame)
 							print("click")
 						end,
 						Icons.plus_one,
-						style:GetColor(Enums.ColorRoleType.OnPrimary),
 						style:GetColor(Enums.ColorRoleType.Primary),
 						style:GetColor(Enums.ColorRoleType.OnSurfaceVariant),
-						style:GetColor(Enums.ColorRoleType.SurfaceVariant),
 						true,
 						0,
 						style.SchemeType,
@@ -64,10 +62,8 @@ return function(frame: Frame)
 							print("click")
 						end,
 						Icons.waterfall_chart,
-						style:GetColor(Enums.ColorRoleType.OnPrimary),
 						style:GetColor(Enums.ColorRoleType.Primary),
 						style:GetColor(Enums.ColorRoleType.OnSurfaceVariant),
-						style:GetColor(Enums.ColorRoleType.SurfaceVariant),
 						true,
 						0,
 						style.SchemeType,
