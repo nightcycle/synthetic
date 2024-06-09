@@ -268,7 +268,7 @@ function Interface.ColdFusion.new(
 				return {
 					[Enums.ButtonStateType.Enabled] = Types.newRenderData(
 						sc,
-						Types.newAppearanceData(Theme.getElevatedColor(sC, e, st), 0),
+						Types.newAppearanceData(Theme.getElevatedColor(tC, e, st), 0),
 						Types.newAppearanceData(Theme.getElevatedColor(sC, e, st), 1),
 						Types.newAppearanceData(Theme.getElevatedColor(tC, e, st), 0),
 						f,
@@ -278,7 +278,7 @@ function Interface.ColdFusion.new(
 					),
 					[Enums.ButtonStateType.Disabled] = Types.newRenderData(
 						sc,
-						Types.newAppearanceData(Theme.getElevatedColor(dSC, e, st), 1 - 0.38),
+						Types.newAppearanceData(Theme.getElevatedColor(dTC, e, st), 1 - 0.38),
 						Types.newAppearanceData(Theme.getElevatedColor(dSC, e, st), 1),
 						Types.newAppearanceData(Theme.getElevatedColor(dTC, e, st), 1 - 0.38),
 						f,
@@ -288,7 +288,7 @@ function Interface.ColdFusion.new(
 					),
 					[Enums.ButtonStateType.Hovered] = Types.newRenderData(
 						sc,
-						Types.newAppearanceData(Theme.getElevatedColor(sC, e + 1, st), 0),
+						Types.newAppearanceData(Theme.getElevatedColor(tC, e + 1, st), 0),
 						Types.newAppearanceData(Theme.getElevatedColor(sC, e + 1, st), 1 - 0.08),
 						Types.newAppearanceData(Theme.getElevatedColor(tC, e + 1, st), 0),
 						f,
@@ -298,7 +298,7 @@ function Interface.ColdFusion.new(
 					),
 					[Enums.ButtonStateType.Focused] = Types.newRenderData(
 						sc,
-						Types.newAppearanceData(Theme.getElevatedColor(sC, e, st), 0),
+						Types.newAppearanceData(Theme.getElevatedColor(tC, e, st), 0),
 						Types.newAppearanceData(Theme.getElevatedColor(sC, e, st), 1 - 0.1),
 						Types.newAppearanceData(Theme.getElevatedColor(tC, e, st), 0),
 						f,
@@ -308,7 +308,7 @@ function Interface.ColdFusion.new(
 					),
 					[Enums.ButtonStateType.Pressed] = Types.newRenderData(
 						sc,
-						Types.newAppearanceData(Theme.getElevatedColor(sC, e, st), 1),
+						Types.newAppearanceData(Theme.getElevatedColor(tC, e, st), 1),
 						Types.newAppearanceData(Theme.getElevatedColor(sC, e - 1, st), 0.1),
 						Types.newAppearanceData(Theme.getElevatedColor(tC, e - 1, st), 0.1),
 						f,
