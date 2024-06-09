@@ -13,6 +13,7 @@ local Types = require(_Package:WaitForChild("Types"))
 local Style = require(_Package:WaitForChild("Style"))
 local Enums = require(_Package:WaitForChild("Enums"))
 local Sounds = require(_Package:WaitForChild("Sounds"))
+local Theme = require(_Package:WaitForChild("Style"):WaitForChild("Theme"))
 
 -- Types
 type Maid = Maid.Maid
@@ -24,6 +25,7 @@ type ImageData = Types.ImageData
 type OptionData = Types.OptionData
 type ButtonData = Types.ButtonData
 type Style = Style.Style
+type FontData = Types.FontData
 
 -- Constants
 local ICONS = MaterialIcons.default.dp_48.scale_1
@@ -82,7 +84,15 @@ function newThemedComponent(
 			return s:GetColor(disabledColor)
 		end, styleState),
 		_import(elevation, 0),
-		styleState
+		_Computed(function(s: Style): any
+			return s.SchemeType
+		end, styleState),
+		_Computed(function(s: Style): FontData
+			return s:GetFontData(Enums.FontType.LabelLarge)
+		end, styleState),
+		_Computed(function(s: Style): number
+			return s.Scale
+		end, styleState)
 	)
 
 	maid:GiveTask(out.Destroying:Connect(function()
@@ -222,7 +232,10 @@ function Interface.ColdFusion.new(
 	fillColor: CanBeState<Color3>,
 	iconColor: CanBeState<Color3>,
 	disabledColor: CanBeState<Color3>,
-	elevation: CanBeState<number>
+	elevation: CanBeState<number>,
+	schemeType: CanBeState<Enums.SchemeType>,
+	fontData: CanBeState<FontData>,
+	scale: CanBeState<number>
 ): GuiObject
 	local maid = Maid.new()
 
@@ -235,6 +248,10 @@ function Interface.ColdFusion.new(
 
 	local _Value = _fuse.Value
 	local _Computed = _fuse.Computed
+
+	local scaleState: State<number> = _import(scale, 1)
+	local schemeTypeState: State<Enums.SchemeType> = _import(schemeType, Enums.SchemeType.Light)
+	local fontDataState: State<FontData> = _import(fontData, nil :: any)
 
 	local initialSelectionState = _import(initialSelection, nil :: boolean?)
 	local outlineColorState = _import(outlineColor, Color3.new(1, 1, 1))
@@ -266,11 +283,11 @@ function Interface.ColdFusion.new(
 		end
 	end, initialSelectionState, clickCountState, hasClicked)
 
-	local styleState: State<Style> = _import(style, nil :: any)
-
 	local renderDatasState = _Computed(
 		function(
-			s: Style,
+			st: Enums.SchemeType,
+			sc: number,
+			f: FontData,
 			oC: Color3,
 			fC: Color3,
 			iC: Color3,
@@ -279,50 +296,50 @@ function Interface.ColdFusion.new(
 		): { [Enums.ButtonStateType]: RenderData }
 			return {
 				[Enums.ButtonStateType.Enabled] = Types.newRenderData(
-					s.Scale,
-					Types.newAppearanceData(s:GetElevatedColor(oC, e), 0),
-					Types.newAppearanceData(s:GetElevatedColor(fC, e), 1),
-					Types.newAppearanceData(s:GetElevatedColor(iC, e), 0),
+					sc,
+					Types.newAppearanceData(Theme.getElevatedColor(oC, e, st), 0),
+					Types.newAppearanceData(Theme.getElevatedColor(fC, e, st), 1),
+					Types.newAppearanceData(Theme.getElevatedColor(iC, e, st), 0),
 					nil,
 					nil,
 					nil,
 					nil
 				),
 				[Enums.ButtonStateType.Disabled] = Types.newRenderData(
-					s.Scale,
-					Types.newAppearanceData(s:GetElevatedColor(dC, e), 1 - 0.38),
-					Types.newAppearanceData(s:GetElevatedColor(dC, e), 1),
-					Types.newAppearanceData(s:GetElevatedColor(dC, e), 1 - 0.38),
+					sc,
+					Types.newAppearanceData(Theme.getElevatedColor(dC, e, st), 1 - 0.38),
+					Types.newAppearanceData(Theme.getElevatedColor(dC, e, st), 1),
+					Types.newAppearanceData(Theme.getElevatedColor(dC, e, st), 1 - 0.38),
 					nil,
 					nil,
 					nil,
 					nil
 				),
 				[Enums.ButtonStateType.Hovered] = Types.newRenderData(
-					s.Scale,
-					Types.newAppearanceData(s:GetElevatedColor(oC, e + 1), 0),
-					Types.newAppearanceData(s:GetElevatedColor(fC, e + 1), 1 - 0.08),
-					Types.newAppearanceData(s:GetElevatedColor(iC, e + 1), 0),
+					sc,
+					Types.newAppearanceData(Theme.getElevatedColor(oC, e + 1, st), 0),
+					Types.newAppearanceData(Theme.getElevatedColor(fC, e + 1, st), 1 - 0.08),
+					Types.newAppearanceData(Theme.getElevatedColor(iC, e + 1, st), 0),
 					nil,
 					nil,
 					nil,
 					nil
 				),
 				[Enums.ButtonStateType.Focused] = Types.newRenderData(
-					s.Scale,
-					Types.newAppearanceData(s:GetElevatedColor(oC, e), 0),
-					Types.newAppearanceData(s:GetElevatedColor(fC, e), 1 - 0.1),
-					Types.newAppearanceData(s:GetElevatedColor(iC, e), 0),
+					sc,
+					Types.newAppearanceData(Theme.getElevatedColor(oC, e, st), 0),
+					Types.newAppearanceData(Theme.getElevatedColor(fC, e, st), 1 - 0.1),
+					Types.newAppearanceData(Theme.getElevatedColor(iC, e, st), 0),
 					nil,
 					nil,
 					nil,
 					nil
 				),
 				[Enums.ButtonStateType.Pressed] = Types.newRenderData(
-					s.Scale,
-					Types.newAppearanceData(s:GetElevatedColor(oC, e - 1), 0),
-					Types.newAppearanceData(s:GetElevatedColor(fC, e - 1), 1 - 0.1),
-					Types.newAppearanceData(s:GetElevatedColor(iC, e - 1), 0),
+					sc,
+					Types.newAppearanceData(Theme.getElevatedColor(oC, e - 1, st), 0),
+					Types.newAppearanceData(Theme.getElevatedColor(fC, e - 1, st), 1 - 0.1),
+					Types.newAppearanceData(Theme.getElevatedColor(iC, e - 1, st), 0),
 					nil,
 					nil,
 					nil,
@@ -330,7 +347,9 @@ function Interface.ColdFusion.new(
 				),
 			}
 		end,
-		styleState,
+		schemeTypeState,
+		scaleState,
+		fontDataState,
 		outlineColorState,
 		fillColorState,
 		iconColorState,
@@ -387,9 +406,9 @@ function Interface.ColdFusion.new(
 	)
 
 	local inst = _new("ImageButton")({
-		Size = _Computed(function(s: Style): UDim2
-			return UDim2.fromOffset(s.Scale * LAYER_SIZE_DP, s.Scale * LAYER_SIZE_DP)
-		end, styleState),
+		Size = _Computed(function(sc: number): UDim2
+			return UDim2.fromOffset(sc * LAYER_SIZE_DP, sc * LAYER_SIZE_DP)
+		end, scaleState),
 		BackgroundColor3 = _Computed(function(data: RenderData): Color3
 			return data.Background.Color3
 		end, renderDataState),
@@ -458,10 +477,10 @@ function Interface.ColdFusion.new(
 				HorizontalAlignment = Enum.HorizontalAlignment.Center,
 			}),
 			_new("ImageLabel")({
-				Size = _Computed(function(s: Style): UDim2
+				Size = _Computed(function(sc: number): UDim2
 					local dpWidth = CHECKBOX_SIZE_DP - (UNSELECT_OUTLINE_WIDTH_DP * 2)
-					return UDim2.fromOffset(s.Scale * dpWidth, s.Scale * dpWidth)
-				end, styleState),
+					return UDim2.fromOffset(sc * dpWidth, sc * dpWidth)
+				end, scaleState),
 				BackgroundTransparency = _Computed(function(v: boolean?, enab: boolean): number
 					return if enab then if v == false then 1 else 0 else 1
 				end, valueState, isEnabledState),
@@ -491,9 +510,9 @@ function Interface.ColdFusion.new(
 				end, iconImageState),
 				Children = {
 					_new("UICorner")({
-						CornerRadius = _Computed(function(s: Style): UDim
-							return UDim.new(0, s.Scale * CHECKBOX_SHAPE_DP)
-						end, styleState),
+						CornerRadius = _Computed(function(sc: number): UDim
+							return UDim.new(0, sc * CHECKBOX_SHAPE_DP)
+						end, scaleState),
 					}),
 					_new("UIStroke")({
 						ApplyStrokeMode = Enum.ApplyStrokeMode.Border,
@@ -501,9 +520,9 @@ function Interface.ColdFusion.new(
 							return if v == false then renderData.Border.Color3 else renderData.Background.Color3
 						end, renderDataState, valueState),
 						LineJoinMode = Enum.LineJoinMode.Round,
-						Thickness = _Computed(function(s: Style): number
-							return s.Scale * UNSELECT_OUTLINE_WIDTH_DP
-						end, styleState),
+						Thickness = _Computed(function(sc: number): number
+							return sc * UNSELECT_OUTLINE_WIDTH_DP
+						end, scaleState),
 						Transparency = _Computed(function(renderData: RenderData): number
 							return renderData.Border.Transparency
 						end, renderDataState),
