@@ -12,6 +12,8 @@ export type FontData = Types.FontData
 export type Typography = {
 	__index: Typography,
 	_Styles: { [Enums.FontType]: FontData },
+	getTextSize: (fontSize: number, scale: number) -> number,
+	getGuiLineHeight: (lineHeight: number, fontSize: number) -> number,
 	Get: (self: Typography, style: Enums.FontType) -> FontData,
 	new: (fontFamily: string?) -> Typography,
 }
@@ -36,6 +38,14 @@ local Cache: { [string]: Typography } = {}
 -- Class
 local Typography = {} :: Typography
 Typography.__index = Typography
+
+function Typography.getTextSize(fontSize: number, scale: number): number
+	return fontSize * scale
+end
+
+function Typography.getGuiLineHeight(lineHeight: number, fontSize: number): number
+	return lineHeight / fontSize
+end
 
 function Typography:Get(style: Enums.FontType): FontData
 	return self._Styles[style]

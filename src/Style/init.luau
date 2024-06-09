@@ -69,11 +69,11 @@ function Style:GetFontData(fontType: Enums.FontType): FontData
 end
 
 function Style:GetTextSize(fontType: Enums.FontType): number
-	return self._Typography:Get(fontType).Size * self.Scale
+	return Typography.getTextSize(self._Typography:Get(fontType).Size, self.Scale)
 end
 
 function Style:GetLineHeight(fontType: Enums.FontType): number
-	return self._Typography:Get(fontType).LineHeight / self._Typography:Get(fontType).Size
+	return Typography.getGuiLineHeight(self._Typography:Get(fontType).LineHeight, self._Typography:Get(fontType).Size)
 end
 
 function Style.new(

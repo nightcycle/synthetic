@@ -13,6 +13,7 @@ local Style = require(_Package:WaitForChild("Style"))
 local Enums = require(_Package:WaitForChild("Enums"))
 local Button = require(_Package:WaitForChild("Component"):WaitForChild("Button"):WaitForChild("TextButton"))
 local Util = require(_Package:WaitForChild("Util"))
+local Typography = require(_Package:WaitForChild("Style"):WaitForChild("Typography"))
 
 -- Types
 type Maid = Maid.Maid
@@ -23,7 +24,7 @@ type RenderData = Types.RenderData
 type ImageData = Types.ImageData
 type ButtonData = Types.ButtonData
 type Style = Style.Style
-
+type FontData = Types.FontData
 -- Constants
 local ELEVATION = 6
 local LIST_PAD_DP = 16
@@ -91,7 +92,21 @@ function newThemedComponent(
 		_Computed(function(s: Style): Color3
 			return s:GetColor(scrimColor)
 		end, styleState),
-		styleState
+		_Computed(function(s: Style): any
+			return s.SchemeType
+		end, styleState),
+		_Computed(function(s: Style): FontData
+			return s:GetFontData(Enums.FontType.HeadlineSmall)
+		end, styleState),
+		_Computed(function(s: Style): FontData
+			return s:GetFontData(Enums.FontType.BodyMedium)
+		end, styleState),
+		_Computed(function(s: Style): FontData
+			return s:GetFontData(Enums.FontType.LabelLarge)
+		end, styleState),
+		_Computed(function(s: Style): number
+			return s.Scale
+		end, styleState)
 	)
 
 	maid:GiveTask(out.Destroying:Connect(function()
@@ -182,8 +197,13 @@ function Interface.ColdFusion.new(
 	disabledTextColor: CanBeState<Color3>,
 	headlineColor: CanBeState<Color3>,
 	descriptionColor: CanBeState<Color3>,
-	scrimColor: CanBeState<Color3>
-)
+	scrimColor: CanBeState<Color3>,
+	schemeType: CanBeState<Enums.SchemeType>,
+	headlineFontData: CanBeState<FontData>,
+	bodyFontData: CanBeState<FontData>,
+	buttonFontData: CanBeState<FontData>,
+	scale: CanBeState<number>
+): GuiObject
 	local maid = Maid.new()
 	local _fuse = ColdFusion.fuse(maid)
 
@@ -195,8 +215,13 @@ function Interface.ColdFusion.new(
 	local _Value = _fuse.Value
 	local _Computed = _fuse.Computed
 
+	local scaleState: State<number> = _import(scale, 1)
+	local schemeTypeState: State<Enums.SchemeType> = _import(schemeType, Enums.SchemeType.Light)
+	local headlineFontDataState: State<FontData> = _import(headlineFontData, nil :: any)
+	local bodyFontDataState: State<FontData> = _import(bodyFontData, nil :: any)
+	local buttonFontDataState: State<FontData> = _import(buttonFontData, nil :: any)
+
 	local iconState = _import(icon, nil :: ImageData?)
-	local styleState: State<Style> = _import(style, nil :: any)
 
 	local headlineState: State<string?> = _import(headline, nil :: string?)
 	local descriptionState: State<string?> = _import(description, nil :: string?)
@@ -215,9 +240,9 @@ function Interface.ColdFusion.new(
 		LayoutOrder = 10,
 		Children = {
 			_new("UIListLayout")({
-				Padding = _Computed(function(s: Style): UDim
-					return UDim.new(0, s.Scale * BUTTON_LIST_PAD_DP)
-				end, styleState),
+				Padding = _Computed(function(sc: number): UDim
+					return UDim.new(0, sc * BUTTON_LIST_PAD_DP)
+				end, scaleState),
 				SortOrder = Enum.SortOrder.LayoutOrder,
 				FillDirection = Enum.FillDirection.Horizontal,
 				ItemLineAlignment = Enum.ItemLineAlignment.Center,
@@ -253,9 +278,9 @@ function Interface.ColdFusion.new(
 							Enum.VerticalAlignment.Center,
 							Enum.HorizontalAlignment.Center,
 							Enum.FillDirection.Vertical,
-							_Computed(function(s: Style): UDim
-								return UDim.new(0, s.Scale * LIST_PAD_DP)
-							end, styleState),
+							_Computed(function(sc: number): UDim
+								return UDim.new(0, sc * LIST_PAD_DP)
+							end, scaleState),
 							Enum.UIFlexAlignment.None,
 							Enum.UIFlexAlignment.Fill,
 							Enum.ItemLineAlignment.Stretch,
@@ -263,17 +288,17 @@ function Interface.ColdFusion.new(
 						)
 					) :: Instance,
 					_new("UICorner")({
-						CornerRadius = _Computed(function(s: Style): UDim
-							return UDim.new(0, s.Scale * SHAPE_DP)
-						end, styleState),
+						CornerRadius = _Computed(function(sc: number): UDim
+							return UDim.new(0, sc * SHAPE_DP)
+						end, scaleState),
 					}),
 					_bind(maid:GiveTask(Util.Container.ColdFusion.new()))({
 						LayoutOrder = 1,
 						Children = {
 							_new("ImageLabel")({
-								Size = _Computed(function(s: Style): UDim2
-									return UDim2.fromOffset(s.Scale * ICON_SIZE_DP, s.Scale * ICON_SIZE_DP)
-								end, styleState),
+								Size = _Computed(function(sc: number): UDim2
+									return UDim2.fromOffset(sc * ICON_SIZE_DP, sc * ICON_SIZE_DP)
+								end, scaleState),
 								Visible = _Computed(function(i: ImageData?): boolean
 									return i ~= nil
 								end, iconState),
@@ -292,7 +317,14 @@ function Interface.ColdFusion.new(
 							maid:GiveTask(Util.List.ColdFusion.center()),
 						},
 					}),
-					maid:GiveTask(Util.Padding.ColdFusion.fromStyleSimple(PADDING_DP, styleState)),
+					maid:GiveTask(Util.Padding.ColdFusion.new(
+						_Computed(function(sc: number): UDim
+							return UDim.new(0, sc * PADDING_DP)
+						end, scaleState),
+						_Computed(function(sc: number): UDim
+							return UDim.new(0, sc * PADDING_DP)
+						end, scaleState)
+					)),
 					_new("TextLabel")({
 						Text = headlineState,
 						LayoutOrder = 1,
@@ -305,15 +337,15 @@ function Interface.ColdFusion.new(
 							return if i then Enum.TextXAlignment.Center else Enum.TextXAlignment.Left
 						end, iconState),
 						AutomaticSize = Enum.AutomaticSize.XY,
-						TextSize = _Computed(function(s: Style): number
-							return s:GetTextSize(Enums.FontType.HeadlineSmall)
-						end, styleState),
-						LineHeight = _Computed(function(s: Style): number
-							return s:GetLineHeight(Enums.FontType.HeadlineSmall)
-						end, styleState),
-						FontFace = _Computed(function(s: Style): Font
-							return s:GetFont(Enums.FontType.HeadlineSmall)
-						end, styleState),
+						TextSize = _Computed(function(f: FontData, sc: number): number
+							return Typography.getTextSize(f.Size, sc)
+						end, headlineFontDataState, scaleState),
+						LineHeight = _Computed(function(f: FontData, sc: number): number
+							return Typography.getGuiLineHeight(f.LineHeight, f.Size)
+						end, headlineFontDataState, scaleState),
+						FontFace = _Computed(function(f: FontData): Font
+							return f.Font
+						end, headlineFontDataState),
 						Size = UDim2.fromOffset(0, 0),
 					}),
 					_new("TextLabel")({
@@ -327,21 +359,21 @@ function Interface.ColdFusion.new(
 						AutomaticSize = Enum.AutomaticSize.XY,
 						TextWrapped = true,
 						TextXAlignment = Enum.TextXAlignment.Left,
-						TextSize = _Computed(function(s: Style): number
-							return s:GetTextSize(Enums.FontType.BodyMedium)
-						end, styleState),
-						LineHeight = _Computed(function(s: Style): number
-							return s:GetLineHeight(Enums.FontType.BodyMedium)
-						end, styleState),
-						FontFace = _Computed(function(s: Style): Font
-							return s:GetFont(Enums.FontType.BodyMedium)
-						end, styleState),
+						TextSize = _Computed(function(f: FontData, sc: number): number
+							return Typography.getTextSize(f.Size, sc)
+						end, bodyFontDataState, scaleState),
+						LineHeight = _Computed(function(f: FontData, sc: number): number
+							return Typography.getGuiLineHeight(f.LineHeight, f.Size)
+						end, bodyFontDataState, scaleState),
+						FontFace = _Computed(function(f: FontData): Font
+							return f.Font
+						end, bodyFontDataState),
 						Size = UDim2.fromOffset(0, 0),
 						Children = {
 							_new("UISizeConstraint")({
-								MinSize = _Computed(function(s: Style): Vector2
-									return Vector2.new(s.Scale * MIN_DESC_WIDTH_DP, 0)
-								end, styleState),
+								MinSize = _Computed(function(sc: number): Vector2
+									return Vector2.new(sc * MIN_DESC_WIDTH_DP, 0)
+								end, scaleState),
 							}),
 						},
 					}),
@@ -369,13 +401,15 @@ function Interface.ColdFusion.new(
 			_Computed(function(bData: ButtonData?): ImageData?
 				return if bData then bData.Icon else nil
 			end, buttonDataState),
-			styleState,
 			buttonTextColorState,
 			disabledButtonTextColorState,
 			_Computed(function(bData: ButtonData?): boolean
 				return if bData then bData.Enabled else false
 			end, buttonDataState),
-			ELEVATION
+			ELEVATION,
+			schemeTypeState,
+			buttonFontDataState,
+			scaleState
 		)))({
 			LayoutOrder = i,
 			Visible = _Computed(function(bData: ButtonData?): boolean

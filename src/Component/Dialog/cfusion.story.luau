@@ -57,7 +57,11 @@ return function(frame: Frame)
 						style:GetColor(Enums.ColorRoleType.OnSurface),
 						style:GetColor(Enums.ColorRoleType.OnSurfaceVariant),
 						style:GetColor(Enums.ColorRoleType.SurfaceTint),
-						style
+						style.SchemeType,
+						Enums.FontType.HeadlineSmall,
+						Enums.FontType.BodyMedium,
+						Enums.FontType.LabelLarge,
+						style.Scale
 					)
 				)
 				button.Size = UDim2.fromScale(1, 1)
