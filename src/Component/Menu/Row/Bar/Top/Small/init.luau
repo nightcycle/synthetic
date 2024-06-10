@@ -22,6 +22,7 @@ type ImageData = Types.ImageData
 type OptionData = Types.OptionData
 type ButtonData = Types.ButtonData
 type Style = Style.Style
+type FontData = Types.FontData
 -- Constants
 -- Variables
 -- References
@@ -68,7 +69,21 @@ function newThemedComponent(
 			return s:GetColor(textColor)
 		end, styleState),
 		_import(elevation, 0),
-		style
+		_Computed(function(s: Style): any
+			return s.SchemeType
+		end, styleState),
+		_Computed(function(s: Style): FontData
+			return s:GetFontData(Enums.FontType.TitleLarge)
+		end, styleState),
+		_Computed(function(s: Style): FontData
+			return s:GetFontData(Enums.FontType.HeadlineMedium)
+		end, styleState),
+		_Computed(function(s: Style): FontData
+			return s:GetFontData(Enums.FontType.LabelLarge)
+		end, styleState),
+		_Computed(function(s: Style): number
+			return s.Scale
+		end, styleState)
 	)
 
 	maid:GiveTask(out.Destroying:Connect(function()
@@ -148,9 +163,27 @@ function Interface.ColdFusion.new(
 	navigation: CanBeState<ButtonData?>,
 	backgroundColor: CanBeState<Color3>,
 	textColor: CanBeState<Color3>,
-	elevation: CanBeState<number>
+	elevation: CanBeState<number>,
+	schemeType: CanBeState<Enums.SchemeType>,
+	titleFontData: CanBeState<FontData>,
+	subHeadingFontData: CanBeState<FontData>,
+	buttonFontData: CanBeState<FontData>,
+	scale: CanBeState<number>
 ): GuiObject
-	return TopBase.component(title, buttons, navigation, "Small", backgroundColor, textColor, elevation, style)
+	return TopBase.component(
+		title,
+		buttons,
+		navigation,
+		"Small",
+		backgroundColor,
+		textColor,
+		elevation,
+		schemeType,
+		titleFontData,
+		subHeadingFontData,
+		buttonFontData,
+		scale
+	)
 end
 
 return Interface

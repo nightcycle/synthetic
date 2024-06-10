@@ -13,6 +13,7 @@ local Types = require(_Package:WaitForChild("Types"))
 local IconButton = require(_Package:WaitForChild("Component"):WaitForChild("Button"):WaitForChild("IconButton"))
 local Style = require(_Package:WaitForChild("Style"))
 local Enums = require(_Package:WaitForChild("Enums"))
+local Theme = require(_Package:WaitForChild("Style"):WaitForChild("Theme"))
 
 -- Types
 type Maid = Maid.Maid
@@ -24,6 +25,7 @@ type OptionData = Types.OptionData
 type Signal = Signal.Signal
 type ButtonData = Types.ButtonData
 type Style = Style.Style
+type FontData = Types.FontData
 
 export type BarVariant = "Center" | "Small" | "Medium" | "Large"
 -- Constants
@@ -54,7 +56,12 @@ function Interface.component(
 	variant: CanBeState<BarVariant>,
 	backgroundColor: CanBeState<Color3>,
 	textColor: CanBeState<Color3>,
-	elevation: CanBeState<number>
+	elevation: CanBeState<number>,
+	schemeType: CanBeState<Enums.SchemeType>,
+	titleFontData: CanBeState<FontData>,
+	subHeadingFontData: CanBeState<FontData>,
+	buttonFontData: CanBeState<FontData>,
+	scale: CanBeState<number>
 ): GuiObject
 	local maid = Maid.new()
 
@@ -72,10 +79,12 @@ function Interface.component(
 		[number]: ButtonData,
 	}> = _import(buttons, {})
 
-	local styleState: State<Style> = _import(style, nil :: Style?)
-	local scaleState: State<number> = _Computed(function(s: Style): number
-		return s.Scale
-	end, styleState)
+	local scaleState: State<number> = _import(scale, 1)
+	local schemeTypeState: State<Enums.SchemeType> = _import(schemeType, Enums.SchemeType.Light)
+	local titleFontDataState: State<FontData> = _import(titleFontData, nil :: any)
+	local subHeadingFontDataState: State<FontData> = _import(subHeadingFontData, nil :: any)
+	local buttonFontDataState: State<FontData> = _import(buttonFontData, nil :: any)
+
 	local navState: State<ButtonData?> = _import(navigationButton, nil :: ButtonData?)
 	local variantState: State<BarVariant> = _import(variant, "Center" :: BarVariant)
 	local backgroundColorState: State<Color3> = _import(backgroundColor, Color3.new(1, 1, 1))
@@ -84,9 +93,9 @@ function Interface.component(
 
 	local inst = _new("Frame")({
 		AutomaticSize = Enum.AutomaticSize.XY,
-		BackgroundColor3 = _Computed(function(color: Color3, e: number, s: Style): Color3
-			return s:GetElevatedColor(color, e)
-		end, backgroundColorState, elevationState, styleState),
+		BackgroundColor3 = _Computed(function(color: Color3, e: number, st: Enums.SchemeType): Color3
+			return Theme.getElevatedColor(color, e, st)
+		end, backgroundColorState, elevationState, schemeTypeState),
 		Children = {
 			_new("UIListLayout")({
 				Padding = _Computed(function(s: number, var: BarVariant): UDim
@@ -126,9 +135,9 @@ function Interface.component(
 				AutomaticSize = Enum.AutomaticSize.X,
 				LayoutOrder = 2,
 				BackgroundTransparency = 1,
-				TextColor3 = _Computed(function(color: Color3, e: number, s: Style): Color3
-					return s:GetElevatedColor(color, e)
-				end, textColorState, elevationState, styleState),
+				TextColor3 = _Computed(function(color: Color3, e: number, st: Enums.SchemeType): Color3
+					return Theme.getElevatedColor(color, e, st)
+				end, textColorState, elevationState, schemeTypeState),
 				Visible = _Computed(function(var: BarVariant): boolean
 					return var == "Medium" or var == "Large"
 				end, variantState),
@@ -140,13 +149,9 @@ function Interface.component(
 					end
 				end, scaleState, variantState),
 				TextScaled = true,
-				FontFace = _Computed(function(s: Style, var: BarVariant): Font
-					if var == "Medium" then
-						return s:GetFont(Enums.FontType.HeadlineSmall)
-					else
-						return s:GetFont(Enums.FontType.HeadlineMedium)
-					end
-				end, styleState, variantState),
+				FontFace = _Computed(function(f: FontData): Font
+					return f.Font
+				end, subHeadingFontDataState),
 			}),
 		},
 	}) :: Frame
@@ -184,16 +189,16 @@ function Interface.component(
 				Visible = _Computed(function(var: BarVariant): boolean
 					return var == "Center"
 				end, variantState),
-				TextColor3 = _Computed(function(color: Color3, e: number, s: Style): Color3
-					return s:GetElevatedColor(color, e)
-				end, textColorState, elevationState, styleState),
+				TextColor3 = _Computed(function(color: Color3, e: number, st: Enums.SchemeType): Color3
+					return Theme.getElevatedColor(color, e, st)
+				end, textColorState, elevationState, schemeTypeState),
 				Size = _Computed(function(s: number): UDim2
 					return UDim2.fromOffset(0, UPPER_TEXT_HEIGHT_DP * s)
 				end, scaleState),
 				TextScaled = true,
-				FontFace = _Computed(function(s: Style): Font
-					return s:GetFont(Enums.FontType.TitleLarge)
-				end, styleState),
+				FontFace = _Computed(function(f: FontData): Font
+					return f.Font
+				end, titleFontDataState),
 			}),
 			_new("Frame")({
 				AutomaticSize = Enum.AutomaticSize.XY,
@@ -220,16 +225,16 @@ function Interface.component(
 						Visible = _Computed(function(var: BarVariant): boolean
 							return var == "Small"
 						end, variantState),
-						TextColor3 = _Computed(function(color: Color3, e: number, s: Style): Color3
-							return s:GetElevatedColor(color, e)
-						end, textColorState, elevationState, styleState),
+						TextColor3 = _Computed(function(color: Color3, e: number, st: Enums.SchemeType): Color3
+							return Theme.getElevatedColor(color, e, st)
+						end, textColorState, elevationState, schemeTypeState),
 						Size = _Computed(function(s: number): UDim2
 							return UDim2.fromOffset(0, UPPER_TEXT_HEIGHT_DP * s)
 						end, scaleState),
 						TextScaled = true,
-						FontFace = _Computed(function(s: Style): Font
-							return s:GetFont(Enums.FontType.TitleLarge)
-						end, styleState),
+						FontFace = _Computed(function(f: FontData): Font
+							return f.Font
+						end, titleFontDataState),
 					}),
 					_bind(IconButton.ColdFusion.new(
 						_Computed(function(nData: ButtonData?)
@@ -238,13 +243,15 @@ function Interface.component(
 						_Computed(function(nData: ButtonData?): ImageData
 							return if nData and nData.Icon then nData.Icon else ERROR_ICON
 						end, navState),
-						style,
 						textColor,
 						textColor,
 						_Computed(function(nData: ButtonData?): boolean
 							return if nData then nData.Enabled else false
 						end, navState),
-						elevation
+						elevation,
+						schemeTypeState,
+						buttonFontDataState,
+						scaleState
 					))({
 						LayoutOrder = 1,
 						Visible = _Computed(function(nData: ButtonData?): boolean
@@ -287,13 +294,15 @@ function Interface.component(
 			_Computed(function(nData: ButtonData?): ImageData
 				return if nData and nData.Icon then nData.Icon else ERROR_ICON
 			end, buttonData),
-			style,
 			textColor,
 			textColor,
 			_Computed(function(nData: ButtonData?): boolean
 				return if nData then nData.Enabled else false
 			end, buttonData),
-			elevation
+			elevation,
+			schemeTypeState,
+			buttonFontDataState,
+			scaleState
 		))({
 			LayoutOrder = i,
 			Visible = _Computed(function(nData: ButtonData?): boolean

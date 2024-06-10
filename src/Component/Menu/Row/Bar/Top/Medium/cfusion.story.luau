@@ -51,7 +51,11 @@ return function(frame: Frame)
 					style:GetColor(Enums.ColorRoleType.Primary),
 					style:GetColor(Enums.ColorRoleType.OnPrimary),
 					1,
-					style
+					style.SchemeType,
+					style:GetFontData(Enums.FontType.TitleLarge),
+					style:GetFontData(Enums.FontType.HeadlineSmall),
+					style:GetFontData(Enums.FontType.LabelLarge),
+					style.Scale
 				)
 			)
 
