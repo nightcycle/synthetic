@@ -28,6 +28,7 @@ Synthetic.Types = {
 	newButtonData = Types.newButtonData,
 	newOptionData = Types.newOptionData,
 	newImageData = Types.newImageData,
+	newFontData = Types.newFontData,
 }
 Synthetic.Style = Style
 Synthetic.Component = {
