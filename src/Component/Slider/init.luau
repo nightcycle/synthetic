@@ -12,6 +12,8 @@ local Types = require(_Package:WaitForChild("Types"))
 local Style = require(_Package:WaitForChild("Style"))
 local Util = require(_Package:WaitForChild("Util"))
 local Enums = require(_Package:WaitForChild("Enums"))
+local Theme = require(_Package:WaitForChild("Style"):WaitForChild("Theme"))
+local Typography = require(_Package:WaitForChild("Style"):WaitForChild("Typography"))
 
 -- Types
 type Maid = Maid.Maid
@@ -29,11 +31,12 @@ type SwitchRenderData = {
 	Background: AppearanceData,
 	Outline: AppearanceData,
 }
+type FontData = Types.FontData
 
 -- Constants
 local ICON_WIDTH_DP = 20
 local BAR_HEIGHT_DP = 16
-local CURSOR_HEIGHT_DP= 44
+local CURSOR_HEIGHT_DP = 44
 local CURSOR_WIDTH_PADDING_DP = 6
 local CURSOR_WIDTH_DP = 4
 local CURSOR_SELECTED_WIDTH_DP = 2
@@ -44,38 +47,38 @@ local BUBBLE_GAP_DP = 4
 local BUBBLE_UP_DOWN_PADDING = 12
 local BUBBLE_LEFT_RIGHT_PADDING = 16
 local ICON_PADDING_DP = 16
-local MIN_WIDTH_DP = CURSOR_HEIGHT_DP*4
+local MIN_WIDTH_DP = CURSOR_HEIGHT_DP * 4
 local RIGHT_CIRCLE_IMAGE = "rbxassetid://15562060748"
 local LEFT_CIRCLE_IMAGE = "rbxassetid://15562057345"
 local CIRCLE_IMAGE_RECT = Rect.new(256, 256, 256, 256)
-local DOT_DIAMETER_DP = BAR_HEIGHT_DP-(2*BAR_UP_DOWN_INNER_PADDING_DP)
+local DOT_DIAMETER_DP = BAR_HEIGHT_DP - (2 * BAR_UP_DOWN_INNER_PADDING_DP)
 
 -- Variables
 -- References
 -- Private Functions
-function newDot(colorState: CanBeState<Color3>, styleState: State<Style>): GuiObject
+function newDot(colorState: State<Color3>, scaleState: State<number>): GuiObject
 	local maid = Maid.new()
 	local _fuse = ColdFusion.fuse(maid)
-	
+
 	local _new = _fuse.new
 	local _bind = _fuse.bind
 	local _clone = _fuse.clone
 	local _import = _fuse.import
-	
+
 	local _Value = _fuse.Value
 	local _Computed = _fuse.Computed
 	local out = _new("Frame")({
 		BorderSizePixel = 0,
 		BackgroundColor3 = colorState,
-		Size = _Computed(function(s: Style): UDim2
-			return UDim2.fromOffset(DOT_DIAMETER_DP*s.Scale, DOT_DIAMETER_DP*s.Scale)
-		end, styleState),
-		AnchorPoint = Vector2.new(0.5,0.5),
+		Size = _Computed(function(sc: number): UDim2
+			return UDim2.fromOffset(DOT_DIAMETER_DP * sc, DOT_DIAMETER_DP * sc)
+		end, scaleState),
+		AnchorPoint = Vector2.new(0.5, 0.5),
 		Children = {
 			_new("UICorner")({
-				CornerRadius = UDim.new(0.5,0)
+				CornerRadius = UDim.new(0.5, 0),
 			}),
-		}
+		},
 	}) :: GuiObject
 	maid:GiveTask(out.Destroying:Connect(function()
 		maid:Destroy()
@@ -83,11 +86,9 @@ function newDot(colorState: CanBeState<Color3>, styleState: State<Style>): GuiOb
 	return out
 end
 
-
 local Interface = {}
 
 Interface.ColdFusion = {}
-
 
 function Interface.ColdFusion.onTertiary(
 	style: CanBeState<Style>,
@@ -100,15 +101,14 @@ function Interface.ColdFusion.onTertiary(
 	rightTextOrIcon: CanBeState<string | ImageData | nil>,
 	elevation: CanBeState<number>
 ): GuiObject
-
 	local maid = Maid.new()
 	local _fuse = ColdFusion.fuse(maid)
-	
+
 	local _new = _fuse.new
 	local _bind = _fuse.bind
 	local _clone = _fuse.clone
 	local _import = _fuse.import
-	
+
 	local _Value = _fuse.Value
 	local _Computed = _fuse.Computed
 
@@ -135,7 +135,15 @@ function Interface.ColdFusion.onTertiary(
 			return s:GetColor(Enums.ColorRoleType.OnTertiaryContainer)
 		end, styleState),
 		elevation,
-		style
+		_Computed(function(s: Style): any
+			return s.SchemeType
+		end, styleState),
+		_Computed(function(s: Style): FontData
+			return s:GetFontData(Enums.FontType.LabelLarge)
+		end, styleState),
+		_Computed(function(s: Style): number
+			return s.Scale
+		end, styleState)
 	)
 	maid:GiveTask(out.Destroying:Connect(function()
 		maid:Destroy()
@@ -155,15 +163,14 @@ function Interface.ColdFusion.onSecondary(
 	rightTextOrIcon: CanBeState<string | ImageData | nil>,
 	elevation: CanBeState<number>
 ): GuiObject
-
 	local maid = Maid.new()
 	local _fuse = ColdFusion.fuse(maid)
-	
+
 	local _new = _fuse.new
 	local _bind = _fuse.bind
 	local _clone = _fuse.clone
 	local _import = _fuse.import
-	
+
 	local _Value = _fuse.Value
 	local _Computed = _fuse.Computed
 
@@ -190,7 +197,15 @@ function Interface.ColdFusion.onSecondary(
 			return s:GetColor(Enums.ColorRoleType.OnSecondaryContainer)
 		end, styleState),
 		elevation,
-		style
+		_Computed(function(s: Style): any
+			return s.SchemeType
+		end, styleState),
+		_Computed(function(s: Style): FontData
+			return s:GetFontData(Enums.FontType.LabelLarge)
+		end, styleState),
+		_Computed(function(s: Style): number
+			return s.Scale
+		end, styleState)
 	)
 	maid:GiveTask(out.Destroying:Connect(function()
 		maid:Destroy()
@@ -210,15 +225,14 @@ function Interface.ColdFusion.onPrimary(
 	rightTextOrIcon: CanBeState<string | ImageData | nil>,
 	elevation: CanBeState<number>
 ): GuiObject
-
 	local maid = Maid.new()
 	local _fuse = ColdFusion.fuse(maid)
-	
+
 	local _new = _fuse.new
 	local _bind = _fuse.bind
 	local _clone = _fuse.clone
 	local _import = _fuse.import
-	
+
 	local _Value = _fuse.Value
 	local _Computed = _fuse.Computed
 
@@ -245,7 +259,15 @@ function Interface.ColdFusion.onPrimary(
 			return s:GetColor(Enums.ColorRoleType.OnPrimaryContainer)
 		end, styleState),
 		elevation,
-		style
+		_Computed(function(s: Style): any
+			return s.SchemeType
+		end, styleState),
+		_Computed(function(s: Style): FontData
+			return s:GetFontData(Enums.FontType.LabelLarge)
+		end, styleState),
+		_Computed(function(s: Style): number
+			return s.Scale
+		end, styleState)
 	)
 	maid:GiveTask(out.Destroying:Connect(function()
 		maid:Destroy()
@@ -265,15 +287,14 @@ function Interface.ColdFusion.tertiary(
 	rightTextOrIcon: CanBeState<string | ImageData | nil>,
 	elevation: CanBeState<number>
 ): GuiObject
-
 	local maid = Maid.new()
 	local _fuse = ColdFusion.fuse(maid)
-	
+
 	local _new = _fuse.new
 	local _bind = _fuse.bind
 	local _clone = _fuse.clone
 	local _import = _fuse.import
-	
+
 	local _Value = _fuse.Value
 	local _Computed = _fuse.Computed
 
@@ -300,7 +321,15 @@ function Interface.ColdFusion.tertiary(
 			return s:GetColor(Enums.ColorRoleType.TertiaryContainer)
 		end, styleState),
 		elevation,
-		style
+		_Computed(function(s: Style): any
+			return s.SchemeType
+		end, styleState),
+		_Computed(function(s: Style): FontData
+			return s:GetFontData(Enums.FontType.LabelLarge)
+		end, styleState),
+		_Computed(function(s: Style): number
+			return s.Scale
+		end, styleState)
 	)
 	maid:GiveTask(out.Destroying:Connect(function()
 		maid:Destroy()
@@ -320,15 +349,14 @@ function Interface.ColdFusion.secondary(
 	rightTextOrIcon: CanBeState<string | ImageData | nil>,
 	elevation: CanBeState<number>
 ): GuiObject
-
 	local maid = Maid.new()
 	local _fuse = ColdFusion.fuse(maid)
-	
+
 	local _new = _fuse.new
 	local _bind = _fuse.bind
 	local _clone = _fuse.clone
 	local _import = _fuse.import
-	
+
 	local _Value = _fuse.Value
 	local _Computed = _fuse.Computed
 
@@ -355,7 +383,15 @@ function Interface.ColdFusion.secondary(
 			return s:GetColor(Enums.ColorRoleType.SecondaryContainer)
 		end, styleState),
 		elevation,
-		style
+		_Computed(function(s: Style): any
+			return s.SchemeType
+		end, styleState),
+		_Computed(function(s: Style): FontData
+			return s:GetFontData(Enums.FontType.LabelLarge)
+		end, styleState),
+		_Computed(function(s: Style): number
+			return s.Scale
+		end, styleState)
 	)
 	maid:GiveTask(out.Destroying:Connect(function()
 		maid:Destroy()
@@ -375,15 +411,14 @@ function Interface.ColdFusion.primary(
 	rightTextOrIcon: CanBeState<string | ImageData | nil>,
 	elevation: CanBeState<number>
 ): GuiObject
-
 	local maid = Maid.new()
 	local _fuse = ColdFusion.fuse(maid)
-	
+
 	local _new = _fuse.new
 	local _bind = _fuse.bind
 	local _clone = _fuse.clone
 	local _import = _fuse.import
-	
+
 	local _Value = _fuse.Value
 	local _Computed = _fuse.Computed
 
@@ -410,7 +445,15 @@ function Interface.ColdFusion.primary(
 			return s:GetColor(Enums.ColorRoleType.PrimaryContainer)
 		end, styleState),
 		elevation,
-		style
+		_Computed(function(s: Style): any
+			return s.SchemeType
+		end, styleState),
+		_Computed(function(s: Style): FontData
+			return s:GetFontData(Enums.FontType.LabelLarge)
+		end, styleState),
+		_Computed(function(s: Style): number
+			return s.Scale
+		end, styleState)
 	)
 	maid:GiveTask(out.Destroying:Connect(function()
 		maid:Destroy()
@@ -418,7 +461,6 @@ function Interface.ColdFusion.primary(
 
 	return out
 end
-
 
 function Interface.ColdFusion.new(
 	onChange: CanBeState<(onChange: number) -> ()>,
@@ -432,7 +474,10 @@ function Interface.ColdFusion.new(
 	onBackgroundTextColor: CanBeState<Color3>,
 	fillColor: CanBeState<Color3>,
 	fillContainerColor: CanBeState<Color3>,
-	elevation: CanBeState<number>
+	elevation: CanBeState<number>,
+	schemeType: CanBeState<Enums.SchemeType>,
+	fontData: CanBeState<FontData>,
+	scale: CanBeState<number>
 ): GuiObject
 	local maid = Maid.new()
 
@@ -446,27 +491,30 @@ function Interface.ColdFusion.new(
 	local _Value = _fuse.Value
 	local _Computed = _fuse.Computed
 
-	local styleState: State<Style> = _import(style, nil :: any)
+	local scaleState: State<number> = _import(scale, 1)
+	local schemeTypeState: State<Enums.SchemeType> = _import(schemeType, Enums.SchemeType.Light)
+	local fontDataState: State<FontData> = _import(fontData, nil :: any)
+
 	local onChangeState: State<(val: number) -> ()> = _import(onChange, nil :: any)
 
 	local elevationState = _import(elevation, 0)
 
-	local onBackgroundColorState = _Computed(function(c: Color3, e: number, s: Style): Color3
-		return s:GetElevatedColor(c, e)
-	end, _import(onBackgroundColor, Color3.new()), elevationState, styleState)
+	local onBackgroundColorState = _Computed(function(c: Color3, e: number, st: Enums.SchemeType): Color3
+		return Theme.getElevatedColor(c, e, st)
+	end, _import(onBackgroundColor, Color3.new()), elevationState, schemeTypeState)
 
-	local onBackgroundTextColorState = _Computed(function(c: Color3, e: number, s: Style): Color3
-		return s:GetElevatedColor(c, e)
-	end, _import(onBackgroundTextColor, Color3.new()), elevationState, styleState)
+	local onBackgroundTextColorState = _Computed(function(c: Color3, e: number, st: Enums.SchemeType): Color3
+		return Theme.getElevatedColor(c, e, st)
+	end, _import(onBackgroundTextColor, Color3.new()), elevationState, schemeTypeState)
 
-	local fillColorState = _Computed(function(c: Color3, e: number, s: Style): Color3
-		return s:GetElevatedColor(c, e)
-	end, _import(fillColor, Color3.new()), elevationState, styleState)
+	local fillColorState = _Computed(function(c: Color3, e: number, st: Enums.SchemeType): Color3
+		return Theme.getElevatedColor(c, e, st)
+	end, _import(fillColor, Color3.new()), elevationState, schemeTypeState)
 
-	local fillContainerColorState = _Computed(function(c: Color3, e: number, s: Style): Color3
-		return s:GetElevatedColor(c, e)
-	end, _import(fillContainerColor, Color3.new()), elevationState, styleState)
-	
+	local fillContainerColorState = _Computed(function(c: Color3, e: number, st: Enums.SchemeType): Color3
+		return Theme.getElevatedColor(c, e, st)
+	end, _import(fillContainerColor, Color3.new()), elevationState, schemeTypeState)
+
 	local leftLabelState: State<string | ImageData | nil> = _import(leftTextOrIcon, nil :: ImageData?)
 	local rightLabelState: State<string | ImageData | nil> = _import(rightTextOrIcon, nil :: ImageData?)
 	local initialValueState: State<number> = _import(initialValue, 50)
@@ -477,34 +525,43 @@ function Interface.ColdFusion.new(
 
 	local isSelectedState = _Value(false)
 
-	local iconSizeState = _Computed(function(s: Style): UDim2
-		return UDim2.fromOffset(s.Scale*ICON_WIDTH_DP, s.Scale*ICON_WIDTH_DP)
-	end, styleState)
+	local iconSizeState = _Computed(function(sc: number): UDim2
+		return UDim2.fromOffset(sc * ICON_WIDTH_DP, sc * ICON_WIDTH_DP)
+	end, scaleState)
 
-	local cursorFullWidthState = _Computed(function(s: Style, isSel: boolean): UDim
-		return UDim.new(0, s.Scale*((if isSel then CURSOR_SELECTED_WIDTH_DP else CURSOR_WIDTH_DP)+CURSOR_WIDTH_PADDING_DP*2))
-	end, styleState, isSelectedState)
+	local cursorFullWidthState = _Computed(function(sc: number, isSel: boolean): UDim
+		return UDim.new(
+			0,
+			sc * ((if isSel then CURSOR_SELECTED_WIDTH_DP else CURSOR_WIDTH_DP) + CURSOR_WIDTH_PADDING_DP * 2)
+		)
+	end, scaleState, isSelectedState)
 
 	local inputState: ValueState<number?> = _Value(nil :: number?)
 
-	local pointFillState = _Computed(function(initial: number, input: number?, min: number, max: number, inc: number?): number
-		local rawVal = math.clamp(input or initial, min, max)
-		if inc then
-			return math.round(rawVal / inc)*inc
-		else
-			return rawVal
-		end
-	end, initialValueState, inputState, minState, maxState, incrementState)
+	local pointFillState = _Computed(
+		function(initial: number, input: number?, min: number, max: number, inc: number?): number
+			local rawVal = math.clamp(input or initial, min, max)
+			if inc then
+				return math.round(rawVal / inc) * inc
+			else
+				return rawVal
+			end
+		end,
+		initialValueState,
+		inputState,
+		minState,
+		maxState,
+		incrementState
+	)
 
 	local fillState = _Computed(function(point: number, min: number, max: number, inc: number?): number
-		local rawVal = math.clamp(point, min, max) / math.max(max-min, 1)
+		local rawVal = math.clamp(point, min, max) / math.max(max - min, 1)
 		if inc then
-			return math.round(rawVal * inc)/inc
+			return math.round(rawVal * inc) / inc
 		else
 			return rawVal
 		end
 	end, pointFillState, minState, maxState, incrementState)
-
 
 	local incrementMaid = maid:GiveTask(Maid.new())
 
@@ -519,9 +576,9 @@ function Interface.ColdFusion.new(
 		SliceCenter = CIRCLE_IMAGE_RECT,
 		SliceScale = 1,
 		ScaleType = Enum.ScaleType.Slice,
-		Size = _Computed(function(s: Style, fill: number, fullWidth: UDim): UDim2
-			return UDim2.new(math.max(fill-fullWidth.Scale*0.5, 0), -fullWidth.Offset*0.5, 0, s.Scale*BAR_HEIGHT_DP)
-		end, styleState, fillState, cursorFullWidthState),
+		Size = _Computed(function(sc: number, fill: number, fullWidth: UDim): UDim2
+			return UDim2.new(math.max(fill - sc * 0.5, 0), -fullWidth.Offset * 0.5, 0, sc * BAR_HEIGHT_DP)
+		end, scaleState, fillState, cursorFullWidthState),
 	}) :: ImageLabel
 
 	local rightBar = _new("ImageLabel")({
@@ -535,9 +592,14 @@ function Interface.ColdFusion.new(
 		SliceCenter = CIRCLE_IMAGE_RECT,
 		SliceScale = 1,
 		ScaleType = Enum.ScaleType.Slice,
-		Size = _Computed(function(s: Style, fill: number, fullWidth: UDim): UDim2
-			return UDim2.new(math.max((1-fill)-fullWidth.Scale*0.5, 0), -fullWidth.Offset*0.5, 0, s.Scale*BAR_HEIGHT_DP)
-		end, styleState, fillState, cursorFullWidthState),
+		Size = _Computed(function(sc: number, fill: number, fullWidth: UDim): UDim2
+			return UDim2.new(
+				math.max((1 - fill) - fullWidth.Scale * 0.5, 0),
+				-fullWidth.Offset * 0.5,
+				0,
+				sc * BAR_HEIGHT_DP
+			)
+		end, scaleState, fillState, cursorFullWidthState),
 	}) :: ImageLabel
 
 	local cursor = _new("Frame")({
@@ -552,67 +614,64 @@ function Interface.ColdFusion.new(
 		end, fillState),
 		AutomaticSize = Enum.AutomaticSize.None,
 		BackgroundTransparency = 0,
-		Size = _Computed(function(s: Style, fullWidth: UDim, isSel: boolean): UDim2
-			return UDim2.fromOffset(s.Scale*(if isSel then CURSOR_SELECTED_WIDTH_DP else CURSOR_WIDTH_DP), s.Scale*CURSOR_HEIGHT_DP)
-		end, styleState, cursorFullWidthState, isSelectedState),
+		Size = _Computed(function(sc: number, fullWidth: UDim, isSel: boolean): UDim2
+			return UDim2.fromOffset(
+				sc * (if isSel then CURSOR_SELECTED_WIDTH_DP else CURSOR_WIDTH_DP),
+				sc * CURSOR_HEIGHT_DP
+			)
+		end, scaleState, cursorFullWidthState, isSelectedState),
 		Children = {
 			_new("UICorner")({
-				CornerRadius = UDim.new(0.5,0)
-			})
+				CornerRadius = UDim.new(0.5, 0),
+			}),
 		},
 	}) :: Frame
 	local dotContainer = _new("Frame")({
 		ZIndex = 5,
-		Position = UDim2.fromScale(0.5,0.5),
+		Position = UDim2.fromScale(0.5, 0.5),
 		AnchorPoint = Vector2.new(0.5, 0.5),
 		AutomaticSize = Enum.AutomaticSize.None,
 		BackgroundTransparency = 1,
-		Size = _Computed(function(s: Style): UDim2
-			return UDim2.new(1, 0, s.Scale*CURSOR_HEIGHT_DP, 0)
-		end, styleState),
+		Size = _Computed(function(sc: number): UDim2
+			return UDim2.new(1, 0, sc * CURSOR_HEIGHT_DP, 0)
+		end, scaleState),
 		Children = {
-			maid:GiveTask(Util.Padding.ColdFusion.fromStyle(
-				BAR_LEFT_RIGHT_INNER_PADDING_DP*2,
-				BAR_UP_DOWN_INNER_PADDING_DP*2,
-				styleState
+			maid:GiveTask(Util.Padding.ColdFusion.new(
+				_Computed(function(sc: number): UDim
+					return UDim.new(0, sc * BAR_LEFT_RIGHT_INNER_PADDING_DP)
+				end, scaleState),
+				_Computed(function(sc: number): UDim
+					return UDim.new(0, sc * BAR_UP_DOWN_INNER_PADDING_DP)
+				end, scaleState)
 			)) :: Instance,
 			_new("UICorner")({
-				CornerRadius = UDim.new(0.5,0)
-			})
+				CornerRadius = UDim.new(0.5, 0),
+			}),
 		},
 	}) :: Frame
 
-	
 	local function updateIncrementMarks()
 		incrementMaid:DoCleaning()
-
 
 		local inc = incrementState:Get()
 		if inc then
 			local val = pointFillState:Get()
 			local min, max = minState:Get(), maxState:Get()
-			local count = (max-min)/inc
+			local count = (max - min) / inc
 			local limit = math.ceil(count)
-			for i=0, limit do
-				local alpha = (i/limit)
+			for i = 0, limit do
+				local alpha = (i / limit)
 
-				local v = i*inc + min
+				local v = i * inc + min
 				if v < val then
-					local dot = incrementMaid:GiveTask(newDot(
-						fillContainerColorState,
-						styleState
-					))
+					local dot = incrementMaid:GiveTask(newDot(fillContainerColorState, scaleState))
 					dot.Position = UDim2.fromScale(alpha, 0.5)
 					dot.Parent = dotContainer
 				elseif v > val then
-					local dot = incrementMaid:GiveTask(newDot(
-						fillColorState,
-						styleState
-					))
+					local dot = incrementMaid:GiveTask(newDot(fillColorState, scaleState))
 					dot.Position = UDim2.fromScale(alpha, 0.5)
 					dot.Parent = dotContainer
 				end
-		
 			end
 		end
 	end
@@ -624,26 +683,33 @@ function Interface.ColdFusion.new(
 		updateIncrementMarks()
 		onChangeState:Get()(pointFillState:Get())
 	end))
-	_bind(maid:GiveTask(Util.PopUp.ColdFusion.fromGuiObject(
-		cursor,
-		Vector2.new(0.5, -(BUBBLE_GAP_DP/BAR_HEIGHT_DP)),
-		Vector2.new(0.5, 1)
-	)))({
+	_bind(
+		maid:GiveTask(
+			Util.PopUp.ColdFusion.fromGuiObject(
+				cursor,
+				Vector2.new(0.5, -(BUBBLE_GAP_DP / BAR_HEIGHT_DP)),
+				Vector2.new(0.5, 1)
+			)
+		)
+	)({
 		Visible = isSelectedState,
 		BackgroundTransparency = 0,
 		BackgroundColor3 = onBackgroundColorState,
 		AutomaticSize = Enum.AutomaticSize.XY,
 		Children = {
 			maid:GiveTask(Util.List.ColdFusion.center()) :: Instance,
-			maid:GiveTask(Util.Padding.ColdFusion.fromStyle(
-				BUBBLE_LEFT_RIGHT_PADDING, 
-				BUBBLE_UP_DOWN_PADDING, 
-				styleState
+			maid:GiveTask(Util.Padding.ColdFusion.new(
+				_Computed(function(sc: number): UDim
+					return UDim.new(0, sc * BUBBLE_LEFT_RIGHT_PADDING)
+				end, scaleState),
+				_Computed(function(sc: number): UDim
+					return UDim.new(0, sc * BUBBLE_UP_DOWN_PADDING)
+				end, scaleState)
 			)),
 			_new("UICorner")({
-				CornerRadius= _Computed(function(s: Style, isSel: boolean): UDim
-					return UDim.new(0, s.Scale*BUBBLE_LEFT_RIGHT_PADDING)
-				end, styleState, isSelectedState)
+				CornerRadius = _Computed(function(sc: number, isSel: boolean): UDim
+					return UDim.new(0, sc * BUBBLE_LEFT_RIGHT_PADDING)
+				end, scaleState, isSelectedState),
 			}),
 			_new("TextLabel")({
 				Text = _Computed(function(fill: number): string
@@ -654,18 +720,18 @@ function Interface.ColdFusion.new(
 				TextTransparency = 0,
 				BackgroundTransparency = 1,
 				AutomaticSize = Enum.AutomaticSize.XY,
-				TextSize = _Computed(function(s: Style): number
-					return s:GetTextSize(Enums.FontType.LabelLarge)
-				end, styleState),
-				LineHeight = _Computed(function(s: Style): number
-					return s:GetLineHeight(Enums.FontType.LabelLarge)
-				end, styleState),
-				FontFace = _Computed(function(s: Style): Font
-					return s:GetFont(Enums.FontType.LabelLarge)
-				end, styleState),
+				TextSize = _Computed(function(f: FontData, sc: number): number
+					return Typography.getTextSize(f.Size, sc)
+				end, fontDataState, scaleState),
+				LineHeight = _Computed(function(f: FontData, sc: number): number
+					return Typography.getGuiLineHeight(f.LineHeight, f.Size)
+				end, fontDataState, scaleState),
+				FontFace = _Computed(function(f: FontData): Font
+					return f.Font
+				end, fontDataState),
 				Size = UDim2.fromOffset(0, 0),
 			}),
-		}
+		},
 	})
 
 	maid:GiveTask(RunService.RenderStepped:Connect(function()
@@ -694,9 +760,9 @@ function Interface.ColdFusion.new(
 			}),
 			_new("UISizeConstraint")({
 				MaxSize = Vector2.new(math.huge, math.huge),
-				MinSize = _Computed(function(s: Style): Vector2
-					return Vector2.new(s.Scale*MIN_WIDTH_DP, 0)
-				end, styleState)
+				MinSize = _Computed(function(sc: number): Vector2
+					return Vector2.new(sc * MIN_WIDTH_DP, 0)
+				end, scaleState),
 			}),
 			cursor,
 			dotContainer,
@@ -708,21 +774,24 @@ function Interface.ColdFusion.new(
 		isSelectedState:Set(false)
 	end))
 	maid:GiveTask(button.InputBegan:Connect(function(inputObject: InputObject)
-		if inputObject.UserInputType == Enum.UserInputType.MouseButton1 or inputObject.UserInputType == Enum.UserInputType.Touch then
-			inputState:Set(100*(inputObject.Position.X-button.AbsolutePosition.X)/(button.AbsoluteSize.X))
+		if
+			inputObject.UserInputType == Enum.UserInputType.MouseButton1
+			or inputObject.UserInputType == Enum.UserInputType.Touch
+		then
+			inputState:Set(100 * (inputObject.Position.X - button.AbsolutePosition.X) / button.AbsoluteSize.X)
 		end
 	end))
 	maid:GiveTask(button.InputChanged:Connect(function(inputObject: InputObject)
 		if inputObject.UserInputType == Enum.UserInputType.MouseMovement and isSelectedState:Get() then
-			inputState:Set(100*(inputObject.Position.X-button.AbsolutePosition.X)/(button.AbsoluteSize.X))
+			inputState:Set(100 * (inputObject.Position.X - button.AbsolutePosition.X) / button.AbsoluteSize.X)
 		end
 	end))
 	local inst = _new("Frame")({
 		AutomaticSize = Enum.AutomaticSize.None,
 		BackgroundTransparency = 1,
-		Size = _Computed(function(s: Style): UDim2
-			return UDim2.fromOffset(0, s.Scale*CURSOR_HEIGHT_DP)
-		end, styleState),
+		Size = _Computed(function(sc: number): UDim2
+			return UDim2.fromOffset(0, sc * CURSOR_HEIGHT_DP)
+		end, scaleState),
 		Children = {
 			_new("TextLabel")({
 				Text = _Computed(function(icon: ImageData | string | nil): string | nil
@@ -737,15 +806,15 @@ function Interface.ColdFusion.new(
 				TextTransparency = 0,
 				BackgroundTransparency = 1,
 				AutomaticSize = Enum.AutomaticSize.XY,
-				TextSize = _Computed(function(s: Style): number
-					return s:GetTextSize(Enums.FontType.LabelLarge)
-				end, styleState),
-				LineHeight = _Computed(function(s: Style): number
-					return s:GetLineHeight(Enums.FontType.LabelLarge)
-				end, styleState),
-				FontFace = _Computed(function(s: Style): Font
-					return s:GetFont(Enums.FontType.LabelLarge)
-				end, styleState),
+				TextSize = _Computed(function(f: FontData, sc: number): number
+					return Typography.getTextSize(f.Size, sc)
+				end, fontDataState, scaleState),
+				LineHeight = _Computed(function(f: FontData, sc: number): number
+					return Typography.getGuiLineHeight(f.LineHeight, f.Size)
+				end, fontDataState, scaleState),
+				FontFace = _Computed(function(f: FontData): Font
+					return f.Font
+				end, fontDataState),
 				Size = UDim2.fromOffset(0, 0),
 			}),
 			_new("TextLabel")({
@@ -761,37 +830,45 @@ function Interface.ColdFusion.new(
 				TextTransparency = 0,
 				BackgroundTransparency = 1,
 				AutomaticSize = Enum.AutomaticSize.XY,
-				TextSize = _Computed(function(s: Style): number
-					return s:GetTextSize(Enums.FontType.LabelLarge)
-				end, styleState),
-				LineHeight = _Computed(function(s: Style): number
-					return s:GetLineHeight(Enums.FontType.LabelLarge)
-				end, styleState),
-				FontFace = _Computed(function(s: Style): Font
-					return s:GetFont(Enums.FontType.LabelLarge)
-				end, styleState),
+				TextSize = _Computed(function(f: FontData, sc: number): number
+					return Typography.getTextSize(f.Size, sc)
+				end, fontDataState, scaleState),
+				LineHeight = _Computed(function(f: FontData, sc: number): number
+					return Typography.getGuiLineHeight(f.LineHeight, f.Size)
+				end, fontDataState, scaleState),
+				FontFace = _Computed(function(f: FontData): Font
+					return f.Font
+				end, fontDataState),
 				Size = UDim2.fromOffset(0, 0),
 			}),
-			_bind(maid:GiveTask(Util.ImageLabel.ColdFusion.new(
-				_Computed(function(icon: ImageData | string | nil): ImageData | nil
-					return if type(icon) == "table" then icon else nil
-				end, leftLabelState),
-				onBackgroundColorState,
-				nil
-			)))({
+			_bind(
+				maid:GiveTask(
+					Util.ImageLabel.ColdFusion.new(
+						_Computed(function(icon: ImageData | string | nil): ImageData | nil
+							return if type(icon) == "table" then icon else nil
+						end, leftLabelState),
+						onBackgroundColorState,
+						nil
+					)
+				)
+			)({
 				Visible = _Computed(function(icon: ImageData | string | nil): boolean
 					return type(icon) == "table"
 				end, leftLabelState),
 				LayoutOrder = 1,
 				Size = iconSizeState,
 			}) :: Instance,
-			_bind(maid:GiveTask(Util.ImageLabel.ColdFusion.new(
-				_Computed(function(icon: ImageData | string | nil): ImageData | nil
-					return if type(icon) == "table" then icon else nil
-				end, rightLabelState),
-				onBackgroundColorState,
-				nil
-			)))({
+			_bind(
+				maid:GiveTask(
+					Util.ImageLabel.ColdFusion.new(
+						_Computed(function(icon: ImageData | string | nil): ImageData | nil
+							return if type(icon) == "table" then icon else nil
+						end, rightLabelState),
+						onBackgroundColorState,
+						nil
+					)
+				)
+			)({
 				Visible = _Computed(function(icon: ImageData | string | nil): boolean
 					return type(icon) == "table"
 				end, rightLabelState),
@@ -799,19 +876,21 @@ function Interface.ColdFusion.new(
 				Size = iconSizeState,
 			}) :: Instance,
 			button,
-			maid:GiveTask(Util.List.ColdFusion.new(
-				Enum.VerticalAlignment.Center,
-				Enum.HorizontalAlignment.Center,
-				Enum.FillDirection.Horizontal,
-				_Computed(function(s: Style): UDim
-					return UDim.new(0, s.Scale*ICON_PADDING_DP)
-				end, styleState),
-				Enum.UIFlexAlignment.Fill,
-				Enum.UIFlexAlignment.None,
-				Enum.ItemLineAlignment.Center,
-				false
-			)),
-		}
+			maid:GiveTask(
+				Util.List.ColdFusion.new(
+					Enum.VerticalAlignment.Center,
+					Enum.HorizontalAlignment.Center,
+					Enum.FillDirection.Horizontal,
+					_Computed(function(sc: number): UDim
+						return UDim.new(0, sc * ICON_PADDING_DP)
+					end, scaleState),
+					Enum.UIFlexAlignment.Fill,
+					Enum.UIFlexAlignment.None,
+					Enum.ItemLineAlignment.Center,
+					false
+				)
+			),
+		},
 	}) :: Frame
 
 	maid:GiveTask(inst.Destroying:Connect(function()

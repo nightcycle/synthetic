@@ -222,6 +222,7 @@ function Interface.ColdFusion.new(
 	local scaleState: State<number> = _import(scale, 1)
 	local schemeTypeState: State<Enums.SchemeType> = _import(schemeType, Enums.SchemeType.Light)
 	local fontDataState: State<FontData> = _import(fontData, nil :: any)
+
 	local elevationState: State<number> = _import(elevation, 0)
 
 	local textColorState: State<Color3> = _import(textColor, Color3.new(1, 1, 1))
