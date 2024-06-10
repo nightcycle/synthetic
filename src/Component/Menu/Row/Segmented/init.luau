@@ -380,7 +380,9 @@ function Interface.ColdFusion.new(
 			_new("UIStroke")({
 				ApplyStrokeMode = Enum.ApplyStrokeMode.Border,
 				Color = _Computed(
-					function(rDatas: { [Enums.ButtonStateType]: { [Enums.SelectionState]: RenderData } }): Color3
+					function(
+						rDatas: { [Enums.ButtonStateType]: { [Enums.SelectionState]: RenderData } }
+					): Color3
 						return rDatas[Enums.ButtonStateType.Enabled][Enums.SelectionState.Unselected].Border.Color3
 					end,
 					renderDatasState
@@ -390,7 +392,9 @@ function Interface.ColdFusion.new(
 					return math.max(s * OUTLINE_WIDTH_DP * 1, 1)
 				end, scaleState),
 				Transparency = _Computed(
-					function(rDatas: { [Enums.ButtonStateType]: { [Enums.SelectionState]: RenderData } }): number
+					function(
+						rDatas: { [Enums.ButtonStateType]: { [Enums.SelectionState]: RenderData } }
+					): number
 						return rDatas[Enums.ButtonStateType.Enabled][Enums.SelectionState.Unselected].Border.Transparency
 					end,
 					renderDatasState
@@ -408,9 +412,12 @@ function Interface.ColdFusion.new(
 	local deselectAll = maid:GiveTask(Signal.new())
 
 	for i = 1, MAX_BUTTON_COUNT do
-		local optionDataState: State<OptionData?> = _Computed(function(o: { [number]: OptionData }): OptionData?
-			return o[i]
-		end, optionsState)
+		local optionDataState: State<OptionData?> = _Computed(
+			function(o: { [number]: OptionData }): OptionData?
+				return o[i]
+			end,
+			optionsState
+		)
 
 		local backgroundImageState = _Computed(function(o: { [number]: OptionData }): string
 			if #o > MAX_BUTTON_COUNT then
@@ -524,13 +531,17 @@ function Interface.ColdFusion.new(
 			Size = barSizeState,
 			BorderSizePixel = 0,
 			BackgroundTransparency = _Computed(
-				function(styleList: { [Enums.ButtonStateType]: { [Enums.SelectionState]: RenderData } }): number
+				function(
+					styleList: { [Enums.ButtonStateType]: { [Enums.SelectionState]: RenderData } }
+				): number
 					return styleList[Enums.ButtonStateType.Enabled][Enums.SelectionState.Unselected].Border.Transparency
 				end,
 				renderDatasState
 			),
 			BackgroundColor3 = _Computed(
-				function(styleList: { [Enums.ButtonStateType]: { [Enums.SelectionState]: RenderData } }): Color3
+				function(
+					styleList: { [Enums.ButtonStateType]: { [Enums.SelectionState]: RenderData } }
+				): Color3
 					return styleList[Enums.ButtonStateType.Enabled][Enums.SelectionState.Unselected].Border.Color3
 				end,
 				renderDatasState

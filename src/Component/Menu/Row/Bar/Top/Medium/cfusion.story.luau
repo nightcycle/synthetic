@@ -31,8 +31,12 @@ return function(frame: Frame)
 		listLayout.Parent = frame
 
 		local function build(isDarkMode: boolean, color: Color3)
-			local style =
-				Style.new(1, "Source Sans", if isDarkMode then Enums.SchemeType.Dark else Enums.SchemeType.Light, color)
+			local style = Style.new(
+				1,
+				"Source Sans",
+				if isDarkMode then Enums.SchemeType.Dark else Enums.SchemeType.Light,
+				color
+			)
 
 			local out = maid:GiveTask(
 				Module.ColdFusion.new(

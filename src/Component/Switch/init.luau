@@ -285,18 +285,23 @@ function Interface.ColdFusion.new(
 		end
 	end, initialSelectionState, clickCountState)
 
-	local iconState = _Computed(function(includeSel: boolean, includeDes: boolean, isSelected: boolean?): ImageData?
-		if isSelected == true then
-			if includeSel then
-				return ICONS.check
+	local iconState = _Computed(
+		function(includeSel: boolean, includeDes: boolean, isSelected: boolean?): ImageData?
+			if isSelected == true then
+				if includeSel then
+					return ICONS.check
+				end
+			elseif isSelected == false then
+				if includeDes then
+					return ICONS.close
+				end
 			end
-		elseif isSelected == false then
-			if includeDes then
-				return ICONS.close
-			end
-		end
-		return nil
-	end, includeSelectedIconState, includeDeselectedIconState, valueState)
+			return nil
+		end,
+		includeSelectedIconState,
+		includeDeselectedIconState,
+		valueState
+	)
 
 	local unselectedRenderDatasState = _Computed(
 		function(
@@ -423,7 +428,12 @@ function Interface.ColdFusion.new(
 	local isHoveredState = _Value(false)
 
 	local currentStateState = _Computed(
-		function(isEnab: boolean, isFocused: boolean, isPressed: boolean, isHovered: boolean): Enums.ButtonStateType
+		function(
+			isEnab: boolean,
+			isFocused: boolean,
+			isPressed: boolean,
+			isHovered: boolean
+		): Enums.ButtonStateType
 			if isEnab then
 				if isPressed then
 					return Enums.ButtonStateType.Pressed
@@ -470,7 +480,9 @@ function Interface.ColdFusion.new(
 	local buttonSizeState = _Computed(function(i: ImageData?, v: boolean): number
 		local size = if i
 			then INNER_BUTTON_YES_ICON_SIZE_DP
-			else if v then INNER_BUTTON_NO_ICON_SELECTED_SIZE_DP else INNER_BUTTON_NO_ICON_UNSELECTED_SIZE_DP
+			else if v
+				then INNER_BUTTON_NO_ICON_SELECTED_SIZE_DP
+				else INNER_BUTTON_NO_ICON_UNSELECTED_SIZE_DP
 		return size
 	end, iconState, valueState)
 
@@ -581,9 +593,13 @@ function Interface.ColdFusion.new(
 				AnchorPoint = _Computed(function(v: boolean): Vector2
 					return if v then Vector2.new(1, 0.5) else Vector2.new(0, 0.5)
 				end, valueState),
-				BackgroundTransparency = _Computed(function(renderData: SwitchRenderData, v: boolean?): number
-					return renderData.Button.Transparency
-				end, renderDataState, valueState),
+				BackgroundTransparency = _Computed(
+					function(renderData: SwitchRenderData, v: boolean?): number
+						return renderData.Button.Transparency
+					end,
+					renderDataState,
+					valueState
+				),
 				BorderSizePixel = 0,
 				BackgroundColor3 = _Computed(function(renderData: SwitchRenderData, v: boolean?): Color3
 					return renderData.Button.Color3

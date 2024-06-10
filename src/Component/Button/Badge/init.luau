@@ -187,7 +187,12 @@ function Interface.ColdFusion.new(
 	local isPressedState = _Value(false)
 	local isHoveredState = _Value(false)
 	local currentStateState = _Computed(
-		function(isEnab: boolean, isFocused: boolean, isPressed: boolean, isHovered: boolean): Enums.ButtonStateType
+		function(
+			isEnab: boolean,
+			isFocused: boolean,
+			isPressed: boolean,
+			isHovered: boolean
+		): Enums.ButtonStateType
 			if isEnab then
 				if isPressed then
 					return Enums.ButtonStateType.Pressed
@@ -482,9 +487,14 @@ function Interface.ColdFusion.new(
 									elevationState,
 									schemeTypeState
 								),
-								TextColor3 = _Computed(function(c: Color3, e: number, st: Enums.SchemeType): Color3
-									return Theme.getElevatedColor(c, e + 1, st)
-								end, errorTextColorState, elevationState, schemeTypeState),
+								TextColor3 = _Computed(
+									function(c: Color3, e: number, st: Enums.SchemeType): Color3
+										return Theme.getElevatedColor(c, e + 1, st)
+									end,
+									errorTextColorState,
+									elevationState,
+									schemeTypeState
+								),
 								Children = {
 									_new("UIPadding")({
 										PaddingLeft = _Computed(function(s: number): UDim

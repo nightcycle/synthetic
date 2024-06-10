@@ -68,7 +68,12 @@ Util.new = function(
 	local textScaleState = _import(textScale, 1)
 
 	local currentStateState = _Computed(
-		function(isEnab: boolean, isFocused: boolean, isPressed: boolean, isHovered: boolean): Enums.ButtonStateType
+		function(
+			isEnab: boolean,
+			isFocused: boolean,
+			isPressed: boolean,
+			isHovered: boolean
+		): Enums.ButtonStateType
 			if isEnab then
 				if isPressed then
 					return Enums.ButtonStateType.Pressed
@@ -155,15 +160,25 @@ Util.new = function(
 			alpha += deltaTime / 0.6
 
 			local moveAlpha = 1
-				- CurveUtil.ease(1 - math.clamp(alpha / 0.5, 0, 1), Enum.EasingStyle.Quad, Enum.EasingDirection.In)
-			local fadeAlpha =
-				CurveUtil.ease(math.clamp((alpha - 0.1) / 0.7, 0, 1), Enum.EasingStyle.Quad, Enum.EasingDirection.In)
+				- CurveUtil.ease(
+					1 - math.clamp(alpha / 0.5, 0, 1),
+					Enum.EasingStyle.Quad,
+					Enum.EasingDirection.In
+				)
+			local fadeAlpha = CurveUtil.ease(
+				math.clamp((alpha - 0.1) / 0.7, 0, 1),
+				Enum.EasingStyle.Quad,
+				Enum.EasingDirection.In
+			)
 
 			local baseColor = (renderDatasState:Get()[Enums.ButtonStateType.Enabled] :: RenderData).Background.Color3
 			local rippleColor = (Color3.new(1, 1, 1):Lerp(baseColor, 0.8)):Lerp(baseColor, fadeAlpha)
 
-			local leftOffset =
-				math.clamp(initialAlpha - moveAlpha, RIP_STEP, math.max(initialAlpha - RIP_STEP, RIP_STEP * 1.5))
+			local leftOffset = math.clamp(
+				initialAlpha - moveAlpha,
+				RIP_STEP,
+				math.max(initialAlpha - RIP_STEP, RIP_STEP * 1.5)
+			)
 			local rightOffset = math.clamp(
 				initialAlpha + moveAlpha,
 				math.min(initialAlpha + RIP_STEP, 1 - RIP_STEP * 1.5),
@@ -268,7 +283,12 @@ Util.new = function(
 						end, currentRenderDataState),
 						ScaleType = Enum.ScaleType.Slice,
 						AutomaticSize = Enum.AutomaticSize.XY,
-						SliceCenter = Rect.new(HALF_IMAGE_SIZE, HALF_IMAGE_SIZE, HALF_IMAGE_SIZE, HALF_IMAGE_SIZE),
+						SliceCenter = Rect.new(
+							HALF_IMAGE_SIZE,
+							HALF_IMAGE_SIZE,
+							HALF_IMAGE_SIZE,
+							HALF_IMAGE_SIZE
+						),
 						SliceScale = 1,
 						Children = {
 							_new("UIListLayout")({
@@ -292,12 +312,16 @@ Util.new = function(
 										return renderData.Background.Transparency
 									end
 								end, currentRenderDataState),
-								BackgroundColor3 = _Computed(function(renderData: RenderData, useRip: boolean): Color3
-									if useRip then
-										return Color3.new(1, 1, 1)
-									end
-									return renderData.Background.Color3
-								end, currentRenderDataState, useRippleState),
+								BackgroundColor3 = _Computed(
+									function(renderData: RenderData, useRip: boolean): Color3
+										if useRip then
+											return Color3.new(1, 1, 1)
+										end
+										return renderData.Background.Color3
+									end,
+									currentRenderDataState,
+									useRippleState
+								),
 								Active = isEnabledState,
 								AutomaticSize = Enum.AutomaticSize.X,
 								Size = _Computed(function(s: number, ts: number): UDim2
@@ -403,9 +427,12 @@ Util.new = function(
 										TextColor3 = _Computed(function(renderData: AppearanceData): Color3
 											return renderData.Color3
 										end, currentTextRenderData),
-										TextTransparency = _Computed(function(renderData: AppearanceData): number
-											return renderData.Transparency
-										end, currentTextRenderData),
+										TextTransparency = _Computed(
+											function(renderData: AppearanceData): number
+												return renderData.Transparency
+											end,
+											currentTextRenderData
+										),
 										Size = _Computed(function(s: number, ts: number): UDim2
 											return UDim2.fromOffset(0, s * ICON_SIZE_DP * ts)
 										end, scaleState, textScaleState),
@@ -437,7 +464,9 @@ Util.new = function(
 										end, iconState),
 										ImageTransparency = _Computed(
 											function(icon: ImageData?, renderData: AppearanceData?): number
-												return if icon and renderData then renderData.Transparency else 1
+												return if icon and renderData
+													then renderData.Transparency
+													else 1
 											end,
 											iconState,
 											currentTextRenderData
@@ -450,10 +479,18 @@ Util.new = function(
 									}),
 									_new("UIPadding")({
 										PaddingLeft = _Computed(
-											function(s: number, icon: ImageData?, txt: string, padScale: number): UDim
+											function(
+												s: number,
+												icon: ImageData?,
+												txt: string,
+												padScale: number
+											): UDim
 												if icon then
 													if txt:len() > 0 then
-														return UDim.new(0, padScale * LEFT_PADDING_WITH_ICON_DP * s)
+														return UDim.new(
+															0,
+															padScale * LEFT_PADDING_WITH_ICON_DP * s
+														)
 													else
 														return UDim.new(
 															0,
@@ -470,10 +507,18 @@ Util.new = function(
 											paddingScaleState
 										),
 										PaddingRight = _Computed(
-											function(s: number, icon: ImageData?, txt: string, padScale: number): UDim
+											function(
+												s: number,
+												icon: ImageData?,
+												txt: string,
+												padScale: number
+											): UDim
 												if icon then
 													if txt:len() > 0 then
-														return UDim.new(0, padScale * RIGHT_PADDING_WITH_ICON_DP * s)
+														return UDim.new(
+															0,
+															padScale * RIGHT_PADDING_WITH_ICON_DP * s
+														)
 													else
 														return UDim.new(
 															0,

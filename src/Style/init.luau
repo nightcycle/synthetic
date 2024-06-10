@@ -23,7 +23,12 @@ export type Style = {
 	_Typography: Typography,
 	GetElevatedColor: (self: Style, color: Color3, elevation: number) -> Color3,
 	GetColor: (self: Style, role: Enums.ColorRoleType, elevation: number?) -> Color3,
-	GetCustomColor: (self: Style, name: string, customType: Enums.CustomColorType, elevation: number?) -> Color3,
+	GetCustomColor: (
+		self: Style,
+		name: string,
+		customType: Enums.CustomColorType,
+		elevation: number?
+	) -> Color3,
 	GetFont: (self: Style, fontType: Enums.FontType) -> Font,
 	GetFontData: (self: Style, fontType: Enums.FontType) -> FontData,
 	GetTextSize: (self: Style, fontType: Enums.FontType) -> number,
@@ -73,7 +78,10 @@ function Style:GetTextSize(fontType: Enums.FontType): number
 end
 
 function Style:GetLineHeight(fontType: Enums.FontType): number
-	return Typography.getGuiLineHeight(self._Typography:Get(fontType).LineHeight, self._Typography:Get(fontType).Size)
+	return Typography.getGuiLineHeight(
+		self._Typography:Get(fontType).LineHeight,
+		self._Typography:Get(fontType).Size
+	)
 end
 
 function Style.new(

@@ -10,7 +10,8 @@ local MaterialIcons = require(_Packages:WaitForChild("MaterialIcons"))
 
 -- Modules
 local Types = require(_Package:WaitForChild("Types"))
-local IconButton = require(_Package:WaitForChild("Component"):WaitForChild("Button"):WaitForChild("IconButton"))
+local IconButton =
+	require(_Package:WaitForChild("Component"):WaitForChild("Button"):WaitForChild("IconButton"))
 local Style = require(_Package:WaitForChild("Style"))
 local Enums = require(_Package:WaitForChild("Enums"))
 local Theme = require(_Package:WaitForChild("Style"):WaitForChild("Theme"))
@@ -225,9 +226,14 @@ function Interface.new(
 						Visible = _Computed(function(var: BarVariant): boolean
 							return var == "Small"
 						end, variantState),
-						TextColor3 = _Computed(function(color: Color3, e: number, st: Enums.SchemeType): Color3
-							return Theme.getElevatedColor(color, e, st)
-						end, textColorState, elevationState, schemeTypeState),
+						TextColor3 = _Computed(
+							function(color: Color3, e: number, st: Enums.SchemeType): Color3
+								return Theme.getElevatedColor(color, e, st)
+							end,
+							textColorState,
+							elevationState,
+							schemeTypeState
+						),
 						Size = _Computed(function(s: number): UDim2
 							return UDim2.fromOffset(0, UPPER_TEXT_HEIGHT_DP * s)
 						end, scaleState),

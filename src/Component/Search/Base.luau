@@ -13,7 +13,8 @@ local ColdFusion = require(_Packages:WaitForChild("ColdFusion"))
 local MaterialIcons = require(_Packages:WaitForChild("MaterialIcons"))
 
 -- Modules
-local IconButton = require(_Package:WaitForChild("Component"):WaitForChild("Button"):WaitForChild("IconButton"))
+local IconButton =
+	require(_Package:WaitForChild("Component"):WaitForChild("Button"):WaitForChild("IconButton"))
 
 local Util = require(_Package:WaitForChild("Util"))
 local Types = require(_Package:WaitForChild("Types"))
@@ -370,12 +371,22 @@ function Base.newBar(
 		local labelMaid = Maid.new()
 		local fuse = ColdFusion.fuse(labelMaid)
 
-		local elevatedTextColorState = fuse.Computed(function(st: Enums.SchemeType, tC: Color3, e: number): Color3
-			return Theme.getElevatedColor(tC, e, st)
-		end, schemeTypeState, textColorState, nextElevationState)
-		local elevatedBackgroundColorState = fuse.Computed(function(st: Enums.SchemeType, tC: Color3, e: number): Color3
-			return Theme.getElevatedColor(tC, e, st)
-		end, schemeTypeState, backgroundColorState, nextElevationState)
+		local elevatedTextColorState = fuse.Computed(
+			function(st: Enums.SchemeType, tC: Color3, e: number): Color3
+				return Theme.getElevatedColor(tC, e, st)
+			end,
+			schemeTypeState,
+			textColorState,
+			nextElevationState
+		)
+		local elevatedBackgroundColorState = fuse.Computed(
+			function(st: Enums.SchemeType, tC: Color3, e: number): Color3
+				return Theme.getElevatedColor(tC, e, st)
+			end,
+			schemeTypeState,
+			backgroundColorState,
+			nextElevationState
+		)
 		local isHoveredState = fuse.Value(false)
 
 		local out = fuse.new("TextButton")({
@@ -483,7 +494,12 @@ function Base.newBar(
 	local isHoveredState = _Value(false)
 	local textScaleState = _import(1, 1)
 	local currentStateState = _Computed(
-		function(isEnab: boolean, isFocused: boolean, isPressed: boolean, isHovered: boolean): Enums.ButtonStateType
+		function(
+			isEnab: boolean,
+			isFocused: boolean,
+			isPressed: boolean,
+			isHovered: boolean
+		): Enums.ButtonStateType
 			if isEnab then
 				if isPressed then
 					return Enums.ButtonStateType.Pressed

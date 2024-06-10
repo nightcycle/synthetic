@@ -147,7 +147,12 @@ function Interface.new(
 	local inputValueState: ValueState<string?> = _Value(initialTextState:Get())
 
 	local buttonStateTypeState = _Computed(
-		function(isEnab: boolean, isFocused: boolean, isPressed: boolean, isHovered: boolean): Enums.ButtonStateType
+		function(
+			isEnab: boolean,
+			isFocused: boolean,
+			isPressed: boolean,
+			isHovered: boolean
+		): Enums.ButtonStateType
 			if isEnab then
 				if isPressed then
 					return Enums.ButtonStateType.Pressed
@@ -176,13 +181,18 @@ function Interface.new(
 		return if isFoc or (val and val:len() > 0) then true else false
 	end, isFocusedState, valueState)
 
-	local labelFontData: State<FontData> = _Computed(function(isMin: boolean, bF: FontData, sF: FontData): FontData
-		if isMin then
-			return sF
-		else
-			return bF
-		end
-	end, isLabelMinimizedState, bodyFontDataState, supportFontDataState)
+	local labelFontData: State<FontData> = _Computed(
+		function(isMin: boolean, bF: FontData, sF: FontData): FontData
+			if isMin then
+				return sF
+			else
+				return bF
+			end
+		end,
+		isLabelMinimizedState,
+		bodyFontDataState,
+		supportFontDataState
+	)
 
 	local rightIconState = _Computed(function(iE: boolean, d: { [number]: string }?, v: string?): ImageData?
 		if iE then
@@ -241,7 +251,9 @@ function Interface.new(
 			if isMin then
 				return UDim2.fromOffset(
 					0,
-					sc * Typography.getTextSize(f.Size, sc) * Typography.getGuiLineHeight(f.LineHeight, f.Size)
+					sc
+						* Typography.getTextSize(f.Size, sc)
+						* Typography.getGuiLineHeight(f.LineHeight, f.Size)
 				)
 			else
 				return UDim2.fromOffset(0, 0)
@@ -323,21 +335,34 @@ function Interface.new(
 							false
 						)
 					) :: Instance,
-					maid:GiveTask(Util.Padding.ColdFusion.new(
-						_Computed(function(sc: number, l: ImageData?): UDim
-							return if l
-								then UDim.new(0, sc * LEFT_RIGHT_YES_ICONS_PADDING_DP)
-								else UDim.new(0, sc * LEFT_RIGHT_NO_ICONS_PADDING_DP)
-						end, scaleState, leadingIconState),
-						UDim.new(0, 0)
-					)) :: Instance,
+					maid:GiveTask(
+						Util.Padding.ColdFusion.new(
+							_Computed(function(sc: number, l: ImageData?): UDim
+								return if l
+									then UDim.new(0, sc * LEFT_RIGHT_YES_ICONS_PADDING_DP)
+									else UDim.new(0, sc * LEFT_RIGHT_NO_ICONS_PADDING_DP)
+							end, scaleState, leadingIconState),
+							UDim.new(0, 0)
+						)
+					) :: Instance,
 					_bind(
 						maid:GiveTask(
 							Util.TextLabel.ColdFusion.new(
 								labelTextState,
-								_Computed(function(lCol: Color3, hCol: Color3, isFoc: boolean, isErr: boolean): Color3
-									return if isFoc or isErr then hCol else lCol
-								end, labelColorState, highlightColorState, isFocusedState, isErrorState),
+								_Computed(
+									function(
+										lCol: Color3,
+										hCol: Color3,
+										isFoc: boolean,
+										isErr: boolean
+									): Color3
+										return if isFoc or isErr then hCol else lCol
+									end,
+									labelColorState,
+									highlightColorState,
+									isFocusedState,
+									isErrorState
+								),
 								_Computed(function(isMin: boolean, isOut: boolean): number
 									if isOut then
 										return if isMin == true then 0 else 1
@@ -529,12 +554,23 @@ function Interface.new(
 									return if i then i.ImageRectSize else Vector2.zero
 								end, rightIconState),
 								BackgroundTransparency = 1,
-								ImageColor3 = _Computed(function(tCol: Color3, eCol: Color3, isErr: boolean): Color3
-									return if isErr then eCol else tCol
-								end, textColorState, errorColorState, isErrorState),
-								ImageTransparency = _Computed(function(i: ImageData?, isEnab: boolean): number
-									return if i ~= nil then if isEnab then 0 else DISABLED_TEXT_TRANSPARENCY else 1
-								end, rightIconState, isEnabledState),
+								ImageColor3 = _Computed(
+									function(tCol: Color3, eCol: Color3, isErr: boolean): Color3
+										return if isErr then eCol else tCol
+									end,
+									textColorState,
+									errorColorState,
+									isErrorState
+								),
+								ImageTransparency = _Computed(
+									function(i: ImageData?, isEnab: boolean): number
+										return if i ~= nil
+											then if isEnab then 0 else DISABLED_TEXT_TRANSPARENCY
+											else 1
+									end,
+									rightIconState,
+									isEnabledState
+								),
 								Size = _Computed(function(sc: number): UDim2
 									return UDim2.fromOffset(sc * ICON_WIDTH_DP, sc * ICON_WIDTH_DP)
 								end, scaleState),
@@ -574,14 +610,16 @@ function Interface.new(
 							false
 						)
 					) :: Instance,
-					maid:GiveTask(Util.Padding.ColdFusion.new(
-						_Computed(function(sc: number, l: ImageData?): UDim
-							return if l
-								then UDim.new(0, sc * LEFT_RIGHT_YES_ICONS_PADDING_DP)
-								else UDim.new(0, sc * LEFT_RIGHT_NO_ICONS_PADDING_DP)
-						end, scaleState, leadingIconState),
-						UDim.new(0, 0)
-					)) :: Instance,
+					maid:GiveTask(
+						Util.Padding.ColdFusion.new(
+							_Computed(function(sc: number, l: ImageData?): UDim
+								return if l
+									then UDim.new(0, sc * LEFT_RIGHT_YES_ICONS_PADDING_DP)
+									else UDim.new(0, sc * LEFT_RIGHT_NO_ICONS_PADDING_DP)
+							end, scaleState, leadingIconState),
+							UDim.new(0, 0)
+						)
+					) :: Instance,
 				},
 			}) :: Instance,
 			_bind(maid:GiveTask(Util.Container.ColdFusion.new()))({
@@ -601,14 +639,16 @@ function Interface.new(
 							false
 						)
 					) :: Instance,
-					maid:GiveTask(Util.Padding.ColdFusion.new(
-						_Computed(function(sc: number, l: ImageData?): UDim
-							return if l
-								then UDim.new(0, sc * LEFT_RIGHT_YES_ICONS_PADDING_DP)
-								else UDim.new(0, sc * LEFT_RIGHT_NO_ICONS_PADDING_DP)
-						end, scaleState, leadingIconState),
-						UDim.new(0, 0)
-					)) :: Instance,
+					maid:GiveTask(
+						Util.Padding.ColdFusion.new(
+							_Computed(function(sc: number, l: ImageData?): UDim
+								return if l
+									then UDim.new(0, sc * LEFT_RIGHT_YES_ICONS_PADDING_DP)
+									else UDim.new(0, sc * LEFT_RIGHT_NO_ICONS_PADDING_DP)
+							end, scaleState, leadingIconState),
+							UDim.new(0, 0)
+						)
+					) :: Instance,
 					_bind(
 						maid:GiveTask(
 							Util.TextLabel.ColdFusion.new(

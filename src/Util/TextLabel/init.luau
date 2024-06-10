@@ -50,7 +50,8 @@ function Util.ColdFusion.fromStyleSimple(
 	local textState: State<string> = _import(text, "")
 	local styleState: State<Style> = _import(style, nil :: any)
 	local fontTypeState: State<Enums.FontType> = _import(fontType, Enums.FontType.LabelMedium)
-	local colorRoleTypeState: State<Enums.ColorRoleType> = _import(colorRoleType, Enums.ColorRoleType.OnBackground)
+	local colorRoleTypeState: State<Enums.ColorRoleType> =
+		_import(colorRoleType, Enums.ColorRoleType.OnBackground)
 
 	local out = _new("TextLabel")({
 		Text = textState,
@@ -150,9 +151,13 @@ function Util.ColdFusion.new(
 				TextColor3 = textColor3State,
 				TextTransparency = textTransparencyState,
 				BackgroundTransparency = 1,
-				TextXAlignment = _Computed(function(i: ImageData?, alignment: Enum.TextXAlignment): Enum.TextXAlignment
-					return if i then Enum.TextXAlignment.Center else alignment
-				end, leftIconState, textXAlignmentState),
+				TextXAlignment = _Computed(
+					function(i: ImageData?, alignment: Enum.TextXAlignment): Enum.TextXAlignment
+						return if i then Enum.TextXAlignment.Center else alignment
+					end,
+					leftIconState,
+					textXAlignmentState
+				),
 				AutomaticSize = Enum.AutomaticSize.X,
 				TextSize = _Computed(function(f: FontData, sc: number): number
 					return Typography.getTextSize(f.Size, sc)

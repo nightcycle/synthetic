@@ -39,7 +39,10 @@ Synthetic.Component = {
 			Segmented = require(Component:WaitForChild("Menu"):WaitForChild("Row"):WaitForChild("Segmented")),
 			Bar = {
 				Bottom = require(
-					Component:WaitForChild("Menu"):WaitForChild("Row"):WaitForChild("Bar"):WaitForChild("Bottom")
+					Component:WaitForChild("Menu")
+						:WaitForChild("Row")
+						:WaitForChild("Bar")
+						:WaitForChild("Bottom")
 				),
 				Navigation = nil,
 				Top = {

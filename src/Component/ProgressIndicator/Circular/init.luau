@@ -362,7 +362,13 @@ function Interface.ColdFusion.new(
 			then { imageLabel }
 			else {
 				_bind(
-					newRotaryElement(maid, progressStartState, progressWidthState, fillColorState, transparencyState)
+					newRotaryElement(
+						maid,
+						progressStartState,
+						progressWidthState,
+						fillColorState,
+						transparencyState
+					)
 				)({
 					ZIndex = 2,
 					Name = "Fill",
@@ -422,7 +428,10 @@ function Interface.ColdFusion.new(
 			local fillCount = 0
 
 			local function getIfFilled(angle: number): boolean
-				return (angle >= startAngle and angle < (if midAngle > 360 or finishAngle > 360 then 360 else midAngle))
+				return (
+					angle >= startAngle
+					and angle < (if midAngle > 360 or finishAngle > 360 then 360 else midAngle)
+				)
 					or (
 						angle >= (if midAngle > 360 or finishAngle > 360 then 0 else midAngle)
 						and angle < finishAngle % 360

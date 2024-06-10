@@ -9,7 +9,8 @@ local MaterialIcons = require(_Packages:WaitForChild("MaterialIcons"))
 
 -- Modules
 local Types = require(_Package:WaitForChild("Types"))
-local IconButton = require(_Package:WaitForChild("Component"):WaitForChild("Button"):WaitForChild("IconButton"))
+local IconButton =
+	require(_Package:WaitForChild("Component"):WaitForChild("Button"):WaitForChild("IconButton"))
 local FAB = require(_Package:WaitForChild("Component"):WaitForChild("Button"):WaitForChild("FAB"))
 local Style = require(_Package:WaitForChild("Style"))
 local Enums = require(_Package:WaitForChild("Enums"))

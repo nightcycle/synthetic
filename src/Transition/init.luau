@@ -45,7 +45,8 @@ Util.Easing = {
 	end,
 	[Enums.TransitionType.Standard] = function(x: number): number
 		if x < STD_FLIP_POINT then
-			return CurveUtil.ease(x / STD_FLIP_POINT, Enum.EasingStyle.Cubic, Enum.EasingDirection.In) * STD_WEIGHT
+			return CurveUtil.ease(x / STD_FLIP_POINT, Enum.EasingStyle.Cubic, Enum.EasingDirection.In)
+				* STD_WEIGHT
 		else
 			return STD_WEIGHT
 				+ (1 - STD_WEIGHT)

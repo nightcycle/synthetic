@@ -19,8 +19,12 @@ return function(frame: Frame)
 	local maid = Maid.new()
 	task.spawn(function()
 		local function makeHalfFrame(isDarkMode: boolean, color: Color3): Frame
-			local style =
-				Style.new(1, "Source Sans", if isDarkMode then Enums.SchemeType.Dark else Enums.SchemeType.Light, color)
+			local style = Style.new(
+				1,
+				"Source Sans",
+				if isDarkMode then Enums.SchemeType.Dark else Enums.SchemeType.Light,
+				color
+			)
 
 			local halfFrame = maid:GiveTask(Instance.new("Frame"))
 			halfFrame.BackgroundColor3 = style:GetColor(Enums.ColorRoleType.Surface)
@@ -56,23 +60,26 @@ return function(frame: Frame)
 			end
 
 			do
-				local button = maid:GiveTask(Module.ColdFusion.primaryContainer(style, function(isSelected: boolean?)
-					print("is selected", isSelected)
-				end, true))
+				local button =
+					maid:GiveTask(Module.ColdFusion.primaryContainer(style, function(isSelected: boolean?)
+						print("is selected", isSelected)
+					end, true))
 				button.Parent = halfFrame
 			end
 
 			do
-				local button = maid:GiveTask(Module.ColdFusion.secondaryContainer(style, function(isSelected: boolean?)
-					print("is selected", isSelected)
-				end, true))
+				local button =
+					maid:GiveTask(Module.ColdFusion.secondaryContainer(style, function(isSelected: boolean?)
+						print("is selected", isSelected)
+					end, true))
 				button.Parent = halfFrame
 			end
 
 			do
-				local button = maid:GiveTask(Module.ColdFusion.tertiaryContainer(style, function(isSelected: boolean?)
-					print("is selected", isSelected)
-				end, true))
+				local button =
+					maid:GiveTask(Module.ColdFusion.tertiaryContainer(style, function(isSelected: boolean?)
+						print("is selected", isSelected)
+					end, true))
 				button.Parent = halfFrame
 			end
 			return halfFrame

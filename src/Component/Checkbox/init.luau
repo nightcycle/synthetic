@@ -372,7 +372,12 @@ function Interface.ColdFusion.new(
 	end, valueState)
 
 	local currentStateState = _Computed(
-		function(isEnab: boolean, isFocused: boolean, isPressed: boolean, isHovered: boolean): Enums.ButtonStateType
+		function(
+			isEnab: boolean,
+			isFocused: boolean,
+			isPressed: boolean,
+			isHovered: boolean
+		): Enums.ButtonStateType
 			if isEnab then
 				if isPressed then
 					return Enums.ButtonStateType.Pressed
@@ -398,7 +403,10 @@ function Interface.ColdFusion.new(
 	) :: State<any>
 
 	local renderDataState = _Computed(
-		function(renderDatas: { [Enums.ButtonStateType]: RenderData }, bState: Enums.ButtonStateType): RenderData
+		function(
+			renderDatas: { [Enums.ButtonStateType]: RenderData },
+			bState: Enums.ButtonStateType
+		): RenderData
 			return renderDatas[bState]
 		end,
 		renderDatasState,
@@ -517,7 +525,9 @@ function Interface.ColdFusion.new(
 					_new("UIStroke")({
 						ApplyStrokeMode = Enum.ApplyStrokeMode.Border,
 						Color = _Computed(function(renderData: RenderData, v: boolean?): Color3
-							return if v == false then renderData.Border.Color3 else renderData.Background.Color3
+							return if v == false
+								then renderData.Border.Color3
+								else renderData.Background.Color3
 						end, renderDataState, valueState),
 						LineJoinMode = Enum.LineJoinMode.Round,
 						Thickness = _Computed(function(sc: number): number

@@ -75,7 +75,12 @@ function Types.newFontData(font: Font, size: number, lineHeight: number?, tracki
 	})
 end
 
-function Types.newButtonData(onClick: () -> (), icon: ImageData?, text: string?, enabled: boolean?): ButtonData
+function Types.newButtonData(
+	onClick: () -> (),
+	icon: ImageData?,
+	text: string?,
+	enabled: boolean?
+): ButtonData
 	return table.freeze({
 		Icon = icon,
 		Text = text,

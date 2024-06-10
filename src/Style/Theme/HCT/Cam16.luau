@@ -29,7 +29,12 @@ export type Cam16 = {
 	) -> Cam16,
 	fromInt: (argb: number) -> Cam16,
 	fromIntInViewingConditions: (argb: number, viewingConditions: ViewingConditions) -> Cam16,
-	fromJchInViewingConditions: (j: number, c: number, h: number, viewingConditions: ViewingConditions) -> Cam16,
+	fromJchInViewingConditions: (
+		j: number,
+		c: number,
+		h: number,
+		viewingConditions: ViewingConditions
+	) -> Cam16,
 	fromUcs: (jstar: number, astar: number, bstar: number) -> Cam16,
 	fromJch: (j: number, c: number, h: number) -> Cam16,
 	fromUcsInViewingConditions: (
@@ -41,7 +46,12 @@ export type Cam16 = {
 	distance: (self: Cam16, other: Cam16) -> number,
 	toInt: (self: Cam16) -> number,
 	viewed: (self: Cam16, viewingConditions: ViewingConditions) -> number,
-	fromXyzInViewingConditions: (x: number, y: number, z: number, viewingConditions: ViewingConditions) -> Cam16,
+	fromXyzInViewingConditions: (
+		x: number,
+		y: number,
+		z: number,
+		viewingConditions: ViewingConditions
+	) -> Cam16,
 	xyzInViewingConditions: (self: Cam16, viewingConditions: ViewingConditions) -> { number },
 }
 
@@ -164,7 +174,12 @@ function Cam16.fromJch(j: number, c: number, h: number): Cam16
 	return Cam16.fromJchInViewingConditions(j, c, h, ViewingConditions.DEFAULT)
 end
 
-function Cam16.fromJchInViewingConditions(j: number, c: number, h: number, viewingConditions: ViewingConditions): Cam16
+function Cam16.fromJchInViewingConditions(
+	j: number,
+	c: number,
+	h: number,
+	viewingConditions: ViewingConditions
+): Cam16
 	local q = (4.0 / viewingConditions.c)
 		* math.sqrt(j / 100.0)
 		* (viewingConditions.aw + 4.0)
@@ -219,7 +234,8 @@ function Cam16:viewed(viewingConditions: ViewingConditions): number
 	local hRad = (self.hue * math.pi) / 180.0
 
 	local eHue = 0.25 * (math.cos(hRad + 2.0) + 3.8)
-	local ac = viewingConditions.aw * math.pow(self.j / 100.0, 1.0 / viewingConditions.c / viewingConditions.z)
+	local ac = viewingConditions.aw
+		* math.pow(self.j / 100.0, 1.0 / viewingConditions.c / viewingConditions.z)
 	local p1 = eHue * (50000.0 / 13.0) * viewingConditions.nc * viewingConditions.ncb
 	local p2 = ac / viewingConditions.nbb
 
@@ -253,7 +269,12 @@ function Cam16:viewed(viewingConditions: ViewingConditions): number
 	return argb
 end
 
-function Cam16.fromXyzInViewingConditions(x: number, y: number, z: number, viewingConditions: ViewingConditions): Cam16
+function Cam16.fromXyzInViewingConditions(
+	x: number,
+	y: number,
+	z: number,
+	viewingConditions: ViewingConditions
+): Cam16
 	local rC = 0.401288 * x + 0.650173 * y - 0.051461 * z
 	local gC = -0.250268 * x + 1.204414 * y + 0.045854 * z
 	local bC = -0.002079 * x + 0.048952 * y + 0.953127 * z
@@ -336,7 +357,8 @@ function Cam16:xyzInViewingConditions(viewingConditions: ViewingConditions): { n
 	local hRad = self.hue * math.pi / 180.0
 
 	local eHue = 0.25 * (math.cos(hRad + 2.0) + 3.8)
-	local ac = viewingConditions.aw * math.pow(self.j / 100.0, 1.0 / (viewingConditions.c * viewingConditions.z))
+	local ac = viewingConditions.aw
+		* math.pow(self.j / 100.0, 1.0 / (viewingConditions.c * viewingConditions.z))
 
 	local p1 = eHue * (50000.0 / 13.0) * viewingConditions.nc * viewingConditions.ncb
 

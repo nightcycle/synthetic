@@ -103,11 +103,13 @@ function Theme.new(source: Color3, custom: { [string]: Color3 }?): Theme
 				[Enums.ColorRoleType.Secondary] = HCT.fromInt(scheme.secondary):toColor3(),
 				[Enums.ColorRoleType.OnSecondary] = HCT.fromInt(scheme.onSecondary):toColor3(),
 				[Enums.ColorRoleType.SecondaryContainer] = HCT.fromInt(scheme.secondaryContainer):toColor3(),
-				[Enums.ColorRoleType.OnSecondaryContainer] = HCT.fromInt(scheme.onSecondaryContainer):toColor3(),
+				[Enums.ColorRoleType.OnSecondaryContainer] = HCT.fromInt(scheme.onSecondaryContainer)
+					:toColor3(),
 				[Enums.ColorRoleType.Tertiary] = HCT.fromInt(scheme.tertiary):toColor3(),
 				[Enums.ColorRoleType.OnTertiary] = HCT.fromInt(scheme.onTertiary):toColor3(),
 				[Enums.ColorRoleType.TertiaryContainer] = HCT.fromInt(scheme.tertiaryContainer):toColor3(),
-				[Enums.ColorRoleType.OnTertiaryContainer] = HCT.fromInt(scheme.onTertiaryContainer):toColor3(),
+				[Enums.ColorRoleType.OnTertiaryContainer] = HCT.fromInt(scheme.onTertiaryContainer)
+					:toColor3(),
 				[Enums.ColorRoleType.Error] = HCT.fromInt(scheme.error):toColor3(),
 				[Enums.ColorRoleType.OnError] = HCT.fromInt(scheme.onError):toColor3(),
 				[Enums.ColorRoleType.ErrorContainer] = HCT.fromInt(scheme.errorContainer):toColor3(),
@@ -122,11 +124,15 @@ function Theme.new(source: Color3, custom: { [string]: Color3 }?): Theme
 				[Enums.ColorRoleType.InverseOnSurface] = HCT.fromInt(scheme.inverseOnSurface):toColor3(),
 				[Enums.ColorRoleType.SurfaceDim] = HCT.fromInt(scheme.surfaceDim):toColor3(),
 				[Enums.ColorRoleType.SurfaceBright] = HCT.fromInt(scheme.surfaceBright):toColor3(),
-				[Enums.ColorRoleType.SurfaceContainerLowest] = HCT.fromInt(scheme.surfaceContainerLowest):toColor3(),
-				[Enums.ColorRoleType.SurfaceContainerLow] = HCT.fromInt(scheme.surfaceContainerLow):toColor3(),
+				[Enums.ColorRoleType.SurfaceContainerLowest] = HCT.fromInt(scheme.surfaceContainerLowest)
+					:toColor3(),
+				[Enums.ColorRoleType.SurfaceContainerLow] = HCT.fromInt(scheme.surfaceContainerLow)
+					:toColor3(),
 				[Enums.ColorRoleType.SurfaceContainer] = HCT.fromInt(scheme.surfaceContainer):toColor3(),
-				[Enums.ColorRoleType.SurfaceContainerHigh] = HCT.fromInt(scheme.surfaceContainerHigh):toColor3(),
-				[Enums.ColorRoleType.SurfaceContainerHighest] = HCT.fromInt(scheme.surfaceContainerHighest):toColor3(),
+				[Enums.ColorRoleType.SurfaceContainerHigh] = HCT.fromInt(scheme.surfaceContainerHigh)
+					:toColor3(),
+				[Enums.ColorRoleType.SurfaceContainerHighest] = HCT.fromInt(scheme.surfaceContainerHighest)
+					:toColor3(),
 				[Enums.ColorRoleType.SurfaceTint] = HCT.fromInt(scheme.surfaceTint):toColor3(),
 				[Enums.ColorRoleType.Outline] = HCT.fromInt(scheme.outline):toColor3(),
 				[Enums.ColorRoleType.OutlineVariant] = HCT.fromInt(scheme.outlineVariant):toColor3(),
@@ -149,8 +155,7 @@ function Theme.new(source: Color3, custom: { [string]: Color3 }?): Theme
 			return function(alpha: number, noClamp: boolean?): Color3
 				return HCT.fromInt(
 					tonalPalette:getTone(if noClamp then alpha * 100 else math.clamp(alpha, 0.05, 0.9) * 100)
-				)
-					:toColor3()
+				):toColor3()
 			end
 		end
 		primaryPalette = fromPalette(googleTheme.palettes.primary)

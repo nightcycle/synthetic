@@ -2,7 +2,8 @@
 -- Services
 -- Packages
 local Maid = require(game:GetService("ReplicatedStorage"):WaitForChild("Packages"):WaitForChild("Maid"))
-local ColdFusion = require(game:GetService("ReplicatedStorage"):WaitForChild("Packages"):WaitForChild("ColdFusion"))
+local ColdFusion =
+	require(game:GetService("ReplicatedStorage"):WaitForChild("Packages"):WaitForChild("ColdFusion"))
 
 -- Modules
 -- Types

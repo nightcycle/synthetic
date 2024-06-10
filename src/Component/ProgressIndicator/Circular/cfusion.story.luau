@@ -4,7 +4,8 @@ local _Packages = _Package.Parent
 -- Services
 -- Packages
 local Maid = require(game:GetService("ReplicatedStorage"):WaitForChild("Packages"):WaitForChild("Maid"))
-local ColdFusion = require(game:GetService("ReplicatedStorage"):WaitForChild("Packages"):WaitForChild("ColdFusion"))
+local ColdFusion =
+	require(game:GetService("ReplicatedStorage"):WaitForChild("Packages"):WaitForChild("ColdFusion"))
 -- Modules
 local Style = require(_Package:WaitForChild("Style"))
 local Enums = require(_Package:WaitForChild("Enums"))
@@ -38,8 +39,12 @@ return function(frame: Frame)
 		frame:SetAttribute(KEY, math.random())
 
 		local function makeHalfFrame(isDarkMode: boolean, color: Color3): Frame
-			local style =
-				Style.new(1, "Source Sans", if isDarkMode then Enums.SchemeType.Dark else Enums.SchemeType.Light, color)
+			local style = Style.new(
+				1,
+				"Source Sans",
+				if isDarkMode then Enums.SchemeType.Dark else Enums.SchemeType.Light,
+				color
+			)
 
 			local halfFrame = maid:GiveTask(Instance.new("Frame"))
 			halfFrame.BackgroundColor3 = style:GetColor(Enums.ColorRoleType.Surface)

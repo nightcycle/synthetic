@@ -370,7 +370,12 @@ function Solver._lerpPoint(source: { number }, t: number, target: { number }): {
 	}
 end
 
-function Solver._setCoordinate(source: { number }, coordinate: number, target: { number }, axis: number): { number }
+function Solver._setCoordinate(
+	source: { number },
+	coordinate: number,
+	target: { number },
+	axis: number
+): { number }
 	local t = Solver._intercept(source[axis], coordinate, target[axis])
 	return Solver._lerpPoint(source, t, target)
 end
@@ -566,7 +571,8 @@ function Solver._findResultByJ(hueRadians: number, chroma: number, y: number): n
 			alpha = chroma / math.sqrt(jNormalized)
 		end
 		local t = math.pow(alpha * tInnerCoeff, 1.0 / 0.9)
-		local ac = viewingConditions.aw * math.pow(jNormalized, 1.0 / viewingConditions.c / viewingConditions.z)
+		local ac = viewingConditions.aw
+			* math.pow(jNormalized, 1.0 / viewingConditions.c / viewingConditions.z)
 		local p2 = ac / viewingConditions.nbb
 		local gamma = 23.0 * (p2 + 0.305) * t / (23.0 * p1 + 11 * t * hCos + 108.0 * t * hSin)
 		local a = gamma * hCos
