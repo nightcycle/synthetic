@@ -12,7 +12,8 @@ local Types = require(_Package:WaitForChild("Types"))
 local Style = require(_Package:WaitForChild("Style"))
 local Enums = require(_Package:WaitForChild("Enums"))
 local Util = require(_Package:WaitForChild("Util"))
-
+local Theme = require(_Package:WaitForChild("Style"):WaitForChild("Theme"))
+local Typography = require(_Package:WaitForChild("Style"):WaitForChild("Typography"))
 -- Types
 type Maid = Maid.Maid
 type State<V> = ColdFusion.State<V>
@@ -29,6 +30,7 @@ type SwitchRenderData = {
 	Background: AppearanceData,
 	Outline: AppearanceData,
 }
+type FontData = Types.FontData
 
 -- Constants
 local CONTAINER_HEIGHT_DP = 56
@@ -75,7 +77,11 @@ function Interface.new(
 	supportingTextColor: CanBeState<Color3>,
 
 	elevation: CanBeState<number>,
-	isOutlined: CanBeState<boolean>
+	isOutlined: CanBeState<boolean>,
+	schemeType: CanBeState<Enums.SchemeType>,
+	bodyFontData: CanBeState<FontData>,
+	supportFontData: CanBeState<FontData>,
+	scale: CanBeState<number>
 ): GuiObject
 	local maid = Maid.new()
 
@@ -88,6 +94,11 @@ function Interface.new(
 
 	local _Value = _fuse.Value
 	local _Computed = _fuse.Computed
+
+	local scaleState: State<number> = _import(scale, 1)
+	local schemeTypeState: State<Enums.SchemeType> = _import(schemeType, Enums.SchemeType.Light)
+	local bodyFontDataState: State<FontData> = _import(bodyFontData, nil :: any)
+	local supportFontDataState: State<FontData> = _import(supportFontData, nil :: any)
 
 	local onSubmitState = _import(onSubmit, function(input: string?): string?
 		return nil
@@ -108,9 +119,9 @@ function Interface.new(
 	local dropdownOptionsState: State<{ [number]: string }?> = _import(nil, nil :: { [number]: string }?)
 
 	local function applyElevation(state: State<Color3>): State<Color3>
-		return _Computed(function(c: Color3, e: number, s: Style): Color3
-			return s:GetElevatedColor(c, e)
-		end, state, elevationState, styleState)
+		return _Computed(function(c: Color3, e: number, st: Enums.SchemeType): Color3
+			return Theme.getElevatedColor(c, e, st)
+		end, state, elevationState, schemeTypeState)
 	end
 
 	local textColorState = applyElevation(_import(textColor, Color3.new()))
@@ -165,13 +176,13 @@ function Interface.new(
 		return if isFoc or (val and val:len() > 0) then true else false
 	end, isFocusedState, valueState)
 
-	local labelFontState: State<Enums.FontType> = _Computed(function(isMin: boolean): any
+	local labelFontData: State<FontData> = _Computed(function(isMin: boolean, bF: FontData, sF: FontData): FontData
 		if isMin then
-			return Enums.FontType.BodySmall
+			return sF
 		else
-			return Enums.FontType.BodyLarge
+			return bF
 		end
-	end, isLabelMinimizedState)
+	end, isLabelMinimizedState, bodyFontDataState, supportFontDataState)
 
 	local rightIconState = _Computed(function(iE: boolean, d: { [number]: string }?, v: string?): ImageData?
 		if iE then
@@ -185,11 +196,11 @@ function Interface.new(
 		end
 	end, isErrorState, dropdownOptionsState, valueState)
 
-	local iconAddedWidthState = _Computed(function(lead: ImageData?, s: Style): number
+	local iconAddedWidthState = _Computed(function(lead: ImageData?, sc: number): number
 		local leftOffset = if lead then ICON_WIDTH_DP + TEXT_AND_ICON_PADDING_DP else 0
 		local rightOffset = ICON_WIDTH_DP + TEXT_AND_ICON_PADDING_DP
-		return (leftOffset + rightOffset) * s.Scale
-	end, leadingIconState, styleState)
+		return (leftOffset + rightOffset) * sc
+	end, leadingIconState, scaleState)
 
 	local textBox: TextBox
 
@@ -217,25 +228,25 @@ function Interface.new(
 		Selectable = false,
 		TextXAlignment = Enum.TextXAlignment.Left,
 		AutomaticSize = Enum.AutomaticSize.X,
-		TextSize = _Computed(function(s: Style): number
-			return s:GetTextSize(Enums.FontType.BodyLarge)
-		end, styleState),
-		LineHeight = _Computed(function(s: Style): number
-			return s:GetLineHeight(Enums.FontType.BodyLarge)
-		end, styleState),
-		FontFace = _Computed(function(s: Style): Font
-			return s:GetFont(Enums.FontType.BodyLarge)
-		end, styleState),
-		Size = _Computed(function(s: Style, isMin: boolean): UDim2
+		TextSize = _Computed(function(f: FontData, sc: number): number
+			return Typography.getTextSize(f.Size, sc)
+		end, bodyFontDataState, scaleState),
+		LineHeight = _Computed(function(f: FontData, sc: number): number
+			return Typography.getGuiLineHeight(f.LineHeight, f.Size)
+		end, bodyFontDataState, scaleState),
+		FontFace = _Computed(function(f: FontData): Font
+			return f.Font
+		end, bodyFontDataState),
+		Size = _Computed(function(sc: number, isMin: boolean, f: FontData): UDim2
 			if isMin then
 				return UDim2.fromOffset(
 					0,
-					s.Scale * s:GetTextSize(Enums.FontType.BodyLarge) * s:GetLineHeight(Enums.FontType.BodyLarge)
+					sc * Typography.getTextSize(f.Size, sc) * Typography.getGuiLineHeight(f.LineHeight, f.Size)
 				)
 			else
 				return UDim2.fromOffset(0, 0)
 			end
-		end, styleState, isLabelMinimizedState),
+		end, scaleState, isLabelMinimizedState, bodyFontDataState),
 		Events = {
 			Focused = function()
 				isFocusedState:Set(true)
@@ -275,9 +286,9 @@ function Interface.new(
 	end))
 	textBox.Text = if initialTextState:Get() then initialTextState:Get() else ""
 
-	local outlineThicknessState = _Computed(function(s: Style, isFoc: boolean): number
-		return s.Scale * if isFoc == false then DEFAULT_OUTLINE_THICKNESS_DP else FOCUSED_OUTLINE_THICKNESS_DP
-	end, styleState, isFocusedState)
+	local outlineThicknessState = _Computed(function(sc: number, isFoc: boolean): number
+		return sc * if isFoc == false then DEFAULT_OUTLINE_THICKNESS_DP else FOCUSED_OUTLINE_THICKNESS_DP
+	end, scaleState, isFocusedState)
 
 	local inst = _bind(maid:GiveTask(Util.Container.ColdFusion.new()))({
 		Children = {
@@ -286,9 +297,9 @@ function Interface.new(
 					Enum.VerticalAlignment.Center,
 					Enum.HorizontalAlignment.Left,
 					Enum.FillDirection.Vertical,
-					_Computed(function(s: Style): UDim
-						return UDim.new(0, s.Scale * SUPPORTING_TEXT_PADDING_DP)
-					end, styleState),
+					_Computed(function(sc: number): UDim
+						return UDim.new(0, sc * SUPPORTING_TEXT_PADDING_DP)
+					end, scaleState),
 					Enum.UIFlexAlignment.None,
 					Enum.UIFlexAlignment.Fill,
 					Enum.ItemLineAlignment.Stretch,
@@ -303,9 +314,9 @@ function Interface.new(
 							Enum.VerticalAlignment.Center,
 							Enum.HorizontalAlignment.Center,
 							Enum.FillDirection.Horizontal,
-							_Computed(function(s: Style): UDim
-								return UDim.new(0, s.Scale * TEXT_AND_ICON_PADDING_DP)
-							end, styleState),
+							_Computed(function(sc: number): UDim
+								return UDim.new(0, sc * TEXT_AND_ICON_PADDING_DP)
+							end, scaleState),
 							Enum.UIFlexAlignment.Fill,
 							Enum.UIFlexAlignment.Fill,
 							Enum.ItemLineAlignment.Center,
@@ -313,11 +324,11 @@ function Interface.new(
 						)
 					) :: Instance,
 					maid:GiveTask(Util.Padding.ColdFusion.new(
-						_Computed(function(s: Style, l: ImageData?): UDim
+						_Computed(function(sc: number, l: ImageData?): UDim
 							return if l
-								then UDim.new(0, s.Scale * LEFT_RIGHT_YES_ICONS_PADDING_DP)
-								else UDim.new(0, s.Scale * LEFT_RIGHT_NO_ICONS_PADDING_DP)
-						end, styleState, leadingIconState),
+								then UDim.new(0, sc * LEFT_RIGHT_YES_ICONS_PADDING_DP)
+								else UDim.new(0, sc * LEFT_RIGHT_NO_ICONS_PADDING_DP)
+						end, scaleState, leadingIconState),
 						UDim.new(0, 0)
 					)) :: Instance,
 					_bind(
@@ -334,12 +345,13 @@ function Interface.new(
 										return 1
 									end
 								end, isLabelMinimizedState, isOutlinedState),
-								Enums.FontType.BodySmall,
+								supportFontDataState,
+								scaleState,
 								nil,
 								nil,
 								0,
-								styleState,
-								true
+								true,
+								nil
 							)
 						)
 					)({}),
@@ -347,9 +359,9 @@ function Interface.new(
 			}),
 			_new("TextButton")({
 				LayoutOrder = 2,
-				Size = _Computed(function(s: Style): UDim2
-					return UDim2.fromOffset(0, s.Scale * CONTAINER_HEIGHT_DP)
-				end, styleState),
+				Size = _Computed(function(sc: number): UDim2
+					return UDim2.fromOffset(0, sc * CONTAINER_HEIGHT_DP)
+				end, scaleState),
 				Text = "",
 				BackgroundColor3 = backgroundColorState,
 				BackgroundTransparency = _Computed(function(isOut: boolean, isEnab: boolean): number
@@ -414,22 +426,22 @@ function Interface.new(
 						end, isEnabledState),
 					}),
 					_new("UICorner")({
-						CornerRadius = _Computed(function(s: Style): UDim
-							return UDim.new(0, s.Scale * RADIUS_DP)
-						end, styleState),
+						CornerRadius = _Computed(function(sc: number): UDim
+							return UDim.new(0, sc * RADIUS_DP)
+						end, scaleState),
 					}),
 					_new("UISizeConstraint")({
 						MaxSize = Vector2.new(math.huge, math.huge),
-						MinSize = _Computed(function(s: Style, add: number): Vector2
-							return Vector2.new((s.Scale * MIN_WIDTH_DP) + add, 0)
-						end, styleState, iconAddedWidthState),
+						MinSize = _Computed(function(sc: number, add: number): Vector2
+							return Vector2.new((sc * MIN_WIDTH_DP) + add, 0)
+						end, scaleState, iconAddedWidthState),
 					}),
 					_bind(maid:GiveTask(Util.Container.ColdFusion.new()))({
 						LayoutOrder = 3,
 						AutomaticSize = Enum.AutomaticSize.X,
-						Size = _Computed(function(s: Style): UDim2
-							return UDim2.fromOffset(0, s.Scale * ICON_WIDTH_DP)
-						end, styleState),
+						Size = _Computed(function(sc: number): UDim2
+							return UDim2.fromOffset(0, sc * ICON_WIDTH_DP)
+						end, scaleState),
 						Children = {
 							textBox :: Instance,
 							_bind(
@@ -442,12 +454,13 @@ function Interface.new(
 										_Computed(function(isEnab: boolean): number
 											return if isEnab then 0 else DISABLED_TEXT_TRANSPARENCY
 										end, isEnabledState),
-										labelFontState,
+										labelFontData,
+										scaleState,
 										nil,
 										nil,
 										0,
-										styleState,
-										true
+										true,
+										nil
 									)
 								)
 							)({
@@ -490,9 +503,9 @@ function Interface.new(
 								Visible = _Computed(function(i: ImageData?): boolean
 									return i ~= nil
 								end, leadingIconState),
-								Size = _Computed(function(s: Style): UDim2
-									return UDim2.fromOffset(s.Scale * ICON_WIDTH_DP, s.Scale * ICON_WIDTH_DP)
-								end, styleState),
+								Size = _Computed(function(sc: number): UDim2
+									return UDim2.fromOffset(sc * ICON_WIDTH_DP, sc * ICON_WIDTH_DP)
+								end, scaleState),
 							}),
 							maid:GiveTask(_new("UIAspectRatioConstraint")({
 								AspectRatio = 1,
@@ -522,9 +535,9 @@ function Interface.new(
 								ImageTransparency = _Computed(function(i: ImageData?, isEnab: boolean): number
 									return if i ~= nil then if isEnab then 0 else DISABLED_TEXT_TRANSPARENCY else 1
 								end, rightIconState, isEnabledState),
-								Size = _Computed(function(s: Style): UDim2
-									return UDim2.fromOffset(s.Scale * ICON_WIDTH_DP, s.Scale * ICON_WIDTH_DP)
-								end, styleState),
+								Size = _Computed(function(sc: number): UDim2
+									return UDim2.fromOffset(sc * ICON_WIDTH_DP, sc * ICON_WIDTH_DP)
+								end, scaleState),
 								Events = {
 									Activated = function()
 										if valueState:Get() and isErrorState:Get() == false then
@@ -552,9 +565,9 @@ function Interface.new(
 							Enum.VerticalAlignment.Center,
 							Enum.HorizontalAlignment.Center,
 							Enum.FillDirection.Horizontal,
-							_Computed(function(s: Style): UDim
-								return UDim.new(0, s.Scale * TEXT_AND_ICON_PADDING_DP)
-							end, styleState),
+							_Computed(function(sc: number): UDim
+								return UDim.new(0, sc * TEXT_AND_ICON_PADDING_DP)
+							end, scaleState),
 							Enum.UIFlexAlignment.Fill,
 							Enum.UIFlexAlignment.Fill,
 							Enum.ItemLineAlignment.Center,
@@ -562,11 +575,11 @@ function Interface.new(
 						)
 					) :: Instance,
 					maid:GiveTask(Util.Padding.ColdFusion.new(
-						_Computed(function(s: Style, l: ImageData?): UDim
+						_Computed(function(sc: number, l: ImageData?): UDim
 							return if l
-								then UDim.new(0, s.Scale * LEFT_RIGHT_YES_ICONS_PADDING_DP)
-								else UDim.new(0, s.Scale * LEFT_RIGHT_NO_ICONS_PADDING_DP)
-						end, styleState, leadingIconState),
+								then UDim.new(0, sc * LEFT_RIGHT_YES_ICONS_PADDING_DP)
+								else UDim.new(0, sc * LEFT_RIGHT_NO_ICONS_PADDING_DP)
+						end, scaleState, leadingIconState),
 						UDim.new(0, 0)
 					)) :: Instance,
 				},
@@ -579,9 +592,9 @@ function Interface.new(
 							Enum.VerticalAlignment.Center,
 							Enum.HorizontalAlignment.Center,
 							Enum.FillDirection.Horizontal,
-							_Computed(function(s: Style): UDim
-								return UDim.new(0, s.Scale * TEXT_AND_ICON_PADDING_DP)
-							end, styleState),
+							_Computed(function(sc: number): UDim
+								return UDim.new(0, sc * TEXT_AND_ICON_PADDING_DP)
+							end, scaleState),
 							Enum.UIFlexAlignment.Fill,
 							Enum.UIFlexAlignment.SpaceBetween,
 							Enum.ItemLineAlignment.Center,
@@ -589,11 +602,11 @@ function Interface.new(
 						)
 					) :: Instance,
 					maid:GiveTask(Util.Padding.ColdFusion.new(
-						_Computed(function(s: Style, l: ImageData?): UDim
+						_Computed(function(sc: number, l: ImageData?): UDim
 							return if l
-								then UDim.new(0, s.Scale * LEFT_RIGHT_YES_ICONS_PADDING_DP)
-								else UDim.new(0, s.Scale * LEFT_RIGHT_NO_ICONS_PADDING_DP)
-						end, styleState, leadingIconState),
+								then UDim.new(0, sc * LEFT_RIGHT_YES_ICONS_PADDING_DP)
+								else UDim.new(0, sc * LEFT_RIGHT_NO_ICONS_PADDING_DP)
+						end, scaleState, leadingIconState),
 						UDim.new(0, 0)
 					)) :: Instance,
 					_bind(
@@ -610,12 +623,13 @@ function Interface.new(
 										then if isEnab then 0 else DISABLED_TEXT_TRANSPARENCY
 										else 1
 								end, supportingTextState, isEnabledState),
-								Enums.FontType.BodySmall,
+								supportFontDataState,
+								scaleState,
 								nil,
 								nil,
 								0,
-								styleState,
-								true
+								true,
+								nil
 							)
 						)
 					)({
@@ -636,11 +650,11 @@ function Interface.new(
 								_Computed(function(lim: number?, isEnab: boolean): number
 									return if lim then if isEnab then 0 else DISABLED_TEXT_TRANSPARENCY else 1
 								end, characterLimitState, isEnabledState),
-								Enums.FontType.BodySmall,
+								supportFontDataState,
+								scaleState,
 								nil,
 								nil,
 								0,
-								styleState,
 								true,
 								Enum.TextXAlignment.Right
 							)

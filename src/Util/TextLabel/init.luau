@@ -10,6 +10,7 @@ local Types = require(_Package:WaitForChild("Types"))
 local Style = require(_Package:WaitForChild("Style"))
 local Enums = require(_Package:WaitForChild("Enums"))
 local Container = require(_Package:WaitForChild("Util"):WaitForChild("Container"))
+local Typography = require(_Package:WaitForChild("Style"):WaitForChild("Typography"))
 
 -- Types
 type State<V> = ColdFusion.State<V>
@@ -17,6 +18,7 @@ type ValueState<V> = ColdFusion.ValueState<V>
 type CanBeState<V> = ColdFusion.CanBeState<V>
 type Style = Style.Style
 type ImageData = Types.ImageData
+type FontData = Types.FontData
 -- Constants
 -- Variables
 -- References
@@ -84,10 +86,11 @@ function Util.ColdFusion.new(
 	text: CanBeState<string>,
 	textColor3: CanBeState<Color3>,
 	textTransparency: CanBeState<number>,
-	fontType: CanBeState<Enums.FontType>,
+	fontData: CanBeState<FontData>,
+	scale: CanBeState<number>,
 	leftIcon: CanBeState<ImageData?>,
 	rightIcon: CanBeState<ImageData?>,
-	paddingDp: CanBeState<number>,
+	paddingDp: CanBeState<number?>,
 	ignoreLineHeight: CanBeState<boolean?>,
 	textXAlignment: CanBeState<Enum.TextXAlignment?>
 ): Frame
@@ -102,6 +105,9 @@ function Util.ColdFusion.new(
 	local _Value = _fuse.Value
 	local _Computed = _fuse.Computed
 
+	local scaleState: State<number> = _import(scale, 1)
+	local fontDataState: State<FontData> = _import(fontData, nil :: any)
+
 	local leftIconState = _import(leftIcon, nil :: ImageData?)
 	local rightIconState = _import(rightIcon, nil :: ImageData?)
 
@@ -112,23 +118,21 @@ function Util.ColdFusion.new(
 
 	local ignoreLineHeightState = _import(ignoreLineHeight, false)
 
-	local styleState: State<Style> = _import(style, nil :: any)
-
-	local fontTypeState: State<Enums.FontType> = _import(fontType, Enums.FontType.LabelMedium)
 	local paddingState: State<number> = _import(paddingDp, 0)
 
-	local iconSizeState = _Computed(function(s: Style, ft: Enums.FontType, ign: boolean): UDim2
-		local dp = (if ign then 1 else s:GetLineHeight(ft)) * s:GetTextSize(ft)
+	local iconSizeState = _Computed(function(f: FontData, ign: boolean, sc: number): UDim2
+		local dp = (if ign then 1 else Typography.getGuiLineHeight(f.LineHeight, f.Size))
+			* Typography.getTextSize(f.Size, sc) -- s:GetTextSize(ft)
 		return UDim2.fromOffset(dp, dp)
-	end, styleState, fontTypeState, ignoreLineHeightState)
+	end, fontDataState, ignoreLineHeightState, scaleState)
 
 	local out = _bind(maid:GiveTask(Container.ColdFusion.new()))({
 		Name = "TextLabel",
 		Children = {
 			_new("UIListLayout")({
-				Padding = _Computed(function(s: Style, dp: number): UDim
-					return UDim.new(0, s.Scale * dp)
-				end, styleState, paddingState),
+				Padding = _Computed(function(sc: number, dp: number): UDim
+					return UDim.new(0, sc * dp)
+				end, scaleState, paddingState),
 				SortOrder = Enum.SortOrder.LayoutOrder,
 				FillDirection = Enum.FillDirection.Horizontal,
 				ItemLineAlignment = Enum.ItemLineAlignment.Center,
@@ -150,18 +154,22 @@ function Util.ColdFusion.new(
 					return if i then Enum.TextXAlignment.Center else alignment
 				end, leftIconState, textXAlignmentState),
 				AutomaticSize = Enum.AutomaticSize.X,
-				TextSize = _Computed(function(s: Style, f: Enums.FontType): number
-					return s:GetTextSize(f)
-				end, styleState, fontTypeState),
-				LineHeight = _Computed(function(s: Style, f: Enums.FontType): number
-					return s:GetLineHeight(f)
-				end, styleState, fontTypeState),
-				FontFace = _Computed(function(s: Style, f: Enums.FontType): Font
-					return s:GetFont(f)
-				end, styleState, fontTypeState),
-				Size = _Computed(function(s: Style, f: Enums.FontType, ign: boolean): UDim2
-					return UDim2.fromOffset(0, (if ign then 1 else s:GetLineHeight(f)) * s:GetTextSize(f))
-				end, styleState, fontTypeState, ignoreLineHeightState),
+				TextSize = _Computed(function(f: FontData, sc: number): number
+					return Typography.getTextSize(f.Size, sc)
+				end, fontDataState, scaleState),
+				LineHeight = _Computed(function(f: FontData, sc: number): number
+					return Typography.getGuiLineHeight(f.LineHeight, f.Size)
+				end, fontDataState, scaleState),
+				FontFace = _Computed(function(f: FontData): Font
+					return f.Font
+				end, fontDataState),
+				Size = _Computed(function(sc: number, f: FontData, ign: boolean): UDim2
+					return UDim2.fromOffset(
+						0,
+						(if ign then 1 else Typography.getGuiLineHeight(f.LineHeight, f.Size))
+							* Typography.getTextSize(f.Size, sc)
+					)
+				end, scaleState, fontDataState, ignoreLineHeightState),
 			}),
 			_new("ImageLabel")({
 				Name = "LeftIcon",

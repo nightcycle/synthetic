@@ -22,6 +22,7 @@ type ImageData = Types.ImageData
 type OptionData = Types.OptionData
 type ButtonData = Types.ButtonData
 type Style = Style.Style
+type FontData = Types.FontData
 
 -- Constants
 
@@ -100,7 +101,18 @@ function newThemedComponent(
 			return s:GetColor(labelColor)
 		end, styleState),
 		_import(elevation, 0),
-		styleState
+		_Computed(function(s: Style): any
+			return s.SchemeType
+		end, styleState),
+		_Computed(function(s: Style): FontData
+			return s:GetFontData(Enums.FontType.BodyLarge)
+		end, styleState),
+		_Computed(function(s: Style): FontData
+			return s:GetFontData(Enums.FontType.BodySmall)
+		end, styleState),
+		_Computed(function(s: Style): number
+			return s.Scale
+		end, styleState)
 	)
 
 	maid:GiveTask(out.Destroying:Connect(function()
@@ -230,7 +242,11 @@ function Interface.ColdFusion.new(
 	borderColor: CanBeState<Color3>,
 	textColor: CanBeState<Color3>,
 	labelColor: CanBeState<Color3>,
-	elevation: CanBeState<number>
+	elevation: CanBeState<number>,
+	schemeType: CanBeState<Enums.SchemeType>,
+	bodyFontData: CanBeState<FontData>,
+	supportFontData: CanBeState<FontData>,
+	scale: CanBeState<number>
 ): GuiObject
 	return Base.new(
 		onSubmit,
@@ -250,8 +266,11 @@ function Interface.ColdFusion.new(
 		borderColor,
 		labelColor,
 		elevation,
-		style,
-		false
+		false,
+		schemeType,
+		bodyFontData,
+		supportFontData,
+		scale
 	)
 end
 
