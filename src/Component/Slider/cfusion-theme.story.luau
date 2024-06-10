@@ -34,101 +34,41 @@ return function(frame: Frame)
 			local Module = require(script.Parent)
 
 			do
-				local button = maid:GiveTask(Module.ColdFusion.primary(
-					style,
-					function(val: number)
-						print(`value={val}`)
-					end,
-					50,
-					0,
-					100,
-					25,
-					nil,
-					nil,
-					1
-				))
+				local button = maid:GiveTask(Module.ColdFusion.primary(style, function(val: number)
+					print(`value={val}`)
+				end, 50, 0, 100, 25, nil, nil, 1))
 				button.Parent = halfFrame
 			end
 			do
-				local button = maid:GiveTask(Module.ColdFusion.secondary(
-					style,
-					function(val: number)
-						print(`value={val}`)
-					end,
-					50,
-					0,
-					100,
-					25,
-					nil,
-					nil,
-					1
-				))
+				local button = maid:GiveTask(Module.ColdFusion.secondary(style, function(val: number)
+					print(`value={val}`)
+				end, 50, 0, 100, 25, nil, nil, 1))
 				button.Parent = halfFrame
 			end
 			do
-				local button = maid:GiveTask(Module.ColdFusion.tertiary(
-					style,
-					function(val: number)
-						print(`value={val}`)
-					end,
-					50,
-					0,
-					100,
-					25,
-					nil,
-					nil,
-					1
-				))
+				local button = maid:GiveTask(Module.ColdFusion.tertiary(style, function(val: number)
+					print(`value={val}`)
+				end, 50, 0, 100, 25, nil, nil, 1))
 				button.Parent = halfFrame
 			end
 			do
-				local button = maid:GiveTask(Module.ColdFusion.onPrimary(
-					style,
-					function(val: number)
-						print(`value={val}`)
-					end,
-					50,
-					0,
-					100,
-					25,
-					nil,
-					nil,
-					1
-				))
-				button.Parent = halfFrame
-			end	
-			do
-				local button = maid:GiveTask(Module.ColdFusion.onSecondary(
-					style,
-					function(val: number)
-						print(`value={val}`)
-					end,
-					50,
-					0,
-					100,
-					25,
-					nil,
-					nil,
-					1
-				))
+				local button = maid:GiveTask(Module.ColdFusion.onPrimary(style, function(val: number)
+					print(`value={val}`)
+				end, 50, 0, 100, 25, nil, nil, 1))
 				button.Parent = halfFrame
 			end
 			do
-				local button = maid:GiveTask(Module.ColdFusion.onTertiary(
-					style,
-					function(val: number)
-						print(`value={val}`)
-					end,
-					50,
-					0,
-					100,
-					25,
-					nil,
-					nil,
-					1
-				))
+				local button = maid:GiveTask(Module.ColdFusion.onSecondary(style, function(val: number)
+					print(`value={val}`)
+				end, 50, 0, 100, 25, nil, nil, 1))
 				button.Parent = halfFrame
-			end	
+			end
+			do
+				local button = maid:GiveTask(Module.ColdFusion.onTertiary(style, function(val: number)
+					print(`value={val}`)
+				end, 50, 0, 100, 25, nil, nil, 1))
+				button.Parent = halfFrame
+			end
 			return halfFrame
 		end
 
@@ -160,5 +100,3 @@ return function(frame: Frame)
 		maid:Destroy()
 	end
 end
-
-

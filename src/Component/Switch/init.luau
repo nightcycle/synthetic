@@ -139,6 +139,7 @@ function newThemedComponent(
 end
 
 Interface.ColdFusion = {}
+Interface.Fusion = {}
 
 function Interface.ColdFusion.primary(
 	style: CanBeState<Style>,

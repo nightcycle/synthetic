@@ -79,7 +79,7 @@ function Interface.ColdFusion.onTertiaryContainer(
 		end, styleState),
 		_Computed(function(s: Style): number
 			return s.Scale
-		end, styleState)	
+		end, styleState)
 	)
 	maid:GiveTask(out.Destroying:Connect(function()
 		maid:Destroy()
@@ -131,7 +131,7 @@ function Interface.ColdFusion.onTertiary(
 		end, styleState),
 		_Computed(function(s: Style): number
 			return s.Scale
-		end, styleState)	
+		end, styleState)
 	)
 	maid:GiveTask(out.Destroying:Connect(function()
 		maid:Destroy()
@@ -183,7 +183,7 @@ function Interface.ColdFusion.onSecondaryContainer(
 		end, styleState),
 		_Computed(function(s: Style): number
 			return s.Scale
-		end, styleState)	
+		end, styleState)
 	)
 	maid:GiveTask(out.Destroying:Connect(function()
 		maid:Destroy()
@@ -235,7 +235,7 @@ function Interface.ColdFusion.onSecondary(
 		end, styleState),
 		_Computed(function(s: Style): number
 			return s.Scale
-		end, styleState)	
+		end, styleState)
 	)
 	maid:GiveTask(out.Destroying:Connect(function()
 		maid:Destroy()
@@ -287,7 +287,7 @@ function Interface.ColdFusion.onPrimaryContainer(
 		end, styleState),
 		_Computed(function(s: Style): number
 			return s.Scale
-		end, styleState)	
+		end, styleState)
 	)
 	maid:GiveTask(out.Destroying:Connect(function()
 		maid:Destroy()
@@ -339,7 +339,7 @@ function Interface.ColdFusion.onPrimary(
 		end, styleState),
 		_Computed(function(s: Style): number
 			return s.Scale
-		end, styleState)	
+		end, styleState)
 	)
 	maid:GiveTask(out.Destroying:Connect(function()
 		maid:Destroy()

@@ -38,12 +38,8 @@ return function(frame: Frame)
 		frame:SetAttribute(KEY, math.random())
 
 		local function makeHalfFrame(isDarkMode: boolean, color: Color3): Frame
-			local style = Style.new(
-				1,
-				"Source Sans",
-				if isDarkMode then Enums.SchemeType.Dark else Enums.SchemeType.Light,
-				color
-			)
+			local style =
+				Style.new(1, "Source Sans", if isDarkMode then Enums.SchemeType.Dark else Enums.SchemeType.Light, color)
 
 			local halfFrame = maid:GiveTask(Instance.new("Frame"))
 			halfFrame.BackgroundColor3 = style:GetColor(Enums.ColorRoleType.Surface)

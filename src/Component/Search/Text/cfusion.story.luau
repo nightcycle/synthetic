@@ -42,9 +42,9 @@ return function(frame: Frame)
 							return input
 						end,
 						"Test search here",
-						function(input: string): {[number]: string}
-							local options: {[number]: string} = {}
-							for i=1, math.random(12) do
+						function(input: string): { [number]: string }
+							local options: { [number]: string } = {}
+							for i = 1, math.random(12) do
 								options[i] = string.rep(input, math.random(5))
 							end
 							return options
@@ -58,10 +58,9 @@ return function(frame: Frame)
 						style.Scale
 					)
 				)
-				button.Size = UDim2.new(0.8,0,0,0)
+				button.Size = UDim2.new(0.8, 0, 0, 0)
 				button.Parent = halfFrame
 			end
-
 
 			return halfFrame
 		end

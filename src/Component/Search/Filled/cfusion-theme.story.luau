@@ -19,7 +19,8 @@ return function(frame: Frame)
 	local maid = Maid.new()
 	task.spawn(function()
 		local function makeHalfFrame(isDarkMode: boolean, color: Color3): Frame
-			local style = Style.new(1, "Source Sans", if isDarkMode then Enums.SchemeType.Dark else Enums.SchemeType.Light, color)
+			local style =
+				Style.new(1, "Source Sans", if isDarkMode then Enums.SchemeType.Dark else Enums.SchemeType.Light, color)
 
 			local halfFrame = maid:GiveTask(Instance.new("Frame"))
 			halfFrame.BackgroundColor3 = style:GetColor(Enums.ColorRoleType.Surface)
@@ -35,135 +36,123 @@ return function(frame: Frame)
 			local Module = require(script.Parent)
 
 			do
-				local button = maid:GiveTask(
-					Module.ColdFusion.primaryContainer(
-						style,
-						function(input: string): string
-							print(`entered: {input}`)
-							return input
-						end,
-						"Primary container search",
-						function(input: string): {[number]: string}
-							local options: {[number]: string} = {}
-							for i=1, math.random(12) do
-								options[i] = string.rep(input, math.random(5))
-							end
-							return options
-						end,
-						nil,
-						0
-					)
-				)
+				local button = maid:GiveTask(Module.ColdFusion.primaryContainer(
+					style,
+					function(input: string): string
+						print(`entered: {input}`)
+						return input
+					end,
+					"Primary container search",
+					function(input: string): { [number]: string }
+						local options: { [number]: string } = {}
+						for i = 1, math.random(12) do
+							options[i] = string.rep(input, math.random(5))
+						end
+						return options
+					end,
+					nil,
+					0
+				))
 				button.Parent = halfFrame
 			end
 			do
-				local button = maid:GiveTask(
-					Module.ColdFusion.secondaryContainer(
-						style,
-						function(input: string): string
-							print(`entered: {input}`)
-							return input
-						end,
-						"Secondary container search",
-						function(input: string): {[number]: string}
-							local options: {[number]: string} = {}
-							for i=1, math.random(12) do
-								options[i] = string.rep(input, math.random(5))
-							end
-							return options
-						end,
-						nil,
-						0
-					)
-				)
+				local button = maid:GiveTask(Module.ColdFusion.secondaryContainer(
+					style,
+					function(input: string): string
+						print(`entered: {input}`)
+						return input
+					end,
+					"Secondary container search",
+					function(input: string): { [number]: string }
+						local options: { [number]: string } = {}
+						for i = 1, math.random(12) do
+							options[i] = string.rep(input, math.random(5))
+						end
+						return options
+					end,
+					nil,
+					0
+				))
 				button.Parent = halfFrame
 			end
 			do
-				local button = maid:GiveTask(
-					Module.ColdFusion.tertiaryContainer(
-						style,
-						function(input: string): string
-							print(`entered: {input}`)
-							return input
-						end,
-						"Tertiary container search",
-						function(input: string): {[number]: string}
-							local options: {[number]: string} = {}
-							for i=1, math.random(12) do
-								options[i] = string.rep(input, math.random(5))
-							end
-							return options
-						end,
-						nil,
-						0
-					)
-				)
+				local button = maid:GiveTask(Module.ColdFusion.tertiaryContainer(
+					style,
+					function(input: string): string
+						print(`entered: {input}`)
+						return input
+					end,
+					"Tertiary container search",
+					function(input: string): { [number]: string }
+						local options: { [number]: string } = {}
+						for i = 1, math.random(12) do
+							options[i] = string.rep(input, math.random(5))
+						end
+						return options
+					end,
+					nil,
+					0
+				))
 				button.Parent = halfFrame
 			end
 			do
-				local button = maid:GiveTask(
-					Module.ColdFusion.primary(
-						style,
-						function(input: string): string
-							print(`entered: {input}`)
-							return input
-						end,
-						"Primary search",
-						function(input: string): {[number]: string}
-							local options: {[number]: string} = {}
-							for i=1, math.random(12) do
-								options[i] = string.rep(input, math.random(5))
-							end
-							return options
-						end,
-						nil,
-						0
-					)
-				)
+				local button = maid:GiveTask(Module.ColdFusion.primary(
+					style,
+					function(input: string): string
+						print(`entered: {input}`)
+						return input
+					end,
+					"Primary search",
+					function(input: string): { [number]: string }
+						local options: { [number]: string } = {}
+						for i = 1, math.random(12) do
+							options[i] = string.rep(input, math.random(5))
+						end
+						return options
+					end,
+					nil,
+					0
+				))
 				button.Parent = halfFrame
 			end
 			do
-				local button = maid:GiveTask(
-					Module.ColdFusion.secondary(
-						style,
-						function(input: string): string
-							print(`entered: {input}`)
-							return input
-						end,
-						"Secondary search",
-						function(input: string): {[number]: string}
-							local options: {[number]: string} = {}
-							for i=1, math.random(12) do
-								options[i] = string.rep(input, math.random(5))
-							end
-							return options
-						end,
-						nil,
-						0
-					)
-				)
+				local button = maid:GiveTask(Module.ColdFusion.secondary(
+					style,
+					function(input: string): string
+						print(`entered: {input}`)
+						return input
+					end,
+					"Secondary search",
+					function(input: string): { [number]: string }
+						local options: { [number]: string } = {}
+						for i = 1, math.random(12) do
+							options[i] = string.rep(input, math.random(5))
+						end
+						return options
+					end,
+					nil,
+					0
+				))
 				button.Parent = halfFrame
 			end
 			do
-				local button = maid:GiveTask(
-					Module.ColdFusion.tertiary(
-						style,
-						function(input: string): string
-							print(`entered: {input}`)
-							return input
-						end,
-						"Tertiary search",
-						function(input: string): {[number]: string}
-							local options: {[number]: string} = {}
-							for i=1, math.random(12) do
-								options[i] = string.rep(input, math.random(5))
-							end
-							return options
-						end,
-						nil,
-						0
-					)
-				)
+				local button = maid:GiveTask(Module.ColdFusion.tertiary(
+					style,
+					function(input: string): string
+						print(`entered: {input}`)
+						return input
+					end,
+					"Tertiary search",
+					function(input: string): { [number]: string }
+						local options: { [number]: string } = {}
+						for i = 1, math.random(12) do
+							options[i] = string.rep(input, math.random(5))
+						end
+						return options
+					end,
+					nil,
+					0
+				))
 				button.Parent = halfFrame
 			end
 			return halfFrame

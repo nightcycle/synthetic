@@ -19,7 +19,8 @@ return function(frame: Frame)
 	local maid = Maid.new()
 	task.spawn(function()
 		local function makeHalfFrame(isDarkMode: boolean, color: Color3): Frame
-			local style = Style.new(1, "Source Sans", if isDarkMode then Enums.SchemeType.Dark else Enums.SchemeType.Light, color)
+			local style =
+				Style.new(1, "Source Sans", if isDarkMode then Enums.SchemeType.Dark else Enums.SchemeType.Light, color)
 
 			local halfFrame = maid:GiveTask(Instance.new("Frame"))
 			halfFrame.BackgroundColor3 = style:GetColor(Enums.ColorRoleType.Surface)
@@ -35,77 +36,45 @@ return function(frame: Frame)
 			local Module = require(script.Parent)
 
 			do
-				local snackbar = maid:GiveTask(
-					Module.ColdFusion.surfaceContainer(
-						style,
-						"Wow what cool text",
-						"Button",
-						function()
-							print("button click")
-						end,
-						function()
-							print("close click")
-						end,
-						1
-					)
-				)
+				local snackbar =
+					maid:GiveTask(Module.ColdFusion.surfaceContainer(style, "Wow what cool text", "Button", function()
+						print("button click")
+					end, function()
+						print("close click")
+					end, 1))
 				snackbar.AutomaticSize = Enum.AutomaticSize.Y
 				snackbar.Size = UDim2.fromScale(0.9, 0)
 				snackbar.Parent = halfFrame
 			end
 			do
-				local snackbar = maid:GiveTask(
-					Module.ColdFusion.primaryContainer(
-						style,
-						"Wow what cool text",
-						"Button",
-						function()
-							print("button click")
-						end,
-						function()
-							print("close click")
-						end,
-						1
-					)
-				)
+				local snackbar =
+					maid:GiveTask(Module.ColdFusion.primaryContainer(style, "Wow what cool text", "Button", function()
+						print("button click")
+					end, function()
+						print("close click")
+					end, 1))
 				snackbar.AutomaticSize = Enum.AutomaticSize.Y
 				snackbar.Size = UDim2.fromScale(0.9, 0)
 				snackbar.Parent = halfFrame
 			end
 			do
-				local snackbar = maid:GiveTask(
-					Module.ColdFusion.secondaryContainer(
-						style,
-						"Wow what cool text",
-						"Button",
-						function()
-							print("button click")
-						end,
-						function()
-							print("close click")
-						end,
-						1
-					)
-				)
+				local snackbar =
+					maid:GiveTask(Module.ColdFusion.secondaryContainer(style, "Wow what cool text", "Button", function()
+						print("button click")
+					end, function()
+						print("close click")
+					end, 1))
 				snackbar.AutomaticSize = Enum.AutomaticSize.Y
 				snackbar.Size = UDim2.fromScale(0.9, 0)
 				snackbar.Parent = halfFrame
 			end
 			do
-				local snackbar = maid:GiveTask(
-					Module.ColdFusion.tertiaryContainer(
-						style,
-						"Wow what cool text",
-						"Button",
-						function()
-							print("button click")
-						end,
-						function()
-							print("close click")
-						end,
-						1
-					)
-				)
+				local snackbar =
+					maid:GiveTask(Module.ColdFusion.tertiaryContainer(style, "Wow what cool text", "Button", function()
+						print("button click")
+					end, function()
+						print("close click")
+					end, 1))
 				snackbar.AutomaticSize = Enum.AutomaticSize.Y
 				snackbar.Size = UDim2.fromScale(0.9, 0)
 				snackbar.Parent = halfFrame
