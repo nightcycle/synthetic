@@ -24,6 +24,7 @@ type ButtonData = Types.ButtonData
 type Style = Style.Style
 type Method = () -> ()
 type OptionConstructor = Base.OptionConstructor
+type FontData = Types.FontData
 
 -- Constants
 -- Variables
@@ -35,24 +36,22 @@ local Interface = {}
 
 Interface.ColdFusion = {}
 
-
 function Interface.ColdFusion.onTertiaryContainer(
 	style: CanBeState<Style>,
 	onInputEntered: CanBeState<(input: string) -> string>,
 	label: CanBeState<string?>,
-	optionSolver: CanBeState<(input: string) -> {[number]: string}>,
+	optionSolver: CanBeState<(input: string) -> { [number]: string }>,
 	optionConstructor: CanBeState<OptionConstructor?>,
 	elevation: CanBeState<number?>
 ): GuiObject
-
 	local maid = Maid.new()
 	local _fuse = ColdFusion.fuse(maid)
-	
+
 	local _new = _fuse.new
 	local _bind = _fuse.bind
 	local _clone = _fuse.clone
 	local _import = _fuse.import
-	
+
 	local _Value = _fuse.Value
 	local _Computed = _fuse.Computed
 
@@ -72,7 +71,15 @@ function Interface.ColdFusion.onTertiaryContainer(
 			return s:GetColor(Enums.ColorRoleType.TertiaryContainer)
 		end, styleState),
 		elevationState,
-		styleState
+		_Computed(function(s: Style): any
+			return s.SchemeType
+		end, styleState),
+		_Computed(function(s: Style): FontData
+			return s:GetFontData(Enums.FontType.LabelLarge)
+		end, styleState),
+		_Computed(function(s: Style): number
+			return s.Scale
+		end, styleState)	
 	)
 	maid:GiveTask(out.Destroying:Connect(function()
 		maid:Destroy()
@@ -85,19 +92,18 @@ function Interface.ColdFusion.onTertiary(
 	style: CanBeState<Style>,
 	onInputEntered: CanBeState<(input: string) -> string>,
 	label: CanBeState<string?>,
-	optionSolver: CanBeState<(input: string) -> {[number]: string}>,
+	optionSolver: CanBeState<(input: string) -> { [number]: string }>,
 	optionConstructor: CanBeState<OptionConstructor?>,
 	elevation: CanBeState<number?>
 ): GuiObject
-
 	local maid = Maid.new()
 	local _fuse = ColdFusion.fuse(maid)
-	
+
 	local _new = _fuse.new
 	local _bind = _fuse.bind
 	local _clone = _fuse.clone
 	local _import = _fuse.import
-	
+
 	local _Value = _fuse.Value
 	local _Computed = _fuse.Computed
 
@@ -117,7 +123,15 @@ function Interface.ColdFusion.onTertiary(
 			return s:GetColor(Enums.ColorRoleType.Tertiary)
 		end, styleState),
 		elevationState,
-		styleState
+		_Computed(function(s: Style): any
+			return s.SchemeType
+		end, styleState),
+		_Computed(function(s: Style): FontData
+			return s:GetFontData(Enums.FontType.LabelLarge)
+		end, styleState),
+		_Computed(function(s: Style): number
+			return s.Scale
+		end, styleState)	
 	)
 	maid:GiveTask(out.Destroying:Connect(function()
 		maid:Destroy()
@@ -130,19 +144,18 @@ function Interface.ColdFusion.onSecondaryContainer(
 	style: CanBeState<Style>,
 	onInputEntered: CanBeState<(input: string) -> string>,
 	label: CanBeState<string?>,
-	optionSolver: CanBeState<(input: string) -> {[number]: string}>,
+	optionSolver: CanBeState<(input: string) -> { [number]: string }>,
 	optionConstructor: CanBeState<OptionConstructor?>,
 	elevation: CanBeState<number?>
 ): GuiObject
-
 	local maid = Maid.new()
 	local _fuse = ColdFusion.fuse(maid)
-	
+
 	local _new = _fuse.new
 	local _bind = _fuse.bind
 	local _clone = _fuse.clone
 	local _import = _fuse.import
-	
+
 	local _Value = _fuse.Value
 	local _Computed = _fuse.Computed
 
@@ -162,7 +175,15 @@ function Interface.ColdFusion.onSecondaryContainer(
 			return s:GetColor(Enums.ColorRoleType.SecondaryContainer)
 		end, styleState),
 		elevationState,
-		styleState
+		_Computed(function(s: Style): any
+			return s.SchemeType
+		end, styleState),
+		_Computed(function(s: Style): FontData
+			return s:GetFontData(Enums.FontType.LabelLarge)
+		end, styleState),
+		_Computed(function(s: Style): number
+			return s.Scale
+		end, styleState)	
 	)
 	maid:GiveTask(out.Destroying:Connect(function()
 		maid:Destroy()
@@ -175,19 +196,18 @@ function Interface.ColdFusion.onSecondary(
 	style: CanBeState<Style>,
 	onInputEntered: CanBeState<(input: string) -> string>,
 	label: CanBeState<string?>,
-	optionSolver: CanBeState<(input: string) -> {[number]: string}>,
+	optionSolver: CanBeState<(input: string) -> { [number]: string }>,
 	optionConstructor: CanBeState<OptionConstructor?>,
 	elevation: CanBeState<number?>
 ): GuiObject
-
 	local maid = Maid.new()
 	local _fuse = ColdFusion.fuse(maid)
-	
+
 	local _new = _fuse.new
 	local _bind = _fuse.bind
 	local _clone = _fuse.clone
 	local _import = _fuse.import
-	
+
 	local _Value = _fuse.Value
 	local _Computed = _fuse.Computed
 
@@ -207,7 +227,15 @@ function Interface.ColdFusion.onSecondary(
 			return s:GetColor(Enums.ColorRoleType.Secondary)
 		end, styleState),
 		elevationState,
-		styleState
+		_Computed(function(s: Style): any
+			return s.SchemeType
+		end, styleState),
+		_Computed(function(s: Style): FontData
+			return s:GetFontData(Enums.FontType.LabelLarge)
+		end, styleState),
+		_Computed(function(s: Style): number
+			return s.Scale
+		end, styleState)	
 	)
 	maid:GiveTask(out.Destroying:Connect(function()
 		maid:Destroy()
@@ -220,19 +248,18 @@ function Interface.ColdFusion.onPrimaryContainer(
 	style: CanBeState<Style>,
 	onInputEntered: CanBeState<(input: string) -> string>,
 	label: CanBeState<string?>,
-	optionSolver: CanBeState<(input: string) -> {[number]: string}>,
+	optionSolver: CanBeState<(input: string) -> { [number]: string }>,
 	optionConstructor: CanBeState<OptionConstructor?>,
 	elevation: CanBeState<number?>
 ): GuiObject
-
 	local maid = Maid.new()
 	local _fuse = ColdFusion.fuse(maid)
-	
+
 	local _new = _fuse.new
 	local _bind = _fuse.bind
 	local _clone = _fuse.clone
 	local _import = _fuse.import
-	
+
 	local _Value = _fuse.Value
 	local _Computed = _fuse.Computed
 
@@ -252,7 +279,15 @@ function Interface.ColdFusion.onPrimaryContainer(
 			return s:GetColor(Enums.ColorRoleType.PrimaryContainer)
 		end, styleState),
 		elevationState,
-		styleState
+		_Computed(function(s: Style): any
+			return s.SchemeType
+		end, styleState),
+		_Computed(function(s: Style): FontData
+			return s:GetFontData(Enums.FontType.LabelLarge)
+		end, styleState),
+		_Computed(function(s: Style): number
+			return s.Scale
+		end, styleState)	
 	)
 	maid:GiveTask(out.Destroying:Connect(function()
 		maid:Destroy()
@@ -265,19 +300,18 @@ function Interface.ColdFusion.onPrimary(
 	style: CanBeState<Style>,
 	onInputEntered: CanBeState<(input: string) -> string>,
 	label: CanBeState<string?>,
-	optionSolver: CanBeState<(input: string) -> {[number]: string}>,
+	optionSolver: CanBeState<(input: string) -> { [number]: string }>,
 	optionConstructor: CanBeState<OptionConstructor?>,
 	elevation: CanBeState<number?>
 ): GuiObject
-
 	local maid = Maid.new()
 	local _fuse = ColdFusion.fuse(maid)
-	
+
 	local _new = _fuse.new
 	local _bind = _fuse.bind
 	local _clone = _fuse.clone
 	local _import = _fuse.import
-	
+
 	local _Value = _fuse.Value
 	local _Computed = _fuse.Computed
 
@@ -297,7 +331,15 @@ function Interface.ColdFusion.onPrimary(
 			return s:GetColor(Enums.ColorRoleType.Primary)
 		end, styleState),
 		elevationState,
-		styleState
+		_Computed(function(s: Style): any
+			return s.SchemeType
+		end, styleState),
+		_Computed(function(s: Style): FontData
+			return s:GetFontData(Enums.FontType.LabelLarge)
+		end, styleState),
+		_Computed(function(s: Style): number
+			return s.Scale
+		end, styleState)	
 	)
 	maid:GiveTask(out.Destroying:Connect(function()
 		maid:Destroy()
@@ -309,13 +351,15 @@ end
 function Interface.ColdFusion.new(
 	onInputEntered: CanBeState<(input: string) -> string>,
 	label: CanBeState<string?>,
-	optionSolver: CanBeState<(input: string) -> {[number]: string}>,
+	optionSolver: CanBeState<(input: string) -> { [number]: string }>,
 	optionConstructor: CanBeState<OptionConstructor?>,
 	textColor: CanBeState<Color3>,
 	backgroundColor: CanBeState<Color3>,
-	elevation: CanBeState<number>
+	elevation: CanBeState<number>,
+	schemeType: CanBeState<Enums.SchemeType>,
+	fontData: CanBeState<FontData>,
+	scale: CanBeState<number>
 ): GuiObject
-
 	return Base.newBar(
 		false,
 		onInputEntered,
@@ -325,7 +369,9 @@ function Interface.ColdFusion.new(
 		textColor,
 		backgroundColor,
 		elevation,
-		style
+		schemeType,
+		fontData,
+		scale
 	)
 end
 

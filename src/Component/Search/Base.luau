@@ -20,6 +20,8 @@ local Types = require(_Package:WaitForChild("Types"))
 local Style = require(_Package:WaitForChild("Style"))
 local Enums = require(_Package:WaitForChild("Enums"))
 local Sounds = require(_Package:WaitForChild("Sounds"))
+local Theme = require(_Package:WaitForChild("Style"):WaitForChild("Theme"))
+local Typography = require(_Package:WaitForChild("Style"):WaitForChild("Typography"))
 
 -- Types
 type Maid = Maid.Maid
@@ -32,6 +34,7 @@ type OptionData = Types.OptionData
 type ButtonData = Types.ButtonData
 type AppearanceData = Types.AppearanceData
 type Style = Style.Style
+type FontData = Types.FontData
 export type OptionConstructor = (key: string, onClick: (key: string) -> ()) -> GuiObject
 -- Constants
 local PADDING_DP = 8
@@ -47,7 +50,6 @@ local Icons = MaterialIcons.default.dp_48.scale_1
 
 -- Private Functions
 
-
 function newPanel(
 	isFilled: boolean,
 	onClick: (content: string) -> (),
@@ -55,12 +57,13 @@ function newPanel(
 	button: GuiObject,
 	textColorState: State<Color3>,
 	backgroundColorState: State<Color3>,
-	optionSolverState: State<(input: string) -> {[number]: string}>,
+	optionSolverState: State<(input: string) -> { [number]: string }>,
 	optionConstructorState: State<OptionConstructor>,
 	elevationState: State<number>,
-	styleState: State<Style>
+	schemeTypeState: State<Enums.SchemeType>,
+	fontDataState: State<FontData>,
+	scaleState: State<number>
 ): GuiObject
-
 	local maid = Maid.new()
 
 	local _fuse = ColdFusion.fuse(maid)
@@ -72,11 +75,11 @@ function newPanel(
 	local _Value = _fuse.Value
 	local _Computed = _fuse.Computed
 
-	local absolutePositionState = _Value(button.AbsolutePosition+Vector2.new(0, button.AbsoluteSize.Y))
+	local absolutePositionState = _Value(button.AbsolutePosition + Vector2.new(0, button.AbsoluteSize.Y))
 
-	local elevatedTextColorState = _Computed(function(s: Style, tC: Color3, e: number): Color3
-		return s:GetElevatedColor(tC, e)
-	end, styleState, textColorState, elevationState)
+	local elevatedTextColorState = _Computed(function(st: Enums.SchemeType, tC: Color3, e: number): Color3
+		return Theme.getElevatedColor(tC, e, st)
+	end, schemeTypeState, textColorState, elevationState)
 
 	local textBox = _new("TextBox")({
 		LayoutOrder = 2,
@@ -86,24 +89,24 @@ function newPanel(
 		TextColor3 = elevatedTextColorState,
 		Text = initialText,
 		ClipsDescendants = false,
-		TextSize = _Computed(function(s: Style): number
-			return s:GetTextSize(Enums.FontType.LabelLarge)
-		end, styleState),
-		LineHeight = _Computed(function(s: Style): number
-			return s:GetLineHeight(Enums.FontType.LabelLarge)
-		end, styleState),
-		FontFace = _Computed(function(s: Style): Font
-			return s:GetFont(Enums.FontType.LabelLarge)
-		end, styleState),
-		Size = _Computed(function(s: Style): UDim2
-			return UDim2.new(1, 0, 0, s.Scale * 40)
-		end, styleState),
+		TextSize = _Computed(function(f: FontData, sc: number): number
+			return Typography.getTextSize(f.Size, sc)
+		end, fontDataState, scaleState),
+		LineHeight = _Computed(function(f: FontData): number
+			return Typography.getGuiLineHeight(f.LineHeight, f.Size)
+		end, fontDataState),
+		FontFace = _Computed(function(f: FontData): Font
+			return f.Font
+		end, fontDataState),
+		Size = _Computed(function(sc: number): UDim2
+			return UDim2.new(1, 0, 0, sc * 40)
+		end, scaleState),
 		ClearTextOnFocus = false,
 		Children = {
 			_new("UIFlexItem")({
 				FlexMode = Enum.UIFlexMode.Shrink,
 			}),
-		}
+		},
 	}) :: TextBox
 
 	textBox.TextTruncate = Enum.TextTruncate.None
@@ -113,9 +116,13 @@ function newPanel(
 		currentTextState:Set(textBox.Text)
 	end))
 
-	local optionsState = _Computed(function(solver: (input: string) -> {[number]: string}, txt: string): {[number]: string}
-		return solver(txt)
-	end, optionSolverState, currentTextState)
+	local optionsState = _Computed(
+		function(solver: (input: string) -> { [number]: string }, txt: string): { [number]: string }
+			return solver(txt)
+		end,
+		optionSolverState,
+		currentTextState
+	)
 
 	maid:GiveTask(textBox.ReturnPressedFromOnScreenKeyboard:Connect(function()
 		onClick(textBox.Text)
@@ -131,61 +138,65 @@ function newPanel(
 	-- 	onClick(textBox.Text)
 	-- end))
 
-	local backButton = _bind(IconButton.ColdFusion.new(
-		function()
-			onClick(textBox.Text)
-		end,
-		Icons.arrow_back,
-		styleState,
-		textColorState,
-		textColorState,
-		true,
-		elevationState
-	))({
+	local backButton = _bind(
+		IconButton.ColdFusion.new(
+			function()
+				onClick(textBox.Text)
+			end,
+			Icons.arrow_back,
+			textColorState,
+			textColorState,
+			true,
+			elevationState,
+			schemeTypeState,
+			fontDataState,
+			scaleState
+		)
+	)({
 		LayoutOrder = 1,
 	}) :: GuiObject
 
-	local clearButton = _bind(IconButton.ColdFusion.new(
-		function()
-			textBox.Text = ""
-			textBox:CaptureFocus()
-		end,
-		Icons.clear,
-		styleState,
-		textColorState,
-		textColorState,
-		true,
-		elevationState
-	))({
+	local clearButton = _bind(
+		IconButton.ColdFusion.new(
+			function()
+				textBox.Text = ""
+				textBox:CaptureFocus()
+			end,
+			Icons.clear,
+			textColorState,
+			textColorState,
+			true,
+			elevationState,
+			schemeTypeState,
+			fontDataState,
+			scaleState
+		)
+	)({
 		LayoutOrder = 3,
 	}) :: GuiObject
 
-	local scrollingFrame = _bind(maid:GiveTask(Util.ScrollingContainer.ColdFusion.new(
-		0,
-		textColorState
-	)) :: ScrollingFrame)({
-		LayoutOrder = 1,
-		Size = UDim2.fromScale(1,0),
-		AutomaticSize = Enum.AutomaticSize.Y,
-		AutomaticCanvasSize = Enum.AutomaticSize.Y,
-		Children = {
-			maid:GiveTask(Util.List.ColdFusion.classic(
-				Enum.VerticalAlignment.Top,
-				Enum.HorizontalAlignment.Left,
-				Enum.FillDirection.Vertical,
-				UDim.new(0,0)-- _Computed(function(s: Style): UDim
-				-- 	return UDim.new(0, s.Scale * PADDING_DP * 0.5)
-				-- end, styleState)
-			)) :: Instance,
-			
-		},
-	}) :: ScrollingFrame
+	local scrollingFrame =
+		_bind(maid:GiveTask(Util.ScrollingContainer.ColdFusion.new(0, textColorState)) :: ScrollingFrame)({
+			LayoutOrder = 1,
+			Size = UDim2.fromScale(1, 0),
+			AutomaticSize = Enum.AutomaticSize.Y,
+			AutomaticCanvasSize = Enum.AutomaticSize.Y,
+			Children = {
+				maid:GiveTask(Util.List.ColdFusion.classic(
+					Enum.VerticalAlignment.Top,
+					Enum.HorizontalAlignment.Left,
+					Enum.FillDirection.Vertical,
+					UDim.new(0, 0) -- _Computed(function(s: Style): UDim
+					-- 	return UDim.new(0, s.Scale * PADDING_DP * 0.5)
+					-- end, styleState)
+				)) :: Instance,
+			},
+		}) :: ScrollingFrame
 
+	local optionRegistry: { [string]: GuiObject } = {}
 
-	local optionRegistry: {[string]: GuiObject} = {}
-
-	local function updateOptions(opts: {[number]: string}, constructor: OptionConstructor)
-		local registry: {[string]: true?} = {}
+	local function updateOptions(opts: { [number]: string }, constructor: OptionConstructor)
+		local registry: { [string]: true? } = {}
 		for i, v in ipairs(opts) do
 			registry[v] = true
 			if not optionRegistry[v] then
@@ -208,59 +219,57 @@ function newPanel(
 		-- local rep = scrollingFrame:Clone()
 		-- rep.Name = `tick={tick()}`
 		-- rep.Parent = workspace
-
 	end
 
-	optionsState:Connect(function(cur: {[number]: string}, prev: {[number]: string}?)
+	optionsState:Connect(function(cur: { [number]: string }, prev: { [number]: string }?)
 		updateOptions(cur, optionConstructorState:Get())
 	end)
-	
+
 	optionConstructorState:Connect(function(cur: OptionConstructor, prev: OptionConstructor?)
 		updateOptions(optionsState:Get(), cur)
 	end)
 
-	local inst = _bind(Util.PopUp.ColdFusion.new(
-		absolutePositionState,
-		Vector2.zero
-	))({
-		BackgroundColor3 = _Computed(function(s: Style, bC: Color3, e: number): Color3
-			return s:GetElevatedColor(bC, e)
-		end, styleState, backgroundColorState, elevationState),
+	local inst = _bind(Util.PopUp.ColdFusion.new(absolutePositionState, Vector2.zero))({
+		BackgroundColor3 = _Computed(function(st: Enums.SchemeType, bC: Color3, e: number): Color3
+			return Theme.getElevatedColor(bC, e, st)
+		end, schemeTypeState, backgroundColorState, elevationState),
 		BackgroundTransparency = if isFilled then 0 else 1,
 		AutomaticSize = Enum.AutomaticSize.Y,
 		Children = {
 			_new("UICorner")({
-				CornerRadius = _Computed(function(s: Style): UDim
-					return UDim.new(0, s.Scale * CORNER_DP)
-				end, styleState),
+				CornerRadius = _Computed(function(sc: number): UDim
+					return UDim.new(0, sc * CORNER_DP)
+				end, scaleState),
 			}),
 			_new("Frame")({
 				LayoutOrder = 1,
 				BackgroundTransparency = 1,
 				AutomaticSize = Enum.AutomaticSize.None,
-				Size = _Computed(function(s: Style)
-					return UDim2.new(1, 0, 0, s.Scale * 40)
-				end, styleState),
+				Size = _Computed(function(sc: number)
+					return UDim2.new(1, 0, 0, sc * 40)
+				end, scaleState),
 				Children = {
 					textBox :: Instance,
 					maid:GiveTask(Util.Padding.ColdFusion.new(
-						_Computed(function(s: Style): UDim
-							return UDim.new(0, s.Scale * PADDING_DP)
-						end, styleState),
+						_Computed(function(sc: number): UDim
+							return UDim.new(0, sc * PADDING_DP)
+						end, scaleState),
 						UDim.new()
 					)),
-					maid:GiveTask(Util.List.ColdFusion.new(
-						Enum.VerticalAlignment.Center,
-						Enum.HorizontalAlignment.Left,
-						Enum.FillDirection.Horizontal,
-						_Computed(function(s: Style): UDim
-							return UDim.new(0, s.Scale * PADDING_DP)
-						end, styleState),
-						Enum.UIFlexAlignment.None,
-						Enum.UIFlexAlignment.SpaceBetween,
-						Enum.ItemLineAlignment.Center,
-						false
-					)),
+					maid:GiveTask(
+						Util.List.ColdFusion.new(
+							Enum.VerticalAlignment.Center,
+							Enum.HorizontalAlignment.Left,
+							Enum.FillDirection.Horizontal,
+							_Computed(function(sc: number): UDim
+								return UDim.new(0, sc * PADDING_DP)
+							end, scaleState),
+							Enum.UIFlexAlignment.None,
+							Enum.UIFlexAlignment.SpaceBetween,
+							Enum.ItemLineAlignment.Center,
+							false
+						)
+					),
 					_bind(maid:GiveTask(Util.Container.ColdFusion.new()))({
 						LayoutOrder = 1,
 						Children = {
@@ -268,7 +277,7 @@ function newPanel(
 								Scale = 0.6,
 							}) :: Instance,
 							maid:GiveTask(Util.List.ColdFusion.center()),
-							backButton
+							backButton,
 						},
 					}),
 					-- backButton,
@@ -279,31 +288,28 @@ function newPanel(
 								Scale = 0.6,
 							}) :: Instance,
 							maid:GiveTask(Util.List.ColdFusion.center()),
-							clearButton
+							clearButton,
 						},
 					}),
 				},
 			}),
-			maid:GiveTask(Util.List.ColdFusion.classic(
-				Enum.VerticalAlignment.Top,
-				Enum.HorizontalAlignment.Left,
-				Enum.FillDirection.Vertical,
-				UDim.new(0, 0)
-			)),
+			maid:GiveTask(
+				Util.List.ColdFusion.classic(
+					Enum.VerticalAlignment.Top,
+					Enum.HorizontalAlignment.Left,
+					Enum.FillDirection.Vertical,
+					UDim.new(0, 0)
+				)
+			),
 			scrollingFrame,
 		},
 	}) :: GuiObject
 
 	maid:GiveTask(RunService.RenderStepped:Connect(function(deltaTime: number)
+		local pos = button.AbsolutePosition --+Vector2.new(0, button.AbsoluteSize.Y)
 
-		local pos = button.AbsolutePosition--+Vector2.new(0, button.AbsoluteSize.Y)
-		
-		inst.Size = UDim2.fromOffset(
-			button.AbsoluteSize.X, 
-			button.AbsoluteSize.Y+1
-		)
+		inst.Size = UDim2.fromOffset(button.AbsoluteSize.X, button.AbsoluteSize.Y + 1)
 		absolutePositionState:Set(pos)
-
 	end))
 
 	textBox:CaptureFocus()
@@ -311,7 +317,6 @@ function newPanel(
 	maid:GiveTask(inst.Destroying:Connect(function()
 		maid:Destroy()
 	end))
-
 
 	return inst
 end
@@ -323,11 +328,14 @@ function Base.newBar(
 	isFilled: boolean,
 	onInputEntered: CanBeState<(input: string) -> string>,
 	label: CanBeState<string?>,
-	optionSolver: CanBeState<(input: string) -> {[number]: string}>,
+	optionSolver: CanBeState<(input: string) -> { [number]: string }>,
 	optionConstructor: CanBeState<OptionConstructor?>,
 	textColor: CanBeState<Color3>,
 	backgroundColor: CanBeState<Color3>,
-	elevation: CanBeState<number>
+	elevation: CanBeState<number>,
+	schemeType: CanBeState<Enums.SchemeType>,
+	fontData: CanBeState<FontData>,
+	scale: CanBeState<number>
 ): GuiObject
 	local maid = Maid.new()
 	local _fuse = ColdFusion.fuse(maid)
@@ -340,11 +348,14 @@ function Base.newBar(
 	local _Value = _fuse.Value
 	local _Computed = _fuse.Computed
 
-	local styleState: State<Style> = _import(style, nil :: any)
+	local scaleState: State<number> = _import(scale, 1)
+	local schemeTypeState: State<Enums.SchemeType> = _import(schemeType, Enums.SchemeType.Light)
+	local fontDataState: State<FontData> = _import(fontData, nil :: any)
+
 	local onInputEnteredState: State<(input: string) -> string> = _import(
-		onInputEntered, 
-		function(input: string): string 
-			return input 
+		onInputEntered,
+		function(input: string): string
+			return input
 		end
 	)
 	local textColorState: State<Color3> = _import(textColor, Color3.new())
@@ -355,42 +366,37 @@ function Base.newBar(
 	end, elevationState)
 	local backgroundColorState: State<Color3> = _import(backgroundColor, Color3.new())
 
-
-	local function newLabel(
-		key: string,
-		onClick: (key: string) -> ()
-	): GuiObject
-
+	local function newLabel(key: string, onClick: (key: string) -> ()): GuiObject
 		local labelMaid = Maid.new()
 		local fuse = ColdFusion.fuse(labelMaid)
 
-		local elevatedTextColorState = fuse.Computed(function(s: Style, tC: Color3, e: number): Color3
-			return s:GetElevatedColor(tC, e)
-		end, styleState, textColorState, nextElevationState)
-		local elevatedBackgroundColorState = fuse.Computed(function(s: Style, tC: Color3, e: number): Color3
-			return s:GetElevatedColor(tC, e)
-		end, styleState, backgroundColorState, nextElevationState)
+		local elevatedTextColorState = fuse.Computed(function(st: Enums.SchemeType, tC: Color3, e: number): Color3
+			return Theme.getElevatedColor(tC, e, st)
+		end, schemeTypeState, textColorState, nextElevationState)
+		local elevatedBackgroundColorState = fuse.Computed(function(st: Enums.SchemeType, tC: Color3, e: number): Color3
+			return Theme.getElevatedColor(tC, e, st)
+		end, schemeTypeState, backgroundColorState, nextElevationState)
 		local isHoveredState = fuse.Value(false)
 
 		local out = fuse.new("TextButton")({
 			Text = key,
 			AutomaticSize = Enum.AutomaticSize.Y,
 			TextXAlignment = Enum.TextXAlignment.Left,
-			Size = UDim2.fromScale(1,0),
+			Size = UDim2.fromScale(1, 0),
 			AutoButtonColor = true,
 			BackgroundTransparency = if isFilled then 0 else 1,
 			BackgroundColor3 = elevatedBackgroundColorState,
 			TextColor3 = elevatedTextColorState,
 			ClipsDescendants = false,
-			TextSize = _Computed(function(s: Style): number
-				return s:GetTextSize(Enums.FontType.LabelLarge)
-			end, styleState),
-			LineHeight = _Computed(function(s: Style): number
-				return s:GetLineHeight(Enums.FontType.LabelLarge)
-			end, styleState),
-			FontFace = _Computed(function(s: Style): Font
-				return s:GetFont(Enums.FontType.LabelLarge)
-			end, styleState),
+			TextSize = _Computed(function(f: FontData, sc: number): number
+				return Typography.getTextSize(f.Size, sc)
+			end, fontDataState, scaleState),
+			LineHeight = _Computed(function(f: FontData): number
+				return Typography.getGuiLineHeight(f.LineHeight, f.Size)
+			end, fontDataState),
+			FontFace = _Computed(function(f: FontData): Font
+				return f.Font
+			end, fontDataState),
 			Events = {
 				Activated = function()
 					onClick(key)
@@ -410,14 +416,14 @@ function Base.newBar(
 			},
 			Children = {
 				labelMaid:GiveTask(Util.Padding.ColdFusion.new(
-					_Computed(function(s: Style): UDim
-						return UDim.new(0, s.Scale * PADDING_DP)
-					end, styleState),
-					_Computed(function(s: Style): UDim
-						return UDim.new(0, s.Scale * PADDING_DP * 0.25)
-					end, styleState)
+					_Computed(function(sc: number): UDim
+						return UDim.new(0, sc * PADDING_DP)
+					end, scaleState),
+					_Computed(function(sc: number): UDim
+						return UDim.new(0, sc * PADDING_DP * 0.25)
+					end, scaleState)
 				)),
-			}
+			},
 		}) :: TextButton
 
 		labelMaid:GiveTask(out.Destroying:Connect(function()
@@ -427,13 +433,10 @@ function Base.newBar(
 		return out
 	end
 
-	local optionSolverState = _import(optionSolver, function(input: string): {[number]: string}
+	local optionSolverState = _import(optionSolver, function(input: string): { [number]: string }
 		return {}
 	end)
-	local optionConstructorState: State<OptionConstructor> = _import(
-		optionConstructor, 
-		newLabel
-	)
+	local optionConstructorState: State<OptionConstructor> = _import(optionConstructor, newLabel)
 	local labelState: State<string> = _import(label, "Search")
 	local inputState = _Value("")
 	local buttonTextState = _Computed(function(l: string, i: string): string
@@ -464,7 +467,9 @@ function Base.newBar(
 			optionSolverState,
 			optionConstructorState,
 			nextElevationState,
-			styleState
+			schemeTypeState,
+			fontDataState,
+			scaleState
 		)
 		isEnabledState:Set(false)
 		panelMaid:GiveTask(function()
@@ -503,12 +508,14 @@ function Base.newBar(
 		isHoveredState
 	) :: State<any>
 
-	local renderDatasState: State<{[Enums.ButtonStateType]: RenderData}>
+	local renderDatasState: State<{ [Enums.ButtonStateType]: RenderData }>
 
 	if isFilled then
 		renderDatasState = _Computed(
 			function(
-				s: Style,
+				st: Enums.SchemeType,
+				sc: number,
+				f: FontData,
 				e: number,
 				tC: Color3,
 				sC: Color3,
@@ -519,58 +526,60 @@ function Base.newBar(
 				e += 1
 				return {
 					[Enums.ButtonStateType.Enabled] = Types.newRenderData(
-						s.Scale,
-						Types.newAppearanceData(s:GetElevatedColor(sC, e), 1),
-						Types.newAppearanceData(s:GetElevatedColor(sC, e), 0),
-						Types.newAppearanceData(s:GetElevatedColor(tC, e), 0),
-						s:GetFontData(Enums.FontType.LabelLarge),
+						sc,
+						Types.newAppearanceData(Theme.getElevatedColor(sC, e, st), 1),
+						Types.newAppearanceData(Theme.getElevatedColor(sC, e, st), 0),
+						Types.newAppearanceData(Theme.getElevatedColor(tC, e, st), 0),
+						f,
 						i,
 						nil,
 						nil
 					),
 					[Enums.ButtonStateType.Disabled] = Types.newRenderData(
-						s.Scale,
-						Types.newAppearanceData(s:GetElevatedColor(dSC, e), 1),
-						Types.newAppearanceData(s:GetElevatedColor(dSC, e), 0.12),
-						Types.newAppearanceData(s:GetElevatedColor(dTC, e), 0.12),
-						s:GetFontData(Enums.FontType.LabelLarge),
+						sc,
+						Types.newAppearanceData(Theme.getElevatedColor(dSC, e, st), 1),
+						Types.newAppearanceData(Theme.getElevatedColor(dSC, e, st), 0.12),
+						Types.newAppearanceData(Theme.getElevatedColor(dTC, e, st), 0.12),
+						f,
 						i,
 						nil,
 						nil
 					),
 					[Enums.ButtonStateType.Hovered] = Types.newRenderData(
-						s.Scale,
-						Types.newAppearanceData(s:GetElevatedColor(sC, e), 1),
-						Types.newAppearanceData(s:GetElevatedColor(sC, e + 1), 0.08),
-						Types.newAppearanceData(s:GetElevatedColor(tC, e + 1), 0.08),
-						s:GetFontData(Enums.FontType.LabelLarge),
+						sc,
+						Types.newAppearanceData(Theme.getElevatedColor(sC, e, st), 1),
+						Types.newAppearanceData(Theme.getElevatedColor(sC, e + 1, st), 0.08),
+						Types.newAppearanceData(Theme.getElevatedColor(tC, e + 1, st), 0.08),
+						f,
 						i,
 						nil,
 						nil
 					),
 					[Enums.ButtonStateType.Focused] = Types.newRenderData(
-						s.Scale,
-						Types.newAppearanceData(s:GetElevatedColor(sC, e), 1),
-						Types.newAppearanceData(s:GetElevatedColor(sC, e), 0.1),
-						Types.newAppearanceData(s:GetElevatedColor(tC, e), 0.1),
-						s:GetFontData(Enums.FontType.LabelLarge),
+						sc,
+						Types.newAppearanceData(Theme.getElevatedColor(sC, e, st), 1),
+						Types.newAppearanceData(Theme.getElevatedColor(sC, e, st), 0.1),
+						Types.newAppearanceData(Theme.getElevatedColor(tC, e, st), 0.1),
+						f,
 						i,
 						nil,
 						nil
 					),
 					[Enums.ButtonStateType.Pressed] = Types.newRenderData(
-						s.Scale,
-						Types.newAppearanceData(s:GetElevatedColor(sC, e), 1),
-						Types.newAppearanceData(s:GetElevatedColor(sC, e - 1), 0.1),
-						Types.newAppearanceData(s:GetElevatedColor(tC, e - 1), 0.1),
-						s:GetFontData(Enums.FontType.LabelLarge),
+						sc,
+						Types.newAppearanceData(Theme.getElevatedColor(sC, e, st), 1),
+						Types.newAppearanceData(Theme.getElevatedColor(sC, e - 1, st), 0.1),
+						Types.newAppearanceData(Theme.getElevatedColor(tC, e - 1, st), 0.1),
+						f,
 						i,
 						Types.newSoundData(Sounds.Library[Enums.SoundType.ui_tap_variant_01], 0),
 						nil
 					),
 				}
 			end,
-			styleState,
+			schemeTypeState,
+			scaleState,
+			fontDataState,
 			elevationState,
 			textColorState,
 			backgroundColorState,
@@ -578,11 +587,12 @@ function Base.newBar(
 			backgroundColorState,
 			_Value(Icons.search)
 		)
-
 	else
 		renderDatasState = _Computed(
 			function(
-				s: Style,
+				st: Enums.SchemeType,
+				sc: number,
+				f: FontData,
 				e: number,
 				hC: Color3,
 				tC: Color3,
@@ -592,58 +602,60 @@ function Base.newBar(
 				e += 1
 				return {
 					[Enums.ButtonStateType.Enabled] = Types.newRenderData(
-						s.Scale,
-						Types.newAppearanceData(s:GetElevatedColor(hC, e), 1),
-						Types.newAppearanceData(s:GetElevatedColor(hC, e), 1),
-						Types.newAppearanceData(s:GetElevatedColor(tC, e), 0),
-						s:GetFontData(Enums.FontType.LabelLarge),
+						sc,
+						Types.newAppearanceData(Theme.getElevatedColor(hC, e, st), 1),
+						Types.newAppearanceData(Theme.getElevatedColor(hC, e, st), 1),
+						Types.newAppearanceData(Theme.getElevatedColor(tC, e, st), 0),
+						f,
 						i,
 						nil,
 						nil
 					),
 					[Enums.ButtonStateType.Disabled] = Types.newRenderData(
-						s.Scale,
-						Types.newAppearanceData(s:GetElevatedColor(hC, e), 1),
-						Types.newAppearanceData(s:GetElevatedColor(hC, e), 1),
-						Types.newAppearanceData(s:GetElevatedColor(dC, e), 1),
-						s:GetFontData(Enums.FontType.LabelLarge),
+						sc,
+						Types.newAppearanceData(Theme.getElevatedColor(hC, e, st), 1),
+						Types.newAppearanceData(Theme.getElevatedColor(hC, e, st), 1),
+						Types.newAppearanceData(Theme.getElevatedColor(dC, e, st), 1),
+						f,
 						i,
 						nil,
 						nil
 					),
 					[Enums.ButtonStateType.Hovered] = Types.newRenderData(
-						s.Scale,
-						Types.newAppearanceData(s:GetElevatedColor(hC, e), 1),
-						Types.newAppearanceData(s:GetElevatedColor(hC, e + 1), 1 - 0.08),
-						Types.newAppearanceData(s:GetElevatedColor(tC, e + 1), 0),
-						s:GetFontData(Enums.FontType.LabelLarge),
+						sc,
+						Types.newAppearanceData(Theme.getElevatedColor(hC, e, st), 1),
+						Types.newAppearanceData(Theme.getElevatedColor(hC, e + 1, st), 1 - 0.08),
+						Types.newAppearanceData(Theme.getElevatedColor(tC, e + 1, st), 0),
+						f,
 						i,
 						nil,
 						nil
 					),
 					[Enums.ButtonStateType.Focused] = Types.newRenderData(
-						s.Scale,
-						Types.newAppearanceData(s:GetElevatedColor(hC, e), 1),
-						Types.newAppearanceData(s:GetElevatedColor(hC, e), 1 - 0.1),
-						Types.newAppearanceData(s:GetElevatedColor(tC, e), 0),
-						s:GetFontData(Enums.FontType.LabelLarge),
+						sc,
+						Types.newAppearanceData(Theme.getElevatedColor(hC, e, st), 1),
+						Types.newAppearanceData(Theme.getElevatedColor(hC, e, st), 1 - 0.1),
+						Types.newAppearanceData(Theme.getElevatedColor(tC, e, st), 0),
+						f,
 						i,
 						nil,
 						nil
 					),
 					[Enums.ButtonStateType.Pressed] = Types.newRenderData(
-						s.Scale,
-						Types.newAppearanceData(s:GetElevatedColor(hC, e), 1),
-						Types.newAppearanceData(s:GetElevatedColor(hC, e - 1), 1 - 0.1),
-						Types.newAppearanceData(s:GetElevatedColor(tC, e - 1), 0),
-						s:GetFontData(Enums.FontType.LabelLarge),
+						sc,
+						Types.newAppearanceData(Theme.getElevatedColor(hC, e, st), 1),
+						Types.newAppearanceData(Theme.getElevatedColor(hC, e - 1, st), 1 - 0.1),
+						Types.newAppearanceData(Theme.getElevatedColor(tC, e - 1, st), 0),
+						f,
 						i,
 						Types.newSoundData(Sounds.Library[Enums.SoundType.ui_tap_variant_01], 1),
 						nil
 					),
 				}
 			end,
-			styleState,
+			schemeTypeState,
+			scaleState,
+			fontDataState,
 			elevationState,
 			backgroundColorState,
 			textColorState,
@@ -676,9 +688,6 @@ function Base.newBar(
 	}) :: Sound
 	local fontState = _Computed(function(st: RenderData): Font
 		return if st.Font then st.Font.Font else Font.fromEnum(Enum.Font.Roboto)
-	end, currentRenderDataState)
-	local scaleState = _Computed(function(st: RenderData): number
-		return st.Scale
 	end, currentRenderDataState)
 
 	currentRenderDataState:Connect(function()
@@ -737,9 +746,13 @@ function Base.newBar(
 			end,
 		},
 		Children = {
-			maid:GiveTask(Util.Padding.ColdFusion.fromStyleSimple(
-				BUTTON_PADDING_DP,
-				styleState
+			maid:GiveTask(Util.Padding.ColdFusion.new(
+				_Computed(function(sc: number): UDim
+					return UDim.new(0, sc * BUTTON_PADDING_DP)
+				end, scaleState),
+				_Computed(function(sc: number): UDim
+					return UDim.new(0, sc * BUTTON_PADDING_DP)
+				end, scaleState)
 			)) :: Instance,
 			_new("UICorner")({
 				CornerRadius = UDim.new(0.5, 0),
@@ -795,7 +808,7 @@ function Base.newBar(
 			}),
 		},
 	}) :: TextButton
-	
+
 	maid:GiveTask(button.Destroying:Connect(function()
 		maid:Destroy()
 	end))

@@ -53,7 +53,9 @@ return function(frame: Frame)
 						style:GetColor(Enums.ColorRoleType.Primary),
 						style:GetColor(Enums.ColorRoleType.PrimaryContainer),
 						0,
-						style
+						style.SchemeType,
+						style:GetFontData(Enums.FontType.LabelLarge),
+						style.Scale
 					)
 				)
 				button.Size = UDim2.new(0.8,0,0,0)
