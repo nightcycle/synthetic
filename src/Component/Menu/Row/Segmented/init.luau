@@ -14,6 +14,7 @@ local Sounds = require(_Package:WaitForChild("Sounds"))
 local Enums = require(_Package:WaitForChild("Enums"))
 local Types = require(_Package:WaitForChild("Types"))
 local Style = require(_Package:WaitForChild("Style"))
+local Theme = require(_Package:WaitForChild("Style"):WaitForChild("Theme"))
 
 -- Types
 type Maid = Maid.Maid
@@ -25,6 +26,7 @@ type ImageData = Types.ImageData
 type OptionData = Types.OptionData
 type Signal = Signal.Signal
 type RenderData = Types.RenderData
+type FontData = Types.FontData
 
 -- Constants
 local HEIGHT_DP = 40
@@ -43,14 +45,23 @@ local CENTER_IMAGE = "rbxassetid://14846394635"
 -- Variables
 -- References
 -- Private Functions
-function component(
-	maid: Maid,
+
+-- Class
+local Interface = {}
+
+function newThemedComponent(
+	style: CanBeState<Style>,
+	textColor: Enums.ColorRoleType,
+	fillTextColor: Enums.ColorRoleType,
+	fillBackgroundColor: Enums.ColorRoleType,
+	outlineColor: Enums.ColorRoleType,
 	options: CanBeState<{ [number]: OptionData }>,
-	density: CanBeState<number>,
-	isMultiSelect: CanBeState<boolean>,
-	renderDatas: CanBeState<{ [Enums.ButtonStateType]: { [Enums.SelectionState]: RenderData } }>,
-	style: CanBeState<Style>
-): Frame
+	density: CanBeState<number?>,
+	isMultiSelect: CanBeState<boolean?>,
+	elevation: CanBeState<number?>
+): GuiObject
+	local maid = Maid.new()
+
 	local _fuse = ColdFusion.fuse(maid)
 
 	local _new = _fuse.new
@@ -61,25 +72,282 @@ function component(
 	local _Value = _fuse.Value
 	local _Computed = _fuse.Computed
 
+	local styleState: State<Style> = _import(style, nil :: any)
+
+	local out = Interface.ColdFusion.new(
+		options,
+		_import(density, 0),
+		_import(isMultiSelect, false),
+		_Computed(function(s: Style): Color3
+			return s:GetColor(textColor)
+		end, styleState),
+		_Computed(function(s: Style): Color3
+			return s:GetColor(fillTextColor)
+		end, styleState),
+		_Computed(function(s: Style): Color3
+			return s:GetColor(fillBackgroundColor)
+		end, styleState),
+		_Computed(function(s: Style): Color3
+			return s:GetColor(outlineColor)
+		end, styleState),
+		_import(elevation, 0),
+		_Computed(function(s: Style): any
+			return s.SchemeType
+		end, styleState),
+		_Computed(function(s: Style): FontData
+			return s:GetFontData(Enums.FontType.LabelLarge)
+		end, styleState),
+		_Computed(function(s: Style): number
+			return s.Scale
+		end, styleState)
+	)
+
+	maid:GiveTask(out.Destroying:Connect(function()
+		maid:Destroy()
+	end))
+
+	return out
+end
+
+Interface.ColdFusion = {}
+
+function Interface.ColdFusion.primaryContainer(
+	style: CanBeState<Style>,
+	options: CanBeState<{ [number]: OptionData }>,
+	density: CanBeState<number?>,
+	isMultiSelect: CanBeState<boolean?>,
+	elevation: CanBeState<number?>
+): GuiObject
+	return newThemedComponent(
+		style,
+		Enums.ColorRoleType.OnSurface,
+		Enums.ColorRoleType.OnPrimaryContainer,
+		Enums.ColorRoleType.PrimaryContainer,
+		Enums.ColorRoleType.Outline,
+		options,
+		density,
+		isMultiSelect,
+		elevation
+	)
+end
+
+function Interface.ColdFusion.secondaryContainer(
+	style: CanBeState<Style>,
+	options: CanBeState<{ [number]: OptionData }>,
+	density: CanBeState<number?>,
+	isMultiSelect: CanBeState<boolean?>,
+	elevation: CanBeState<number?>
+): GuiObject
+	return newThemedComponent(
+		style,
+		Enums.ColorRoleType.OnSurface,
+		Enums.ColorRoleType.OnSecondaryContainer,
+		Enums.ColorRoleType.SecondaryContainer,
+		Enums.ColorRoleType.Outline,
+		options,
+		density,
+		isMultiSelect,
+		elevation
+	)
+end
+
+function Interface.ColdFusion.tertiaryContainer(
+	style: CanBeState<Style>,
+	options: CanBeState<{ [number]: OptionData }>,
+	density: CanBeState<number?>,
+	isMultiSelect: CanBeState<boolean?>,
+	elevation: CanBeState<number?>
+): GuiObject
+	return newThemedComponent(
+		style,
+		Enums.ColorRoleType.OnSurface,
+		Enums.ColorRoleType.OnTertiaryContainer,
+		Enums.ColorRoleType.TertiaryContainer,
+		Enums.ColorRoleType.Outline,
+		options,
+		density,
+		isMultiSelect,
+		elevation
+	)
+end
+
+function Interface.ColdFusion.new(
+	options: CanBeState<{ [number]: OptionData }>,
+	density: CanBeState<number>,
+	isMultiSelect: CanBeState<boolean>,
+	textColor: CanBeState<Color3>,
+	fillTextColor: CanBeState<Color3>,
+	fillBackgroundColor: CanBeState<Color3>,
+	outlineColor: CanBeState<Color3>,
+	elevation: CanBeState<number>,
+	schemeType: CanBeState<Enums.SchemeType>,
+	fontData: CanBeState<FontData>,
+	scale: CanBeState<number>
+): GuiObject
+	local maid = Maid.new()
+
+	local _fuse = ColdFusion.fuse(maid)
+
+	local _new = _fuse.new
+	local _bind = _fuse.bind
+	local _clone = _fuse.clone
+	local _import = _fuse.import
+
+	local _Value = _fuse.Value
+	local _Computed = _fuse.Computed
+
+	local scaleState: State<number> = _import(scale, 1)
+	local schemeTypeState: State<Enums.SchemeType> = _import(schemeType, Enums.SchemeType.Light)
+	local fontDataState: State<FontData> = _import(fontData, nil :: any)
+
+	local elevationState: State<number> = _import(elevation, 0)
+	local textColorState: State<Color3> = _import(textColor, Color3.new(1, 1, 1))
+	local fillTextColorState: State<Color3> = _import(fillTextColor, Color3.new(1, 1, 1))
+	local fillBackgroundColorState: State<Color3> = _import(fillBackgroundColor, Color3.new(1, 1, 1))
+	local outlineColorState: State<Color3> = _import(outlineColor, Color3.new(1, 1, 1))
+
+	local renderDatasState: State<{ [Enums.ButtonStateType]: { [Enums.SelectionState]: RenderData } }> = _Computed(
+		function(
+			st: Enums.SchemeType,
+			sc: number,
+			f: FontData,
+			e: number,
+			tC: Color3,
+			fTC: Color3,
+			fBC: Color3,
+			oC: Color3
+		): { [Enums.ButtonStateType]: { [Enums.SelectionState]: RenderData } }
+			e += 1
+			return {
+				[Enums.ButtonStateType.Enabled] = {
+					[Enums.SelectionState.Selected] = Types.newRenderData(
+						sc,
+						Types.newAppearanceData(Theme.getElevatedColor(oC, e, st), 0),
+						Types.newAppearanceData(Theme.getElevatedColor(fBC, e, st), 0),
+						Types.newAppearanceData(Theme.getElevatedColor(fTC, e, st), 0),
+						f,
+						nil,
+						nil,
+						nil
+					),
+					[Enums.SelectionState.Unselected] = Types.newRenderData(
+						sc,
+						Types.newAppearanceData(Theme.getElevatedColor(oC, e, st), 0),
+						Types.newAppearanceData(Theme.getElevatedColor(fBC, e, st), 1),
+						Types.newAppearanceData(Theme.getElevatedColor(tC, e, st), 0),
+						f,
+						nil,
+						nil,
+						nil
+					),
+				},
+				[Enums.ButtonStateType.Disabled] = {
+					[Enums.SelectionState.Selected] = Types.newRenderData(
+						sc,
+						Types.newAppearanceData(Theme.getElevatedColor(tC, e, st), 1 - 0.38),
+						Types.newAppearanceData(Theme.getElevatedColor(tC, e, st), 1 - 0.12),
+						Types.newAppearanceData(Theme.getElevatedColor(tC, e, st), 1 - 0.38),
+						f,
+						nil,
+						nil,
+						nil
+					),
+					[Enums.SelectionState.Unselected] = Types.newRenderData(
+						sc,
+						Types.newAppearanceData(Theme.getElevatedColor(tC, e, st), 1 - 0.38),
+						Types.newAppearanceData(Theme.getElevatedColor(tC, e, st), 1 - 0.12),
+						Types.newAppearanceData(Theme.getElevatedColor(tC, e, st), 1 - 0.38),
+						f,
+						nil,
+						nil,
+						nil
+					),
+				},
+				[Enums.ButtonStateType.Hovered] = {
+					[Enums.SelectionState.Selected] = Types.newRenderData(
+						sc,
+						Types.newAppearanceData(Theme.getElevatedColor(oC, e + 1, st), 0),
+						Types.newAppearanceData(Theme.getElevatedColor(fBC, e + 1, st), 1 - 0.08),
+						Types.newAppearanceData(Theme.getElevatedColor(fTC, e + 1, st), 0),
+						f,
+						nil,
+						nil,
+						nil
+					),
+					[Enums.SelectionState.Unselected] = Types.newRenderData(
+						sc,
+						Types.newAppearanceData(Theme.getElevatedColor(oC, e + 1, st), 0),
+						Types.newAppearanceData(Theme.getElevatedColor(fBC, e + 1, st), 1 - 0.08),
+						Types.newAppearanceData(Theme.getElevatedColor(tC, e + 1, st), 0),
+						f,
+						nil,
+						nil,
+						nil
+					),
+				},
+				[Enums.ButtonStateType.Focused] = {
+					[Enums.SelectionState.Selected] = Types.newRenderData(
+						sc,
+						Types.newAppearanceData(Theme.getElevatedColor(oC, e + 1, st), 0),
+						Types.newAppearanceData(Theme.getElevatedColor(fBC, e + 1, st), 1 - 0.1),
+						Types.newAppearanceData(Theme.getElevatedColor(fTC, e + 1, st), 0),
+						f,
+						nil,
+						nil,
+						nil
+					),
+					[Enums.SelectionState.Unselected] = Types.newRenderData(
+						sc,
+						Types.newAppearanceData(Theme.getElevatedColor(oC, e + 1, st), 0),
+						Types.newAppearanceData(Theme.getElevatedColor(fBC, e + 1, st), 1 - 0.1),
+						Types.newAppearanceData(Theme.getElevatedColor(tC, e + 1, st), 0),
+						f,
+						nil,
+						nil,
+						nil
+					),
+				},
+				[Enums.ButtonStateType.Pressed] = {
+					[Enums.SelectionState.Selected] = Types.newRenderData(
+						sc,
+						Types.newAppearanceData(Theme.getElevatedColor(oC, e - 1, st), 0),
+						Types.newAppearanceData(Theme.getElevatedColor(fBC, e - 1, st), 1 - 0.1),
+						Types.newAppearanceData(Theme.getElevatedColor(fTC, e - 1, st), 0),
+						f,
+						nil,
+						Types.newSoundData(Sounds.Library[Enums.SoundType.ui_tap_variant_01], 1),
+						nil
+					),
+					[Enums.SelectionState.Unselected] = Types.newRenderData(
+						sc,
+						Types.newAppearanceData(Theme.getElevatedColor(oC, e - 1, st), 0),
+						Types.newAppearanceData(Theme.getElevatedColor(fBC, e - 1, st), 1 - 0.1),
+						Types.newAppearanceData(Theme.getElevatedColor(tC, e - 1, st), 0),
+						f,
+						nil,
+						Types.newSoundData(Sounds.Library[Enums.SoundType.ui_tap_variant_01], 1),
+						nil
+					),
+				},
+			}
+		end,
+		schemeTypeState,
+		scaleState,
+		fontDataState,
+		elevationState,
+		textColorState,
+		fillTextColorState,
+		fillBackgroundColorState,
+		outlineColorState
+	)
+
 	local optionsState: State<{ [number]: OptionData }> = _import(options, {})
 
 	local isMultiSelectState: State<boolean> = _import(isMultiSelect, false)
 
-	local renderDatasState: State<{ [Enums.ButtonStateType]: { [Enums.SelectionState]: RenderData } }> =
-		_import(renderDatas, {})
-	local styleState: State<Style> = _import(style, nil :: any)
-
-	local scaleState = _Computed(function(st: Style): number
-		return st.Scale
-	end, styleState)
-
 	local densityState: State<number> = _Computed(function(d: number)
 		return math.clamp(d, -3, 0)
 	end, _import(density, 0))
-
-	local fontState: State<Font> = _Computed(function(st: Style): Font
-		return st:GetFontData(Enums.FontType.LabelLarge).Font
-	end, styleState)
 
 	local heightState = _Computed(function(s: number, d: number): number
 		return s * (HEIGHT_DP + (d * 4))
@@ -375,7 +643,9 @@ function component(
 					TextYAlignment = Enum.TextYAlignment.Center,
 					BackgroundTransparency = 1,
 					AutomaticSize = Enum.AutomaticSize.X,
-					FontFace = fontState,
+					FontFace = _Computed(function(f: FontData): Font
+						return f.Font
+					end, fontDataState),
 					LayoutOrder = 2,
 					TextColor3 = _Computed(function(s: RenderData): Color3
 						return if s.Text then s.Text.Color3 else Color3.new(1, 1, 1)
@@ -445,302 +715,11 @@ function component(
 		})
 	end
 
+	maid:GiveTask(inst.Destroying:Connect(function()
+		maid:Destroy()
+	end))
+
 	return inst
-end
--- Class
-local Interface = {}
-
-function newThemedComponent(
-	style: CanBeState<Style>,
-
-	textColor: Enums.ColorRoleType,
-	fillTextColor: Enums.ColorRoleType,
-	fillBackgroundColor: Enums.ColorRoleType,
-	outlineColor: Enums.ColorRoleType,
-
-	options: CanBeState<{ [number]: OptionData }>,
-
-	density: CanBeState<number?>,
-	isMultiSelect: CanBeState<boolean?>,
-	elevation: CanBeState<number?>
-): GuiObject
-	local maid = Maid.new()
-
-	local _fuse = ColdFusion.fuse(maid)
-
-	local _new = _fuse.new
-	local _bind = _fuse.bind
-	local _clone = _fuse.clone
-	local _import = _fuse.import
-
-	local _Value = _fuse.Value
-	local _Computed = _fuse.Computed
-
-	local styleState: State<Style> = _import(style, nil :: any)
-
-	local out = Interface.ColdFusion.new(
-		options,
-		_import(density, 0),
-		_import(isMultiSelect, false),
-		_Computed(function(s: Style): Color3
-			return s:GetColor(textColor)
-		end, styleState),
-		_Computed(function(s: Style): Color3
-			return s:GetColor(fillTextColor)
-		end, styleState),
-		_Computed(function(s: Style): Color3
-			return s:GetColor(fillBackgroundColor)
-		end, styleState),
-		_Computed(function(s: Style): Color3
-			return s:GetColor(outlineColor)
-		end, styleState),
-		_import(elevation, 0),
-		styleState
-	)
-
-	maid:GiveTask(out.Destroying:Connect(function()
-		maid:Destroy()
-	end))
-
-	return out
-end
-
-Interface.ColdFusion = {}
-
-function Interface.ColdFusion.primaryContainer(
-	style: CanBeState<Style>,
-	options: CanBeState<{ [number]: OptionData }>,
-	density: CanBeState<number?>,
-	isMultiSelect: CanBeState<boolean?>,
-	elevation: CanBeState<number?>
-): GuiObject
-	return newThemedComponent(
-		style,
-		Enums.ColorRoleType.OnSurface,
-		Enums.ColorRoleType.OnPrimaryContainer,
-		Enums.ColorRoleType.PrimaryContainer,
-		Enums.ColorRoleType.Outline,
-		options,
-		density,
-		isMultiSelect,
-		elevation
-	)
-end
-
-function Interface.ColdFusion.secondaryContainer(
-	style: CanBeState<Style>,
-	options: CanBeState<{ [number]: OptionData }>,
-	density: CanBeState<number?>,
-	isMultiSelect: CanBeState<boolean?>,
-	elevation: CanBeState<number?>
-): GuiObject
-	return newThemedComponent(
-		style,
-		Enums.ColorRoleType.OnSurface,
-		Enums.ColorRoleType.OnSecondaryContainer,
-		Enums.ColorRoleType.SecondaryContainer,
-		Enums.ColorRoleType.Outline,
-		options,
-		density,
-		isMultiSelect,
-		elevation
-	)
-end
-
-function Interface.ColdFusion.tertiaryContainer(
-	style: CanBeState<Style>,
-	options: CanBeState<{ [number]: OptionData }>,
-	density: CanBeState<number?>,
-	isMultiSelect: CanBeState<boolean?>,
-	elevation: CanBeState<number?>
-): GuiObject
-	return newThemedComponent(
-		style,
-		Enums.ColorRoleType.OnSurface,
-		Enums.ColorRoleType.OnTertiaryContainer,
-		Enums.ColorRoleType.TertiaryContainer,
-		Enums.ColorRoleType.Outline,
-		options,
-		density,
-		isMultiSelect,
-		elevation
-	)
-end
-
-function Interface.ColdFusion.new(
-	options: CanBeState<{ [number]: OptionData }>,
-	density: CanBeState<number>,
-	isMultiSelect: CanBeState<boolean>,
-
-	textColor: CanBeState<Color3>,
-	fillTextColor: CanBeState<Color3>,
-	fillBackgroundColor: CanBeState<Color3>,
-	outlineColor: CanBeState<Color3>,
-
-	elevation: CanBeState<number>
-): GuiObject
-	local maid = Maid.new()
-
-	local _fuse = ColdFusion.fuse(maid)
-
-	local _new = _fuse.new
-	local _bind = _fuse.bind
-	local _clone = _fuse.clone
-	local _import = _fuse.import
-
-	local _Value = _fuse.Value
-	local _Computed = _fuse.Computed
-
-	local styleState: State<Style> = _import(style, nil :: any)
-
-	local elevationState: State<number> = _import(elevation, 0)
-	local textColorState: State<Color3> = _import(textColor, Color3.new(1, 1, 1))
-	local fillTextColorState: State<Color3> = _import(fillTextColor, Color3.new(1, 1, 1))
-	local fillBackgroundColorState: State<Color3> = _import(fillBackgroundColor, Color3.new(1, 1, 1))
-	local outlineColorState: State<Color3> = _import(outlineColor, Color3.new(1, 1, 1))
-
-	local button = component(
-		maid,
-		options,
-		density,
-		isMultiSelect,
-		_Computed(
-			function(
-				s: Style,
-				e: number,
-				tC: Color3,
-				fTC: Color3,
-				fBC: Color3,
-				oC: Color3
-			): { [Enums.ButtonStateType]: { [Enums.SelectionState]: RenderData } }
-				e += 1
-				return {
-					[Enums.ButtonStateType.Enabled] = {
-						[Enums.SelectionState.Selected] = Types.newRenderData(
-							s.Scale,
-							Types.newAppearanceData(s:GetElevatedColor(oC, e), 0),
-							Types.newAppearanceData(s:GetElevatedColor(fBC, e), 0),
-							Types.newAppearanceData(s:GetElevatedColor(fTC, e), 0),
-							s:GetFontData(Enums.FontType.LabelLarge),
-							nil,
-							nil,
-							nil
-						),
-						[Enums.SelectionState.Unselected] = Types.newRenderData(
-							s.Scale,
-							Types.newAppearanceData(s:GetElevatedColor(oC, e), 0),
-							Types.newAppearanceData(s:GetElevatedColor(fBC, e), 1),
-							Types.newAppearanceData(s:GetElevatedColor(tC, e), 0),
-							s:GetFontData(Enums.FontType.LabelLarge),
-							nil,
-							nil,
-							nil
-						),
-					},
-					[Enums.ButtonStateType.Disabled] = {
-						[Enums.SelectionState.Selected] = Types.newRenderData(
-							s.Scale,
-							Types.newAppearanceData(s:GetElevatedColor(tC, e), 1 - 0.38),
-							Types.newAppearanceData(s:GetElevatedColor(tC, e), 1 - 0.12),
-							Types.newAppearanceData(s:GetElevatedColor(tC, e), 1 - 0.38),
-							s:GetFontData(Enums.FontType.LabelLarge),
-							nil,
-							nil,
-							nil
-						),
-						[Enums.SelectionState.Unselected] = Types.newRenderData(
-							s.Scale,
-							Types.newAppearanceData(s:GetElevatedColor(tC, e), 1 - 0.38),
-							Types.newAppearanceData(s:GetElevatedColor(tC, e), 1 - 0.12),
-							Types.newAppearanceData(s:GetElevatedColor(tC, e), 1 - 0.38),
-							s:GetFontData(Enums.FontType.LabelLarge),
-							nil,
-							nil,
-							nil
-						),
-					},
-					[Enums.ButtonStateType.Hovered] = {
-						[Enums.SelectionState.Selected] = Types.newRenderData(
-							s.Scale,
-							Types.newAppearanceData(s:GetElevatedColor(oC, e + 1), 0),
-							Types.newAppearanceData(s:GetElevatedColor(fBC, e + 1), 1 - 0.08),
-							Types.newAppearanceData(s:GetElevatedColor(fTC, e + 1), 0),
-							s:GetFontData(Enums.FontType.LabelLarge),
-							nil,
-							nil,
-							nil
-						),
-						[Enums.SelectionState.Unselected] = Types.newRenderData(
-							s.Scale,
-							Types.newAppearanceData(s:GetElevatedColor(oC, e + 1), 0),
-							Types.newAppearanceData(s:GetElevatedColor(fBC, e + 1), 1 - 0.08),
-							Types.newAppearanceData(s:GetElevatedColor(tC, e + 1), 0),
-							s:GetFontData(Enums.FontType.LabelLarge),
-							nil,
-							nil,
-							nil
-						),
-					},
-					[Enums.ButtonStateType.Focused] = {
-						[Enums.SelectionState.Selected] = Types.newRenderData(
-							s.Scale,
-							Types.newAppearanceData(s:GetElevatedColor(oC, e + 1), 0),
-							Types.newAppearanceData(s:GetElevatedColor(fBC, e + 1), 1 - 0.1),
-							Types.newAppearanceData(s:GetElevatedColor(fTC, e + 1), 0),
-							s:GetFontData(Enums.FontType.LabelLarge),
-							nil,
-							nil,
-							nil
-						),
-						[Enums.SelectionState.Unselected] = Types.newRenderData(
-							s.Scale,
-							Types.newAppearanceData(s:GetElevatedColor(oC, e + 1), 0),
-							Types.newAppearanceData(s:GetElevatedColor(fBC, e + 1), 1 - 0.1),
-							Types.newAppearanceData(s:GetElevatedColor(tC, e + 1), 0),
-							s:GetFontData(Enums.FontType.LabelLarge),
-							nil,
-							nil,
-							nil
-						),
-					},
-					[Enums.ButtonStateType.Pressed] = {
-						[Enums.SelectionState.Selected] = Types.newRenderData(
-							s.Scale,
-							Types.newAppearanceData(s:GetElevatedColor(oC, e - 1), 0),
-							Types.newAppearanceData(s:GetElevatedColor(fBC, e - 1), 1 - 0.1),
-							Types.newAppearanceData(s:GetElevatedColor(fTC, e - 1), 0),
-							s:GetFontData(Enums.FontType.LabelLarge),
-							nil,
-							Types.newSoundData(Sounds.Library[Enums.SoundType.ui_tap_variant_01], 1),
-							nil
-						),
-						[Enums.SelectionState.Unselected] = Types.newRenderData(
-							s.Scale,
-							Types.newAppearanceData(s:GetElevatedColor(oC, e - 1), 0),
-							Types.newAppearanceData(s:GetElevatedColor(fBC, e - 1), 1 - 0.1),
-							Types.newAppearanceData(s:GetElevatedColor(tC, e - 1), 0),
-							s:GetFontData(Enums.FontType.LabelLarge),
-							nil,
-							Types.newSoundData(Sounds.Library[Enums.SoundType.ui_tap_variant_01], 1),
-							nil
-						),
-					},
-				}
-			end,
-			styleState,
-			elevationState,
-			textColorState,
-			fillTextColorState,
-			fillBackgroundColorState,
-			outlineColorState
-		),
-		style
-	)
-	maid:GiveTask(button.Destroying:Connect(function()
-		maid:Destroy()
-	end))
-
-	return button
 end
 
 return Interface
