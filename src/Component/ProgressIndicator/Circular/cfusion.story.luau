@@ -65,7 +65,7 @@ return function(frame: Frame)
 						true,
 						style:GetColor(Enums.ColorRoleType.Primary, 1),
 						style:GetColor(Enums.ColorRoleType.PrimaryContainer, 1),
-						style
+						style.Scale
 					)
 				)
 				button.Parent = halfFrame

@@ -26,6 +26,7 @@ type ImageData = Types.ImageData
 type OptionData = Types.OptionData
 type ButtonData = Types.ButtonData
 type Style = Style.Style
+type FontData = Types.FontData
 
 -- Constants
 local DIAMETER_DP = 36 --48
@@ -132,7 +133,6 @@ function newRotaryElement(
 		return (start + width * 0.5) % 360
 	end, progressStartState, progressWidthState)
 
-
 	return _new("Frame")({
 		Size = UDim2.fromScale(1, 1),
 		AnchorPoint = Vector2.new(0.5, 0.5),
@@ -143,8 +143,6 @@ function newRotaryElement(
 			newSemiRotaryElement(maid, progressMidState, progressFinishState, colorState, transparencyState),
 		},
 	}) :: GuiObject
-
-
 end
 
 -- Class
@@ -180,7 +178,9 @@ function Interface.ColdFusion.primary(
 		_Computed(function(s: Style): Color3
 			return s:GetColor(Enums.ColorRoleType.PrimaryContainer)
 		end, styleState),
-		styleState
+		_Computed(function(s: Style): number
+			return s.Scale
+		end, styleState)
 	)
 
 	maid:GiveTask(out.Destroying:Connect(function()
@@ -218,7 +218,9 @@ function Interface.ColdFusion.secondary(
 		_Computed(function(s: Style): Color3
 			return s:GetColor(Enums.ColorRoleType.SecondaryContainer)
 		end, styleState),
-		styleState
+		_Computed(function(s: Style): number
+			return s.Scale
+		end, styleState)
 	)
 
 	maid:GiveTask(out.Destroying:Connect(function()
@@ -256,7 +258,9 @@ function Interface.ColdFusion.tertiary(
 		_Computed(function(s: Style): Color3
 			return s:GetColor(Enums.ColorRoleType.TertiaryContainer)
 		end, styleState),
-		styleState
+		_Computed(function(s: Style): number
+			return s.Scale
+		end, styleState)
 	)
 
 	maid:GiveTask(out.Destroying:Connect(function()
@@ -270,7 +274,8 @@ function Interface.ColdFusion.new(
 	progress: CanBeState<number?>,
 	isEnabled: CanBeState<boolean>,
 	fillColor: CanBeState<Color3>,
-	emptyColor: CanBeState<Color3>
+	emptyColor: CanBeState<Color3>,
+	scale: CanBeState<number>
 ): GuiObject
 	local maid = Maid.new()
 
@@ -283,12 +288,11 @@ function Interface.ColdFusion.new(
 
 	local _Value = _fuse.Value
 	local _Computed = _fuse.Computed
-
+	local scaleState: State<number> = _import(scale, 1)
 	local inputProgressState: State<number?> = _import(progress, nil :: number?)
 	local isEnabledState = _import(isEnabled, true)
 	local fillColorState = _import(fillColor, Color3.new())
 	local emptyColorState = _import(emptyColor, Color3.new())
-	local styleState: State<Style> = _import(style, nil :: any)
 
 	local transparencyState = _Computed(function(isEnab: boolean): number
 		return if isEnab then 0 else 1
@@ -335,65 +339,66 @@ function Interface.ColdFusion.new(
 	local imageLabel: GuiObject?
 
 	if USE_EDITABLE_IMAGE then
-		
 		imageLabel = _new("ImageLabel")({
 			Size = UDim2.fromScale(1, 1),
 			AnchorPoint = Vector2.new(0.5, 0.5),
 			Position = UDim2.fromScale(0.5, 0.5),
 			BackgroundTransparency = 1,
 			Children = {
-				editableImage
-			}
+				editableImage,
+			},
 		}) :: GuiObject
-
 	end
 
 	local out = _new("Frame")({
-		Size = _Computed(function(s: Style): UDim2
-			return UDim2.fromOffset(s.Scale * DIAMETER_DP, s.Scale * DIAMETER_DP)
-		end, styleState),
+		Size = _Computed(function(sc: number): UDim2
+			return UDim2.fromOffset(sc * DIAMETER_DP, sc * DIAMETER_DP)
+		end, scaleState),
 		AnchorPoint = Vector2.new(0.5, 0.5),
 		Position = UDim2.fromScale(0.5, 0.5),
 		BackgroundTransparency = 1,
 		-- BackgroundColor3 = Color3.new(0.5,0.5,0.5),
-		Children = if USE_EDITABLE_IMAGE then {imageLabel} else {
-			_bind(newRotaryElement(maid, progressStartState, progressWidthState, fillColorState, transparencyState))({
-				ZIndex = 2,
-				Name = "Fill",
-			}),
-			_bind(newRotaryElement(
-				maid,
-				_Computed(function(start: number, width: number): number
-					return (start + width + BUFFER) % 360
-				end, progressStartState, progressWidthState),
-				_Computed(function(width: number): number
-					return 360 - width - BUFFER * 2
-				end, progressWidthState),
-				emptyColorState,
-				transparencyState
-			))({
-				ZIndex = 1,
-				Name = "Empty",
-			}),
-		},
+		Children = if USE_EDITABLE_IMAGE
+			then { imageLabel }
+			else {
+				_bind(
+					newRotaryElement(maid, progressStartState, progressWidthState, fillColorState, transparencyState)
+				)({
+					ZIndex = 2,
+					Name = "Fill",
+				}),
+				_bind(newRotaryElement(
+					maid,
+					_Computed(function(start: number, width: number): number
+						return (start + width + BUFFER) % 360
+					end, progressStartState, progressWidthState),
+					_Computed(function(width: number): number
+						return 360 - width - BUFFER * 2
+					end, progressWidthState),
+					emptyColorState,
+					transparencyState
+				))({
+					ZIndex = 1,
+					Name = "Empty",
+				}),
+			},
 	}) :: GuiObject
 
 	if DEBUG_ENABLED then
 		_new("TextLabel")({
 			Text = _Computed(function(inputProgress: number?): string
-				return if inputProgress then tostring(math.round(inputProgress*100)) else "?"
+				return if inputProgress then tostring(math.round(inputProgress * 100)) else "?"
 			end, inputProgressState),
 			TextSize = 16,
 			TextColor3 = fillColorState,
 			Parent = out,
 			BackgroundTransparency = 1,
-			Size = UDim2.fromScale(1,1),
+			Size = UDim2.fromScale(1, 1),
 		})
 	end
 
 	if USE_EDITABLE_IMAGE then
 		assert(imageLabel)
-		
 
 		maid:GiveTask(RunService.RenderStepped:Connect(function(deltaTime: number)
 			editableImage.Size = Vector2.new(
@@ -402,59 +407,50 @@ function Interface.ColdFusion.new(
 			)
 			local outerRadius = math.ceil(editableImage.Size.X * 0.5 - 1)
 			local innerRadius = math.ceil(outerRadius * 0.5)
-			local center = editableImage.Size/2
+			local center = editableImage.Size / 2
 			local fCol = fillColorState:Get()
 			local eCol = emptyColorState:Get()
 
 			local trans = transparencyState:Get()
-			editableImage:DrawRectangle(Vector2.zero, editableImage.Size-Vector2.one, eCol, 1)
-		
-			local startAngle = progressStartState:Get()--+BUFFER
+			editableImage:DrawRectangle(Vector2.zero, editableImage.Size - Vector2.one, eCol, 1)
+
+			local startAngle = progressStartState:Get() --+BUFFER
 			local widthAngle = progressWidthState:Get()
 			local midAngle = startAngle + widthAngle * 0.5
-			local finishAngle = startAngle + widthAngle---BUFFER
+			local finishAngle = startAngle + widthAngle ---BUFFER
 
 			local fillCount = 0
 
 			local function getIfFilled(angle: number): boolean
 				return (angle >= startAngle and angle < (if midAngle > 360 or finishAngle > 360 then 360 else midAngle))
-					or (angle >= (if midAngle > 360 or finishAngle > 360 then 0 else midAngle) and angle < finishAngle%360)
+					or (
+						angle >= (if midAngle > 360 or finishAngle > 360 then 0 else midAngle)
+						and angle < finishAngle % 360
+					)
 			end
 
-			for y=0, editableImage.Size.Y-1 do
-				for x=0, editableImage.Size.X-1 do
-					local offset = (Vector2.new(x,y)-center)*Vector2.new(1,1)
+			for y = 0, editableImage.Size.Y - 1 do
+				for x = 0, editableImage.Size.X - 1 do
+					local offset = (Vector2.new(x, y) - center) * Vector2.new(1, 1)
 					local dist = offset.Magnitude
 					if dist > innerRadius and dist < outerRadius then
-
-						local angle = math.deg(math.atan2(offset.Y, offset.X)+math.rad(90))
+						local angle = math.deg(math.atan2(offset.Y, offset.X) + math.rad(90))
 						if angle < 0 then
 							angle = 360 + angle
 						end
-						
+
 						local isFilled = getIfFilled(angle)
 
 						if isFilled then
 							fillCount += 1
-							editableImage:DrawRectangle(
-								Vector2.new(x,y),
-								Vector2.one,
-								fCol,
-								trans
-							)
+							editableImage:DrawRectangle(Vector2.new(x, y), Vector2.one, fCol, trans)
 						else
-							editableImage:DrawRectangle(
-								Vector2.new(x,y),
-								Vector2.one,
-								eCol,
-								trans
-							)
+							editableImage:DrawRectangle(Vector2.new(x, y), Vector2.one, eCol, trans)
 						end
 					end
 				end
 			end
 			-- print(`{math.round(startAngle)}->{math.round(finishAngle)}={fillCount}`)
-
 		end))
 	end
 
