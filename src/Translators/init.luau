@@ -27,27 +27,54 @@ export type FusionObserver = Fusion.Observer
 type Properties = {
 	[string]: unknown?,
 }
-export type RoactProperties<V> = Properties & V
+export type RoactProperties<States> = Properties & States
 
-export type RoactElement<V> = {
-	props: RoactProperties<V>,
-	render: (self: RoactElement<V>) -> (),
-	init: (self: RoactElement<V>) -> (),
-	setState: (self: RoactElement<V>, props: RoactProperties<V> | () -> RoactProperties<V>?) -> (),
+export type RoactElement<States> = {
+	props: RoactProperties<States>,
 }
-export type RoactHandle<V> = {}
+
+export type RoactComponent<States, Name> = RoactElement<States> & {
+	__componentName: Name,
+	init: (self: RoactComponent<States, Name>) -> (),
+	render: (self: RoactComponent<States, Name>) -> RoactElement<States>,
+	didMount: (self: RoactComponent<States, Name>) -> (),
+	setState: (
+		self: RoactComponent<States, Name>,
+		props: RoactProperties<States> | (prev: RoactProperties<States>) -> RoactProperties<States>?
+	) -> (),
+}
+export type RoactHandle<States, MountedInstance> = {}
+type RoactComponentInterface = {
+	extend: <States, Name>(
+		self: RoactComponentInterface,
+		name: Name & string
+	) -> RoactComponent<States, Name>,
+}
 export type Roact = {
 	-- creates a backend only class that can be modified
 	createElement: <States>(
-		className: string,
+		elementType: string,
+		RoactComponent<States, unknown> | (States) -> RoactElement<States>,
 		props: RoactProperties<States>,
 		children: { [string]: unknown }
 	) -> RoactElement<States>,
+
 	-- binds an element to a Roblox instance
-	mount: <States, InstanceType>(
+	mount: <States, MountedInstance>(
 		element: RoactElement<Properties>,
-		inst: InstanceType
-	) -> RoactHandle<States>,
+		inst: MountedInstance
+	) -> RoactHandle<States, MountedInstance>,
+
+	-- used to swap out elements at runtime (not used super frequently except for non-roact compat)
+	update: <States, MountedInstance>(
+		handle: RoactHandle<States, MountedInstance>,
+		element: RoactElement<States>
+	) -> RoactHandle<States, MountedInstance>,
+
+	-- cleans up elements + destroys instances
+	unmount: <States, MountedInstance>(handle: RoactHandle<States, MountedInstance>) -> (),
+
+	Component: RoactComponentInterface,
 }
 -- Constants
 -- Variables
@@ -58,7 +85,7 @@ local Translators = {}
 
 Translators.Fusion = {}
 
-function Translators.Fusion.toColdFusion<V>(fuse: CFuse, value: FusionCanBeState<V>): CFusionCanBeState<V>
+function Translators.Fusion.toColdFusion<V>(maid: Maid, fuse: CFuse, value: FusionCanBeState<V>): CFusionCanBeState<V>
 	if typeof(value) == "table" then
 		local valueTable: { [unknown]: unknown? } = value :: any
 		if
@@ -69,9 +96,9 @@ function Translators.Fusion.toColdFusion<V>(fuse: CFuse, value: FusionCanBeState
 			local stateObject: FusionStateObject<V> = valueTable :: any
 			local state = fuse.Value(stateObject:get(false))
 			local observer = Fusion.Observer(stateObject)
-			observer:onChange(function()
+			maid:GiveTask(observer:onChange(function()
 				state:Set(stateObject:get(false))
-			end)
+			end))
 
 			return state
 		else
