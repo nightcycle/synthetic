@@ -170,7 +170,7 @@ function Interface.ColdFusion.new(
 	buttonFontData: CanBeState<FontData>,
 	scale: CanBeState<number>
 ): GuiObject
-	return TopBase.component(
+	return TopBase.new(
 		title,
 		buttons,
 		navigation,

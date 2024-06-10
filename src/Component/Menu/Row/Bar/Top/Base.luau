@@ -47,7 +47,7 @@ local UPPER_TEXT_HEIGHT_DP = 36
 -- Class
 local Interface = {}
 
-function Interface.component(
+function Interface.new(
 	title: CanBeState<string>,
 	buttons: CanBeState<{
 		[number]: ButtonData,

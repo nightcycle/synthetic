@@ -250,7 +250,7 @@ function Interface.new(
 		iconState
 	)
 
-	local button = Base.component(
+	local button = Base.new(
 		maid,
 		function()
 			clickCountState:Set(clickCountState:Get() + 1)

@@ -269,7 +269,7 @@ function Interface.ColdFusion.new(
 
 	local iconState: State<ImageData?> = _import(icon, nil :: ImageData?)
 
-	local button = Base.component(
+	local button = Base.new(
 		maid,
 		onClick,
 		text,

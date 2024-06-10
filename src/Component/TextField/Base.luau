@@ -107,8 +107,6 @@ function Interface.new(
 	local leadingIconState = _import(leadingIcon, nil :: ImageData?)
 	local dropdownOptionsState: State<{ [number]: string }?> = _import(nil, nil :: { [number]: string }?)
 
-	local styleState: State<Style> = _import(style, nil :: any)
-
 	local function applyElevation(state: State<Color3>): State<Color3>
 		return _Computed(function(c: Color3, e: number, s: Style): Color3
 			return s:GetElevatedColor(c, e)

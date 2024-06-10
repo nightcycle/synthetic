@@ -39,7 +39,7 @@ local HALF_IMAGE_SIZE = IMAGE_SIZE / 2
 
 local Util = {}
 
-Util.component = function(
+Util.new = function(
 	maid: Maid,
 	onClick: CanBeState<() -> ()>,
 	text: CanBeState<string>,
@@ -60,7 +60,7 @@ Util.component = function(
 
 	local _Value = fuse.Value
 	local _Computed = fuse.Computed
-	
+
 	local isEnabledState = _import(isEnabled, true)
 	local isFocusedState = _Value(false)
 	local isPressedState = _Value(false)
