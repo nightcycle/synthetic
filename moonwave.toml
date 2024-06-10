@@ -1,4 +1,4 @@
-title = "synthetic"  # From Git
+title = "synthetic"                                    # From Git
 gitRepoUrl = "https://github.com/nightcycle/synthetic" # From Git
 
 gitSourceBranch = "master"
@@ -19,4 +19,4 @@ tagline = "A library used for the construction of Material Design inspired Fusio
 
 [footer]
 style = "dark"
-copyright = "Copyright © 2022 Nightcycle Studios LLC. Built with Moonwave and Docusaurus"
+copyright = "Copyright © 2024 Nightcycle Studios LLC. Built with Moonwave and Docusaurus"
