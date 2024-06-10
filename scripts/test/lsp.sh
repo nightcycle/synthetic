@@ -1,0 +1,2 @@
+#!/usr/bin/env bash
+luau-lsp analyze --sourcemap="sourcemap.json" --ignore="Packages/**" --ignore="**/Packages/**" --ignore="*.spec.luau" --ignore="out/**" --flag:LuauTypeInferIterationLimit=0 --flag:LuauCheckRecursionLimit=0 --flag:LuauTypeInferRecursionLimit=0 --flag:LuauTarjanChildLimit=0 --flag:LuauTypeInferTypePackLoopLimit=0 --flag:LuauVisitRecursionLimit=0 --definitions=types/globalTypes.d.lua src
