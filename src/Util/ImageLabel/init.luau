@@ -8,7 +8,6 @@ local Maid = require(_Packages:WaitForChild("Maid"))
 -- Modules
 local Types = require(_Package:WaitForChild("Types"))
 local Style = require(_Package:WaitForChild("Style"))
-local Enums = require(_Package:WaitForChild("Enums"))
 
 -- Types
 type State<V> = ColdFusion.State<V>

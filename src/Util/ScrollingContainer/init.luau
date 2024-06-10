@@ -2,14 +2,12 @@
 local _Package = script.Parent.Parent
 local _Packages = _Package.Parent
 -- Services
-local RunService = game:GetService("RunService")
 -- Packages
 local ColdFusion = require(_Packages:WaitForChild("ColdFusion"))
 local Maid = require(_Packages:WaitForChild("Maid"))
 -- Modules
 local Types = require(_Package:WaitForChild("Types"))
 local Style = require(_Package:WaitForChild("Style"))
-local Enums = require(_Package:WaitForChild("Enums"))
 
 -- Types
 type State<V> = ColdFusion.State<V>
@@ -30,10 +28,7 @@ local Util = {}
 
 Util.ColdFusion = {}
 
-function Util.ColdFusion.new(
-	barThickness: CanBeState<number?>,
-	barColor: CanBeState<Color3?>
-): ScrollingFrame
+function Util.ColdFusion.new(barThickness: CanBeState<number?>, barColor: CanBeState<Color3?>): ScrollingFrame
 	local maid = Maid.new()
 
 	local _fuse = ColdFusion.fuse(maid)
@@ -47,14 +42,14 @@ function Util.ColdFusion.new(
 	local _Computed = _fuse.Computed
 
 	local barThicknessState = _import(barThickness, 10)
-	local barColorState = _import(barColor, Color3.new(1,1,1))
+	local barColorState = _import(barColor, Color3.new(1, 1, 1))
 
 	local out = _new("ScrollingFrame")({
 		Name = "ScrollingContainer",
 		AutomaticSize = Enum.AutomaticSize.None,
 		AutomaticCanvasSize = Enum.AutomaticSize.None,
 		Size = UDim2.fromScale(0, 0),
-		CanvasSize = UDim2.fromScale(0,0),
+		CanvasSize = UDim2.fromScale(0, 0),
 		BackgroundTransparency = 1,
 		BorderSizePixel = 0,
 		BottomImage = BOTTOM_IMAGE,
@@ -64,9 +59,7 @@ function Util.ColdFusion.new(
 		ScrollBarImageColor3 = barColorState,
 		VerticalScrollBarInset = Enum.ScrollBarInset.ScrollBar,
 		HorizontalScrollBarInset = Enum.ScrollBarInset.ScrollBar,
-		Children = {
-
-		},
+		Children = {},
 	}) :: ScrollingFrame
 
 	maid:GiveTask(out.Destroying:Connect(function()

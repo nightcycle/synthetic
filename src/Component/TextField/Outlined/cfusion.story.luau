@@ -66,7 +66,10 @@ return function(frame: Frame)
 						style:GetColor(Enums.ColorRoleType.OnSurface, 1),
 						style:GetColor(Enums.ColorRoleType.OnSurfaceVariant, 1),
 						0,
-						style
+						style.SchemeType,
+						style:GetFontData(Enums.FontType.BodyLarge),
+						style:GetFontData(Enums.FontType.BodySmall),
+						style.Scale
 					)
 				)
 				button.Parent = halfFrame
@@ -94,9 +97,11 @@ return function(frame: Frame)
 						style:GetColor(Enums.ColorRoleType.Outline, 1),
 						style:GetColor(Enums.ColorRoleType.OnSurface, 1),
 						style:GetColor(Enums.ColorRoleType.OnSurfaceVariant, 1),
-
 						0,
-						style
+						style.SchemeType,
+						style:GetFontData(Enums.FontType.BodyLarge),
+						style:GetFontData(Enums.FontType.BodySmall),
+						style.Scale
 					)
 				)
 				button.Parent = halfFrame
@@ -115,37 +120,6 @@ return function(frame: Frame)
 						nil,
 						true,
 						true,
-						"Label",
-						20,
-						"Supporting Text",
-						Icons.settings,
-						style:GetColor(Enums.ColorRoleType.Primary, 1),
-						style:GetColor(Enums.ColorRoleType.Error, 1),
-						style:GetColor(Enums.ColorRoleType.Outline, 1),
-						style:GetColor(Enums.ColorRoleType.OnSurface, 1),
-						style:GetColor(Enums.ColorRoleType.OnSurfaceVariant, 1),
-
-						0,
-						style
-					)
-				)
-				button.Parent = halfFrame
-			end
-
-			do
-				local button = maid:GiveTask(
-					Module.ColdFusion.new(
-						function(input: string?): string?
-							print(`submit: {input}`)
-							return input
-						end,
-						function(input: string?): string?
-							print(`input: {input}`)
-							return input
-						end,
-						nil,
-						false,
-						false,
 						"Label",
 						20,
 						"Supporting Text",
@@ -157,7 +131,10 @@ return function(frame: Frame)
 						style:GetColor(Enums.ColorRoleType.OnSurfaceVariant, 1),
 
 						0,
-						style
+						style.SchemeType,
+						style:GetFontData(Enums.FontType.BodyLarge),
+						style:GetFontData(Enums.FontType.BodySmall),
+						style.Scale
 					)
 				)
 				button.Parent = halfFrame
@@ -175,7 +152,7 @@ return function(frame: Frame)
 							return input
 						end,
 						nil,
-						true,
+						false,
 						false,
 						"Label",
 						20,
@@ -188,7 +165,44 @@ return function(frame: Frame)
 						style:GetColor(Enums.ColorRoleType.OnSurfaceVariant, 1),
 
 						0,
-						style
+						style.SchemeType,
+						style:GetFontData(Enums.FontType.BodyLarge),
+						style:GetFontData(Enums.FontType.BodySmall),
+						style.Scale
+					)
+				)
+				button.Parent = halfFrame
+			end
+
+			do
+				local button = maid:GiveTask(
+					Module.ColdFusion.new(
+						function(input: string?): string?
+							print(`submit: {input}`)
+							return input
+						end,
+						function(input: string?): string?
+							print(`input: {input}`)
+							return input
+						end,
+						nil,
+						true,
+						false,
+						"Label",
+						20,
+						"Supporting Text",
+						Icons.settings,
+						style:GetColor(Enums.ColorRoleType.Primary, 1),
+						style:GetColor(Enums.ColorRoleType.Error, 1),
+						style:GetColor(Enums.ColorRoleType.Outline, 1),
+						style:GetColor(Enums.ColorRoleType.OnSurface, 1),
+						style:GetColor(Enums.ColorRoleType.OnSurfaceVariant, 1),
+
+						0,
+						style.SchemeType,
+						style:GetFontData(Enums.FontType.BodyLarge),
+						style:GetFontData(Enums.FontType.BodySmall),
+						style.Scale
 					)
 				)
 				button.Parent = halfFrame
