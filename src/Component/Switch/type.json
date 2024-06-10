@@ -1,0 +1,138 @@
+[
+	{
+		"names": [
+			"new"
+		],
+		"parameters": [
+			{
+				"name": "onSelect",
+				"type": "(isSelected: boolean) -> ()",
+				"default": "function(isSelected: boolean) end"
+			},
+			{
+				"name": "initialSelection",
+				"type": "boolean",
+				"default": "false"
+			},
+			{
+				"name": "isEnabled",
+				"type": "boolean",
+				"default": "true"
+			},
+			{
+				"name": "includeIconOnSelected",
+				"type": "boolean",
+				"default": "true"
+			},
+			{
+				"name": "includeIconOnSelected",
+				"type": "boolean",
+				"default": "true"
+			},
+			{
+				"name": "includeIconOnDeselected",
+				"type": "boolean",
+				"default": "true"
+			},
+			{
+				"name": "backgroundColor",
+				"type": "Color3",
+				"default": "Color3.new()"
+			},
+			{
+				"name": "onBackgroundColor",
+				"type": "Color3",
+				"default": "Color3.new()"
+			},
+			{
+				"name": "fillColor",
+				"type": "Color3",
+				"default": "Color3.new()"
+			},
+			{
+				"name": "buttonColor",
+				"type": "Color3",
+				"default": "Color3.new()"
+			},
+			{
+				"name": "onButtonColor",
+				"type": "Color3",
+				"default": "Color3.new()"
+			},
+			{
+				"name": "disabledColor",
+				"type": "Color3",
+				"default": "Color3.new()"
+			},
+			{
+				"name": "onDisabledColor",
+				"type": "Color3",
+				"default": "Color3.new()"
+			},
+			{
+				"name": "elevation",
+				"type": "number",
+				"default": "0"
+			},
+			{
+				"name": "schemeType",
+				"type": "Enums.SchemeType",
+				"default": "Enums.SchemeType.Light"
+			},
+			{
+				"name": "fontData",
+				"type": "FontData",
+				"default": "Types.newFontData(Font.fromEnum(Enum.Font.ArialBold), 14)"
+			},
+			{
+				"name": "scale",
+				"type": "number",
+				"default": "1"
+			}
+		]
+	},
+	{
+		"names": [
+			"primary",
+			"second",
+			"tertiary"
+		],
+		"parameters": [
+			{
+				"name": "style",
+				"type": "Style",
+				"default": ""
+			},
+			{
+				"name": "onSelect",
+				"type": "(isSelected: boolean) -> ()",
+				"default": ""
+			},
+			{
+				"name": "initialSelection",
+				"type": "boolean",
+				"default": "false"
+			},
+			{
+				"name": "includeIconOnSelected",
+				"type": "boolean?",
+				"default": "true"
+			},
+			{
+				"name": "includeIconOnDeselected",
+				"type": "boolean?",
+				"default": "true"
+			},
+			{
+				"name": "elevation",
+				"type": "number?",
+				"default": "0"
+			},
+			{
+				"name": "isEnabled",
+				"type": "boolean?",
+				"default": "true"
+			}
+		]
+	}
+]

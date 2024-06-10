@@ -2,10 +2,10 @@
 A UI component framework for Roblox Front-End development with the goal of compiling a robust library of quick to deploy and style, professional grade, UI components.
 
 # Compatability
-Beyond a basic wrapper interface for those without a specific UI framework, compatability is also covered for the following libraries:
-- (Fusion): [https://github.com/dphfox/Fusion]
-- (Cold-Fusion)[https://github.com/nightcycle/cold-fusion]
-- (Roact): [https://github.com/Roblox/roact/]
+Beyond a basic wrapper interface for those without a specific UI framework, compatability will also also covered for the following libraries:
+- (Cold-Fusion: DONE)[https://github.com/nightcycle/cold-fusion]
+- (Fusion: DOING)[https://github.com/dphfox/Fusion]
+- (Roact: TO-DO)[https://github.com/Roblox/roact/]
 
 # To-Do
 - component/tooltip

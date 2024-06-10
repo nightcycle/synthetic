@@ -13,4 +13,5 @@ local _Packages = _Package.Parent
 return {
 	ColdFusion = require(script:WaitForChild("ColdFusion")),
 	Fusion = require(script:WaitForChild("Fusion")),
+	Wrapper = require(script:WaitForChild("Wrapper")),
 }

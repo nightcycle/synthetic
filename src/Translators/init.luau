@@ -76,16 +76,26 @@ export type Roact = {
 
 	Component: RoactComponentInterface,
 }
--- Constants
--- Variables
--- References
--- Private Functions
--- Class
+export type Wrapper<BaseInstance, Definition, ClassName> = Definition & BaseInstance & {
+	ClassName: ClassName & string,
+	Instance: BaseInstance & Instance,
+}
+
+-- Private functions
+
+-- Interface
 local Translators = {}
 
 Translators.Fusion = {}
+Translators.Wrapper = {}
+Translators.ColdFusion = {}
+Translators.Roact = {}
 
-function Translators.Fusion.toColdFusion<V>(maid: Maid, fuse: CFuse, value: FusionCanBeState<V>): CFusionCanBeState<V>
+function Translators.Fusion.toColdFusion<V>(
+	maid: Maid,
+	fuse: CFuse,
+	value: FusionCanBeState<V>
+): CFusionCanBeState<V>
 	if typeof(value) == "table" then
 		local valueTable: { [unknown]: unknown? } = value :: any
 		if
@@ -109,10 +119,53 @@ function Translators.Fusion.toColdFusion<V>(maid: Maid, fuse: CFuse, value: Fusi
 	end
 end
 
-Translators.ColdFusion = {}
+function Translators.ColdFusion.toWrapper<BaseInstance, Definition, ClassName>(
+	className: ClassName & string,
+	inst: BaseInstance & Instance,
+	states: {
+		[unknown]: CFusionValueState<unknown?>,
+	}
+): (Wrapper<
+	Instance,
+	{ [string]: any },
+	string
+>, () -> ())
+	--  Private class
+	local wrapper = {}
+	wrapper.ClassName = className
+	wrapper.Instance = inst
 
-function Translators.ColdFusion.ToRoact()
-	local app = Roact.Component:extend("Greeting")
+	local meta = {}
+
+	function meta:__index(k: unknown): unknown?
+		if rawget(self, k) then
+			return rawget(self, k)
+		elseif states[k] then
+			return states[k]:Get()
+		else
+			return (inst :: any)[k]
+		end
+	end
+
+	function meta:__newindex(k: unknown, v: unknown?): ()
+		if rawget(self, k) ~= nil then
+			rawset(self, k, v)
+		elseif states[k] then
+			states[k]:Set(v)
+		elseif v ~= nil then
+			local anyInst: any = inst
+			anyInst[k] = v
+		end
+	end
+
+	setmetatable(wrapper :: any, meta)
+
+	return wrapper :: any,
+		function(): ()
+			table.clear(wrapper)
+			setmetatable(wrapper, nil)
+			table.clear(meta)
+		end
 end
 
 return Translators
