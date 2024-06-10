@@ -324,7 +324,7 @@ function Interface.ColdFusion.new(
 						_Computed(function(sc: number): UDim
 							return UDim.new(0, sc * PADDING_DP)
 						end, scaleState)
-					)),
+					)) :: Instance,
 					_new("TextLabel")({
 						Text = headlineState,
 						LayoutOrder = 1,

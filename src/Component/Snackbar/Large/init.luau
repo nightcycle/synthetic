@@ -14,6 +14,7 @@ local Util = require(_Package:WaitForChild("Util"))
 local Types = require(_Package:WaitForChild("Types"))
 local Style = require(_Package:WaitForChild("Style"))
 local Enums = require(_Package:WaitForChild("Enums"))
+local Typography = require(_Package:WaitForChild("Style"):WaitForChild("Typography"))
 
 -- Types
 type Maid = Maid.Maid
@@ -26,12 +27,11 @@ type OptionData = Types.OptionData
 type ButtonData = Types.ButtonData
 type Style = Style.Style
 type Method = () -> ()
+type FontData = Types.FontData
 
 -- Constants
 local PADDING_DP = 8
 local CORNER_DP = 4
-
-local TEXT_FONT_TYPE = Enums.FontType.LabelLarge
 -- Variables
 -- References
 local Icons = MaterialIcons.default.dp_48.scale_1
@@ -42,7 +42,6 @@ local Icons = MaterialIcons.default.dp_48.scale_1
 local Interface = {}
 
 Interface.ColdFusion = {}
-
 
 function Interface.ColdFusion.surfaceContainer(
 	style: CanBeState<Style>,
@@ -82,7 +81,15 @@ function Interface.ColdFusion.surfaceContainer(
 			return s:GetColor(Enums.ColorRoleType.SurfaceContainer, e)
 		end, styleState, elevationState),
 		1,
-		style
+		_Computed(function(s: Style): any
+			return s.SchemeType
+		end, styleState),
+		_Computed(function(s: Style): FontData
+			return s:GetFontData(Enums.FontType.LabelLarge)
+		end, styleState),
+		_Computed(function(s: Style): number
+			return s.Scale
+		end, styleState)
 	)
 
 	maid:GiveTask(inst.Destroying:Connect(function()
@@ -90,9 +97,7 @@ function Interface.ColdFusion.surfaceContainer(
 	end))
 
 	return inst
-
 end
-
 
 function Interface.ColdFusion.primaryContainer(
 	style: CanBeState<Style>,
@@ -132,7 +137,15 @@ function Interface.ColdFusion.primaryContainer(
 			return s:GetColor(Enums.ColorRoleType.PrimaryContainer, e)
 		end, styleState, elevationState),
 		1,
-		style
+		_Computed(function(s: Style): any
+			return s.SchemeType
+		end, styleState),
+		_Computed(function(s: Style): FontData
+			return s:GetFontData(Enums.FontType.LabelLarge)
+		end, styleState),
+		_Computed(function(s: Style): number
+			return s.Scale
+		end, styleState)
 	)
 
 	maid:GiveTask(inst.Destroying:Connect(function()
@@ -140,7 +153,6 @@ function Interface.ColdFusion.primaryContainer(
 	end))
 
 	return inst
-
 end
 
 function Interface.ColdFusion.secondaryContainer(
@@ -181,7 +193,15 @@ function Interface.ColdFusion.secondaryContainer(
 			return s:GetColor(Enums.ColorRoleType.SecondaryContainer, e)
 		end, styleState, elevationState),
 		1,
-		style
+		_Computed(function(s: Style): any
+			return s.SchemeType
+		end, styleState),
+		_Computed(function(s: Style): FontData
+			return s:GetFontData(Enums.FontType.LabelLarge)
+		end, styleState),
+		_Computed(function(s: Style): number
+			return s.Scale
+		end, styleState)
 	)
 
 	maid:GiveTask(inst.Destroying:Connect(function()
@@ -189,7 +209,6 @@ function Interface.ColdFusion.secondaryContainer(
 	end))
 
 	return inst
-
 end
 
 function Interface.ColdFusion.tertiaryContainer(
@@ -230,7 +249,15 @@ function Interface.ColdFusion.tertiaryContainer(
 			return s:GetColor(Enums.ColorRoleType.TertiaryContainer, e)
 		end, styleState, elevationState),
 		1,
-		style
+		_Computed(function(s: Style): any
+			return s.SchemeType
+		end, styleState),
+		_Computed(function(s: Style): FontData
+			return s:GetFontData(Enums.FontType.LabelLarge)
+		end, styleState),
+		_Computed(function(s: Style): number
+			return s.Scale
+		end, styleState)
 	)
 
 	maid:GiveTask(inst.Destroying:Connect(function()
@@ -238,7 +265,6 @@ function Interface.ColdFusion.tertiaryContainer(
 	end))
 
 	return inst
-
 end
 
 function Interface.ColdFusion.new(
@@ -249,7 +275,10 @@ function Interface.ColdFusion.new(
 	textColor: CanBeState<Color3>,
 	buttonTextColor: CanBeState<Color3>,
 	backgroundColor: CanBeState<Color3>,
-	elevation: CanBeState<number>
+	elevation: CanBeState<number>,
+	schemeType: CanBeState<Enums.SchemeType>,
+	fontData: CanBeState<FontData>,
+	scale: CanBeState<number>
 ): GuiObject
 	local maid = Maid.new()
 
@@ -263,10 +292,13 @@ function Interface.ColdFusion.new(
 	local _Value = _fuse.Value
 	local _Computed = _fuse.Computed
 
+	local scaleState: State<number> = _import(scale, 1)
+	local schemeTypeState: State<Enums.SchemeType> = _import(schemeType, Enums.SchemeType.Light)
+	local fontDataState: State<FontData> = _import(fontData, nil :: any)
+
 	local buttonTextState: State<string> = _import(buttonText, "Action")
 
 	local textState: State<string> = _import(text, "")
-	local styleState: State<Style> = _import(style, nil :: any)
 	local elevationState: State<number> = _import(elevation, 0)
 
 	local onButtonClickState = _import(onButtonClick, nil)
@@ -281,27 +313,33 @@ function Interface.ColdFusion.new(
 		AutomaticSize = Enum.AutomaticSize.XY,
 		BackgroundColor3 = backgroundColorState,
 		Children = {
-			maid:GiveTask(Util.Padding.ColdFusion.fromStyleSimple(
-				PADDING_DP,
-				style
+			maid:GiveTask(Util.Padding.ColdFusion.new(
+				_Computed(function(sc: number): UDim
+					return UDim.new(0, sc * PADDING_DP)
+				end, scaleState),
+				_Computed(function(sc: number): UDim
+					return UDim.new(0, sc * PADDING_DP)
+				end, scaleState)
 			)) :: Instance,
 			maid:GiveTask(_new("UICorner")({
-				CornerRadius = _Computed(function(s: Style): UDim
-					return UDim.new(0, s.Scale*CORNER_DP)
-				end, styleState),
+				CornerRadius = _Computed(function(sc: number): UDim
+					return UDim.new(0, sc * CORNER_DP)
+				end, scaleState),
 			})),
-			maid:GiveTask(Util.List.ColdFusion.new(
-				Enum.VerticalAlignment.Center,
-				Enum.HorizontalAlignment.Right,
-				Enum.FillDirection.Vertical,
-				_Computed(function(s: Style): UDim
-					return UDim.new(0, s.Scale*PADDING_DP)
-				end, styleState),
-				Enum.UIFlexAlignment.None,
-				Enum.UIFlexAlignment.Fill,
-				Enum.ItemLineAlignment.Stretch,
-				false
-			)),
+			maid:GiveTask(
+				Util.List.ColdFusion.new(
+					Enum.VerticalAlignment.Center,
+					Enum.HorizontalAlignment.Right,
+					Enum.FillDirection.Vertical,
+					_Computed(function(sc: number): UDim
+						return UDim.new(0, sc * PADDING_DP)
+					end, scaleState),
+					Enum.UIFlexAlignment.None,
+					Enum.UIFlexAlignment.Fill,
+					Enum.ItemLineAlignment.Stretch,
+					false
+				)
+			),
 			_new("TextLabel")({
 				Name = "Text",
 				Text = textState,
@@ -317,37 +355,39 @@ function Interface.ColdFusion.new(
 				TextTransparency = 0,
 				BackgroundTransparency = 1,
 				AutomaticSize = Enum.AutomaticSize.XY,
-				TextSize = _Computed(function(s: Style): number
-					return s:GetTextSize(TEXT_FONT_TYPE)
-				end, styleState),
-				LineHeight = _Computed(function(s: Style): number
-					return s:GetLineHeight(TEXT_FONT_TYPE)
-				end, styleState),
-				FontFace = _Computed(function(s: Style): Font
-					return s:GetFont(TEXT_FONT_TYPE)
-				end, styleState),
+				TextSize = _Computed(function(f: FontData, sc: number): number
+					return Typography.getTextSize(f.Size, sc)
+				end, fontDataState, scaleState),
+				LineHeight = _Computed(function(f: FontData, sc: number): number
+					return Typography.getGuiLineHeight(f.LineHeight, f.Size)
+				end, fontDataState, scaleState),
+				FontFace = _Computed(function(f: FontData): Font
+					return f.Font
+				end, fontDataState),
 				Size = UDim2.fromOffset(0, 0),
 				Children = {
 					_new("UIFlexItem")({
 						FlexMode = Enum.UIFlexMode.Shrink,
 						ItemLineAlignment = Enum.ItemLineAlignment.Center,
-					})
-				}
+					}),
+				},
 			}) :: Instance,
 			_bind(maid:GiveTask(Util.Container.ColdFusion.new()))({
 				LayoutOrder = 3,
 				Name = "Buttons",
 				Children = {
-					maid:GiveTask(Util.List.ColdFusion.new(
-						Enum.VerticalAlignment.Center,
-						Enum.HorizontalAlignment.Right,
-						Enum.FillDirection.Horizontal,
-						UDim.new(0, 0),
-						Enum.UIFlexAlignment.None,
-						Enum.UIFlexAlignment.None,
-						Enum.ItemLineAlignment.Stretch,
-						false
-					)) :: Instance,
+					maid:GiveTask(
+						Util.List.ColdFusion.new(
+							Enum.VerticalAlignment.Center,
+							Enum.HorizontalAlignment.Right,
+							Enum.FillDirection.Horizontal,
+							UDim.new(0, 0),
+							Enum.UIFlexAlignment.None,
+							Enum.UIFlexAlignment.None,
+							Enum.ItemLineAlignment.Stretch,
+							false
+						)
+					) :: Instance,
 					_bind(maid:GiveTask(Util.Container.ColdFusion.new()))({
 						LayoutOrder = 2,
 						Name = "Button",
@@ -356,20 +396,24 @@ function Interface.ColdFusion.new(
 						end, onButtonClickState),
 						Children = {
 							maid:GiveTask(Util.List.ColdFusion.center()) :: Instance,
-							maid:GiveTask(TextButton.ColdFusion.new(
-								_Computed(function(onClick: Method?): Method
-									return onClick or function() end
-								end, onButtonClickState),
-								buttonTextState,
-								nil,
-								styleState,
-								buttonTextColorState,
-								textColorState,
-								_Computed(function(onClick: Method?): boolean
-									return onClick ~= nil
-								end, onButtonClickState),
-								elevationState
-							)) :: Instance,
+							maid:GiveTask(
+								TextButton.ColdFusion.new(
+									_Computed(function(onClick: Method?): Method
+										return onClick or function() end
+									end, onButtonClickState),
+									buttonTextState,
+									nil,
+									buttonTextColorState,
+									textColorState,
+									_Computed(function(onClick: Method?): boolean
+										return onClick ~= nil
+									end, onButtonClickState),
+									elevationState,
+									schemeTypeState,
+									fontDataState,
+									scaleState
+								)
+							) :: Instance,
 						},
 					}),
 					_bind(maid:GiveTask(Util.Container.ColdFusion.new()))({
@@ -385,20 +429,21 @@ function Interface.ColdFusion.new(
 									return onClick or function() end
 								end, onCloseClickState),
 								Icons.close,
-								styleState,
 								textColorState,
 								textColorState,
 								_Computed(function(onClick: Method?): boolean
 									return onClick ~= nil
 								end, onCloseClickState),
-								elevationState
+								elevationState,
+								schemeTypeState,
+								fontDataState,
+								scaleState
 							)) :: Instance,
 						},
 					}),
-				}
+				},
 			}),
-
-		}
+		},
 	}) :: Frame
 
 	maid:GiveTask(inst.Destroying:Connect(function()
