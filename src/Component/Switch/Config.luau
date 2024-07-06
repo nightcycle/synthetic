@@ -1,4 +1,0 @@
---!strict
-return {
-
-}
