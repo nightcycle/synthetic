@@ -159,7 +159,7 @@ function Translators.ColdFusion.toWrapper<BaseInstance, Definition, ClassName>(
 	end
 
 	setmetatable(wrapper :: any, meta)
-
+	table.freeze(wrapper)
 	return wrapper :: any,
 		function(): ()
 			table.clear(wrapper)

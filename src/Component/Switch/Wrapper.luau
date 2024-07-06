@@ -89,7 +89,6 @@ function styleWrapperConstructor(constructor: typeof(Source.primary)): StyledSwi
 	return wrapper
 end
 
-
 -- Class
 local Interface = {}
 
@@ -97,11 +96,11 @@ function Interface.primary(): StyledSwitchWrapper
 	return styleWrapperConstructor(Source.primary)
 end
 
-function Interface.secondary(): StyledSwitchWrapper 
+function Interface.secondary(): StyledSwitchWrapper
 	return styleWrapperConstructor(Source.secondary)
 end
 
-function Interface.tertiary(): StyledSwitchWrapper 
+function Interface.tertiary(): StyledSwitchWrapper
 	return styleWrapperConstructor(Source.tertiary)
 end
 

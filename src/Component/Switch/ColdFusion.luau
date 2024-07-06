@@ -34,6 +34,7 @@ type SwitchRenderData = {
 type FontData = Types.FontData
 
 -- Constants
+local DEFAULTS = require(script.Parent:WaitForChild("Defaults"))
 local ICONS = MaterialIcons.default.dp_48.scale_1
 local SWITCH_HEIGHT_DP = 32
 local SWITCH_WIDTH_DP = 52
@@ -63,6 +64,7 @@ end
 local Interface = {}
 
 function newThemedComponent(
+	themeDefaults: typeof(DEFAULTS.PRIMARY),
 	style: CanBeState<Style>,
 	backgroundColor: Enums.ColorRoleType,
 	onBackgroundColor: Enums.ColorRoleType,
@@ -148,6 +150,7 @@ function Interface.primary(
 	isEnabled: CanBeState<boolean?>
 ): GuiObject
 	return newThemedComponent(
+		DEFAULTS.PRIMARY,
 		style,
 		Enums.ColorRoleType.SurfaceContainerHighest,
 		Enums.ColorRoleType.Outline,
@@ -175,6 +178,7 @@ function Interface.secondary(
 	isEnabled: CanBeState<boolean?>
 ): GuiObject
 	return newThemedComponent(
+		DEFAULTS.SECONDARY,
 		style,
 		Enums.ColorRoleType.SurfaceContainerHighest,
 		Enums.ColorRoleType.Outline,
@@ -202,6 +206,7 @@ function Interface.tertiary(
 	isEnabled: CanBeState<boolean?>
 ): GuiObject
 	return newThemedComponent(
+		DEFAULTS.TERTIARY,
 		style,
 		Enums.ColorRoleType.SurfaceContainerHighest,
 		Enums.ColorRoleType.Outline,
@@ -249,28 +254,29 @@ function Interface.new(
 	local _Value = _fuse.Value
 	local _Computed = _fuse.Computed
 
-	local scaleState: State<number> = _import(scale, 1)
-	local schemeTypeState: State<Enums.SchemeType> = _import(schemeType, Enums.SchemeType.Light)
-	local fontDataState: State<FontData> = _import(fontData, nil :: any)
+	local scaleState: State<number> = _import(scale, DEFAULTS.NEW.SCALE)
+	local schemeTypeState: State<Enums.SchemeType> = _import(schemeType, DEFAULTS.NEW.SCHEME_TYPE)
+	local fontDataState: State<FontData> = _import(fontData, DEFAULTS.NEW.FONT_DATA)
 
-	local disabledColorState = _import(disabledColor, Color3.new(1, 1, 1))
-	local onDisabledColorState = _import(onDisabledColor, Color3.new(1, 1, 1))
+	local disabledColorState = _import(disabledColor, DEFAULTS.NEW.DISABLED_COLOR)
+	local onDisabledColorState = _import(onDisabledColor, DEFAULTS.NEW.DISABLED_COLOR)
 
-	local initialSelectionState = _import(initialSelection, false)
-	local fillColorState = _import(fillColor, Color3.new(1, 1, 1))
+	local initialSelectionState = _import(initialSelection, DEFAULTS.NEW.INITIAL_SELECTION)
+	local fillColorState = _import(fillColor, DEFAULTS.NEW.FILL_COLOR)
 
-	local backgroundColorState = _import(backgroundColor, Color3.new(1, 1, 1))
-	local onBackgroundColorState = _import(onBackgroundColor, Color3.new(1, 1, 1))
+	local backgroundColorState = _import(backgroundColor, DEFAULTS.NEW.BACKGROUND_COLOR)
+	local onBackgroundColorState = _import(onBackgroundColor, DEFAULTS.NEW.ON_BACKGROUND_COLOR)
 
-	local buttonColorState = _import(buttonColor, Color3.new(1, 1, 1))
-	local onButtonColorState = _import(onButtonColor, Color3.new(1, 1, 1))
+	local buttonColorState = _import(buttonColor, DEFAULTS.NEW.BUTTON_COLOR)
+	local onButtonColorState = _import(onButtonColor, DEFAULTS.NEW.ON_BUTTON_COLOR)
 
-	local elevationState = _import(elevation, 0)
-	local isEnabledState = _import(isEnabled, true)
-	local includeSelectedIconState = _import(includeIconOnSelected, true)
-	local includeDeselectedIconState = _import(includeIconOnDeselected, true)
+	local elevationState = _import(elevation, DEFAULTS.NEW.ELEVATION)
+	local isEnabledState = _import(isEnabled, DEFAULTS.NEW.IS_ENABLED)
+	local includeSelectedIconState = _import(includeIconOnSelected, DEFAULTS.NEW.INCLUDE_ICON_ON_SELECTED)
+	local includeDeselectedIconState =
+		_import(includeIconOnDeselected, DEFAULTS.NEW.INCLUDE_ICON_ON_DESELECTED)
 
-	local onSelectState = _import(onSelect, function(isSelected: boolean?) end)
+	local onSelectState = _import(onSelect, DEFAULTS.NEW.ON_SELECT)
 
 	local clickCountState = _Value(0)
 
@@ -520,13 +526,13 @@ function Interface.new(
 
 				onClick(valueState:Get())
 			end,
-			MouseButton1Down = function(x: number, y: number)
+			MouseButton1Down = function()
 				if isEnabledState:Get() == false then
 					return
 				end
 				isPressedState:Set(true)
 			end,
-			MouseButton1Up = function(x: number, y: number)
+			MouseButton1Up = function()
 				if isEnabledState:Get() == false then
 					return
 				end

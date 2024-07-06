@@ -152,7 +152,8 @@ return function(frame: Frame)
 							if index % 2 == 0
 								then style:GetColor(Enums.ColorRoleType.OnPrimary)
 								else style:GetColor(Enums.ColorRoleType.OnTertiary),
-							0
+							0,
+							Enum.ImageCombineType.Overwrite
 						)
 					end)
 				end
@@ -168,7 +169,8 @@ return function(frame: Frame)
 						if index % 2 == 0
 							then style:GetColor(Enums.ColorRoleType.Primary)
 							else style:GetColor(Enums.ColorRoleType.Tertiary),
-						0
+						0,
+						Enum.ImageCombineType.Overwrite
 					)
 				end)
 
