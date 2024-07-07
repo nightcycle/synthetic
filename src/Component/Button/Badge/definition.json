@@ -1,0 +1,109 @@
+[
+	{
+		"names": [
+			"new"
+		],
+		"key": "",
+		"parameters": [
+			{
+				"name": "onClick",
+				"type": "() -> ()",
+				"default": "function() end"
+			},
+			{
+				"name": "icon",
+				"type": "ImageData",
+				"default": "Types.newImageData(\"\")"
+			},
+			{
+				"name": "label",
+				"type": "string?",
+				"default": "nil"
+			},
+			{
+				"name": "count",
+				"type": "number?",
+				"default": "nil"
+			},
+			{
+				"name": "textColor",
+				"type": "Color3",
+				"default": "Color3.new()"
+			},
+			{
+				"name": "hoverColor",
+				"type": "Color3",
+				"default": "Color3.new()"
+			},
+			{
+				"name": "errorTextColor",
+				"type": "Color3",
+				"default": "Color3.new()"
+			},
+			{
+				"name": "errorBackgroundColor",
+				"type": "Color3",
+				"default": "Color3.new()"
+			},
+			{
+				"name": "elevation",
+				"type": "number",
+				"default": "0"
+			},
+			{
+				"name": "schemeType",
+				"type": "Enums.SchemeType",
+				"default": "Enums.SchemeType.Light"
+			},
+			{
+				"name": "fontData",
+				"type": "FontData",
+				"default": "Types.newFontData(Font.fromEnum(Enum.Font.ArialBold), 14)"
+			},
+			{
+				"name": "scale",
+				"type": "number",
+				"default": "1"
+			}
+		]
+	},
+	{
+		"names": [
+			"onPrimary",
+			"onSurface"
+		],
+		"key": "styled",
+		"parameters": [
+			{
+				"name": "style",
+				"type": "Style",
+				"default": "Style.new(1, \"Arial\", \"Light\", Color3.new(0, 0.4, 0.7))"
+			},
+			{
+				"name": "onClick",
+				"type": "() -> ()",
+				"default": "function() end"
+			},
+			{
+				"name": "icon",
+				"type": "ImageData",
+				"default": "Types.newImageData(\"\")"
+			},
+			{
+				"name": "label",
+				"type": "string?",
+				"default": "nil"
+			},
+			{
+				"name": "count",
+				"type": "number?",
+				"default": "nil"
+			},
+			{
+				"name": "elevation",
+				"type": "number?",
+				"default": "nil"
+			}
+		]
+	}
+]
