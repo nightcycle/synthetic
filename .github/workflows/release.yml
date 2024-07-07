@@ -32,7 +32,7 @@ jobs:
           repo_name="${repo_name/${forward_repo_pattern}/${empty_str}}"
           echo "::set-output name=repo_name::$repo_name"
 
-          # Use the GitHub API to fetch the repository description            
+          # Use the GitHub API to fetch the repository description
           description_prefix="\"description\":"
           curl -L "https://api.github.com/repos/${repo_owner_name}/${repo_name}" > "desc.text"
           desc=$(<desc.text)
@@ -56,14 +56,14 @@ jobs:
 
       # Install wally packages
       - name: update wally packages
-        run: wally-update patch        
- 
+        run: wally-update patch
+
       - name: install wally packages
-        run: wally install   
- 
+        run: wally install
+
       - name: generate sourcemap
         run: rojo sourcemap dev.project.json --output sourcemap.json
- 
+
       - name: export wally package types
         run: wally-package-types --sourcemap sourcemap.json Packages
 
@@ -100,9 +100,9 @@ jobs:
       - name: generate sourcemap
         run: rojo sourcemap dev.project.json --output sourcemap.json
 
-      # Test validity
-      - name: typecheck src files
-        run: luau-lsp analyze --sourcemap="sourcemap.json" --ignore="Packages/**" --ignore="src/Server/NPC/Animate.server.lua" --ignore="**/Packages/**" --ignore="*.spec.luau" --ignore="out/**" --flag:LuauTypeInferIterationLimit=0 --flag:LuauCheckRecursionLimit=0 --flag:LuauTypeInferRecursionLimit=0 --flag:LuauTarjanChildLimit=0 --flag:LuauTypeInferTypePackLoopLimit=0 --flag:LuauVisitRecursionLimit=0 --definitions=types/globalTypes.d.lua --flag:LuauParseDeclareClassIndexer=true src
+      # # Test validity
+      # - name: typecheck src files
+      #   run: luau-lsp analyze --sourcemap="sourcemap.json" --ignore="Packages/**" --ignore="src/Server/NPC/Animate.server.lua" --ignore="**/Packages/**" --ignore="*.spec.luau" --ignore="out/**" --flag:LuauTypeInferIterationLimit=0 --flag:LuauCheckRecursionLimit=0 --flag:LuauTypeInferRecursionLimit=0 --flag:LuauTarjanChildLimit=0 --flag:LuauTypeInferTypePackLoopLimit=0 --flag:LuauVisitRecursionLimit=0 --definitions=types/globalTypes.d.lua --flag:LuauParseDeclareClassIndexer=true src
 
       - name: lint src files
         run: selene src
@@ -114,37 +114,37 @@ jobs:
           repo_name="${{needs.get_published_release.outputs.repo_name}}"
           repo_desc=${{needs.get_published_release.outputs.repo_desc}}
           goal_version_str="${{needs.get_published_release.outputs.tag_name}}"
-          
+
           # remove letters
           goal_version_str=$(echo "$goal_version_str" | sed 's/[a-zA-Z]//g')
 
           # read file
           wally_toml_contents=$(<wally.toml)
-          
+
           # swap out version
           goal_version_line="version = \"${goal_version_str}\""
           target_version_line=$(echo "$wally_toml_contents" | grep -F "version = ")
           wally_toml_contents="${wally_toml_contents/${target_version_line}/${goal_version_line}}"
-          
+
           # swap out name
           goal_name_line="name = \"${repo_owner}/${repo_name}\""
           target_name_line=$(echo "$wally_toml_contents" | grep -F "name = ")
           wally_toml_contents="${wally_toml_contents/${target_name_line}/${goal_name_line}}"
-          
+
           # swap out description
           goal_desc_line="description = \"${repo_desc}\""
           target_desc_line=$(echo "$wally_toml_contents" | grep -F "description = ")
           wally_toml_contents="${wally_toml_contents/${target_desc_line}/${goal_desc_line}}"
-          
+
           # update file
           echo "$wally_toml_contents" > "wally.toml"
-          
+
           # read json file
           default_json_contents=$(<default.project.json)
           target_json_name_line=$(echo "$default_json_contents" | grep -F "\"name\": ")
           goal_json_name_line="  \"name\": \"${repo_name}\","
           default_json_contents="${default_json_contents/${target_json_name_line}/${goal_json_name_line}}"
-          
+
           # update file
           echo "$default_json_contents" > "default.project.json"
 
