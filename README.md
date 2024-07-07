@@ -6,8 +6,6 @@ A UI component framework for Roblox Front-End development with the goal of compi
 	Your browser does not support the video tag.
 </video>
 
-This will create a video player with controls and display the video located at `media/demo.mp4`. If the browser doesn't support the video tag, it will display a fallback message.
-
 
 # Compatability
 Beyond a basic wrapper interface for those without a specific UI framework, compatability will also also covered for the following libraries:
