@@ -23,7 +23,7 @@ return function(frame: Frame)
 		local function makeHalfFrame(isDarkMode: boolean, color: Color3): Frame
 			local style = Style.new(
 				1,
-				"Source Sans",
+				Enum.Font.SourceSans,
 				if isDarkMode then Enums.SchemeType.Dark else Enums.SchemeType.Light,
 				color
 			)

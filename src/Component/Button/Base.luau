@@ -335,13 +335,13 @@ Util.new = function(
 										local click = onClickState:Get()
 										click()
 									end,
-									MouseButton1Down = function(x: number, y: number)
+									MouseButton1Down = function()
 										if isEnabledState:Get() == false then
 											return
 										end
 										isPressedState:Set(true)
 									end,
-									MouseButton1Up = function(x: number, y: number)
+									MouseButton1Up = (function(x: number, y: number)
 										if isEnabledState:Get() == false then
 											return
 										end
@@ -349,7 +349,7 @@ Util.new = function(
 											ripple(Vector2.new(x, y))
 										end
 										isPressedState:Set(false)
-									end,
+									end) :: any,
 									MouseEnter = function()
 										isHoveredState:Set(true)
 									end,

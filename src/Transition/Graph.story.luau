@@ -29,7 +29,7 @@ return function(frame: Frame)
 	task.spawn(function()
 		local Module = require(script.Parent)
 		local style =
-			Style.new(1, "Source Sans", Enums.SchemeType.Light, Color3.fromHSV(math.random(), 0.7, 0.7))
+			Style.new(1, Enum.Font.SourceSans, Enums.SchemeType.Light, Color3.fromHSV(math.random(), 0.7, 0.7))
 
 		local gridLayout = maid:GiveTask(Instance.new("UIGridLayout"))
 		gridLayout.CellPadding = UDim2.fromOffset(PAD, PAD)

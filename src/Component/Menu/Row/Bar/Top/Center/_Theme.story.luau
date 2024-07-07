@@ -33,7 +33,7 @@ return function(frame: Frame)
 		local function build(isDarkMode: boolean, color: Color3)
 			local style = Style.new(
 				0.75,
-				"Source Sans",
+				Enum.Font.SourceSans,
 				if isDarkMode then Enums.SchemeType.Dark else Enums.SchemeType.Light,
 				color
 			)

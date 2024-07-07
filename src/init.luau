@@ -23,7 +23,7 @@ local Synthetic = {}
 Synthetic.Enums = require(_Package:WaitForChild("Enums"))
 Synthetic.Sounds = require(_Package:WaitForChild("Sounds"))
 Synthetic.Util = require(_Package:WaitForChild("Util"))
-Synthetic.Transition = require(_Package:WaitForChild("Transition"))
+-- Synthetic.Transition = require(_Package:WaitForChild("Transition"))
 Synthetic.Types = {
 	newButtonData = Types.newButtonData,
 	newOptionData = Types.newOptionData,
@@ -31,6 +31,7 @@ Synthetic.Types = {
 	newFontData = Types.newFontData,
 }
 Synthetic.Style = Style
+Synthetic.Typography = require(_Package:WaitForChild("Typography"))
 Synthetic.Component = {
 	Dialog = require(Component:WaitForChild("Dialog")),
 	Menu = {

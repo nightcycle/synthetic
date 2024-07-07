@@ -7,7 +7,7 @@ local HashUtil = require(_Packages:WaitForChild("HashUtil"))
 local TableUtil = require(_Packages:WaitForChild("TableUtil"))
 
 -- Modules
-local Typography = require(script:WaitForChild("Typography"))
+local Typography = require(_Package:WaitForChild("Typography"))
 local Theme = require(script:WaitForChild("Theme"))
 local Enums = require(_Package:WaitForChild("Enums"))
 
@@ -35,7 +35,7 @@ export type Style = {
 	GetLineHeight: (self: Style, fontType: Enums.FontType) -> number,
 	new: (
 		scale: number,
-		fontFamily: string,
+		typographyOrFont: Typography | Enum.Font,
 		schemeType: Enums.SchemeType,
 		source: Color3,
 		custom: { [string]: Color3 }?
@@ -86,14 +86,22 @@ end
 
 function Style.new(
 	scale: number,
-	fontFamily: string,
+	typographyOrFont: Typography | Enum.Font,
 	schemeType: Enums.SchemeType,
 	source: Color3,
 	additions: { [string]: Color3 }?
 ): Style
+	local typography: Typography
+	if typeof(typographyOrFont) == "EnumItem" then
+		typography = Typography.fromFont(typographyOrFont)
+	else
+		typography = typographyOrFont
+	end
+
 	local hash = ""
 	do
-		local hashInput = `{scale}+{fontFamily}+{schemeType}+{source:ToHex()}+` .. "{"
+
+		local hashInput = `{scale}+{typography:Hash()}+{schemeType}+{source:ToHex()}+` .. "{"
 		if additions then
 			local keys = TableUtil.keys(additions)
 			table.sort(keys)
@@ -112,7 +120,7 @@ function Style.new(
 	self.Scale = scale
 	self.SchemeType = schemeType
 	self._Theme = Theme.new(source, additions)
-	self._Typography = Typography.new(fontFamily)
+	self._Typography = typography
 
 	table.freeze(self)
 	Cache[hash] = self
