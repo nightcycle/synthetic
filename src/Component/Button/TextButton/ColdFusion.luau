@@ -26,6 +26,7 @@ type ImageData = Types.ImageData
 type FontData = Types.FontData
 
 -- Constants
+local DEFAULTS = require(script.Parent:WaitForChild("Defaults"))
 -- Variables
 -- References
 -- Private Functions
@@ -35,6 +36,7 @@ local Interface = {}
 
 -- Private Functions
 function newThemedComponent(
+	themeDefaults: typeof(DEFAULTS.PRIMARY),
 	textColor: Enums.ColorRoleType,
 	disabledTextColor: Enums.ColorRoleType,
 	onClick: CanBeState<() -> ()>,
@@ -56,12 +58,12 @@ function newThemedComponent(
 	local _Value = _fuse.Value
 	local _Computed = _fuse.Computed
 
-	local styleState: State<Style> = _import(style, nil :: any)
+	local styleState: State<Style> = _import(style, themeDefaults.STYLE)
 
 	local out = Interface.new(
-		onClick,
-		text,
-		icon,
+		_import(onClick, themeDefaults.ON_CLICK),
+		_import(text, themeDefaults.TEXT),
+		_import(icon, themeDefaults.ICON),
 		_Computed(function(s: Style): Color3
 			return s:GetColor(textColor)
 		end, styleState),
@@ -99,6 +101,7 @@ function Interface.primary(
 	isEnabled: CanBeState<boolean?>
 ): GuiObject
 	return newThemedComponent(
+		DEFAULTS.PRIMARY,
 		Enums.ColorRoleType.OnPrimary,
 		Enums.ColorRoleType.OnSurfaceVariant,
 		onClick,
@@ -119,6 +122,7 @@ function Interface.secondary(
 	isEnabled: CanBeState<boolean?>
 ): GuiObject
 	return newThemedComponent(
+		DEFAULTS.SECONDARY,
 		Enums.ColorRoleType.OnSecondary,
 		Enums.ColorRoleType.OnSurfaceVariant,
 		onClick,
@@ -139,6 +143,7 @@ function Interface.tertiary(
 	isEnabled: CanBeState<boolean?>
 ): GuiObject
 	return newThemedComponent(
+		DEFAULTS.TERTIARY,
 		Enums.ColorRoleType.OnTertiary,
 		Enums.ColorRoleType.OnSurfaceVariant,
 		onClick,
@@ -159,6 +164,7 @@ function Interface.primaryContainer(
 	isEnabled: CanBeState<boolean?>
 ): GuiObject
 	return newThemedComponent(
+		DEFAULTS.PRIMARY_CONTAINER,
 		Enums.ColorRoleType.OnPrimaryContainer,
 		Enums.ColorRoleType.OnSecondaryContainer,
 		onClick,
@@ -179,6 +185,7 @@ function Interface.secondaryContainer(
 	isEnabled: CanBeState<boolean?>
 ): GuiObject
 	return newThemedComponent(
+		DEFAULTS.SECONDARY_CONTAINER,
 		Enums.ColorRoleType.OnSecondaryContainer,
 		Enums.ColorRoleType.OnSecondaryContainer,
 		onClick,
@@ -199,6 +206,7 @@ function Interface.tertiaryContainer(
 	isEnabled: CanBeState<boolean?>
 ): GuiObject
 	return newThemedComponent(
+		DEFAULTS.TERTIARY_CONTAINER,
 		Enums.ColorRoleType.OnTertiaryContainer,
 		Enums.ColorRoleType.OnSecondaryContainer,
 		onClick,
@@ -234,18 +242,18 @@ function Interface.new(
 	local _Value = _fuse.Value
 	local _Computed = _fuse.Computed
 
-	local scaleState: State<number> = _import(scale, 1)
-	local schemeTypeState: State<Enums.SchemeType> = _import(schemeType, Enums.SchemeType.Light)
-	local fontDataState: State<FontData> = _import(fontData, nil :: any)
-	local elevationState: State<number> = _import(elevation, 0)
+	local scaleState: State<number> = _import(scale, DEFAULTS.NEW.SCALE)
+	local schemeTypeState: State<Enums.SchemeType> = _import(schemeType, DEFAULTS.NEW.SCHEME_TYPE)
+	local fontDataState: State<FontData> = _import(fontData, DEFAULTS.NEW.FONT_DATA)
+	local elevationState: State<number> = _import(elevation, DEFAULTS.NEW.ELEVATION)
 
-	local textColorState: State<Color3> = _import(textColor, Color3.new(1, 1, 1))
-	local hoverColorState: State<Color3> = _import(textColorState, Color3.new(1, 1, 1))
+	local textColorState: State<Color3> = _import(textColor, DEFAULTS.NEW.TEXT_COLOR)
+	local hoverColorState: State<Color3> = _import(textColor, DEFAULTS.NEW.TEXT_COLOR)
 
-	local disabledTextColorState: State<Color3> = _import(disabledTextColor, Color3.new(1, 1, 1))
-	local disabledHoverColorState: State<Color3> = _import(disabledTextColor, Color3.new(1, 1, 1))
+	local disabledTextColorState: State<Color3> = _import(disabledTextColor, DEFAULTS.NEW.DISABLED_TEXT_COLOR)
+	local disabledHoverColorState: State<Color3> = _import(disabledTextColor, DEFAULTS.NEW.DISABLED_TEXT_COLOR)
 
-	local iconState: State<ImageData?> = _import(icon, nil :: ImageData?)
+	local iconState: State<ImageData?> = _import(icon, DEFAULTS.NEW.ICON)
 
 	local button = Base.new(
 		maid,
