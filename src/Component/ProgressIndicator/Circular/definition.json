@@ -1,0 +1,60 @@
+[
+	{
+		"names": [
+			"new"
+		],
+		"key": "",
+		"parameters": [
+			{
+				"name": "progress",
+				"type": "number?",
+				"default": "nil"
+			},
+			{
+				"name": "isEnabled",
+				"type": "boolean?",
+				"default": "nil"
+			},
+			{
+				"name": "fillColor",
+				"type": "Color3",
+				"default": "Color3.new()"
+			},
+			{
+				"name": "emptyColor",
+				"type": "Color3",
+				"default": "Color3.new()"
+			},
+			{
+				"name": "scale",
+				"type": "number",
+				"default": "1"
+			}
+		]
+	},
+	{
+		"names": [
+			"primary",
+			"secondary",
+			"tertiary"
+		],
+		"key": "styled",
+		"parameters": [
+			{
+				"name": "style",
+				"type": "Style",
+				"default": "Style.new(1, \"Arial\", \"Light\", Color3.new(0, 0.4, 0.7))"
+			},
+			{
+				"name": "progress",
+				"type": "number?",
+				"default": "nil"
+			},
+			{
+				"name": "isEnabled",
+				"type": "boolean?",
+				"default": "nil"
+			}
+		]
+	}
+]
