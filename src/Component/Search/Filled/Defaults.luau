@@ -35,11 +35,11 @@ return {
 		BACKGROUND_COLOR = Color3.new(),
 		ELEVATION = 0,
 		SCHEME_TYPE = Enums.SchemeType.Light,
-		FONT_DATA = Types.newFontData(Font.fromEnum(Enum.Font.ArialBold), 14),
+		FONT_DATA = Types.newFontData(Font.fromEnum(Enum.Font.SourceSans), 14),
 		SCALE = 1,
 	},
 	PRIMARY = {
-		STYLE = Style.new(1, "Arial", "Light", Color3.new(0, 0.4, 0.7)),
+		STYLE = Style.new(1, Enum.Font.SourceSans, "Light", Color3.new(0, 0.4, 0.7)),
 		ON_INPUT_ENTERED = function(input: string)
 			return input
 		end,
@@ -51,7 +51,7 @@ return {
 		ELEVATION = nil :: number?,
 	},
 	SECONDARY = {
-		STYLE = Style.new(1, "Arial", "Light", Color3.new(0, 0.4, 0.7)),
+		STYLE = Style.new(1, Enum.Font.SourceSans, "Light", Color3.new(0, 0.4, 0.7)),
 		ON_INPUT_ENTERED = function(input: string)
 			return input
 		end,
@@ -63,7 +63,7 @@ return {
 		ELEVATION = nil :: number?,
 	},
 	TERTIARY = {
-		STYLE = Style.new(1, "Arial", "Light", Color3.new(0, 0.4, 0.7)),
+		STYLE = Style.new(1, Enum.Font.SourceSans, "Light", Color3.new(0, 0.4, 0.7)),
 		ON_INPUT_ENTERED = function(input: string)
 			return input
 		end,
@@ -75,7 +75,7 @@ return {
 		ELEVATION = nil :: number?,
 	},
 	PRIMARY_CONTAINER = {
-		STYLE = Style.new(1, "Arial", "Light", Color3.new(0, 0.4, 0.7)),
+		STYLE = Style.new(1, Enum.Font.SourceSans, "Light", Color3.new(0, 0.4, 0.7)),
 		ON_INPUT_ENTERED = function(input: string)
 			return input
 		end,
@@ -87,7 +87,7 @@ return {
 		ELEVATION = nil :: number?,
 	},
 	SECONDARY_CONTAINER = {
-		STYLE = Style.new(1, "Arial", "Light", Color3.new(0, 0.4, 0.7)),
+		STYLE = Style.new(1, Enum.Font.SourceSans, "Light", Color3.new(0, 0.4, 0.7)),
 		ON_INPUT_ENTERED = function(input: string)
 			return input
 		end,
@@ -99,7 +99,7 @@ return {
 		ELEVATION = nil :: number?,
 	},
 	TERTIARY_CONTAINER = {
-		STYLE = Style.new(1, "Arial", "Light", Color3.new(0, 0.4, 0.7)),
+		STYLE = Style.new(1, Enum.Font.SourceSans, "Light", Color3.new(0, 0.4, 0.7)),
 		ON_INPUT_ENTERED = function(input: string)
 			return input
 		end,

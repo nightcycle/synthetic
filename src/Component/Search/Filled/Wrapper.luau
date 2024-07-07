@@ -60,7 +60,7 @@ function Interface.primary(): StyledFilledWrapper
 	local _fuse = ColdFusion.fuse(maid)
 	local _Value = _fuse.Value
 	local definition = {
-		Style = _Value(Style.new(1, "Arial", "Light", Color3.new(0, 0.4, 0.7))),
+		Style = _Value(Style.new(1, Enum.Font.SourceSans, "Light", Color3.new(0, 0.4, 0.7))),
 		OnInputEntered = _Value(function(input: string)
 			return input
 		end),
@@ -92,7 +92,7 @@ function Interface.secondary(): StyledFilledWrapper
 	local _fuse = ColdFusion.fuse(maid)
 	local _Value = _fuse.Value
 	local definition = {
-		Style = _Value(Style.new(1, "Arial", "Light", Color3.new(0, 0.4, 0.7))),
+		Style = _Value(Style.new(1, Enum.Font.SourceSans, "Light", Color3.new(0, 0.4, 0.7))),
 		OnInputEntered = _Value(function(input: string)
 			return input
 		end),
@@ -124,7 +124,7 @@ function Interface.tertiary(): StyledFilledWrapper
 	local _fuse = ColdFusion.fuse(maid)
 	local _Value = _fuse.Value
 	local definition = {
-		Style = _Value(Style.new(1, "Arial", "Light", Color3.new(0, 0.4, 0.7))),
+		Style = _Value(Style.new(1, Enum.Font.SourceSans, "Light", Color3.new(0, 0.4, 0.7))),
 		OnInputEntered = _Value(function(input: string)
 			return input
 		end),
@@ -156,7 +156,7 @@ function Interface.primaryContainer(): StyledFilledWrapper
 	local _fuse = ColdFusion.fuse(maid)
 	local _Value = _fuse.Value
 	local definition = {
-		Style = _Value(Style.new(1, "Arial", "Light", Color3.new(0, 0.4, 0.7))),
+		Style = _Value(Style.new(1, Enum.Font.SourceSans, "Light", Color3.new(0, 0.4, 0.7))),
 		OnInputEntered = _Value(function(input: string)
 			return input
 		end),
@@ -188,7 +188,7 @@ function Interface.secondaryContainer(): StyledFilledWrapper
 	local _fuse = ColdFusion.fuse(maid)
 	local _Value = _fuse.Value
 	local definition = {
-		Style = _Value(Style.new(1, "Arial", "Light", Color3.new(0, 0.4, 0.7))),
+		Style = _Value(Style.new(1, Enum.Font.SourceSans, "Light", Color3.new(0, 0.4, 0.7))),
 		OnInputEntered = _Value(function(input: string)
 			return input
 		end),
@@ -220,7 +220,7 @@ function Interface.tertiaryContainer(): StyledFilledWrapper
 	local _fuse = ColdFusion.fuse(maid)
 	local _Value = _fuse.Value
 	local definition = {
-		Style = _Value(Style.new(1, "Arial", "Light", Color3.new(0, 0.4, 0.7))),
+		Style = _Value(Style.new(1, Enum.Font.SourceSans, "Light", Color3.new(0, 0.4, 0.7))),
 		OnInputEntered = _Value(function(input: string)
 			return input
 		end),

@@ -61,7 +61,7 @@ function Interface.surfaceContainer(): StyledLargeWrapper
 	local _fuse = ColdFusion.fuse(maid)
 	local _Value = _fuse.Value
 	local definition = {
-		Style = _Value(Style.new(1, "Arial", "Light", Color3.new(0, 0.4, 0.7))),
+		Style = _Value(Style.new(1, Enum.Font.SourceSans, "Light", Color3.new(0, 0.4, 0.7))),
 		Text = _Value(""),
 		ButtonText = _Value(nil),
 		OnButtonClick = _Value(nil),
@@ -89,7 +89,7 @@ function Interface.primaryContainer(): StyledLargeWrapper
 	local _fuse = ColdFusion.fuse(maid)
 	local _Value = _fuse.Value
 	local definition = {
-		Style = _Value(Style.new(1, "Arial", "Light", Color3.new(0, 0.4, 0.7))),
+		Style = _Value(Style.new(1, Enum.Font.SourceSans, "Light", Color3.new(0, 0.4, 0.7))),
 		Text = _Value(""),
 		ButtonText = _Value(nil),
 		OnButtonClick = _Value(nil),
@@ -117,7 +117,7 @@ function Interface.secondaryContainer(): StyledLargeWrapper
 	local _fuse = ColdFusion.fuse(maid)
 	local _Value = _fuse.Value
 	local definition = {
-		Style = _Value(Style.new(1, "Arial", "Light", Color3.new(0, 0.4, 0.7))),
+		Style = _Value(Style.new(1, Enum.Font.SourceSans, "Light", Color3.new(0, 0.4, 0.7))),
 		Text = _Value(""),
 		ButtonText = _Value(nil),
 		OnButtonClick = _Value(nil),
@@ -145,7 +145,7 @@ function Interface.tertiaryContainer(): StyledLargeWrapper
 	local _fuse = ColdFusion.fuse(maid)
 	local _Value = _fuse.Value
 	local definition = {
-		Style = _Value(Style.new(1, "Arial", "Light", Color3.new(0, 0.4, 0.7))),
+		Style = _Value(Style.new(1, Enum.Font.SourceSans, "Light", Color3.new(0, 0.4, 0.7))),
 		Text = _Value(""),
 		ButtonText = _Value(nil),
 		OnButtonClick = _Value(nil),

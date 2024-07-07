@@ -60,7 +60,7 @@ function Interface.primary(): StyledCheckboxWrapper
 	local _fuse = ColdFusion.fuse(maid)
 	local _Value = _fuse.Value
 	local definition = {
-		Style = _Value(Style.new(1, "Arial", "Light", Color3.new(0, 0.4, 0.7))),
+		Style = _Value(Style.new(1, Enum.Font.SourceSans, "Light", Color3.new(0, 0.4, 0.7))),
 		OnSelect = _Value(function(isSelected: boolean?) end),
 		InitialSelection = _Value(false),
 		Elevation = _Value(nil),
@@ -86,7 +86,7 @@ function Interface.secondary(): StyledCheckboxWrapper
 	local _fuse = ColdFusion.fuse(maid)
 	local _Value = _fuse.Value
 	local definition = {
-		Style = _Value(Style.new(1, "Arial", "Light", Color3.new(0, 0.4, 0.7))),
+		Style = _Value(Style.new(1, Enum.Font.SourceSans, "Light", Color3.new(0, 0.4, 0.7))),
 		OnSelect = _Value(function(isSelected: boolean?) end),
 		InitialSelection = _Value(false),
 		Elevation = _Value(nil),
@@ -112,7 +112,7 @@ function Interface.tertiary(): StyledCheckboxWrapper
 	local _fuse = ColdFusion.fuse(maid)
 	local _Value = _fuse.Value
 	local definition = {
-		Style = _Value(Style.new(1, "Arial", "Light", Color3.new(0, 0.4, 0.7))),
+		Style = _Value(Style.new(1, Enum.Font.SourceSans, "Light", Color3.new(0, 0.4, 0.7))),
 		OnSelect = _Value(function(isSelected: boolean?) end),
 		InitialSelection = _Value(false),
 		Elevation = _Value(nil),
@@ -138,7 +138,7 @@ function Interface.primaryContainer(): StyledCheckboxWrapper
 	local _fuse = ColdFusion.fuse(maid)
 	local _Value = _fuse.Value
 	local definition = {
-		Style = _Value(Style.new(1, "Arial", "Light", Color3.new(0, 0.4, 0.7))),
+		Style = _Value(Style.new(1, Enum.Font.SourceSans, "Light", Color3.new(0, 0.4, 0.7))),
 		OnSelect = _Value(function(isSelected: boolean?) end),
 		InitialSelection = _Value(false),
 		Elevation = _Value(nil),
@@ -164,7 +164,7 @@ function Interface.secondaryContainer(): StyledCheckboxWrapper
 	local _fuse = ColdFusion.fuse(maid)
 	local _Value = _fuse.Value
 	local definition = {
-		Style = _Value(Style.new(1, "Arial", "Light", Color3.new(0, 0.4, 0.7))),
+		Style = _Value(Style.new(1, Enum.Font.SourceSans, "Light", Color3.new(0, 0.4, 0.7))),
 		OnSelect = _Value(function(isSelected: boolean?) end),
 		InitialSelection = _Value(false),
 		Elevation = _Value(nil),
@@ -190,7 +190,7 @@ function Interface.tertiaryContainer(): StyledCheckboxWrapper
 	local _fuse = ColdFusion.fuse(maid)
 	local _Value = _fuse.Value
 	local definition = {
-		Style = _Value(Style.new(1, "Arial", "Light", Color3.new(0, 0.4, 0.7))),
+		Style = _Value(Style.new(1, Enum.Font.SourceSans, "Light", Color3.new(0, 0.4, 0.7))),
 		OnSelect = _Value(function(isSelected: boolean?) end),
 		InitialSelection = _Value(false),
 		Elevation = _Value(nil),

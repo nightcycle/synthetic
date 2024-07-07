@@ -33,11 +33,11 @@ return {
 		IS_ENABLED = true,
 		ELEVATION = 0,
 		SCHEME_TYPE = Enums.SchemeType.Light,
-		FONT_DATA = Types.newFontData(Font.fromEnum(Enum.Font.ArialBold), 14),
+		FONT_DATA = Types.newFontData(Font.fromEnum(Enum.Font.SourceSans), 14),
 		SCALE = 1,
 	},
 	PRIMARY = {
-		STYLE = Style.new(1, "Arial", "Light", Color3.new(0, 0.4, 0.7)),
+		STYLE = Style.new(1, Enum.Font.SourceSans, "Light", Color3.new(0, 0.4, 0.7)),
 		ON_CLICK = function() end,
 		TEXT = "Button",
 		ICON = nil :: ImageData?,
@@ -45,7 +45,7 @@ return {
 		IS_ENABLED = true,
 	},
 	SECONDARY = {
-		STYLE = Style.new(1, "Arial", "Light", Color3.new(0, 0.4, 0.7)),
+		STYLE = Style.new(1, Enum.Font.SourceSans, "Light", Color3.new(0, 0.4, 0.7)),
 		ON_CLICK = function() end,
 		TEXT = "Button",
 		ICON = nil :: ImageData?,
@@ -53,7 +53,7 @@ return {
 		IS_ENABLED = true,
 	},
 	TERTIARY = {
-		STYLE = Style.new(1, "Arial", "Light", Color3.new(0, 0.4, 0.7)),
+		STYLE = Style.new(1, Enum.Font.SourceSans, "Light", Color3.new(0, 0.4, 0.7)),
 		ON_CLICK = function() end,
 		TEXT = "Button",
 		ICON = nil :: ImageData?,
@@ -61,7 +61,7 @@ return {
 		IS_ENABLED = true,
 	},
 	PRIMARY_CONTAINER = {
-		STYLE = Style.new(1, "Arial", "Light", Color3.new(0, 0.4, 0.7)),
+		STYLE = Style.new(1, Enum.Font.SourceSans, "Light", Color3.new(0, 0.4, 0.7)),
 		ON_CLICK = function() end,
 		TEXT = "Button",
 		ICON = nil :: ImageData?,
@@ -69,7 +69,7 @@ return {
 		IS_ENABLED = true,
 	},
 	SECONDARY_CONTAINER = {
-		STYLE = Style.new(1, "Arial", "Light", Color3.new(0, 0.4, 0.7)),
+		STYLE = Style.new(1, Enum.Font.SourceSans, "Light", Color3.new(0, 0.4, 0.7)),
 		ON_CLICK = function() end,
 		TEXT = "Button",
 		ICON = nil :: ImageData?,
@@ -77,7 +77,7 @@ return {
 		IS_ENABLED = true,
 	},
 	TERTIARY_CONTAINER = {
-		STYLE = Style.new(1, "Arial", "Light", Color3.new(0, 0.4, 0.7)),
+		STYLE = Style.new(1, Enum.Font.SourceSans, "Light", Color3.new(0, 0.4, 0.7)),
 		ON_CLICK = function() end,
 		TEXT = "Button",
 		ICON = nil :: ImageData?,

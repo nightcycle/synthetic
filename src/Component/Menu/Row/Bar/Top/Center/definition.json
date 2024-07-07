@@ -43,17 +43,17 @@
 			{
 				"name": "titleFontData",
 				"type": "FontData",
-				"default": "Types.newFontData(Font.fromEnum(Enum.Font.ArialBold), 14)"
+				"default": "Types.newFontData(Font.fromEnum(Enum.Font.SourceSans), 14)"
 			},
 			{
 				"name": "subHeadingFontData",
 				"type": "FontData",
-				"default": "Types.newFontData(Font.fromEnum(Enum.Font.ArialBold), 14)"
+				"default": "Types.newFontData(Font.fromEnum(Enum.Font.SourceSans), 14)"
 			},
 			{
 				"name": "buttonFontData",
 				"type": "FontData",
-				"default": "Types.newFontData(Font.fromEnum(Enum.Font.ArialBold), 14)"
+				"default": "Types.newFontData(Font.fromEnum(Enum.Font.SourceSans), 14)"
 			},
 			{
 				"name": "scale",
@@ -73,7 +73,7 @@
 			{
 				"name": "style",
 				"type": "Style",
-				"default": "Style.new(1, \"Arial\", \"Light\", Color3.new(0, 0.4, 0.7))"
+				"default": "Style.new(1, Enum.Font.SourceSans, \"Light\", Color3.new(0, 0.4, 0.7))"
 			},
 			{
 				"name": "title",

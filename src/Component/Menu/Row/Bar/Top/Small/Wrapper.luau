@@ -60,7 +60,7 @@ function Interface.primary(): StyledSmallWrapper
 	local _fuse = ColdFusion.fuse(maid)
 	local _Value = _fuse.Value
 	local definition = {
-		Style = _Value(Style.new(1, "Arial", "Light", Color3.new(0, 0.4, 0.7))),
+		Style = _Value(Style.new(1, Enum.Font.SourceSans, "Light", Color3.new(0, 0.4, 0.7))),
 		Title = _Value("Title"),
 		Buttons = _Value({}),
 		Navigation = _Value(nil),
@@ -86,7 +86,7 @@ function Interface.secondary(): StyledSmallWrapper
 	local _fuse = ColdFusion.fuse(maid)
 	local _Value = _fuse.Value
 	local definition = {
-		Style = _Value(Style.new(1, "Arial", "Light", Color3.new(0, 0.4, 0.7))),
+		Style = _Value(Style.new(1, Enum.Font.SourceSans, "Light", Color3.new(0, 0.4, 0.7))),
 		Title = _Value("Title"),
 		Buttons = _Value({}),
 		Navigation = _Value(nil),
@@ -112,7 +112,7 @@ function Interface.tertiary(): StyledSmallWrapper
 	local _fuse = ColdFusion.fuse(maid)
 	local _Value = _fuse.Value
 	local definition = {
-		Style = _Value(Style.new(1, "Arial", "Light", Color3.new(0, 0.4, 0.7))),
+		Style = _Value(Style.new(1, Enum.Font.SourceSans, "Light", Color3.new(0, 0.4, 0.7))),
 		Title = _Value("Title"),
 		Buttons = _Value({}),
 		Navigation = _Value(nil),

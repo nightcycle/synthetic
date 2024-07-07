@@ -13,7 +13,7 @@ local Style = require(_Package:WaitForChild("Style"))
 local Enums = require(_Package:WaitForChild("Enums"))
 local Button = require(_Package:WaitForChild("Component"):WaitForChild("Button"):WaitForChild("TextButton"))
 local Util = require(_Package:WaitForChild("Util"))
-local Typography = require(_Package:WaitForChild("Style"):WaitForChild("Typography"))
+local Typography = require(_Package:WaitForChild("Typography"))
 
 -- Types
 type Maid = Maid.Maid

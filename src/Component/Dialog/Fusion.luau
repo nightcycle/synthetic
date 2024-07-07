@@ -34,7 +34,7 @@ local Interface = {}
 
 function Interface.new(
 	buttons: FusionCanBeState<{ ButtonData }>,
-	icon: FusionCanBeState<ImageData>,
+	icon: FusionCanBeState<ImageData?>,
 	headline: FusionCanBeState<string?>,
 	description: FusionCanBeState<string?>,
 	surfaceColor: FusionCanBeState<Color3>,
@@ -80,7 +80,7 @@ end
 function Interface.primary(
 	style: FusionCanBeState<Style>,
 	buttons: FusionCanBeState<{ ButtonData }>,
-	icon: FusionCanBeState<ImageData>,
+	icon: FusionCanBeState<ImageData?>,
 	headline: FusionCanBeState<string?>,
 	description: FusionCanBeState<string?>
 ): GuiObject
@@ -105,7 +105,7 @@ end
 function Interface.secondary(
 	style: FusionCanBeState<Style>,
 	buttons: FusionCanBeState<{ ButtonData }>,
-	icon: FusionCanBeState<ImageData>,
+	icon: FusionCanBeState<ImageData?>,
 	headline: FusionCanBeState<string?>,
 	description: FusionCanBeState<string?>
 ): GuiObject
@@ -130,7 +130,7 @@ end
 function Interface.tertiary(
 	style: FusionCanBeState<Style>,
 	buttons: FusionCanBeState<{ ButtonData }>,
-	icon: FusionCanBeState<ImageData>,
+	icon: FusionCanBeState<ImageData?>,
 	headline: FusionCanBeState<string?>,
 	description: FusionCanBeState<string?>
 ): GuiObject

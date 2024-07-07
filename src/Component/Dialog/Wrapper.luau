@@ -27,7 +27,7 @@ type Wrapper<BaseInstance, Definition, ClassName> = Translators.Wrapper<BaseInst
 
 export type DialogWrapperDefinition = {
 	Buttons: { ButtonData },
-	Icon: ImageData,
+	Icon: ImageData?,
 	Headline: string?,
 	Description: string?,
 	SurfaceColor: Color3,
@@ -47,7 +47,7 @@ export type DialogWrapper = Wrapper<GuiObject, DialogWrapperDefinition, "Dialog"
 export type StyledDialogWrapperDefinition = {
 	Style: Style,
 	Buttons: { ButtonData },
-	Icon: ImageData,
+	Icon: ImageData?,
 	Headline: string?,
 	Description: string?,
 }
@@ -64,7 +64,7 @@ function Interface.primary(): StyledDialogWrapper
 	local _fuse = ColdFusion.fuse(maid)
 	local _Value = _fuse.Value
 	local definition = {
-		Style = _Value(Style.new(1, "Arial", "Light", Color3.new(0, 0.4, 0.7))),
+		Style = _Value(Style.new(1, Enum.Font.SourceSans, "Light", Color3.new(0, 0.4, 0.7))),
 		Buttons = _Value({}),
 		Icon = _Value(nil),
 		Headline = _Value(nil),
@@ -90,7 +90,7 @@ function Interface.secondary(): StyledDialogWrapper
 	local _fuse = ColdFusion.fuse(maid)
 	local _Value = _fuse.Value
 	local definition = {
-		Style = _Value(Style.new(1, "Arial", "Light", Color3.new(0, 0.4, 0.7))),
+		Style = _Value(Style.new(1, Enum.Font.SourceSans, "Light", Color3.new(0, 0.4, 0.7))),
 		Buttons = _Value({}),
 		Icon = _Value(nil),
 		Headline = _Value(nil),
@@ -116,7 +116,7 @@ function Interface.tertiary(): StyledDialogWrapper
 	local _fuse = ColdFusion.fuse(maid)
 	local _Value = _fuse.Value
 	local definition = {
-		Style = _Value(Style.new(1, "Arial", "Light", Color3.new(0, 0.4, 0.7))),
+		Style = _Value(Style.new(1, Enum.Font.SourceSans, "Light", Color3.new(0, 0.4, 0.7))),
 		Buttons = _Value({}),
 		Icon = _Value(nil),
 		Headline = _Value(nil),

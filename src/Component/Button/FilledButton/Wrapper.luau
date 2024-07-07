@@ -66,7 +66,7 @@ function Interface.primary(): StyledFilledButtonWrapper
 	local _fuse = ColdFusion.fuse(maid)
 	local _Value = _fuse.Value
 	local definition = {
-		Style = _Value(Style.new(1, "Arial", "Light", Color3.new(0, 0.4, 0.7))),
+		Style = _Value(Style.new(1, Enum.Font.SourceSans, "Light", Color3.new(0, 0.4, 0.7))),
 		OnClick = _Value(function() end),
 		Text = _Value("Button"),
 		Icon = _Value(nil),
@@ -94,7 +94,7 @@ function Interface.secondary(): StyledFilledButtonWrapper
 	local _fuse = ColdFusion.fuse(maid)
 	local _Value = _fuse.Value
 	local definition = {
-		Style = _Value(Style.new(1, "Arial", "Light", Color3.new(0, 0.4, 0.7))),
+		Style = _Value(Style.new(1, Enum.Font.SourceSans, "Light", Color3.new(0, 0.4, 0.7))),
 		OnClick = _Value(function() end),
 		Text = _Value("Button"),
 		Icon = _Value(nil),
@@ -122,7 +122,7 @@ function Interface.tertiary(): StyledFilledButtonWrapper
 	local _fuse = ColdFusion.fuse(maid)
 	local _Value = _fuse.Value
 	local definition = {
-		Style = _Value(Style.new(1, "Arial", "Light", Color3.new(0, 0.4, 0.7))),
+		Style = _Value(Style.new(1, Enum.Font.SourceSans, "Light", Color3.new(0, 0.4, 0.7))),
 		OnClick = _Value(function() end),
 		Text = _Value("Button"),
 		Icon = _Value(nil),
@@ -150,7 +150,7 @@ function Interface.primaryContainer(): StyledFilledButtonWrapper
 	local _fuse = ColdFusion.fuse(maid)
 	local _Value = _fuse.Value
 	local definition = {
-		Style = _Value(Style.new(1, "Arial", "Light", Color3.new(0, 0.4, 0.7))),
+		Style = _Value(Style.new(1, Enum.Font.SourceSans, "Light", Color3.new(0, 0.4, 0.7))),
 		OnClick = _Value(function() end),
 		Text = _Value("Button"),
 		Icon = _Value(nil),
@@ -178,7 +178,7 @@ function Interface.secondaryContainer(): StyledFilledButtonWrapper
 	local _fuse = ColdFusion.fuse(maid)
 	local _Value = _fuse.Value
 	local definition = {
-		Style = _Value(Style.new(1, "Arial", "Light", Color3.new(0, 0.4, 0.7))),
+		Style = _Value(Style.new(1, Enum.Font.SourceSans, "Light", Color3.new(0, 0.4, 0.7))),
 		OnClick = _Value(function() end),
 		Text = _Value("Button"),
 		Icon = _Value(nil),
@@ -206,7 +206,7 @@ function Interface.tertiaryContainer(): StyledFilledButtonWrapper
 	local _fuse = ColdFusion.fuse(maid)
 	local _Value = _fuse.Value
 	local definition = {
-		Style = _Value(Style.new(1, "Arial", "Light", Color3.new(0, 0.4, 0.7))),
+		Style = _Value(Style.new(1, Enum.Font.SourceSans, "Light", Color3.new(0, 0.4, 0.7))),
 		OnClick = _Value(function() end),
 		Text = _Value("Button"),
 		Icon = _Value(nil),

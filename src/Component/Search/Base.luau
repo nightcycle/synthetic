@@ -22,7 +22,7 @@ local Style = require(_Package:WaitForChild("Style"))
 local Enums = require(_Package:WaitForChild("Enums"))
 local Sounds = require(_Package:WaitForChild("Sounds"))
 local Theme = require(_Package:WaitForChild("Style"):WaitForChild("Theme"))
-local Typography = require(_Package:WaitForChild("Style"):WaitForChild("Typography"))
+local Typography = require(_Package:WaitForChild("Typography"))
 
 -- Types
 type Maid = Maid.Maid
@@ -736,13 +736,13 @@ function Base.newBar(
 				end
 				onClick()
 			end,
-			MouseButton1Down = function(x: number, y: number)
+			MouseButton1Down = function()
 				if isEnabledState:Get() == false then
 					return
 				end
 				isPressedState:Set(true)
 			end,
-			MouseButton1Up = function(x: number, y: number)
+			MouseButton1Up = function()
 				if isEnabledState:Get() == false then
 					return
 				end

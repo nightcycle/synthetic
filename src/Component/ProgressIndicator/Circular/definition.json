@@ -43,7 +43,7 @@
 			{
 				"name": "style",
 				"type": "Style",
-				"default": "Style.new(1, \"Arial\", \"Light\", Color3.new(0, 0.4, 0.7))"
+				"default": "Style.new(1, Enum.Font.SourceSans, \"Light\", Color3.new(0, 0.4, 0.7))"
 			},
 			{
 				"name": "progress",

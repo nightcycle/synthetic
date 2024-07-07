@@ -64,7 +64,7 @@ function Interface.primary(): StyledRadioButtonWrapper
 	local _fuse = ColdFusion.fuse(maid)
 	local _Value = _fuse.Value
 	local definition = {
-		Style = _Value(Style.new(1, "Arial", "Light", Color3.new(0, 0.4, 0.7))),
+		Style = _Value(Style.new(1, Enum.Font.SourceSans, "Light", Color3.new(0, 0.4, 0.7))),
 		OnSelect = _Value(function(isSelected: boolean) end),
 		InitialSelection = _Value(false),
 		Elevation = _Value(nil),
@@ -90,7 +90,7 @@ function Interface.secondary(): StyledRadioButtonWrapper
 	local _fuse = ColdFusion.fuse(maid)
 	local _Value = _fuse.Value
 	local definition = {
-		Style = _Value(Style.new(1, "Arial", "Light", Color3.new(0, 0.4, 0.7))),
+		Style = _Value(Style.new(1, Enum.Font.SourceSans, "Light", Color3.new(0, 0.4, 0.7))),
 		OnSelect = _Value(function(isSelected: boolean) end),
 		InitialSelection = _Value(false),
 		Elevation = _Value(nil),
@@ -116,7 +116,7 @@ function Interface.tertiary(): StyledRadioButtonWrapper
 	local _fuse = ColdFusion.fuse(maid)
 	local _Value = _fuse.Value
 	local definition = {
-		Style = _Value(Style.new(1, "Arial", "Light", Color3.new(0, 0.4, 0.7))),
+		Style = _Value(Style.new(1, Enum.Font.SourceSans, "Light", Color3.new(0, 0.4, 0.7))),
 		OnSelect = _Value(function(isSelected: boolean) end),
 		InitialSelection = _Value(false),
 		Elevation = _Value(nil),
@@ -142,7 +142,7 @@ function Interface.primaryContainer(): StyledRadioButtonWrapper
 	local _fuse = ColdFusion.fuse(maid)
 	local _Value = _fuse.Value
 	local definition = {
-		Style = _Value(Style.new(1, "Arial", "Light", Color3.new(0, 0.4, 0.7))),
+		Style = _Value(Style.new(1, Enum.Font.SourceSans, "Light", Color3.new(0, 0.4, 0.7))),
 		OnSelect = _Value(function(isSelected: boolean) end),
 		InitialSelection = _Value(false),
 		Elevation = _Value(nil),
@@ -168,7 +168,7 @@ function Interface.secondaryContainer(): StyledRadioButtonWrapper
 	local _fuse = ColdFusion.fuse(maid)
 	local _Value = _fuse.Value
 	local definition = {
-		Style = _Value(Style.new(1, "Arial", "Light", Color3.new(0, 0.4, 0.7))),
+		Style = _Value(Style.new(1, Enum.Font.SourceSans, "Light", Color3.new(0, 0.4, 0.7))),
 		OnSelect = _Value(function(isSelected: boolean) end),
 		InitialSelection = _Value(false),
 		Elevation = _Value(nil),
@@ -194,7 +194,7 @@ function Interface.tertiaryContainer(): StyledRadioButtonWrapper
 	local _fuse = ColdFusion.fuse(maid)
 	local _Value = _fuse.Value
 	local definition = {
-		Style = _Value(Style.new(1, "Arial", "Light", Color3.new(0, 0.4, 0.7))),
+		Style = _Value(Style.new(1, Enum.Font.SourceSans, "Light", Color3.new(0, 0.4, 0.7))),
 		OnSelect = _Value(function(isSelected: boolean) end),
 		InitialSelection = _Value(false),
 		Elevation = _Value(nil),

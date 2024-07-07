@@ -67,7 +67,7 @@ function Interface.primary(): StyledElevatedButtonWrapper
 	local _fuse = ColdFusion.fuse(maid)
 	local _Value = _fuse.Value
 	local definition = {
-		Style = _Value(Style.new(1, "Arial", "Light", Color3.new(0, 0.4, 0.7))),
+		Style = _Value(Style.new(1, Enum.Font.SourceSans, "Light", Color3.new(0, 0.4, 0.7))),
 		OnClick = _Value(function() end),
 		Text = _Value("Button"),
 		Icon = _Value(Types.newImageData("")),
@@ -95,7 +95,7 @@ function Interface.secondary(): StyledElevatedButtonWrapper
 	local _fuse = ColdFusion.fuse(maid)
 	local _Value = _fuse.Value
 	local definition = {
-		Style = _Value(Style.new(1, "Arial", "Light", Color3.new(0, 0.4, 0.7))),
+		Style = _Value(Style.new(1, Enum.Font.SourceSans, "Light", Color3.new(0, 0.4, 0.7))),
 		OnClick = _Value(function() end),
 		Text = _Value("Button"),
 		Icon = _Value(Types.newImageData("")),
@@ -123,7 +123,7 @@ function Interface.tertiary(): StyledElevatedButtonWrapper
 	local _fuse = ColdFusion.fuse(maid)
 	local _Value = _fuse.Value
 	local definition = {
-		Style = _Value(Style.new(1, "Arial", "Light", Color3.new(0, 0.4, 0.7))),
+		Style = _Value(Style.new(1, Enum.Font.SourceSans, "Light", Color3.new(0, 0.4, 0.7))),
 		OnClick = _Value(function() end),
 		Text = _Value("Button"),
 		Icon = _Value(Types.newImageData("")),
@@ -151,7 +151,7 @@ function Interface.primaryContainer(): StyledElevatedButtonWrapper
 	local _fuse = ColdFusion.fuse(maid)
 	local _Value = _fuse.Value
 	local definition = {
-		Style = _Value(Style.new(1, "Arial", "Light", Color3.new(0, 0.4, 0.7))),
+		Style = _Value(Style.new(1, Enum.Font.SourceSans, "Light", Color3.new(0, 0.4, 0.7))),
 		OnClick = _Value(function() end),
 		Text = _Value("Button"),
 		Icon = _Value(Types.newImageData("")),
@@ -179,7 +179,7 @@ function Interface.secondaryContainer(): StyledElevatedButtonWrapper
 	local _fuse = ColdFusion.fuse(maid)
 	local _Value = _fuse.Value
 	local definition = {
-		Style = _Value(Style.new(1, "Arial", "Light", Color3.new(0, 0.4, 0.7))),
+		Style = _Value(Style.new(1, Enum.Font.SourceSans, "Light", Color3.new(0, 0.4, 0.7))),
 		OnClick = _Value(function() end),
 		Text = _Value("Button"),
 		Icon = _Value(Types.newImageData("")),
@@ -207,7 +207,7 @@ function Interface.tertiaryContainer(): StyledElevatedButtonWrapper
 	local _fuse = ColdFusion.fuse(maid)
 	local _Value = _fuse.Value
 	local definition = {
-		Style = _Value(Style.new(1, "Arial", "Light", Color3.new(0, 0.4, 0.7))),
+		Style = _Value(Style.new(1, Enum.Font.SourceSans, "Light", Color3.new(0, 0.4, 0.7))),
 		OnClick = _Value(function() end),
 		Text = _Value("Button"),
 		Icon = _Value(Types.newImageData("")),

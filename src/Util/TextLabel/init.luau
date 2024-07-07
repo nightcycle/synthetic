@@ -10,7 +10,7 @@ local Types = require(_Package:WaitForChild("Types"))
 local Style = require(_Package:WaitForChild("Style"))
 local Enums = require(_Package:WaitForChild("Enums"))
 local Container = require(_Package:WaitForChild("Util"):WaitForChild("Container"))
-local Typography = require(_Package:WaitForChild("Style"):WaitForChild("Typography"))
+local Typography = require(_Package:WaitForChild("Typography"))
 
 -- Types
 type State<V> = ColdFusion.State<V>

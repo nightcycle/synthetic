@@ -7,12 +7,12 @@
 		"parameters": [
 			{
 				"name": "onSubmit",
-				"type": "(text: string?) -> string?",
+				"type": "((text: string?) -> string?)",
 				"default": "function(text: string?)\nreturn text\nend"
 			},
 			{
 				"name": "onInput",
-				"type": "(text: string?) -> string?",
+				"type": "((text: string?) -> string?)",
 				"default": "function(text: string?)\nreturn text\nend"
 			},
 			{
@@ -23,12 +23,12 @@
 			{
 				"name": "isEnabled",
 				"type": "boolean",
-				"default": "nil"
+				"default": "true"
 			},
 			{
 				"name": "isError",
 				"type": "boolean",
-				"default": "nil"
+				"default": "false"
 			},
 			{
 				"name": "label",
@@ -88,12 +88,12 @@
 			{
 				"name": "bodyFontData",
 				"type": "FontData",
-				"default": "Types.newFontData(Font.fromEnum(Enum.Font.ArialBold), 14)"
+				"default": "Types.newFontData(Font.fromEnum(Enum.Font.SourceSans), 14)"
 			},
 			{
 				"name": "supportFontData",
 				"type": "FontData",
-				"default": "Types.newFontData(Font.fromEnum(Enum.Font.ArialBold), 14)"
+				"default": "Types.newFontData(Font.fromEnum(Enum.Font.SourceSans), 14)"
 			},
 			{
 				"name": "scale",
@@ -113,11 +113,11 @@
 			{
 				"name": "style",
 				"type": "Style",
-				"default": "Style.new(1, \"Arial\", \"Light\", Color3.new(0, 0.4, 0.7))"
+				"default": "Style.new(1, Enum.Font.SourceSans, \"Light\", Color3.new(0, 0.4, 0.7))"
 			},
 			{
 				"name": "onSubmit",
-				"type": "(text: string?) -> string?",
+				"type": "((text: string?) -> string?)",
 				"default": "function(text: string?)\nreturn text\nend"
 			},
 			{

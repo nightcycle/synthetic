@@ -52,7 +52,7 @@ function Interface.primary(): StyledCircularWrapper
 	local _fuse = ColdFusion.fuse(maid)
 	local _Value = _fuse.Value
 	local definition = {
-		Style = _Value(Style.new(1, "Arial", "Light", Color3.new(0, 0.4, 0.7))),
+		Style = _Value(Style.new(1, Enum.Font.SourceSans, "Light", Color3.new(0, 0.4, 0.7))),
 		Progress = _Value(nil),
 		IsEnabled = _Value(nil),
 	}
@@ -70,7 +70,7 @@ function Interface.secondary(): StyledCircularWrapper
 	local _fuse = ColdFusion.fuse(maid)
 	local _Value = _fuse.Value
 	local definition = {
-		Style = _Value(Style.new(1, "Arial", "Light", Color3.new(0, 0.4, 0.7))),
+		Style = _Value(Style.new(1, Enum.Font.SourceSans, "Light", Color3.new(0, 0.4, 0.7))),
 		Progress = _Value(nil),
 		IsEnabled = _Value(nil),
 	}
@@ -88,7 +88,7 @@ function Interface.tertiary(): StyledCircularWrapper
 	local _fuse = ColdFusion.fuse(maid)
 	local _Value = _fuse.Value
 	local definition = {
-		Style = _Value(Style.new(1, "Arial", "Light", Color3.new(0, 0.4, 0.7))),
+		Style = _Value(Style.new(1, Enum.Font.SourceSans, "Light", Color3.new(0, 0.4, 0.7))),
 		Progress = _Value(nil),
 		IsEnabled = _Value(nil),
 	}

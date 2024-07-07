@@ -68,7 +68,7 @@ function Interface.primary(): StyledSliderWrapper
 	local _fuse = ColdFusion.fuse(maid)
 	local _Value = _fuse.Value
 	local definition = {
-		Style = _Value(Style.new(1, "Arial", "Light", Color3.new(0, 0.4, 0.7))),
+		Style = _Value(Style.new(1, Enum.Font.SourceSans, "Light", Color3.new(0, 0.4, 0.7))),
 		OnChange = _Value(function(onChange: number) end),
 		InitialValue = _Value(50),
 		Minimum = _Value(nil),
@@ -102,7 +102,7 @@ function Interface.secondary(): StyledSliderWrapper
 	local _fuse = ColdFusion.fuse(maid)
 	local _Value = _fuse.Value
 	local definition = {
-		Style = _Value(Style.new(1, "Arial", "Light", Color3.new(0, 0.4, 0.7))),
+		Style = _Value(Style.new(1, Enum.Font.SourceSans, "Light", Color3.new(0, 0.4, 0.7))),
 		OnChange = _Value(function(onChange: number) end),
 		InitialValue = _Value(50),
 		Minimum = _Value(nil),
@@ -136,7 +136,7 @@ function Interface.tertiary(): StyledSliderWrapper
 	local _fuse = ColdFusion.fuse(maid)
 	local _Value = _fuse.Value
 	local definition = {
-		Style = _Value(Style.new(1, "Arial", "Light", Color3.new(0, 0.4, 0.7))),
+		Style = _Value(Style.new(1, Enum.Font.SourceSans, "Light", Color3.new(0, 0.4, 0.7))),
 		OnChange = _Value(function(onChange: number) end),
 		InitialValue = _Value(50),
 		Minimum = _Value(nil),
@@ -170,7 +170,7 @@ function Interface.onPrimary(): StyledSliderWrapper
 	local _fuse = ColdFusion.fuse(maid)
 	local _Value = _fuse.Value
 	local definition = {
-		Style = _Value(Style.new(1, "Arial", "Light", Color3.new(0, 0.4, 0.7))),
+		Style = _Value(Style.new(1, Enum.Font.SourceSans, "Light", Color3.new(0, 0.4, 0.7))),
 		OnChange = _Value(function(onChange: number) end),
 		InitialValue = _Value(50),
 		Minimum = _Value(nil),
@@ -204,7 +204,7 @@ function Interface.onSecondary(): StyledSliderWrapper
 	local _fuse = ColdFusion.fuse(maid)
 	local _Value = _fuse.Value
 	local definition = {
-		Style = _Value(Style.new(1, "Arial", "Light", Color3.new(0, 0.4, 0.7))),
+		Style = _Value(Style.new(1, Enum.Font.SourceSans, "Light", Color3.new(0, 0.4, 0.7))),
 		OnChange = _Value(function(onChange: number) end),
 		InitialValue = _Value(50),
 		Minimum = _Value(nil),
@@ -238,7 +238,7 @@ function Interface.onTertiary(): StyledSliderWrapper
 	local _fuse = ColdFusion.fuse(maid)
 	local _Value = _fuse.Value
 	local definition = {
-		Style = _Value(Style.new(1, "Arial", "Light", Color3.new(0, 0.4, 0.7))),
+		Style = _Value(Style.new(1, Enum.Font.SourceSans, "Light", Color3.new(0, 0.4, 0.7))),
 		OnChange = _Value(function(onChange: number) end),
 		InitialValue = _Value(50),
 		Minimum = _Value(nil),

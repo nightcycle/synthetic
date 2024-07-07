@@ -61,7 +61,7 @@ function newThemedComponent(
 
 	local styleState: State<Style> = _import(style, themeDefaults.STYLE)
 
-	local out = Interface.ColdFusion.new(
+	local out = Interface.new(
 		_import(onClick, themeDefaults.ON_CLICK),
 		_import(icon, themeDefaults.ICON),
 		_Computed(function(s: Style): Color3
@@ -96,9 +96,9 @@ function newThemedComponent(
 	return out
 end
 
-Interface.ColdFusion = {}
+Interface = {}
 
-function Interface.ColdFusion.primary(
+function Interface.primary(
 	style: CanBeState<Style>,
 	onClick: CanBeState<() -> ()>,
 	icon: CanBeState<ImageData>,
@@ -119,7 +119,7 @@ function Interface.ColdFusion.primary(
 	)
 end
 
-function Interface.ColdFusion.secondary(
+function Interface.secondary(
 	style: CanBeState<Style>,
 	onClick: CanBeState<() -> ()>,
 	icon: CanBeState<ImageData>,
@@ -140,7 +140,7 @@ function Interface.ColdFusion.secondary(
 	)
 end
 
-function Interface.ColdFusion.tertiary(
+function Interface.tertiary(
 	style: CanBeState<Style>,
 	onClick: CanBeState<() -> ()>,
 	icon: CanBeState<ImageData>,
@@ -161,7 +161,7 @@ function Interface.ColdFusion.tertiary(
 	)
 end
 
-function Interface.ColdFusion.primaryContainer(
+function Interface.primaryContainer(
 	style: CanBeState<Style>,
 	onClick: CanBeState<() -> ()>,
 	icon: CanBeState<ImageData>,
@@ -182,7 +182,7 @@ function Interface.ColdFusion.primaryContainer(
 	)
 end
 
-function Interface.ColdFusion.secondaryContainer(
+function Interface.secondaryContainer(
 	style: CanBeState<Style>,
 	onClick: CanBeState<() -> ()>,
 	icon: CanBeState<ImageData>,
@@ -203,7 +203,7 @@ function Interface.ColdFusion.secondaryContainer(
 	)
 end
 
-function Interface.ColdFusion.tertiaryContainer(
+function Interface.tertiaryContainer(
 	style: CanBeState<Style>,
 	onClick: CanBeState<() -> ()>,
 	icon: CanBeState<ImageData>,
@@ -224,7 +224,7 @@ function Interface.ColdFusion.tertiaryContainer(
 	)
 end
 
-function Interface.ColdFusion.new(
+function Interface.new(
 	onClick: CanBeState<() -> ()>,
 	icon: CanBeState<ImageData>,
 	textColor: CanBeState<Color3>,

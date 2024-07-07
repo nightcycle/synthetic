@@ -67,7 +67,7 @@ function Interface.primary(): StyledSwitchWrapper
 	local _fuse = ColdFusion.fuse(maid)
 	local _Value = _fuse.Value
 	local definition = {
-		Style = _Value(Style.new(1, "Arial", "Light", Color3.new(0, 0.4, 0.7))),
+		Style = _Value(Style.new(1, Enum.Font.SourceSans, "Light", Color3.new(0, 0.4, 0.7))),
 		OnSelect = _Value(function(isSelected: boolean) end),
 		InitialSelection = _Value(false),
 		IncludeIconOnSelected = _Value(nil),
@@ -97,7 +97,7 @@ function Interface.secondary(): StyledSwitchWrapper
 	local _fuse = ColdFusion.fuse(maid)
 	local _Value = _fuse.Value
 	local definition = {
-		Style = _Value(Style.new(1, "Arial", "Light", Color3.new(0, 0.4, 0.7))),
+		Style = _Value(Style.new(1, Enum.Font.SourceSans, "Light", Color3.new(0, 0.4, 0.7))),
 		OnSelect = _Value(function(isSelected: boolean) end),
 		InitialSelection = _Value(false),
 		IncludeIconOnSelected = _Value(nil),
@@ -127,7 +127,7 @@ function Interface.tertiary(): StyledSwitchWrapper
 	local _fuse = ColdFusion.fuse(maid)
 	local _Value = _fuse.Value
 	local definition = {
-		Style = _Value(Style.new(1, "Arial", "Light", Color3.new(0, 0.4, 0.7))),
+		Style = _Value(Style.new(1, Enum.Font.SourceSans, "Light", Color3.new(0, 0.4, 0.7))),
 		OnSelect = _Value(function(isSelected: boolean) end),
 		InitialSelection = _Value(false),
 		IncludeIconOnSelected = _Value(nil),

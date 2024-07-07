@@ -75,8 +75,10 @@ function Interface.primary(): StyledFilledWrapper
 	local _fuse = ColdFusion.fuse(maid)
 	local _Value = _fuse.Value
 	local definition = {
-		Style = _Value(Style.new(1, "Arial", "Light", Color3.new(0, 0.4, 0.7))),
-		OnSubmit = _Value(nil),
+		Style = _Value(Style.new(1, Enum.Font.SourceSans, "Light", Color3.new(0, 0.4, 0.7))),
+		OnSubmit = _Value(function(text: string?)
+			return text
+		end),
 		Label = _Value("Label"),
 		InitialText = _Value(nil),
 		OnInput = _Value(nil),
@@ -113,8 +115,10 @@ function Interface.secondary(): StyledFilledWrapper
 	local _fuse = ColdFusion.fuse(maid)
 	local _Value = _fuse.Value
 	local definition = {
-		Style = _Value(Style.new(1, "Arial", "Light", Color3.new(0, 0.4, 0.7))),
-		OnSubmit = _Value(nil),
+		Style = _Value(Style.new(1, Enum.Font.SourceSans, "Light", Color3.new(0, 0.4, 0.7))),
+		OnSubmit = _Value(function(text: string?)
+			return text
+		end),
 		Label = _Value("Label"),
 		InitialText = _Value(nil),
 		OnInput = _Value(nil),
@@ -151,8 +155,10 @@ function Interface.tertiary(): StyledFilledWrapper
 	local _fuse = ColdFusion.fuse(maid)
 	local _Value = _fuse.Value
 	local definition = {
-		Style = _Value(Style.new(1, "Arial", "Light", Color3.new(0, 0.4, 0.7))),
-		OnSubmit = _Value(nil),
+		Style = _Value(Style.new(1, Enum.Font.SourceSans, "Light", Color3.new(0, 0.4, 0.7))),
+		OnSubmit = _Value(function(text: string?)
+			return text
+		end),
 		Label = _Value("Label"),
 		InitialText = _Value(nil),
 		OnInput = _Value(nil),

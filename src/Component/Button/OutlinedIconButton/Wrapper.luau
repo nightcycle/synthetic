@@ -66,7 +66,7 @@ function Interface.primary(): StyledOutlinedIconButtonWrapper
 	local _fuse = ColdFusion.fuse(maid)
 	local _Value = _fuse.Value
 	local definition = {
-		Style = _Value(Style.new(1, "Arial", "Light", Color3.new(0, 0.4, 0.7))),
+		Style = _Value(Style.new(1, Enum.Font.SourceSans, "Light", Color3.new(0, 0.4, 0.7))),
 		OnClick = _Value(function() end),
 		Icon = _Value(Types.newImageData("")),
 		Elevation = _Value(0),
@@ -92,7 +92,7 @@ function Interface.secondary(): StyledOutlinedIconButtonWrapper
 	local _fuse = ColdFusion.fuse(maid)
 	local _Value = _fuse.Value
 	local definition = {
-		Style = _Value(Style.new(1, "Arial", "Light", Color3.new(0, 0.4, 0.7))),
+		Style = _Value(Style.new(1, Enum.Font.SourceSans, "Light", Color3.new(0, 0.4, 0.7))),
 		OnClick = _Value(function() end),
 		Icon = _Value(Types.newImageData("")),
 		Elevation = _Value(0),
@@ -118,7 +118,7 @@ function Interface.tertiary(): StyledOutlinedIconButtonWrapper
 	local _fuse = ColdFusion.fuse(maid)
 	local _Value = _fuse.Value
 	local definition = {
-		Style = _Value(Style.new(1, "Arial", "Light", Color3.new(0, 0.4, 0.7))),
+		Style = _Value(Style.new(1, Enum.Font.SourceSans, "Light", Color3.new(0, 0.4, 0.7))),
 		OnClick = _Value(function() end),
 		Icon = _Value(Types.newImageData("")),
 		Elevation = _Value(0),
@@ -144,7 +144,7 @@ function Interface.primaryContainer(): StyledOutlinedIconButtonWrapper
 	local _fuse = ColdFusion.fuse(maid)
 	local _Value = _fuse.Value
 	local definition = {
-		Style = _Value(Style.new(1, "Arial", "Light", Color3.new(0, 0.4, 0.7))),
+		Style = _Value(Style.new(1, Enum.Font.SourceSans, "Light", Color3.new(0, 0.4, 0.7))),
 		OnClick = _Value(function() end),
 		Icon = _Value(Types.newImageData("")),
 		Elevation = _Value(0),
@@ -170,7 +170,7 @@ function Interface.secondaryContainer(): StyledOutlinedIconButtonWrapper
 	local _fuse = ColdFusion.fuse(maid)
 	local _Value = _fuse.Value
 	local definition = {
-		Style = _Value(Style.new(1, "Arial", "Light", Color3.new(0, 0.4, 0.7))),
+		Style = _Value(Style.new(1, Enum.Font.SourceSans, "Light", Color3.new(0, 0.4, 0.7))),
 		OnClick = _Value(function() end),
 		Icon = _Value(Types.newImageData("")),
 		Elevation = _Value(0),
@@ -196,7 +196,7 @@ function Interface.tertiaryContainer(): StyledOutlinedIconButtonWrapper
 	local _fuse = ColdFusion.fuse(maid)
 	local _Value = _fuse.Value
 	local definition = {
-		Style = _Value(Style.new(1, "Arial", "Light", Color3.new(0, 0.4, 0.7))),
+		Style = _Value(Style.new(1, Enum.Font.SourceSans, "Light", Color3.new(0, 0.4, 0.7))),
 		OnClick = _Value(function() end),
 		Icon = _Value(Types.newImageData("")),
 		Elevation = _Value(0),

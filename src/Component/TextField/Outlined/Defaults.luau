@@ -23,11 +23,15 @@ type CanBeState<V> = ColdFusion.CanBeState<V>
 
 return {
 	NEW = {
-		ON_SUBMIT = nil :: (text: string?) -> string?,
-		ON_INPUT = nil :: (text: string?) -> string?,
+		ON_SUBMIT = function(text: string?)
+			return text
+		end,
+		ON_INPUT = function(text: string?)
+			return text
+		end,
 		INITIAL_TEXT = nil :: string?,
-		IS_ENABLED = nil :: boolean,
-		IS_ERROR = nil :: boolean,
+		IS_ENABLED = true,
+		IS_ERROR = false,
 		LABEL = "Label",
 		CHARACTER_LIMIT = nil :: number?,
 		SUPPORTING_TEXT = nil :: string?,
@@ -39,13 +43,15 @@ return {
 		LABEL_COLOR = Color3.new(),
 		ELEVATION = 0,
 		SCHEME_TYPE = Enums.SchemeType.Light,
-		BODY_FONT_DATA = Types.newFontData(Font.fromEnum(Enum.Font.ArialBold), 14),
-		SUPPORT_FONT_DATA = Types.newFontData(Font.fromEnum(Enum.Font.ArialBold), 14),
+		BODY_FONT_DATA = Types.newFontData(Font.fromEnum(Enum.Font.SourceSans), 14),
+		SUPPORT_FONT_DATA = Types.newFontData(Font.fromEnum(Enum.Font.SourceSans), 14),
 		SCALE = 1,
 	},
 	PRIMARY = {
-		STYLE = Style.new(1, "Arial", "Light", Color3.new(0, 0.4, 0.7)),
-		ON_SUBMIT = nil :: (text: string?) -> string?,
+		STYLE = Style.new(1, Enum.Font.SourceSans, "Light", Color3.new(0, 0.4, 0.7)),
+		ON_SUBMIT = function(text: string?)
+			return text
+		end,
 		LABEL = "Label",
 		INITIAL_TEXT = nil :: string?,
 		ON_INPUT = nil :: ((text: string?) -> string?)?,
@@ -57,8 +63,10 @@ return {
 		IS_ENABLED = nil :: boolean?,
 	},
 	SECONDARY = {
-		STYLE = Style.new(1, "Arial", "Light", Color3.new(0, 0.4, 0.7)),
-		ON_SUBMIT = nil :: (text: string?) -> string?,
+		STYLE = Style.new(1, Enum.Font.SourceSans, "Light", Color3.new(0, 0.4, 0.7)),
+		ON_SUBMIT = function(text: string?)
+			return text
+		end,
 		LABEL = "Label",
 		INITIAL_TEXT = nil :: string?,
 		ON_INPUT = nil :: ((text: string?) -> string?)?,
@@ -70,8 +78,10 @@ return {
 		IS_ENABLED = nil :: boolean?,
 	},
 	TERTIARY = {
-		STYLE = Style.new(1, "Arial", "Light", Color3.new(0, 0.4, 0.7)),
-		ON_SUBMIT = nil :: (text: string?) -> string?,
+		STYLE = Style.new(1, Enum.Font.SourceSans, "Light", Color3.new(0, 0.4, 0.7)),
+		ON_SUBMIT = function(text: string?)
+			return text
+		end,
 		LABEL = "Label",
 		INITIAL_TEXT = nil :: string?,
 		ON_INPUT = nil :: ((text: string?) -> string?)?,

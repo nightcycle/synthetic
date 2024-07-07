@@ -33,8 +33,8 @@ type FusionCanBeState<V> = Translators.FusionCanBeState<V>
 local Interface = {}
 
 function Interface.new(
-	onSubmit: FusionCanBeState<(text: string?) -> string?>,
-	onInput: FusionCanBeState<(text: string?) -> string?>,
+	onSubmit: FusionCanBeState<((text: string?) -> string?)>,
+	onInput: FusionCanBeState<((text: string?) -> string?)>,
 	initialText: FusionCanBeState<string?>,
 	isEnabled: FusionCanBeState<boolean>,
 	isError: FusionCanBeState<boolean>,
@@ -89,7 +89,7 @@ end
 
 function Interface.primary(
 	style: FusionCanBeState<Style>,
-	onSubmit: FusionCanBeState<(text: string?) -> string?>,
+	onSubmit: FusionCanBeState<((text: string?) -> string?)>,
 	label: FusionCanBeState<string>,
 	initialText: FusionCanBeState<string?>,
 	onInput: FusionCanBeState<(((text: string?) -> string?)?)>,
@@ -126,7 +126,7 @@ end
 
 function Interface.secondary(
 	style: FusionCanBeState<Style>,
-	onSubmit: FusionCanBeState<(text: string?) -> string?>,
+	onSubmit: FusionCanBeState<((text: string?) -> string?)>,
 	label: FusionCanBeState<string>,
 	initialText: FusionCanBeState<string?>,
 	onInput: FusionCanBeState<(((text: string?) -> string?)?)>,
@@ -163,7 +163,7 @@ end
 
 function Interface.tertiary(
 	style: FusionCanBeState<Style>,
-	onSubmit: FusionCanBeState<(text: string?) -> string?>,
+	onSubmit: FusionCanBeState<((text: string?) -> string?)>,
 	label: FusionCanBeState<string>,
 	initialText: FusionCanBeState<string?>,
 	onInput: FusionCanBeState<(((text: string?) -> string?)?)>,

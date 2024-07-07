@@ -63,7 +63,7 @@ function Interface.primary(): StyledFilterWrapper
 	local _fuse = ColdFusion.fuse(maid)
 	local _Value = _fuse.Value
 	local definition = {
-		Style = _Value(Style.new(1, "Arial", "Light", Color3.new(0, 0.4, 0.7))),
+		Style = _Value(Style.new(1, Enum.Font.SourceSans, "Light", Color3.new(0, 0.4, 0.7))),
 		OnClick = _Value(function(isSelected: boolean) end),
 		Text = _Value("Filter"),
 		IsInitiallySelected = _Value(false),
@@ -91,7 +91,7 @@ function Interface.secondary(): StyledFilterWrapper
 	local _fuse = ColdFusion.fuse(maid)
 	local _Value = _fuse.Value
 	local definition = {
-		Style = _Value(Style.new(1, "Arial", "Light", Color3.new(0, 0.4, 0.7))),
+		Style = _Value(Style.new(1, Enum.Font.SourceSans, "Light", Color3.new(0, 0.4, 0.7))),
 		OnClick = _Value(function(isSelected: boolean) end),
 		Text = _Value("Filter"),
 		IsInitiallySelected = _Value(false),
@@ -119,7 +119,7 @@ function Interface.tertiary(): StyledFilterWrapper
 	local _fuse = ColdFusion.fuse(maid)
 	local _Value = _fuse.Value
 	local definition = {
-		Style = _Value(Style.new(1, "Arial", "Light", Color3.new(0, 0.4, 0.7))),
+		Style = _Value(Style.new(1, Enum.Font.SourceSans, "Light", Color3.new(0, 0.4, 0.7))),
 		OnClick = _Value(function(isSelected: boolean) end),
 		Text = _Value("Filter"),
 		IsInitiallySelected = _Value(false),
