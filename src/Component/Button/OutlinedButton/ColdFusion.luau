@@ -40,7 +40,8 @@ function newThemedComponent(
 	textColor: Enums.ColorRoleType,
 	disabledTextColor: Enums.ColorRoleType,
 	onClick: CanBeState<() -> ()>,
-	icon: CanBeState<ImageData>,
+	text: CanBeState<string>,
+	icon: CanBeState<ImageData?>,
 	style: CanBeState<Style>,
 	elevation: CanBeState<number?>,
 	isEnabled: CanBeState<boolean?>
@@ -61,6 +62,7 @@ function newThemedComponent(
 
 	local out = Interface.new(
 		_import(onClick, themeDefaults.ON_CLICK),
+		_import(text, themeDefaults.TEXT),
 		_import(icon, themeDefaults.ICON),
 		_Computed(function(s: Style): Color3
 			return s:GetColor(textColor)
@@ -88,12 +90,11 @@ function newThemedComponent(
 	return out
 end
 
-Interface = {}
-
 function Interface.primary(
 	style: CanBeState<Style>,
 	onClick: CanBeState<() -> ()>,
-	icon: CanBeState<ImageData>,
+	text: CanBeState<string>,
+	icon: CanBeState<ImageData?>,
 	elevation: CanBeState<number?>,
 	isEnabled: CanBeState<boolean?>
 ): GuiObject
@@ -102,6 +103,7 @@ function Interface.primary(
 		Enums.ColorRoleType.OnPrimary,
 		Enums.ColorRoleType.OnSurfaceVariant,
 		onClick,
+		text,
 		icon,
 		style,
 		elevation,
@@ -112,7 +114,8 @@ end
 function Interface.secondary(
 	style: CanBeState<Style>,
 	onClick: CanBeState<() -> ()>,
-	icon: CanBeState<ImageData>,
+	text: CanBeState<string>,
+	icon: CanBeState<ImageData?>,
 	elevation: CanBeState<number?>,
 	isEnabled: CanBeState<boolean?>
 ): GuiObject
@@ -121,6 +124,7 @@ function Interface.secondary(
 		Enums.ColorRoleType.OnSecondary,
 		Enums.ColorRoleType.OnSurfaceVariant,
 		onClick,
+		text,
 		icon,
 		style,
 		elevation,
@@ -131,7 +135,8 @@ end
 function Interface.tertiary(
 	style: CanBeState<Style>,
 	onClick: CanBeState<() -> ()>,
-	icon: CanBeState<ImageData>,
+	text: CanBeState<string>,
+	icon: CanBeState<ImageData?>,
 	elevation: CanBeState<number?>,
 	isEnabled: CanBeState<boolean?>
 ): GuiObject
@@ -140,6 +145,7 @@ function Interface.tertiary(
 		Enums.ColorRoleType.OnTertiary,
 		Enums.ColorRoleType.OnSurfaceVariant,
 		onClick,
+		text,
 		icon,
 		style,
 		elevation,
@@ -150,7 +156,8 @@ end
 function Interface.primaryContainer(
 	style: CanBeState<Style>,
 	onClick: CanBeState<() -> ()>,
-	icon: CanBeState<ImageData>,
+	text: CanBeState<string>,
+	icon: CanBeState<ImageData?>,
 	elevation: CanBeState<number?>,
 	isEnabled: CanBeState<boolean?>
 ): GuiObject
@@ -159,6 +166,7 @@ function Interface.primaryContainer(
 		Enums.ColorRoleType.OnPrimaryContainer,
 		Enums.ColorRoleType.OnSecondaryContainer,
 		onClick,
+		text,
 		icon,
 		style,
 		elevation,
@@ -169,7 +177,8 @@ end
 function Interface.secondaryContainer(
 	style: CanBeState<Style>,
 	onClick: CanBeState<() -> ()>,
-	icon: CanBeState<ImageData>,
+	text: CanBeState<string>,
+	icon: CanBeState<ImageData?>,
 	elevation: CanBeState<number?>,
 	isEnabled: CanBeState<boolean?>
 ): GuiObject
@@ -178,6 +187,7 @@ function Interface.secondaryContainer(
 		Enums.ColorRoleType.OnSecondaryContainer,
 		Enums.ColorRoleType.OnSecondaryContainer,
 		onClick,
+		text,
 		icon,
 		style,
 		elevation,
@@ -188,7 +198,8 @@ end
 function Interface.tertiaryContainer(
 	style: CanBeState<Style>,
 	onClick: CanBeState<() -> ()>,
-	icon: CanBeState<ImageData>,
+	text: CanBeState<string>,
+	icon: CanBeState<ImageData?>,
 	elevation: CanBeState<number?>,
 	isEnabled: CanBeState<boolean?>
 ): GuiObject
@@ -197,6 +208,7 @@ function Interface.tertiaryContainer(
 		Enums.ColorRoleType.OnTertiaryContainer,
 		Enums.ColorRoleType.OnSecondaryContainer,
 		onClick,
+		text,
 		icon,
 		style,
 		elevation,
@@ -206,7 +218,8 @@ end
 
 function Interface.new(
 	onClick: CanBeState<() -> ()>,
-	icon: CanBeState<ImageData>,
+	text: CanBeState<string>,
+	icon: CanBeState<ImageData?>,
 	textColor: CanBeState<Color3>,
 	disabledTextColor: CanBeState<Color3>,
 	isEnabled: CanBeState<boolean>,
@@ -233,7 +246,7 @@ function Interface.new(
 	local elevationState: State<number> = _import(elevation, DEFAULTS.NEW.ELEVATION)
 
 	local textColorState: State<Color3> = _import(textColor, DEFAULTS.NEW.TEXT_COLOR)
-	local hoverColorState: State<Color3> = _import(textColor, DEFAULTS.NEW.TEXT_COLOR)
+	local hoverColorState: State<Color3> = _import(textColorState, DEFAULTS.NEW.TEXT_COLOR)
 
 	local disabledTextColorState: State<Color3> = _import(disabledTextColor, DEFAULTS.NEW.DISABLED_TEXT_COLOR)
 	local disabledHoverColorState: State<Color3> =
@@ -244,7 +257,7 @@ function Interface.new(
 	local button = Base.new(
 		maid,
 		onClick,
-		"",
+		text,
 		if isEnabled == nil then true else isEnabled,
 		_Computed(
 			function(
@@ -302,9 +315,9 @@ function Interface.new(
 					),
 					[Enums.ButtonStateType.Pressed] = Types.newRenderData(
 						sc,
-						Types.newAppearanceData(Theme.getElevatedColor(tC, e, st), 0),
-						Types.newAppearanceData(Theme.getElevatedColor(sC, e - 1, st), 1 - 0.1),
-						Types.newAppearanceData(Theme.getElevatedColor(tC, e - 1, st), 0),
+						Types.newAppearanceData(Theme.getElevatedColor(tC, e, st), 1),
+						Types.newAppearanceData(Theme.getElevatedColor(sC, e - 1, st), 0.1),
+						Types.newAppearanceData(Theme.getElevatedColor(tC, e - 1, st), 0.1),
 						f,
 						i,
 						Types.newSoundData(Sounds.Library[Enums.SoundType.ui_tap_variant_01], 0),
@@ -322,9 +335,9 @@ function Interface.new(
 			disabledHoverColorState,
 			iconState
 		),
-		false,
 		nil,
-		0.8,
+		nil,
+		nil,
 		nil
 	)
 	maid:GiveTask(button.Destroying:Connect(function()

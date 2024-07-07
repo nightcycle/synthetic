@@ -70,8 +70,8 @@ function newThemedComponent(
 		_Computed(function(s: Style): Color3
 			return s:GetColor(disabledTextColor)
 		end, styleState),
-		_import(isEnabled, true),
-		_import(elevation, 0),
+		_import(isEnabled, themeDefaults.IS_ENABLED),
+		_import(elevation, themeDefaults.ELEVATION),
 		_Computed(function(s: Style): any
 			return s.SchemeType
 		end, styleState),
