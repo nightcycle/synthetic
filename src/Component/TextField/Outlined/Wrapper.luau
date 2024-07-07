@@ -75,9 +75,7 @@ function Interface.primary(): StyledOutlinedWrapper
 	local _Value = _fuse.Value
 	local definition = {
 		Style = _Value(Style.new(1, "Arial", "Light", Color3.new(0, 0.4, 0.7))),
-		OnSubmit = _Value(function(text: string?)
-			return text
-		end),
+		OnSubmit = _Value(nil),
 		Label = _Value("Label"),
 		InitialText = _Value(nil),
 		OnInput = _Value(nil),
@@ -85,7 +83,7 @@ function Interface.primary(): StyledOutlinedWrapper
 		Icon = _Value(nil),
 		CharacterLimit = _Value(nil),
 		IsError = _Value(nil),
-		Elevation = _Value(0),
+		Elevation = _Value(nil),
 		IsEnabled = _Value(nil),
 	}
 	local inst: GuiObject = Source.primary(
@@ -115,9 +113,7 @@ function Interface.secondary(): StyledOutlinedWrapper
 	local _Value = _fuse.Value
 	local definition = {
 		Style = _Value(Style.new(1, "Arial", "Light", Color3.new(0, 0.4, 0.7))),
-		OnSubmit = _Value(function(text: string?)
-			return text
-		end),
+		OnSubmit = _Value(nil),
 		Label = _Value("Label"),
 		InitialText = _Value(nil),
 		OnInput = _Value(nil),
@@ -125,7 +121,7 @@ function Interface.secondary(): StyledOutlinedWrapper
 		Icon = _Value(nil),
 		CharacterLimit = _Value(nil),
 		IsError = _Value(nil),
-		Elevation = _Value(0),
+		Elevation = _Value(nil),
 		IsEnabled = _Value(nil),
 	}
 	local inst: GuiObject = Source.secondary(
@@ -155,9 +151,7 @@ function Interface.tertiary(): StyledOutlinedWrapper
 	local _Value = _fuse.Value
 	local definition = {
 		Style = _Value(Style.new(1, "Arial", "Light", Color3.new(0, 0.4, 0.7))),
-		OnSubmit = _Value(function(text: string?)
-			return text
-		end),
+		OnSubmit = _Value(nil),
 		Label = _Value("Label"),
 		InitialText = _Value(nil),
 		OnInput = _Value(nil),
@@ -165,7 +159,7 @@ function Interface.tertiary(): StyledOutlinedWrapper
 		Icon = _Value(nil),
 		CharacterLimit = _Value(nil),
 		IsError = _Value(nil),
-		Elevation = _Value(0),
+		Elevation = _Value(nil),
 		IsEnabled = _Value(nil),
 	}
 	local inst: GuiObject = Source.tertiary(

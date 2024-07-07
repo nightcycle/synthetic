@@ -70,10 +70,10 @@ function Interface.primary(): StyledSwitchWrapper
 		Style = _Value(Style.new(1, "Arial", "Light", Color3.new(0, 0.4, 0.7))),
 		OnSelect = _Value(function(isSelected: boolean) end),
 		InitialSelection = _Value(false),
-		IncludeIconOnSelected = _Value(true),
-		IncludeIconOnDeselected = _Value(true),
-		Elevation = _Value(0),
-		IsEnabled = _Value(true),
+		IncludeIconOnSelected = _Value(nil),
+		IncludeIconOnDeselected = _Value(nil),
+		Elevation = _Value(nil),
+		IsEnabled = _Value(nil),
 	}
 	local inst: GuiObject = Source.primary(
 		definition.Style,
@@ -100,10 +100,10 @@ function Interface.secondary(): StyledSwitchWrapper
 		Style = _Value(Style.new(1, "Arial", "Light", Color3.new(0, 0.4, 0.7))),
 		OnSelect = _Value(function(isSelected: boolean) end),
 		InitialSelection = _Value(false),
-		IncludeIconOnSelected = _Value(true),
-		IncludeIconOnDeselected = _Value(true),
-		Elevation = _Value(0),
-		IsEnabled = _Value(true),
+		IncludeIconOnSelected = _Value(nil),
+		IncludeIconOnDeselected = _Value(nil),
+		Elevation = _Value(nil),
+		IsEnabled = _Value(nil),
 	}
 	local inst: GuiObject = Source.secondary(
 		definition.Style,
@@ -130,10 +130,10 @@ function Interface.tertiary(): StyledSwitchWrapper
 		Style = _Value(Style.new(1, "Arial", "Light", Color3.new(0, 0.4, 0.7))),
 		OnSelect = _Value(function(isSelected: boolean) end),
 		InitialSelection = _Value(false),
-		IncludeIconOnSelected = _Value(true),
-		IncludeIconOnDeselected = _Value(true),
-		Elevation = _Value(0),
-		IsEnabled = _Value(true),
+		IncludeIconOnSelected = _Value(nil),
+		IncludeIconOnDeselected = _Value(nil),
+		Elevation = _Value(nil),
+		IsEnabled = _Value(nil),
 	}
 	local inst: GuiObject = Source.tertiary(
 		definition.Style,

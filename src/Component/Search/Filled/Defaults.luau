@@ -26,11 +26,11 @@ return {
 		ON_INPUT_ENTERED = function(input: string)
 			return input
 		end,
-		LABEL = nil,
+		LABEL = nil :: string?,
 		OPTION_SOLVER = function(input: string)
 			return {}
 		end,
-		OPTION_CONSTRUCTOR = nil,
+		OPTION_CONSTRUCTOR = nil :: ((key: string, onClick: (key: string) -> ()) -> GuiObject)?,
 		TEXT_COLOR = Color3.new(),
 		BACKGROUND_COLOR = Color3.new(),
 		ELEVATION = 0,
@@ -43,71 +43,71 @@ return {
 		ON_INPUT_ENTERED = function(input: string)
 			return input
 		end,
-		LABEL = nil,
+		LABEL = nil :: string?,
 		OPTION_SOLVER = function(input: string)
 			return {}
 		end,
-		OPTION_CONSTRUCTOR = nil,
-		ELEVATION = 0,
+		OPTION_CONSTRUCTOR = nil :: ((key: string, onClick: (key: string) -> ()) -> GuiObject)?,
+		ELEVATION = nil :: number?,
 	},
 	SECONDARY = {
 		STYLE = Style.new(1, "Arial", "Light", Color3.new(0, 0.4, 0.7)),
 		ON_INPUT_ENTERED = function(input: string)
 			return input
 		end,
-		LABEL = nil,
+		LABEL = nil :: string?,
 		OPTION_SOLVER = function(input: string)
 			return {}
 		end,
-		OPTION_CONSTRUCTOR = nil,
-		ELEVATION = 0,
+		OPTION_CONSTRUCTOR = nil :: ((key: string, onClick: (key: string) -> ()) -> GuiObject)?,
+		ELEVATION = nil :: number?,
 	},
 	TERTIARY = {
 		STYLE = Style.new(1, "Arial", "Light", Color3.new(0, 0.4, 0.7)),
 		ON_INPUT_ENTERED = function(input: string)
 			return input
 		end,
-		LABEL = nil,
+		LABEL = nil :: string?,
 		OPTION_SOLVER = function(input: string)
 			return {}
 		end,
-		OPTION_CONSTRUCTOR = nil,
-		ELEVATION = 0,
+		OPTION_CONSTRUCTOR = nil :: ((key: string, onClick: (key: string) -> ()) -> GuiObject)?,
+		ELEVATION = nil :: number?,
 	},
 	PRIMARY_CONTAINER = {
 		STYLE = Style.new(1, "Arial", "Light", Color3.new(0, 0.4, 0.7)),
 		ON_INPUT_ENTERED = function(input: string)
 			return input
 		end,
-		LABEL = nil,
+		LABEL = nil :: string?,
 		OPTION_SOLVER = function(input: string)
 			return {}
 		end,
-		OPTION_CONSTRUCTOR = nil,
-		ELEVATION = 0,
+		OPTION_CONSTRUCTOR = nil :: ((key: string, onClick: (key: string) -> ()) -> GuiObject)?,
+		ELEVATION = nil :: number?,
 	},
 	SECONDARY_CONTAINER = {
 		STYLE = Style.new(1, "Arial", "Light", Color3.new(0, 0.4, 0.7)),
 		ON_INPUT_ENTERED = function(input: string)
 			return input
 		end,
-		LABEL = nil,
+		LABEL = nil :: string?,
 		OPTION_SOLVER = function(input: string)
 			return {}
 		end,
-		OPTION_CONSTRUCTOR = nil,
-		ELEVATION = 0,
+		OPTION_CONSTRUCTOR = nil :: ((key: string, onClick: (key: string) -> ()) -> GuiObject)?,
+		ELEVATION = nil :: number?,
 	},
 	TERTIARY_CONTAINER = {
 		STYLE = Style.new(1, "Arial", "Light", Color3.new(0, 0.4, 0.7)),
 		ON_INPUT_ENTERED = function(input: string)
 			return input
 		end,
-		LABEL = nil,
+		LABEL = nil :: string?,
 		OPTION_SOLVER = function(input: string)
 			return {}
 		end,
-		OPTION_CONSTRUCTOR = nil,
-		ELEVATION = 0,
+		OPTION_CONSTRUCTOR = nil :: ((key: string, onClick: (key: string) -> ()) -> GuiObject)?,
+		ELEVATION = nil :: number?,
 	},
 }

@@ -23,25 +23,25 @@ type CanBeState<V> = ColdFusion.CanBeState<V>
 
 return {
 	NEW = {
-		PROGRESS = nil,
-		IS_ENABLED = nil,
+		PROGRESS = nil :: number?,
+		IS_ENABLED = nil :: boolean?,
 		FILL_COLOR = Color3.new(),
 		EMPTY_COLOR = Color3.new(),
 		SCALE = 1,
 	},
 	PRIMARY = {
 		STYLE = Style.new(1, "Arial", "Light", Color3.new(0, 0.4, 0.7)),
-		PROGRESS = nil,
-		IS_ENABLED = nil,
+		PROGRESS = nil :: number?,
+		IS_ENABLED = nil :: boolean?,
 	},
 	SECONDARY = {
 		STYLE = Style.new(1, "Arial", "Light", Color3.new(0, 0.4, 0.7)),
-		PROGRESS = nil,
-		IS_ENABLED = nil,
+		PROGRESS = nil :: number?,
+		IS_ENABLED = nil :: boolean?,
 	},
 	TERTIARY = {
 		STYLE = Style.new(1, "Arial", "Light", Color3.new(0, 0.4, 0.7)),
-		PROGRESS = nil,
-		IS_ENABLED = nil,
+		PROGRESS = nil :: number?,
+		IS_ENABLED = nil :: boolean?,
 	},
 }
