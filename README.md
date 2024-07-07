@@ -1,7 +1,6 @@
 # Synthetic
 A UI component framework for Roblox Front-End development with the goal of compiling a robust library of quick to deploy and style, professional grade, UI components.
 
-<video src="./media/demo.mp4" alt="demo">
 
 # Compatability
 Beyond a basic wrapper interface for those without a specific UI framework, compatability will also also covered for the following libraries:
