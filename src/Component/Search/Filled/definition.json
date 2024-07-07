@@ -17,7 +17,7 @@
 			},
 			{
 				"name": "optionSolver",
-				"type": "(input: string) -> { [number]: string }",
+				"type": "(input: string) -> { string }",
 				"default": "function(input: string)\nreturn {}\nend"
 			},
 			{
@@ -85,7 +85,7 @@
 			},
 			{
 				"name": "optionSolver",
-				"type": "(input: string) -> { [number]: string }",
+				"type": "(input: string) -> { string }",
 				"default": "function(input: string)\nreturn {}\nend"
 			},
 			{

@@ -58,7 +58,7 @@ function newPanel(
 	button: GuiObject,
 	textColorState: State<Color3>,
 	backgroundColorState: State<Color3>,
-	optionSolverState: State<(input: string) -> { [number]: string }>,
+	optionSolverState: State<(input: string) -> { string }>,
 	optionConstructorState: State<OptionConstructor>,
 	elevationState: State<number>,
 	schemeTypeState: State<Enums.SchemeType>,
@@ -118,7 +118,7 @@ function newPanel(
 	end))
 
 	local optionsState = _Computed(
-		function(solver: (input: string) -> { [number]: string }, txt: string): { [number]: string }
+		function(solver: (input: string) -> { string }, txt: string): { string }
 			return solver(txt)
 		end,
 		optionSolverState,
@@ -196,7 +196,7 @@ function newPanel(
 
 	local optionRegistry: { [string]: GuiObject } = {}
 
-	local function updateOptions(opts: { [number]: string }, constructor: OptionConstructor)
+	local function updateOptions(opts: { string }, constructor: OptionConstructor)
 		local registry: { [string]: true? } = {}
 		for i, v in ipairs(opts) do
 			registry[v] = true
@@ -222,7 +222,7 @@ function newPanel(
 		-- rep.Parent = workspace
 	end
 
-	optionsState:Connect(function(cur: { [number]: string }, prev: { [number]: string }?)
+	optionsState:Connect(function(cur: { string }, prev: { string }?)
 		updateOptions(cur, optionConstructorState:Get())
 	end)
 
@@ -329,7 +329,7 @@ function Base.newBar(
 	isFilled: boolean,
 	onInputEntered: CanBeState<(input: string) -> string>,
 	label: CanBeState<string?>,
-	optionSolver: CanBeState<(input: string) -> { [number]: string }>,
+	optionSolver: CanBeState<(input: string) -> { string }>,
 	optionConstructor: CanBeState<OptionConstructor?>,
 	textColor: CanBeState<Color3>,
 	backgroundColor: CanBeState<Color3>,
@@ -444,7 +444,7 @@ function Base.newBar(
 		return out
 	end
 
-	local optionSolverState = _import(optionSolver, function(input: string): { [number]: string }
+	local optionSolverState = _import(optionSolver, function(input: string): { string }
 		return {}
 	end)
 	local optionConstructorState: State<OptionConstructor> = _import(optionConstructor, newLabel)

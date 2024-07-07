@@ -28,7 +28,7 @@ type Wrapper<BaseInstance, Definition, ClassName> = Translators.Wrapper<BaseInst
 export type TextWrapperDefinition = {
 	OnInputEntered: (input: string) -> string,
 	Label: string?,
-	OptionSolver: (input: string) -> { [number]: string },
+	OptionSolver: (input: string) -> { string },
 	OptionConstructor: ((key: string, onClick: (key: string) -> ()) -> GuiObject)?,
 	TextColor: Color3,
 	BackgroundColor: Color3,
@@ -43,7 +43,7 @@ export type StyledTextWrapperDefinition = {
 	Style: Style,
 	OnInputEntered: (input: string) -> string,
 	Label: string?,
-	OptionSolver: (input: string) -> { [number]: string },
+	OptionSolver: (input: string) -> { string },
 	OptionConstructor: ((key: string, onClick: (key: string) -> ()) -> GuiObject)?,
 	Elevation: number?,
 }

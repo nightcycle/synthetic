@@ -7,7 +7,7 @@
 		"parameters": [
 			{
 				"name": "options",
-				"type": "{ [number]: OptionData }",
+				"type": "{ OptionData }",
 				"default": "{}"
 			},
 			{
@@ -77,7 +77,7 @@
 			},
 			{
 				"name": "options",
-				"type": "{ [number]: OptionData }",
+				"type": "{ OptionData }",
 				"default": "{}"
 			},
 			{

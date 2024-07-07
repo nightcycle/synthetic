@@ -41,7 +41,7 @@ function Interface.onTertiaryContainer(
 	style: CanBeState<Style>,
 	onInputEntered: CanBeState<(input: string) -> string>,
 	label: CanBeState<string?>,
-	optionSolver: CanBeState<(input: string) -> { [number]: string }>,
+	optionSolver: CanBeState<(input: string) -> { string }>,
 	optionConstructor: CanBeState<OptionConstructor?>,
 	elevation: CanBeState<number?>
 ): GuiObject
@@ -93,7 +93,7 @@ function Interface.onTertiary(
 	style: CanBeState<Style>,
 	onInputEntered: CanBeState<(input: string) -> string>,
 	label: CanBeState<string?>,
-	optionSolver: CanBeState<(input: string) -> { [number]: string }>,
+	optionSolver: CanBeState<(input: string) -> { string }>,
 	optionConstructor: CanBeState<OptionConstructor?>,
 	elevation: CanBeState<number?>
 ): GuiObject
@@ -145,7 +145,7 @@ function Interface.onSecondaryContainer(
 	style: CanBeState<Style>,
 	onInputEntered: CanBeState<(input: string) -> string>,
 	label: CanBeState<string?>,
-	optionSolver: CanBeState<(input: string) -> { [number]: string }>,
+	optionSolver: CanBeState<(input: string) -> { string }>,
 	optionConstructor: CanBeState<OptionConstructor?>,
 	elevation: CanBeState<number?>
 ): GuiObject
@@ -197,7 +197,7 @@ function Interface.onSecondary(
 	style: CanBeState<Style>,
 	onInputEntered: CanBeState<(input: string) -> string>,
 	label: CanBeState<string?>,
-	optionSolver: CanBeState<(input: string) -> { [number]: string }>,
+	optionSolver: CanBeState<(input: string) -> { string }>,
 	optionConstructor: CanBeState<OptionConstructor?>,
 	elevation: CanBeState<number?>
 ): GuiObject
@@ -249,7 +249,7 @@ function Interface.onPrimaryContainer(
 	style: CanBeState<Style>,
 	onInputEntered: CanBeState<(input: string) -> string>,
 	label: CanBeState<string?>,
-	optionSolver: CanBeState<(input: string) -> { [number]: string }>,
+	optionSolver: CanBeState<(input: string) -> { string }>,
 	optionConstructor: CanBeState<OptionConstructor?>,
 	elevation: CanBeState<number?>
 ): GuiObject
@@ -300,7 +300,7 @@ function Interface.onPrimary(
 	style: CanBeState<Style>,
 	onInputEntered: CanBeState<(input: string) -> string>,
 	label: CanBeState<string?>,
-	optionSolver: CanBeState<(input: string) -> { [number]: string }>,
+	optionSolver: CanBeState<(input: string) -> { string }>,
 	optionConstructor: CanBeState<OptionConstructor?>,
 	elevation: CanBeState<number?>
 ): GuiObject
@@ -351,7 +351,7 @@ end
 function Interface.new(
 	onInputEntered: CanBeState<(input: string) -> string>,
 	label: CanBeState<string?>,
-	optionSolver: CanBeState<(input: string) -> { [number]: string }>,
+	optionSolver: CanBeState<(input: string) -> { string }>,
 	optionConstructor: CanBeState<OptionConstructor?>,
 	textColor: CanBeState<Color3>,
 	backgroundColor: CanBeState<Color3>,

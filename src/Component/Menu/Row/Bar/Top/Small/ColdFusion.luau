@@ -41,9 +41,7 @@ function newThemedComponent(
 	textColor: Enums.ColorRoleType,
 
 	title: CanBeState<string>,
-	buttons: CanBeState<{
-		[number]: ButtonData,
-	}>,
+	buttons: CanBeState<{ ButtonData }>,
 	navigation: CanBeState<ButtonData?>,
 	elevation: CanBeState<number?>
 ): GuiObject
@@ -101,9 +99,7 @@ Interface = {}
 function Interface.primary(
 	style: CanBeState<Style>,
 	title: CanBeState<string>,
-	buttons: CanBeState<{
-		[number]: ButtonData,
-	}>,
+	buttons: CanBeState<{ ButtonData }>,
 	navigation: CanBeState<ButtonData?>,
 	elevation: CanBeState<number?>
 ): GuiObject
@@ -122,9 +118,7 @@ end
 function Interface.secondary(
 	style: CanBeState<Style>,
 	title: CanBeState<string>,
-	buttons: CanBeState<{
-		[number]: ButtonData,
-	}>,
+	buttons: CanBeState<{ ButtonData }>,
 	navigation: CanBeState<ButtonData?>,
 	elevation: CanBeState<number?>
 ): GuiObject
@@ -143,9 +137,7 @@ end
 function Interface.tertiary(
 	style: CanBeState<Style>,
 	title: CanBeState<string>,
-	buttons: CanBeState<{
-		[number]: ButtonData,
-	}>,
+	buttons: CanBeState<{ ButtonData }>,
 	navigation: CanBeState<ButtonData?>,
 	elevation: CanBeState<number?>
 ): GuiObject
@@ -163,9 +155,7 @@ end
 
 function Interface.new(
 	title: CanBeState<string>,
-	buttons: CanBeState<{
-		[number]: ButtonData,
-	}>,
+	buttons: CanBeState<{ ButtonData }>,
 	navigation: CanBeState<ButtonData?>,
 	backgroundColor: CanBeState<Color3>,
 	textColor: CanBeState<Color3>,

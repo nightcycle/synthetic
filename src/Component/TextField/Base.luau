@@ -116,7 +116,7 @@ function Interface.new(
 
 	local supportingTextState: State<string?> = _import(supportingText, nil :: string?)
 	local leadingIconState = _import(leadingIcon, nil :: ImageData?)
-	local dropdownOptionsState: State<{ [number]: string }?> = _import(nil, nil :: { [number]: string }?)
+	local dropdownOptionsState: State<{ string }?> = _import(nil, nil :: { string }?)
 
 	local function applyElevation(state: State<Color3>): State<Color3>
 		return _Computed(function(c: Color3, e: number, st: Enums.SchemeType): Color3
@@ -194,7 +194,7 @@ function Interface.new(
 		supportFontDataState
 	)
 
-	local rightIconState = _Computed(function(iE: boolean, d: { [number]: string }?, v: string?): ImageData?
+	local rightIconState = _Computed(function(iE: boolean, d: { string }?, v: string?): ImageData?
 		if iE then
 			return Icons.error
 		elseif v ~= nil then

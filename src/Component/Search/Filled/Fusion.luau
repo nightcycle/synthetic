@@ -35,7 +35,7 @@ local Interface = {}
 function Interface.new(
 	onInputEntered: FusionCanBeState<(input: string) -> string>,
 	label: FusionCanBeState<string?>,
-	optionSolver: FusionCanBeState<(input: string) -> { [number]: string }>,
+	optionSolver: FusionCanBeState<(input: string) -> { string }>,
 	optionConstructor: FusionCanBeState<(((key: string, onClick: (key: string) -> ()) -> GuiObject)?)>,
 	textColor: FusionCanBeState<Color3>,
 	backgroundColor: FusionCanBeState<Color3>,
@@ -71,7 +71,7 @@ function Interface.primary(
 	style: FusionCanBeState<Style>,
 	onInputEntered: FusionCanBeState<(input: string) -> string>,
 	label: FusionCanBeState<string?>,
-	optionSolver: FusionCanBeState<(input: string) -> { [number]: string }>,
+	optionSolver: FusionCanBeState<(input: string) -> { string }>,
 	optionConstructor: FusionCanBeState<
 		(((key: string, onClick: (key: string) -> ()) -> GuiObject)?)
 	>,
@@ -100,7 +100,7 @@ function Interface.secondary(
 	style: FusionCanBeState<Style>,
 	onInputEntered: FusionCanBeState<(input: string) -> string>,
 	label: FusionCanBeState<string?>,
-	optionSolver: FusionCanBeState<(input: string) -> { [number]: string }>,
+	optionSolver: FusionCanBeState<(input: string) -> { string }>,
 	optionConstructor: FusionCanBeState<
 		(((key: string, onClick: (key: string) -> ()) -> GuiObject)?)
 	>,
@@ -129,7 +129,7 @@ function Interface.tertiary(
 	style: FusionCanBeState<Style>,
 	onInputEntered: FusionCanBeState<(input: string) -> string>,
 	label: FusionCanBeState<string?>,
-	optionSolver: FusionCanBeState<(input: string) -> { [number]: string }>,
+	optionSolver: FusionCanBeState<(input: string) -> { string }>,
 	optionConstructor: FusionCanBeState<
 		(((key: string, onClick: (key: string) -> ()) -> GuiObject)?)
 	>,
@@ -158,7 +158,7 @@ function Interface.primaryContainer(
 	style: FusionCanBeState<Style>,
 	onInputEntered: FusionCanBeState<(input: string) -> string>,
 	label: FusionCanBeState<string?>,
-	optionSolver: FusionCanBeState<(input: string) -> { [number]: string }>,
+	optionSolver: FusionCanBeState<(input: string) -> { string }>,
 	optionConstructor: FusionCanBeState<
 		(((key: string, onClick: (key: string) -> ()) -> GuiObject)?)
 	>,
@@ -187,7 +187,7 @@ function Interface.secondaryContainer(
 	style: FusionCanBeState<Style>,
 	onInputEntered: FusionCanBeState<(input: string) -> string>,
 	label: FusionCanBeState<string?>,
-	optionSolver: FusionCanBeState<(input: string) -> { [number]: string }>,
+	optionSolver: FusionCanBeState<(input: string) -> { string }>,
 	optionConstructor: FusionCanBeState<
 		(((key: string, onClick: (key: string) -> ()) -> GuiObject)?)
 	>,
@@ -216,7 +216,7 @@ function Interface.tertiaryContainer(
 	style: FusionCanBeState<Style>,
 	onInputEntered: FusionCanBeState<(input: string) -> string>,
 	label: FusionCanBeState<string?>,
-	optionSolver: FusionCanBeState<(input: string) -> { [number]: string }>,
+	optionSolver: FusionCanBeState<(input: string) -> { string }>,
 	optionConstructor: FusionCanBeState<
 		(((key: string, onClick: (key: string) -> ()) -> GuiObject)?)
 	>,

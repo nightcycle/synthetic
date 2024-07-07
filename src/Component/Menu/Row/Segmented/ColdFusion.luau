@@ -57,7 +57,7 @@ function newThemedComponent(
 	fillTextColor: Enums.ColorRoleType,
 	fillBackgroundColor: Enums.ColorRoleType,
 	outlineColor: Enums.ColorRoleType,
-	options: CanBeState<{ [number]: OptionData }>,
+	options: CanBeState<{ OptionData }>,
 	density: CanBeState<number?>,
 	isMultiSelect: CanBeState<boolean?>,
 	elevation: CanBeState<number?>
@@ -118,7 +118,7 @@ Interface = {}
 
 function Interface.primaryContainer(
 	style: CanBeState<Style>,
-	options: CanBeState<{ [number]: OptionData }>,
+	options: CanBeState<{ OptionData }>,
 	density: CanBeState<number?>,
 	isMultiSelect: CanBeState<boolean?>,
 	elevation: CanBeState<number?>
@@ -139,7 +139,7 @@ end
 
 function Interface.secondaryContainer(
 	style: CanBeState<Style>,
-	options: CanBeState<{ [number]: OptionData }>,
+	options: CanBeState<{ OptionData }>,
 	density: CanBeState<number?>,
 	isMultiSelect: CanBeState<boolean?>,
 	elevation: CanBeState<number?>
@@ -160,7 +160,7 @@ end
 
 function Interface.tertiaryContainer(
 	style: CanBeState<Style>,
-	options: CanBeState<{ [number]: OptionData }>,
+	options: CanBeState<{ OptionData }>,
 	density: CanBeState<number?>,
 	isMultiSelect: CanBeState<boolean?>,
 	elevation: CanBeState<number?>
@@ -180,7 +180,7 @@ function Interface.tertiaryContainer(
 end
 
 function Interface.new(
-	options: CanBeState<{ [number]: OptionData }>,
+	options: CanBeState<{ OptionData }>,
 	density: CanBeState<number>,
 	isMultiSelect: CanBeState<boolean>,
 	textColor: CanBeState<Color3>,
@@ -350,7 +350,7 @@ function Interface.new(
 		outlineColorState
 	)
 
-	local optionsState: State<{ [number]: OptionData }> = _import(options, {})
+	local optionsState: State<{ OptionData }> = _import(options, {})
 
 	local isMultiSelectState: State<boolean> = _import(isMultiSelect, false)
 
@@ -421,14 +421,11 @@ function Interface.new(
 	local deselectAll = maid:GiveTask(Signal.new())
 
 	for i = 1, MAX_BUTTON_COUNT do
-		local optionDataState: State<OptionData?> = _Computed(
-			function(o: { [number]: OptionData }): OptionData?
-				return o[i]
-			end,
-			optionsState
-		)
+		local optionDataState: State<OptionData?> = _Computed(function(o: { OptionData }): OptionData?
+			return o[i]
+		end, optionsState)
 
-		local backgroundImageState = _Computed(function(o: { [number]: OptionData }): string
+		local backgroundImageState = _Computed(function(o: { OptionData }): string
 			if #o > MAX_BUTTON_COUNT then
 				warn(`max of 5 buttons for segmented button bar, currently {#o} are defined`)
 			end
@@ -562,7 +559,7 @@ function Interface.new(
 			Visible = _Computed(function(data: OptionData?): boolean
 				return data ~= nil
 			end, optionDataState),
-			Size = _Computed(function(o: { [number]: OptionData }, b: UDim2): UDim2
+			Size = _Computed(function(o: { OptionData }, b: UDim2): UDim2
 				local buttonCount = #o
 				local avgBarReduction = b.X.Offset * (buttonCount - 1) / buttonCount
 				return UDim2.new(1 / buttonCount, -avgBarReduction, 1, 0)
