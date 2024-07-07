@@ -7,18 +7,18 @@
 		"parameters": [
 			{
 				"name": "onClick",
-				"type": "(isSelected: boolean) -> ()",
-				"default": "function(isSelected: boolean) end"
-			},
-			{
-				"name": "isInitiallySelected",
-				"type": "boolean",
-				"default": "false"
+				"type": "() -> ()",
+				"default": "function() end"
 			},
 			{
 				"name": "text",
 				"type": "string",
-				"default": "\"Filter\""
+				"default": "\"Chip\""
+			},
+			{
+				"name": "icon",
+				"type": "ImageData?",
+				"default": "nil"
 			},
 
 			{
@@ -28,21 +28,6 @@
 			},
 			{
 				"name": "disabledTextColor",
-				"type": "Color3",
-				"default": "Color3.new()"
-			},
-			{
-				"name": "fillTextColor",
-				"type": "Color3",
-				"default": "Color3.new()"
-			},
-			{
-				"name": "disabledFillTextColor",
-				"type": "Color3",
-				"default": "Color3.new()"
-			},
-			{
-				"name": "disabledFillColor",
 				"type": "Color3",
 				"default": "Color3.new()"
 			},
@@ -88,19 +73,20 @@
 			},
 			{
 				"name": "onClick",
-				"type": "(isSelected: boolean) -> ()",
-				"default": "function(isSelected: boolean) end"
+				"type": "() -> ()",
+				"default": "function() end"
 			},
 			{
 				"name": "text",
 				"type": "string",
-				"default": "\"Filter\""
+				"default": "\"Chip\""
 			},
 			{
-				"name": "isInitiallySelected",
-				"type": "boolean",
-				"default": "false"
+				"name": "icon",
+				"type": "ImageData?",
+				"default": "nil"
 			},
+
 			{
 				"name": "isEnabled",
 				"type": "boolean?",

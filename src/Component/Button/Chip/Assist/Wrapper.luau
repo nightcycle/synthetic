@@ -25,32 +25,29 @@ type ImageData = Types.ImageData
 type CanBeState<V> = ColdFusion.CanBeState<V>
 type Wrapper<BaseInstance, Definition, ClassName> = Translators.Wrapper<BaseInstance, Definition, ClassName>
 
-export type FilterWrapperDefinition = {
-	OnClick: (isSelected: boolean) -> (),
-	IsInitiallySelected: boolean,
+export type AssistWrapperDefinition = {
+	OnClick: () -> (),
 	Text: string,
+	Icon: ImageData?,
 	TextColor: Color3,
 	DisabledTextColor: Color3,
-	FillTextColor: Color3,
-	DisabledFillTextColor: Color3,
-	DisabledFillColor: Color3,
 	IsEnabled: boolean,
 	Elevation: number,
 	SchemeType: Enums.SchemeType,
 	FontData: FontData,
 	Scale: number,
 }
-export type FilterWrapper = Wrapper<GuiObject, FilterWrapperDefinition, "Filter">
+export type AssistWrapper = Wrapper<GuiObject, AssistWrapperDefinition, "Assist">
 
-export type StyledFilterWrapperDefinition = {
+export type StyledAssistWrapperDefinition = {
 	Style: Style,
-	OnClick: (isSelected: boolean) -> (),
+	OnClick: () -> (),
 	Text: string,
-	IsInitiallySelected: boolean,
+	Icon: ImageData?,
 	IsEnabled: boolean?,
 	Elevation: number?,
 }
-export type StyledFilterWrapper = Wrapper<GuiObject, StyledFilterWrapperDefinition, "StyledFilter">
+export type StyledAssistWrapper = Wrapper<GuiObject, StyledAssistWrapperDefinition, "StyledAssist">
 -- Constants
 -- Variables
 -- References
@@ -58,15 +55,15 @@ export type StyledFilterWrapper = Wrapper<GuiObject, StyledFilterWrapperDefiniti
 -- Interface
 local Interface = {}
 
-function Interface.primary(): StyledFilterWrapper
+function Interface.primary(): StyledAssistWrapper
 	local maid = Maid.new()
 	local _fuse = ColdFusion.fuse(maid)
 	local _Value = _fuse.Value
 	local definition = {
 		Style = _Value(Style.new(1, "Arial", "Light", Color3.new(0, 0.4, 0.7))),
-		OnClick = _Value(function(isSelected: boolean) end),
-		Text = _Value("Filter"),
-		IsInitiallySelected = _Value(false),
+		OnClick = _Value(function() end),
+		Text = _Value("Chip"),
+		Icon = _Value(nil),
 		IsEnabled = _Value(nil),
 		Elevation = _Value(nil),
 	}
@@ -74,27 +71,27 @@ function Interface.primary(): StyledFilterWrapper
 		definition.Style,
 		definition.OnClick,
 		definition.Text,
-		definition.IsInitiallySelected,
+		definition.Icon,
 		definition.IsEnabled,
 		definition.Elevation
 	)
 	maid:GiveTask(inst.Destroying:Connect(function()
 		maid:Destroy()
 	end))
-	local wrapper, cleanUp = Translators.ColdFusion.toWrapper("StyledFilter", inst, definition)
+	local wrapper, cleanUp = Translators.ColdFusion.toWrapper("StyledAssist", inst, definition)
 	maid:GiveTask(cleanUp)
 	return wrapper
 end
 
-function Interface.secondary(): StyledFilterWrapper
+function Interface.secondary(): StyledAssistWrapper
 	local maid = Maid.new()
 	local _fuse = ColdFusion.fuse(maid)
 	local _Value = _fuse.Value
 	local definition = {
 		Style = _Value(Style.new(1, "Arial", "Light", Color3.new(0, 0.4, 0.7))),
-		OnClick = _Value(function(isSelected: boolean) end),
-		Text = _Value("Filter"),
-		IsInitiallySelected = _Value(false),
+		OnClick = _Value(function() end),
+		Text = _Value("Chip"),
+		Icon = _Value(nil),
 		IsEnabled = _Value(nil),
 		Elevation = _Value(nil),
 	}
@@ -102,27 +99,27 @@ function Interface.secondary(): StyledFilterWrapper
 		definition.Style,
 		definition.OnClick,
 		definition.Text,
-		definition.IsInitiallySelected,
+		definition.Icon,
 		definition.IsEnabled,
 		definition.Elevation
 	)
 	maid:GiveTask(inst.Destroying:Connect(function()
 		maid:Destroy()
 	end))
-	local wrapper, cleanUp = Translators.ColdFusion.toWrapper("StyledFilter", inst, definition)
+	local wrapper, cleanUp = Translators.ColdFusion.toWrapper("StyledAssist", inst, definition)
 	maid:GiveTask(cleanUp)
 	return wrapper
 end
 
-function Interface.tertiary(): StyledFilterWrapper
+function Interface.tertiary(): StyledAssistWrapper
 	local maid = Maid.new()
 	local _fuse = ColdFusion.fuse(maid)
 	local _Value = _fuse.Value
 	local definition = {
 		Style = _Value(Style.new(1, "Arial", "Light", Color3.new(0, 0.4, 0.7))),
-		OnClick = _Value(function(isSelected: boolean) end),
-		Text = _Value("Filter"),
-		IsInitiallySelected = _Value(false),
+		OnClick = _Value(function() end),
+		Text = _Value("Chip"),
+		Icon = _Value(nil),
 		IsEnabled = _Value(nil),
 		Elevation = _Value(nil),
 	}
@@ -130,14 +127,14 @@ function Interface.tertiary(): StyledFilterWrapper
 		definition.Style,
 		definition.OnClick,
 		definition.Text,
-		definition.IsInitiallySelected,
+		definition.Icon,
 		definition.IsEnabled,
 		definition.Elevation
 	)
 	maid:GiveTask(inst.Destroying:Connect(function()
 		maid:Destroy()
 	end))
-	local wrapper, cleanUp = Translators.ColdFusion.toWrapper("StyledFilter", inst, definition)
+	local wrapper, cleanUp = Translators.ColdFusion.toWrapper("StyledAssist", inst, definition)
 	maid:GiveTask(cleanUp)
 	return wrapper
 end

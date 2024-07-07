@@ -6,7 +6,6 @@ local _Packages = _Package.Parent
 -- Packages
 local Maid = require(_Packages:WaitForChild("Maid"))
 local ColdFusion = require(_Packages:WaitForChild("ColdFusion"))
-local MaterialIcons = require(_Packages:WaitForChild("MaterialIcons"))
 
 -- Modules
 local Types = require(_Package:WaitForChild("Types"))
@@ -23,17 +22,16 @@ type RenderData = Types.RenderData
 type Style = Style.Style
 type ImageData = Types.ImageData
 type FontData = Types.FontData
-
 -- Constants
 local DEFAULTS = require(script.Parent:WaitForChild("Defaults"))
 -- Variables
 -- References
-local Icons = MaterialIcons.default.dp_48.scale_1
 
 -- Private Functions
 
 -- Class
 local Interface = {}
+
 Interface = {}
 
 function newThemedComponent(
@@ -41,14 +39,11 @@ function newThemedComponent(
 	style: CanBeState<Style>,
 	textColor: Enums.ColorRoleType,
 	disabledTextColor: Enums.ColorRoleType,
-	fillTextColor: Enums.ColorRoleType,
-	disabledFillTextColor: Enums.ColorRoleType,
-	disabledFillColor: Enums.ColorRoleType,
-	onClick: CanBeState<(isSelected: boolean) -> ()>,
-	isInitiallySelected: CanBeState<boolean>,
+	onClick: CanBeState<() -> ()>,
 	text: CanBeState<string>,
-	isEnabled: CanBeState<boolean?>,
-	elevation: CanBeState<number?>
+	icon: CanBeState<ImageData?>,
+	elevation: CanBeState<number?>,
+	isEnabled: CanBeState<boolean?>
 ): GuiObject
 	local maid = Maid.new()
 
@@ -66,22 +61,13 @@ function newThemedComponent(
 
 	local out = Interface.new(
 		_import(onClick, themeDefaults.ON_CLICK),
-		_import(isInitiallySelected, themeDefaults.IS_INITIALLY_SELECTED),
 		_import(text, themeDefaults.TEXT),
+		_import(icon, themeDefaults.ICON),
 		_Computed(function(s: Style): Color3
 			return s:GetColor(textColor)
 		end, styleState),
 		_Computed(function(s: Style): Color3
 			return s:GetColor(disabledTextColor)
-		end, styleState),
-		_Computed(function(s: Style): Color3
-			return s:GetColor(fillTextColor)
-		end, styleState),
-		_Computed(function(s: Style): Color3
-			return s:GetColor(disabledFillTextColor)
-		end, styleState),
-		_Computed(function(s: Style): Color3
-			return s:GetColor(disabledFillColor)
 		end, styleState),
 		_import(isEnabled, themeDefaults.IS_ENABLED),
 		_import(elevation, themeDefaults.ELEVATION),
@@ -105,85 +91,73 @@ end
 
 function Interface.primary(
 	style: CanBeState<Style>,
-	onClick: CanBeState<(isSelected: boolean) -> ()>,
+	onClick: CanBeState<() -> ()>,
 	text: CanBeState<string>,
-	isInitiallySelected: CanBeState<boolean>,
-	isEnabled: CanBeState<boolean?>,
-	elevation: CanBeState<number?>
+	icon: CanBeState<ImageData?>,
+	elevation: CanBeState<number?>,
+	isEnabled: CanBeState<boolean?>
 ): GuiObject
 	return newThemedComponent(
 		DEFAULTS.PRIMARY,
 		style,
 		Enums.ColorRoleType.Primary,
-		Enums.ColorRoleType.OnSurface,
-		Enums.ColorRoleType.OnPrimary,
-		Enums.ColorRoleType.OnSurfaceVariant,
-		Enums.ColorRoleType.SurfaceVariant,
+		Enums.ColorRoleType.Surface,
 		onClick,
-		isInitiallySelected,
 		text,
-		isEnabled,
-		elevation
+		icon,
+		elevation,
+		isEnabled
 	)
 end
 
 function Interface.secondary(
 	style: CanBeState<Style>,
-	onClick: CanBeState<(isSelected: boolean) -> ()>,
+	onClick: CanBeState<() -> ()>,
 	text: CanBeState<string>,
-	isInitiallySelected: CanBeState<boolean>,
-	isEnabled: CanBeState<boolean?>,
-	elevation: CanBeState<number?>
+	icon: CanBeState<ImageData?>,
+	elevation: CanBeState<number?>,
+	isEnabled: CanBeState<boolean?>
 ): GuiObject
 	return newThemedComponent(
 		DEFAULTS.SECONDARY,
 		style,
 		Enums.ColorRoleType.Secondary,
-		Enums.ColorRoleType.OnSurface,
-		Enums.ColorRoleType.OnSecondary,
-		Enums.ColorRoleType.OnSurfaceVariant,
-		Enums.ColorRoleType.SurfaceVariant,
+		Enums.ColorRoleType.Surface,
 		onClick,
-		isInitiallySelected,
 		text,
-		isEnabled,
-		elevation
+		icon,
+		elevation,
+		isEnabled
 	)
 end
 
 function Interface.tertiary(
 	style: CanBeState<Style>,
-	onClick: CanBeState<(isSelected: boolean) -> ()>,
+	onClick: CanBeState<() -> ()>,
 	text: CanBeState<string>,
-	isInitiallySelected: CanBeState<boolean>,
-	isEnabled: CanBeState<boolean?>,
-	elevation: CanBeState<number?>
+	icon: CanBeState<ImageData?>,
+	elevation: CanBeState<number?>,
+	isEnabled: CanBeState<boolean?>
 ): GuiObject
 	return newThemedComponent(
 		DEFAULTS.TERTIARY,
 		style,
 		Enums.ColorRoleType.Tertiary,
-		Enums.ColorRoleType.OnSurface,
-		Enums.ColorRoleType.OnTertiary,
-		Enums.ColorRoleType.OnSurfaceVariant,
-		Enums.ColorRoleType.SurfaceVariant,
+		Enums.ColorRoleType.Surface,
 		onClick,
-		isInitiallySelected,
 		text,
-		isEnabled,
-		elevation
+		icon,
+		elevation,
+		isEnabled
 	)
 end
 
 function Interface.new(
-	onClick: CanBeState<(isSelected: boolean) -> ()>,
-	isInitiallySelected: CanBeState<boolean>,
+	onClick: CanBeState<() -> ()>,
 	text: CanBeState<string>,
+	icon: CanBeState<ImageData?>,
 	textColor: CanBeState<Color3>,
 	disabledTextColor: CanBeState<Color3>,
-	fillTextColor: CanBeState<Color3>,
-	disabledFillTextColor: CanBeState<Color3>,
-	disabledFillColor: CanBeState<Color3>,
 	isEnabled: CanBeState<boolean>,
 	elevation: CanBeState<number>,
 	schemeType: CanBeState<Enums.SchemeType>,
@@ -202,31 +176,27 @@ function Interface.new(
 	local _Value = _fuse.Value
 	local _Computed = _fuse.Computed
 
-	local isInitiallySelectedState = _import(isInitiallySelected, DEFAULTS.NEW.IS_INITIALLY_SELECTED)
-	local isSelectedState = _Value(isInitiallySelectedState:Get())
 	local onClickState = _import(onClick, DEFAULTS.NEW.ON_CLICK)
 	local button = Base.new(
 		function(isSelected: boolean)
 			local click = onClickState:Get()
-			isSelectedState:Set(isSelected)
-			click(isSelected)
+			click()
 		end,
-		isInitiallySelectedState,
+		false,
 		_import(text, DEFAULTS.NEW.TEXT),
-		_Computed(function(isSel: boolean): ImageData?
-			return if isSel then Icons.check else nil
-		end, isSelectedState),
+		_import(icon, DEFAULTS.NEW.ICON),
 		_import(scale, DEFAULTS.NEW.SCALE),
 		_import(fontData, DEFAULTS.NEW.FONT_DATA),
 		_import(schemeType, DEFAULTS.NEW.SCHEME_TYPE),
 		_import(textColor, DEFAULTS.NEW.TEXT_COLOR),
 		_import(disabledTextColor, DEFAULTS.NEW.DISABLED_TEXT_COLOR),
-		_import(fillTextColor, DEFAULTS.NEW.FILL_TEXT_COLOR),
-		_import(disabledFillTextColor, DEFAULTS.NEW.DISABLED_FILL_TEXT_COLOR),
 		_import(textColor, DEFAULTS.NEW.TEXT_COLOR),
-		_import(disabledFillColor, DEFAULTS.NEW.DISABLED_FILL_COLOR),
+		_import(disabledTextColor, DEFAULTS.NEW.DISABLED_TEXT_COLOR),
+		_import(textColor, DEFAULTS.NEW.TEXT_COLOR),
+		_import(disabledTextColor, DEFAULTS.NEW.DISABLED_TEXT_COLOR),
 		_import(isEnabled, DEFAULTS.NEW.IS_ENABLED),
-		_import(elevation, DEFAULTS.NEW.ELEVATION)
+		_import(elevation, DEFAULTS.NEW.ELEVATION),
+		true
 	)
 
 	maid:GiveTask(button.Destroying:Connect(function()

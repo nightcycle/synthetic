@@ -33,14 +33,11 @@ type FusionCanBeState<V> = Translators.FusionCanBeState<V>
 local Interface = {}
 
 function Interface.new(
-	onClick: FusionCanBeState<(isSelected: boolean) -> ()>,
-	isInitiallySelected: FusionCanBeState<boolean>,
+	onClick: FusionCanBeState<() -> ()>,
 	text: FusionCanBeState<string>,
+	icon: FusionCanBeState<ImageData?>,
 	textColor: FusionCanBeState<Color3>,
 	disabledTextColor: FusionCanBeState<Color3>,
-	fillTextColor: FusionCanBeState<Color3>,
-	disabledFillTextColor: FusionCanBeState<Color3>,
-	disabledFillColor: FusionCanBeState<Color3>,
 	isEnabled: FusionCanBeState<boolean>,
 	elevation: FusionCanBeState<number>,
 	schemeType: FusionCanBeState<Enums.SchemeType>,
@@ -54,13 +51,10 @@ function Interface.new(
 	end
 	local inst = Source.new(
 		convert(onClick),
-		convert(isInitiallySelected),
 		convert(text),
+		convert(icon),
 		convert(textColor),
 		convert(disabledTextColor),
-		convert(fillTextColor),
-		convert(disabledFillTextColor),
-		convert(disabledFillColor),
 		convert(isEnabled),
 		convert(elevation),
 		convert(schemeType),
@@ -75,9 +69,9 @@ end
 
 function Interface.primary(
 	style: FusionCanBeState<Style>,
-	onClick: FusionCanBeState<(isSelected: boolean) -> ()>,
+	onClick: FusionCanBeState<() -> ()>,
 	text: FusionCanBeState<string>,
-	isInitiallySelected: FusionCanBeState<boolean>,
+	icon: FusionCanBeState<ImageData?>,
 	isEnabled: FusionCanBeState<boolean?>,
 	elevation: FusionCanBeState<number?>
 ): GuiObject
@@ -90,7 +84,7 @@ function Interface.primary(
 		convert(style),
 		convert(onClick),
 		convert(text),
-		convert(isInitiallySelected),
+		convert(icon),
 		convert(isEnabled),
 		convert(elevation)
 	)
@@ -102,9 +96,9 @@ end
 
 function Interface.secondary(
 	style: FusionCanBeState<Style>,
-	onClick: FusionCanBeState<(isSelected: boolean) -> ()>,
+	onClick: FusionCanBeState<() -> ()>,
 	text: FusionCanBeState<string>,
-	isInitiallySelected: FusionCanBeState<boolean>,
+	icon: FusionCanBeState<ImageData?>,
 	isEnabled: FusionCanBeState<boolean?>,
 	elevation: FusionCanBeState<number?>
 ): GuiObject
@@ -117,7 +111,7 @@ function Interface.secondary(
 		convert(style),
 		convert(onClick),
 		convert(text),
-		convert(isInitiallySelected),
+		convert(icon),
 		convert(isEnabled),
 		convert(elevation)
 	)
@@ -129,9 +123,9 @@ end
 
 function Interface.tertiary(
 	style: FusionCanBeState<Style>,
-	onClick: FusionCanBeState<(isSelected: boolean) -> ()>,
+	onClick: FusionCanBeState<() -> ()>,
 	text: FusionCanBeState<string>,
-	isInitiallySelected: FusionCanBeState<boolean>,
+	icon: FusionCanBeState<ImageData?>,
 	isEnabled: FusionCanBeState<boolean?>,
 	elevation: FusionCanBeState<number?>
 ): GuiObject
@@ -144,7 +138,7 @@ function Interface.tertiary(
 		convert(style),
 		convert(onClick),
 		convert(text),
-		convert(isInitiallySelected),
+		convert(icon),
 		convert(isEnabled),
 		convert(elevation)
 	)
