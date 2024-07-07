@@ -16,6 +16,8 @@ local Enums = require(_Package:WaitForChild("Enums"))
 type Maid = Maid.Maid
 type Style = Style.Style
 type FontData = Types.FontData
+type OptionData = Types.OptionData
+type ButtonData = Types.ButtonData
 type ImageData = Types.ImageData
 type CanBeState<V> = ColdFusion.CanBeState<V>
 
