@@ -19,6 +19,7 @@ local Source = require(script.Parent:WaitForChild("ColdFusion"))
 type Maid = Maid.Maid
 type Style = Style.Style
 type FontData = Types.FontData
+type ImageData = Types.ImageData
 type CanBeState<V> = ColdFusion.CanBeState<V>
 type FusionCanBeState<V> = Translators.FusionCanBeState<V>
 

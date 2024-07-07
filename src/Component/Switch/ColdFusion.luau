@@ -92,14 +92,14 @@ function newThemedComponent(
 	local _Value = _fuse.Value
 	local _Computed = _fuse.Computed
 
-	local styleState: State<Style> = _import(style, nil :: any)
+	local styleState: State<Style> = _import(style, themeDefaults.STYLE)
 
 	local out = Interface.new(
 		onSelect,
 		initialSelection,
-		_import(isEnabled, true),
-		_import(includeIconOnSelected, true),
-		_import(includeIconOnDeselected, true),
+		_import(isEnabled, themeDefaults.IS_ENABLED),
+		_import(includeIconOnSelected, themeDefaults.INCLUDE_ICON_ON_SELECTED),
+		_import(includeIconOnDeselected, themeDefaults.INCLUDE_ICON_ON_DESELECTED),
 		_Computed(function(s: Style): Color3
 			return s:GetColor(backgroundColor)
 		end, styleState),
@@ -121,7 +121,7 @@ function newThemedComponent(
 		_Computed(function(s: Style): Color3
 			return s:GetColor(onDisabledColor)
 		end, styleState),
-		_import(elevation, 0),
+		_import(elevation, themeDefaults.ELEVATION),
 		_Computed(function(s: Style): any
 			return s.SchemeType
 		end, styleState),

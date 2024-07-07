@@ -16,6 +16,7 @@ local Enums = require(_Package:WaitForChild("Enums"))
 type Maid = Maid.Maid
 type Style = Style.Style
 type FontData = Types.FontData
+type ImageData = Types.ImageData
 type CanBeState<V> = ColdFusion.CanBeState<V>
 
 return {
@@ -38,6 +39,8 @@ return {
 		SCALE = 1,
 	},
 	PRIMARY = {
+		STYLE = Style.new(1, "Arial", "Light", Color3.new(0, 0.4, 0.7)),
+		ON_SELECT = function(isSelected: boolean) end,
 		INITIAL_SELECTION = false,
 		INCLUDE_ICON_ON_SELECTED = true,
 		INCLUDE_ICON_ON_DESELECTED = true,
@@ -45,6 +48,8 @@ return {
 		IS_ENABLED = true,
 	},
 	SECONDARY = {
+		STYLE = Style.new(1, "Arial", "Light", Color3.new(0, 0.4, 0.7)),
+		ON_SELECT = function(isSelected: boolean) end,
 		INITIAL_SELECTION = false,
 		INCLUDE_ICON_ON_SELECTED = true,
 		INCLUDE_ICON_ON_DESELECTED = true,
@@ -52,6 +57,8 @@ return {
 		IS_ENABLED = true,
 	},
 	TERTIARY = {
+		STYLE = Style.new(1, "Arial", "Light", Color3.new(0, 0.4, 0.7)),
+		ON_SELECT = function(isSelected: boolean) end,
 		INITIAL_SELECTION = false,
 		INCLUDE_ICON_ON_SELECTED = true,
 		INCLUDE_ICON_ON_DESELECTED = true,

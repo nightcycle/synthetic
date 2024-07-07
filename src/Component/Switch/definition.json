@@ -3,6 +3,7 @@
 		"names": [
 			"new"
 		],
+		"key": "",
 		"parameters": [
 			{
 				"name": "onSelect",
@@ -92,16 +93,17 @@
 			"secondary",
 			"tertiary"
 		],
+		"key": "styled",
 		"parameters": [
 			{
 				"name": "style",
 				"type": "Style",
-				"default": ""
+				"default": "Style.new(1, \"Arial\", \"Light\", Color3.new(0, 0.4, 0.7))"
 			},
 			{
 				"name": "onSelect",
 				"type": "(isSelected: boolean) -> ()",
-				"default": ""
+				"default": "function(isSelected: boolean) end"
 			},
 			{
 				"name": "initialSelection",

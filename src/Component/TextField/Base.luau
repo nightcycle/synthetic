@@ -400,13 +400,13 @@ function Interface.new(
 						end
 						textBox:CaptureFocus()
 					end,
-					MouseButton1Down = function(x: number, y: number)
+					MouseButton1Down = function()
 						if isEnabledState:Get() == false then
 							return
 						end
 						isPressedState:Set(true)
 					end,
-					MouseButton1Up = function(x: number, y: number)
+					MouseButton1Up = function()
 						if isEnabledState:Get() == false then
 							return
 						end

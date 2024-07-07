@@ -5,7 +5,6 @@ local _Packages = _Package.Parent
 -- Services
 -- Packages
 local ColdFusion = require(_Packages:WaitForChild("ColdFusion"))
-local Roact = require(_Packages:WaitForChild("Roact"))
 local Fusion = require(_Packages:WaitForChild("Fusion"))
 local Maid = require(_Packages:WaitForChild("Maid"))
 -- Modules
