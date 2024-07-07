@@ -1,5 +1,5 @@
 --!strict
-local _Package = script.Parent.Parent.Parent
+local _Package = script.Parent.Parent.Parent.Parent
 local _Packages = _Package.Parent
 -- Services
 local SoundService = game:GetService("SoundService")
@@ -314,13 +314,13 @@ function Interface.ColdFusion.new(
 
 				click()
 			end,
-			MouseButton1Down = function(x: number, y: number)
+			MouseButton1Down = function()
 				if isEnabledState:Get() == false then
 					return
 				end
 				isPressedState:Set(true)
 			end,
-			MouseButton1Up = function(x: number, y: number)
+			MouseButton1Up = function()
 				if isEnabledState:Get() == false then
 					return
 				end
