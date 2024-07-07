@@ -27,6 +27,7 @@ type FontData = Types.FontData
 
 -- Constants
 local DEFAULTS = require(script.Parent:WaitForChild("Defaults"))
+
 -- Variables
 -- References
 -- Private Functions
@@ -38,7 +39,9 @@ local Interface = {}
 function newThemedComponent(
 	themeDefaults: typeof(DEFAULTS.PRIMARY),
 	textColor: Enums.ColorRoleType,
+	surfaceColor: Enums.ColorRoleType,
 	disabledTextColor: Enums.ColorRoleType,
+	disabledSurfaceColor: Enums.ColorRoleType,
 	onClick: CanBeState<() -> ()>,
 	text: CanBeState<string>,
 	icon: CanBeState<ImageData?>,
@@ -68,7 +71,13 @@ function newThemedComponent(
 			return s:GetColor(textColor)
 		end, styleState),
 		_Computed(function(s: Style): Color3
+			return s:GetColor(surfaceColor)
+		end, styleState),
+		_Computed(function(s: Style): Color3
 			return s:GetColor(disabledTextColor)
+		end, styleState),
+		_Computed(function(s: Style): Color3
+			return s:GetColor(disabledSurfaceColor)
 		end, styleState),
 		_import(isEnabled, themeDefaults.IS_ENABLED),
 		_import(elevation, themeDefaults.ELEVATION),
@@ -90,8 +99,6 @@ function newThemedComponent(
 	return out
 end
 
-Interface = {}
-
 function Interface.primary(
 	style: CanBeState<Style>,
 	onClick: CanBeState<() -> ()>,
@@ -103,7 +110,9 @@ function Interface.primary(
 	return newThemedComponent(
 		DEFAULTS.PRIMARY,
 		Enums.ColorRoleType.OnPrimary,
+		Enums.ColorRoleType.Primary,
 		Enums.ColorRoleType.OnSurfaceVariant,
+		Enums.ColorRoleType.SurfaceVariant,
 		onClick,
 		text,
 		icon,
@@ -124,7 +133,9 @@ function Interface.secondary(
 	return newThemedComponent(
 		DEFAULTS.SECONDARY,
 		Enums.ColorRoleType.OnSecondary,
+		Enums.ColorRoleType.Secondary,
 		Enums.ColorRoleType.OnSurfaceVariant,
+		Enums.ColorRoleType.SurfaceVariant,
 		onClick,
 		text,
 		icon,
@@ -145,7 +156,9 @@ function Interface.tertiary(
 	return newThemedComponent(
 		DEFAULTS.TERTIARY,
 		Enums.ColorRoleType.OnTertiary,
+		Enums.ColorRoleType.Tertiary,
 		Enums.ColorRoleType.OnSurfaceVariant,
+		Enums.ColorRoleType.SurfaceVariant,
 		onClick,
 		text,
 		icon,
@@ -166,7 +179,9 @@ function Interface.primaryContainer(
 	return newThemedComponent(
 		DEFAULTS.PRIMARY_CONTAINER,
 		Enums.ColorRoleType.OnPrimaryContainer,
+		Enums.ColorRoleType.PrimaryContainer,
 		Enums.ColorRoleType.OnSecondaryContainer,
+		Enums.ColorRoleType.SurfaceContainer,
 		onClick,
 		text,
 		icon,
@@ -187,7 +202,9 @@ function Interface.secondaryContainer(
 	return newThemedComponent(
 		DEFAULTS.SECONDARY_CONTAINER,
 		Enums.ColorRoleType.OnSecondaryContainer,
+		Enums.ColorRoleType.SecondaryContainer,
 		Enums.ColorRoleType.OnSecondaryContainer,
+		Enums.ColorRoleType.SurfaceContainer,
 		onClick,
 		text,
 		icon,
@@ -208,7 +225,9 @@ function Interface.tertiaryContainer(
 	return newThemedComponent(
 		DEFAULTS.TERTIARY_CONTAINER,
 		Enums.ColorRoleType.OnTertiaryContainer,
+		Enums.ColorRoleType.TertiaryContainer,
 		Enums.ColorRoleType.OnSecondaryContainer,
+		Enums.ColorRoleType.SurfaceContainer,
 		onClick,
 		text,
 		icon,
@@ -223,7 +242,9 @@ function Interface.new(
 	text: CanBeState<string>,
 	icon: CanBeState<ImageData?>,
 	textColor: CanBeState<Color3>,
+	surfaceColor: CanBeState<Color3>,
 	disabledTextColor: CanBeState<Color3>,
+	disabledSurfaceColor: CanBeState<Color3>,
 	isEnabled: CanBeState<boolean>,
 	elevation: CanBeState<number>,
 	schemeType: CanBeState<Enums.SchemeType>,
@@ -248,11 +269,10 @@ function Interface.new(
 	local elevationState: State<number> = _import(elevation, DEFAULTS.NEW.ELEVATION)
 
 	local textColorState: State<Color3> = _import(textColor, DEFAULTS.NEW.TEXT_COLOR)
-	local hoverColorState: State<Color3> = _import(textColor, DEFAULTS.NEW.TEXT_COLOR)
+	local surfaceColorState: State<Color3> = _import(surfaceColor, DEFAULTS.NEW.SURFACE_COLOR)
 
 	local disabledTextColorState: State<Color3> = _import(disabledTextColor, DEFAULTS.NEW.DISABLED_TEXT_COLOR)
-	local disabledHoverColorState: State<Color3> =
-		_import(disabledTextColor, DEFAULTS.NEW.DISABLED_TEXT_COLOR)
+	local disabledSurfaceColorState: State<Color3> = _import(disabledSurfaceColor, DEFAULTS.NEW.DISABLED_SURFACE_COLOR)
 
 	local iconState: State<ImageData?> = _import(icon, DEFAULTS.NEW.ICON)
 
@@ -278,7 +298,7 @@ function Interface.new(
 					[Enums.ButtonStateType.Enabled] = Types.newRenderData(
 						sc,
 						Types.newAppearanceData(Theme.getElevatedColor(sC, e, st), 1),
-						Types.newAppearanceData(Theme.getElevatedColor(sC, e, st), 1),
+						Types.newAppearanceData(Theme.getElevatedColor(sC, e, st), 0),
 						Types.newAppearanceData(Theme.getElevatedColor(tC, e, st), 0),
 						f,
 						i,
@@ -288,8 +308,8 @@ function Interface.new(
 					[Enums.ButtonStateType.Disabled] = Types.newRenderData(
 						sc,
 						Types.newAppearanceData(Theme.getElevatedColor(dSC, e, st), 1),
-						Types.newAppearanceData(Theme.getElevatedColor(dSC, e, st), 1),
-						Types.newAppearanceData(Theme.getElevatedColor(dTC, e, st), 1 - 0.38),
+						Types.newAppearanceData(Theme.getElevatedColor(dSC, e, st), 0.12),
+						Types.newAppearanceData(Theme.getElevatedColor(dTC, e, st), 0.12),
 						f,
 						i,
 						nil,
@@ -297,9 +317,9 @@ function Interface.new(
 					),
 					[Enums.ButtonStateType.Hovered] = Types.newRenderData(
 						sc,
-						Types.newAppearanceData(Theme.getElevatedColor(sC, e, st), 0),
-						Types.newAppearanceData(Theme.getElevatedColor(sC, e + 1, st), 1 - 0.08),
-						Types.newAppearanceData(Theme.getElevatedColor(tC, e + 1, st), 0),
+						Types.newAppearanceData(Theme.getElevatedColor(sC, e, st), 1),
+						Types.newAppearanceData(Theme.getElevatedColor(sC, e + 1, st), 0.08),
+						Types.newAppearanceData(Theme.getElevatedColor(tC, e + 1, st), 0.08),
 						f,
 						i,
 						nil,
@@ -307,9 +327,9 @@ function Interface.new(
 					),
 					[Enums.ButtonStateType.Focused] = Types.newRenderData(
 						sc,
-						Types.newAppearanceData(Theme.getElevatedColor(sC, e, st), 0),
-						Types.newAppearanceData(Theme.getElevatedColor(sC, e, st), 1 - 0.1),
-						Types.newAppearanceData(Theme.getElevatedColor(tC, e, st), 0),
+						Types.newAppearanceData(Theme.getElevatedColor(sC, e, st), 1),
+						Types.newAppearanceData(Theme.getElevatedColor(sC, e, st), 0.1),
+						Types.newAppearanceData(Theme.getElevatedColor(tC, e, st), 0.1),
 						f,
 						i,
 						nil,
@@ -318,11 +338,11 @@ function Interface.new(
 					[Enums.ButtonStateType.Pressed] = Types.newRenderData(
 						sc,
 						Types.newAppearanceData(Theme.getElevatedColor(sC, e, st), 1),
-						Types.newAppearanceData(Theme.getElevatedColor(sC, e - 1, st), 1 - 0.1),
-						Types.newAppearanceData(Theme.getElevatedColor(tC, e - 1, st), 0),
+						Types.newAppearanceData(Theme.getElevatedColor(sC, e - 1, st), 0.1),
+						Types.newAppearanceData(Theme.getElevatedColor(tC, e - 1, st), 0.1),
 						f,
 						i,
-						Types.newSoundData(Sounds.Library[Enums.SoundType.ui_tap_variant_01], 1),
+						Types.newSoundData(Sounds.Library[Enums.SoundType.ui_tap_variant_01], 0),
 						nil
 					),
 				}
@@ -332,15 +352,15 @@ function Interface.new(
 			fontDataState,
 			elevationState,
 			textColorState,
-			hoverColorState,
+			surfaceColorState,
 			disabledTextColorState,
-			disabledHoverColorState,
+			disabledSurfaceColorState,
 			iconState
 		),
 		nil,
 		nil,
 		nil,
-		nil
+		true
 	)
 	maid:GiveTask(button.Destroying:Connect(function()
 		maid:Destroy()

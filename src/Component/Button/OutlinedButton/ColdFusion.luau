@@ -256,9 +256,9 @@ function Interface.new(
 
 	local button = Base.new(
 		maid,
-		onClick,
-		text,
-		if isEnabled == nil then true else isEnabled,
+		_import(onClick, DEFAULTS.NEW.ON_CLICK),
+		_import(text, DEFAULTS.NEW.TEXT),
+		_import(isEnabled, DEFAULTS.NEW.IS_ENABLED),
 		_Computed(
 			function(
 				st: Enums.SchemeType,

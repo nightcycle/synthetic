@@ -265,9 +265,9 @@ function Interface.ColdFusion.new(
 
 	local button = Base.new(
 		maid,
-		onClick,
+		_import(onClick, DEFAULTS.NEW.ON_CLICK),
 		"",
-		if isEnabled == nil then true else isEnabled,
+		_import(isEnabled, DEFAULTS.NEW.IS_ENABLED),
 		_Computed(
 			function(
 				st: Enums.SchemeType,
