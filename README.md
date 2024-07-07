@@ -6,8 +6,8 @@ A UI component framework for Roblox Front-End development with the goal of compi
 # Compatability
 Beyond a basic wrapper interface for those without a specific UI framework, compatability will also also covered for the following libraries:
 - [Cold-Fusion](https://github.com/nightcycle/cold-fusion): DONE
-- Vanilla / Wrapper: DOING
-- [Fusion](https://github.com/dphfox/Fusion): DOING
+- Vanilla / Wrapper: DONE
+- [Fusion](https://github.com/dphfox/Fusion): DONE
 - [Roact](https://github.com/Roblox/roact/): TO-DO
 
 # To-Do
