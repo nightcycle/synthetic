@@ -255,7 +255,7 @@ typography:Apply(
 
 # Components
 ## Buttons
-- [Badge](./src/Component/Button/Badge/README.md)
+- [Badge](./src/Component/Button/Badge)
 
 ### Common
 - [Elevated](https://m3.material.io/components/buttons/overview)
