@@ -33,15 +33,19 @@ class FunctionDefinition(TypedDict):
 class ComponentDefinition:
 	path: str
 	name: str
+	display_name: str
+	description: str
 	functions: list[FunctionDefinition]
 
 	# add constructor
 	def __init__(self, path: str):
-		self.path = os.path.dirname(path)
-		self.name = os.path.basename(self.path)
-
 		with open(path, "r") as file:
-			self.functions = json.load(file)
+			data = json.load(file)
+			self.path = os.path.dirname(path)
+			self.name = os.path.basename(self.path)
+			self.display_name = data["name"]
+			self.description = data["description"]
+			self.functions = data["functions"]
 
 	def get_header(self, include_source=True, include_translators=True) -> str:
 		# get number of steps in the path
@@ -263,7 +267,6 @@ type CanBeState<V> = ColdFusion.CanBeState<V>"""
 		self.write_fusion()
 		self.write_wrapper()
 		self.write_init()
-		os.system(f"stylua {self.path}")
 
 # iterate through tree under directory SRC_DIR_PATH, looking for files named "definition.json", then print the path
 component_definitions: list[ComponentDefinition] = []
@@ -272,10 +275,6 @@ for root, dirs, files in os.walk(SRC_DIR_PATH):
 	for file in files:
 		if file == "definition.json":
 			component_definitions.append(ComponentDefinition(os.path.join(root, file)))
-		# elif file == "cfusion-theme.story.luau":
-		# 	os.rename(os.path.join(root, file), os.path.join(root, "_Theme.story.luau"))
-		# elif file == "cfusion.story.luau":
-		# 	os.rename(os.path.join(root, file), os.path.join(root, "_Config.story.luau"))
 
 
 for definition in component_definitions:
@@ -288,6 +287,3 @@ for definition in component_definitions:
 	print(definition.path)
 	definition.write_all()
 
-# os.system("sh scripts/workspace/wally-install.sh")
-time.sleep(3)
-os.system(f"rojo sourcemap dev.project.json --output sourcemap.json")

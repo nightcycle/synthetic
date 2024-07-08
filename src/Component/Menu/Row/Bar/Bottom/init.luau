@@ -50,8 +50,7 @@ function newThemedComponent(
 	fabColor: Enums.ColorRoleType,
 	fabIconColor: Enums.ColorRoleType,
 
-	buttons: CanBeState<{
-		ButtonData}>,
+	buttons: CanBeState<{ ButtonData }>,
 	fab: CanBeState<ButtonData?>,
 	elevation: CanBeState<number?>
 ): GuiObject
@@ -110,8 +109,7 @@ Interface.ColdFusion = {}
 
 function Interface.ColdFusion.primary(
 	style: CanBeState<Style>,
-	buttons: CanBeState<{
-		ButtonData}>,
+	buttons: CanBeState<{ ButtonData }>,
 	fab: CanBeState<ButtonData?>,
 	elevation: CanBeState<number?>
 ): GuiObject
@@ -129,8 +127,7 @@ end
 
 function Interface.ColdFusion.secondary(
 	style: CanBeState<Style>,
-	buttons: CanBeState<{
-		ButtonData}>,
+	buttons: CanBeState<{ ButtonData }>,
 	fab: CanBeState<ButtonData?>,
 	elevation: CanBeState<number?>
 ): GuiObject
@@ -148,8 +145,7 @@ end
 
 function Interface.ColdFusion.tertiary(
 	style: CanBeState<Style>,
-	buttons: CanBeState<{
-		ButtonData}>,
+	buttons: CanBeState<{ ButtonData }>,
 	fab: CanBeState<ButtonData?>,
 	elevation: CanBeState<number?>
 ): GuiObject
@@ -166,8 +162,7 @@ function Interface.ColdFusion.tertiary(
 end
 
 function Interface.ColdFusion.new(
-	buttons: CanBeState<{
-		ButtonData}>,
+	buttons: CanBeState<{ ButtonData }>,
 	fab: CanBeState<ButtonData?>,
 	backgroundColor: CanBeState<Color3>,
 	iconColor: CanBeState<Color3>,
@@ -191,8 +186,7 @@ function Interface.ColdFusion.new(
 	local _Value = _fuse.Value
 	local _Computed = _fuse.Computed
 
-	local buttonsState: State<{
-		ButtonData}> = _import(buttons, {})
+	local buttonsState: State<{ ButtonData }> = _import(buttons, {})
 
 	local scaleState: State<number> = _import(scale, 1)
 	local schemeTypeState: State<Enums.SchemeType> = _import(schemeType, Enums.SchemeType.Light)

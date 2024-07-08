@@ -117,13 +117,9 @@ function newPanel(
 		currentTextState:Set(textBox.Text)
 	end))
 
-	local optionsState = _Computed(
-		function(solver: (input: string) -> { string }, txt: string): { string }
-			return solver(txt)
-		end,
-		optionSolverState,
-		currentTextState
-	)
+	local optionsState = _Computed(function(solver: (input: string) -> { string }, txt: string): { string }
+		return solver(txt)
+	end, optionSolverState, currentTextState)
 
 	maid:GiveTask(textBox.ReturnPressedFromOnScreenKeyboard:Connect(function()
 		onClick(textBox.Text)

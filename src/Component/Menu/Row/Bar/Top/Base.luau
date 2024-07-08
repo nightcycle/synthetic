@@ -50,8 +50,7 @@ local Interface = {}
 
 function Interface.new(
 	title: CanBeState<string>,
-	buttons: CanBeState<{
-		ButtonData}>,
+	buttons: CanBeState<{ ButtonData }>,
 	navigationButton: CanBeState<ButtonData?>,
 	variant: CanBeState<BarVariant>,
 	backgroundColor: CanBeState<Color3>,
@@ -75,8 +74,7 @@ function Interface.new(
 	local _Value = _fuse.Value
 	local _Computed = _fuse.Computed
 
-	local buttonsState: State<{
-		ButtonData}> = _import(buttons, {})
+	local buttonsState: State<{ ButtonData }> = _import(buttons, {})
 
 	local scaleState: State<number> = _import(scale, 1)
 	local schemeTypeState: State<Enums.SchemeType> = _import(schemeType, Enums.SchemeType.Light)

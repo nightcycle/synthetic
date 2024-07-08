@@ -20,7 +20,7 @@ export type Typography = {
 	Apply: (self: Typography, inst: TextInstance, fontType: Enums.FontType, scale: number?) -> (),
 	Get: (self: Typography, fontType: Enums.FontType) -> FontData,
 	Hash: (self: Typography) -> string,
-	new: (fonts: {[Enums.FontType]: FontData}) -> Typography,
+	new: (fonts: { [Enums.FontType]: FontData }) -> Typography,
 	fromFont: (font: Enum.Font) -> Typography,
 }
 -- Constants
@@ -97,7 +97,7 @@ function Typography:Hash(): string
 	return HashUtil.md5(fullMessage)
 end
 
-function Typography.new(fonts: {[Enums.FontType]: FontData}): Typography
+function Typography.new(fonts: { [Enums.FontType]: FontData }): Typography
 	local self: Typography = setmetatable({}, Typography) :: any
 	self._Fonts = table.freeze(table.clone(fonts))
 
@@ -106,7 +106,6 @@ function Typography.new(fonts: {[Enums.FontType]: FontData}): Typography
 end
 
 function Typography.fromFont(font: Enum.Font): Typography
-
 	if FontCache[font] then
 		return FontCache[font]
 	end
