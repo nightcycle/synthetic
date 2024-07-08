@@ -25,18 +25,30 @@ This function is a native constructor, with verbosity allowing for control over 
 
 **Vanilla**
 ```luau
+local onClick: () -> () = function() end
+local icon: ImageData = Types.ImageData.new("")
+local textColor: Color3 = Color3.new()
+local surfaceColor: Color3 = Color3.new()
+local disabledTextColor: Color3 = Color3.new()
+local disabledSurfaceColor: Color3 = Color3.new()
+local isEnabled: boolean = true
+local elevation: number = 0
+local schemeType: Enums.SchemeType = Enums.SchemeType.Light
+local fontData: FontData = Types.FontData.new(Font.fromEnum(Enum.Font.SourceSans), 14)
+local scale: number = 1
+
 local filledIconButton = Synthetic.Component.Button.FilledIconButton.Fusion.new()
-filledIconButton.OnClick = function() end :: () -> ()
-filledIconButton.Icon = Types.ImageData.new("") :: ImageData
-filledIconButton.TextColor = Color3.new() :: Color3
-filledIconButton.SurfaceColor = Color3.new() :: Color3
-filledIconButton.DisabledTextColor = Color3.new() :: Color3
-filledIconButton.DisabledSurfaceColor = Color3.new() :: Color3
-filledIconButton.IsEnabled = true :: boolean
-filledIconButton.Elevation = 0 :: number
-filledIconButton.SchemeType = Enums.SchemeType.Light :: Enums.SchemeType
-filledIconButton.FontData = Types.FontData.new(Font.fromEnum(Enum.Font.SourceSans), 14) :: FontData
-filledIconButton.Scale = 1 :: number
+filledIconButton.OnClick = onClick
+filledIconButton.Icon = icon
+filledIconButton.TextColor = textColor
+filledIconButton.SurfaceColor = surfaceColor
+filledIconButton.DisabledTextColor = disabledTextColor
+filledIconButton.DisabledSurfaceColor = disabledSurfaceColor
+filledIconButton.IsEnabled = isEnabled
+filledIconButton.Elevation = elevation
+filledIconButton.SchemeType = schemeType
+filledIconButton.FontData = fontData
+filledIconButton.Scale = scale
 ```
 
 **Fusion**
@@ -82,12 +94,18 @@ This function is a style constructor, utilizing the "Style" type to reduce the n
 
 **Vanilla**
 ```luau
+local style: Style = Style.new(1, Enum.Font.SourceSans, "Light", Color3.new(0, 0.4, 0.7))
+local onClick: () -> () = function() end
+local icon: ImageData = Types.ImageData.new("")
+local elevation: number = 0
+local isEnabled: boolean = true
+
 local filledIconButton = Synthetic.Component.Button.FilledIconButton.Fusion.primary()
-filledIconButton.Style = Style.new(1, Enum.Font.SourceSans, "Light", Color3.new(0, 0.4, 0.7)) :: Style
-filledIconButton.OnClick = function() end :: () -> ()
-filledIconButton.Icon = Types.ImageData.new("") :: ImageData
-filledIconButton.Elevation = 0 :: number
-filledIconButton.IsEnabled = true :: boolean
+filledIconButton.Style = style
+filledIconButton.OnClick = onClick
+filledIconButton.Icon = icon
+filledIconButton.Elevation = elevation
+filledIconButton.IsEnabled = isEnabled
 ```
 
 **Fusion**

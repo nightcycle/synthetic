@@ -23,16 +23,26 @@ This function is a native constructor, with verbosity allowing for control over 
 
 **Vanilla**
 ```luau
+local onClick: () -> () = function() end
+local icon: ImageData = Types.ImageData.new("")
+local textColor: Color3 = Color3.new()
+local disabledTextColor: Color3 = Color3.new()
+local isEnabled: boolean = true
+local elevation: number = 0
+local schemeType: Enums.SchemeType = Enums.SchemeType.Light
+local fontData: FontData = Types.FontData.new(Font.fromEnum(Enum.Font.SourceSans), 14)
+local scale: number = 1
+
 local outlinedIconButton = Synthetic.Component.Button.OutlinedIconButton.Fusion.new()
-outlinedIconButton.OnClick = function() end :: () -> ()
-outlinedIconButton.Icon = Types.ImageData.new("") :: ImageData
-outlinedIconButton.TextColor = Color3.new() :: Color3
-outlinedIconButton.DisabledTextColor = Color3.new() :: Color3
-outlinedIconButton.IsEnabled = true :: boolean
-outlinedIconButton.Elevation = 0 :: number
-outlinedIconButton.SchemeType = Enums.SchemeType.Light :: Enums.SchemeType
-outlinedIconButton.FontData = Types.FontData.new(Font.fromEnum(Enum.Font.SourceSans), 14) :: FontData
-outlinedIconButton.Scale = 1 :: number
+outlinedIconButton.OnClick = onClick
+outlinedIconButton.Icon = icon
+outlinedIconButton.TextColor = textColor
+outlinedIconButton.DisabledTextColor = disabledTextColor
+outlinedIconButton.IsEnabled = isEnabled
+outlinedIconButton.Elevation = elevation
+outlinedIconButton.SchemeType = schemeType
+outlinedIconButton.FontData = fontData
+outlinedIconButton.Scale = scale
 ```
 
 **Fusion**
@@ -74,12 +84,18 @@ This function is a style constructor, utilizing the "Style" type to reduce the n
 
 **Vanilla**
 ```luau
+local style: Style = Style.new(1, Enum.Font.SourceSans, "Light", Color3.new(0, 0.4, 0.7))
+local onClick: () -> () = function() end
+local icon: ImageData = Types.ImageData.new("")
+local elevation: number = 0
+local isEnabled: boolean = true
+
 local outlinedIconButton = Synthetic.Component.Button.OutlinedIconButton.Fusion.primary()
-outlinedIconButton.Style = Style.new(1, Enum.Font.SourceSans, "Light", Color3.new(0, 0.4, 0.7)) :: Style
-outlinedIconButton.OnClick = function() end :: () -> ()
-outlinedIconButton.Icon = Types.ImageData.new("") :: ImageData
-outlinedIconButton.Elevation = 0 :: number
-outlinedIconButton.IsEnabled = true :: boolean
+outlinedIconButton.Style = style
+outlinedIconButton.OnClick = onClick
+outlinedIconButton.Icon = icon
+outlinedIconButton.Elevation = elevation
+outlinedIconButton.IsEnabled = isEnabled
 ```
 
 **Fusion**

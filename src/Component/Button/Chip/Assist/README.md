@@ -24,17 +24,28 @@ This function is a native constructor, with verbosity allowing for control over 
 
 **Vanilla**
 ```luau
+local onClick: () -> () = function() end
+local text: string = "Chip"
+local icon: ImageData? = nil
+local textColor: Color3 = Color3.new()
+local disabledTextColor: Color3 = Color3.new()
+local isEnabled: boolean = true
+local elevation: number = 0
+local schemeType: Enums.SchemeType = Enums.SchemeType.Light
+local fontData: FontData = Types.FontData.new(Font.fromEnum(Enum.Font.SourceSans), 14)
+local scale: number = 1
+
 local assist = Synthetic.Component.Button.Chip.Assist.Fusion.new()
-assist.OnClick = function() end :: () -> ()
-assist.Text = "Chip" :: string
-assist.Icon = nil :: ImageData?
-assist.TextColor = Color3.new() :: Color3
-assist.DisabledTextColor = Color3.new() :: Color3
-assist.IsEnabled = true :: boolean
-assist.Elevation = 0 :: number
-assist.SchemeType = Enums.SchemeType.Light :: Enums.SchemeType
-assist.FontData = Types.FontData.new(Font.fromEnum(Enum.Font.SourceSans), 14) :: FontData
-assist.Scale = 1 :: number
+assist.OnClick = onClick
+assist.Text = text
+assist.Icon = icon
+assist.TextColor = textColor
+assist.DisabledTextColor = disabledTextColor
+assist.IsEnabled = isEnabled
+assist.Elevation = elevation
+assist.SchemeType = schemeType
+assist.FontData = fontData
+assist.Scale = scale
 ```
 
 **Fusion**
@@ -79,13 +90,20 @@ This function is a style constructor, utilizing the "Style" type to reduce the n
 
 **Vanilla**
 ```luau
+local style: Style = Style.new(1, Enum.Font.SourceSans, "Light", Color3.new(0, 0.4, 0.7))
+local onClick: () -> () = function() end
+local text: string = "Chip"
+local icon: ImageData? = nil
+local isEnabled: boolean? = nil
+local elevation: number? = nil
+
 local assist = Synthetic.Component.Button.Chip.Assist.Fusion.primary()
-assist.Style = Style.new(1, Enum.Font.SourceSans, "Light", Color3.new(0, 0.4, 0.7)) :: Style
-assist.OnClick = function() end :: () -> ()
-assist.Text = "Chip" :: string
-assist.Icon = nil :: ImageData?
-assist.IsEnabled = nil :: boolean?
-assist.Elevation = nil :: number?
+assist.Style = style
+assist.OnClick = onClick
+assist.Text = text
+assist.Icon = icon
+assist.IsEnabled = isEnabled
+assist.Elevation = elevation
 ```
 
 **Fusion**

@@ -33,30 +33,50 @@ This function is a native constructor, with verbosity allowing for control over 
 
 **Vanilla**
 ```luau
+local onSubmit: ((text: string?) -> string?) = function(text: string?)
+return text
+end
+local onInput: ((text: string?) -> string?) = function(text: string?)
+return text
+end
+local initialText: string? = nil
+local isEnabled: boolean = true
+local isError: boolean = false
+local label: string = "Label"
+local characterLimit: number? = nil
+local supportingText: string? = nil
+local icon: ImageData? = nil
+local hightlightColor: Color3 = Color3.new()
+local errorColor: Color3 = Color3.new()
+local borderColor: Color3 = Color3.new()
+local textColor: Color3 = Color3.new()
+local labelColor: Color3 = Color3.new()
+local elevation: number = 0
+local schemeType: Enums.SchemeType = Enums.SchemeType.Light
+local bodyFontData: FontData = Types.FontData.new(Font.fromEnum(Enum.Font.SourceSans), 14)
+local supportFontData: FontData = Types.FontData.new(Font.fromEnum(Enum.Font.SourceSans), 14)
+local scale: number = 1
+
 local outlined = Synthetic.Component.TextField.Outlined.Fusion.new()
-outlined.OnSubmit = function(text: string?)
-return text
-end :: ((text: string?) -> string?)
-outlined.OnInput = function(text: string?)
-return text
-end :: ((text: string?) -> string?)
-outlined.InitialText = nil :: string?
-outlined.IsEnabled = true :: boolean
-outlined.IsError = false :: boolean
-outlined.Label = "Label" :: string
-outlined.CharacterLimit = nil :: number?
-outlined.SupportingText = nil :: string?
-outlined.Icon = nil :: ImageData?
-outlined.HightlightColor = Color3.new() :: Color3
-outlined.ErrorColor = Color3.new() :: Color3
-outlined.BorderColor = Color3.new() :: Color3
-outlined.TextColor = Color3.new() :: Color3
-outlined.LabelColor = Color3.new() :: Color3
-outlined.Elevation = 0 :: number
-outlined.SchemeType = Enums.SchemeType.Light :: Enums.SchemeType
-outlined.BodyFontData = Types.FontData.new(Font.fromEnum(Enum.Font.SourceSans), 14) :: FontData
-outlined.SupportFontData = Types.FontData.new(Font.fromEnum(Enum.Font.SourceSans), 14) :: FontData
-outlined.Scale = 1 :: number
+outlined.OnSubmit = onSubmit
+outlined.OnInput = onInput
+outlined.InitialText = initialText
+outlined.IsEnabled = isEnabled
+outlined.IsError = isError
+outlined.Label = label
+outlined.CharacterLimit = characterLimit
+outlined.SupportingText = supportingText
+outlined.Icon = icon
+outlined.HightlightColor = hightlightColor
+outlined.ErrorColor = errorColor
+outlined.BorderColor = borderColor
+outlined.TextColor = textColor
+outlined.LabelColor = labelColor
+outlined.Elevation = elevation
+outlined.SchemeType = schemeType
+outlined.BodyFontData = bodyFontData
+outlined.SupportFontData = supportFontData
+outlined.Scale = scale
 ```
 
 **Fusion**
@@ -128,20 +148,32 @@ This function is a style constructor, utilizing the "Style" type to reduce the n
 
 **Vanilla**
 ```luau
-local outlined = Synthetic.Component.TextField.Outlined.Fusion.primary()
-outlined.Style = Style.new(1, Enum.Font.SourceSans, "Light", Color3.new(0, 0.4, 0.7)) :: Style
-outlined.OnSubmit = function(text: string?)
+local style: Style = Style.new(1, Enum.Font.SourceSans, "Light", Color3.new(0, 0.4, 0.7))
+local onSubmit: ((text: string?) -> string?) = function(text: string?)
 return text
-end :: ((text: string?) -> string?)
-outlined.Label = "Label" :: string
-outlined.InitialText = nil :: string?
-outlined.OnInput = nil :: (((text: string?) -> string?)?)
-outlined.SupportingText = nil :: string?
-outlined.Icon = nil :: ImageData?
-outlined.CharacterLimit = nil :: number?
-outlined.IsError = nil :: boolean?
-outlined.Elevation = nil :: number?
-outlined.IsEnabled = nil :: boolean?
+end
+local label: string = "Label"
+local initialText: string? = nil
+local onInput: (((text: string?) -> string?)?) = nil
+local supportingText: string? = nil
+local icon: ImageData? = nil
+local characterLimit: number? = nil
+local isError: boolean? = nil
+local elevation: number? = nil
+local isEnabled: boolean? = nil
+
+local outlined = Synthetic.Component.TextField.Outlined.Fusion.primary()
+outlined.Style = style
+outlined.OnSubmit = onSubmit
+outlined.Label = label
+outlined.InitialText = initialText
+outlined.OnInput = onInput
+outlined.SupportingText = supportingText
+outlined.Icon = icon
+outlined.CharacterLimit = characterLimit
+outlined.IsError = isError
+outlined.Elevation = elevation
+outlined.IsEnabled = isEnabled
 ```
 
 **Fusion**

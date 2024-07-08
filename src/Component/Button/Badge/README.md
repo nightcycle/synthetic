@@ -26,19 +26,32 @@ This function is a native constructor, with verbosity allowing for control over 
 
 **Vanilla**
 ```luau
+local onClick: () -> () = function() end
+local icon: ImageData = Types.ImageData.new("")
+local label: string? = nil
+local count: number? = nil
+local textColor: Color3 = Color3.new()
+local hoverColor: Color3 = Color3.new()
+local errorTextColor: Color3 = Color3.new()
+local errorBackgroundColor: Color3 = Color3.new()
+local elevation: number = 0
+local schemeType: Enums.SchemeType = Enums.SchemeType.Light
+local fontData: FontData = Types.FontData.new(Font.fromEnum(Enum.Font.SourceSans), 14)
+local scale: number = 1
+
 local badge = Synthetic.Component.Button.Badge.Fusion.new()
-badge.OnClick = function() end :: () -> ()
-badge.Icon = Types.ImageData.new("") :: ImageData
-badge.Label = nil :: string?
-badge.Count = nil :: number?
-badge.TextColor = Color3.new() :: Color3
-badge.HoverColor = Color3.new() :: Color3
-badge.ErrorTextColor = Color3.new() :: Color3
-badge.ErrorBackgroundColor = Color3.new() :: Color3
-badge.Elevation = 0 :: number
-badge.SchemeType = Enums.SchemeType.Light :: Enums.SchemeType
-badge.FontData = Types.FontData.new(Font.fromEnum(Enum.Font.SourceSans), 14) :: FontData
-badge.Scale = 1 :: number
+badge.OnClick = onClick
+badge.Icon = icon
+badge.Label = label
+badge.Count = count
+badge.TextColor = textColor
+badge.HoverColor = hoverColor
+badge.ErrorTextColor = errorTextColor
+badge.ErrorBackgroundColor = errorBackgroundColor
+badge.Elevation = elevation
+badge.SchemeType = schemeType
+badge.FontData = fontData
+badge.Scale = scale
 ```
 
 **Fusion**
@@ -87,13 +100,20 @@ This function is a style constructor, utilizing the "Style" type to reduce the n
 
 **Vanilla**
 ```luau
+local style: Style = Style.new(1, Enum.Font.SourceSans, "Light", Color3.new(0, 0.4, 0.7))
+local onClick: () -> () = function() end
+local icon: ImageData = Types.ImageData.new("")
+local label: string? = nil
+local count: number? = nil
+local elevation: number? = nil
+
 local badge = Synthetic.Component.Button.Badge.Fusion.onPrimary()
-badge.Style = Style.new(1, Enum.Font.SourceSans, "Light", Color3.new(0, 0.4, 0.7)) :: Style
-badge.OnClick = function() end :: () -> ()
-badge.Icon = Types.ImageData.new("") :: ImageData
-badge.Label = nil :: string?
-badge.Count = nil :: number?
-badge.Elevation = nil :: number?
+badge.Style = style
+badge.OnClick = onClick
+badge.Icon = icon
+badge.Label = label
+badge.Count = count
+badge.Elevation = elevation
 ```
 
 **Fusion**

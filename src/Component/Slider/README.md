@@ -29,22 +29,38 @@ This function is a native constructor, with verbosity allowing for control over 
 
 **Vanilla**
 ```luau
+local onChange: (onChange: number) -> () = function(onChange: number) end
+local initialValue: number = 50
+local minimum: number? = nil
+local maximum: number? = nil
+local increment: number? = nil
+local leftTextOrIcon: string | ImageData | nil = 
+local rightTextOrIcon: string | ImageData | nil = 
+local onBackgroundColor: Color3 = Color3.new()
+local onBackgroundTextColor: Color3 = Color3.new()
+local fillColor: Color3 = Color3.new()
+local fillContainerColor: Color3 = Color3.new()
+local elevation: number = 0
+local schemeType: Enums.SchemeType = Enums.SchemeType.Light
+local fontData: FontData = Types.FontData.new(Font.fromEnum(Enum.Font.SourceSans), 14)
+local scale: number = 1
+
 local slider = Synthetic.Component.Slider.Fusion.new()
-slider.OnChange = function(onChange: number) end :: (onChange: number) -> ()
-slider.InitialValue = 50 :: number
-slider.Minimum = nil :: number?
-slider.Maximum = nil :: number?
-slider.Increment = nil :: number?
-slider.LeftTextOrIcon =  :: string | ImageData | nil
-slider.RightTextOrIcon =  :: string | ImageData | nil
-slider.OnBackgroundColor = Color3.new() :: Color3
-slider.OnBackgroundTextColor = Color3.new() :: Color3
-slider.FillColor = Color3.new() :: Color3
-slider.FillContainerColor = Color3.new() :: Color3
-slider.Elevation = 0 :: number
-slider.SchemeType = Enums.SchemeType.Light :: Enums.SchemeType
-slider.FontData = Types.FontData.new(Font.fromEnum(Enum.Font.SourceSans), 14) :: FontData
-slider.Scale = 1 :: number
+slider.OnChange = onChange
+slider.InitialValue = initialValue
+slider.Minimum = minimum
+slider.Maximum = maximum
+slider.Increment = increment
+slider.LeftTextOrIcon = leftTextOrIcon
+slider.RightTextOrIcon = rightTextOrIcon
+slider.OnBackgroundColor = onBackgroundColor
+slider.OnBackgroundTextColor = onBackgroundTextColor
+slider.FillColor = fillColor
+slider.FillContainerColor = fillContainerColor
+slider.Elevation = elevation
+slider.SchemeType = schemeType
+slider.FontData = fontData
+slider.Scale = scale
 ```
 
 **Fusion**
@@ -102,16 +118,26 @@ This function is a style constructor, utilizing the "Style" type to reduce the n
 
 **Vanilla**
 ```luau
+local style: Style = Style.new(1, Enum.Font.SourceSans, "Light", Color3.new(0, 0.4, 0.7))
+local onChange: (onChange: number) -> () = function(onChange: number) end
+local initialValue: number = 50
+local minimum: number? = nil
+local maximum: number? = nil
+local increment: number? = nil
+local leftTextOrIcon: string | ImageData | nil = nil
+local rightTextOrIcon: string | ImageData | nil = nil
+local elevation: number = 0
+
 local slider = Synthetic.Component.Slider.Fusion.primary()
-slider.Style = Style.new(1, Enum.Font.SourceSans, "Light", Color3.new(0, 0.4, 0.7)) :: Style
-slider.OnChange = function(onChange: number) end :: (onChange: number) -> ()
-slider.InitialValue = 50 :: number
-slider.Minimum = nil :: number?
-slider.Maximum = nil :: number?
-slider.Increment = nil :: number?
-slider.LeftTextOrIcon = nil :: string | ImageData | nil
-slider.RightTextOrIcon = nil :: string | ImageData | nil
-slider.Elevation = 0 :: number
+slider.Style = style
+slider.OnChange = onChange
+slider.InitialValue = initialValue
+slider.Minimum = minimum
+slider.Maximum = maximum
+slider.Increment = increment
+slider.LeftTextOrIcon = leftTextOrIcon
+slider.RightTextOrIcon = rightTextOrIcon
+slider.Elevation = elevation
 ```
 
 **Fusion**

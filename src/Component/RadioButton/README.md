@@ -25,18 +25,30 @@ This function is a native constructor, with verbosity allowing for control over 
 
 **Vanilla**
 ```luau
+local onSelect: (isSelected: boolean) -> () = function(isSelected: boolean) end
+local initialSelection: boolean = false
+local isEnabled: boolean = true
+local outlineColor: Color3 = Color3.new()
+local fillColor: Color3 = Color3.new()
+local iconColor: Color3 = Color3.new()
+local disabledColor: Color3 = Color3.new()
+local elevation: number = 0
+local schemeType: Enums.SchemeType = Enums.SchemeType.Light
+local fontData: FontData = Types.FontData.new(Font.fromEnum(Enum.Font.SourceSans), 14)
+local scale: number = 1
+
 local radioButton = Synthetic.Component.RadioButton.Fusion.new()
-radioButton.OnSelect = function(isSelected: boolean) end :: (isSelected: boolean) -> ()
-radioButton.InitialSelection = false :: boolean
-radioButton.IsEnabled = true :: boolean
-radioButton.OutlineColor = Color3.new() :: Color3
-radioButton.FillColor = Color3.new() :: Color3
-radioButton.IconColor = Color3.new() :: Color3
-radioButton.DisabledColor = Color3.new() :: Color3
-radioButton.Elevation = 0 :: number
-radioButton.SchemeType = Enums.SchemeType.Light :: Enums.SchemeType
-radioButton.FontData = Types.FontData.new(Font.fromEnum(Enum.Font.SourceSans), 14) :: FontData
-radioButton.Scale = 1 :: number
+radioButton.OnSelect = onSelect
+radioButton.InitialSelection = initialSelection
+radioButton.IsEnabled = isEnabled
+radioButton.OutlineColor = outlineColor
+radioButton.FillColor = fillColor
+radioButton.IconColor = iconColor
+radioButton.DisabledColor = disabledColor
+radioButton.Elevation = elevation
+radioButton.SchemeType = schemeType
+radioButton.FontData = fontData
+radioButton.Scale = scale
 ```
 
 **Fusion**
@@ -82,12 +94,18 @@ This function is a style constructor, utilizing the "Style" type to reduce the n
 
 **Vanilla**
 ```luau
+local style: Style = Style.new(1, Enum.Font.SourceSans, "Light", Color3.new(0, 0.4, 0.7))
+local onSelect: (isSelected: boolean) -> () = function(isSelected: boolean) end
+local initialSelection: boolean = false
+local elevation: number? = nil
+local isEnabled: boolean? = nil
+
 local radioButton = Synthetic.Component.RadioButton.Fusion.primary()
-radioButton.Style = Style.new(1, Enum.Font.SourceSans, "Light", Color3.new(0, 0.4, 0.7)) :: Style
-radioButton.OnSelect = function(isSelected: boolean) end :: (isSelected: boolean) -> ()
-radioButton.InitialSelection = false :: boolean
-radioButton.Elevation = nil :: number?
-radioButton.IsEnabled = nil :: boolean?
+radioButton.Style = style
+radioButton.OnSelect = onSelect
+radioButton.InitialSelection = initialSelection
+radioButton.Elevation = elevation
+radioButton.IsEnabled = isEnabled
 ```
 
 **Fusion**

@@ -24,21 +24,32 @@ This function is a native constructor, with verbosity allowing for control over 
 
 **Vanilla**
 ```luau
-local filled = Synthetic.Component.Search.Filled.Fusion.new()
-filled.OnInputEntered = function(input: string)
+local onInputEntered: (input: string) -> string = function(input: string)
 return input
-end :: (input: string) -> string
-filled.Label = nil :: string?
-filled.OptionSolver = function(input: string)
+end
+local label: string? = nil
+local optionSolver: (input: string) -> { string } = function(input: string)
 return {}
-end :: (input: string) -> { string }
-filled.OptionConstructor = nil :: (((key: string, onClick: (key: string) -> ()) -> GuiObject)?)
-filled.TextColor = Color3.new() :: Color3
-filled.BackgroundColor = Color3.new() :: Color3
-filled.Elevation = 0 :: number
-filled.SchemeType = Enums.SchemeType.Light :: Enums.SchemeType
-filled.FontData = Types.FontData.new(Font.fromEnum(Enum.Font.SourceSans), 14) :: FontData
-filled.Scale = 1 :: number
+end
+local optionConstructor: (((key: string, onClick: (key: string) -> ()) -> GuiObject)?) = nil
+local textColor: Color3 = Color3.new()
+local backgroundColor: Color3 = Color3.new()
+local elevation: number = 0
+local schemeType: Enums.SchemeType = Enums.SchemeType.Light
+local fontData: FontData = Types.FontData.new(Font.fromEnum(Enum.Font.SourceSans), 14)
+local scale: number = 1
+
+local filled = Synthetic.Component.Search.Filled.Fusion.new()
+filled.OnInputEntered = onInputEntered
+filled.Label = label
+filled.OptionSolver = optionSolver
+filled.OptionConstructor = optionConstructor
+filled.TextColor = textColor
+filled.BackgroundColor = backgroundColor
+filled.Elevation = elevation
+filled.SchemeType = schemeType
+filled.FontData = fontData
+filled.Scale = scale
 ```
 
 **Fusion**
@@ -87,17 +98,24 @@ This function is a style constructor, utilizing the "Style" type to reduce the n
 
 **Vanilla**
 ```luau
-local filled = Synthetic.Component.Search.Filled.Fusion.primary()
-filled.Style = Style.new(1, Enum.Font.SourceSans, "Light", Color3.new(0, 0.4, 0.7)) :: Style
-filled.OnInputEntered = function(input: string)
+local style: Style = Style.new(1, Enum.Font.SourceSans, "Light", Color3.new(0, 0.4, 0.7))
+local onInputEntered: (input: string) -> string = function(input: string)
 return input
-end :: (input: string) -> string
-filled.Label = nil :: string?
-filled.OptionSolver = function(input: string)
+end
+local label: string? = nil
+local optionSolver: (input: string) -> { string } = function(input: string)
 return {}
-end :: (input: string) -> { string }
-filled.OptionConstructor = nil :: (((key: string, onClick: (key: string) -> ()) -> GuiObject)?)
-filled.Elevation = nil :: number?
+end
+local optionConstructor: (((key: string, onClick: (key: string) -> ()) -> GuiObject)?) = nil
+local elevation: number? = nil
+
+local filled = Synthetic.Component.Search.Filled.Fusion.primary()
+filled.Style = style
+filled.OnInputEntered = onInputEntered
+filled.Label = label
+filled.OptionSolver = optionSolver
+filled.OptionConstructor = optionConstructor
+filled.Elevation = elevation
 ```
 
 **Fusion**

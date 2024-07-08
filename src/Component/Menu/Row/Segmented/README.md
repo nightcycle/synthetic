@@ -25,18 +25,30 @@ This function is a native constructor, with verbosity allowing for control over 
 
 **Vanilla**
 ```luau
+local options: { OptionData } = {}
+local density: number? = nil
+local isMultiSelect: boolean? = nil
+local textColor: Color3 = Color3.new()
+local fillTextColor: Color3 = Color3.new()
+local fillBackgroundColor: Color3 = Color3.new()
+local outlineColor: Color3 = Color3.new()
+local elevation: number? = nil
+local schemeType: Enums.SchemeType = Enums.SchemeType.Light
+local fontData: FontData = Types.FontData.new(Font.fromEnum(Enum.Font.SourceSans), 14)
+local scale: number? = nil
+
 local segmented = Synthetic.Component.Menu.Row.Segmented.Fusion.new()
-segmented.Options = {} :: { OptionData }
-segmented.Density = nil :: number?
-segmented.IsMultiSelect = nil :: boolean?
-segmented.TextColor = Color3.new() :: Color3
-segmented.FillTextColor = Color3.new() :: Color3
-segmented.FillBackgroundColor = Color3.new() :: Color3
-segmented.OutlineColor = Color3.new() :: Color3
-segmented.Elevation = nil :: number?
-segmented.SchemeType = Enums.SchemeType.Light :: Enums.SchemeType
-segmented.FontData = Types.FontData.new(Font.fromEnum(Enum.Font.SourceSans), 14) :: FontData
-segmented.Scale = nil :: number?
+segmented.Options = options
+segmented.Density = density
+segmented.IsMultiSelect = isMultiSelect
+segmented.TextColor = textColor
+segmented.FillTextColor = fillTextColor
+segmented.FillBackgroundColor = fillBackgroundColor
+segmented.OutlineColor = outlineColor
+segmented.Elevation = elevation
+segmented.SchemeType = schemeType
+segmented.FontData = fontData
+segmented.Scale = scale
 ```
 
 **Fusion**
@@ -82,12 +94,18 @@ This function is a style constructor, utilizing the "Style" type to reduce the n
 
 **Vanilla**
 ```luau
+local style: Style = Style.new(1, Enum.Font.SourceSans, "Light", Color3.new(0, 0.4, 0.7))
+local options: { OptionData } = {}
+local density: number? = nil
+local isMultiSelect: boolean? = nil
+local elevation: number? = nil
+
 local segmented = Synthetic.Component.Menu.Row.Segmented.Fusion.primaryContainer()
-segmented.Style = Style.new(1, Enum.Font.SourceSans, "Light", Color3.new(0, 0.4, 0.7)) :: Style
-segmented.Options = {} :: { OptionData }
-segmented.Density = nil :: number?
-segmented.IsMultiSelect = nil :: boolean?
-segmented.Elevation = nil :: number?
+segmented.Style = style
+segmented.Options = options
+segmented.Density = density
+segmented.IsMultiSelect = isMultiSelect
+segmented.Elevation = elevation
 ```
 
 **Fusion**

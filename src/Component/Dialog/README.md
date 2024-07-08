@@ -29,22 +29,38 @@ This function is a native constructor, with verbosity allowing for control over 
 
 **Vanilla**
 ```luau
+local buttons: { ButtonData } = {}
+local icon: ImageData? = nil
+local headline: string? = nil
+local description: string? = nil
+local surfaceColor: Color3 = Color3.new()
+local buttonTextColor: Color3 = Color3.new()
+local disabledTextColor: Color3 = Color3.new()
+local headlineColor: Color3 = Color3.new()
+local descriptionColor: Color3 = Color3.new()
+local scrimColor: Color3 = Color3.new()
+local schemeType: Enums.SchemeType = Enums.SchemeType.Light
+local headlineFontData: FontData = Types.FontData.new(Font.fromEnum(Enum.Font.SourceSans), 14)
+local bodyFontData: FontData = Types.FontData.new(Font.fromEnum(Enum.Font.SourceSans), 14)
+local buttonFontData: FontData = Types.FontData.new(Font.fromEnum(Enum.Font.SourceSans), 14)
+local scale: number = 1
+
 local dialog = Synthetic.Component.Dialog.Fusion.new()
-dialog.Buttons = {} :: { ButtonData }
-dialog.Icon = nil :: ImageData?
-dialog.Headline = nil :: string?
-dialog.Description = nil :: string?
-dialog.SurfaceColor = Color3.new() :: Color3
-dialog.ButtonTextColor = Color3.new() :: Color3
-dialog.DisabledTextColor = Color3.new() :: Color3
-dialog.HeadlineColor = Color3.new() :: Color3
-dialog.DescriptionColor = Color3.new() :: Color3
-dialog.ScrimColor = Color3.new() :: Color3
-dialog.SchemeType = Enums.SchemeType.Light :: Enums.SchemeType
-dialog.HeadlineFontData = Types.FontData.new(Font.fromEnum(Enum.Font.SourceSans), 14) :: FontData
-dialog.BodyFontData = Types.FontData.new(Font.fromEnum(Enum.Font.SourceSans), 14) :: FontData
-dialog.ButtonFontData = Types.FontData.new(Font.fromEnum(Enum.Font.SourceSans), 14) :: FontData
-dialog.Scale = 1 :: number
+dialog.Buttons = buttons
+dialog.Icon = icon
+dialog.Headline = headline
+dialog.Description = description
+dialog.SurfaceColor = surfaceColor
+dialog.ButtonTextColor = buttonTextColor
+dialog.DisabledTextColor = disabledTextColor
+dialog.HeadlineColor = headlineColor
+dialog.DescriptionColor = descriptionColor
+dialog.ScrimColor = scrimColor
+dialog.SchemeType = schemeType
+dialog.HeadlineFontData = headlineFontData
+dialog.BodyFontData = bodyFontData
+dialog.ButtonFontData = buttonFontData
+dialog.Scale = scale
 ```
 
 **Fusion**
@@ -98,12 +114,18 @@ This function is a style constructor, utilizing the "Style" type to reduce the n
 
 **Vanilla**
 ```luau
+local style: Style = Style.new(1, Enum.Font.SourceSans, "Light", Color3.new(0, 0.4, 0.7))
+local buttons: { ButtonData } = {}
+local icon: ImageData? = nil
+local headline: string? = nil
+local description: string? = nil
+
 local dialog = Synthetic.Component.Dialog.Fusion.primary()
-dialog.Style = Style.new(1, Enum.Font.SourceSans, "Light", Color3.new(0, 0.4, 0.7)) :: Style
-dialog.Buttons = {} :: { ButtonData }
-dialog.Icon = nil :: ImageData?
-dialog.Headline = nil :: string?
-dialog.Description = nil :: string?
+dialog.Style = style
+dialog.Buttons = buttons
+dialog.Icon = icon
+dialog.Headline = headline
+dialog.Description = description
 ```
 
 **Fusion**

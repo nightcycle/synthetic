@@ -24,17 +24,28 @@ This function is a native constructor, with verbosity allowing for control over 
 
 **Vanilla**
 ```luau
+local onClick: () -> () = function() end
+local text: string = "Button"
+local icon: ImageData? = nil
+local textColor: Color3 = Color3.new()
+local disabledTextColor: Color3 = Color3.new()
+local isEnabled: boolean = true
+local elevation: number = 0
+local schemeType: Enums.SchemeType = Enums.SchemeType.Light
+local fontData: FontData = Types.FontData.new(Font.fromEnum(Enum.Font.SourceSans), 14)
+local scale: number = 1
+
 local textButton = Synthetic.Component.Button.TextButton.Fusion.new()
-textButton.OnClick = function() end :: () -> ()
-textButton.Text = "Button" :: string
-textButton.Icon = nil :: ImageData?
-textButton.TextColor = Color3.new() :: Color3
-textButton.DisabledTextColor = Color3.new() :: Color3
-textButton.IsEnabled = true :: boolean
-textButton.Elevation = 0 :: number
-textButton.SchemeType = Enums.SchemeType.Light :: Enums.SchemeType
-textButton.FontData = Types.FontData.new(Font.fromEnum(Enum.Font.SourceSans), 14) :: FontData
-textButton.Scale = 1 :: number
+textButton.OnClick = onClick
+textButton.Text = text
+textButton.Icon = icon
+textButton.TextColor = textColor
+textButton.DisabledTextColor = disabledTextColor
+textButton.IsEnabled = isEnabled
+textButton.Elevation = elevation
+textButton.SchemeType = schemeType
+textButton.FontData = fontData
+textButton.Scale = scale
 ```
 
 **Fusion**
@@ -79,13 +90,20 @@ This function is a style constructor, utilizing the "Style" type to reduce the n
 
 **Vanilla**
 ```luau
+local style: Style = Style.new(1, Enum.Font.SourceSans, "Light", Color3.new(0, 0.4, 0.7))
+local onClick: () -> () = function() end
+local text: string = "Button"
+local icon: ImageData? = nil
+local elevation: number = 0
+local isEnabled: boolean = true
+
 local textButton = Synthetic.Component.Button.TextButton.Fusion.primary()
-textButton.Style = Style.new(1, Enum.Font.SourceSans, "Light", Color3.new(0, 0.4, 0.7)) :: Style
-textButton.OnClick = function() end :: () -> ()
-textButton.Text = "Button" :: string
-textButton.Icon = nil :: ImageData?
-textButton.Elevation = 0 :: number
-textButton.IsEnabled = true :: boolean
+textButton.Style = style
+textButton.OnClick = onClick
+textButton.Text = text
+textButton.Icon = icon
+textButton.Elevation = elevation
+textButton.IsEnabled = isEnabled
 ```
 
 **Fusion**

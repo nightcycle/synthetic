@@ -27,20 +27,34 @@ This function is a native constructor, with verbosity allowing for control over 
 
 **Vanilla**
 ```luau
+local onClick: (isSelected: boolean) -> () = function(isSelected: boolean) end
+local isInitiallySelected: boolean = false
+local text: string = "Filter"
+local textColor: Color3 = Color3.new()
+local disabledTextColor: Color3 = Color3.new()
+local fillTextColor: Color3 = Color3.new()
+local disabledFillTextColor: Color3 = Color3.new()
+local disabledFillColor: Color3 = Color3.new()
+local isEnabled: boolean = true
+local elevation: number = 0
+local schemeType: Enums.SchemeType = Enums.SchemeType.Light
+local fontData: FontData = Types.FontData.new(Font.fromEnum(Enum.Font.SourceSans), 14)
+local scale: number = 1
+
 local filter = Synthetic.Component.Button.Chip.Filter.Fusion.new()
-filter.OnClick = function(isSelected: boolean) end :: (isSelected: boolean) -> ()
-filter.IsInitiallySelected = false :: boolean
-filter.Text = "Filter" :: string
-filter.TextColor = Color3.new() :: Color3
-filter.DisabledTextColor = Color3.new() :: Color3
-filter.FillTextColor = Color3.new() :: Color3
-filter.DisabledFillTextColor = Color3.new() :: Color3
-filter.DisabledFillColor = Color3.new() :: Color3
-filter.IsEnabled = true :: boolean
-filter.Elevation = 0 :: number
-filter.SchemeType = Enums.SchemeType.Light :: Enums.SchemeType
-filter.FontData = Types.FontData.new(Font.fromEnum(Enum.Font.SourceSans), 14) :: FontData
-filter.Scale = 1 :: number
+filter.OnClick = onClick
+filter.IsInitiallySelected = isInitiallySelected
+filter.Text = text
+filter.TextColor = textColor
+filter.DisabledTextColor = disabledTextColor
+filter.FillTextColor = fillTextColor
+filter.DisabledFillTextColor = disabledFillTextColor
+filter.DisabledFillColor = disabledFillColor
+filter.IsEnabled = isEnabled
+filter.Elevation = elevation
+filter.SchemeType = schemeType
+filter.FontData = fontData
+filter.Scale = scale
 ```
 
 **Fusion**
@@ -91,13 +105,20 @@ This function is a style constructor, utilizing the "Style" type to reduce the n
 
 **Vanilla**
 ```luau
+local style: Style = Style.new(1, Enum.Font.SourceSans, "Light", Color3.new(0, 0.4, 0.7))
+local onClick: (isSelected: boolean) -> () = function(isSelected: boolean) end
+local text: string = "Filter"
+local isInitiallySelected: boolean = false
+local isEnabled: boolean? = nil
+local elevation: number? = nil
+
 local filter = Synthetic.Component.Button.Chip.Filter.Fusion.primary()
-filter.Style = Style.new(1, Enum.Font.SourceSans, "Light", Color3.new(0, 0.4, 0.7)) :: Style
-filter.OnClick = function(isSelected: boolean) end :: (isSelected: boolean) -> ()
-filter.Text = "Filter" :: string
-filter.IsInitiallySelected = false :: boolean
-filter.IsEnabled = nil :: boolean?
-filter.Elevation = nil :: number?
+filter.Style = style
+filter.OnClick = onClick
+filter.Text = text
+filter.IsInitiallySelected = isInitiallySelected
+filter.IsEnabled = isEnabled
+filter.Elevation = elevation
 ```
 
 **Fusion**

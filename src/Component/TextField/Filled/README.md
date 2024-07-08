@@ -34,31 +34,52 @@ This function is a native constructor, with verbosity allowing for control over 
 
 **Vanilla**
 ```luau
+local onSubmit: ((text: string?) -> string?) = function(text: string?)
+return text
+end
+local onInput: ((text: string?) -> string?) = function(text: string?)
+return text
+end
+local initialText: string? = nil
+local isEnabled: boolean = true
+local isError: boolean = false
+local label: string = "Label"
+local characterLimit: number? = nil
+local supportingText: string? = nil
+local icon: ImageData? = nil
+local backgroundColor: Color3 = Color3.new()
+local hightlightColor: Color3 = Color3.new()
+local errorColor: Color3 = Color3.new()
+local borderColor: Color3 = Color3.new()
+local textColor: Color3 = Color3.new()
+local labelColor: Color3 = Color3.new()
+local elevation: number = 0
+local schemeType: Enums.SchemeType = Enums.SchemeType.Light
+local bodyFontData: FontData = Types.FontData.new(Font.fromEnum(Enum.Font.SourceSans), 14)
+local supportFontData: FontData = Types.FontData.new(Font.fromEnum(Enum.Font.SourceSans), 14)
+local scale: number = 1
+
 local filled = Synthetic.Component.TextField.Filled.Fusion.new()
-filled.OnSubmit = function(text: string?)
-return text
-end :: ((text: string?) -> string?)
-filled.OnInput = function(text: string?)
-return text
-end :: ((text: string?) -> string?)
-filled.InitialText = nil :: string?
-filled.IsEnabled = true :: boolean
-filled.IsError = false :: boolean
-filled.Label = "Label" :: string
-filled.CharacterLimit = nil :: number?
-filled.SupportingText = nil :: string?
-filled.Icon = nil :: ImageData?
-filled.BackgroundColor = Color3.new() :: Color3
-filled.HightlightColor = Color3.new() :: Color3
-filled.ErrorColor = Color3.new() :: Color3
-filled.BorderColor = Color3.new() :: Color3
-filled.TextColor = Color3.new() :: Color3
-filled.LabelColor = Color3.new() :: Color3
-filled.Elevation = 0 :: number
-filled.SchemeType = Enums.SchemeType.Light :: Enums.SchemeType
-filled.BodyFontData = Types.FontData.new(Font.fromEnum(Enum.Font.SourceSans), 14) :: FontData
-filled.SupportFontData = Types.FontData.new(Font.fromEnum(Enum.Font.SourceSans), 14) :: FontData
-filled.Scale = 1 :: number
+filled.OnSubmit = onSubmit
+filled.OnInput = onInput
+filled.InitialText = initialText
+filled.IsEnabled = isEnabled
+filled.IsError = isError
+filled.Label = label
+filled.CharacterLimit = characterLimit
+filled.SupportingText = supportingText
+filled.Icon = icon
+filled.BackgroundColor = backgroundColor
+filled.HightlightColor = hightlightColor
+filled.ErrorColor = errorColor
+filled.BorderColor = borderColor
+filled.TextColor = textColor
+filled.LabelColor = labelColor
+filled.Elevation = elevation
+filled.SchemeType = schemeType
+filled.BodyFontData = bodyFontData
+filled.SupportFontData = supportFontData
+filled.Scale = scale
 ```
 
 **Fusion**
@@ -132,20 +153,32 @@ This function is a style constructor, utilizing the "Style" type to reduce the n
 
 **Vanilla**
 ```luau
-local filled = Synthetic.Component.TextField.Filled.Fusion.primary()
-filled.Style = Style.new(1, Enum.Font.SourceSans, "Light", Color3.new(0, 0.4, 0.7)) :: Style
-filled.OnSubmit = function(text: string?)
+local style: Style = Style.new(1, Enum.Font.SourceSans, "Light", Color3.new(0, 0.4, 0.7))
+local onSubmit: ((text: string?) -> string?) = function(text: string?)
 return text
-end :: ((text: string?) -> string?)
-filled.Label = "Label" :: string
-filled.InitialText = nil :: string?
-filled.OnInput = nil :: (((text: string?) -> string?)?)
-filled.SupportingText = nil :: string?
-filled.Icon = nil :: ImageData?
-filled.CharacterLimit = nil :: number?
-filled.IsError = nil :: boolean?
-filled.Elevation = nil :: number?
-filled.IsEnabled = nil :: boolean?
+end
+local label: string = "Label"
+local initialText: string? = nil
+local onInput: (((text: string?) -> string?)?) = nil
+local supportingText: string? = nil
+local icon: ImageData? = nil
+local characterLimit: number? = nil
+local isError: boolean? = nil
+local elevation: number? = nil
+local isEnabled: boolean? = nil
+
+local filled = Synthetic.Component.TextField.Filled.Fusion.primary()
+filled.Style = style
+filled.OnSubmit = onSubmit
+filled.Label = label
+filled.InitialText = initialText
+filled.OnInput = onInput
+filled.SupportingText = supportingText
+filled.Icon = icon
+filled.CharacterLimit = characterLimit
+filled.IsError = isError
+filled.Elevation = elevation
+filled.IsEnabled = isEnabled
 ```
 
 **Fusion**

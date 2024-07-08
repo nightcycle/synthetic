@@ -26,19 +26,32 @@ This function is a native constructor, with verbosity allowing for control over 
 
 **Vanilla**
 ```luau
+local onClick: () -> () = function() end
+local icon: ImageData = Types.ImageData.new("")
+local textColor: Color3 = Color3.new()
+local surfaceColor: Color3 = Color3.new()
+local disabledTextColor: Color3 = Color3.new()
+local disabledSurfaceColor: Color3 = Color3.new()
+local shadowColor: Color3 = Color3.new()
+local isEnabled: boolean = true
+local elevation: number = 0
+local schemeType: Enums.SchemeType = Enums.SchemeType.Light
+local fontData: FontData = Types.FontData.new(Font.fromEnum(Enum.Font.SourceSans), 14)
+local scale: number = 1
+
 local fAB = Synthetic.Component.Button.FAB.Fusion.new()
-fAB.OnClick = function() end :: () -> ()
-fAB.Icon = Types.ImageData.new("") :: ImageData
-fAB.TextColor = Color3.new() :: Color3
-fAB.SurfaceColor = Color3.new() :: Color3
-fAB.DisabledTextColor = Color3.new() :: Color3
-fAB.DisabledSurfaceColor = Color3.new() :: Color3
-fAB.ShadowColor = Color3.new() :: Color3
-fAB.IsEnabled = true :: boolean
-fAB.Elevation = 0 :: number
-fAB.SchemeType = Enums.SchemeType.Light :: Enums.SchemeType
-fAB.FontData = Types.FontData.new(Font.fromEnum(Enum.Font.SourceSans), 14) :: FontData
-fAB.Scale = 1 :: number
+fAB.OnClick = onClick
+fAB.Icon = icon
+fAB.TextColor = textColor
+fAB.SurfaceColor = surfaceColor
+fAB.DisabledTextColor = disabledTextColor
+fAB.DisabledSurfaceColor = disabledSurfaceColor
+fAB.ShadowColor = shadowColor
+fAB.IsEnabled = isEnabled
+fAB.Elevation = elevation
+fAB.SchemeType = schemeType
+fAB.FontData = fontData
+fAB.Scale = scale
 ```
 
 **Fusion**
@@ -86,12 +99,18 @@ This function is a style constructor, utilizing the "Style" type to reduce the n
 
 **Vanilla**
 ```luau
+local style: Style = Style.new(1, Enum.Font.SourceSans, "Light", Color3.new(0, 0.4, 0.7))
+local onClick: () -> () = function() end
+local icon: ImageData = Types.ImageData.new("")
+local elevation: number = 0
+local isEnabled: boolean = true
+
 local fAB = Synthetic.Component.Button.FAB.Fusion.primary()
-fAB.Style = Style.new(1, Enum.Font.SourceSans, "Light", Color3.new(0, 0.4, 0.7)) :: Style
-fAB.OnClick = function() end :: () -> ()
-fAB.Icon = Types.ImageData.new("") :: ImageData
-fAB.Elevation = 0 :: number
-fAB.IsEnabled = true :: boolean
+fAB.Style = style
+fAB.OnClick = onClick
+fAB.Icon = icon
+fAB.Elevation = elevation
+fAB.IsEnabled = isEnabled
 ```
 
 **Fusion**

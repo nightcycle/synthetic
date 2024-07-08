@@ -27,20 +27,34 @@ This function is a native constructor, with verbosity allowing for control over 
 
 **Vanilla**
 ```luau
+local onClick: () -> () = function() end
+local text: string = "Button"
+local icon: ImageData = Types.ImageData.new("")
+local textColor: Color3 = Color3.new()
+local surfaceColor: Color3 = Color3.new()
+local disabledTextColor: Color3 = Color3.new()
+local disabledSurfaceColor: Color3 = Color3.new()
+local shadowColor: Color3 = Color3.new()
+local isEnabled: boolean = true
+local elevation: number = 0
+local schemeType: Enums.SchemeType = Enums.SchemeType.Light
+local fontData: FontData = Types.FontData.new(Font.fromEnum(Enum.Font.SourceSans), 14)
+local scale: number = 1
+
 local extendedFAB = Synthetic.Component.Button.ExtendedFAB.Fusion.new()
-extendedFAB.OnClick = function() end :: () -> ()
-extendedFAB.Text = "Button" :: string
-extendedFAB.Icon = Types.ImageData.new("") :: ImageData
-extendedFAB.TextColor = Color3.new() :: Color3
-extendedFAB.SurfaceColor = Color3.new() :: Color3
-extendedFAB.DisabledTextColor = Color3.new() :: Color3
-extendedFAB.DisabledSurfaceColor = Color3.new() :: Color3
-extendedFAB.ShadowColor = Color3.new() :: Color3
-extendedFAB.IsEnabled = true :: boolean
-extendedFAB.Elevation = 0 :: number
-extendedFAB.SchemeType = Enums.SchemeType.Light :: Enums.SchemeType
-extendedFAB.FontData = Types.FontData.new(Font.fromEnum(Enum.Font.SourceSans), 14) :: FontData
-extendedFAB.Scale = 1 :: number
+extendedFAB.OnClick = onClick
+extendedFAB.Text = text
+extendedFAB.Icon = icon
+extendedFAB.TextColor = textColor
+extendedFAB.SurfaceColor = surfaceColor
+extendedFAB.DisabledTextColor = disabledTextColor
+extendedFAB.DisabledSurfaceColor = disabledSurfaceColor
+extendedFAB.ShadowColor = shadowColor
+extendedFAB.IsEnabled = isEnabled
+extendedFAB.Elevation = elevation
+extendedFAB.SchemeType = schemeType
+extendedFAB.FontData = fontData
+extendedFAB.Scale = scale
 ```
 
 **Fusion**
@@ -91,13 +105,20 @@ This function is a style constructor, utilizing the "Style" type to reduce the n
 
 **Vanilla**
 ```luau
+local style: Style = Style.new(1, Enum.Font.SourceSans, "Light", Color3.new(0, 0.4, 0.7))
+local onClick: () -> () = function() end
+local text: string = "Button"
+local icon: ImageData = Types.ImageData.new("")
+local elevation: number = 0
+local isEnabled: boolean = true
+
 local extendedFAB = Synthetic.Component.Button.ExtendedFAB.Fusion.primary()
-extendedFAB.Style = Style.new(1, Enum.Font.SourceSans, "Light", Color3.new(0, 0.4, 0.7)) :: Style
-extendedFAB.OnClick = function() end :: () -> ()
-extendedFAB.Text = "Button" :: string
-extendedFAB.Icon = Types.ImageData.new("") :: ImageData
-extendedFAB.Elevation = 0 :: number
-extendedFAB.IsEnabled = true :: boolean
+extendedFAB.Style = style
+extendedFAB.OnClick = onClick
+extendedFAB.Text = text
+extendedFAB.Icon = icon
+extendedFAB.Elevation = elevation
+extendedFAB.IsEnabled = isEnabled
 ```
 
 **Fusion**

@@ -332,13 +332,19 @@ type CanBeState<V> = ColdFusion.CanBeState<V>"""
 			vanilla_lines: list[str] = [
 				'\n**Vanilla**',
 				'```luau',
-				f'local {pascal_to_camel(self.name)} = {self.path.replace('src', 'Synthetic').replace("\\", ".")}.Fusion.{func['names'][0]}()',
-
 			]
+			vanilla_modifications: list[str] = []
 			for param in func['parameters']:
-				vanilla_lines.append(f'{pascal_to_camel(self.name)}.{camel_to_pascal(param["name"])} = {param["default"]} :: {param["type"]}')
+				comment = ""
+				if "comment" in param:
+					comment = f" -- {param['comment']}"
+
+				vanilla_lines.append(f'local {param["name"]}: {param["type"]} = {param["default"]}{comment}')
+				vanilla_modifications.append(f'{pascal_to_camel(self.name)}.{camel_to_pascal(param["name"])} = {param["name"]}')
 
 			vanilla_lines += [
+				f'\nlocal {pascal_to_camel(self.name)} = {self.path.replace('src', 'Synthetic').replace("\\", ".")}.Fusion.{func['names'][0]}()',
+			] + vanilla_modifications + [
 				'```',
 			]
 

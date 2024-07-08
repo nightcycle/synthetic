@@ -25,18 +25,30 @@ This function is a native constructor, with verbosity allowing for control over 
 
 **Vanilla**
 ```luau
+local title: string = "Title"
+local buttons: {ButtonData} = {}
+local navigation: ButtonData? = nil
+local backgroundColor: Color3 = Color3.new()
+local textColor: Color3 = Color3.new()
+local elevation: number? = nil
+local schemeType: Enums.SchemeType = Enums.SchemeType.Light
+local titleFontData: FontData = Types.FontData.new(Font.fromEnum(Enum.Font.SourceSans), 14)
+local subHeadingFontData: FontData = Types.FontData.new(Font.fromEnum(Enum.Font.SourceSans), 14)
+local buttonFontData: FontData = Types.FontData.new(Font.fromEnum(Enum.Font.SourceSans), 14)
+local scale: number = 1
+
 local large = Synthetic.Component.Menu.Row.Bar.Top.Large.Fusion.new()
-large.Title = "Title" :: string
-large.Buttons = {} :: {ButtonData}
-large.Navigation = nil :: ButtonData?
-large.BackgroundColor = Color3.new() :: Color3
-large.TextColor = Color3.new() :: Color3
-large.Elevation = nil :: number?
-large.SchemeType = Enums.SchemeType.Light :: Enums.SchemeType
-large.TitleFontData = Types.FontData.new(Font.fromEnum(Enum.Font.SourceSans), 14) :: FontData
-large.SubHeadingFontData = Types.FontData.new(Font.fromEnum(Enum.Font.SourceSans), 14) :: FontData
-large.ButtonFontData = Types.FontData.new(Font.fromEnum(Enum.Font.SourceSans), 14) :: FontData
-large.Scale = 1 :: number
+large.Title = title
+large.Buttons = buttons
+large.Navigation = navigation
+large.BackgroundColor = backgroundColor
+large.TextColor = textColor
+large.Elevation = elevation
+large.SchemeType = schemeType
+large.TitleFontData = titleFontData
+large.SubHeadingFontData = subHeadingFontData
+large.ButtonFontData = buttonFontData
+large.Scale = scale
 ```
 
 **Fusion**
@@ -82,12 +94,18 @@ This function is a style constructor, utilizing the "Style" type to reduce the n
 
 **Vanilla**
 ```luau
+local style: Style = Style.new(1, Enum.Font.SourceSans, "Light", Color3.new(0, 0.4, 0.7))
+local title: string = "Title"
+local buttons: {ButtonData} = {}
+local navigation: ButtonData? = nil
+local elevation: number? = nil
+
 local large = Synthetic.Component.Menu.Row.Bar.Top.Large.Fusion.primary()
-large.Style = Style.new(1, Enum.Font.SourceSans, "Light", Color3.new(0, 0.4, 0.7)) :: Style
-large.Title = "Title" :: string
-large.Buttons = {} :: {ButtonData}
-large.Navigation = nil :: ButtonData?
-large.Elevation = nil :: number?
+large.Style = style
+large.Title = title
+large.Buttons = buttons
+large.Navigation = navigation
+large.Elevation = elevation
 ```
 
 **Fusion**

@@ -25,18 +25,30 @@ This function is a native constructor, with verbosity allowing for control over 
 
 **Vanilla**
 ```luau
+local text: string = ""
+local buttonText: string? = nil
+local onButtonClick: ((() -> ())?) = nil
+local onCloseClick: ((() -> ())?) = nil
+local textColor: Color3 = Color3.new()
+local buttonTextColor: Color3 = Color3.new()
+local backgroundColor: Color3 = Color3.new()
+local elevation: number = 0
+local schemeType: Enums.SchemeType = Enums.SchemeType.Light
+local fontData: FontData = Types.FontData.new(Font.fromEnum(Enum.Font.SourceSans), 14)
+local scale: number = 1
+
 local small = Synthetic.Component.Snackbar.Small.Fusion.new()
-small.Text = "" :: string
-small.ButtonText = nil :: string?
-small.OnButtonClick = nil :: ((() -> ())?)
-small.OnCloseClick = nil :: ((() -> ())?)
-small.TextColor = Color3.new() :: Color3
-small.ButtonTextColor = Color3.new() :: Color3
-small.BackgroundColor = Color3.new() :: Color3
-small.Elevation = 0 :: number
-small.SchemeType = Enums.SchemeType.Light :: Enums.SchemeType
-small.FontData = Types.FontData.new(Font.fromEnum(Enum.Font.SourceSans), 14) :: FontData
-small.Scale = 1 :: number
+small.Text = text
+small.ButtonText = buttonText
+small.OnButtonClick = onButtonClick
+small.OnCloseClick = onCloseClick
+small.TextColor = textColor
+small.ButtonTextColor = buttonTextColor
+small.BackgroundColor = backgroundColor
+small.Elevation = elevation
+small.SchemeType = schemeType
+small.FontData = fontData
+small.Scale = scale
 ```
 
 **Fusion**
@@ -83,13 +95,20 @@ This function is a style constructor, utilizing the "Style" type to reduce the n
 
 **Vanilla**
 ```luau
+local style: Style = Style.new(1, Enum.Font.SourceSans, "Light", Color3.new(0, 0.4, 0.7))
+local text: string = ""
+local buttonText: string? = nil
+local onButtonClick: ((() -> ())?) = nil
+local onCloseClick: ((() -> ())?) = nil
+local elevation: number? = nil
+
 local small = Synthetic.Component.Snackbar.Small.Fusion.surfaceContainer()
-small.Style = Style.new(1, Enum.Font.SourceSans, "Light", Color3.new(0, 0.4, 0.7)) :: Style
-small.Text = "" :: string
-small.ButtonText = nil :: string?
-small.OnButtonClick = nil :: ((() -> ())?)
-small.OnCloseClick = nil :: ((() -> ())?)
-small.Elevation = nil :: number?
+small.Style = style
+small.Text = text
+small.ButtonText = buttonText
+small.OnButtonClick = onButtonClick
+small.OnCloseClick = onCloseClick
+small.Elevation = elevation
 ```
 
 **Fusion**

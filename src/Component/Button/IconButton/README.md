@@ -23,16 +23,26 @@ This function is a native constructor, with verbosity allowing for control over 
 
 **Vanilla**
 ```luau
+local onClick: () -> () = function() end
+local icon: ImageData = Types.ImageData.new("")
+local textColor: Color3 = Color3.new()
+local disabledTextColor: Color3 = Color3.new()
+local isEnabled: boolean = true
+local elevation: number = 0
+local schemeType: Enums.SchemeType = Enums.SchemeType.Light
+local fontData: FontData = Types.FontData.new(Font.fromEnum(Enum.Font.SourceSans), 14)
+local scale: number = 1
+
 local iconButton = Synthetic.Component.Button.IconButton.Fusion.new()
-iconButton.OnClick = function() end :: () -> ()
-iconButton.Icon = Types.ImageData.new("") :: ImageData
-iconButton.TextColor = Color3.new() :: Color3
-iconButton.DisabledTextColor = Color3.new() :: Color3
-iconButton.IsEnabled = true :: boolean
-iconButton.Elevation = 0 :: number
-iconButton.SchemeType = Enums.SchemeType.Light :: Enums.SchemeType
-iconButton.FontData = Types.FontData.new(Font.fromEnum(Enum.Font.SourceSans), 14) :: FontData
-iconButton.Scale = 1 :: number
+iconButton.OnClick = onClick
+iconButton.Icon = icon
+iconButton.TextColor = textColor
+iconButton.DisabledTextColor = disabledTextColor
+iconButton.IsEnabled = isEnabled
+iconButton.Elevation = elevation
+iconButton.SchemeType = schemeType
+iconButton.FontData = fontData
+iconButton.Scale = scale
 ```
 
 **Fusion**
@@ -74,12 +84,18 @@ This function is a style constructor, utilizing the "Style" type to reduce the n
 
 **Vanilla**
 ```luau
+local style: Style = Style.new(1, Enum.Font.SourceSans, "Light", Color3.new(0, 0.4, 0.7))
+local onClick: () -> () = function() end
+local icon: ImageData = Types.ImageData.new("")
+local elevation: number = 0
+local isEnabled: boolean = true
+
 local iconButton = Synthetic.Component.Button.IconButton.Fusion.primary()
-iconButton.Style = Style.new(1, Enum.Font.SourceSans, "Light", Color3.new(0, 0.4, 0.7)) :: Style
-iconButton.OnClick = function() end :: () -> ()
-iconButton.Icon = Types.ImageData.new("") :: ImageData
-iconButton.Elevation = 0 :: number
-iconButton.IsEnabled = true :: boolean
+iconButton.Style = style
+iconButton.OnClick = onClick
+iconButton.Icon = icon
+iconButton.Elevation = elevation
+iconButton.IsEnabled = isEnabled
 ```
 
 **Fusion**
