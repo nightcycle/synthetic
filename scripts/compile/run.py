@@ -18,6 +18,11 @@ def camel_to_pascal(name: str) -> str:
 		return ""
 	return name[0].upper() + name[1:]
 
+def pascal_to_camel(name: str) -> str:
+	if (len(name) == 0):
+		return ""
+	return name[0].lower() + name[1:]
+
 # Classes
 class ParameterDefinition(TypedDict):
 	name: str
@@ -295,6 +300,43 @@ type CanBeState<V> = ColdFusion.CanBeState<V>"""
 					description = " = " + param["description"]
 				lines.append(f"- **{param['name']}**: {param['type']}{description}")
 			lines.append("")
+
+			lines.append("\n### Usage")
+
+			fusion_lines: list[str] = [
+				'\n#### Fusion',
+				'You can use states or regular values for every parameter.',
+				'```luau',
+			]
+			fusion_param_line: list[str] = []
+			fusion_index = 0
+			for param in func['parameters']:
+				fusion_index += 1
+				comment = ""
+				if "comment" in param:
+					comment = f" -- {param['comment']}"
+
+				if fusion_index % 2 == 0:
+					fusion_param_line.append("\t"+param["name"]+"")
+					fusion_lines.append(f'local {param["name"]}: {param["type"]} = {param["default"]}{comment}')
+				else:
+					fusion_param_line.append("\t"+param["name"]+"State")
+					fusion_lines.append(f'local {param["name"]}State: Fusion.Value<{param["type"]}, unknown> = Value({param["default"]}){comment}')
+
+			fusion_lines += [
+				"",
+				f'local {pascal_to_camel(self.name)}: GuiObject = {self.path.replace('src', 'Synthetic').replace("\\", ".")}.Fusion.{func['names'][0]}(',
+			]
+			fusion_lines.append(",\n".join(fusion_param_line))
+			fusion_lines.append(")\n```")
+
+			vanilla_lines: list[str] = []
+			cf_lines: list[str] = []
+
+			lines += cf_lines
+			lines += fusion_lines
+			lines += vanilla_lines
+
 		out_path = self.path + "/README.md"
 		with open(out_path, mode="w") as file:
 			file.write("\n".join(lines))
