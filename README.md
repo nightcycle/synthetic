@@ -306,7 +306,7 @@ typography:Apply(
 - [Checkbox](./src/Component/Checkbox)
 - [Radio Button](./src/Component/RadioButton)
 - [Switch](./src/Component/Switch)
-- [Slider](./src/Component/Slider)
+<!-- - [Slider](./src/Component/Slider) -->
 
 # Utility Components
 In making this framework, various patterns became apparent. To save code frequent instance use-cases were organized into internal components. You can access them under `Synthetic.Util`.

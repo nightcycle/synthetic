@@ -77,23 +77,23 @@ return function(frame: Frame)
 				snackbar.Size = UDim2.fromScale(0.9, 0)
 				snackbar.Parent = halfFrame
 			end
-			do
-				local snackbar = maid:GiveTask(
-					Module.ColdFusion.surfaceContainer(
-						style,
-						"Wow what cool text abc 123 abc 123 abc 123 abc 123 uhhh well ya know need to get the full lines lorem ipsum or something",
-						"Button",
-						function()
-							print("button click")
-						end,
-						nil,
-						0
-					)
-				)
-				snackbar.AutomaticSize = Enum.AutomaticSize.Y
-				snackbar.Size = UDim2.fromScale(0.9, 0)
-				snackbar.Parent = halfFrame
-			end
+			-- do
+			-- 	local snackbar = maid:GiveTask(
+			-- 		Module.ColdFusion.surfaceContainer(
+			-- 			style,
+			-- 			"Wow what cool text abc 123 abc 123 abc 123 abc 123 uhhh well ya know need to get the full lines lorem ipsum or something",
+			-- 			"Button",
+			-- 			function()
+			-- 				print("button click")
+			-- 			end,
+			-- 			nil,
+			-- 			0
+			-- 		)
+			-- 	)
+			-- 	snackbar.AutomaticSize = Enum.AutomaticSize.Y
+			-- 	snackbar.Size = UDim2.fromScale(0.9, 0)
+			-- 	snackbar.Parent = halfFrame
+			-- end
 			return halfFrame
 		end
 
@@ -103,7 +103,7 @@ return function(frame: Frame)
 			-- Color3.fromHSV(0, 0.9, 0.5),
 			Color3.fromHSV(0.6, 0.9, 0.7),
 			Color3.fromHSV(0.35, 0.9, 0.7),
-			Color3.fromHSV(0.1, 0.9, 0.7),
+			-- Color3.fromHSV(0.1, 0.9, 0.7),
 		}
 
 		for i, color in ipairs(COLORS) do

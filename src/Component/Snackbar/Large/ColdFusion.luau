@@ -65,11 +65,11 @@ function Interface.surfaceContainer(
 	local _Computed = _fuse.Computed
 
 	local styleState: State<Style> = _import(style, DEFAULTS.SURFACE_CONTAINER.STYLE)
-	local elevationState: State<number> = _import(elevation, DEFAULTS.SURFACE_CONTAINER.ELEVATION)
+	local elevationState: State<number> = _import(elevation, DEFAULTS.SURFACE_CONTAINER.ELEVATION or 0)
 
 	local inst = Interface.new(
-		_import(text, DEFAULTS.SURFACE_CONTAINER.TEXT),
-		_import(buttonText, DEFAULTS.SURFACE_CONTAINER.BUTTON_TEXT),
+		_import(text, DEFAULTS.SURFACE_CONTAINER.TEXT or ""),
+		_import(buttonText, DEFAULTS.SURFACE_CONTAINER.BUTTON_TEXT or ""),
 		_import(onButtonClick, DEFAULTS.SURFACE_CONTAINER.ON_BUTTON_CLICK),
 		_import(onCloseClick, DEFAULTS.SURFACE_CONTAINER.ON_CLOSE_CLICK),
 		_Computed(function(s: Style, e: number?): Color3
@@ -81,7 +81,7 @@ function Interface.surfaceContainer(
 		_Computed(function(s: Style, e: number?): Color3
 			return s:GetColor(Enums.ColorRoleType.SurfaceContainer, e)
 		end, styleState, elevationState),
-		1,
+		elevationState,
 		_Computed(function(s: Style): any
 			return s.SchemeType
 		end, styleState),
@@ -121,11 +121,11 @@ function Interface.primaryContainer(
 	local _Computed = _fuse.Computed
 
 	local styleState: State<Style> = _import(style, DEFAULTS.PRIMARY_CONTAINER.STYLE)
-	local elevationState: State<number> = _import(elevation, DEFAULTS.PRIMARY_CONTAINER.ELEVATION)
+	local elevationState: State<number> = _import(elevation, DEFAULTS.PRIMARY_CONTAINER.ELEVATION or 0)
 
 	local inst = Interface.new(
-		_import(text, DEFAULTS.PRIMARY_CONTAINER.TEXT),
-		_import(buttonText, DEFAULTS.PRIMARY_CONTAINER.BUTTON_TEXT),
+		_import(text, DEFAULTS.PRIMARY_CONTAINER.TEXT or ""),
+		_import(buttonText, DEFAULTS.PRIMARY_CONTAINER.BUTTON_TEXT or ""),
 		_import(onButtonClick, DEFAULTS.PRIMARY_CONTAINER.ON_BUTTON_CLICK),
 		_import(onCloseClick, DEFAULTS.PRIMARY_CONTAINER.ON_CLOSE_CLICK),
 		_Computed(function(s: Style, e: number?): Color3
@@ -137,7 +137,7 @@ function Interface.primaryContainer(
 		_Computed(function(s: Style, e: number?): Color3
 			return s:GetColor(Enums.ColorRoleType.PrimaryContainer, e)
 		end, styleState, elevationState),
-		1,
+		elevationState,
 		_Computed(function(s: Style): any
 			return s.SchemeType
 		end, styleState),
@@ -177,11 +177,11 @@ function Interface.secondaryContainer(
 	local _Computed = _fuse.Computed
 
 	local styleState: State<Style> = _import(style, DEFAULTS.SECONDARY_CONTAINER.STYLE)
-	local elevationState: State<number> = _import(elevation, DEFAULTS.SECONDARY_CONTAINER.ELEVATION)
+	local elevationState: State<number> = _import(elevation, DEFAULTS.SECONDARY_CONTAINER.ELEVATION or 0)
 
 	local inst = Interface.new(
-		_import(text, DEFAULTS.SECONDARY_CONTAINER.TEXT),
-		_import(buttonText, DEFAULTS.SECONDARY_CONTAINER.BUTTON_TEXT),
+		_import(text, DEFAULTS.SECONDARY_CONTAINER.TEXT or ""),
+		_import(buttonText, DEFAULTS.SECONDARY_CONTAINER.BUTTON_TEXT or ""),
 		_import(onButtonClick, DEFAULTS.SECONDARY_CONTAINER.ON_BUTTON_CLICK),
 		_import(onCloseClick, DEFAULTS.SECONDARY_CONTAINER.ON_CLOSE_CLICK),
 		_Computed(function(s: Style, e: number?): Color3
@@ -193,7 +193,7 @@ function Interface.secondaryContainer(
 		_Computed(function(s: Style, e: number?): Color3
 			return s:GetColor(Enums.ColorRoleType.SecondaryContainer, e)
 		end, styleState, elevationState),
-		1,
+		elevationState,
 		_Computed(function(s: Style): any
 			return s.SchemeType
 		end, styleState),
@@ -233,11 +233,11 @@ function Interface.tertiaryContainer(
 	local _Computed = _fuse.Computed
 
 	local styleState: State<Style> = _import(style, DEFAULTS.TERTIARY_CONTAINER.STYLE)
-	local elevationState: State<number> = _import(elevation, DEFAULTS.TERTIARY_CONTAINER.ELEVATION)
+	local elevationState: State<number> = _import(elevation, DEFAULTS.TERTIARY_CONTAINER.ELEVATION or 0)
 
 	local inst = Interface.new(
-		_import(text, DEFAULTS.TERTIARY_CONTAINER.TEXT),
-		_import(buttonText, DEFAULTS.TERTIARY_CONTAINER.BUTTON_TEXT),
+		_import(text, DEFAULTS.TERTIARY_CONTAINER.TEXT or ""),
+		_import(buttonText, DEFAULTS.TERTIARY_CONTAINER.BUTTON_TEXT or ""),
 		_import(onButtonClick, DEFAULTS.TERTIARY_CONTAINER.ON_BUTTON_CLICK),
 		_import(onCloseClick, DEFAULTS.TERTIARY_CONTAINER.ON_CLOSE_CLICK),
 		_Computed(function(s: Style, e: number?): Color3
@@ -249,7 +249,7 @@ function Interface.tertiaryContainer(
 		_Computed(function(s: Style, e: number?): Color3
 			return s:GetColor(Enums.ColorRoleType.TertiaryContainer, e)
 		end, styleState, elevationState),
-		1,
+		elevationState,
 		_Computed(function(s: Style): any
 			return s.SchemeType
 		end, styleState),
@@ -293,14 +293,14 @@ function Interface.new(
 	local _Value = _fuse.Value
 	local _Computed = _fuse.Computed
 
-	local scaleState: State<number> = _import(scale, DEFAULTS.NEW.SCALE)
+	local scaleState: State<number> = _import(scale, DEFAULTS.NEW.SCALE or 1)
 	local schemeTypeState: State<Enums.SchemeType> = _import(schemeType, DEFAULTS.NEW.SCHEME_TYPE)
 	local fontDataState: State<FontData> = _import(fontData, DEFAULTS.NEW.FONT_DATA)
 
-	local buttonTextState: State<string> = _import(buttonText, DEFAULTS.NEW.BUTTON_TEXT)
+	local buttonTextState: State<string> = _import(buttonText, DEFAULTS.NEW.BUTTON_TEXT or "")
 
-	local textState: State<string> = _import(text, DEFAULTS.NEW.TEXT)
-	local elevationState: State<number> = _import(elevation, DEFAULTS.NEW.ELEVATION)
+	local textState: State<string> = _import(text, DEFAULTS.NEW.TEXT or "")
+	local elevationState: State<number> = _import(elevation, DEFAULTS.NEW.ELEVATION or 0)
 
 	local onButtonClickState = _import(onButtonClick, DEFAULTS.NEW.ON_BUTTON_CLICK)
 	local onCloseClickState = _import(onCloseClick, DEFAULTS.NEW.ON_CLOSE_CLICK)

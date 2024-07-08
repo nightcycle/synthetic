@@ -78,7 +78,7 @@ function newThemedComponent(
 		_import(initialText, themeDefaults.INITIAL_TEXT),
 		_import(isEnabled, if themeDefaults.IS_ENABLED ~= nil then themeDefaults.IS_ENABLED else true),
 		_import(isError, if themeDefaults.IS_ERROR ~= nil then themeDefaults.IS_ERROR else true),
-		_import(label, themeDefaults.LABEL),
+		_import(label, themeDefaults.LABEL or ""),
 		_import(characterLimit, themeDefaults.CHARACTER_LIMIT),
 		_import(supportingText, themeDefaults.SUPPORTING_TEXT),
 		_import(icon, themeDefaults.ICON),
@@ -97,7 +97,7 @@ function newThemedComponent(
 		_Computed(function(s: Style): Color3
 			return s:GetColor(labelColor)
 		end, styleState),
-		_import(elevation, themeDefaults.ELEVATION),
+		_import(elevation, themeDefaults.ELEVATION or 0),
 		_Computed(function(s: Style): any
 			return s.SchemeType
 		end, styleState),
@@ -256,7 +256,7 @@ function Interface.new(
 			then isError
 			elseif DEFAULTS.NEW.IS_ERROR ~= nil then DEFAULTS.NEW.IS_ERROR
 			else false,
-		if label ~= nil then label else DEFAULTS.NEW.LABEL,
+		if label ~= nil then label else DEFAULTS.NEW.LABEL or "",
 		if characterLimit ~= nil then characterLimit else DEFAULTS.NEW.CHARACTER_LIMIT,
 		if supportingText ~= nil then supportingText else DEFAULTS.NEW.SUPPORTING_TEXT,
 		if icon ~= nil then icon else DEFAULTS.NEW.ICON,
@@ -267,7 +267,7 @@ function Interface.new(
 		if borderColor ~= nil then borderColor else DEFAULTS.NEW.BORDER_COLOR,
 		if borderColor ~= nil then borderColor else DEFAULTS.NEW.BORDER_COLOR,
 		if labelColor ~= nil then labelColor else DEFAULTS.NEW.LABEL_COLOR,
-		if elevation ~= nil then elevation else DEFAULTS.NEW.ELEVATION,
+		if elevation ~= nil then elevation else DEFAULTS.NEW.ELEVATION or 0,
 		true,
 		if schemeType ~= nil then schemeType else DEFAULTS.NEW.SCHEME_TYPE,
 		if bodyFontData ~= nil then bodyFontData else DEFAULTS.NEW.BODY_FONT_DATA,

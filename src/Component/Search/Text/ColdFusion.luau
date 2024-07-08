@@ -57,7 +57,7 @@ function Interface.onTertiaryContainer(
 	local _Computed = _fuse.Computed
 
 	local styleState: State<Style> = _import(style, DEFAULTS.ON_TERTIARY_CONTAINER.STYLE)
-	local elevationState = _import(elevation, DEFAULTS.ON_TERTIARY_CONTAINER.ELEVATION)
+	local elevationState = _import(elevation, DEFAULTS.ON_TERTIARY_CONTAINER.ELEVATION or 0)
 
 	local out = Base.newBar(
 		false,
@@ -368,7 +368,7 @@ function Interface.new(
 		if optionConstructor ~= nil then optionConstructor else DEFAULTS.NEW.OPTION_CONSTRUCTOR,
 		if textColor ~= nil then textColor else DEFAULTS.NEW.TEXT_COLOR,
 		if backgroundColor ~= nil then backgroundColor else DEFAULTS.NEW.BACKGROUND_COLOR,
-		if elevation ~= nil then elevation else DEFAULTS.NEW.ELEVATION,
+		if elevation ~= nil then elevation else DEFAULTS.NEW.ELEVATION or 0,
 		if schemeType ~= nil then schemeType else DEFAULTS.NEW.SCHEME_TYPE,
 		if fontData ~= nil then fontData else DEFAULTS.NEW.FONT_DATA,
 		if scale ~= nil then scale else DEFAULTS.NEW.SCALE

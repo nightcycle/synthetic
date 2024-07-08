@@ -23,7 +23,7 @@ return function(frame: Frame)
 	task.spawn(function()
 		local function makeHalfFrame(isDarkMode: boolean, color: Color3): Frame
 			local style = Style.new(
-				0.75,
+				1.5,
 				Enum.Font.SourceSans,
 				if isDarkMode then Enums.SchemeType.Dark else Enums.SchemeType.Light,
 				color
@@ -88,114 +88,11 @@ return function(frame: Frame)
 						end,
 						nil,
 						true,
-						false,
-						"Label",
-						20,
-						"Supporting Text",
-						nil,
-						style:GetColor(Enums.ColorRoleType.SurfaceContainerHighest, 1),
-						style:GetColor(Enums.ColorRoleType.Primary, 1),
-						style:GetColor(Enums.ColorRoleType.Error, 1),
-						style:GetColor(Enums.ColorRoleType.Outline, 1),
-						style:GetColor(Enums.ColorRoleType.OnSurface, 1),
-						style:GetColor(Enums.ColorRoleType.OnSurfaceVariant, 1),
-
-						0,
-						style.SchemeType,
-						style:GetFontData(Enums.FontType.BodyLarge),
-						style:GetFontData(Enums.FontType.BodySmall),
-						style.Scale
-					)
-				)
-				button.Parent = halfFrame
-			end
-			do
-				local button = maid:GiveTask(
-					Module.ColdFusion.new(
-						function(input: string?): string?
-							print(`submit: {input}`)
-							return input
-						end,
-						function(input: string?): string?
-							print(`input: {input}`)
-							return input
-						end,
-						nil,
-						false,
-						false,
-						"Label",
-						20,
-						"Supporting Text",
-						nil,
-						style:GetColor(Enums.ColorRoleType.SurfaceContainerHighest, 1),
-						style:GetColor(Enums.ColorRoleType.Primary, 1),
-						style:GetColor(Enums.ColorRoleType.Error, 1),
-						style:GetColor(Enums.ColorRoleType.Outline, 1),
-						style:GetColor(Enums.ColorRoleType.OnSurface, 1),
-						style:GetColor(Enums.ColorRoleType.OnSurfaceVariant, 1),
-
-						0,
-						style.SchemeType,
-						style:GetFontData(Enums.FontType.BodyLarge),
-						style:GetFontData(Enums.FontType.BodySmall),
-						style.Scale
-					)
-				)
-				button.Parent = halfFrame
-			end
-			do
-				local button = maid:GiveTask(
-					Module.ColdFusion.new(
-						function(input: string?): string?
-							print(`submit: {input}`)
-							return input
-						end,
-						function(input: string?): string?
-							print(`input: {input}`)
-							return input
-						end,
-						nil,
-						true,
 						true,
 						"Label",
-						20,
-						"Supporting Text",
-						Icons.settings,
-						style:GetColor(Enums.ColorRoleType.SurfaceContainerHighest, 1),
-						style:GetColor(Enums.ColorRoleType.Primary, 1),
-						style:GetColor(Enums.ColorRoleType.Error, 1),
-						style:GetColor(Enums.ColorRoleType.Outline, 1),
-						style:GetColor(Enums.ColorRoleType.OnSurface, 1),
-						style:GetColor(Enums.ColorRoleType.OnSurfaceVariant, 1),
-
-						0,
-						style.SchemeType,
-						style:GetFontData(Enums.FontType.BodyLarge),
-						style:GetFontData(Enums.FontType.BodySmall),
-						style.Scale
-					)
-				)
-				button.Parent = halfFrame
-			end
-
-			do
-				local button = maid:GiveTask(
-					Module.ColdFusion.new(
-						function(input: string?): string?
-							print(`submit: {input}`)
-							return input
-						end,
-						function(input: string?): string?
-							print(`input: {input}`)
-							return input
-						end,
 						nil,
-						true,
-						false,
-						"Label",
-						20,
-						"Supporting Text",
-						Icons.settings,
+						nil,
+						nil,
 						style:GetColor(Enums.ColorRoleType.SurfaceContainerHighest, 1),
 						style:GetColor(Enums.ColorRoleType.Primary, 1),
 						style:GetColor(Enums.ColorRoleType.Error, 1),
@@ -212,6 +109,109 @@ return function(frame: Frame)
 				)
 				button.Parent = halfFrame
 			end
+			-- do
+			-- 	local button = maid:GiveTask(
+			-- 		Module.ColdFusion.new(
+			-- 			function(input: string?): string?
+			-- 				print(`submit: {input}`)
+			-- 				return input
+			-- 			end,
+			-- 			function(input: string?): string?
+			-- 				print(`input: {input}`)
+			-- 				return input
+			-- 			end,
+			-- 			nil,
+			-- 			false,
+			-- 			false,
+			-- 			"Label",
+			-- 			20,
+			-- 			"Supporting Text",
+			-- 			nil,
+			-- 			style:GetColor(Enums.ColorRoleType.SurfaceContainerHighest, 1),
+			-- 			style:GetColor(Enums.ColorRoleType.Primary, 1),
+			-- 			style:GetColor(Enums.ColorRoleType.Error, 1),
+			-- 			style:GetColor(Enums.ColorRoleType.Outline, 1),
+			-- 			style:GetColor(Enums.ColorRoleType.OnSurface, 1),
+			-- 			style:GetColor(Enums.ColorRoleType.OnSurfaceVariant, 1),
+
+			-- 			0,
+			-- 			style.SchemeType,
+			-- 			style:GetFontData(Enums.FontType.BodyLarge),
+			-- 			style:GetFontData(Enums.FontType.BodySmall),
+			-- 			style.Scale
+			-- 		)
+			-- 	)
+			-- 	button.Parent = halfFrame
+			-- end
+			-- do
+			-- 	local button = maid:GiveTask(
+			-- 		Module.ColdFusion.new(
+			-- 			function(input: string?): string?
+			-- 				print(`submit: {input}`)
+			-- 				return input
+			-- 			end,
+			-- 			function(input: string?): string?
+			-- 				print(`input: {input}`)
+			-- 				return input
+			-- 			end,
+			-- 			nil,
+			-- 			true,
+			-- 			true,
+			-- 			"Label",
+			-- 			20,
+			-- 			"Supporting Text",
+			-- 			Icons.settings,
+			-- 			style:GetColor(Enums.ColorRoleType.SurfaceContainerHighest, 1),
+			-- 			style:GetColor(Enums.ColorRoleType.Primary, 1),
+			-- 			style:GetColor(Enums.ColorRoleType.Error, 1),
+			-- 			style:GetColor(Enums.ColorRoleType.Outline, 1),
+			-- 			style:GetColor(Enums.ColorRoleType.OnSurface, 1),
+			-- 			style:GetColor(Enums.ColorRoleType.OnSurfaceVariant, 1),
+
+			-- 			0,
+			-- 			style.SchemeType,
+			-- 			style:GetFontData(Enums.FontType.BodyLarge),
+			-- 			style:GetFontData(Enums.FontType.BodySmall),
+			-- 			style.Scale
+			-- 		)
+			-- 	)
+			-- 	button.Parent = halfFrame
+			-- end
+
+			-- do
+			-- 	local button = maid:GiveTask(
+			-- 		Module.ColdFusion.new(
+			-- 			function(input: string?): string?
+			-- 				print(`submit: {input}`)
+			-- 				return input
+			-- 			end,
+			-- 			function(input: string?): string?
+			-- 				print(`input: {input}`)
+			-- 				return input
+			-- 			end,
+			-- 			nil,
+			-- 			true,
+			-- 			false,
+			-- 			"Label",
+			-- 			20,
+			-- 			"Supporting Text",
+			-- 			Icons.settings,
+			-- 			style:GetColor(Enums.ColorRoleType.SurfaceContainerHighest, 1),
+			-- 			style:GetColor(Enums.ColorRoleType.Primary, 1),
+			-- 			style:GetColor(Enums.ColorRoleType.Error, 1),
+			-- 			style:GetColor(Enums.ColorRoleType.Outline, 1),
+			-- 			style:GetColor(Enums.ColorRoleType.OnSurface, 1),
+			-- 			style:GetColor(Enums.ColorRoleType.OnSurfaceVariant, 1),
+
+			-- 			0,
+			-- 			style.SchemeType,
+			-- 			style:GetFontData(Enums.FontType.BodyLarge),
+			-- 			style:GetFontData(Enums.FontType.BodySmall),
+			-- 			style.Scale
+			-- 		)
+			-- 	)
+			-- 	button.Parent = halfFrame
+			-- end
 
 			return halfFrame
 		end
@@ -221,8 +221,8 @@ return function(frame: Frame)
 			-- Color3.fromHSV(0, 0.25, 0.8),
 			-- Color3.fromHSV(0, 0.9, 0.5),
 			Color3.fromHSV(0.6, 0.9, 0.7),
-			Color3.fromHSV(0.35, 0.9, 0.7),
-			Color3.fromHSV(0.1, 0.9, 0.7),
+			-- Color3.fromHSV(0.35, 0.9, 0.7),
+			-- Color3.fromHSV(0.1, 0.9, 0.7),
 		}
 
 		for i, color in ipairs(COLORS) do

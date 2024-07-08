@@ -1,5 +1,7 @@
 # Filled Search Bar
 
+![Preview](preview.gif)
+
 A filled search bar is a container that allows for dynamic text queries. Read more [here](https://m3.material.io/components/search/overview).
 # Constructors
 
