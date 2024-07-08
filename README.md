@@ -127,6 +127,7 @@ local theme = Synthetic.Theme.new(
 ```
 
 ### Type Usage
+![example color roles](./media/color-roles.png)
 The entire goal of the theme type is to replace hours tinkering with colors, and replace them with a few context relevant tokens. The theme type will then take those tokens and return the appropriate color.
 ```luau
 -- using official color role
@@ -151,6 +152,7 @@ local customColor: Color3 = theme:GetCustom(
 )
 ```
 ### Palettes
+![example palette](./media/tonal-palette.png)
 The theme engine also generates palettes - functions that return a color with a consistent tone, but a brightness level dependent on the provided parameter. If you're interested in going deeper into color customization, you can do so with the palettes.
 
 ```luau
