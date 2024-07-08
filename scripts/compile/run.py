@@ -262,11 +262,21 @@ type CanBeState<V> = ColdFusion.CanBeState<V>"""
 		with open(out_path, mode="w") as file:
 			file.write("\n".join(lines))
 
+	def write_md(self) -> None:
+		lines: list[str] = [
+			f"# {self.display_name}\n",
+			self.description,
+		]
+		out_path = self.path + "/README.md"
+		with open(out_path, mode="w") as file:
+			file.write("\n".join(lines))
+
 	def write_all(self) -> None:
 		self.write_defaults()
 		self.write_fusion()
 		self.write_wrapper()
 		self.write_init()
+		self.write_md()
 
 # iterate through tree under directory SRC_DIR_PATH, looking for files named "definition.json", then print the path
 component_definitions: list[ComponentDefinition] = []
