@@ -1,5 +1,7 @@
 # Assist
 
+![Preview](preview.gif)
+
 A assist chip is a small button that allows for contextual action input. Read more (here)[https://m3.material.io/components/chips/overview].
 # Constructors
 

@@ -82,7 +82,7 @@ function newThemedComponent(
 		_Computed(function(s: Style): Color3
 			return s:GetColor(Enums.ColorRoleType.ErrorContainer)
 		end, styleState),
-		_import(elevation, themeDefaults.ELEVATION),
+		_import(elevation, themeDefaults.ELEVATION or 0),
 		_Computed(function(s: Style): any
 			return s.SchemeType
 		end, styleState),
@@ -183,7 +183,7 @@ function Interface.new(
 	local errorBackgroundColorState: State<Color3> =
 		_import(errorBackgroundColor, DEFAULTS.NEW.ERROR_BACKGROUND_COLOR)
 
-	local labelState = _import(label, DEFAULTS.NEW.LABEL)
+	local labelState = _import(label, DEFAULTS.NEW.LABEL or "")
 	local countState = _import(count, DEFAULTS.NEW.COUNT)
 	local iconState: State<ImageData> = _import(icon, DEFAULTS.NEW.ICON)
 	local onClickState = _import(onClick, DEFAULTS.NEW.ON_CLICK)
@@ -232,6 +232,7 @@ function Interface.new(
 			tC: Color3,
 			i: ImageData?
 		): { [Enums.ButtonStateType]: RenderData }
+			-- print(st, sc, e, hC, tC, f)
 			e += 1
 			return {
 				[Enums.ButtonStateType.Enabled] = Types._RenderData.new(
