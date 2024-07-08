@@ -22,14 +22,14 @@ return function(frame: Frame)
 	task.spawn(function()
 		local function makeHalfFrame(isDarkMode: boolean, color: Color3): Frame
 			local style = Style.new(
-				1,
+				1.5,
 				Enum.Font.SourceSans,
 				if isDarkMode then Enums.SchemeType.Dark else Enums.SchemeType.Light,
 				color
 			)
 
 			local halfFrame = maid:GiveTask(Instance.new("Frame"))
-			halfFrame.BackgroundColor3 = style:GetColor(Enums.ColorRoleType.Surface)
+			halfFrame.BackgroundColor3 = style:GetColor(Enums.ColorRoleType.Primary)
 			halfFrame.BorderSizePixel = 0
 			local listLayout = maid:GiveTask(Instance.new("UIListLayout"))
 			listLayout.FillDirection = Enum.FillDirection.Vertical
@@ -49,7 +49,7 @@ return function(frame: Frame)
 						"Button",
 						nil,
 						style:GetColor(Enums.ColorRoleType.OnPrimary),
-						style:GetColor(Enums.ColorRoleType.OnSurfaceVariant),
+						style:GetColor(Enums.ColorRoleType.InversePrimary),
 						true,
 						0,
 						style.SchemeType,
@@ -69,8 +69,8 @@ return function(frame: Frame)
 						"Disabled",
 						nil,
 						style:GetColor(Enums.ColorRoleType.OnPrimary),
-						style:GetColor(Enums.ColorRoleType.OnSurfaceVariant),
-						true,
+						style:GetColor(Enums.ColorRoleType.InversePrimary),
+						false,
 						0,
 						style.SchemeType,
 						style:GetFontData(Enums.FontType.LabelLarge),
@@ -105,11 +105,11 @@ return function(frame: Frame)
 
 		local COLORS: { [number]: Color3 } = {
 			Color3.fromHSV(0, 0.9, 0.8),
-			Color3.fromHSV(0, 0.25, 0.8),
-			Color3.fromHSV(0, 0.9, 0.5),
+			-- Color3.fromHSV(0, 0.25, 0.8),
+			-- Color3.fromHSV(0, 0.9, 0.5),
 			Color3.fromHSV(0.6, 0.9, 0.7),
 			Color3.fromHSV(0.35, 0.9, 0.7),
-			Color3.fromHSV(0.1, 0.9, 0.7),
+			-- Color3.fromHSV(0.1, 0.9, 0.7),
 		}
 
 		for i, color in ipairs(COLORS) do

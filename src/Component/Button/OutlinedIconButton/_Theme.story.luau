@@ -22,14 +22,14 @@ return function(frame: Frame)
 	task.spawn(function()
 		local function makeHalfFrame(isDarkMode: boolean, color: Color3): Frame
 			local style = Style.new(
-				1,
+				1.5,
 				Enum.Font.SourceSans,
 				if isDarkMode then Enums.SchemeType.Dark else Enums.SchemeType.Light,
 				color
 			)
 
 			local halfFrame = maid:GiveTask(Instance.new("Frame"))
-			halfFrame.BackgroundColor3 = style:GetColor(Enums.ColorRoleType.Surface)
+			halfFrame.BackgroundColor3 = style:GetColor(Enums.ColorRoleType.Primary)
 			halfFrame.BorderSizePixel = 0
 			local listLayout = maid:GiveTask(Instance.new("UIListLayout"))
 			listLayout.FillDirection = Enum.FillDirection.Vertical
@@ -41,21 +41,21 @@ return function(frame: Frame)
 			local Module = require(script.Parent)
 
 			do
-				local button = maid:GiveTask(Module.ColdFusion.primary(style, function()
+				local button = maid:GiveTask(Module.ColdFusion.onPrimary(style, function()
 					print("click")
 				end, Icons["1k"]))
 				button.Parent = halfFrame
 			end
 
 			do
-				local button = maid:GiveTask(Module.ColdFusion.secondary(style, function()
+				local button = maid:GiveTask(Module.ColdFusion.onSecondary(style, function()
 					print("click")
 				end, Icons["2k"]))
 				button.Parent = halfFrame
 			end
 
 			do
-				local button = maid:GiveTask(Module.ColdFusion.tertiary(style, function()
+				local button = maid:GiveTask(Module.ColdFusion.onTertiary(style, function()
 					print("click")
 				end, Icons["3k"]))
 				button.Parent = halfFrame
@@ -66,11 +66,11 @@ return function(frame: Frame)
 
 		local COLORS: { [number]: Color3 } = {
 			Color3.fromHSV(0, 0.9, 0.8),
-			Color3.fromHSV(0, 0.25, 0.8),
-			Color3.fromHSV(0, 0.9, 0.5),
+			-- Color3.fromHSV(0, 0.25, 0.8),
+			-- Color3.fromHSV(0, 0.9, 0.5),
 			Color3.fromHSV(0.6, 0.9, 0.7),
 			Color3.fromHSV(0.35, 0.9, 0.7),
-			Color3.fromHSV(0.1, 0.9, 0.7),
+			-- Color3.fromHSV(0.1, 0.9, 0.7),
 		}
 
 		for i, color in ipairs(COLORS) do

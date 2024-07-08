@@ -65,7 +65,7 @@ function Interface.new(
 	return inst
 end
 
-function Interface.primary(
+function Interface.onPrimary(
 	style: FusionCanBeState<Style>,
 	onClick: FusionCanBeState<() -> ()>,
 	icon: FusionCanBeState<ImageData>,
@@ -77,7 +77,7 @@ function Interface.primary(
 	local function convert<V>(value: FusionCanBeState<V>): CanBeState<V>
 		return Translators.Fusion.toColdFusion(maid, _fuse, value)
 	end
-	local inst = Source.primary(
+	local inst = Source.onPrimary(
 		convert(style),
 		convert(onClick),
 		convert(icon),
@@ -90,7 +90,7 @@ function Interface.primary(
 	return inst
 end
 
-function Interface.secondary(
+function Interface.onSecondary(
 	style: FusionCanBeState<Style>,
 	onClick: FusionCanBeState<() -> ()>,
 	icon: FusionCanBeState<ImageData>,
@@ -102,7 +102,7 @@ function Interface.secondary(
 	local function convert<V>(value: FusionCanBeState<V>): CanBeState<V>
 		return Translators.Fusion.toColdFusion(maid, _fuse, value)
 	end
-	local inst = Source.secondary(
+	local inst = Source.onSecondary(
 		convert(style),
 		convert(onClick),
 		convert(icon),
@@ -115,7 +115,7 @@ function Interface.secondary(
 	return inst
 end
 
-function Interface.tertiary(
+function Interface.onTertiary(
 	style: FusionCanBeState<Style>,
 	onClick: FusionCanBeState<() -> ()>,
 	icon: FusionCanBeState<ImageData>,
@@ -127,7 +127,7 @@ function Interface.tertiary(
 	local function convert<V>(value: FusionCanBeState<V>): CanBeState<V>
 		return Translators.Fusion.toColdFusion(maid, _fuse, value)
 	end
-	local inst = Source.tertiary(
+	local inst = Source.onTertiary(
 		convert(style),
 		convert(onClick),
 		convert(icon),
@@ -140,7 +140,7 @@ function Interface.tertiary(
 	return inst
 end
 
-function Interface.primaryContainer(
+function Interface.onPrimaryContainer(
 	style: FusionCanBeState<Style>,
 	onClick: FusionCanBeState<() -> ()>,
 	icon: FusionCanBeState<ImageData>,
@@ -152,7 +152,7 @@ function Interface.primaryContainer(
 	local function convert<V>(value: FusionCanBeState<V>): CanBeState<V>
 		return Translators.Fusion.toColdFusion(maid, _fuse, value)
 	end
-	local inst = Source.primaryContainer(
+	local inst = Source.onPrimaryContainer(
 		convert(style),
 		convert(onClick),
 		convert(icon),
@@ -165,7 +165,7 @@ function Interface.primaryContainer(
 	return inst
 end
 
-function Interface.secondaryContainer(
+function Interface.onSecondaryContainer(
 	style: FusionCanBeState<Style>,
 	onClick: FusionCanBeState<() -> ()>,
 	icon: FusionCanBeState<ImageData>,
@@ -177,7 +177,7 @@ function Interface.secondaryContainer(
 	local function convert<V>(value: FusionCanBeState<V>): CanBeState<V>
 		return Translators.Fusion.toColdFusion(maid, _fuse, value)
 	end
-	local inst = Source.secondaryContainer(
+	local inst = Source.onSecondaryContainer(
 		convert(style),
 		convert(onClick),
 		convert(icon),
@@ -190,7 +190,7 @@ function Interface.secondaryContainer(
 	return inst
 end
 
-function Interface.tertiaryContainer(
+function Interface.onTertiaryContainer(
 	style: FusionCanBeState<Style>,
 	onClick: FusionCanBeState<() -> ()>,
 	icon: FusionCanBeState<ImageData>,
@@ -202,7 +202,7 @@ function Interface.tertiaryContainer(
 	local function convert<V>(value: FusionCanBeState<V>): CanBeState<V>
 		return Translators.Fusion.toColdFusion(maid, _fuse, value)
 	end
-	local inst = Source.tertiaryContainer(
+	local inst = Source.onTertiaryContainer(
 		convert(style),
 		convert(onClick),
 		convert(icon),

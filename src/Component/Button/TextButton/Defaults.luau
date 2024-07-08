@@ -34,7 +34,7 @@ return {
 		FONT_DATA = Types.FontData.new(Font.fromEnum(Enum.Font.SourceSans), 14),
 		SCALE = 1,
 	},
-	PRIMARY = {
+	ON_PRIMARY = {
 		STYLE = Style.new(1, Enum.Font.SourceSans, "Light", Color3.new(0, 0.4, 0.7)),
 		ON_CLICK = function() end,
 		TEXT = "Button",
@@ -42,7 +42,7 @@ return {
 		ELEVATION = 0,
 		IS_ENABLED = true,
 	},
-	SECONDARY = {
+	ON_SECONDARY = {
 		STYLE = Style.new(1, Enum.Font.SourceSans, "Light", Color3.new(0, 0.4, 0.7)),
 		ON_CLICK = function() end,
 		TEXT = "Button",
@@ -50,7 +50,7 @@ return {
 		ELEVATION = 0,
 		IS_ENABLED = true,
 	},
-	TERTIARY = {
+	ON_TERTIARY = {
 		STYLE = Style.new(1, Enum.Font.SourceSans, "Light", Color3.new(0, 0.4, 0.7)),
 		ON_CLICK = function() end,
 		TEXT = "Button",
@@ -58,7 +58,7 @@ return {
 		ELEVATION = 0,
 		IS_ENABLED = true,
 	},
-	PRIMARY_CONTAINER = {
+	ON_PRIMARY_CONTAINER = {
 		STYLE = Style.new(1, Enum.Font.SourceSans, "Light", Color3.new(0, 0.4, 0.7)),
 		ON_CLICK = function() end,
 		TEXT = "Button",
@@ -66,7 +66,7 @@ return {
 		ELEVATION = 0,
 		IS_ENABLED = true,
 	},
-	SECONDARY_CONTAINER = {
+	ON_SECONDARY_CONTAINER = {
 		STYLE = Style.new(1, Enum.Font.SourceSans, "Light", Color3.new(0, 0.4, 0.7)),
 		ON_CLICK = function() end,
 		TEXT = "Button",
@@ -74,7 +74,7 @@ return {
 		ELEVATION = 0,
 		IS_ENABLED = true,
 	},
-	TERTIARY_CONTAINER = {
+	ON_TERTIARY_CONTAINER = {
 		STYLE = Style.new(1, Enum.Font.SourceSans, "Light", Color3.new(0, 0.4, 0.7)),
 		ON_CLICK = function() end,
 		TEXT = "Button",

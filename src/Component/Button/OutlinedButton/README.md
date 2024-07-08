@@ -1,5 +1,7 @@
 # Outlined Button
 
+![Preview](preview.gif)
+
 An outlined button is like a filled button, but the background is transparent and replaced by lines. Read more [here](https://m3.material.io/components/buttons/overview).
 # Constructors
 
@@ -74,7 +76,7 @@ local outlinedButton: GuiObject = Synthetic.Component.Button.OutlinedButton.Fusi
 	scale
 )
 ```
-## primary / secondary / tertiary / primaryContainer / secondaryContainer / tertiaryContainer
+## onPrimary / onSecondary / onTertiary / onPrimaryContainer / onSecondaryContainer / onTertiaryContainer
 This function is a style constructor, utilizing the "Style" type to reduce the number of parameters required for implementation.
 
 ### Parameters
@@ -97,7 +99,7 @@ local icon: ImageData? = nil
 local elevation: number = 0
 local isEnabled: boolean = true
 
-local outlinedButton = Synthetic.Component.Button.OutlinedButton.Fusion.primary()
+local outlinedButton = Synthetic.Component.Button.OutlinedButton.Fusion.onPrimary()
 outlinedButton.Style = style
 outlinedButton.OnClick = onClick
 outlinedButton.Text = text
@@ -115,7 +117,7 @@ local icon: ImageData? = nil
 local elevationState: Fusion.Value<number> = Value(0)
 local isEnabled: boolean = true
 
-local outlinedButton: GuiObject = Synthetic.Component.Button.OutlinedButton.Fusion.primary(
+local outlinedButton: GuiObject = Synthetic.Component.Button.OutlinedButton.Fusion.onPrimary(
 	styleState,
 	onClick,
 	textState,

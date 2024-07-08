@@ -28,7 +28,7 @@ type Wrapper<BaseInstance, Definition, ClassName> = Translators.Wrapper<BaseInst
 export type ExtendedFABWrapperDefinition = {
 	OnClick: () -> (),
 	Text: string,
-	Icon: ImageData,
+	Icon: ImageData?,
 	TextColor: Color3,
 	SurfaceColor: Color3,
 	DisabledTextColor: Color3,
@@ -46,7 +46,7 @@ export type StyledExtendedFABWrapperDefinition = {
 	Style: Style,
 	OnClick: () -> (),
 	Text: string,
-	Icon: ImageData,
+	Icon: ImageData?,
 	Elevation: number,
 	IsEnabled: boolean,
 }
@@ -70,7 +70,7 @@ function Interface.primary(): StyledExtendedFABWrapper
 		Style = _Value(Style.new(1, Enum.Font.SourceSans, "Light", Color3.new(0, 0.4, 0.7))),
 		OnClick = _Value(function() end),
 		Text = _Value("Button"),
-		Icon = _Value(Types.ImageData.new("")),
+		Icon = _Value(nil),
 		Elevation = _Value(0),
 		IsEnabled = _Value(true),
 	}
@@ -98,7 +98,7 @@ function Interface.secondary(): StyledExtendedFABWrapper
 		Style = _Value(Style.new(1, Enum.Font.SourceSans, "Light", Color3.new(0, 0.4, 0.7))),
 		OnClick = _Value(function() end),
 		Text = _Value("Button"),
-		Icon = _Value(Types.ImageData.new("")),
+		Icon = _Value(nil),
 		Elevation = _Value(0),
 		IsEnabled = _Value(true),
 	}
@@ -126,7 +126,7 @@ function Interface.tertiary(): StyledExtendedFABWrapper
 		Style = _Value(Style.new(1, Enum.Font.SourceSans, "Light", Color3.new(0, 0.4, 0.7))),
 		OnClick = _Value(function() end),
 		Text = _Value("Button"),
-		Icon = _Value(Types.ImageData.new("")),
+		Icon = _Value(nil),
 		Elevation = _Value(0),
 		IsEnabled = _Value(true),
 	}
@@ -154,7 +154,7 @@ function Interface.primaryContainer(): StyledExtendedFABWrapper
 		Style = _Value(Style.new(1, Enum.Font.SourceSans, "Light", Color3.new(0, 0.4, 0.7))),
 		OnClick = _Value(function() end),
 		Text = _Value("Button"),
-		Icon = _Value(Types.ImageData.new("")),
+		Icon = _Value(nil),
 		Elevation = _Value(0),
 		IsEnabled = _Value(true),
 	}
@@ -182,7 +182,7 @@ function Interface.secondaryContainer(): StyledExtendedFABWrapper
 		Style = _Value(Style.new(1, Enum.Font.SourceSans, "Light", Color3.new(0, 0.4, 0.7))),
 		OnClick = _Value(function() end),
 		Text = _Value("Button"),
-		Icon = _Value(Types.ImageData.new("")),
+		Icon = _Value(nil),
 		Elevation = _Value(0),
 		IsEnabled = _Value(true),
 	}
@@ -210,7 +210,7 @@ function Interface.tertiaryContainer(): StyledExtendedFABWrapper
 		Style = _Value(Style.new(1, Enum.Font.SourceSans, "Light", Color3.new(0, 0.4, 0.7))),
 		OnClick = _Value(function() end),
 		Text = _Value("Button"),
-		Icon = _Value(Types.ImageData.new("")),
+		Icon = _Value(nil),
 		Elevation = _Value(0),
 		IsEnabled = _Value(true),
 	}

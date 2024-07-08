@@ -1,5 +1,7 @@
 # Outlined Icon Button
 
+![Preview](preview.gif)
+
 
 # Constructors
 
@@ -69,7 +71,7 @@ local outlinedIconButton: GuiObject = Synthetic.Component.Button.OutlinedIconBut
 	scaleState
 )
 ```
-## primary / secondary / tertiary / primaryContainer / secondaryContainer / tertiaryContainer
+## onPrimary / onSecondary / onTertiary / onPrimaryContainer / onSecondaryContainer / onTertiaryContainer
 This function is a style constructor, utilizing the "Style" type to reduce the number of parameters required for implementation.
 
 ### Parameters
@@ -90,7 +92,7 @@ local icon: ImageData = Types.ImageData.new("")
 local elevation: number = 0
 local isEnabled: boolean = true
 
-local outlinedIconButton = Synthetic.Component.Button.OutlinedIconButton.Fusion.primary()
+local outlinedIconButton = Synthetic.Component.Button.OutlinedIconButton.Fusion.onPrimary()
 outlinedIconButton.Style = style
 outlinedIconButton.OnClick = onClick
 outlinedIconButton.Icon = icon
@@ -106,7 +108,7 @@ local iconState: Fusion.Value<ImageData> = Value(Types.ImageData.new(""))
 local elevation: number = 0
 local isEnabledState: Fusion.Value<boolean> = Value(true)
 
-local outlinedIconButton: GuiObject = Synthetic.Component.Button.OutlinedIconButton.Fusion.primary(
+local outlinedIconButton: GuiObject = Synthetic.Component.Button.OutlinedIconButton.Fusion.onPrimary(
 	styleState,
 	onClick,
 	iconState,

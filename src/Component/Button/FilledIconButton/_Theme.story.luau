@@ -87,11 +87,11 @@ return function(frame: Frame)
 
 		local COLORS: { [number]: Color3 } = {
 			Color3.fromHSV(0, 0.9, 0.8),
-			Color3.fromHSV(0, 0.25, 0.8),
-			Color3.fromHSV(0, 0.9, 0.5),
+			-- Color3.fromHSV(0, 0.25, 0.8),
+			-- Color3.fromHSV(0, 0.9, 0.5),
 			Color3.fromHSV(0.6, 0.9, 0.7),
 			Color3.fromHSV(0.35, 0.9, 0.7),
-			Color3.fromHSV(0.1, 0.9, 0.7),
+			-- Color3.fromHSV(0.1, 0.9, 0.7),
 		}
 
 		for i, color in ipairs(COLORS) do

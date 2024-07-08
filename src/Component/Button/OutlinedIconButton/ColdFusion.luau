@@ -36,7 +36,7 @@ local Interface = {}
 
 -- Private Functions
 function newThemedComponent(
-	themeDefaults: typeof(DEFAULTS.PRIMARY),
+	themeDefaults: typeof(DEFAULTS.ON_PRIMARY),
 	textColor: Enums.ColorRoleType,
 	disabledTextColor: Enums.ColorRoleType,
 	onClick: CanBeState<() -> ()>,
@@ -68,8 +68,8 @@ function newThemedComponent(
 		_Computed(function(s: Style): Color3
 			return s:GetColor(disabledTextColor)
 		end, styleState),
-		_import(isEnabled, themeDefaults.IS_ENABLED),
-		_import(elevation, themeDefaults.ELEVATION),
+		_import(isEnabled, if themeDefaults.IS_ENABLED ~= nil then themeDefaults.IS_ENABLED else true),
+		_import(elevation, themeDefaults.ELEVATION or 0),
 		_Computed(function(s: Style): any
 			return s.SchemeType
 		end, styleState),
@@ -90,7 +90,7 @@ end
 
 Interface = {}
 
-function Interface.primary(
+function Interface.onPrimary(
 	style: CanBeState<Style>,
 	onClick: CanBeState<() -> ()>,
 	icon: CanBeState<ImageData>,
@@ -98,9 +98,9 @@ function Interface.primary(
 	isEnabled: CanBeState<boolean?>
 ): GuiObject
 	return newThemedComponent(
-		DEFAULTS.PRIMARY,
+		DEFAULTS.ON_PRIMARY,
 		Enums.ColorRoleType.OnPrimary,
-		Enums.ColorRoleType.OnSurfaceVariant,
+		Enums.ColorRoleType.SurfaceVariant,
 		onClick,
 		icon,
 		style,
@@ -109,7 +109,7 @@ function Interface.primary(
 	)
 end
 
-function Interface.secondary(
+function Interface.onSecondary(
 	style: CanBeState<Style>,
 	onClick: CanBeState<() -> ()>,
 	icon: CanBeState<ImageData>,
@@ -117,9 +117,9 @@ function Interface.secondary(
 	isEnabled: CanBeState<boolean?>
 ): GuiObject
 	return newThemedComponent(
-		DEFAULTS.SECONDARY,
+		DEFAULTS.ON_SECONDARY,
 		Enums.ColorRoleType.OnSecondary,
-		Enums.ColorRoleType.OnSurfaceVariant,
+		Enums.ColorRoleType.SurfaceVariant,
 		onClick,
 		icon,
 		style,
@@ -128,7 +128,7 @@ function Interface.secondary(
 	)
 end
 
-function Interface.tertiary(
+function Interface.onTertiary(
 	style: CanBeState<Style>,
 	onClick: CanBeState<() -> ()>,
 	icon: CanBeState<ImageData>,
@@ -136,9 +136,9 @@ function Interface.tertiary(
 	isEnabled: CanBeState<boolean?>
 ): GuiObject
 	return newThemedComponent(
-		DEFAULTS.TERTIARY,
+		DEFAULTS.ON_TERTIARY,
 		Enums.ColorRoleType.OnTertiary,
-		Enums.ColorRoleType.OnSurfaceVariant,
+		Enums.ColorRoleType.SurfaceVariant,
 		onClick,
 		icon,
 		style,
@@ -147,7 +147,7 @@ function Interface.tertiary(
 	)
 end
 
-function Interface.primaryContainer(
+function Interface.onPrimaryContainer(
 	style: CanBeState<Style>,
 	onClick: CanBeState<() -> ()>,
 	icon: CanBeState<ImageData>,
@@ -155,9 +155,9 @@ function Interface.primaryContainer(
 	isEnabled: CanBeState<boolean?>
 ): GuiObject
 	return newThemedComponent(
-		DEFAULTS.PRIMARY_CONTAINER,
+		DEFAULTS.ON_PRIMARY_CONTAINER,
 		Enums.ColorRoleType.OnPrimaryContainer,
-		Enums.ColorRoleType.OnSecondaryContainer,
+		Enums.ColorRoleType.Primary,
 		onClick,
 		icon,
 		style,
@@ -166,7 +166,7 @@ function Interface.primaryContainer(
 	)
 end
 
-function Interface.secondaryContainer(
+function Interface.onSecondaryContainer(
 	style: CanBeState<Style>,
 	onClick: CanBeState<() -> ()>,
 	icon: CanBeState<ImageData>,
@@ -174,9 +174,9 @@ function Interface.secondaryContainer(
 	isEnabled: CanBeState<boolean?>
 ): GuiObject
 	return newThemedComponent(
-		DEFAULTS.SECONDARY_CONTAINER,
+		DEFAULTS.ON_SECONDARY_CONTAINER,
 		Enums.ColorRoleType.OnSecondaryContainer,
-		Enums.ColorRoleType.OnSecondaryContainer,
+		Enums.ColorRoleType.Secondary,
 		onClick,
 		icon,
 		style,
@@ -185,7 +185,7 @@ function Interface.secondaryContainer(
 	)
 end
 
-function Interface.tertiaryContainer(
+function Interface.onTertiaryContainer(
 	style: CanBeState<Style>,
 	onClick: CanBeState<() -> ()>,
 	icon: CanBeState<ImageData>,
@@ -193,9 +193,9 @@ function Interface.tertiaryContainer(
 	isEnabled: CanBeState<boolean?>
 ): GuiObject
 	return newThemedComponent(
-		DEFAULTS.TERTIARY_CONTAINER,
+		DEFAULTS.ON_TERTIARY_CONTAINER,
 		Enums.ColorRoleType.OnTertiaryContainer,
-		Enums.ColorRoleType.OnSecondaryContainer,
+		Enums.ColorRoleType.Tertiary,
 		onClick,
 		icon,
 		style,

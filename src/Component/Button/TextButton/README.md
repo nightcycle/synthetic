@@ -1,5 +1,7 @@
 # Text Button
 
+![Preview](preview.gif)
+
 A text button is a simple interactive label which can be clicked for an action. Read more [here](https://m3.material.io/components/buttons/overview).
 # Constructors
 
@@ -74,7 +76,7 @@ local textButton: GuiObject = Synthetic.Component.Button.TextButton.Fusion.new(
 	scale
 )
 ```
-## primary / secondary / tertiary / primaryContainer / secondaryContainer / tertiaryContainer
+## onPrimary / onSecondary / onTertiary / onPrimaryContainer / onSecondaryContainer / onTertiaryContainer
 This function is a style constructor, utilizing the "Style" type to reduce the number of parameters required for implementation.
 
 ### Parameters
@@ -97,7 +99,7 @@ local icon: ImageData? = nil
 local elevation: number = 0
 local isEnabled: boolean = true
 
-local textButton = Synthetic.Component.Button.TextButton.Fusion.primary()
+local textButton = Synthetic.Component.Button.TextButton.Fusion.onPrimary()
 textButton.Style = style
 textButton.OnClick = onClick
 textButton.Text = text
@@ -115,7 +117,7 @@ local icon: ImageData? = nil
 local elevationState: Fusion.Value<number> = Value(0)
 local isEnabled: boolean = true
 
-local textButton: GuiObject = Synthetic.Component.Button.TextButton.Fusion.primary(
+local textButton: GuiObject = Synthetic.Component.Button.TextButton.Fusion.onPrimary(
 	styleState,
 	onClick,
 	textState,

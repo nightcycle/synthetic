@@ -35,7 +35,7 @@ local Interface = {}
 function Interface.new(
 	onClick: FusionCanBeState<() -> ()>,
 	text: FusionCanBeState<string>,
-	icon: FusionCanBeState<ImageData>,
+	icon: FusionCanBeState<ImageData?>,
 	textColor: FusionCanBeState<Color3>,
 	surfaceColor: FusionCanBeState<Color3>,
 	disabledTextColor: FusionCanBeState<Color3>,
@@ -77,7 +77,7 @@ function Interface.primary(
 	style: FusionCanBeState<Style>,
 	onClick: FusionCanBeState<() -> ()>,
 	text: FusionCanBeState<string>,
-	icon: FusionCanBeState<ImageData>,
+	icon: FusionCanBeState<ImageData?>,
 	elevation: FusionCanBeState<number>,
 	isEnabled: FusionCanBeState<boolean>
 ): GuiObject
@@ -104,7 +104,7 @@ function Interface.secondary(
 	style: FusionCanBeState<Style>,
 	onClick: FusionCanBeState<() -> ()>,
 	text: FusionCanBeState<string>,
-	icon: FusionCanBeState<ImageData>,
+	icon: FusionCanBeState<ImageData?>,
 	elevation: FusionCanBeState<number>,
 	isEnabled: FusionCanBeState<boolean>
 ): GuiObject
@@ -131,7 +131,7 @@ function Interface.tertiary(
 	style: FusionCanBeState<Style>,
 	onClick: FusionCanBeState<() -> ()>,
 	text: FusionCanBeState<string>,
-	icon: FusionCanBeState<ImageData>,
+	icon: FusionCanBeState<ImageData?>,
 	elevation: FusionCanBeState<number>,
 	isEnabled: FusionCanBeState<boolean>
 ): GuiObject
@@ -158,7 +158,7 @@ function Interface.primaryContainer(
 	style: FusionCanBeState<Style>,
 	onClick: FusionCanBeState<() -> ()>,
 	text: FusionCanBeState<string>,
-	icon: FusionCanBeState<ImageData>,
+	icon: FusionCanBeState<ImageData?>,
 	elevation: FusionCanBeState<number>,
 	isEnabled: FusionCanBeState<boolean>
 ): GuiObject
@@ -185,7 +185,7 @@ function Interface.secondaryContainer(
 	style: FusionCanBeState<Style>,
 	onClick: FusionCanBeState<() -> ()>,
 	text: FusionCanBeState<string>,
-	icon: FusionCanBeState<ImageData>,
+	icon: FusionCanBeState<ImageData?>,
 	elevation: FusionCanBeState<number>,
 	isEnabled: FusionCanBeState<boolean>
 ): GuiObject
@@ -212,7 +212,7 @@ function Interface.tertiaryContainer(
 	style: FusionCanBeState<Style>,
 	onClick: FusionCanBeState<() -> ()>,
 	text: FusionCanBeState<string>,
-	icon: FusionCanBeState<ImageData>,
+	icon: FusionCanBeState<ImageData?>,
 	elevation: FusionCanBeState<number>,
 	isEnabled: FusionCanBeState<boolean>
 ): GuiObject

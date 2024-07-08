@@ -1,5 +1,7 @@
 # FAB
 
+![Preview](preview.gif)
+
 A "Floating-Action-Button" (FAB) is a large filled icon button that hovers above the other UI elements. Read more [here](https://m3.material.io/components/floating-action-button/overview).
 # Constructors
 

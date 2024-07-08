@@ -20,8 +20,8 @@
                 },
                 {
                     "name": "icon",
-                    "type": "ImageData",
-                    "default": "Types.ImageData.new(\"\")"
+                    "type": "ImageData?",
+                    "default": "nil"
                 },
                 {
                     "name": "textColor",
@@ -103,8 +103,8 @@
                 },
                 {
                     "name": "icon",
-                    "type": "ImageData",
-                    "default": "Types.ImageData.new(\"\")"
+                    "type": "ImageData?",
+                    "default": "nil"
                 },
                 {
                     "name": "elevation",

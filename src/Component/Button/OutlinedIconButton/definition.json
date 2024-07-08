@@ -57,12 +57,12 @@
         },
         {
             "names": [
-                "primary",
-                "secondary",
-                "tertiary",
-                "primaryContainer",
-                "secondaryContainer",
-                "tertiaryContainer"
+                "onPrimary",
+                "onSecondary",
+                "onTertiary",
+                "onPrimaryContainer",
+                "onSecondaryContainer",
+                "onTertiaryContainer"
             ],
             "key": "styled",
             "parameters": [

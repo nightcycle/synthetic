@@ -22,7 +22,7 @@ return function(frame: Frame)
 	task.spawn(function()
 		local function makeHalfFrame(isDarkMode: boolean, color: Color3): Frame
 			local style = Style.new(
-				1,
+				1.5,
 				Enum.Font.SourceSans,
 				if isDarkMode then Enums.SchemeType.Dark else Enums.SchemeType.Light,
 				color
@@ -74,7 +74,7 @@ return function(frame: Frame)
 						style:GetColor(Enums.ColorRoleType.Primary),
 						style:GetColor(Enums.ColorRoleType.OnSurfaceVariant),
 						style:GetColor(Enums.ColorRoleType.SurfaceVariant),
-						true,
+						false,
 						0,
 						style.SchemeType,
 						style:GetFontData(Enums.FontType.LabelLarge),
@@ -111,11 +111,11 @@ return function(frame: Frame)
 
 		local COLORS: { [number]: Color3 } = {
 			Color3.fromHSV(0, 0.9, 0.8),
-			Color3.fromHSV(0, 0.25, 0.8),
-			Color3.fromHSV(0, 0.9, 0.5),
+			-- Color3.fromHSV(0, 0.25, 0.8),
+			-- Color3.fromHSV(0, 0.9, 0.5),
 			Color3.fromHSV(0.6, 0.9, 0.7),
 			Color3.fromHSV(0.35, 0.9, 0.7),
-			Color3.fromHSV(0.1, 0.9, 0.7),
+			-- Color3.fromHSV(0.1, 0.9, 0.7),
 		}
 
 		for i, color in ipairs(COLORS) do

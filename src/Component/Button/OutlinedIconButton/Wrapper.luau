@@ -61,7 +61,7 @@ export type StyledOutlinedIconButtonWrapper = Wrapper<
 -- Interface
 local Interface = {}
 
-function Interface.primary(): StyledOutlinedIconButtonWrapper
+function Interface.onPrimary(): StyledOutlinedIconButtonWrapper
 	local maid = Maid.new()
 	local _fuse = ColdFusion.fuse(maid)
 	local _Value = _fuse.Value
@@ -72,7 +72,7 @@ function Interface.primary(): StyledOutlinedIconButtonWrapper
 		Elevation = _Value(0),
 		IsEnabled = _Value(true),
 	}
-	local inst: GuiObject = Source.primary(
+	local inst: GuiObject = Source.onPrimary(
 		definition.Style,
 		definition.OnClick,
 		definition.Icon,
@@ -87,7 +87,7 @@ function Interface.primary(): StyledOutlinedIconButtonWrapper
 	return wrapper
 end
 
-function Interface.secondary(): StyledOutlinedIconButtonWrapper
+function Interface.onSecondary(): StyledOutlinedIconButtonWrapper
 	local maid = Maid.new()
 	local _fuse = ColdFusion.fuse(maid)
 	local _Value = _fuse.Value
@@ -98,7 +98,7 @@ function Interface.secondary(): StyledOutlinedIconButtonWrapper
 		Elevation = _Value(0),
 		IsEnabled = _Value(true),
 	}
-	local inst: GuiObject = Source.secondary(
+	local inst: GuiObject = Source.onSecondary(
 		definition.Style,
 		definition.OnClick,
 		definition.Icon,
@@ -113,7 +113,7 @@ function Interface.secondary(): StyledOutlinedIconButtonWrapper
 	return wrapper
 end
 
-function Interface.tertiary(): StyledOutlinedIconButtonWrapper
+function Interface.onTertiary(): StyledOutlinedIconButtonWrapper
 	local maid = Maid.new()
 	local _fuse = ColdFusion.fuse(maid)
 	local _Value = _fuse.Value
@@ -124,7 +124,7 @@ function Interface.tertiary(): StyledOutlinedIconButtonWrapper
 		Elevation = _Value(0),
 		IsEnabled = _Value(true),
 	}
-	local inst: GuiObject = Source.tertiary(
+	local inst: GuiObject = Source.onTertiary(
 		definition.Style,
 		definition.OnClick,
 		definition.Icon,
@@ -139,7 +139,7 @@ function Interface.tertiary(): StyledOutlinedIconButtonWrapper
 	return wrapper
 end
 
-function Interface.primaryContainer(): StyledOutlinedIconButtonWrapper
+function Interface.onPrimaryContainer(): StyledOutlinedIconButtonWrapper
 	local maid = Maid.new()
 	local _fuse = ColdFusion.fuse(maid)
 	local _Value = _fuse.Value
@@ -150,7 +150,7 @@ function Interface.primaryContainer(): StyledOutlinedIconButtonWrapper
 		Elevation = _Value(0),
 		IsEnabled = _Value(true),
 	}
-	local inst: GuiObject = Source.primaryContainer(
+	local inst: GuiObject = Source.onPrimaryContainer(
 		definition.Style,
 		definition.OnClick,
 		definition.Icon,
@@ -165,7 +165,7 @@ function Interface.primaryContainer(): StyledOutlinedIconButtonWrapper
 	return wrapper
 end
 
-function Interface.secondaryContainer(): StyledOutlinedIconButtonWrapper
+function Interface.onSecondaryContainer(): StyledOutlinedIconButtonWrapper
 	local maid = Maid.new()
 	local _fuse = ColdFusion.fuse(maid)
 	local _Value = _fuse.Value
@@ -176,7 +176,7 @@ function Interface.secondaryContainer(): StyledOutlinedIconButtonWrapper
 		Elevation = _Value(0),
 		IsEnabled = _Value(true),
 	}
-	local inst: GuiObject = Source.secondaryContainer(
+	local inst: GuiObject = Source.onSecondaryContainer(
 		definition.Style,
 		definition.OnClick,
 		definition.Icon,
@@ -191,7 +191,7 @@ function Interface.secondaryContainer(): StyledOutlinedIconButtonWrapper
 	return wrapper
 end
 
-function Interface.tertiaryContainer(): StyledOutlinedIconButtonWrapper
+function Interface.onTertiaryContainer(): StyledOutlinedIconButtonWrapper
 	local maid = Maid.new()
 	local _fuse = ColdFusion.fuse(maid)
 	local _Value = _fuse.Value
@@ -202,7 +202,7 @@ function Interface.tertiaryContainer(): StyledOutlinedIconButtonWrapper
 		Elevation = _Value(0),
 		IsEnabled = _Value(true),
 	}
-	local inst: GuiObject = Source.tertiaryContainer(
+	local inst: GuiObject = Source.onTertiaryContainer(
 		definition.Style,
 		definition.OnClick,
 		definition.Icon,

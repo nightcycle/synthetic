@@ -1,5 +1,7 @@
 # Filled Icon Button
 
+![Preview](preview.gif)
+
 A Filled Icon Button is an icon in a clickable container. Read more [here](https://m3.material.io/components/icon-buttons/overview).
 # Constructors
 

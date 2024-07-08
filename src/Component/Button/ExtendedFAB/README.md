@@ -1,5 +1,7 @@
 # Extended FAB
 
+![Preview](preview.gif)
+
 An Extended "Floating-Action-Button" (FAB) is a FAB with a text component. Read more [here](https://m3.material.io/components/floating-action-button/overview).
 # Constructors
 
@@ -10,7 +12,7 @@ This function is a native constructor, with verbosity allowing for control over 
 ### Parameters
 - **onClick**: () -> ()
 - **text**: string
-- **icon**: ImageData
+- **icon**: ImageData?
 - **textColor**: Color3
 - **surfaceColor**: Color3
 - **disabledTextColor**: Color3
@@ -29,7 +31,7 @@ This function is a native constructor, with verbosity allowing for control over 
 ```luau
 local onClick: () -> () = function() end
 local text: string = "Button"
-local icon: ImageData = Types.ImageData.new("")
+local icon: ImageData? = nil
 local textColor: Color3 = Color3.new()
 local surfaceColor: Color3 = Color3.new()
 local disabledTextColor: Color3 = Color3.new()
@@ -61,7 +63,7 @@ extendedFAB.Scale = scale
 ```luau
 local onClickState: Fusion.Value<() -> ()> = Value(function() end)
 local text: string = "Button"
-local iconState: Fusion.Value<ImageData> = Value(Types.ImageData.new(""))
+local iconState: Fusion.Value<ImageData?> = Value(nil)
 local textColor: Color3 = Color3.new()
 local surfaceColorState: Fusion.Value<Color3> = Value(Color3.new())
 local disabledTextColor: Color3 = Color3.new()
@@ -96,7 +98,7 @@ This function is a style constructor, utilizing the "Style" type to reduce the n
 - **style**: Style
 - **onClick**: () -> ()
 - **text**: string
-- **icon**: ImageData
+- **icon**: ImageData?
 - **elevation**: number
 - **isEnabled**: boolean
 
@@ -108,7 +110,7 @@ This function is a style constructor, utilizing the "Style" type to reduce the n
 local style: Style = Style.new(1, Enum.Font.SourceSans, "Light", Color3.new(0, 0.4, 0.7))
 local onClick: () -> () = function() end
 local text: string = "Button"
-local icon: ImageData = Types.ImageData.new("")
+local icon: ImageData? = nil
 local elevation: number = 0
 local isEnabled: boolean = true
 
@@ -126,7 +128,7 @@ extendedFAB.IsEnabled = isEnabled
 local styleState: Fusion.Value<Style> = Value(Style.new(1, Enum.Font.SourceSans, "Light", Color3.new(0, 0.4, 0.7)))
 local onClick: () -> () = function() end
 local textState: Fusion.Value<string> = Value("Button")
-local icon: ImageData = Types.ImageData.new("")
+local icon: ImageData? = nil
 local elevationState: Fusion.Value<number> = Value(0)
 local isEnabled: boolean = true
 
