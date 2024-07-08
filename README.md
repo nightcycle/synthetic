@@ -44,6 +44,63 @@ I love fusion, but the table based method all the constructors use is a headache
 
 I've gone and used parameter dense functions for constructors, relying on the parameter name hinting to guide me. In my experience, this reduces debugging turnaround and leads to faster implementation.
 
+
+# Components
+## Buttons
+- [Badge](./src/Component/Button/Badge)
+
+### Common
+- [Elevated](./src/Component/Button/ElevatedButton)
+- [Filled](./src/Component/Button/FilledButton)
+- [Outlined](./src/Component/Button/OutlinedButton)
+- [Text](./src/Component/Button/TextButton)
+
+### Icons
+- [Filled Icon](./src/Component/Button/FilledIconButton)
+- [Outlined Icon](./src/Component/Button/OutlinedIconButton)
+
+### FAB
+- [FAB](./src/Component/Button/FAB)
+- [Extended FAB](./src/Component/Button/FAB)
+
+### Chips
+- [Assist Chip](./src/Component/Button/Chip/Assist)
+- [Filter Chip](./src/Component/Button/Chip/Filter)
+
+## Menu
+### Row
+- [Segmented](./src/Component/Menu/Row/Segmented)
+
+### Bar
+- [Bottom](./src/Component/Menu/Row/Bar/Bottom)
+- [Top Center](./src/Component/Menu/Row/Bar/Top/Center)
+- [Top Large](./src/Component/Menu/Row/Bar/Top/Large)
+- [Top Medium](./src/Component/Menu/Row/Bar/Top/Medium)
+- [Top Small](./src/Component/Menu/Row/Bar/Top/Small)
+
+## Text Field
+- [Filled](./src/Component/TextField/Filled)
+- [Outlined](./src/Component/TextField/Outlined)
+
+## Progress Indicator
+- [Circular](./src/Component/ProgressIndicator/Circular)
+
+## Snackbar
+- [Small](./src/Component/Snackbar/Small)
+- [Large](./src/Component/Snackbar/Large)
+
+## Search
+- [Filled](./src/Component/Search/Filled)
+- [Text](./src/Component/Search/Filled)
+
+## Misc
+- [Dialog](./src/Component/Dialog)
+- [Checkbox](./src/Component/Checkbox)
+- [Radio Button](./src/Component/RadioButton)
+- [Switch](./src/Component/Switch)
+<!-- - [Slider](./src/Component/Slider) -->
+
+
 # Style
 A lot of UI coding is assigning colors, fonts, and sizing - Synthetic attempts to fix that with a new immutable datatype: "Style". It's immutable due to its intention to be swapped out within states - a case where changes are much more easily detected when the datatype is immutable.
 
@@ -255,60 +312,12 @@ typography:Apply(
 )
 ```
 
-# Components
-## Buttons
-- [Badge](./src/Component/Button/Badge)
+# Sounds
+I've gone and uploaded [all the sounds](https://m2.material.io/design/sound/sound-resources.html) made open source by an older version of the Material Design site. They're available as a static dictionary with keys taken from the original file names. They're used throughout the components, however you're welcome to use them as well!
 
-### Common
-- [Elevated](./src/Component/Button/ElevatedButton)
-- [Filled](./src/Component/Button/FilledButton)
-- [Outlined](./src/Component/Button/OutlinedButton)
-- [Text](./src/Component/Button/TextButton)
+# Icons
+All of the google icons are [imported as spritesheets](https://github.com/nightcycle/material-icons), and are recommended to use with this library. They natively support the ImageData type, and are just handy to have around.
 
-### Icons
-- [Filled Icon](./src/Component/Button/FilledIconButton)
-- [Outlined Icon](./src/Component/Button/OutlinedIconButton)
-
-### FAB
-- [FAB](./src/Component/Button/FAB)
-- [Extended FAB](./src/Component/Button/FAB)
-
-### Chips
-- [Assist Chip](./src/Component/Button/Chip/Assist)
-- [Filter Chip](./src/Component/Button/Chip/Filter)
-
-## Menu
-### Row
-- [Segmented](./src/Component/Menu/Row/Segmented)
-
-### Bar
-- [Bottom](./src/Component/Menu/Row/Bar/Bottom)
-- [Top Center](./src/Component/Menu/Row/Bar/Top/Center)
-- [Top Large](./src/Component/Menu/Row/Bar/Top/Large)
-- [Top Medium](./src/Component/Menu/Row/Bar/Top/Medium)
-- [Top Small](./src/Component/Menu/Row/Bar/Top/Small)
-
-## Text Field
-- [Filled](./src/Component/TextField/Filled)
-- [Outlined](./src/Component/TextField/Outlined)
-
-## Progress Indicator
-- [Circular](./src/Component/ProgressIndicator/Circular)
-
-## Snackbar
-- [Small](./src/Component/Snackbar/Small)
-- [Large](./src/Component/Snackbar/Large)
-
-## Search
-- [Filled](./src/Component/Search/Filled)
-- [Text](./src/Component/Search/Filled)
-
-## Misc
-- [Dialog](./src/Component/Dialog)
-- [Checkbox](./src/Component/Checkbox)
-- [Radio Button](./src/Component/RadioButton)
-- [Switch](./src/Component/Switch)
-<!-- - [Slider](./src/Component/Slider) -->
 
 # Utility Components
 In making this framework, various patterns became apparent. To save code frequent instance use-cases were organized into internal components. You can access them under `Synthetic.Util`.
@@ -332,13 +341,6 @@ A set of scrolling container constructors that tries to fit whatever you put int
 
 ## TextLabel
 Quickly add labels to things. Includes built in support for icons at beginning / end of text.
-
-
-# Sounds
-I've gone and uploaded [all the sounds](https://m2.material.io/design/sound/sound-resources.html) made open source by an older version of the Material Design site. They're available as a static dictionary with keys taken from the original file names. They're used throughout the components, however you're welcome to use them as well!
-
-# Icons
-All of the google icons are [imported as spritesheets](https://github.com/nightcycle/material-icons), and are recommended to use with this library. They natively support the ImageData type, and are just handy to have around.
 
 # Transitions
 The Material Design philosophies on [motion](https://m3.material.io/styles/motion/overview) is a very interesting read - however it's not one that is currently hooked up to most components. However if you do want their expertly curated theories on motion in your game, the Transitions utility may help you.
