@@ -10,8 +10,11 @@ local Style = require(_Package:WaitForChild("Style"))
 -- Types
 export type ImageData = Types.ImageData
 export type OptionData = Types.OptionData
+export type ButtonData = Types.ButtonData
+export type FontData = Types.FontData
 export type Style = Style.Style
 export type Typography = Style.Typography
+export type Theme = Style.Theme
 -- Constants
 -- Variables
 -- References
@@ -23,9 +26,10 @@ local Synthetic = {}
 Synthetic.Enums = require(_Package:WaitForChild("Enums"))
 Synthetic.Sounds = require(_Package:WaitForChild("Sounds"))
 Synthetic.Util = require(_Package:WaitForChild("Util"))
--- Synthetic.Transition = require(_Package:WaitForChild("Transition"))
+Synthetic.Transition = require(_Package:WaitForChild("Transition"))
 Synthetic.Types = Types
 Synthetic.Style = Style
+Synthetic.Theme = require(_Package:WaitForChild("Theme"))
 Synthetic.Typography = require(_Package:WaitForChild("Typography"))
 Synthetic.Component = {
 	Dialog = require(Component:WaitForChild("Dialog")),

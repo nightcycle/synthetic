@@ -1,4 +1,5 @@
 --!strict
+--!native
 -- https://github.com/material-foundation/material-color-utilities/blob/f5d03da60c268b43928f3a24d6bf499e2564d39a/typescript/blend/blend.ts
 local Cam16 = require(script.Parent:WaitForChild("HCT"):WaitForChild("Cam16"))
 local HCT = require(script.Parent:WaitForChild("HCT"))

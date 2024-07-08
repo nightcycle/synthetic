@@ -14,7 +14,7 @@ local Sounds = require(_Package:WaitForChild("Sounds"))
 local Enums = require(_Package:WaitForChild("Enums"))
 local Types = require(_Package:WaitForChild("Types"))
 local Style = require(_Package:WaitForChild("Style"))
-local Theme = require(_Package:WaitForChild("Style"):WaitForChild("Theme"))
+local Theme = require(_Package:WaitForChild("Theme"))
 
 -- Types
 type Maid = Maid.Maid

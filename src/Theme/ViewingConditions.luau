@@ -1,4 +1,5 @@
 --!strict
+--!native
 -- https://github.com/material-foundation/material-color-utilities/blob/f5d03da60c268b43928f3a24d6bf499e2564d39a/typescript/hct/viewing_conditions.ts
 local MathUtil = require(script.Parent:WaitForChild("MathUtil"))
 local ColorUtil = require(script.Parent:WaitForChild("ColorUtil"))

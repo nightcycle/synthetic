@@ -5,12 +5,13 @@ This UI library is powered by a variant of the fusion library, with the goal of 
 
 It is compatible with all major UI workflows:
 - Vanilla / No Framework
-- [Cold-Fusion](https://github.com/nightcycle/cold-fusion)
 - [Fusion](https://github.com/dphfox/Fusion)
 - [Roact](https://github.com/Roblox/roact/)
+- [Cold-Fusion](https://github.com/nightcycle/cold-fusion)
 - [Blend](https://quenty.github.io/NevermoreEngine/api/Blend)
 
 https://github.com/nightcycle/synthetic/assets/77173389/42044196-0b4a-4e76-9276-88edaf60ef55
+All components can be previewed with the [Hoarcecat](https://github.com/Kampfkarren/hoarcekat) plugin. Anything named "_Config" showcases the different ways a component can be configured. Anything named "_Theme" showcases how the component looks when made with the more portable theme constructors.
 
 # Goals
 
@@ -43,53 +44,211 @@ I've gone and used parameter dense functions for constructors, relying on the pa
 # Style
 A lot of UI coding is assigning colors, fonts, and sizing - Synthetic attempts to fix that with a new immutable datatype: "Style". It's immutable due to its intention to be swapped out within states - a case where changes are much more easily detected when the datatype is immutable.
 
+## Usage
+Construction:
 ```luau
--- construct
+-- construct style somewhere
 local style = Synthetic.Style.new(
 	1, -- scale applied to all components
 	Enum.Font.SourceSans -- Enum.Font or Typography type,
 	if isDarkMode then Enums.SchemeType.Dark else Enums.SchemeType.Light, -- used for theme engine solver
 	color -- the singular color the entire theme should be built around
 )
+````
 
--- ez usage
+Usage:
+```luau
+
+-- here's a basic switch
 local primarySwitch = Synthetic.Components.Switch.ColdFusion.primary(
 	style,
 	function(isSelected: boolean)
 		print("is selected", isSelected)
-	end,
-	true -- initialSelection
+	end, -- onSelect
+	true, -- initialSelection
 )
 
--- this is a lot easier to set up than this
--- this constructor can be used without a style state
-local newSwitch = Module.ColdFusion.new(
+-- here's a basic switch with all optional parameters
+local fullPrimarySwitch = Synthetic.Components.Switch.ColdFusion.primary(
+	style,
+	function(isSelected: boolean)
+		print("is selected", isSelected)
+	end, -- onSelect
+	true, -- initialSelection,
+	true, -- isEnabled
+	true, -- includeIconOnSelected
+	true -- includeIconOnDeselected
+)
+
+
+-- this constructor can be used without a style state - it's much more verbose / slower to implement
+local fullSwitch = Module.ColdFusion.new(
 	function(isSelected: boolean?)
 		print("is selected", isSelected)
-	end,
-	true,
-	true,
-	true,
-	true,
-	style:GetColor(Enums.ColorRoleType.SurfaceContainerHighest),
-	style:GetColor(Enums.ColorRoleType.Outline),
-	style:GetColor(Enums.ColorRoleType.Primary),
-	style:GetColor(Enums.ColorRoleType.PrimaryContainer),
-	style:GetColor(Enums.ColorRoleType.OnPrimaryContainer),
-	style:GetColor(Enums.ColorRoleType.Surface),
-	style:GetColor(Enums.ColorRoleType.OnSurface),
-	1,
-	style.SchemeType,
-	style:GetFontData(Enums.FontType.LabelLarge),
-	style.Scale
+	end, -- onSelect
+	true, -- initialSelection
+	true, -- isEnabled
+	true, -- includeIconOnSelected
+	true, -- includeIconOnDeselected
+	style:GetColor(Enums.ColorRoleType.SurfaceContainerHighest), -- backgroundColor
+	style:GetColor(Enums.ColorRoleType.Outline), -- onBackgroundColor
+	style:GetColor(Enums.ColorRoleType.Primary), -- fillColor
+	style:GetColor(Enums.ColorRoleType.PrimaryContainer), -- buttonColor
+	style:GetColor(Enums.ColorRoleType.OnPrimaryContainer), -- onButtonColor
+	style:GetColor(Enums.ColorRoleType.Surface), -- disabledColor
+	style:GetColor(Enums.ColorRoleType.OnSurface), -- onDisabledColor
+	1, -- elevation
+	style.SchemeType, -- schemeType
+	style:GetFontData(Enums.FontType.LabelLarge), -- fontData
+	style.Scale -- scale
+)
+```
+A style type is mostly composed of two underlying immutable classes: Theme and Typography.
+
+## Theme
+Theme is inspired by the philosophy of the [Material Design color role system](https://m3.material.io/styles/color/roles), and powered by a manual port of their [open source color engine](https://github.com/material-foundation/material-color-utilities).
+
+The theme engine is a bit slow due to all the crazy math (~10 ms construction), so it caches the results from prior constructions. This shouldn't be a problem if you're only constructing a handful of these and passing them around, however if you find yourself creating a new one from dynamic input multiple times a second be warned. From my own experience though, since I added caching I haven't noticed any notable performance issues.
+
+### Construction
+Should you want to define the theme manually, you can construct one and pass it as a parameter when creating the Style type.
+```luau
+local source: Color3 = Color3.new(1,0,0)
+local customPalette: {[string]: Color3} = {
+	RobloxRed = Color3.fromHex("#E2231A"),
+}
+local theme = Synthetic.Theme.new(
+	source,
+	customPalette -- can be nil
+)
+```
+
+### Type Usage
+The entire goal of the theme type is to replace hours tinkering with colors, and replace them with a few context relevant tokens. The theme type will then take those tokens and return the appropriate color.
+```luau
+-- using official color role
+local role = "Primary"
+local scheme = "Light"
+local elevation = 0 -- from (0-6) how much color is modified to appear close to the camera.
+local color: Color3 = theme:Get(
+	role,
+	scheme,
+	elevation -- optional, will default to 0
+)
+
+-- using custom color role
+local customRole = "RobloxRed"
+local colorType: "Custom" | "CustomContainer" | "OnCustom" | "OnCustomContainer" = "CustomContainer"
+
+local customColor: Color3 = theme:GetCustom(
+	customRole,
+	colorType,
+	scheme
+	elevation
+)
+```
+### Palettes
+The theme engine also generates palettes - functions that return a color with a consistent tone, but a brightness level dependent on the provided parameter. If you're interested in going deeper into color customization, you can do so with the palettes.
+
+```luau
+local tone: "Primary" | "Secondary" | "Tertiary" | "Neutral" | "NeutralVariant" | "Error" = "Primary"
+local isClampEnabled = true -- bright white and pitch black lack a tone, so on default it clamps the values to visually distinct ranges
+local brightness = 0.7
+local color = style.Palettes[tone](
+	brightness,
+	isClampEnabled -- optional, defaults to true
+)
+```
+
+### Interface Usage
+If you just want to quickly solve a color's elevation, you can do that without constructing a theme.
+```luau
+local sourceColor: Color3 = Color3.new(1,0,0)
+local elevation: number = 3
+local scheme = "Light"
+local elevatedColor = Synthetic.Theme.getElevatedColor(sourceColor, elevation, scheme)
+```
+
+## Typography
+The typography half of the style type is fairly simple. It's basically a dictionary of tokenized use cases as the keys, and FontData as the values.
+
+### FontData
+FontData is the immutable data structure that all text appearance related state is stored.
+```luau
+type FontData = {
+	Font: Font, -- the font to apply to the text
+	Size: number, -- the pixel height of the typical character
+	Tracking: number, -- the letter spacing ratio. 1.0 = monospaced
+	LineHeight: number, -- the pixel height of the line + the gap separating it from a neighboring line
+}
+
+local fontData = Synthetic.Types.FontData.new(
+	Font.fromEnum(Enum.Font.Arial),
+	12,
+	0.4,
+	14
 )
 
 ```
+This data is much easier to pass around across functions. It's used heavily internally, however you're welcome to use it externally if you like.
 
-## Theme
-It's inspired by the philosophy of the [Material Design style system](https://m3.material.io/styles/color/roles), and powered by their [open source theme engine](https://github.com/material-foundation/material-color-utilities).
+### Construction
+To create a custom typography off of a Roblox font, you can do so like this:
+```luau
+local font = Font.fromEnum(Enum.Font.Arial)
+local typography = Synthetic.Typography.fromFont(font)
+```
 
-## Typography
+If you want something more custom, you'll have to define all of the font-data manually
+```
+local typography = Synthetic.Typography.new({
+	DisplayLarge = Synthetic.Types.FontData.new(
+		Font.fromEnum(Enum.Font.Arial),
+		12,
+		0.4,
+		14
+	),
+	DisplayMedium = Synthetic.Types.FontData.new(
+		Font.fromEnum(Enum.Font.Arial),
+		10,
+		0.35,
+		12
+	),
+	-- etc
+})
+```
+
+### Usage
+The goal of typography is to quickly provide fontData.
+```luau
+local fontData = typography:Get("DisplayLarge")
+```
+
+### Manual Application
+If you aren't sending the fontData as a constructor parameter, you can apply it yourself.
+```luau
+local fontData = typography:Get("BodySmall")
+local scale = 1
+
+local textLabel = Instance.new("TextLabel")
+textLabel.TextSize = Synthetic.Typography.getTextSize(fontData.Size, scale),
+textLabel.LineHeight = Synthetic.Typography.getGuiLineHeight(fontData.LineHeight, fontData.Size)
+textLabel.FontFace = fontData.Font
+
+-- or, if it's just the main text property
+Synthetic.Typography.apply(
+	textLabel,
+	fontData,
+	scale -- scale is optional, defaults to 1
+)
+
+-- alternatively if you have a Typography type around
+typography:Apply(
+	textLabel,
+	"BodySmall",
+	scale -- scale is optional, defaults to 1
+)
+```
 
 # Components
 ## Buttons
@@ -145,6 +304,15 @@ It's inspired by the philosophy of the [Material Design style system](https://m3
 - [Radio Button](https://m3.material.io/components/radio-button/overview)
 - [Switch](https://m3.material.io/components/switch/overview)
 - [Slider](https://m3.material.io/components/sliders/overview)
+
+# Utilities
+
+# Sounds
+
+# Icons
+
+# Transitions
+The Material Design philosophies on [motion](https://m3.material.io/styles/motion/overview) is a very interesting read - however it's not one that is currently hooked up to most components. However if you do want their expertly curated theories on motion in your game, the Transitions utility may help you.
 
 # Contributing
 If you like this framework, please feel free to contribute!

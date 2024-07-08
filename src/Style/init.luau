@@ -4,11 +4,10 @@ local _Packages = _Package.Parent
 -- Services
 -- Packages
 local HashUtil = require(_Packages:WaitForChild("HashUtil"))
-local TableUtil = require(_Packages:WaitForChild("TableUtil"))
 
 -- Modules
 local Typography = require(_Package:WaitForChild("Typography"))
-local Theme = require(script:WaitForChild("Theme"))
+local Theme = require(_Package:WaitForChild("Theme"))
 local Enums = require(_Package:WaitForChild("Enums"))
 
 -- Types
@@ -37,8 +36,7 @@ export type Style = {
 		scale: number,
 		typographyOrFont: Typography | Enum.Font,
 		schemeType: Enums.SchemeType,
-		source: Color3,
-		custom: { [string]: Color3 }?
+		themeOrColor: Color3 | Theme
 	) -> Style,
 }
 
@@ -88,8 +86,7 @@ function Style.new(
 	scale: number,
 	typographyOrFont: Typography | Enum.Font,
 	schemeType: Enums.SchemeType,
-	source: Color3,
-	additions: { [string]: Color3 }?
+	themeOrColor: Color3 | Theme
 ): Style
 	local typography: Typography
 	if typeof(typographyOrFont) == "EnumItem" then
@@ -98,20 +95,14 @@ function Style.new(
 		typography = typographyOrFont
 	end
 
-	local hash = ""
-	do
-
-		local hashInput = `{scale}+{typography:Hash()}+{schemeType}+{source:ToHex()}+` .. "{"
-		if additions then
-			local keys = TableUtil.keys(additions)
-			table.sort(keys)
-			for i, k in ipairs(keys) do
-				hashInput ..= `{k}={additions[k]:ToHex()},`
-			end
-		end
-		hashInput ..= "}"
-		hash = HashUtil.md5(hashInput)
+	local theme: Theme
+	if typeof(themeOrColor) == "Color3" then
+		theme = Theme.new(themeOrColor)
+	else
+		theme = themeOrColor
 	end
+
+	local hash = HashUtil.md5(`{scale}+{typography:Hash()}+{schemeType}+{theme:Hash()}`)
 	if Cache[hash] then
 		return Cache[hash]
 	end
@@ -119,7 +110,7 @@ function Style.new(
 	local self: Style = setmetatable({}, Style) :: any
 	self.Scale = scale
 	self.SchemeType = schemeType
-	self._Theme = Theme.new(source, additions)
+	self._Theme = theme
 	self._Typography = typography
 
 	table.freeze(self)

@@ -10,11 +10,14 @@ local Types = require(_Package:WaitForChild("Types"))
 
 -- Types
 export type FontData = Types.FontData
+type TextInstance = TextLabel | TextButton | TextBox
 export type Typography = {
 	__index: Typography,
 	_Fonts: { [Enums.FontType]: FontData },
 	getTextSize: (fontSize: number, scale: number) -> number,
 	getGuiLineHeight: (lineHeight: number, fontSize: number) -> number,
+	apply: (inst: TextInstance, fontData: FontData, scale: number?) -> (),
+	Apply: (self: Typography, inst: TextInstance, fontType: Enums.FontType, scale: number?) -> (),
 	Get: (self: Typography, fontType: Enums.FontType) -> FontData,
 	Hash: (self: Typography) -> string,
 	new: (fonts: {[Enums.FontType]: FontData}) -> Typography,
@@ -54,6 +57,32 @@ end
 
 function Typography.getGuiLineHeight(lineHeight: number, fontSize: number): number
 	return lineHeight / fontSize
+end
+
+function Typography.apply(inst: TextInstance, fontData: FontData, scale: number?)
+	scale = scale or 1
+	assert(scale)
+	local textSize = Typography.getTextSize(fontData.Size, scale)
+	local lineHeightRatio = Typography.getGuiLineHeight(fontData.LineHeight, fontData.Size)
+	if inst:IsA("TextLabel") then
+		inst.TextSize = textSize
+		inst.LineHeight = lineHeightRatio
+		inst.FontFace = fontData.Font
+	elseif inst:IsA("TextButton") then
+		inst.TextSize = textSize
+		inst.LineHeight = lineHeightRatio
+		inst.FontFace = fontData.Font
+	elseif inst:IsA("TextBox") then
+		inst.TextSize = textSize
+		inst.LineHeight = lineHeightRatio
+		inst.FontFace = fontData.Font
+	else
+		error(`Unsupported TextInstance type: {inst.ClassName}`)
+	end
+end
+
+function Typography:Apply(inst: TextInstance, fontType: Enums.FontType, scale: number?)
+	Typography.apply(inst, self:Get(fontType), scale)
 end
 
 function Typography:Get(style: Enums.FontType): FontData

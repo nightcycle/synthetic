@@ -1,4 +1,5 @@
 --!strict
+--!native
 -- https://github.com/material-foundation/material-color-utilities/blob/f5d03da60c268b43928f3a24d6bf499e2564d39a/typescript/utils/color_utils.ts
 local MathUtil = require(script.Parent:WaitForChild("MathUtil"))
 

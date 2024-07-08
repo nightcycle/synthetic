@@ -1,5 +1,6 @@
 --!strict
-local _Package = script.Parent.Parent
+--!native
+local _Package = script.Parent
 local _Packages = _Package.Parent
 -- Services
 -- Packages
@@ -38,6 +39,7 @@ export type Theme = {
 		[string]: CustomColorGroup,
 	},
 	_Hash: string,
+	Hash: (self: Theme) -> string,
 	Get: (self: Theme, role: Enums.ColorRoleType, schemeType: Enums.SchemeType, elevation: number?) -> Color3,
 	GetCustom: (
 		self: Theme,
@@ -59,6 +61,10 @@ local Cache: { [string]: Theme } = {}
 -- Class
 local Theme = {} :: Theme
 Theme.__index = Theme
+
+function Theme:Hash()
+	return self._Hash
+end
 
 function Theme.new(source: Color3, custom: { [string]: Color3 }?): Theme
 	local hash = ""
@@ -197,6 +203,7 @@ function Theme.new(source: Color3, custom: { [string]: Color3 }?): Theme
 			Light = lightScheme,
 			Dark = darkScheme,
 		}),
+		_Hash = hash,
 		Palettes = table.freeze({
 			Primary = primaryPalette,
 			Secondary = secondaryPalette,
