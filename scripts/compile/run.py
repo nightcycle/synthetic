@@ -330,7 +330,7 @@ type CanBeState<V> = ColdFusion.CanBeState<V>"""
 			fusion_lines.append(")\n```")
 
 			vanilla_lines: list[str] = [
-				'\n**Vanilla**',
+				'\n**No Framework**',
 				'```luau',
 			]
 			vanilla_modifications: list[str] = []

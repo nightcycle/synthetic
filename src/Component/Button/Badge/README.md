@@ -24,7 +24,7 @@ This function is a native constructor, with verbosity allowing for control over 
 
 ### Usage
 
-**Vanilla**
+**No Framework**
 ```luau
 local onClick: () -> () = function() end
 local icon: ImageData = Types.ImageData.new("")

@@ -22,7 +22,7 @@ This function is a native constructor, with verbosity allowing for control over 
 
 ### Usage
 
-**Vanilla**
+**No Framework**
 ```luau
 local onInputEntered: (input: string) -> string = function(input: string)
 return input
@@ -96,7 +96,7 @@ This function is a style constructor, utilizing the "Style" type to reduce the n
 
 ### Usage
 
-**Vanilla**
+**No Framework**
 ```luau
 local style: Style = Style.new(1, Enum.Font.SourceSans, "Light", Color3.new(0, 0.4, 0.7))
 local onInputEntered: (input: string) -> string = function(input: string)

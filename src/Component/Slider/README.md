@@ -27,7 +27,7 @@ This function is a native constructor, with verbosity allowing for control over 
 
 ### Usage
 
-**Vanilla**
+**No Framework**
 ```luau
 local onChange: (onChange: number) -> () = function(onChange: number) end
 local initialValue: number = 50
@@ -116,7 +116,7 @@ This function is a style constructor, utilizing the "Style" type to reduce the n
 
 ### Usage
 
-**Vanilla**
+**No Framework**
 ```luau
 local style: Style = Style.new(1, Enum.Font.SourceSans, "Light", Color3.new(0, 0.4, 0.7))
 local onChange: (onChange: number) -> () = function(onChange: number) end
