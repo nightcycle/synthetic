@@ -1,5 +1,7 @@
 # Switch
 
+![Preview](preview.gif)
+
 A true / false input component often used in menus. Read more [here](https://m3.material.io/components/switch/overview).
 # Constructors
 

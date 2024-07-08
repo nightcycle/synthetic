@@ -98,8 +98,18 @@ function newThemedComponent(
 		onSelect,
 		initialSelection,
 		_import(isEnabled, if themeDefaults.IS_ENABLED ~= nil then themeDefaults.IS_ENABLED else true),
-		_import(includeIconOnSelected, if themeDefaults.INCLUDE_ICON_ON_SELECTED ~= nil then themeDefaults.INCLUDE_ICON_ON_SELECTED else true),
-		_import(includeIconOnDeselected, if themeDefaults.INCLUDE_ICON_ON_DESELECTED ~= nil then themeDefaults.INCLUDE_ICON_ON_DESELECTED else false),
+		_import(
+			includeIconOnSelected,
+			if themeDefaults.INCLUDE_ICON_ON_SELECTED ~= nil
+				then themeDefaults.INCLUDE_ICON_ON_SELECTED
+				else true
+		),
+		_import(
+			includeIconOnDeselected,
+			if themeDefaults.INCLUDE_ICON_ON_DESELECTED ~= nil
+				then themeDefaults.INCLUDE_ICON_ON_DESELECTED
+				else false
+		),
 		_Computed(function(s: Style): Color3
 			return s:GetColor(backgroundColor)
 		end, styleState),

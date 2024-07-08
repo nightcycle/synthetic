@@ -1,5 +1,7 @@
 # Small Snackbar
 
+![Preview](preview.gif)
+
 A snackbar is a single-line notification pop up that sometimes has buttons. Read more [here](https://m3.material.io/components/snackbar/overview).
 # Constructors
 

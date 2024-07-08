@@ -1,5 +1,7 @@
 # Filled Text Field
 
+![Preview](preview.gif)
+
 A filled text field is a container with a text input area. Read more [here](https://m3.material.io/components/text-fields/overview).
 # Constructors
 

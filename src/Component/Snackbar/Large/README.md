@@ -1,5 +1,7 @@
 # Large Snackbar
 
+![Preview](preview.gif)
+
 A large snackbar is a multi-line notification pop up that sometimes has buttons. Read more [here](https://m3.material.io/components/snackbar/overview).
 # Constructors
 
