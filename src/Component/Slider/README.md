@@ -27,8 +27,7 @@ This function is a native constructor, with verbosity allowing for control over 
 
 ### Usage
 
-#### Fusion
-You can use states or regular values for every parameter.
+***Fusion***
 ```luau
 local onChangeState: Fusion.Value<(onChange: number) -> (), unknown> = Value(function(onChange: number) end)
 local initialValue: number = 50
@@ -81,8 +80,7 @@ This function is a style constructor, utilizing the "Style" type to reduce the n
 
 ### Usage
 
-#### Fusion
-You can use states or regular values for every parameter.
+***Fusion***
 ```luau
 local styleState: Fusion.Value<Style, unknown> = Value(Style.new(1, Enum.Font.SourceSans, "Light", Color3.new(0, 0.4, 0.7)))
 local onChange: (onChange: number) -> () = function(onChange: number) end

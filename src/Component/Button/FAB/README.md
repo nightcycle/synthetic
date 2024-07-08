@@ -24,8 +24,7 @@ This function is a native constructor, with verbosity allowing for control over 
 
 ### Usage
 
-#### Fusion
-You can use states or regular values for every parameter.
+***Fusion***
 ```luau
 local onClickState: Fusion.Value<() -> (), unknown> = Value(function() end)
 local icon: ImageData = Types.ImageData.new("")
@@ -68,8 +67,7 @@ This function is a style constructor, utilizing the "Style" type to reduce the n
 
 ### Usage
 
-#### Fusion
-You can use states or regular values for every parameter.
+***Fusion***
 ```luau
 local styleState: Fusion.Value<Style, unknown> = Value(Style.new(1, Enum.Font.SourceSans, "Light", Color3.new(0, 0.4, 0.7)))
 local onClick: () -> () = function() end

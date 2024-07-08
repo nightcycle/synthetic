@@ -304,8 +304,7 @@ type CanBeState<V> = ColdFusion.CanBeState<V>"""
 			lines.append("\n### Usage")
 
 			fusion_lines: list[str] = [
-				'\n#### Fusion',
-				'You can use states or regular values for every parameter.',
+				'\n***Fusion***',
 				'```luau',
 			]
 			fusion_param_line: list[str] = []
