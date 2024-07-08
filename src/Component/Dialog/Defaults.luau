@@ -34,9 +34,9 @@ return {
 		DESCRIPTION_COLOR = Color3.new(),
 		SCRIM_COLOR = Color3.new(),
 		SCHEME_TYPE = Enums.SchemeType.Light,
-		HEADLINE_FONT_DATA = Types.newFontData(Font.fromEnum(Enum.Font.SourceSans), 14),
-		BODY_FONT_DATA = Types.newFontData(Font.fromEnum(Enum.Font.SourceSans), 14),
-		BUTTON_FONT_DATA = Types.newFontData(Font.fromEnum(Enum.Font.SourceSans), 14),
+		HEADLINE_FONT_DATA = Types.FontData.new(Font.fromEnum(Enum.Font.SourceSans), 14),
+		BODY_FONT_DATA = Types.FontData.new(Font.fromEnum(Enum.Font.SourceSans), 14),
+		BUTTON_FONT_DATA = Types.FontData.new(Font.fromEnum(Enum.Font.SourceSans), 14),
 		SCALE = 1,
 	},
 	PRIMARY = {

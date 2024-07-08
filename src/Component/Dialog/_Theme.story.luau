@@ -47,10 +47,10 @@ return function(frame: Frame)
 					Module.ColdFusion.primary(
 						style,
 						{
-							Types.newButtonData(function()
+							Types.ButtonData.new(function()
 								print("Click 1")
 							end, nil, "Primary 1", true),
-							Types.newButtonData(function()
+							Types.ButtonData.new(function()
 								print("Click 2")
 							end, nil, "Primary 2", false),
 						},

@@ -301,51 +301,51 @@ function Interface.new(
 			e: number
 		): { [Enums.ButtonStateType]: RenderData }
 			return {
-				[Enums.ButtonStateType.Enabled] = Types.newRenderData(
+				[Enums.ButtonStateType.Enabled] = Types._RenderData.new(
 					sc,
-					Types.newAppearanceData(Theme.getElevatedColor(oC, e, st), 0),
-					Types.newAppearanceData(Theme.getElevatedColor(fC, e, st), 1),
-					Types.newAppearanceData(Theme.getElevatedColor(iC, e, st), 0),
+					Types._AppearanceData.new(Theme.getElevatedColor(oC, e, st), 0),
+					Types._AppearanceData.new(Theme.getElevatedColor(fC, e, st), 1),
+					Types._AppearanceData.new(Theme.getElevatedColor(iC, e, st), 0),
 					nil,
 					nil,
 					nil,
 					nil
 				),
-				[Enums.ButtonStateType.Disabled] = Types.newRenderData(
+				[Enums.ButtonStateType.Disabled] = Types._RenderData.new(
 					sc,
-					Types.newAppearanceData(Theme.getElevatedColor(dC, e, st), 1 - 0.38),
-					Types.newAppearanceData(Theme.getElevatedColor(dC, e, st), 1),
-					Types.newAppearanceData(Theme.getElevatedColor(dC, e, st), 1 - 0.38),
+					Types._AppearanceData.new(Theme.getElevatedColor(dC, e, st), 1 - 0.38),
+					Types._AppearanceData.new(Theme.getElevatedColor(dC, e, st), 1),
+					Types._AppearanceData.new(Theme.getElevatedColor(dC, e, st), 1 - 0.38),
 					nil,
 					nil,
 					nil,
 					nil
 				),
-				[Enums.ButtonStateType.Hovered] = Types.newRenderData(
+				[Enums.ButtonStateType.Hovered] = Types._RenderData.new(
 					sc,
-					Types.newAppearanceData(Theme.getElevatedColor(oC, e + 1, st), 0),
-					Types.newAppearanceData(Theme.getElevatedColor(fC, e + 1, st), 1 - 0.08),
-					Types.newAppearanceData(Theme.getElevatedColor(iC, e + 1, st), 0),
+					Types._AppearanceData.new(Theme.getElevatedColor(oC, e + 1, st), 0),
+					Types._AppearanceData.new(Theme.getElevatedColor(fC, e + 1, st), 1 - 0.08),
+					Types._AppearanceData.new(Theme.getElevatedColor(iC, e + 1, st), 0),
 					nil,
 					nil,
 					nil,
 					nil
 				),
-				[Enums.ButtonStateType.Focused] = Types.newRenderData(
+				[Enums.ButtonStateType.Focused] = Types._RenderData.new(
 					sc,
-					Types.newAppearanceData(Theme.getElevatedColor(oC, e, st), 0),
-					Types.newAppearanceData(Theme.getElevatedColor(fC, e, st), 1 - 0.1),
-					Types.newAppearanceData(Theme.getElevatedColor(iC, e, st), 0),
+					Types._AppearanceData.new(Theme.getElevatedColor(oC, e, st), 0),
+					Types._AppearanceData.new(Theme.getElevatedColor(fC, e, st), 1 - 0.1),
+					Types._AppearanceData.new(Theme.getElevatedColor(iC, e, st), 0),
 					nil,
 					nil,
 					nil,
 					nil
 				),
-				[Enums.ButtonStateType.Pressed] = Types.newRenderData(
+				[Enums.ButtonStateType.Pressed] = Types._RenderData.new(
 					sc,
-					Types.newAppearanceData(Theme.getElevatedColor(oC, e - 1, st), 0),
-					Types.newAppearanceData(Theme.getElevatedColor(fC, e - 1, st), 1 - 0.1),
-					Types.newAppearanceData(Theme.getElevatedColor(iC, e - 1, st), 0),
+					Types._AppearanceData.new(Theme.getElevatedColor(oC, e - 1, st), 0),
+					Types._AppearanceData.new(Theme.getElevatedColor(fC, e - 1, st), 1 - 0.1),
+					Types._AppearanceData.new(Theme.getElevatedColor(iC, e - 1, st), 0),
 					nil,
 					nil,
 					nil,
@@ -373,7 +373,7 @@ function Interface.new(
 		elseif v == true then
 			return CHECK_ICON
 		else
-			return Types.newImageData("")
+			return Types.ImageData.new("")
 		end
 	end, valueState)
 

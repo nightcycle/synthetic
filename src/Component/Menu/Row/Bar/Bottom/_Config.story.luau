@@ -48,17 +48,17 @@ return function(frame: Frame)
 				local button = maid:GiveTask(
 					Module.ColdFusion.new(
 						{
-							Types.newButtonData(function()
+							Types.ButtonData.new(function()
 								print("click 1")
 							end, Icons.gamepad, nil, true),
-							Types.newButtonData(function()
+							Types.ButtonData.new(function()
 								print("click 2")
 							end, Icons.waves, nil, true),
-							Types.newButtonData(function()
+							Types.ButtonData.new(function()
 								print("click 3")
 							end, Icons.work_off, nil, true),
 						},
-						Types.newButtonData(function()
+						Types.ButtonData.new(function()
 							print("click fab")
 						end, Icons.plus_one, nil, true),
 						style:GetColor(Enums.ColorRoleType.Primary),
@@ -79,10 +79,10 @@ return function(frame: Frame)
 				local button = maid:GiveTask(
 					Module.ColdFusion.new(
 						{
-							Types.newButtonData(function()
+							Types.ButtonData.new(function()
 								print("click 1")
 							end, Icons.gamepad, nil, true),
-							Types.newButtonData(function()
+							Types.ButtonData.new(function()
 								print("click 2")
 							end, Icons.waves, nil, false),
 						},

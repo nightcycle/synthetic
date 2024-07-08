@@ -66,7 +66,8 @@ export type FontData = {
 -- Class
 local Types = {}
 
-function Types.newFontData(font: Font, size: number, lineHeight: number?, tracking: number?): FontData
+Types.FontData = {}
+function Types.FontData.new(font: Font, size: number, lineHeight: number?, tracking: number?): FontData
 	return table.freeze({
 		Font = font,
 		Size = size,
@@ -75,7 +76,8 @@ function Types.newFontData(font: Font, size: number, lineHeight: number?, tracki
 	})
 end
 
-function Types.newButtonData(
+Types.ButtonData = {}
+function Types.ButtonData.new(
 	onClick: () -> (),
 	icon: ImageData?,
 	text: string?,
@@ -89,7 +91,8 @@ function Types.newButtonData(
 	})
 end
 
-function Types.newOptionData(
+Types.OptionData = {}
+function Types.OptionData.new(
 	onSelect: (isSelected: boolean) -> (),
 	disabled: boolean,
 	isInitiallySelected: boolean,
@@ -108,28 +111,33 @@ function Types.newOptionData(
 		OnSelect = onSelect,
 	})
 end
-function Types.newSoundData(soundId: string, volume: number?): SoundData
+
+Types._SoundData = {}
+function Types._SoundData.new(soundId: string, volume: number?): SoundData
 	return table.freeze({
 		SoundId = soundId,
 		Volume = volume or 1,
 	})
 end
 
-function Types.newShadow(appearance: AppearanceData, offset: Vector2): ShadowData
+Types._ShadowData = {}
+function Types._ShadowData.new(appearance: AppearanceData, offset: Vector2): ShadowData
 	return table.freeze({
 		Appearance = appearance,
 		Offset = offset,
 	})
 end
 
-function Types.newAppearanceData(color3: Color3, transparency: number?): AppearanceData
+Types._AppearanceData = {}
+function Types._AppearanceData.new(color3: Color3, transparency: number?): AppearanceData
 	return table.freeze({
 		Color3 = color3,
 		Transparency = transparency or 0,
 	})
 end
 
-function Types.newImageData(image: string, rectOffset: Vector2?, rectSize: Vector2?): ImageData
+Types.ImageData = {}
+function Types.ImageData.new(image: string, rectOffset: Vector2?, rectSize: Vector2?): ImageData
 	return table.freeze({
 		Image = image,
 		ImageRectOffset = rectOffset or Vector2.zero,
@@ -137,7 +145,8 @@ function Types.newImageData(image: string, rectOffset: Vector2?, rectSize: Vecto
 	})
 end
 
-function Types.newRenderData(
+Types._RenderData = {}
+function Types._RenderData.new(
 	scale: number,
 	border: AppearanceData,
 	background: AppearanceData,

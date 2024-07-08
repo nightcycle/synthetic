@@ -68,7 +68,7 @@ function Interface.primary(): StyledOutlinedIconButtonWrapper
 	local definition = {
 		Style = _Value(Style.new(1, Enum.Font.SourceSans, "Light", Color3.new(0, 0.4, 0.7))),
 		OnClick = _Value(function() end),
-		Icon = _Value(Types.newImageData("")),
+		Icon = _Value(Types.ImageData.new("")),
 		Elevation = _Value(0),
 		IsEnabled = _Value(true),
 	}
@@ -94,7 +94,7 @@ function Interface.secondary(): StyledOutlinedIconButtonWrapper
 	local definition = {
 		Style = _Value(Style.new(1, Enum.Font.SourceSans, "Light", Color3.new(0, 0.4, 0.7))),
 		OnClick = _Value(function() end),
-		Icon = _Value(Types.newImageData("")),
+		Icon = _Value(Types.ImageData.new("")),
 		Elevation = _Value(0),
 		IsEnabled = _Value(true),
 	}
@@ -120,7 +120,7 @@ function Interface.tertiary(): StyledOutlinedIconButtonWrapper
 	local definition = {
 		Style = _Value(Style.new(1, Enum.Font.SourceSans, "Light", Color3.new(0, 0.4, 0.7))),
 		OnClick = _Value(function() end),
-		Icon = _Value(Types.newImageData("")),
+		Icon = _Value(Types.ImageData.new("")),
 		Elevation = _Value(0),
 		IsEnabled = _Value(true),
 	}
@@ -146,7 +146,7 @@ function Interface.primaryContainer(): StyledOutlinedIconButtonWrapper
 	local definition = {
 		Style = _Value(Style.new(1, Enum.Font.SourceSans, "Light", Color3.new(0, 0.4, 0.7))),
 		OnClick = _Value(function() end),
-		Icon = _Value(Types.newImageData("")),
+		Icon = _Value(Types.ImageData.new("")),
 		Elevation = _Value(0),
 		IsEnabled = _Value(true),
 	}
@@ -172,7 +172,7 @@ function Interface.secondaryContainer(): StyledOutlinedIconButtonWrapper
 	local definition = {
 		Style = _Value(Style.new(1, Enum.Font.SourceSans, "Light", Color3.new(0, 0.4, 0.7))),
 		OnClick = _Value(function() end),
-		Icon = _Value(Types.newImageData("")),
+		Icon = _Value(Types.ImageData.new("")),
 		Elevation = _Value(0),
 		IsEnabled = _Value(true),
 	}
@@ -198,7 +198,7 @@ function Interface.tertiaryContainer(): StyledOutlinedIconButtonWrapper
 	local definition = {
 		Style = _Value(Style.new(1, Enum.Font.SourceSans, "Light", Color3.new(0, 0.4, 0.7))),
 		OnClick = _Value(function() end),
-		Icon = _Value(Types.newImageData("")),
+		Icon = _Value(Types.ImageData.new("")),
 		Elevation = _Value(0),
 		IsEnabled = _Value(true),
 	}

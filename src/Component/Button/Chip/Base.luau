@@ -111,54 +111,54 @@ function Interface.new(
 		): { [Enums.ButtonStateType]: RenderData }
 			e += 1
 			return {
-				[Enums.ButtonStateType.Enabled] = Types.newRenderData(
+				[Enums.ButtonStateType.Enabled] = Types._RenderData.new(
 					sc,
-					Types.newAppearanceData(Theme.getElevatedColor(tC, e, st), 0),
-					Types.newAppearanceData(Theme.getElevatedColor(hC, e, st), INVIS),
-					Types.newAppearanceData(Theme.getElevatedColor(tC, e, st), 0),
+					Types._AppearanceData.new(Theme.getElevatedColor(tC, e, st), 0),
+					Types._AppearanceData.new(Theme.getElevatedColor(hC, e, st), INVIS),
+					Types._AppearanceData.new(Theme.getElevatedColor(tC, e, st), 0),
 					f,
 					i,
 					nil,
 					nil
 				),
-				[Enums.ButtonStateType.Disabled] = Types.newRenderData(
+				[Enums.ButtonStateType.Disabled] = Types._RenderData.new(
 					sc,
-					Types.newAppearanceData(Theme.getElevatedColor(dC, e, st), 1 - 0.38),
-					Types.newAppearanceData(Theme.getElevatedColor(hC, e, st), INVIS),
-					Types.newAppearanceData(Theme.getElevatedColor(dC, e, st), 1 - 0.38),
+					Types._AppearanceData.new(Theme.getElevatedColor(dC, e, st), 1 - 0.38),
+					Types._AppearanceData.new(Theme.getElevatedColor(hC, e, st), INVIS),
+					Types._AppearanceData.new(Theme.getElevatedColor(dC, e, st), 1 - 0.38),
 					f,
 					i,
 					nil,
 					nil
 				),
-				[Enums.ButtonStateType.Hovered] = Types.newRenderData(
+				[Enums.ButtonStateType.Hovered] = Types._RenderData.new(
 					sc,
-					Types.newAppearanceData(Theme.getElevatedColor(tC, e + 1, st), 0),
-					Types.newAppearanceData(Theme.getElevatedColor(hC, e + 1, st), 1 - 0.08),
-					Types.newAppearanceData(Theme.getElevatedColor(tC, e + 1, st), 0),
+					Types._AppearanceData.new(Theme.getElevatedColor(tC, e + 1, st), 0),
+					Types._AppearanceData.new(Theme.getElevatedColor(hC, e + 1, st), 1 - 0.08),
+					Types._AppearanceData.new(Theme.getElevatedColor(tC, e + 1, st), 0),
 					f,
 					i,
 					nil,
 					nil
 				),
-				[Enums.ButtonStateType.Focused] = Types.newRenderData(
+				[Enums.ButtonStateType.Focused] = Types._RenderData.new(
 					sc,
-					Types.newAppearanceData(Theme.getElevatedColor(tC, e, st), 0),
-					Types.newAppearanceData(Theme.getElevatedColor(hC, e, st), 1 - 0.1),
-					Types.newAppearanceData(Theme.getElevatedColor(tC, e, st), 0),
+					Types._AppearanceData.new(Theme.getElevatedColor(tC, e, st), 0),
+					Types._AppearanceData.new(Theme.getElevatedColor(hC, e, st), 1 - 0.1),
+					Types._AppearanceData.new(Theme.getElevatedColor(tC, e, st), 0),
 					f,
 					i,
 					nil,
 					nil
 				),
-				[Enums.ButtonStateType.Pressed] = Types.newRenderData(
+				[Enums.ButtonStateType.Pressed] = Types._RenderData.new(
 					sc,
-					Types.newAppearanceData(Theme.getElevatedColor(tC, e - 1, st), 0),
-					Types.newAppearanceData(Theme.getElevatedColor(hC, e - 1, st), 1 - 0.1),
-					Types.newAppearanceData(Theme.getElevatedColor(tC, e - 1, st), 0),
+					Types._AppearanceData.new(Theme.getElevatedColor(tC, e - 1, st), 0),
+					Types._AppearanceData.new(Theme.getElevatedColor(hC, e - 1, st), 1 - 0.1),
+					Types._AppearanceData.new(Theme.getElevatedColor(tC, e - 1, st), 0),
 					f,
 					i,
-					Types.newSoundData(Sounds.Library[Enums.SoundType.ui_tap_variant_01], 1),
+					Types._SoundData.new(Sounds.Library[Enums.SoundType.ui_tap_variant_01], 1),
 					nil
 				),
 			}
@@ -187,54 +187,54 @@ function Interface.new(
 		): { [Enums.ButtonStateType]: RenderData }
 			e += 1
 			return {
-				[Enums.ButtonStateType.Enabled] = Types.newRenderData(
+				[Enums.ButtonStateType.Enabled] = Types._RenderData.new(
 					sc,
-					Types.newAppearanceData(Theme.getElevatedColor(sC, e, st), INVIS),
-					Types.newAppearanceData(Theme.getElevatedColor(sC, e, st), 0),
-					Types.newAppearanceData(Theme.getElevatedColor(tC, e, st), 0),
+					Types._AppearanceData.new(Theme.getElevatedColor(sC, e, st), INVIS),
+					Types._AppearanceData.new(Theme.getElevatedColor(sC, e, st), 0),
+					Types._AppearanceData.new(Theme.getElevatedColor(tC, e, st), 0),
 					f,
 					i,
 					nil,
 					nil
 				),
-				[Enums.ButtonStateType.Disabled] = Types.newRenderData(
+				[Enums.ButtonStateType.Disabled] = Types._RenderData.new(
 					sc,
-					Types.newAppearanceData(Theme.getElevatedColor(dSC, e, st), INVIS),
-					Types.newAppearanceData(Theme.getElevatedColor(dSC, e, st), 0.12),
-					Types.newAppearanceData(Theme.getElevatedColor(dTC, e, st), 0.12),
+					Types._AppearanceData.new(Theme.getElevatedColor(dSC, e, st), INVIS),
+					Types._AppearanceData.new(Theme.getElevatedColor(dSC, e, st), 0.12),
+					Types._AppearanceData.new(Theme.getElevatedColor(dTC, e, st), 0.12),
 					f,
 					i,
 					nil,
 					nil
 				),
-				[Enums.ButtonStateType.Hovered] = Types.newRenderData(
+				[Enums.ButtonStateType.Hovered] = Types._RenderData.new(
 					sc,
-					Types.newAppearanceData(Theme.getElevatedColor(sC, e, st), INVIS),
-					Types.newAppearanceData(Theme.getElevatedColor(sC, e + 1, st), 0.08),
-					Types.newAppearanceData(Theme.getElevatedColor(tC, e + 1, st), 0.08),
+					Types._AppearanceData.new(Theme.getElevatedColor(sC, e, st), INVIS),
+					Types._AppearanceData.new(Theme.getElevatedColor(sC, e + 1, st), 0.08),
+					Types._AppearanceData.new(Theme.getElevatedColor(tC, e + 1, st), 0.08),
 					f,
 					i,
 					nil,
 					nil
 				),
-				[Enums.ButtonStateType.Focused] = Types.newRenderData(
+				[Enums.ButtonStateType.Focused] = Types._RenderData.new(
 					sc,
-					Types.newAppearanceData(Theme.getElevatedColor(sC, e, st), INVIS),
-					Types.newAppearanceData(Theme.getElevatedColor(sC, e, st), 0.1),
-					Types.newAppearanceData(Theme.getElevatedColor(tC, e, st), 0.1),
+					Types._AppearanceData.new(Theme.getElevatedColor(sC, e, st), INVIS),
+					Types._AppearanceData.new(Theme.getElevatedColor(sC, e, st), 0.1),
+					Types._AppearanceData.new(Theme.getElevatedColor(tC, e, st), 0.1),
 					f,
 					i,
 					nil,
 					nil
 				),
-				[Enums.ButtonStateType.Pressed] = Types.newRenderData(
+				[Enums.ButtonStateType.Pressed] = Types._RenderData.new(
 					sc,
-					Types.newAppearanceData(Theme.getElevatedColor(sC, e, st), INVIS),
-					Types.newAppearanceData(Theme.getElevatedColor(sC, e - 1, st), 0.1),
-					Types.newAppearanceData(Theme.getElevatedColor(tC, e - 1, st), 0.1),
+					Types._AppearanceData.new(Theme.getElevatedColor(sC, e, st), INVIS),
+					Types._AppearanceData.new(Theme.getElevatedColor(sC, e - 1, st), 0.1),
+					Types._AppearanceData.new(Theme.getElevatedColor(tC, e - 1, st), 0.1),
 					f,
 					i,
-					Types.newSoundData(Sounds.Library[Enums.SoundType.ui_tap_variant_01], 0),
+					Types._SoundData.new(Sounds.Library[Enums.SoundType.ui_tap_variant_01], 0),
 					nil
 				),
 			}

@@ -50,14 +50,11 @@ jobs:
       - uses: actions/checkout@v2
 
       # Install foreman and all foreman tools
-      - uses: Roblox/setup-foreman@v1
+      - uses: ok-nick/setup-aftman@v0.4.2
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
 
       # Install wally packages
-      - name: update wally packages
-        run: wally-update patch
-
       - name: install wally packages
         run: wally install
 
@@ -100,9 +97,9 @@ jobs:
       - name: generate sourcemap
         run: rojo sourcemap dev.project.json --output sourcemap.json
 
-      # # Test validity
-      # - name: typecheck src files
-      #   run: luau-lsp analyze --sourcemap="sourcemap.json" --ignore="Packages/**" --ignore="src/Server/NPC/Animate.server.lua" --ignore="**/Packages/**" --ignore="*.spec.luau" --ignore="out/**" --flag:LuauTypeInferIterationLimit=0 --flag:LuauCheckRecursionLimit=0 --flag:LuauTypeInferRecursionLimit=0 --flag:LuauTarjanChildLimit=0 --flag:LuauTypeInferTypePackLoopLimit=0 --flag:LuauVisitRecursionLimit=0 --definitions=types/globalTypes.d.lua --flag:LuauParseDeclareClassIndexer=true src
+      # Test validity
+      - name: typecheck src files
+        run: luau-lsp analyze --sourcemap="sourcemap.json" --ignore="Packages/**" --ignore="src/Server/NPC/Animate.server.lua" --ignore="**/Packages/**" --ignore="*.spec.luau" --ignore="out/**" --flag:LuauTypeInferIterationLimit=0 --flag:LuauCheckRecursionLimit=0 --flag:LuauTypeInferRecursionLimit=0 --flag:LuauTarjanChildLimit=0 --flag:LuauTypeInferTypePackLoopLimit=0 --flag:LuauVisitRecursionLimit=0 --definitions=types/globalTypes.d.lua src
 
       - name: lint src files
         run: selene src

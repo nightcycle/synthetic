@@ -64,7 +64,7 @@ function Interface.onPrimary(): StyledBadgeWrapper
 	local definition = {
 		Style = _Value(Style.new(1, Enum.Font.SourceSans, "Light", Color3.new(0, 0.4, 0.7))),
 		OnClick = _Value(function() end),
-		Icon = _Value(Types.newImageData("")),
+		Icon = _Value(Types.ImageData.new("")),
 		Label = _Value(nil),
 		Count = _Value(nil),
 		Elevation = _Value(nil),
@@ -92,7 +92,7 @@ function Interface.onSurface(): StyledBadgeWrapper
 	local definition = {
 		Style = _Value(Style.new(1, Enum.Font.SourceSans, "Light", Color3.new(0, 0.4, 0.7))),
 		OnClick = _Value(function() end),
-		Icon = _Value(Types.newImageData("")),
+		Icon = _Value(Types.ImageData.new("")),
 		Label = _Value(nil),
 		Count = _Value(nil),
 		Elevation = _Value(nil),

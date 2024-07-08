@@ -63,17 +63,17 @@
 			{
 				"name": "headlineFontData",
 				"type": "FontData",
-				"default": "Types.newFontData(Font.fromEnum(Enum.Font.SourceSans), 14)"
+				"default": "Types.FontData.new(Font.fromEnum(Enum.Font.SourceSans), 14)"
 			},
 			{
 				"name": "bodyFontData",
 				"type": "FontData",
-				"default": "Types.newFontData(Font.fromEnum(Enum.Font.SourceSans), 14)"
+				"default": "Types.FontData.new(Font.fromEnum(Enum.Font.SourceSans), 14)"
 			},
 			{
 				"name": "buttonFontData",
 				"type": "FontData",
-				"default": "Types.newFontData(Font.fromEnum(Enum.Font.SourceSans), 14)"
+				"default": "Types.FontData.new(Font.fromEnum(Enum.Font.SourceSans), 14)"
 			},
 			{
 				"name": "scale",

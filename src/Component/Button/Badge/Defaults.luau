@@ -24,7 +24,7 @@ type CanBeState<V> = ColdFusion.CanBeState<V>
 return {
 	NEW = {
 		ON_CLICK = function() end,
-		ICON = Types.newImageData(""),
+		ICON = Types.ImageData.new(""),
 		LABEL = nil :: string?,
 		COUNT = nil :: number?,
 		TEXT_COLOR = Color3.new(),
@@ -33,13 +33,13 @@ return {
 		ERROR_BACKGROUND_COLOR = Color3.new(),
 		ELEVATION = 0,
 		SCHEME_TYPE = Enums.SchemeType.Light,
-		FONT_DATA = Types.newFontData(Font.fromEnum(Enum.Font.SourceSans), 14),
+		FONT_DATA = Types.FontData.new(Font.fromEnum(Enum.Font.SourceSans), 14),
 		SCALE = 1,
 	},
 	ON_PRIMARY = {
 		STYLE = Style.new(1, Enum.Font.SourceSans, "Light", Color3.new(0, 0.4, 0.7)),
 		ON_CLICK = function() end,
-		ICON = Types.newImageData(""),
+		ICON = Types.ImageData.new(""),
 		LABEL = nil :: string?,
 		COUNT = nil :: number?,
 		ELEVATION = nil :: number?,
@@ -47,7 +47,7 @@ return {
 	ON_SURFACE = {
 		STYLE = Style.new(1, Enum.Font.SourceSans, "Light", Color3.new(0, 0.4, 0.7)),
 		ON_CLICK = function() end,
-		ICON = Types.newImageData(""),
+		ICON = Types.ImageData.new(""),
 		LABEL = nil :: string?,
 		COUNT = nil :: number?,
 		ELEVATION = nil :: number?,

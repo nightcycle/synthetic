@@ -42,14 +42,14 @@ return function(frame: Frame)
 				Module.ColdFusion.new(
 					"Title",
 					{
-						Types.newButtonData(function()
+						Types.ButtonData.new(function()
 							print("save click")
 						end, Icons.save),
-						Types.newButtonData(function()
+						Types.ButtonData.new(function()
 							print("publish click")
 						end, Icons.publish),
 					},
-					Types.newButtonData(function()
+					Types.ButtonData.new(function()
 						print("nav click")
 					end, Icons.arrow_back),
 					style:GetColor(Enums.ColorRoleType.Primary),

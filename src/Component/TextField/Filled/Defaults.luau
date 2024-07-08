@@ -44,8 +44,8 @@ return {
 		LABEL_COLOR = Color3.new(),
 		ELEVATION = 0,
 		SCHEME_TYPE = Enums.SchemeType.Light,
-		BODY_FONT_DATA = Types.newFontData(Font.fromEnum(Enum.Font.SourceSans), 14),
-		SUPPORT_FONT_DATA = Types.newFontData(Font.fromEnum(Enum.Font.SourceSans), 14),
+		BODY_FONT_DATA = Types.FontData.new(Font.fromEnum(Enum.Font.SourceSans), 14),
+		SUPPORT_FONT_DATA = Types.FontData.new(Font.fromEnum(Enum.Font.SourceSans), 14),
 		SCALE = 1,
 	},
 	PRIMARY = {

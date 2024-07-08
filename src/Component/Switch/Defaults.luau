@@ -37,7 +37,7 @@ return {
 		ON_DISABLED_COLOR = Color3.new(),
 		ELEVATION = 0,
 		SCHEME_TYPE = Enums.SchemeType.Light,
-		FONT_DATA = Types.newFontData(Font.fromEnum(Enum.Font.SourceSans), 14),
+		FONT_DATA = Types.FontData.new(Font.fromEnum(Enum.Font.SourceSans), 14),
 		SCALE = 1,
 	},
 	PRIMARY = {

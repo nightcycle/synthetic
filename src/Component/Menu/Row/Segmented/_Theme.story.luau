@@ -42,19 +42,19 @@ return function(frame: Frame)
 			local Module = require(script.Parent)
 
 			local options = {
-				Types.newOptionData(function(onSelected: boolean)
+				Types.OptionData.new(function(onSelected: boolean)
 					print("select 1", onSelected)
 				end, false, true, "Unselected 1", Icons.gamepad, "Selected 1", Icons.handyman),
-				Types.newOptionData(function(onSelected: boolean)
+				Types.OptionData.new(function(onSelected: boolean)
 					print("select 2", onSelected)
 				end, false, false, "Selected 2", Icons.track_changes),
-				Types.newOptionData(function(onSelected: boolean)
+				Types.OptionData.new(function(onSelected: boolean)
 					print("select 3", onSelected)
 				end, true, false, "Selected 3", Icons.badge),
-				Types.newOptionData(function(onSelected: boolean)
+				Types.OptionData.new(function(onSelected: boolean)
 					print("select 4", onSelected)
 				end, false, false, "Selected 4"),
-				Types.newOptionData(function(onSelected: boolean)
+				Types.OptionData.new(function(onSelected: boolean)
 					print("select 5", onSelected)
 				end, false, false, "Unselected 5", nil, "Selected 5", nil),
 			}

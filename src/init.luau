@@ -24,12 +24,7 @@ Synthetic.Enums = require(_Package:WaitForChild("Enums"))
 Synthetic.Sounds = require(_Package:WaitForChild("Sounds"))
 Synthetic.Util = require(_Package:WaitForChild("Util"))
 -- Synthetic.Transition = require(_Package:WaitForChild("Transition"))
-Synthetic.Types = {
-	newButtonData = Types.newButtonData,
-	newOptionData = Types.newOptionData,
-	newImageData = Types.newImageData,
-	newFontData = Types.newFontData,
-}
+Synthetic.Types = Types
 Synthetic.Style = Style
 Synthetic.Typography = require(_Package:WaitForChild("Typography"))
 Synthetic.Component = {

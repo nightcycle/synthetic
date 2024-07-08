@@ -322,34 +322,34 @@ function Interface.new(
 		): { [Enums.ButtonStateType]: SwitchRenderData }
 			return {
 				[Enums.ButtonStateType.Enabled] = newSwitchRenderData(
-					Types.newAppearanceData(Theme.getElevatedColor(oC, e, st), 0),
-					Types.newAppearanceData(Theme.getElevatedColor(oOC, e, st), 0),
-					Types.newAppearanceData(Theme.getElevatedColor(oC, e, st), 0),
-					Types.newAppearanceData(Theme.getElevatedColor(oOC, e, st), 0)
+					Types._AppearanceData.new(Theme.getElevatedColor(oC, e, st), 0),
+					Types._AppearanceData.new(Theme.getElevatedColor(oOC, e, st), 0),
+					Types._AppearanceData.new(Theme.getElevatedColor(oC, e, st), 0),
+					Types._AppearanceData.new(Theme.getElevatedColor(oOC, e, st), 0)
 				),
 				[Enums.ButtonStateType.Disabled] = newSwitchRenderData(
-					Types.newAppearanceData(Theme.getElevatedColor(oOC, e, st), 1 - 0.38),
-					Types.newAppearanceData(Theme.getElevatedColor(oOC, e, st), 1 - 0.38),
-					Types.newAppearanceData(Theme.getElevatedColor(oOC, e, st), 1),
-					Types.newAppearanceData(Theme.getElevatedColor(oOC, e, st), 1 - 0.38)
+					Types._AppearanceData.new(Theme.getElevatedColor(oOC, e, st), 1 - 0.38),
+					Types._AppearanceData.new(Theme.getElevatedColor(oOC, e, st), 1 - 0.38),
+					Types._AppearanceData.new(Theme.getElevatedColor(oOC, e, st), 1),
+					Types._AppearanceData.new(Theme.getElevatedColor(oOC, e, st), 1 - 0.38)
 				),
 				[Enums.ButtonStateType.Hovered] = newSwitchRenderData(
-					Types.newAppearanceData(Theme.getElevatedColor(oC, e, st), 0),
-					Types.newAppearanceData(Theme.getElevatedColor(oOC, e, st), 0),
-					Types.newAppearanceData(Theme.getElevatedColor(oC, e, st), 1 - 0.08),
-					Types.newAppearanceData(Theme.getElevatedColor(oOC, e, st), 0)
+					Types._AppearanceData.new(Theme.getElevatedColor(oC, e, st), 0),
+					Types._AppearanceData.new(Theme.getElevatedColor(oOC, e, st), 0),
+					Types._AppearanceData.new(Theme.getElevatedColor(oC, e, st), 1 - 0.08),
+					Types._AppearanceData.new(Theme.getElevatedColor(oOC, e, st), 0)
 				),
 				[Enums.ButtonStateType.Focused] = newSwitchRenderData(
-					Types.newAppearanceData(Theme.getElevatedColor(oC, e, st), 0),
-					Types.newAppearanceData(Theme.getElevatedColor(oOC, e, st), 0),
-					Types.newAppearanceData(Theme.getElevatedColor(oC, e, st), 1 - 0.1),
-					Types.newAppearanceData(Theme.getElevatedColor(oOC, e, st), 0)
+					Types._AppearanceData.new(Theme.getElevatedColor(oC, e, st), 0),
+					Types._AppearanceData.new(Theme.getElevatedColor(oOC, e, st), 0),
+					Types._AppearanceData.new(Theme.getElevatedColor(oC, e, st), 1 - 0.1),
+					Types._AppearanceData.new(Theme.getElevatedColor(oOC, e, st), 0)
 				),
 				[Enums.ButtonStateType.Pressed] = newSwitchRenderData(
-					Types.newAppearanceData(Theme.getElevatedColor(oC, e, st), 0),
-					Types.newAppearanceData(Theme.getElevatedColor(oOC, e, st), 0),
-					Types.newAppearanceData(Theme.getElevatedColor(oC, e, st), 1 - 0.1),
-					Types.newAppearanceData(Theme.getElevatedColor(oOC, e, st), 0)
+					Types._AppearanceData.new(Theme.getElevatedColor(oC, e, st), 0),
+					Types._AppearanceData.new(Theme.getElevatedColor(oOC, e, st), 0),
+					Types._AppearanceData.new(Theme.getElevatedColor(oC, e, st), 1 - 0.1),
+					Types._AppearanceData.new(Theme.getElevatedColor(oOC, e, st), 0)
 				),
 			}
 		end,
@@ -382,34 +382,34 @@ function Interface.new(
 		): { [Enums.ButtonStateType]: SwitchRenderData }
 			return {
 				[Enums.ButtonStateType.Enabled] = newSwitchRenderData(
-					Types.newAppearanceData(Theme.getElevatedColor(oBC, e, st), 0),
-					Types.newAppearanceData(Theme.getElevatedColor(bC, e, st), 0),
-					Types.newAppearanceData(Theme.getElevatedColor(fC, e, st), 0),
-					Types.newAppearanceData(Theme.getElevatedColor(fC, e, st), 0)
+					Types._AppearanceData.new(Theme.getElevatedColor(oBC, e, st), 0),
+					Types._AppearanceData.new(Theme.getElevatedColor(bC, e, st), 0),
+					Types._AppearanceData.new(Theme.getElevatedColor(fC, e, st), 0),
+					Types._AppearanceData.new(Theme.getElevatedColor(fC, e, st), 0)
 				),
 				[Enums.ButtonStateType.Disabled] = newSwitchRenderData(
-					Types.newAppearanceData(Theme.getElevatedColor(oDC, e, st), 1 - 0.38),
-					Types.newAppearanceData(Theme.getElevatedColor(dC, e, st), 0),
-					Types.newAppearanceData(Theme.getElevatedColor(oDC, e, st), 1 - 0.38),
-					Types.newAppearanceData(Theme.getElevatedColor(oDC, e, st), 1 - 0.38)
+					Types._AppearanceData.new(Theme.getElevatedColor(oDC, e, st), 1 - 0.38),
+					Types._AppearanceData.new(Theme.getElevatedColor(dC, e, st), 0),
+					Types._AppearanceData.new(Theme.getElevatedColor(oDC, e, st), 1 - 0.38),
+					Types._AppearanceData.new(Theme.getElevatedColor(oDC, e, st), 1 - 0.38)
 				),
 				[Enums.ButtonStateType.Hovered] = newSwitchRenderData(
-					Types.newAppearanceData(Theme.getElevatedColor(oBC, e, st), 0),
-					Types.newAppearanceData(Theme.getElevatedColor(bC, e, st), 0),
-					Types.newAppearanceData(Theme.getElevatedColor(fC, e, st), 0.08),
-					Types.newAppearanceData(Theme.getElevatedColor(fC, e, st), 0)
+					Types._AppearanceData.new(Theme.getElevatedColor(oBC, e, st), 0),
+					Types._AppearanceData.new(Theme.getElevatedColor(bC, e, st), 0),
+					Types._AppearanceData.new(Theme.getElevatedColor(fC, e, st), 0.08),
+					Types._AppearanceData.new(Theme.getElevatedColor(fC, e, st), 0)
 				),
 				[Enums.ButtonStateType.Focused] = newSwitchRenderData(
-					Types.newAppearanceData(Theme.getElevatedColor(oBC, e, st), 0),
-					Types.newAppearanceData(Theme.getElevatedColor(bC, e, st), 0),
-					Types.newAppearanceData(Theme.getElevatedColor(fC, e, st), 0.1),
-					Types.newAppearanceData(Theme.getElevatedColor(fC, e, st), 0)
+					Types._AppearanceData.new(Theme.getElevatedColor(oBC, e, st), 0),
+					Types._AppearanceData.new(Theme.getElevatedColor(bC, e, st), 0),
+					Types._AppearanceData.new(Theme.getElevatedColor(fC, e, st), 0.1),
+					Types._AppearanceData.new(Theme.getElevatedColor(fC, e, st), 0)
 				),
 				[Enums.ButtonStateType.Pressed] = newSwitchRenderData(
-					Types.newAppearanceData(Theme.getElevatedColor(oBC, e, st), 0),
-					Types.newAppearanceData(Theme.getElevatedColor(bC, e, st), 0),
-					Types.newAppearanceData(Theme.getElevatedColor(fC, e, st), 0.1),
-					Types.newAppearanceData(Theme.getElevatedColor(fC, e, st), 0)
+					Types._AppearanceData.new(Theme.getElevatedColor(oBC, e, st), 0),
+					Types._AppearanceData.new(Theme.getElevatedColor(bC, e, st), 0),
+					Types._AppearanceData.new(Theme.getElevatedColor(fC, e, st), 0.1),
+					Types._AppearanceData.new(Theme.getElevatedColor(fC, e, st), 0)
 				),
 			}
 		end,

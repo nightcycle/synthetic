@@ -45,10 +45,10 @@ return function(frame: Frame)
 				local button = maid:GiveTask(
 					Module.ColdFusion.new(
 						{
-							Types.newButtonData(function()
+							Types.ButtonData.new(function()
 								print("Click 1")
 							end, nil, "Button 1", true),
-							Types.newButtonData(function()
+							Types.ButtonData.new(function()
 								print("Click 2")
 							end, nil, "Button 2", false),
 						},

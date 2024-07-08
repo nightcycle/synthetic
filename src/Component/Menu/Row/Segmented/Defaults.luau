@@ -32,7 +32,7 @@ return {
 		OUTLINE_COLOR = Color3.new(),
 		ELEVATION = nil :: number?,
 		SCHEME_TYPE = Enums.SchemeType.Light,
-		FONT_DATA = Types.newFontData(Font.fromEnum(Enum.Font.SourceSans), 14),
+		FONT_DATA = Types.FontData.new(Font.fromEnum(Enum.Font.SourceSans), 14),
 		SCALE = nil :: number?,
 	},
 	PRIMARY_CONTAINER = {

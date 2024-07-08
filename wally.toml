@@ -5,7 +5,7 @@ version = "5.0.0"
 authors = ["CJ Oyer <coyer@nightcycle.us>"]
 realm = "shared"
 registry = "https://github.com/upliftgames/wally-index"
-exclude = ["Packages", ".vscode", "media"]
+exclude = ["Packages", ".vscode", "*.mp4", "*.gif", "*.png"]
 
 [dependencies]
 ColdFusion = "nightcycle/cold-fusion@9.1.1"

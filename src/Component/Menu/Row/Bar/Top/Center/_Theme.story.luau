@@ -43,14 +43,14 @@ return function(frame: Frame)
 					style,
 					"Primary",
 					{
-						Types.newButtonData(function()
+						Types.ButtonData.new(function()
 							print("save click")
 						end, Icons.save),
-						Types.newButtonData(function()
+						Types.ButtonData.new(function()
 							print("publish click")
 						end, Icons.publish),
 					},
-					Types.newButtonData(function()
+					Types.ButtonData.new(function()
 						print("nav click")
 					end, Icons.arrow_back)
 				))
@@ -66,14 +66,14 @@ return function(frame: Frame)
 					style,
 					"Secondary",
 					{
-						Types.newButtonData(function()
+						Types.ButtonData.new(function()
 							print("save click")
 						end, Icons.save),
-						Types.newButtonData(function()
+						Types.ButtonData.new(function()
 							print("publish click")
 						end, Icons.publish),
 					},
-					Types.newButtonData(function()
+					Types.ButtonData.new(function()
 						print("nav click")
 					end, Icons.arrow_back)
 				))
@@ -89,14 +89,14 @@ return function(frame: Frame)
 					style,
 					"Tertiary",
 					{
-						Types.newButtonData(function()
+						Types.ButtonData.new(function()
 							print("save click")
 						end, Icons.save),
-						Types.newButtonData(function()
+						Types.ButtonData.new(function()
 							print("publish click")
 						end, Icons.publish),
 					},
-					Types.newButtonData(function()
+					Types.ButtonData.new(function()
 						print("nav click")
 					end, Icons.arrow_back)
 				))

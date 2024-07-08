@@ -30,9 +30,9 @@ return {
 		TEXT_COLOR = Color3.new(),
 		ELEVATION = nil :: number?,
 		SCHEME_TYPE = Enums.SchemeType.Light,
-		TITLE_FONT_DATA = Types.newFontData(Font.fromEnum(Enum.Font.SourceSans), 14),
-		SUB_HEADING_FONT_DATA = Types.newFontData(Font.fromEnum(Enum.Font.SourceSans), 14),
-		BUTTON_FONT_DATA = Types.newFontData(Font.fromEnum(Enum.Font.SourceSans), 14),
+		TITLE_FONT_DATA = Types.FontData.new(Font.fromEnum(Enum.Font.SourceSans), 14),
+		SUB_HEADING_FONT_DATA = Types.FontData.new(Font.fromEnum(Enum.Font.SourceSans), 14),
+		BUTTON_FONT_DATA = Types.FontData.new(Font.fromEnum(Enum.Font.SourceSans), 14),
 		SCALE = 1,
 	},
 	PRIMARY = {

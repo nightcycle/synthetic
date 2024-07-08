@@ -78,7 +78,7 @@
 			{
 				"name": "fontData",
 				"type": "FontData",
-				"default": "Types.newFontData(Font.fromEnum(Enum.Font.SourceSans), 14)"
+				"default": "Types.FontData.new(Font.fromEnum(Enum.Font.SourceSans), 14)"
 			},
 			{
 				"name": "scale",
