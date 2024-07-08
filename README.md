@@ -47,57 +47,57 @@ I've gone and used parameter dense functions for constructors, relying on the pa
 
 # Components
 ## Buttons
-- [Badge](./src/Component/Button/Badge)
+- [Badge](./src/Component/Button/Badge/README.md)
 
 ### Common
-- [Elevated](./src/Component/Button/ElevatedButton)
-- [Filled](./src/Component/Button/FilledButton)
-- [Outlined](./src/Component/Button/OutlinedButton)
-- [Text](./src/Component/Button/TextButton)
+- [Elevated](./src/Component/Button/ElevatedButton/README.md)
+- [Filled](./src/Component/Button/FilledButton/README.md)
+- [Outlined](./src/Component/Button/OutlinedButton/README.md)
+- [Text](./src/Component/Button/TextButton/README.md)
 
 ### Icons
-- [Filled Icon](./src/Component/Button/FilledIconButton)
-- [Outlined Icon](./src/Component/Button/OutlinedIconButton)
+- [Filled Icon](./src/Component/Button/FilledIconButton/README.md)
+- [Outlined Icon](./src/Component/Button/OutlinedIconButton/README.md)
 
 ### FAB
-- [FAB](./src/Component/Button/FAB)
-- [Extended FAB](./src/Component/Button/FAB)
+- [FAB](./src/Component/Button/FAB/README.md)
+- [Extended FAB](./src/Component/Button/FAB/README.md)
 
 ### Chips
-- [Assist Chip](./src/Component/Button/Chip/Assist)
-- [Filter Chip](./src/Component/Button/Chip/Filter)
+- [Assist Chip](./src/Component/Button/Chip/Assist/README.md)
+- [Filter Chip](./src/Component/Button/Chip/Filter/README.md)
 
 ## Menu
 ### Row
-- [Segmented](./src/Component/Menu/Row/Segmented)
+- [Segmented](./src/Component/Menu/Row/Segmented/README.md)
 
 ### Bar
-- [Bottom](./src/Component/Menu/Row/Bar/Bottom)
-- [Top Center](./src/Component/Menu/Row/Bar/Top/Center)
-- [Top Large](./src/Component/Menu/Row/Bar/Top/Large)
-- [Top Medium](./src/Component/Menu/Row/Bar/Top/Medium)
-- [Top Small](./src/Component/Menu/Row/Bar/Top/Small)
+- [Bottom](./src/Component/Menu/Row/Bar/Bottom/README.md)
+- [Top Center](./src/Component/Menu/Row/Bar/Top/Center/README.md)
+- [Top Large](./src/Component/Menu/Row/Bar/Top/Large/README.md)
+- [Top Medium](./src/Component/Menu/Row/Bar/Top/Medium/README.md)
+- [Top Small](./src/Component/Menu/Row/Bar/Top/Small/README.md)
 
 ## Text Field
-- [Filled](./src/Component/TextField/Filled)
-- [Outlined](./src/Component/TextField/Outlined)
+- [Filled](./src/Component/TextField/Filled/README.md)
+- [Outlined](./src/Component/TextField/Outlined/README.md)
 
 ## Progress Indicator
-- [Circular](./src/Component/ProgressIndicator/Circular)
+- [Circular](./src/Component/ProgressIndicator/Circular/README.md)
 
 ## Snackbar
-- [Small](./src/Component/Snackbar/Small)
-- [Large](./src/Component/Snackbar/Large)
+- [Small](./src/Component/Snackbar/Small/README.md)
+- [Large](./src/Component/Snackbar/Large/README.md)
 
 ## Search
-- [Filled](./src/Component/Search/Filled)
-- [Text](./src/Component/Search/Filled)
+- [Filled](./src/Component/Search/Filled/README.md)
+- [Text](./src/Component/Search/Filled/README.md)
 
 ## Misc
-- [Dialog](./src/Component/Dialog)
-- [Checkbox](./src/Component/Checkbox)
-- [Radio Button](./src/Component/RadioButton)
-- [Switch](./src/Component/Switch)
+- [Dialog](./src/Component/Dialog/README.md)
+- [Checkbox](./src/Component/Checkbox/README.md)
+- [Radio Button](./src/Component/RadioButton/README.md)
+- [Switch](./src/Component/Switch/README.md)
 <!-- - [Slider](./src/Component/Slider) -->
 
 
