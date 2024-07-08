@@ -3,11 +3,13 @@ Synthetic = Fusion created Material
 
 This UI library is powered by a Fusion framework variant, and has the the goal of porting the Google Material Design framework / philosophy to Roblox.
 
-It is compatible with all major UI workflows:
+Currently Supports:
 - Vanilla / No Framework
 - [Fusion](https://github.com/dphfox/Fusion)
-- [Roact](https://github.com/Roblox/roact/)
 - [Cold-Fusion](https://github.com/nightcycle/cold-fusion)
+
+Coming Soon:
+- [Roact](https://github.com/Roblox/roact/)
 - [Blend](https://quenty.github.io/NevermoreEngine/api/Blend)
 
 https://github.com/nightcycle/synthetic/assets/77173389/42044196-0b4a-4e76-9276-88edaf60ef55
