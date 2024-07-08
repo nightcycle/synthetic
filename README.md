@@ -305,11 +305,35 @@ typography:Apply(
 - [Switch](https://m3.material.io/components/switch/overview)
 - [Slider](https://m3.material.io/components/sliders/overview)
 
-# Utilities
+# Utility Components
+In making this framework, various patterns became apparent. To save code frequent instance use-cases were organized into internal components. You can access them under `Synthetic.Util`.
+
+They're not really meant for developers, however you might find them handy. Currently these aren't translated into other frameworks, however if this is something people find handy then I'll definitely fast-track it.
+
+## Containers
+The container interface helps quickly construct invisible frames that scale with the contents. Very handy when dealing with flex hierarchies.
+
+## ImageLabel
+Allows for the quick construction of basic icons and images using the ImageData format
+
+## List
+Various list constructors, typically more focused on dealing with flex logic.
+
+## Padding
+Quickly add scale considerate UIPadding to instances.
+
+## ScrollingContainer
+A set of scrolling container constructors that tries to fit whatever you put into it, disappearing into a container if everything fits at once.
+
+## TextLabel
+Quickly add labels to things. Includes built in support for icons at beginning / end of text.
+
 
 # Sounds
+I've gone and uploaded [all the sounds](https://m2.material.io/design/sound/sound-resources.html) made open source by an older version of the Material Design site. They're available as a static dictionary with keys taken from the original file names. They're used throughout the components, however you're welcome to use them as well!
 
 # Icons
+All of the google icons are [imported as spritesheets](https://github.com/nightcycle/material-icons), and are recommended to use with this library. They natively support the ImageData type, and are just handy to have around.
 
 # Transitions
 The Material Design philosophies on [motion](https://m3.material.io/styles/motion/overview) is a very interesting read - however it's not one that is currently hooked up to most components. However if you do want their expertly curated theories on motion in your game, the Transitions utility may help you.
