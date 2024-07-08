@@ -27,23 +27,43 @@ This function is a native constructor, with verbosity allowing for control over 
 
 ### Usage
 
-***Fusion***
+**Vanilla**
 ```luau
-local onChangeState: Fusion.Value<(onChange: number) -> (), unknown> = Value(function(onChange: number) end)
+local slider = Synthetic.Component.Slider.Fusion.new()
+slider.OnChange = function(onChange: number) end
+slider.InitialValue = 50
+slider.Minimum = nil
+slider.Maximum = nil
+slider.Increment = nil
+slider.LeftTextOrIcon = 
+slider.RightTextOrIcon = 
+slider.OnBackgroundColor = Color3.new()
+slider.OnBackgroundTextColor = Color3.new()
+slider.FillColor = Color3.new()
+slider.FillContainerColor = Color3.new()
+slider.Elevation = 0
+slider.SchemeType = Enums.SchemeType.Light
+slider.FontData = Types.FontData.new(Font.fromEnum(Enum.Font.SourceSans), 14)
+slider.Scale = 1
+```
+
+**Fusion**
+```luau
+local onChangeState: Fusion.Value<(onChange: number) -> ()> = Value(function(onChange: number) end)
 local initialValue: number = 50
-local minimumState: Fusion.Value<number?, unknown> = Value(nil)
+local minimumState: Fusion.Value<number?> = Value(nil)
 local maximum: number? = nil
-local incrementState: Fusion.Value<number?, unknown> = Value(nil)
+local incrementState: Fusion.Value<number?> = Value(nil)
 local leftTextOrIcon: string | ImageData | nil = 
-local rightTextOrIconState: Fusion.Value<string | ImageData | nil, unknown> = Value()
+local rightTextOrIconState: Fusion.Value<string | ImageData | nil> = Value()
 local onBackgroundColor: Color3 = Color3.new()
-local onBackgroundTextColorState: Fusion.Value<Color3, unknown> = Value(Color3.new())
+local onBackgroundTextColorState: Fusion.Value<Color3> = Value(Color3.new())
 local fillColor: Color3 = Color3.new()
-local fillContainerColorState: Fusion.Value<Color3, unknown> = Value(Color3.new())
+local fillContainerColorState: Fusion.Value<Color3> = Value(Color3.new())
 local elevation: number = 0
-local schemeTypeState: Fusion.Value<Enums.SchemeType, unknown> = Value(Enums.SchemeType.Light)
+local schemeTypeState: Fusion.Value<Enums.SchemeType> = Value(Enums.SchemeType.Light)
 local fontData: FontData = Types.FontData.new(Font.fromEnum(Enum.Font.SourceSans), 14)
-local scaleState: Fusion.Value<number, unknown> = Value(1)
+local scaleState: Fusion.Value<number> = Value(1)
 
 local slider: GuiObject = Synthetic.Component.Slider.Fusion.new(
 	onChangeState,
@@ -80,17 +100,31 @@ This function is a style constructor, utilizing the "Style" type to reduce the n
 
 ### Usage
 
-***Fusion***
+**Vanilla**
 ```luau
-local styleState: Fusion.Value<Style, unknown> = Value(Style.new(1, Enum.Font.SourceSans, "Light", Color3.new(0, 0.4, 0.7)))
+local slider = Synthetic.Component.Slider.Fusion.primary()
+slider.Style = Style.new(1, Enum.Font.SourceSans, "Light", Color3.new(0, 0.4, 0.7))
+slider.OnChange = function(onChange: number) end
+slider.InitialValue = 50
+slider.Minimum = nil
+slider.Maximum = nil
+slider.Increment = nil
+slider.LeftTextOrIcon = nil
+slider.RightTextOrIcon = nil
+slider.Elevation = 0
+```
+
+**Fusion**
+```luau
+local styleState: Fusion.Value<Style> = Value(Style.new(1, Enum.Font.SourceSans, "Light", Color3.new(0, 0.4, 0.7)))
 local onChange: (onChange: number) -> () = function(onChange: number) end
-local initialValueState: Fusion.Value<number, unknown> = Value(50)
+local initialValueState: Fusion.Value<number> = Value(50)
 local minimum: number? = nil
-local maximumState: Fusion.Value<number?, unknown> = Value(nil)
+local maximumState: Fusion.Value<number?> = Value(nil)
 local increment: number? = nil
-local leftTextOrIconState: Fusion.Value<string | ImageData | nil, unknown> = Value(nil)
+local leftTextOrIconState: Fusion.Value<string | ImageData | nil> = Value(nil)
 local rightTextOrIcon: string | ImageData | nil = nil
-local elevationState: Fusion.Value<number, unknown> = Value(0)
+local elevationState: Fusion.Value<number> = Value(0)
 
 local slider: GuiObject = Synthetic.Component.Slider.Fusion.primary(
 	styleState,

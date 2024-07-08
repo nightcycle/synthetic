@@ -304,7 +304,7 @@ type CanBeState<V> = ColdFusion.CanBeState<V>"""
 			lines.append("\n### Usage")
 
 			fusion_lines: list[str] = [
-				'\n***Fusion***',
+				'\n**Fusion**',
 				'```luau',
 			]
 			fusion_param_line: list[str] = []
@@ -320,7 +320,7 @@ type CanBeState<V> = ColdFusion.CanBeState<V>"""
 					fusion_lines.append(f'local {param["name"]}: {param["type"]} = {param["default"]}{comment}')
 				else:
 					fusion_param_line.append("\t"+param["name"]+"State")
-					fusion_lines.append(f'local {param["name"]}State: Fusion.Value<{param["type"]}, unknown> = Value({param["default"]}){comment}')
+					fusion_lines.append(f'local {param["name"]}State: Fusion.Value<{param["type"]}> = Value({param["default"]}){comment}')
 
 			fusion_lines += [
 				"",
@@ -329,12 +329,22 @@ type CanBeState<V> = ColdFusion.CanBeState<V>"""
 			fusion_lines.append(",\n".join(fusion_param_line))
 			fusion_lines.append(")\n```")
 
-			vanilla_lines: list[str] = []
-			cf_lines: list[str] = []
+			vanilla_lines: list[str] = [
+				'\n**Vanilla**',
+				'```luau',
+				f'local {pascal_to_camel(self.name)} = {self.path.replace('src', 'Synthetic').replace("\\", ".")}.Fusion.{func['names'][0]}()',
 
-			lines += cf_lines
-			lines += fusion_lines
+			]
+			for param in func['parameters']:
+				vanilla_lines.append(f'{pascal_to_camel(self.name)}.{camel_to_pascal(param["name"])} = {param["default"]}')
+
+			vanilla_lines += [
+				'```',
+			]
+
 			lines += vanilla_lines
+			lines += fusion_lines
+
 
 		out_path = self.path + "/README.md"
 		with open(out_path, mode="w") as file:

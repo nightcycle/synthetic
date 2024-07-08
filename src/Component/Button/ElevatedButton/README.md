@@ -25,21 +25,39 @@ This function is a native constructor, with verbosity allowing for control over 
 
 ### Usage
 
-***Fusion***
+**Vanilla**
 ```luau
-local onClickState: Fusion.Value<() -> (), unknown> = Value(function() end)
+local elevatedButton = Synthetic.Component.Button.ElevatedButton.Fusion.new()
+elevatedButton.OnClick = function() end
+elevatedButton.Text = "Button"
+elevatedButton.Icon = Types.ImageData.new("")
+elevatedButton.TextColor = Color3.new()
+elevatedButton.SurfaceColor = Color3.new()
+elevatedButton.DisabledTextColor = Color3.new()
+elevatedButton.DisabledSurfaceColor = Color3.new()
+elevatedButton.ShadowColor = Color3.new()
+elevatedButton.IsEnabled = true
+elevatedButton.Elevation = 0
+elevatedButton.SchemeType = Enums.SchemeType.Light
+elevatedButton.FontData = Types.FontData.new(Font.fromEnum(Enum.Font.SourceSans), 14)
+elevatedButton.Scale = 1
+```
+
+**Fusion**
+```luau
+local onClickState: Fusion.Value<() -> ()> = Value(function() end)
 local text: string = "Button"
-local iconState: Fusion.Value<ImageData, unknown> = Value(Types.ImageData.new(""))
+local iconState: Fusion.Value<ImageData> = Value(Types.ImageData.new(""))
 local textColor: Color3 = Color3.new()
-local surfaceColorState: Fusion.Value<Color3, unknown> = Value(Color3.new())
+local surfaceColorState: Fusion.Value<Color3> = Value(Color3.new())
 local disabledTextColor: Color3 = Color3.new()
-local disabledSurfaceColorState: Fusion.Value<Color3, unknown> = Value(Color3.new())
+local disabledSurfaceColorState: Fusion.Value<Color3> = Value(Color3.new())
 local shadowColor: Color3 = Color3.new()
-local isEnabledState: Fusion.Value<boolean, unknown> = Value(true)
+local isEnabledState: Fusion.Value<boolean> = Value(true)
 local elevation: number = 0
-local schemeTypeState: Fusion.Value<Enums.SchemeType, unknown> = Value(Enums.SchemeType.Light)
+local schemeTypeState: Fusion.Value<Enums.SchemeType> = Value(Enums.SchemeType.Light)
 local fontData: FontData = Types.FontData.new(Font.fromEnum(Enum.Font.SourceSans), 14)
-local scaleState: Fusion.Value<number, unknown> = Value(1)
+local scaleState: Fusion.Value<number> = Value(1)
 
 local elevatedButton: GuiObject = Synthetic.Component.Button.ElevatedButton.Fusion.new(
 	onClickState,
@@ -71,13 +89,24 @@ This function is a style constructor, utilizing the "Style" type to reduce the n
 
 ### Usage
 
-***Fusion***
+**Vanilla**
 ```luau
-local styleState: Fusion.Value<Style, unknown> = Value(Style.new(1, Enum.Font.SourceSans, "Light", Color3.new(0, 0.4, 0.7)))
+local elevatedButton = Synthetic.Component.Button.ElevatedButton.Fusion.primary()
+elevatedButton.Style = Style.new(1, Enum.Font.SourceSans, "Light", Color3.new(0, 0.4, 0.7))
+elevatedButton.OnClick = function() end
+elevatedButton.Text = "Button"
+elevatedButton.Icon = Types.ImageData.new("")
+elevatedButton.Elevation = 0
+elevatedButton.IsEnabled = true
+```
+
+**Fusion**
+```luau
+local styleState: Fusion.Value<Style> = Value(Style.new(1, Enum.Font.SourceSans, "Light", Color3.new(0, 0.4, 0.7)))
 local onClick: () -> () = function() end
-local textState: Fusion.Value<string, unknown> = Value("Button")
+local textState: Fusion.Value<string> = Value("Button")
 local icon: ImageData = Types.ImageData.new("")
-local elevationState: Fusion.Value<number, unknown> = Value(0)
+local elevationState: Fusion.Value<number> = Value(0)
 local isEnabled: boolean = true
 
 local elevatedButton: GuiObject = Synthetic.Component.Button.ElevatedButton.Fusion.primary(

@@ -25,21 +25,39 @@ This function is a native constructor, with verbosity allowing for control over 
 
 ### Usage
 
-***Fusion***
+**Vanilla**
 ```luau
-local onClickState: Fusion.Value<(isSelected: boolean) -> (), unknown> = Value(function(isSelected: boolean) end)
+local filter = Synthetic.Component.Button.Chip.Filter.Fusion.new()
+filter.OnClick = function(isSelected: boolean) end
+filter.IsInitiallySelected = false
+filter.Text = "Filter"
+filter.TextColor = Color3.new()
+filter.DisabledTextColor = Color3.new()
+filter.FillTextColor = Color3.new()
+filter.DisabledFillTextColor = Color3.new()
+filter.DisabledFillColor = Color3.new()
+filter.IsEnabled = true
+filter.Elevation = 0
+filter.SchemeType = Enums.SchemeType.Light
+filter.FontData = Types.FontData.new(Font.fromEnum(Enum.Font.SourceSans), 14)
+filter.Scale = 1
+```
+
+**Fusion**
+```luau
+local onClickState: Fusion.Value<(isSelected: boolean) -> ()> = Value(function(isSelected: boolean) end)
 local isInitiallySelected: boolean = false
-local textState: Fusion.Value<string, unknown> = Value("Filter")
+local textState: Fusion.Value<string> = Value("Filter")
 local textColor: Color3 = Color3.new()
-local disabledTextColorState: Fusion.Value<Color3, unknown> = Value(Color3.new())
+local disabledTextColorState: Fusion.Value<Color3> = Value(Color3.new())
 local fillTextColor: Color3 = Color3.new()
-local disabledFillTextColorState: Fusion.Value<Color3, unknown> = Value(Color3.new())
+local disabledFillTextColorState: Fusion.Value<Color3> = Value(Color3.new())
 local disabledFillColor: Color3 = Color3.new()
-local isEnabledState: Fusion.Value<boolean, unknown> = Value(true)
+local isEnabledState: Fusion.Value<boolean> = Value(true)
 local elevation: number = 0
-local schemeTypeState: Fusion.Value<Enums.SchemeType, unknown> = Value(Enums.SchemeType.Light)
+local schemeTypeState: Fusion.Value<Enums.SchemeType> = Value(Enums.SchemeType.Light)
 local fontData: FontData = Types.FontData.new(Font.fromEnum(Enum.Font.SourceSans), 14)
-local scaleState: Fusion.Value<number, unknown> = Value(1)
+local scaleState: Fusion.Value<number> = Value(1)
 
 local filter: GuiObject = Synthetic.Component.Button.Chip.Filter.Fusion.new(
 	onClickState,
@@ -71,13 +89,24 @@ This function is a style constructor, utilizing the "Style" type to reduce the n
 
 ### Usage
 
-***Fusion***
+**Vanilla**
 ```luau
-local styleState: Fusion.Value<Style, unknown> = Value(Style.new(1, Enum.Font.SourceSans, "Light", Color3.new(0, 0.4, 0.7)))
+local filter = Synthetic.Component.Button.Chip.Filter.Fusion.primary()
+filter.Style = Style.new(1, Enum.Font.SourceSans, "Light", Color3.new(0, 0.4, 0.7))
+filter.OnClick = function(isSelected: boolean) end
+filter.Text = "Filter"
+filter.IsInitiallySelected = false
+filter.IsEnabled = nil
+filter.Elevation = nil
+```
+
+**Fusion**
+```luau
+local styleState: Fusion.Value<Style> = Value(Style.new(1, Enum.Font.SourceSans, "Light", Color3.new(0, 0.4, 0.7)))
 local onClick: (isSelected: boolean) -> () = function(isSelected: boolean) end
-local textState: Fusion.Value<string, unknown> = Value("Filter")
+local textState: Fusion.Value<string> = Value("Filter")
 local isInitiallySelected: boolean = false
-local isEnabledState: Fusion.Value<boolean?, unknown> = Value(nil)
+local isEnabledState: Fusion.Value<boolean?> = Value(nil)
 local elevation: number? = nil
 
 local filter: GuiObject = Synthetic.Component.Button.Chip.Filter.Fusion.primary(

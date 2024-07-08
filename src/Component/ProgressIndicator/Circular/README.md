@@ -17,13 +17,23 @@ This function is a native constructor, with verbosity allowing for control over 
 
 ### Usage
 
-***Fusion***
+**Vanilla**
 ```luau
-local progressState: Fusion.Value<number?, unknown> = Value(nil)
+local circular = Synthetic.Component.ProgressIndicator.Circular.Fusion.new()
+circular.Progress = nil
+circular.IsEnabled = nil
+circular.FillColor = Color3.new()
+circular.EmptyColor = Color3.new()
+circular.Scale = 1
+```
+
+**Fusion**
+```luau
+local progressState: Fusion.Value<number?> = Value(nil)
 local isEnabled: boolean? = nil
-local fillColorState: Fusion.Value<Color3, unknown> = Value(Color3.new())
+local fillColorState: Fusion.Value<Color3> = Value(Color3.new())
 local emptyColor: Color3 = Color3.new()
-local scaleState: Fusion.Value<number, unknown> = Value(1)
+local scaleState: Fusion.Value<number> = Value(1)
 
 local circular: GuiObject = Synthetic.Component.ProgressIndicator.Circular.Fusion.new(
 	progressState,
@@ -44,11 +54,19 @@ This function is a style constructor, utilizing the "Style" type to reduce the n
 
 ### Usage
 
-***Fusion***
+**Vanilla**
 ```luau
-local styleState: Fusion.Value<Style, unknown> = Value(Style.new(1, Enum.Font.SourceSans, "Light", Color3.new(0, 0.4, 0.7)))
+local circular = Synthetic.Component.ProgressIndicator.Circular.Fusion.primary()
+circular.Style = Style.new(1, Enum.Font.SourceSans, "Light", Color3.new(0, 0.4, 0.7))
+circular.Progress = nil
+circular.IsEnabled = nil
+```
+
+**Fusion**
+```luau
+local styleState: Fusion.Value<Style> = Value(Style.new(1, Enum.Font.SourceSans, "Light", Color3.new(0, 0.4, 0.7)))
 local progress: number? = nil
-local isEnabledState: Fusion.Value<boolean?, unknown> = Value(nil)
+local isEnabledState: Fusion.Value<boolean?> = Value(nil)
 
 local circular: GuiObject = Synthetic.Component.ProgressIndicator.Circular.Fusion.primary(
 	styleState,

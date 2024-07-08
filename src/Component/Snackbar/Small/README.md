@@ -23,19 +23,35 @@ This function is a native constructor, with verbosity allowing for control over 
 
 ### Usage
 
-***Fusion***
+**Vanilla**
 ```luau
-local textState: Fusion.Value<string, unknown> = Value("")
+local small = Synthetic.Component.Snackbar.Small.Fusion.new()
+small.Text = ""
+small.ButtonText = nil
+small.OnButtonClick = nil
+small.OnCloseClick = nil
+small.TextColor = Color3.new()
+small.ButtonTextColor = Color3.new()
+small.BackgroundColor = Color3.new()
+small.Elevation = 0
+small.SchemeType = Enums.SchemeType.Light
+small.FontData = Types.FontData.new(Font.fromEnum(Enum.Font.SourceSans), 14)
+small.Scale = 1
+```
+
+**Fusion**
+```luau
+local textState: Fusion.Value<string> = Value("")
 local buttonText: string? = nil
-local onButtonClickState: Fusion.Value<((() -> ())?), unknown> = Value(nil)
+local onButtonClickState: Fusion.Value<((() -> ())?)> = Value(nil)
 local onCloseClick: ((() -> ())?) = nil
-local textColorState: Fusion.Value<Color3, unknown> = Value(Color3.new())
+local textColorState: Fusion.Value<Color3> = Value(Color3.new())
 local buttonTextColor: Color3 = Color3.new()
-local backgroundColorState: Fusion.Value<Color3, unknown> = Value(Color3.new())
+local backgroundColorState: Fusion.Value<Color3> = Value(Color3.new())
 local elevation: number = 0
-local schemeTypeState: Fusion.Value<Enums.SchemeType, unknown> = Value(Enums.SchemeType.Light)
+local schemeTypeState: Fusion.Value<Enums.SchemeType> = Value(Enums.SchemeType.Light)
 local fontData: FontData = Types.FontData.new(Font.fromEnum(Enum.Font.SourceSans), 14)
-local scaleState: Fusion.Value<number, unknown> = Value(1)
+local scaleState: Fusion.Value<number> = Value(1)
 
 local small: GuiObject = Synthetic.Component.Snackbar.Small.Fusion.new(
 	textState,
@@ -65,13 +81,24 @@ This function is a style constructor, utilizing the "Style" type to reduce the n
 
 ### Usage
 
-***Fusion***
+**Vanilla**
 ```luau
-local styleState: Fusion.Value<Style, unknown> = Value(Style.new(1, Enum.Font.SourceSans, "Light", Color3.new(0, 0.4, 0.7)))
+local small = Synthetic.Component.Snackbar.Small.Fusion.surfaceContainer()
+small.Style = Style.new(1, Enum.Font.SourceSans, "Light", Color3.new(0, 0.4, 0.7))
+small.Text = ""
+small.ButtonText = nil
+small.OnButtonClick = nil
+small.OnCloseClick = nil
+small.Elevation = nil
+```
+
+**Fusion**
+```luau
+local styleState: Fusion.Value<Style> = Value(Style.new(1, Enum.Font.SourceSans, "Light", Color3.new(0, 0.4, 0.7)))
 local text: string = ""
-local buttonTextState: Fusion.Value<string?, unknown> = Value(nil)
+local buttonTextState: Fusion.Value<string?> = Value(nil)
 local onButtonClick: ((() -> ())?) = nil
-local onCloseClickState: Fusion.Value<((() -> ())?), unknown> = Value(nil)
+local onCloseClickState: Fusion.Value<((() -> ())?)> = Value(nil)
 local elevation: number? = nil
 
 local small: GuiObject = Synthetic.Component.Snackbar.Small.Fusion.surfaceContainer(

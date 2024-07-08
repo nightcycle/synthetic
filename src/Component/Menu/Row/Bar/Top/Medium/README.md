@@ -23,19 +23,35 @@ This function is a native constructor, with verbosity allowing for control over 
 
 ### Usage
 
-***Fusion***
+**Vanilla**
 ```luau
-local titleState: Fusion.Value<string, unknown> = Value("Title")
+local medium = Synthetic.Component.Menu.Row.Bar.Top.Medium.Fusion.new()
+medium.Title = "Title"
+medium.Buttons = {}
+medium.Navigation = nil
+medium.BackgroundColor = Color3.new()
+medium.TextColor = Color3.new()
+medium.Elevation = nil
+medium.SchemeType = Enums.SchemeType.Light
+medium.TitleFontData = Types.FontData.new(Font.fromEnum(Enum.Font.SourceSans), 14)
+medium.SubHeadingFontData = Types.FontData.new(Font.fromEnum(Enum.Font.SourceSans), 14)
+medium.ButtonFontData = Types.FontData.new(Font.fromEnum(Enum.Font.SourceSans), 14)
+medium.Scale = 1
+```
+
+**Fusion**
+```luau
+local titleState: Fusion.Value<string> = Value("Title")
 local buttons: {ButtonData} = {}
-local navigationState: Fusion.Value<ButtonData?, unknown> = Value(nil)
+local navigationState: Fusion.Value<ButtonData?> = Value(nil)
 local backgroundColor: Color3 = Color3.new()
-local textColorState: Fusion.Value<Color3, unknown> = Value(Color3.new())
+local textColorState: Fusion.Value<Color3> = Value(Color3.new())
 local elevation: number? = nil
-local schemeTypeState: Fusion.Value<Enums.SchemeType, unknown> = Value(Enums.SchemeType.Light)
+local schemeTypeState: Fusion.Value<Enums.SchemeType> = Value(Enums.SchemeType.Light)
 local titleFontData: FontData = Types.FontData.new(Font.fromEnum(Enum.Font.SourceSans), 14)
-local subHeadingFontDataState: Fusion.Value<FontData, unknown> = Value(Types.FontData.new(Font.fromEnum(Enum.Font.SourceSans), 14))
+local subHeadingFontDataState: Fusion.Value<FontData> = Value(Types.FontData.new(Font.fromEnum(Enum.Font.SourceSans), 14))
 local buttonFontData: FontData = Types.FontData.new(Font.fromEnum(Enum.Font.SourceSans), 14)
-local scaleState: Fusion.Value<number, unknown> = Value(1)
+local scaleState: Fusion.Value<number> = Value(1)
 
 local medium: GuiObject = Synthetic.Component.Menu.Row.Bar.Top.Medium.Fusion.new(
 	titleState,
@@ -64,13 +80,23 @@ This function is a style constructor, utilizing the "Style" type to reduce the n
 
 ### Usage
 
-***Fusion***
+**Vanilla**
 ```luau
-local styleState: Fusion.Value<Style, unknown> = Value(Style.new(1, Enum.Font.SourceSans, "Light", Color3.new(0, 0.4, 0.7)))
+local medium = Synthetic.Component.Menu.Row.Bar.Top.Medium.Fusion.primary()
+medium.Style = Style.new(1, Enum.Font.SourceSans, "Light", Color3.new(0, 0.4, 0.7))
+medium.Title = "Title"
+medium.Buttons = {}
+medium.Navigation = nil
+medium.Elevation = nil
+```
+
+**Fusion**
+```luau
+local styleState: Fusion.Value<Style> = Value(Style.new(1, Enum.Font.SourceSans, "Light", Color3.new(0, 0.4, 0.7)))
 local title: string = "Title"
-local buttonsState: Fusion.Value<{ButtonData}, unknown> = Value({})
+local buttonsState: Fusion.Value<{ButtonData}> = Value({})
 local navigation: ButtonData? = nil
-local elevationState: Fusion.Value<number?, unknown> = Value(nil)
+local elevationState: Fusion.Value<number?> = Value(nil)
 
 local medium: GuiObject = Synthetic.Component.Menu.Row.Bar.Top.Medium.Fusion.primary(
 	styleState,

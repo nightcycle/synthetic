@@ -23,19 +23,35 @@ This function is a native constructor, with verbosity allowing for control over 
 
 ### Usage
 
-***Fusion***
+**Vanilla**
 ```luau
-local onSelectState: Fusion.Value<(isSelected: boolean) -> (), unknown> = Value(function(isSelected: boolean) end)
+local radioButton = Synthetic.Component.RadioButton.Fusion.new()
+radioButton.OnSelect = function(isSelected: boolean) end
+radioButton.InitialSelection = false
+radioButton.IsEnabled = true
+radioButton.OutlineColor = Color3.new()
+radioButton.FillColor = Color3.new()
+radioButton.IconColor = Color3.new()
+radioButton.DisabledColor = Color3.new()
+radioButton.Elevation = 0
+radioButton.SchemeType = Enums.SchemeType.Light
+radioButton.FontData = Types.FontData.new(Font.fromEnum(Enum.Font.SourceSans), 14)
+radioButton.Scale = 1
+```
+
+**Fusion**
+```luau
+local onSelectState: Fusion.Value<(isSelected: boolean) -> ()> = Value(function(isSelected: boolean) end)
 local initialSelection: boolean = false
-local isEnabledState: Fusion.Value<boolean, unknown> = Value(true)
+local isEnabledState: Fusion.Value<boolean> = Value(true)
 local outlineColor: Color3 = Color3.new()
-local fillColorState: Fusion.Value<Color3, unknown> = Value(Color3.new())
+local fillColorState: Fusion.Value<Color3> = Value(Color3.new())
 local iconColor: Color3 = Color3.new()
-local disabledColorState: Fusion.Value<Color3, unknown> = Value(Color3.new())
+local disabledColorState: Fusion.Value<Color3> = Value(Color3.new())
 local elevation: number = 0
-local schemeTypeState: Fusion.Value<Enums.SchemeType, unknown> = Value(Enums.SchemeType.Light)
+local schemeTypeState: Fusion.Value<Enums.SchemeType> = Value(Enums.SchemeType.Light)
 local fontData: FontData = Types.FontData.new(Font.fromEnum(Enum.Font.SourceSans), 14)
-local scaleState: Fusion.Value<number, unknown> = Value(1)
+local scaleState: Fusion.Value<number> = Value(1)
 
 local radioButton: GuiObject = Synthetic.Component.RadioButton.Fusion.new(
 	onSelectState,
@@ -64,13 +80,23 @@ This function is a style constructor, utilizing the "Style" type to reduce the n
 
 ### Usage
 
-***Fusion***
+**Vanilla**
 ```luau
-local styleState: Fusion.Value<Style, unknown> = Value(Style.new(1, Enum.Font.SourceSans, "Light", Color3.new(0, 0.4, 0.7)))
+local radioButton = Synthetic.Component.RadioButton.Fusion.primary()
+radioButton.Style = Style.new(1, Enum.Font.SourceSans, "Light", Color3.new(0, 0.4, 0.7))
+radioButton.OnSelect = function(isSelected: boolean) end
+radioButton.InitialSelection = false
+radioButton.Elevation = nil
+radioButton.IsEnabled = nil
+```
+
+**Fusion**
+```luau
+local styleState: Fusion.Value<Style> = Value(Style.new(1, Enum.Font.SourceSans, "Light", Color3.new(0, 0.4, 0.7)))
 local onSelect: (isSelected: boolean) -> () = function(isSelected: boolean) end
-local initialSelectionState: Fusion.Value<boolean, unknown> = Value(false)
+local initialSelectionState: Fusion.Value<boolean> = Value(false)
 local elevation: number? = nil
-local isEnabledState: Fusion.Value<boolean?, unknown> = Value(nil)
+local isEnabledState: Fusion.Value<boolean?> = Value(nil)
 
 local radioButton: GuiObject = Synthetic.Component.RadioButton.Fusion.primary(
 	styleState,

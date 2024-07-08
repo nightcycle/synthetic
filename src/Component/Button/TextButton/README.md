@@ -22,17 +22,32 @@ This function is a native constructor, with verbosity allowing for control over 
 
 ### Usage
 
-***Fusion***
+**Vanilla**
 ```luau
-local onClickState: Fusion.Value<() -> (), unknown> = Value(function() end)
+local textButton = Synthetic.Component.Button.TextButton.Fusion.new()
+textButton.OnClick = function() end
+textButton.Text = "Button"
+textButton.Icon = nil
+textButton.TextColor = Color3.new()
+textButton.DisabledTextColor = Color3.new()
+textButton.IsEnabled = true
+textButton.Elevation = 0
+textButton.SchemeType = Enums.SchemeType.Light
+textButton.FontData = Types.FontData.new(Font.fromEnum(Enum.Font.SourceSans), 14)
+textButton.Scale = 1
+```
+
+**Fusion**
+```luau
+local onClickState: Fusion.Value<() -> ()> = Value(function() end)
 local text: string = "Button"
-local iconState: Fusion.Value<ImageData?, unknown> = Value(nil)
+local iconState: Fusion.Value<ImageData?> = Value(nil)
 local textColor: Color3 = Color3.new()
-local disabledTextColorState: Fusion.Value<Color3, unknown> = Value(Color3.new())
+local disabledTextColorState: Fusion.Value<Color3> = Value(Color3.new())
 local isEnabled: boolean = true
-local elevationState: Fusion.Value<number, unknown> = Value(0)
+local elevationState: Fusion.Value<number> = Value(0)
 local schemeType: Enums.SchemeType = Enums.SchemeType.Light
-local fontDataState: Fusion.Value<FontData, unknown> = Value(Types.FontData.new(Font.fromEnum(Enum.Font.SourceSans), 14))
+local fontDataState: Fusion.Value<FontData> = Value(Types.FontData.new(Font.fromEnum(Enum.Font.SourceSans), 14))
 local scale: number = 1
 
 local textButton: GuiObject = Synthetic.Component.Button.TextButton.Fusion.new(
@@ -62,13 +77,24 @@ This function is a style constructor, utilizing the "Style" type to reduce the n
 
 ### Usage
 
-***Fusion***
+**Vanilla**
 ```luau
-local styleState: Fusion.Value<Style, unknown> = Value(Style.new(1, Enum.Font.SourceSans, "Light", Color3.new(0, 0.4, 0.7)))
+local textButton = Synthetic.Component.Button.TextButton.Fusion.primary()
+textButton.Style = Style.new(1, Enum.Font.SourceSans, "Light", Color3.new(0, 0.4, 0.7))
+textButton.OnClick = function() end
+textButton.Text = "Button"
+textButton.Icon = nil
+textButton.Elevation = 0
+textButton.IsEnabled = true
+```
+
+**Fusion**
+```luau
+local styleState: Fusion.Value<Style> = Value(Style.new(1, Enum.Font.SourceSans, "Light", Color3.new(0, 0.4, 0.7)))
 local onClick: () -> () = function() end
-local textState: Fusion.Value<string, unknown> = Value("Button")
+local textState: Fusion.Value<string> = Value("Button")
 local icon: ImageData? = nil
-local elevationState: Fusion.Value<number, unknown> = Value(0)
+local elevationState: Fusion.Value<number> = Value(0)
 local isEnabled: boolean = true
 
 local textButton: GuiObject = Synthetic.Component.Button.TextButton.Fusion.primary(

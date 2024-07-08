@@ -23,19 +23,35 @@ This function is a native constructor, with verbosity allowing for control over 
 
 ### Usage
 
-***Fusion***
+**Vanilla**
 ```luau
-local optionsState: Fusion.Value<{ OptionData }, unknown> = Value({})
+local segmented = Synthetic.Component.Menu.Row.Segmented.Fusion.new()
+segmented.Options = {}
+segmented.Density = nil
+segmented.IsMultiSelect = nil
+segmented.TextColor = Color3.new()
+segmented.FillTextColor = Color3.new()
+segmented.FillBackgroundColor = Color3.new()
+segmented.OutlineColor = Color3.new()
+segmented.Elevation = nil
+segmented.SchemeType = Enums.SchemeType.Light
+segmented.FontData = Types.FontData.new(Font.fromEnum(Enum.Font.SourceSans), 14)
+segmented.Scale = nil
+```
+
+**Fusion**
+```luau
+local optionsState: Fusion.Value<{ OptionData }> = Value({})
 local density: number? = nil
-local isMultiSelectState: Fusion.Value<boolean?, unknown> = Value(nil)
+local isMultiSelectState: Fusion.Value<boolean?> = Value(nil)
 local textColor: Color3 = Color3.new()
-local fillTextColorState: Fusion.Value<Color3, unknown> = Value(Color3.new())
+local fillTextColorState: Fusion.Value<Color3> = Value(Color3.new())
 local fillBackgroundColor: Color3 = Color3.new()
-local outlineColorState: Fusion.Value<Color3, unknown> = Value(Color3.new())
+local outlineColorState: Fusion.Value<Color3> = Value(Color3.new())
 local elevation: number? = nil
-local schemeTypeState: Fusion.Value<Enums.SchemeType, unknown> = Value(Enums.SchemeType.Light)
+local schemeTypeState: Fusion.Value<Enums.SchemeType> = Value(Enums.SchemeType.Light)
 local fontData: FontData = Types.FontData.new(Font.fromEnum(Enum.Font.SourceSans), 14)
-local scaleState: Fusion.Value<number?, unknown> = Value(nil)
+local scaleState: Fusion.Value<number?> = Value(nil)
 
 local segmented: GuiObject = Synthetic.Component.Menu.Row.Segmented.Fusion.new(
 	optionsState,
@@ -64,13 +80,23 @@ This function is a style constructor, utilizing the "Style" type to reduce the n
 
 ### Usage
 
-***Fusion***
+**Vanilla**
 ```luau
-local styleState: Fusion.Value<Style, unknown> = Value(Style.new(1, Enum.Font.SourceSans, "Light", Color3.new(0, 0.4, 0.7)))
+local segmented = Synthetic.Component.Menu.Row.Segmented.Fusion.primaryContainer()
+segmented.Style = Style.new(1, Enum.Font.SourceSans, "Light", Color3.new(0, 0.4, 0.7))
+segmented.Options = {}
+segmented.Density = nil
+segmented.IsMultiSelect = nil
+segmented.Elevation = nil
+```
+
+**Fusion**
+```luau
+local styleState: Fusion.Value<Style> = Value(Style.new(1, Enum.Font.SourceSans, "Light", Color3.new(0, 0.4, 0.7)))
 local options: { OptionData } = {}
-local densityState: Fusion.Value<number?, unknown> = Value(nil)
+local densityState: Fusion.Value<number?> = Value(nil)
 local isMultiSelect: boolean? = nil
-local elevationState: Fusion.Value<number?, unknown> = Value(nil)
+local elevationState: Fusion.Value<number?> = Value(nil)
 
 local segmented: GuiObject = Synthetic.Component.Menu.Row.Segmented.Fusion.primaryContainer(
 	styleState,

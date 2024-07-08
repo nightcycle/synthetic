@@ -28,23 +28,44 @@ This function is a native constructor, with verbosity allowing for control over 
 
 ### Usage
 
-***Fusion***
+**Vanilla**
 ```luau
-local onSelectState: Fusion.Value<(isSelected: boolean) -> (), unknown> = Value(function(isSelected: boolean) end)
+local switch = Synthetic.Component.Switch.Fusion.new()
+switch.OnSelect = function(isSelected: boolean) end
+switch.InitialSelection = false
+switch.IsEnabled = true
+switch.IncludeIconOnSelected = true
+switch.IncludeIconOnDeselected = true
+switch.BackgroundColor = Color3.new()
+switch.OnBackgroundColor = Color3.new()
+switch.FillColor = Color3.new()
+switch.ButtonColor = Color3.new()
+switch.OnButtonColor = Color3.new()
+switch.DisabledColor = Color3.new()
+switch.OnDisabledColor = Color3.new()
+switch.Elevation = 0
+switch.SchemeType = Enums.SchemeType.Light
+switch.FontData = Types.FontData.new(Font.fromEnum(Enum.Font.SourceSans), 14)
+switch.Scale = 1
+```
+
+**Fusion**
+```luau
+local onSelectState: Fusion.Value<(isSelected: boolean) -> ()> = Value(function(isSelected: boolean) end)
 local initialSelection: boolean = false
-local isEnabledState: Fusion.Value<boolean, unknown> = Value(true)
+local isEnabledState: Fusion.Value<boolean> = Value(true)
 local includeIconOnSelected: boolean = true
-local includeIconOnDeselectedState: Fusion.Value<boolean, unknown> = Value(true)
+local includeIconOnDeselectedState: Fusion.Value<boolean> = Value(true)
 local backgroundColor: Color3 = Color3.new()
-local onBackgroundColorState: Fusion.Value<Color3, unknown> = Value(Color3.new())
+local onBackgroundColorState: Fusion.Value<Color3> = Value(Color3.new())
 local fillColor: Color3 = Color3.new()
-local buttonColorState: Fusion.Value<Color3, unknown> = Value(Color3.new())
+local buttonColorState: Fusion.Value<Color3> = Value(Color3.new())
 local onButtonColor: Color3 = Color3.new()
-local disabledColorState: Fusion.Value<Color3, unknown> = Value(Color3.new())
+local disabledColorState: Fusion.Value<Color3> = Value(Color3.new())
 local onDisabledColor: Color3 = Color3.new()
-local elevationState: Fusion.Value<number, unknown> = Value(0)
+local elevationState: Fusion.Value<number> = Value(0)
 local schemeType: Enums.SchemeType = Enums.SchemeType.Light
-local fontDataState: Fusion.Value<FontData, unknown> = Value(Types.FontData.new(Font.fromEnum(Enum.Font.SourceSans), 14))
+local fontDataState: Fusion.Value<FontData> = Value(Types.FontData.new(Font.fromEnum(Enum.Font.SourceSans), 14))
 local scale: number = 1
 
 local switch: GuiObject = Synthetic.Component.Switch.Fusion.new(
@@ -81,15 +102,27 @@ This function is a style constructor, utilizing the "Style" type to reduce the n
 
 ### Usage
 
-***Fusion***
+**Vanilla**
 ```luau
-local styleState: Fusion.Value<Style, unknown> = Value(Style.new(1, Enum.Font.SourceSans, "Light", Color3.new(0, 0.4, 0.7)))
+local switch = Synthetic.Component.Switch.Fusion.primary()
+switch.Style = Style.new(1, Enum.Font.SourceSans, "Light", Color3.new(0, 0.4, 0.7))
+switch.OnSelect = function(isSelected: boolean) end
+switch.InitialSelection = false
+switch.IncludeIconOnSelected = nil
+switch.IncludeIconOnDeselected = nil
+switch.Elevation = nil
+switch.IsEnabled = nil
+```
+
+**Fusion**
+```luau
+local styleState: Fusion.Value<Style> = Value(Style.new(1, Enum.Font.SourceSans, "Light", Color3.new(0, 0.4, 0.7)))
 local onSelect: (isSelected: boolean) -> () = function(isSelected: boolean) end
-local initialSelectionState: Fusion.Value<boolean, unknown> = Value(false)
+local initialSelectionState: Fusion.Value<boolean> = Value(false)
 local includeIconOnSelected: boolean? = nil
-local includeIconOnDeselectedState: Fusion.Value<boolean?, unknown> = Value(nil)
+local includeIconOnDeselectedState: Fusion.Value<boolean?> = Value(nil)
 local elevation: number? = nil
-local isEnabledState: Fusion.Value<boolean?, unknown> = Value(nil)
+local isEnabledState: Fusion.Value<boolean?> = Value(nil)
 
 local switch: GuiObject = Synthetic.Component.Switch.Fusion.primary(
 	styleState,
