@@ -8,72 +8,24 @@
 This function is a native constructor, with verbosity allowing for control over every configurable property at the cost of a less convenient calling.
 
 ### Parameters
-#### title
-Type: **string**
-Initial Value: **"Title"**
-
-#### buttons
-Type: **{ButtonData}**
-Initial Value: **{}**
-
-#### navigation
-Type: **ButtonData?**
-Initial Value: **nil**
-
-#### backgroundColor
-Type: **Color3**
-Initial Value: **Color3.new()**
-
-#### textColor
-Type: **Color3**
-Initial Value: **Color3.new()**
-
-#### elevation
-Type: **number?**
-Initial Value: **nil**
-
-#### schemeType
-Type: **Enums.SchemeType**
-Initial Value: **Enums.SchemeType.Light**
-
-#### titleFontData
-Type: **FontData**
-Initial Value: **Types.FontData.new(Font.fromEnum(Enum.Font.SourceSans), 14)**
-
-#### subHeadingFontData
-Type: **FontData**
-Initial Value: **Types.FontData.new(Font.fromEnum(Enum.Font.SourceSans), 14)**
-
-#### buttonFontData
-Type: **FontData**
-Initial Value: **Types.FontData.new(Font.fromEnum(Enum.Font.SourceSans), 14)**
-
-#### scale
-Type: **number**
-Initial Value: **1**
-
+- **title**: string
+- **buttons**: {ButtonData}
+- **navigation**: ButtonData?
+- **backgroundColor**: Color3
+- **textColor**: Color3
+- **elevation**: number?
+- **schemeType**: Enums.SchemeType
+- **titleFontData**: FontData
+- **subHeadingFontData**: FontData
+- **buttonFontData**: FontData
+- **scale**: number
 
 ## primary / secondary / tertiary
 This function is a style constructor, utilizing the "Style" type to reduce the number of parameters required for implementation.
 
 ### Parameters
-#### style
-Type: **Style**
-Initial Value: **Style.new(1, Enum.Font.SourceSans, "Light", Color3.new(0, 0.4, 0.7))**
-
-#### title
-Type: **string**
-Initial Value: **"Title"**
-
-#### buttons
-Type: **{ButtonData}**
-Initial Value: **{}**
-
-#### navigation
-Type: **ButtonData?**
-Initial Value: **nil**
-
-#### elevation
-Type: **number?**
-Initial Value: **nil**
-
+- **style**: Style
+- **title**: string
+- **buttons**: {ButtonData}
+- **navigation**: ButtonData?
+- **elevation**: number?

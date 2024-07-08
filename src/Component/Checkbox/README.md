@@ -8,72 +8,24 @@
 This function is a native constructor, with verbosity allowing for control over every configurable property at the cost of a less convenient calling.
 
 ### Parameters
-#### onSelect
-Type: **(isSelected: boolean?) -> ()**
-Initial Value: **function(isSelected: boolean?) end**
-
-#### initialSelection
-Type: **boolean**
-Initial Value: **false**
-
-#### isEnabled
-Type: **boolean**
-Initial Value: **true**
-
-#### outlineColor
-Type: **Color3**
-Initial Value: **Color3.new()**
-
-#### fillColor
-Type: **Color3**
-Initial Value: **Color3.new()**
-
-#### iconColor
-Type: **Color3**
-Initial Value: **Color3.new()**
-
-#### disabledColor
-Type: **Color3**
-Initial Value: **Color3.new()**
-
-#### elevation
-Type: **number**
-Initial Value: **0**
-
-#### schemeType
-Type: **Enums.SchemeType**
-Initial Value: **Enums.SchemeType.Light**
-
-#### fontData
-Type: **FontData**
-Initial Value: **Types.FontData.new(Font.fromEnum(Enum.Font.SourceSans), 14)**
-
-#### scale
-Type: **number**
-Initial Value: **1**
-
+- **onSelect**: (isSelected: boolean?) -> ()
+- **initialSelection**: boolean
+- **isEnabled**: boolean
+- **outlineColor**: Color3
+- **fillColor**: Color3
+- **iconColor**: Color3
+- **disabledColor**: Color3
+- **elevation**: number
+- **schemeType**: Enums.SchemeType
+- **fontData**: FontData
+- **scale**: number
 
 ## primary / secondary / tertiary / primaryContainer / secondaryContainer / tertiaryContainer
 This function is a style constructor, utilizing the "Style" type to reduce the number of parameters required for implementation.
 
 ### Parameters
-#### style
-Type: **Style**
-Initial Value: **Style.new(1, Enum.Font.SourceSans, "Light", Color3.new(0, 0.4, 0.7))**
-
-#### onSelect
-Type: **(isSelected: boolean?) -> ()**
-Initial Value: **function(isSelected: boolean?) end**
-
-#### initialSelection
-Type: **boolean**
-Initial Value: **false**
-
-#### elevation
-Type: **number?**
-Initial Value: **nil**
-
-#### isEnabled
-Type: **boolean?**
-Initial Value: **nil**
-
+- **style**: Style
+- **onSelect**: (isSelected: boolean?) -> ()
+- **initialSelection**: boolean
+- **elevation**: number?
+- **isEnabled**: boolean?

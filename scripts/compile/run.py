@@ -290,12 +290,10 @@ type CanBeState<V> = ColdFusion.CanBeState<V>"""
 			lines.append("\n### Parameters")
 
 			for param in func['parameters']:
-				lines.append(f"#### {param['name']}")
-				lines.append("Type: **" + param['type']+"**")
-				lines.append("Initial Value: **" + param['default']+ "**")
+				description = ""
 				if "description" in param:
-					lines.append("\n"+param["description"])
-				lines.append("")
+					description = " = " + param["description"]
+				lines.append(f"- **{param['name']}**: {param['type']}{description}")
 			lines.append("")
 		out_path = self.path + "/README.md"
 		with open(out_path, mode="w") as file:

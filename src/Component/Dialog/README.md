@@ -8,88 +8,28 @@
 This function is a native constructor, with verbosity allowing for control over every configurable property at the cost of a less convenient calling.
 
 ### Parameters
-#### buttons
-Type: **{ ButtonData }**
-Initial Value: **{}**
-
-#### icon
-Type: **ImageData?**
-Initial Value: **nil**
-
-#### headline
-Type: **string?**
-Initial Value: **nil**
-
-#### description
-Type: **string?**
-Initial Value: **nil**
-
-#### surfaceColor
-Type: **Color3**
-Initial Value: **Color3.new()**
-
-#### buttonTextColor
-Type: **Color3**
-Initial Value: **Color3.new()**
-
-#### disabledTextColor
-Type: **Color3**
-Initial Value: **Color3.new()**
-
-#### headlineColor
-Type: **Color3**
-Initial Value: **Color3.new()**
-
-#### descriptionColor
-Type: **Color3**
-Initial Value: **Color3.new()**
-
-#### scrimColor
-Type: **Color3**
-Initial Value: **Color3.new()**
-
-#### schemeType
-Type: **Enums.SchemeType**
-Initial Value: **Enums.SchemeType.Light**
-
-#### headlineFontData
-Type: **FontData**
-Initial Value: **Types.FontData.new(Font.fromEnum(Enum.Font.SourceSans), 14)**
-
-#### bodyFontData
-Type: **FontData**
-Initial Value: **Types.FontData.new(Font.fromEnum(Enum.Font.SourceSans), 14)**
-
-#### buttonFontData
-Type: **FontData**
-Initial Value: **Types.FontData.new(Font.fromEnum(Enum.Font.SourceSans), 14)**
-
-#### scale
-Type: **number**
-Initial Value: **1**
-
+- **buttons**: { ButtonData }
+- **icon**: ImageData?
+- **headline**: string?
+- **description**: string?
+- **surfaceColor**: Color3
+- **buttonTextColor**: Color3
+- **disabledTextColor**: Color3
+- **headlineColor**: Color3
+- **descriptionColor**: Color3
+- **scrimColor**: Color3
+- **schemeType**: Enums.SchemeType
+- **headlineFontData**: FontData
+- **bodyFontData**: FontData
+- **buttonFontData**: FontData
+- **scale**: number
 
 ## primary / secondary / tertiary
 This function is a style constructor, utilizing the "Style" type to reduce the number of parameters required for implementation.
 
 ### Parameters
-#### style
-Type: **Style**
-Initial Value: **Style.new(1, Enum.Font.SourceSans, "Light", Color3.new(0, 0.4, 0.7))**
-
-#### buttons
-Type: **{ ButtonData }**
-Initial Value: **{}**
-
-#### icon
-Type: **ImageData?**
-Initial Value: **nil**
-
-#### headline
-Type: **string?**
-Initial Value: **nil**
-
-#### description
-Type: **string?**
-Initial Value: **nil**
-
+- **style**: Style
+- **buttons**: { ButtonData }
+- **icon**: ImageData?
+- **headline**: string?
+- **description**: string?
