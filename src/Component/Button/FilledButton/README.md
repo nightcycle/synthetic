@@ -1,6 +1,6 @@
-# FilledButton
+# Filled Button
 
-
+A filled button is a container with text + optional icons inside of it. Read more [here](https://m3.material.io/components/buttons/overview).
 # Constructors
 
 

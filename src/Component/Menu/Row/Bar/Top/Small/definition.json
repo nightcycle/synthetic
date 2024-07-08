@@ -1,6 +1,6 @@
 {
-    "name": "Small",
-    "description": "",
+    "name": "Top Small Menu Bar",
+    "description": "The top small menu bar has a left aligned title between the buttons. Read more [here](https://m3.material.io/components/top-app-bar/overview).",
     "functions": [
         {
             "names": [

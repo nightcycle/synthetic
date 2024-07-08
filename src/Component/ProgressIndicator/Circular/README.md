@@ -1,6 +1,6 @@
-# Circular
+# Circular Progress Indicator
 
-
+A circular progress indicator shows the user how close they are to completion of something (such as loading). Read more [here](https://m3.material.io/components/progress-indicators/overview).
 # Constructors
 
 

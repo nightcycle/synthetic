@@ -1,6 +1,6 @@
 {
-    "name": "ExtendedFAB",
-    "description": "",
+    "name": "Extended FAB",
+    "description": "An Extended \"Floating-Action-Button\" (FAB) is a FAB with a text component. Read more [here](https://m3.material.io/components/floating-action-button/overview).",
     "functions": [
         {
             "names": [

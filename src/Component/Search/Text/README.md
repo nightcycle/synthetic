@@ -1,6 +1,6 @@
-# Text
+# Text Search Bar
 
-
+A text search bar is a text element that allows for dynamic text queries. Read more [here](https://m3.material.io/components/search/overview).
 # Constructors
 
 

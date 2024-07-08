@@ -1,6 +1,6 @@
 {
     "name": "Assist",
-    "description": "",
+    "description": "A assist chip is a small button that allows for contextual action input. Read more (here)[https://m3.material.io/components/chips/overview].",
     "functions": [
         {
             "names": [

@@ -1,6 +1,6 @@
-# OutlinedButton
+# Outlined Button
 
-
+An outlined button is like a filled button, but the background is transparent and replaced by lines. Read more [here](https://m3.material.io/components/buttons/overview).
 # Constructors
 
 

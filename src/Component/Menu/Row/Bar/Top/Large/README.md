@@ -1,6 +1,6 @@
-# Large
+# Top Large Menu Bar
 
-
+The top large menu has left aligned title text a line and a half below the buttons. Read more [here](https://m3.material.io/components/top-app-bar/overview).
 # Constructors
 
 

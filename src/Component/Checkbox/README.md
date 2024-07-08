@@ -1,6 +1,6 @@
 # Checkbox
 
-
+A checkbox allows for true / false  / null input for multiple categories. Read more [here](https://m3.material.io/components/checkbox/overview)
 # Constructors
 
 

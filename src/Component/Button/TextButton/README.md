@@ -1,6 +1,6 @@
-# TextButton
+# Text Button
 
-
+A text button is a simple interactive label which can be clicked for an action. Read more [here](https://m3.material.io/components/buttons/overview).
 # Constructors
 
 

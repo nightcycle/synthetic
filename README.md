@@ -258,55 +258,55 @@ typography:Apply(
 - [Badge](./src/Component/Button/Badge)
 
 ### Common
-- [Elevated](https://m3.material.io/components/buttons/overview)
-- [Filled](https://m3.material.io/components/buttons/overview)
-- [Outlined](https://m3.material.io/components/buttons/overview)
-- [Text](https://m3.material.io/components/buttons/overview)
+- [Elevated](./src/Component/Button/ElevatedButton)
+- [Filled](./src/Component/Button/FilledButton)
+- [Outlined](./src/Component/Button/OutlinedButton)
+- [Text](./src/Component/Button/TextButton)
 
 ### Icons
-- [Filled icon](https://m3.material.io/components/icon-buttons/overview)
-- [Outlined icon](https://m3.material.io/components/icon-buttons/overview)
+- [Filled Icon](./src/Component/Button/FilledIconButton)
+- [Outlined Icon](./src/Component/Button/OutlinedIconButton)
 
 ### FAB
-- [FAB](https://m3.material.io/components/floating-action-button/overview)
-- [Extended FAB](https://m3.material.io/components/floating-action-button/overview)
+- [FAB](./src/Component/Button/FAB)
+- [Extended FAB](./src/Component/Button/FAB)
 
 ### Chips
-- [Assist Chip](https://m3.material.io/components/chips/overview)
-- [Filter Chip](https://m3.material.io/components/chips/overview)
+- [Assist Chip](./src/Component/Button/Chip/Assist)
+- [Filter Chip](./src/Component/Button/Chip/Filter)
 
 ## Menu
 ### Row
-- [Segmented](https://m3.material.io/components/segmented-buttons/overview)
+- [Segmented](./src/Component/Menu/Row/Segmented)
 
 ### Bar
-- [Bottom](https://m3.material.io/components/bottom-app-bar/overview)
-- [Top Center](https://m3.material.io/components/top-app-bar/overview)
-- [Top Large](https://m3.material.io/components/top-app-bar/overview)
-- [Top Medium](https://m3.material.io/components/top-app-bar/overview)
-- [Top Small](https://m3.material.io/components/top-app-bar/overview)
+- [Bottom](./src/Component/Menu/Row/Bar/Bottom)
+- [Top Center](./src/Component/Menu/Row/Bar/Top/Center)
+- [Top Large](./src/Component/Menu/Row/Bar/Top/Large)
+- [Top Medium](./src/Component/Menu/Row/Bar/Top/Medium)
+- [Top Small](./src/Component/Menu/Row/Bar/Top/Small)
 
 ## Text Field
-- [Filled](https://m3.material.io/components/text-fields/overview)
-- [Outlined](https://m3.material.io/components/text-fields/overview)
+- [Filled](./src/Component/TextField/Filled)
+- [Outlined](./src/Component/TextField/Outlined)
 
 ## Progress Indicator
-- [Circular](https://m3.material.io/components/progress-indicators/overview)
+- [Circular](./src/Component/ProgressIndicator/Circular)
 
 ## Snackbar
-- [Small](https://m3.material.io/components/snackbar/overview)
-- [Large](https://m3.material.io/components/snackbar/overview)
+- [Small](./src/Component/Snackbar/Small)
+- [Large](./src/Component/Snackbar/Large)
 
 ## Search
-- [Filled](https://m3.material.io/components/search/overview)
-- [Text](https://m3.material.io/components/search/overview)
+- [Filled](./src/Component/Search/Filled)
+- [Text](./src/Component/Search/Filled)
 
 ## Misc
-- [Dialog](https://m3.material.io/components/dialogs/overview)
-- [Checkbox](https://m3.material.io/components/checkbox/overview)
-- [Radio Button](https://m3.material.io/components/radio-button/overview)
-- [Switch](https://m3.material.io/components/switch/overview)
-- [Slider](https://m3.material.io/components/sliders/overview)
+- [Dialog](./src/Component/Dialog)
+- [Checkbox](./src/Component/Checkbox)
+- [Radio Button](./src/Component/RadioButton)
+- [Switch](./src/Component/Switch)
+- [Slider](./src/Component/Slider)
 
 # Utility Components
 In making this framework, various patterns became apparent. To save code frequent instance use-cases were organized into internal components. You can access them under `Synthetic.Util`.

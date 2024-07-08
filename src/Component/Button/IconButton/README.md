@@ -1,6 +1,6 @@
-# IconButton
+# Icon Button
 
-
+An icon button is just the icon part of the button - no container. Read more [here](https://m3.material.io/components/icon-buttons/overview).
 # Constructors
 
 

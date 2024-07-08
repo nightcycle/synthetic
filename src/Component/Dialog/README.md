@@ -1,6 +1,6 @@
 # Dialog
 
-
+A prompt that allows the user to make an important decision. Read more [here](https://m3.material.io/components/dialogs/overview).
 # Constructors
 
 

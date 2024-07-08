@@ -1,6 +1,6 @@
 {
-    "name": "Text Button",
-    "description": "A text button is a simple interactive label which can be clicked for an action. Read more [here](https://m3.material.io/components/buttons/overview).",
+    "name": "Bottom Bar Menu",
+    "description": "The bottom app bar allows for the display of multiple icon buttons at the bottom of the screen. Read more [here](https://m3.material.io/components/bottom-app-bar/overview).",
     "functions": [
         {
             "names": [
@@ -9,34 +9,39 @@
             "key": "",
             "parameters": [
                 {
-                    "name": "onClick",
-                    "type": "() -> ()",
-                    "default": "function() end"
+                    "name": "buttons",
+                    "type": "{ButtonData}",
+                    "default": "{}"
                 },
                 {
-                    "name": "text",
-                    "type": "string",
-                    "default": "\"Button\""
-                },
-                {
-                    "name": "icon",
-                    "type": "ImageData?",
+                    "name": "fab",
+                    "type": "ButtonData?",
                     "default": "nil"
                 },
                 {
-                    "name": "textColor",
+                    "name": "backgroundColor",
                     "type": "Color3",
                     "default": "Color3.new()"
                 },
                 {
-                    "name": "disabledTextColor",
+                    "name": "iconColor",
                     "type": "Color3",
                     "default": "Color3.new()"
                 },
                 {
-                    "name": "isEnabled",
-                    "type": "boolean",
-                    "default": "true"
+                    "name": "fabColor",
+                    "type": "Color3",
+                    "default": "Color3.new()"
+                },
+                {
+                    "name": "fabIconColor",
+                    "type": "Color3",
+                    "default": "Color3.new()"
+                },
+                {
+                    "name": "fabShadowColor",
+                    "type": "Color3",
+                    "default": "Color3.new()"
                 },
                 {
                     "name": "elevation",
@@ -64,10 +69,7 @@
             "names": [
                 "primary",
                 "secondary",
-                "tertiary",
-                "primaryContainer",
-                "secondaryContainer",
-                "tertiaryContainer"
+                "tertiary"
             ],
             "key": "styled",
             "parameters": [
@@ -77,29 +79,19 @@
                     "default": "Style.new(1, Enum.Font.SourceSans, \"Light\", Color3.new(0, 0.4, 0.7))"
                 },
                 {
-                    "name": "onClick",
-                    "type": "() -> ()",
-                    "default": "function() end"
+                    "name": "buttons",
+                    "type": "{ButtonData}",
+                    "default": "{}"
                 },
                 {
-                    "name": "text",
-                    "type": "string",
-                    "default": "\"Button\""
-                },
-                {
-                    "name": "icon",
-                    "type": "ImageData?",
+                    "name": "fab",
+                    "type": "ButtonData?",
                     "default": "nil"
                 },
                 {
                     "name": "elevation",
-                    "type": "number",
-                    "default": "0"
-                },
-                {
-                    "name": "isEnabled",
-                    "type": "boolean",
-                    "default": "true"
+                    "type": "number?",
+                    "default": "nil"
                 }
             ]
         }

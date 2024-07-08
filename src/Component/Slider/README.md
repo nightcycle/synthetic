@@ -1,6 +1,6 @@
 # Slider
 
-
+A slider allows for the selection of a value within a range. Read more [here](https://m3.material.io/components/sliders/overview).
 # Constructors
 
 

@@ -1,6 +1,6 @@
-# ElevatedButton
+# Elevated Button
 
-
+An elevated button is like a filled button, but there's a light shadow under it. Read more [here](https://m3.material.io/components/buttons/overview).
 # Constructors
 
 

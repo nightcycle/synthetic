@@ -1,6 +1,6 @@
-# Medium
+# Top Medium Menu Bar
 
-
+The top medium menu bar has a left aligned title directly below the buttons. Read more [here](https://m3.material.io/components/top-app-bar/overview).
 # Constructors
 
 

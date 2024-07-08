@@ -1,4 +1,4 @@
-# OutlinedIconButton
+# Outlined Icon Button
 
 
 # Constructors

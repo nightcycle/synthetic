@@ -1,6 +1,6 @@
-# ExtendedFAB
+# Extended FAB
 
-
+An Extended "Floating-Action-Button" (FAB) is a FAB with a text component. Read more [here](https://m3.material.io/components/floating-action-button/overview).
 # Constructors
 
 

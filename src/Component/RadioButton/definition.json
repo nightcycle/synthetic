@@ -1,6 +1,6 @@
 {
-    "name": "RadioButton",
-    "description": "",
+    "name": "Radio Button",
+    "description": "The radio button is a component used for selection a single item from a list. Read more [here](https://m3.material.io/components/radio-button/overview)",
     "functions": [
         {
             "names": [

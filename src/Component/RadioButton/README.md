@@ -1,6 +1,6 @@
-# RadioButton
+# Radio Button
 
-
+The radio button is a component used for selection a single item from a list. Read more [here](https://m3.material.io/components/radio-button/overview)
 # Constructors
 
 

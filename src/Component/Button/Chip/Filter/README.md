@@ -1,6 +1,6 @@
 # Filter
 
-
+A filter chip is a small switch that allows for hiding / revealing of elements. Read more (here)[https://m3.material.io/components/chips/overview].
 # Constructors
 
 

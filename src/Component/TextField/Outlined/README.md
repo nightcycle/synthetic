@@ -1,6 +1,6 @@
-# Outlined
+# Outlined Text Field
 
-
+An outlined text field uses lines instead of a container to display the boundaries of the text input area. Read more [here](https://m3.material.io/components/text-fields/overview).
 # Constructors
 
 
