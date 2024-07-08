@@ -1,5 +1,7 @@
 # Top Center Bar Menu
 
+![Preview](preview.gif)
+
 The top center bar is a menu with a centered title at the top of the page. Read more [here](https://m3.material.io/components/top-app-bar/overview).
 # Constructors
 

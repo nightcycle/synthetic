@@ -47,10 +47,10 @@ return function(frame: Frame)
 						{
 							Types.ButtonData.new(function()
 								print("Click 1")
-							end, nil, "Button 1", true),
+							end, nil, "Select", true),
 							Types.ButtonData.new(function()
 								print("Click 2")
-							end, nil, "Button 2", false),
+							end, nil, "Disabled", false),
 						},
 						Icons.usb,
 						"Dialog",
@@ -62,9 +62,9 @@ return function(frame: Frame)
 						style:GetColor(Enums.ColorRoleType.OnSurfaceVariant),
 						style:GetColor(Enums.ColorRoleType.SurfaceTint),
 						style.SchemeType,
-						Enums.FontType.HeadlineSmall,
-						Enums.FontType.BodyMedium,
-						Enums.FontType.LabelLarge,
+						style:GetFontData(Enums.FontType.HeadlineSmall),
+						style:GetFontData(Enums.FontType.BodyMedium),
+						style:GetFontData(Enums.FontType.LabelLarge),
 						style.Scale
 					)
 				)

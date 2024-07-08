@@ -31,7 +31,7 @@ return function(frame: Frame)
 			)
 
 			local halfFrame = maid:GiveTask(Instance.new("Frame"))
-			halfFrame.BackgroundColor3 = style:GetColor(Enums.ColorRoleType.Background)
+			halfFrame.BackgroundColor3 = Color3.new(0.7, 0.7, 0.7) --style:GetColor(Enums.ColorRoleType.Background)
 			halfFrame.BorderSizePixel = 0
 
 			local listLayout = maid:GiveTask(Instance.new("UIListLayout"))
@@ -60,7 +60,7 @@ return function(frame: Frame)
 						},
 						Types.ButtonData.new(function()
 							print("click fab")
-						end, Icons.plus_one, nil, true),
+						end, Icons.plus_one, nil, isDarkMode),
 						style:GetColor(Enums.ColorRoleType.Primary),
 						style:GetColor(Enums.ColorRoleType.OnPrimary),
 						style:GetColor(Enums.ColorRoleType.OnSurface),
@@ -75,31 +75,31 @@ return function(frame: Frame)
 				button.Parent = halfFrame
 			end
 
-			do
-				local button = maid:GiveTask(
-					Module.ColdFusion.new(
-						{
-							Types.ButtonData.new(function()
-								print("click 1")
-							end, Icons.gamepad, nil, true),
-							Types.ButtonData.new(function()
-								print("click 2")
-							end, Icons.waves, nil, false),
-						},
-						nil,
-						style:GetColor(Enums.ColorRoleType.Primary),
-						style:GetColor(Enums.ColorRoleType.OnPrimary),
-						style:GetColor(Enums.ColorRoleType.OnSurface),
-						style:GetColor(Enums.ColorRoleType.PrimaryContainer),
-						style:GetColor(Enums.ColorRoleType.Shadow),
-						1,
-						style.SchemeType,
-						style:GetFontData(Enums.FontType.LabelLarge),
-						style.Scale
-					)
-				)
-				button.Parent = halfFrame
-			end
+			-- do
+			-- 	local button = maid:GiveTask(
+			-- 		Module.ColdFusion.new(
+			-- 			{
+			-- 				Types.ButtonData.new(function()
+			-- 					print("click 1")
+			-- 				end, Icons.gamepad, nil, true),
+			-- 				Types.ButtonData.new(function()
+			-- 					print("click 2")
+			-- 				end, Icons.waves, nil, false),
+			-- 			},
+			-- 			nil,
+			-- 			style:GetColor(Enums.ColorRoleType.Primary),
+			-- 			style:GetColor(Enums.ColorRoleType.OnPrimary),
+			-- 			style:GetColor(Enums.ColorRoleType.OnSurface),
+			-- 			style:GetColor(Enums.ColorRoleType.PrimaryContainer),
+			-- 			style:GetColor(Enums.ColorRoleType.Shadow),
+			-- 			1,
+			-- 			style.SchemeType,
+			-- 			style:GetFontData(Enums.FontType.LabelLarge),
+			-- 			style.Scale
+			-- 		)
+			-- 	)
+			-- 	button.Parent = halfFrame
+			-- end
 
 			return halfFrame
 		end
@@ -109,7 +109,7 @@ return function(frame: Frame)
 			-- Color3.fromHSV(0, 0.25, 0.8),
 			-- Color3.fromHSV(0, 0.9, 0.5),
 			Color3.fromHSV(0.6, 0.9, 0.7),
-			-- Color3.fromHSV(0.35, 0.9, 0.7),
+			Color3.fromHSV(0.35, 0.9, 0.7),
 			-- Color3.fromHSV(0.1, 0.9, 0.7),
 		}
 

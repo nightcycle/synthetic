@@ -1,5 +1,7 @@
 # Segmented
 
+![Preview](preview.gif)
+
 Segmented Buttons are a group of buttons that allow for selecting between closely related options. Read more [here](https://m3.material.io/components/segmented-buttons/overview).
 # Constructors
 

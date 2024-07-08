@@ -95,7 +95,7 @@ function newThemedComponent(
 		_Computed(function(s: Style): Color3
 			return s:GetColor(outlineColor)
 		end, styleState),
-		_import(elevation, 0),
+		_import(elevation, themeDefaults.ELEVATION or 0),
 		_Computed(function(s: Style): any
 			return s.SchemeType
 		end, styleState),

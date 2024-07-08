@@ -1,5 +1,7 @@
 # Top Small Menu Bar
 
+![Preview](preview.gif)
+
 The top small menu bar has a left aligned title between the buttons. Read more [here](https://m3.material.io/components/top-app-bar/overview).
 # Constructors
 

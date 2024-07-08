@@ -50,7 +50,7 @@ return function(frame: Frame)
 				end, false, false, "Selected 2", Icons.track_changes),
 				Types.OptionData.new(function(onSelected: boolean)
 					print("select 3", onSelected)
-				end, true, false, "Selected 3", Icons.badge),
+				end, true, false, "Disabled 3", Icons.badge),
 				Types.OptionData.new(function(onSelected: boolean)
 					print("select 4", onSelected)
 				end, false, false, "Selected 4"),
@@ -124,7 +124,7 @@ return function(frame: Frame)
 			-- Color3.fromHSV(0, 0.25, 0.8),
 			-- Color3.fromHSV(0, 0.9, 0.5),
 			Color3.fromHSV(0.6, 0.9, 0.7),
-			Color3.fromHSV(0.35, 0.9, 0.7),
+			-- Color3.fromHSV(0.35, 0.9, 0.7),
 			-- Color3.fromHSV(0.1, 0.9, 0.7),
 		}
 

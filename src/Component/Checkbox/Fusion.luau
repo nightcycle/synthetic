@@ -34,7 +34,7 @@ local Interface = {}
 
 function Interface.new(
 	onSelect: FusionCanBeState<(isSelected: boolean?) -> ()>,
-	initialSelection: FusionCanBeState<boolean>,
+	initialSelection: FusionCanBeState<boolean?>,
 	isEnabled: FusionCanBeState<boolean>,
 	outlineColor: FusionCanBeState<Color3>,
 	fillColor: FusionCanBeState<Color3>,
@@ -72,7 +72,7 @@ end
 function Interface.primary(
 	style: FusionCanBeState<Style>,
 	onSelect: FusionCanBeState<(isSelected: boolean?) -> ()>,
-	initialSelection: FusionCanBeState<boolean>,
+	initialSelection: FusionCanBeState<boolean?>,
 	elevation: FusionCanBeState<number?>,
 	isEnabled: FusionCanBeState<boolean?>
 ): GuiObject
@@ -97,7 +97,7 @@ end
 function Interface.secondary(
 	style: FusionCanBeState<Style>,
 	onSelect: FusionCanBeState<(isSelected: boolean?) -> ()>,
-	initialSelection: FusionCanBeState<boolean>,
+	initialSelection: FusionCanBeState<boolean?>,
 	elevation: FusionCanBeState<number?>,
 	isEnabled: FusionCanBeState<boolean?>
 ): GuiObject
@@ -122,7 +122,7 @@ end
 function Interface.tertiary(
 	style: FusionCanBeState<Style>,
 	onSelect: FusionCanBeState<(isSelected: boolean?) -> ()>,
-	initialSelection: FusionCanBeState<boolean>,
+	initialSelection: FusionCanBeState<boolean?>,
 	elevation: FusionCanBeState<number?>,
 	isEnabled: FusionCanBeState<boolean?>
 ): GuiObject
@@ -147,7 +147,7 @@ end
 function Interface.primaryContainer(
 	style: FusionCanBeState<Style>,
 	onSelect: FusionCanBeState<(isSelected: boolean?) -> ()>,
-	initialSelection: FusionCanBeState<boolean>,
+	initialSelection: FusionCanBeState<boolean?>,
 	elevation: FusionCanBeState<number?>,
 	isEnabled: FusionCanBeState<boolean?>
 ): GuiObject
@@ -172,7 +172,7 @@ end
 function Interface.secondaryContainer(
 	style: FusionCanBeState<Style>,
 	onSelect: FusionCanBeState<(isSelected: boolean?) -> ()>,
-	initialSelection: FusionCanBeState<boolean>,
+	initialSelection: FusionCanBeState<boolean?>,
 	elevation: FusionCanBeState<number?>,
 	isEnabled: FusionCanBeState<boolean?>
 ): GuiObject
@@ -197,7 +197,7 @@ end
 function Interface.tertiaryContainer(
 	style: FusionCanBeState<Style>,
 	onSelect: FusionCanBeState<(isSelected: boolean?) -> ()>,
-	initialSelection: FusionCanBeState<boolean>,
+	initialSelection: FusionCanBeState<boolean?>,
 	elevation: FusionCanBeState<number?>,
 	isEnabled: FusionCanBeState<boolean?>
 ): GuiObject

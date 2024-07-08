@@ -27,7 +27,7 @@ type Wrapper<BaseInstance, Definition, ClassName> = Translators.Wrapper<BaseInst
 
 export type CheckboxWrapperDefinition = {
 	OnSelect: (isSelected: boolean?) -> (),
-	InitialSelection: boolean,
+	InitialSelection: boolean?,
 	IsEnabled: boolean,
 	OutlineColor: Color3,
 	FillColor: Color3,
@@ -43,7 +43,7 @@ export type CheckboxWrapper = Wrapper<GuiObject, CheckboxWrapperDefinition, "Che
 export type StyledCheckboxWrapperDefinition = {
 	Style: Style,
 	OnSelect: (isSelected: boolean?) -> (),
-	InitialSelection: boolean,
+	InitialSelection: boolean?,
 	Elevation: number?,
 	IsEnabled: boolean?,
 }
@@ -62,7 +62,7 @@ function Interface.primary(): StyledCheckboxWrapper
 	local definition = {
 		Style = _Value(Style.new(1, Enum.Font.SourceSans, "Light", Color3.new(0, 0.4, 0.7))),
 		OnSelect = _Value(function(isSelected: boolean?) end),
-		InitialSelection = _Value(false),
+		InitialSelection = _Value(nil),
 		Elevation = _Value(nil),
 		IsEnabled = _Value(nil),
 	}
@@ -88,7 +88,7 @@ function Interface.secondary(): StyledCheckboxWrapper
 	local definition = {
 		Style = _Value(Style.new(1, Enum.Font.SourceSans, "Light", Color3.new(0, 0.4, 0.7))),
 		OnSelect = _Value(function(isSelected: boolean?) end),
-		InitialSelection = _Value(false),
+		InitialSelection = _Value(nil),
 		Elevation = _Value(nil),
 		IsEnabled = _Value(nil),
 	}
@@ -114,7 +114,7 @@ function Interface.tertiary(): StyledCheckboxWrapper
 	local definition = {
 		Style = _Value(Style.new(1, Enum.Font.SourceSans, "Light", Color3.new(0, 0.4, 0.7))),
 		OnSelect = _Value(function(isSelected: boolean?) end),
-		InitialSelection = _Value(false),
+		InitialSelection = _Value(nil),
 		Elevation = _Value(nil),
 		IsEnabled = _Value(nil),
 	}
@@ -140,7 +140,7 @@ function Interface.primaryContainer(): StyledCheckboxWrapper
 	local definition = {
 		Style = _Value(Style.new(1, Enum.Font.SourceSans, "Light", Color3.new(0, 0.4, 0.7))),
 		OnSelect = _Value(function(isSelected: boolean?) end),
-		InitialSelection = _Value(false),
+		InitialSelection = _Value(nil),
 		Elevation = _Value(nil),
 		IsEnabled = _Value(nil),
 	}
@@ -166,7 +166,7 @@ function Interface.secondaryContainer(): StyledCheckboxWrapper
 	local definition = {
 		Style = _Value(Style.new(1, Enum.Font.SourceSans, "Light", Color3.new(0, 0.4, 0.7))),
 		OnSelect = _Value(function(isSelected: boolean?) end),
-		InitialSelection = _Value(false),
+		InitialSelection = _Value(nil),
 		Elevation = _Value(nil),
 		IsEnabled = _Value(nil),
 	}
@@ -192,7 +192,7 @@ function Interface.tertiaryContainer(): StyledCheckboxWrapper
 	local definition = {
 		Style = _Value(Style.new(1, Enum.Font.SourceSans, "Light", Color3.new(0, 0.4, 0.7))),
 		OnSelect = _Value(function(isSelected: boolean?) end),
-		InitialSelection = _Value(false),
+		InitialSelection = _Value(nil),
 		Elevation = _Value(nil),
 		IsEnabled = _Value(nil),
 	}

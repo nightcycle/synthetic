@@ -20,7 +20,7 @@ return function(frame: Frame)
 	task.spawn(function()
 		local function makeHalfFrame(isDarkMode: boolean, color: Color3): Frame
 			local style = Style.new(
-				1,
+				1.5,
 				Enum.Font.SourceSans,
 				if isDarkMode then Enums.SchemeType.Dark else Enums.SchemeType.Light,
 				color
@@ -59,26 +59,26 @@ return function(frame: Frame)
 				button.Parent = halfFrame
 			end
 
-			do
-				local button = maid:GiveTask(
-					Module.ColdFusion.new(
-						function(isSelected: boolean?)
-							print("is selected", isSelected)
-						end,
-						nil,
-						false,
-						style:GetColor(Enums.ColorRoleType.OnSurfaceVariant),
-						style:GetColor(Enums.ColorRoleType.Primary),
-						style:GetColor(Enums.ColorRoleType.OnPrimary),
-						style:GetColor(Enums.ColorRoleType.OnSurface),
-						1,
-						style.SchemeType,
-						style:GetFontData(Enums.FontType.LabelLarge),
-						style.Scale
-					)
-				)
-				button.Parent = halfFrame
-			end
+			-- do
+			-- 	local button = maid:GiveTask(
+			-- 		Module.ColdFusion.new(
+			-- 			function(isSelected: boolean?)
+			-- 				print("is selected", isSelected)
+			-- 			end,
+			-- 			nil,
+			-- 			false,
+			-- 			style:GetColor(Enums.ColorRoleType.OnSurfaceVariant),
+			-- 			style:GetColor(Enums.ColorRoleType.Primary),
+			-- 			style:GetColor(Enums.ColorRoleType.OnPrimary),
+			-- 			style:GetColor(Enums.ColorRoleType.OnSurface),
+			-- 			1,
+			-- 			style.SchemeType,
+			-- 			style:GetFontData(Enums.FontType.LabelLarge),
+			-- 			style.Scale
+			-- 		)
+			-- 	)
+			-- 	button.Parent = halfFrame
+			-- end
 
 			do
 				local button = maid:GiveTask(
@@ -148,11 +148,11 @@ return function(frame: Frame)
 
 		local COLORS: { [number]: Color3 } = {
 			Color3.fromHSV(0, 0.9, 0.8),
-			Color3.fromHSV(0, 0.25, 0.8),
-			Color3.fromHSV(0, 0.9, 0.5),
+			-- Color3.fromHSV(0, 0.25, 0.8),
+			-- Color3.fromHSV(0, 0.9, 0.5),
 			Color3.fromHSV(0.6, 0.9, 0.7),
 			Color3.fromHSV(0.35, 0.9, 0.7),
-			Color3.fromHSV(0.1, 0.9, 0.7),
+			-- Color3.fromHSV(0.1, 0.9, 0.7),
 		}
 
 		for i, color in ipairs(COLORS) do

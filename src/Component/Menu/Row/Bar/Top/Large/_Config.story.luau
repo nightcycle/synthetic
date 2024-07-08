@@ -32,7 +32,7 @@ return function(frame: Frame)
 
 		local function build(isDarkMode: boolean, color: Color3)
 			local style = Style.new(
-				1,
+				1.4,
 				Enum.Font.SourceSans,
 				if isDarkMode then Enums.SchemeType.Dark else Enums.SchemeType.Light,
 				color
@@ -68,12 +68,12 @@ return function(frame: Frame)
 			out.Size = UDim2.fromScale(1, 0)
 			out.Parent = frame
 		end
-		build(false, Color3.fromHSV(0.5, 0.3, 0.95))
-		build(true, Color3.fromHSV(0.5, 0.5, 0.4))
-		build(false, Color3.fromHSV(0.1, 0.3, 0.95))
-		build(true, Color3.fromHSV(0.1, 0.5, 0.4))
-		build(false, Color3.fromHSV(0.7, 0.3, 0.95))
-		build(true, Color3.fromHSV(0.7, 0.5, 0.4))
+		build(false, Color3.fromHSV(0, 0.9, 0.8))
+		build(true, Color3.fromHSV(0, 0.9, 0.8))
+		-- build(false, Color3.fromHSV(0.6, 0.9, 0.7))
+		-- build(true, Color3.fromHSV(0.6, 0.9, 0.7))
+		-- build(false, Color3.fromHSV(0.35, 0.9, 0.7))
+		-- build(true, Color3.fromHSV(0.35, 0.9, 0.7))
 	end)
 	return function()
 		maid:Destroy()

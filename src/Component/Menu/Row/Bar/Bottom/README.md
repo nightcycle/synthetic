@@ -1,5 +1,7 @@
 # Bottom Bar Menu
 
+![Preview](preview.gif)
+
 The bottom app bar allows for the display of multiple icon buttons at the bottom of the screen. Read more [here](https://m3.material.io/components/bottom-app-bar/overview).
 # Constructors
 
