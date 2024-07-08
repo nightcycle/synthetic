@@ -11,6 +11,7 @@ It is compatible with all major UI workflows:
 - [Blend](https://quenty.github.io/NevermoreEngine/api/Blend)
 
 https://github.com/nightcycle/synthetic/assets/77173389/42044196-0b4a-4e76-9276-88edaf60ef55
+
 All components can be previewed with the [Hoarcecat](https://github.com/Kampfkarren/hoarcekat) plugin. Anything named "_Config" showcases the different ways a component can be configured. Anything named "_Theme" showcases how the component looks when made with the more portable theme constructors.
 
 # Goals
