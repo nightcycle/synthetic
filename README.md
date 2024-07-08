@@ -1,7 +1,7 @@
 # Synthetic
 Synthetic = Fusion created Material
 
-This UI library is powered by a variant of the fusion library, with the goal of creating a Roblox compatible port of the Google Material Design framework / philosophy.
+This UI library is powered by a Fusion framework variant, and has the the goal of porting the Google Material Design framework / philosophy to Roblox.
 
 It is compatible with all major UI workflows:
 - Vanilla / No Framework
