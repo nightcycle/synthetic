@@ -167,8 +167,7 @@ function Interface.primary(
 	local _Computed = _fuse.Computed
 
 	local styleState: State<Style> = _import(style, DEFAULTS.PRIMARY.STYLE)
-	local isEnabledState =
-		_import(isEnabled, if DEFAULTS.PRIMARY.IS_ENABLED ~= nil then DEFAULTS.PRIMARY.IS_ENABLED else true)
+	local isEnabledState = _import(isEnabled, DEFAULTS.PRIMARY.IS_ENABLED)
 	local out = Interface.new(
 		_import(progress, DEFAULTS.PRIMARY.PROGRESS),
 		isEnabledState,
@@ -208,10 +207,7 @@ function Interface.secondary(
 	local _Computed = _fuse.Computed
 
 	local styleState: State<Style> = _import(style, DEFAULTS.SECONDARY.STYLE)
-	local isEnabledState = _import(
-		isEnabled,
-		if DEFAULTS.SECONDARY.IS_ENABLED ~= nil then DEFAULTS.SECONDARY.IS_ENABLED else true
-	)
+	local isEnabledState = _import(isEnabled, DEFAULTS.SECONDARY.IS_ENABLED)
 	local out = Interface.new(
 		_import(progress, DEFAULTS.SECONDARY.PROGRESS),
 		isEnabledState,
@@ -251,8 +247,7 @@ function Interface.tertiary(
 	local _Computed = _fuse.Computed
 
 	local styleState: State<Style> = _import(style, DEFAULTS.TERTIARY.STYLE)
-	local isEnabledState =
-		_import(isEnabled, if DEFAULTS.TERTIARY.IS_ENABLED ~= nil then DEFAULTS.TERTIARY.IS_ENABLED else true)
+	local isEnabledState = _import(isEnabled, DEFAULTS.TERTIARY.IS_ENABLED)
 	local out = Interface.new(
 		_import(progress, DEFAULTS.TERTIARY.PROGRESS),
 		isEnabledState,
@@ -294,8 +289,7 @@ function Interface.new(
 	local _Computed = _fuse.Computed
 	local scaleState: State<number> = _import(scale, DEFAULTS.NEW.SCALE)
 	local inputProgressState: State<number?> = _import(progress, DEFAULTS.NEW.PROGRESS)
-	local isEnabledState =
-		_import(isEnabled, if DEFAULTS.NEW.IS_ENABLED ~= nil then DEFAULTS.NEW.IS_ENABLED else true)
+	local isEnabledState = _import(isEnabled, DEFAULTS.NEW.IS_ENABLED)
 	local fillColorState = _import(fillColor, DEFAULTS.NEW.FILL_COLOR)
 	local emptyColorState = _import(emptyColor, DEFAULTS.NEW.EMPTY_COLOR)
 

@@ -39,18 +39,18 @@ return {
 		STYLE = Style.new(1, Enum.Font.SourceSans, "Light", Color3.new(0, 0.4, 0.7)),
 		BUTTONS = {},
 		FAB = nil :: ButtonData?,
-		ELEVATION = nil :: number?,
+		ELEVATION = 0,
 	},
 	SECONDARY = {
 		STYLE = Style.new(1, Enum.Font.SourceSans, "Light", Color3.new(0, 0.4, 0.7)),
 		BUTTONS = {},
 		FAB = nil :: ButtonData?,
-		ELEVATION = nil :: number?,
+		ELEVATION = 0,
 	},
 	TERTIARY = {
 		STYLE = Style.new(1, Enum.Font.SourceSans, "Light", Color3.new(0, 0.4, 0.7)),
 		BUTTONS = {},
 		FAB = nil :: ButtonData?,
-		ELEVATION = nil :: number?,
+		ELEVATION = 0,
 	},
 }

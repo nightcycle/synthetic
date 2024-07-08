@@ -34,16 +34,16 @@ local Interface = {}
 
 function Interface.new(
 	options: FusionCanBeState<{ OptionData }>,
-	density: FusionCanBeState<number?>,
-	isMultiSelect: FusionCanBeState<boolean?>,
+	density: FusionCanBeState<number>,
+	isMultiSelect: FusionCanBeState<boolean>,
 	textColor: FusionCanBeState<Color3>,
 	fillTextColor: FusionCanBeState<Color3>,
 	fillBackgroundColor: FusionCanBeState<Color3>,
 	outlineColor: FusionCanBeState<Color3>,
-	elevation: FusionCanBeState<number?>,
+	elevation: FusionCanBeState<number>,
 	schemeType: FusionCanBeState<Enums.SchemeType>,
 	fontData: FusionCanBeState<FontData>,
-	scale: FusionCanBeState<number?>
+	scale: FusionCanBeState<number>
 ): GuiObject
 	local maid = Maid.new()
 	local _fuse = ColdFusion.fuse(maid)

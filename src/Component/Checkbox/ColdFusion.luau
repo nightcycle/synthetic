@@ -72,7 +72,7 @@ function newThemedComponent(
 	local out = Interface.new(
 		_import(onSelect, themeDefaults.ON_SELECT or function(isSelected: boolean?) end),
 		_import(initialSelection, themeDefaults.INITIAL_SELECTION),
-		_import(isEnabled, if themeDefaults.IS_ENABLED ~= nil then themeDefaults.IS_ENABLED else true),
+		_import(isEnabled, themeDefaults.IS_ENABLED),
 		_Computed(function(s: Style): Color3
 			return s:GetColor(outlineColor)
 		end, styleState),
@@ -85,7 +85,7 @@ function newThemedComponent(
 		_Computed(function(s: Style): Color3
 			return s:GetColor(disabledColor)
 		end, styleState),
-		_import(elevation, themeDefaults.ELEVATION or 0),
+		_import(elevation, themeDefaults.ELEVATION),
 		_Computed(function(s: Style): any
 			return s.SchemeType
 		end, styleState),
@@ -265,8 +265,7 @@ function Interface.new(
 	local disabledColorState = _import(disabledColor, DEFAULTS.NEW.DISABLED_COLOR)
 	local iconColorState = _import(iconColor, DEFAULTS.NEW.ICON_COLOR)
 	local elevationState = _import(elevation, DEFAULTS.NEW.ELEVATION)
-	local isEnabledState =
-		_import(isEnabled, if DEFAULTS.NEW.IS_ENABLED ~= nil then DEFAULTS.NEW.IS_ENABLED else true)
+	local isEnabledState = _import(isEnabled, DEFAULTS.NEW.IS_ENABLED)
 	local onSelectState = _import(onSelect, DEFAULTS.NEW.ON_SELECT)
 
 	local clickCountState = _Value(0)

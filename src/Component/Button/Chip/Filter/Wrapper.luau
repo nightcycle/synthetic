@@ -67,8 +67,8 @@ function Interface.primary(): StyledFilterWrapper
 		OnClick = _Value(function(isSelected: boolean) end),
 		Text = _Value("Filter"),
 		IsInitiallySelected = _Value(false),
-		IsEnabled = _Value(nil),
-		Elevation = _Value(nil),
+		IsEnabled = _Value(true),
+		Elevation = _Value(0),
 	}
 	local inst: GuiObject = Source.primary(
 		definition.Style,
@@ -95,8 +95,8 @@ function Interface.secondary(): StyledFilterWrapper
 		OnClick = _Value(function(isSelected: boolean) end),
 		Text = _Value("Filter"),
 		IsInitiallySelected = _Value(false),
-		IsEnabled = _Value(nil),
-		Elevation = _Value(nil),
+		IsEnabled = _Value(true),
+		Elevation = _Value(0),
 	}
 	local inst: GuiObject = Source.secondary(
 		definition.Style,
@@ -123,8 +123,8 @@ function Interface.tertiary(): StyledFilterWrapper
 		OnClick = _Value(function(isSelected: boolean) end),
 		Text = _Value("Filter"),
 		IsInitiallySelected = _Value(false),
-		IsEnabled = _Value(nil),
-		Elevation = _Value(nil),
+		IsEnabled = _Value(true),
+		Elevation = _Value(0),
 	}
 	local inst: GuiObject = Source.tertiary(
 		definition.Style,

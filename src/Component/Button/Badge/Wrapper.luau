@@ -67,7 +67,7 @@ function Interface.onPrimary(): StyledBadgeWrapper
 		Icon = _Value(Types.ImageData.new("")),
 		Label = _Value(nil),
 		Count = _Value(nil),
-		Elevation = _Value(nil),
+		Elevation = _Value(0),
 	}
 	local inst: GuiObject = Source.onPrimary(
 		definition.Style,
@@ -95,7 +95,7 @@ function Interface.onSurface(): StyledBadgeWrapper
 		Icon = _Value(Types.ImageData.new("")),
 		Label = _Value(nil),
 		Count = _Value(nil),
-		Elevation = _Value(nil),
+		Elevation = _Value(0),
 	}
 	local inst: GuiObject = Source.onSurface(
 		definition.Style,

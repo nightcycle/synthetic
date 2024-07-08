@@ -24,7 +24,7 @@ type CanBeState<V> = ColdFusion.CanBeState<V>
 return {
 	NEW = {
 		PROGRESS = nil :: number?,
-		IS_ENABLED = nil :: boolean?,
+		IS_ENABLED = true,
 		FILL_COLOR = Color3.new(),
 		EMPTY_COLOR = Color3.new(),
 		SCALE = 1,
@@ -32,16 +32,16 @@ return {
 	PRIMARY = {
 		STYLE = Style.new(1, Enum.Font.SourceSans, "Light", Color3.new(0, 0.4, 0.7)),
 		PROGRESS = nil :: number?,
-		IS_ENABLED = nil :: boolean?,
+		IS_ENABLED = true,
 	},
 	SECONDARY = {
 		STYLE = Style.new(1, Enum.Font.SourceSans, "Light", Color3.new(0, 0.4, 0.7)),
 		PROGRESS = nil :: number?,
-		IS_ENABLED = nil :: boolean?,
+		IS_ENABLED = true,
 	},
 	TERTIARY = {
 		STYLE = Style.new(1, Enum.Font.SourceSans, "Light", Color3.new(0, 0.4, 0.7)),
 		PROGRESS = nil :: number?,
-		IS_ENABLED = nil :: boolean?,
+		IS_ENABLED = true,
 	},
 }

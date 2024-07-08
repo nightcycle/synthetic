@@ -79,10 +79,7 @@ function newThemedComponent(
 	local out = Interface.new(
 		options,
 		_import(density, themeDefaults.DENSITY or 0),
-		_import(
-			isMultiSelect,
-			if themeDefaults.IS_MULTI_SELECT ~= nil then themeDefaults.IS_MULTI_SELECT else false
-		),
+		_import(isMultiSelect, themeDefaults.IS_MULTI_SELECT),
 		_Computed(function(s: Style): Color3
 			return s:GetColor(textColor)
 		end, styleState),
@@ -95,7 +92,7 @@ function newThemedComponent(
 		_Computed(function(s: Style): Color3
 			return s:GetColor(outlineColor)
 		end, styleState),
-		_import(elevation, themeDefaults.ELEVATION or 0),
+		_import(elevation, themeDefaults.ELEVATION),
 		_Computed(function(s: Style): any
 			return s.SchemeType
 		end, styleState),

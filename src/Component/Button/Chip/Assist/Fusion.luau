@@ -72,8 +72,8 @@ function Interface.primary(
 	onClick: FusionCanBeState<() -> ()>,
 	text: FusionCanBeState<string>,
 	icon: FusionCanBeState<ImageData?>,
-	isEnabled: FusionCanBeState<boolean?>,
-	elevation: FusionCanBeState<number?>
+	elevation: FusionCanBeState<number?>,
+	isEnabled: FusionCanBeState<boolean?>
 ): GuiObject
 	local maid = Maid.new()
 	local _fuse = ColdFusion.fuse(maid)
@@ -85,8 +85,8 @@ function Interface.primary(
 		convert(onClick),
 		convert(text),
 		convert(icon),
-		convert(isEnabled),
-		convert(elevation)
+		convert(elevation),
+		convert(isEnabled)
 	)
 	maid:GiveTask(inst.Destroying:Connect(function()
 		maid:Destroy()
@@ -99,8 +99,8 @@ function Interface.secondary(
 	onClick: FusionCanBeState<() -> ()>,
 	text: FusionCanBeState<string>,
 	icon: FusionCanBeState<ImageData?>,
-	isEnabled: FusionCanBeState<boolean?>,
-	elevation: FusionCanBeState<number?>
+	elevation: FusionCanBeState<number?>,
+	isEnabled: FusionCanBeState<boolean?>
 ): GuiObject
 	local maid = Maid.new()
 	local _fuse = ColdFusion.fuse(maid)
@@ -112,8 +112,8 @@ function Interface.secondary(
 		convert(onClick),
 		convert(text),
 		convert(icon),
-		convert(isEnabled),
-		convert(elevation)
+		convert(elevation),
+		convert(isEnabled)
 	)
 	maid:GiveTask(inst.Destroying:Connect(function()
 		maid:Destroy()
@@ -126,8 +126,8 @@ function Interface.tertiary(
 	onClick: FusionCanBeState<() -> ()>,
 	text: FusionCanBeState<string>,
 	icon: FusionCanBeState<ImageData?>,
-	isEnabled: FusionCanBeState<boolean?>,
-	elevation: FusionCanBeState<number?>
+	elevation: FusionCanBeState<number?>,
+	isEnabled: FusionCanBeState<boolean?>
 ): GuiObject
 	local maid = Maid.new()
 	local _fuse = ColdFusion.fuse(maid)
@@ -139,8 +139,8 @@ function Interface.tertiary(
 		convert(onClick),
 		convert(text),
 		convert(icon),
-		convert(isEnabled),
-		convert(elevation)
+		convert(elevation),
+		convert(isEnabled)
 	)
 	maid:GiveTask(inst.Destroying:Connect(function()
 		maid:Destroy()

@@ -31,7 +31,7 @@ export type LargeWrapperDefinition = {
 	Navigation: ButtonData?,
 	BackgroundColor: Color3,
 	TextColor: Color3,
-	Elevation: number?,
+	Elevation: number,
 	SchemeType: Enums.SchemeType,
 	TitleFontData: FontData,
 	SubHeadingFontData: FontData,
@@ -64,7 +64,7 @@ function Interface.primary(): StyledLargeWrapper
 		Title = _Value("Title"),
 		Buttons = _Value({}),
 		Navigation = _Value(nil),
-		Elevation = _Value(nil),
+		Elevation = _Value(0),
 	}
 	local inst: GuiObject = Source.primary(
 		definition.Style,
@@ -90,7 +90,7 @@ function Interface.secondary(): StyledLargeWrapper
 		Title = _Value("Title"),
 		Buttons = _Value({}),
 		Navigation = _Value(nil),
-		Elevation = _Value(nil),
+		Elevation = _Value(0),
 	}
 	local inst: GuiObject = Source.secondary(
 		definition.Style,
@@ -116,7 +116,7 @@ function Interface.tertiary(): StyledLargeWrapper
 		Title = _Value("Title"),
 		Buttons = _Value({}),
 		Navigation = _Value(nil),
-		Elevation = _Value(nil),
+		Elevation = _Value(0),
 	}
 	local inst: GuiObject = Source.tertiary(
 		definition.Style,

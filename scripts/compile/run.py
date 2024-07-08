@@ -1,6 +1,4 @@
 import os
-import time
-import sys
 import json
 from typing import TypedDict, Optional
 
@@ -373,12 +371,6 @@ for root, dirs, files in os.walk(SRC_DIR_PATH):
 
 
 for definition in component_definitions:
-	for func in definition.functions:
-		for param in func["parameters"]:
-
-			if param["type"][-1] == "?":
-				param["default"] = "nil"
-
 	print(definition.path)
 	definition.write_all()
 

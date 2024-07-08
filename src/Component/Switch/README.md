@@ -126,10 +126,10 @@ This function is a style constructor, utilizing the "Style" type to reduce the n
 local style: Style = Style.new(1, Enum.Font.SourceSans, "Light", Color3.new(0, 0.4, 0.7))
 local onSelect: (isSelected: boolean) -> () = function(isSelected: boolean) end
 local initialSelection: boolean = false
-local includeIconOnSelected: boolean? = nil
-local includeIconOnDeselected: boolean? = nil
-local elevation: number? = nil
-local isEnabled: boolean? = nil
+local includeIconOnSelected: boolean? = true
+local includeIconOnDeselected: boolean? = true
+local elevation: number? = 0
+local isEnabled: boolean? = true
 
 local switch = Synthetic.Component.Switch.Fusion.primary()
 switch.Style = style
@@ -146,10 +146,10 @@ switch.IsEnabled = isEnabled
 local styleState: Fusion.Value<Style> = Value(Style.new(1, Enum.Font.SourceSans, "Light", Color3.new(0, 0.4, 0.7)))
 local onSelect: (isSelected: boolean) -> () = function(isSelected: boolean) end
 local initialSelectionState: Fusion.Value<boolean> = Value(false)
-local includeIconOnSelected: boolean? = nil
-local includeIconOnDeselectedState: Fusion.Value<boolean?> = Value(nil)
-local elevation: number? = nil
-local isEnabledState: Fusion.Value<boolean?> = Value(nil)
+local includeIconOnSelected: boolean? = true
+local includeIconOnDeselectedState: Fusion.Value<boolean?> = Value(true)
+local elevation: number? = 0
+local isEnabledState: Fusion.Value<boolean?> = Value(true)
 
 local switch: GuiObject = Synthetic.Component.Switch.Fusion.primary(
 	styleState,

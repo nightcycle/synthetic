@@ -11,16 +11,16 @@ This function is a native constructor, with verbosity allowing for control over 
 
 ### Parameters
 - **options**: { OptionData }
-- **density**: number?
-- **isMultiSelect**: boolean?
+- **density**: number
+- **isMultiSelect**: boolean
 - **textColor**: Color3
 - **fillTextColor**: Color3
 - **fillBackgroundColor**: Color3
 - **outlineColor**: Color3
-- **elevation**: number?
+- **elevation**: number
 - **schemeType**: Enums.SchemeType
 - **fontData**: FontData
-- **scale**: number?
+- **scale**: number
 
 
 ### Usage
@@ -28,16 +28,16 @@ This function is a native constructor, with verbosity allowing for control over 
 **No Framework**
 ```luau
 local options: { OptionData } = {}
-local density: number? = nil
-local isMultiSelect: boolean? = nil
+local density: number = 0
+local isMultiSelect: boolean = false
 local textColor: Color3 = Color3.new()
 local fillTextColor: Color3 = Color3.new()
 local fillBackgroundColor: Color3 = Color3.new()
 local outlineColor: Color3 = Color3.new()
-local elevation: number? = nil
+local elevation: number = 0
 local schemeType: Enums.SchemeType = Enums.SchemeType.Light
 local fontData: FontData = Types.FontData.new(Font.fromEnum(Enum.Font.SourceSans), 14)
-local scale: number? = nil
+local scale: number = 1
 
 local segmented = Synthetic.Component.Menu.Row.Segmented.Fusion.new()
 segmented.Options = options
@@ -56,16 +56,16 @@ segmented.Scale = scale
 **Fusion**
 ```luau
 local optionsState: Fusion.Value<{ OptionData }> = Value({})
-local density: number? = nil
-local isMultiSelectState: Fusion.Value<boolean?> = Value(nil)
+local density: number = 0
+local isMultiSelectState: Fusion.Value<boolean> = Value(false)
 local textColor: Color3 = Color3.new()
 local fillTextColorState: Fusion.Value<Color3> = Value(Color3.new())
 local fillBackgroundColor: Color3 = Color3.new()
 local outlineColorState: Fusion.Value<Color3> = Value(Color3.new())
-local elevation: number? = nil
+local elevation: number = 0
 local schemeTypeState: Fusion.Value<Enums.SchemeType> = Value(Enums.SchemeType.Light)
 local fontData: FontData = Types.FontData.new(Font.fromEnum(Enum.Font.SourceSans), 14)
-local scaleState: Fusion.Value<number?> = Value(nil)
+local scaleState: Fusion.Value<number> = Value(1)
 
 local segmented: GuiObject = Synthetic.Component.Menu.Row.Segmented.Fusion.new(
 	optionsState,
@@ -98,9 +98,9 @@ This function is a style constructor, utilizing the "Style" type to reduce the n
 ```luau
 local style: Style = Style.new(1, Enum.Font.SourceSans, "Light", Color3.new(0, 0.4, 0.7))
 local options: { OptionData } = {}
-local density: number? = nil
-local isMultiSelect: boolean? = nil
-local elevation: number? = nil
+local density: number? = 0
+local isMultiSelect: boolean? = false
+local elevation: number? = 0
 
 local segmented = Synthetic.Component.Menu.Row.Segmented.Fusion.primaryContainer()
 segmented.Style = style
@@ -114,9 +114,9 @@ segmented.Elevation = elevation
 ```luau
 local styleState: Fusion.Value<Style> = Value(Style.new(1, Enum.Font.SourceSans, "Light", Color3.new(0, 0.4, 0.7)))
 local options: { OptionData } = {}
-local densityState: Fusion.Value<number?> = Value(nil)
-local isMultiSelect: boolean? = nil
-local elevationState: Fusion.Value<number?> = Value(nil)
+local densityState: Fusion.Value<number?> = Value(0)
+local isMultiSelect: boolean? = false
+local elevationState: Fusion.Value<number?> = Value(0)
 
 local segmented: GuiObject = Synthetic.Component.Menu.Row.Segmented.Fusion.primaryContainer(
 	styleState,

@@ -106,12 +106,12 @@
                 {
                     "name": "isEnabled",
                     "type": "boolean?",
-                    "default": "nil"
+                    "default": "true"
                 },
                 {
                     "name": "elevation",
                     "type": "number?",
-                    "default": "nil"
+                    "default": "0"
                 }
             ]
         }

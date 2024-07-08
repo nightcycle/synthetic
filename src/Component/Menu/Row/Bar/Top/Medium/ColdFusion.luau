@@ -69,7 +69,7 @@ function newThemedComponent(
 		_Computed(function(s: Style): Color3
 			return s:GetColor(textColor)
 		end, styleState),
-		_import(elevation, themeDefaults.ELEVATION or 0),
+		_import(elevation, themeDefaults.ELEVATION),
 		_Computed(function(s: Style): any
 			return s.SchemeType
 		end, styleState),

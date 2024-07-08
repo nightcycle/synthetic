@@ -63,10 +63,10 @@ function Interface.surfaceContainer(): StyledSmallWrapper
 	local definition = {
 		Style = _Value(Style.new(1, Enum.Font.SourceSans, "Light", Color3.new(0, 0.4, 0.7))),
 		Text = _Value(""),
-		ButtonText = _Value(nil),
+		ButtonText = _Value("Action"),
 		OnButtonClick = _Value(nil),
 		OnCloseClick = _Value(nil),
-		Elevation = _Value(nil),
+		Elevation = _Value(0),
 	}
 	local inst: GuiObject = Source.surfaceContainer(
 		definition.Style,
@@ -91,10 +91,10 @@ function Interface.primaryContainer(): StyledSmallWrapper
 	local definition = {
 		Style = _Value(Style.new(1, Enum.Font.SourceSans, "Light", Color3.new(0, 0.4, 0.7))),
 		Text = _Value(""),
-		ButtonText = _Value(nil),
+		ButtonText = _Value("Action"),
 		OnButtonClick = _Value(nil),
 		OnCloseClick = _Value(nil),
-		Elevation = _Value(nil),
+		Elevation = _Value(0),
 	}
 	local inst: GuiObject = Source.primaryContainer(
 		definition.Style,
@@ -119,10 +119,10 @@ function Interface.secondaryContainer(): StyledSmallWrapper
 	local definition = {
 		Style = _Value(Style.new(1, Enum.Font.SourceSans, "Light", Color3.new(0, 0.4, 0.7))),
 		Text = _Value(""),
-		ButtonText = _Value(nil),
+		ButtonText = _Value("Action"),
 		OnButtonClick = _Value(nil),
 		OnCloseClick = _Value(nil),
-		Elevation = _Value(nil),
+		Elevation = _Value(0),
 	}
 	local inst: GuiObject = Source.secondaryContainer(
 		definition.Style,
@@ -147,10 +147,10 @@ function Interface.tertiaryContainer(): StyledSmallWrapper
 	local definition = {
 		Style = _Value(Style.new(1, Enum.Font.SourceSans, "Light", Color3.new(0, 0.4, 0.7))),
 		Text = _Value(""),
-		ButtonText = _Value(nil),
+		ButtonText = _Value("Action"),
 		OnButtonClick = _Value(nil),
 		OnCloseClick = _Value(nil),
-		Elevation = _Value(nil),
+		Elevation = _Value(0),
 	}
 	local inst: GuiObject = Source.tertiaryContainer(
 		definition.Style,

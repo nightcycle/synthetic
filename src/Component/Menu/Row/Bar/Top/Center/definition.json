@@ -35,8 +35,8 @@
                 },
                 {
                     "name": "elevation",
-                    "type": "number?",
-                    "default": "nil"
+                    "type": "number",
+                    "default": "0"
                 },
                 {
                     "name": "schemeType",
@@ -96,7 +96,7 @@
                 {
                     "name": "elevation",
                     "type": "number?",
-                    "default": "nil"
+                    "default": "0"
                 }
             ]
         }

@@ -42,7 +42,7 @@ return {
 		ICON = Types.ImageData.new(""),
 		LABEL = nil :: string?,
 		COUNT = nil :: number?,
-		ELEVATION = nil :: number?,
+		ELEVATION = 0,
 	},
 	ON_SURFACE = {
 		STYLE = Style.new(1, Enum.Font.SourceSans, "Light", Color3.new(0, 0.4, 0.7)),
@@ -50,6 +50,6 @@ return {
 		ICON = Types.ImageData.new(""),
 		LABEL = nil :: string?,
 		COUNT = nil :: number?,
-		ELEVATION = nil :: number?,
+		ELEVATION = 0,
 	},
 }

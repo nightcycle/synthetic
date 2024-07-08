@@ -89,15 +89,16 @@
                     "default": "nil"
                 },
                 {
-                    "name": "isEnabled",
-                    "type": "boolean?",
-                    "default": "nil"
-                },
-                {
                     "name": "elevation",
                     "type": "number?",
-                    "default": "nil"
+                    "default": "0"
+                },
+                {
+                    "name": "isEnabled",
+                    "type": "boolean?",
+                    "default": "true"
                 }
+
             ]
         }
     ]

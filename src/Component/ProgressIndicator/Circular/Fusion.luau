@@ -34,7 +34,7 @@ local Interface = {}
 
 function Interface.new(
 	progress: FusionCanBeState<number?>,
-	isEnabled: FusionCanBeState<boolean?>,
+	isEnabled: FusionCanBeState<boolean>,
 	fillColor: FusionCanBeState<Color3>,
 	emptyColor: FusionCanBeState<Color3>,
 	scale: FusionCanBeState<number>

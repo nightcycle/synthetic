@@ -27,16 +27,16 @@ type Wrapper<BaseInstance, Definition, ClassName> = Translators.Wrapper<BaseInst
 
 export type SegmentedWrapperDefinition = {
 	Options: { OptionData },
-	Density: number?,
-	IsMultiSelect: boolean?,
+	Density: number,
+	IsMultiSelect: boolean,
 	TextColor: Color3,
 	FillTextColor: Color3,
 	FillBackgroundColor: Color3,
 	OutlineColor: Color3,
-	Elevation: number?,
+	Elevation: number,
 	SchemeType: Enums.SchemeType,
 	FontData: FontData,
-	Scale: number?,
+	Scale: number,
 }
 export type SegmentedWrapper = Wrapper<GuiObject, SegmentedWrapperDefinition, "Segmented">
 
@@ -62,9 +62,9 @@ function Interface.primaryContainer(): StyledSegmentedWrapper
 	local definition = {
 		Style = _Value(Style.new(1, Enum.Font.SourceSans, "Light", Color3.new(0, 0.4, 0.7))),
 		Options = _Value({}),
-		Density = _Value(nil),
-		IsMultiSelect = _Value(nil),
-		Elevation = _Value(nil),
+		Density = _Value(0),
+		IsMultiSelect = _Value(false),
+		Elevation = _Value(0),
 	}
 	local inst: GuiObject = Source.primaryContainer(
 		definition.Style,
@@ -88,9 +88,9 @@ function Interface.secondaryContainer(): StyledSegmentedWrapper
 	local definition = {
 		Style = _Value(Style.new(1, Enum.Font.SourceSans, "Light", Color3.new(0, 0.4, 0.7))),
 		Options = _Value({}),
-		Density = _Value(nil),
-		IsMultiSelect = _Value(nil),
-		Elevation = _Value(nil),
+		Density = _Value(0),
+		IsMultiSelect = _Value(false),
+		Elevation = _Value(0),
 	}
 	local inst: GuiObject = Source.secondaryContainer(
 		definition.Style,
@@ -114,9 +114,9 @@ function Interface.tertiaryContainer(): StyledSegmentedWrapper
 	local definition = {
 		Style = _Value(Style.new(1, Enum.Font.SourceSans, "Light", Color3.new(0, 0.4, 0.7))),
 		Options = _Value({}),
-		Density = _Value(nil),
-		IsMultiSelect = _Value(nil),
-		Elevation = _Value(nil),
+		Density = _Value(0),
+		IsMultiSelect = _Value(false),
+		Elevation = _Value(0),
 	}
 	local inst: GuiObject = Source.tertiaryContainer(
 		definition.Style,

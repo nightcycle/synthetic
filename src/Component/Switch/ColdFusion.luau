@@ -97,19 +97,9 @@ function newThemedComponent(
 	local out = Interface.new(
 		onSelect,
 		initialSelection,
-		_import(isEnabled, if themeDefaults.IS_ENABLED ~= nil then themeDefaults.IS_ENABLED else true),
-		_import(
-			includeIconOnSelected,
-			if themeDefaults.INCLUDE_ICON_ON_SELECTED ~= nil
-				then themeDefaults.INCLUDE_ICON_ON_SELECTED
-				else true
-		),
-		_import(
-			includeIconOnDeselected,
-			if themeDefaults.INCLUDE_ICON_ON_DESELECTED ~= nil
-				then themeDefaults.INCLUDE_ICON_ON_DESELECTED
-				else false
-		),
+		_import(isEnabled, themeDefaults.IS_ENABLED),
+		_import(includeIconOnSelected, themeDefaults.INCLUDE_ICON_ON_SELECTED),
+		_import(includeIconOnDeselected, themeDefaults.INCLUDE_ICON_ON_DESELECTED),
 		_Computed(function(s: Style): Color3
 			return s:GetColor(backgroundColor)
 		end, styleState),
@@ -131,7 +121,7 @@ function newThemedComponent(
 		_Computed(function(s: Style): Color3
 			return s:GetColor(onDisabledColor)
 		end, styleState),
-		_import(elevation, themeDefaults.ELEVATION or 0),
+		_import(elevation, themeDefaults.ELEVATION),
 		_Computed(function(s: Style): any
 			return s.SchemeType
 		end, styleState),

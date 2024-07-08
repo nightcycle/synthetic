@@ -80,13 +80,15 @@ function Interface.primary(): StyledOutlinedWrapper
 		end),
 		Label = _Value("Label"),
 		InitialText = _Value(nil),
-		OnInput = _Value(nil),
+		OnInput = _Value(function(text: string?)
+			return text
+		end),
 		SupportingText = _Value(nil),
 		Icon = _Value(nil),
 		CharacterLimit = _Value(nil),
-		IsError = _Value(nil),
-		Elevation = _Value(nil),
-		IsEnabled = _Value(nil),
+		IsError = _Value(false),
+		Elevation = _Value(0),
+		IsEnabled = _Value(true),
 	}
 	local inst: GuiObject = Source.primary(
 		definition.Style,
@@ -120,13 +122,15 @@ function Interface.secondary(): StyledOutlinedWrapper
 		end),
 		Label = _Value("Label"),
 		InitialText = _Value(nil),
-		OnInput = _Value(nil),
+		OnInput = _Value(function(text: string?)
+			return text
+		end),
 		SupportingText = _Value(nil),
 		Icon = _Value(nil),
 		CharacterLimit = _Value(nil),
-		IsError = _Value(nil),
-		Elevation = _Value(nil),
-		IsEnabled = _Value(nil),
+		IsError = _Value(false),
+		Elevation = _Value(0),
+		IsEnabled = _Value(true),
 	}
 	local inst: GuiObject = Source.secondary(
 		definition.Style,
@@ -160,13 +164,15 @@ function Interface.tertiary(): StyledOutlinedWrapper
 		end),
 		Label = _Value("Label"),
 		InitialText = _Value(nil),
-		OnInput = _Value(nil),
+		OnInput = _Value(function(text: string?)
+			return text
+		end),
 		SupportingText = _Value(nil),
 		Icon = _Value(nil),
 		CharacterLimit = _Value(nil),
-		IsError = _Value(nil),
-		Elevation = _Value(nil),
-		IsEnabled = _Value(nil),
+		IsError = _Value(false),
+		Elevation = _Value(0),
+		IsEnabled = _Value(true),
 	}
 	local inst: GuiObject = Source.tertiary(
 		definition.Style,

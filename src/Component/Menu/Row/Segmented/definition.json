@@ -15,13 +15,13 @@
                 },
                 {
                     "name": "density",
-                    "type": "number?",
-                    "default": "nil"
+                    "type": "number",
+                    "default": "0"
                 },
                 {
                     "name": "isMultiSelect",
-                    "type": "boolean?",
-                    "default": "nil"
+                    "type": "boolean",
+                    "default": "false"
                 },
                 {
                     "name": "textColor",
@@ -45,8 +45,8 @@
                 },
                 {
                     "name": "elevation",
-                    "type": "number?",
-                    "default": "nil"
+                    "type": "number",
+                    "default": "0"
                 },
                 {
                     "name": "schemeType",
@@ -60,7 +60,7 @@
                 },
                 {
                     "name": "scale",
-                    "type": "number?",
+                    "type": "number",
                     "default": "1"
                 }
             ]
@@ -86,17 +86,17 @@
                 {
                     "name": "density",
                     "type": "number?",
-                    "default": "nil"
+                    "default": "0"
                 },
                 {
                     "name": "isMultiSelect",
                     "type": "boolean?",
-                    "default": "nil"
+                    "default": "false"
                 },
                 {
                     "name": "elevation",
                     "type": "number?",
-                    "default": "nil"
+                    "default": "0"
                 }
             ]
         }

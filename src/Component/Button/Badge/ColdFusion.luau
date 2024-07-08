@@ -82,7 +82,7 @@ function newThemedComponent(
 		_Computed(function(s: Style): Color3
 			return s:GetColor(Enums.ColorRoleType.ErrorContainer)
 		end, styleState),
-		_import(elevation, themeDefaults.ELEVATION or 0),
+		_import(elevation, themeDefaults.ELEVATION),
 		_Computed(function(s: Style): any
 			return s.SchemeType
 		end, styleState),
@@ -183,7 +183,7 @@ function Interface.new(
 	local errorBackgroundColorState: State<Color3> =
 		_import(errorBackgroundColor, DEFAULTS.NEW.ERROR_BACKGROUND_COLOR)
 
-	local labelState = _import(label, DEFAULTS.NEW.LABEL or "")
+	local labelState = _import(label, DEFAULTS.NEW.LABEL)
 	local countState = _import(count, DEFAULTS.NEW.COUNT)
 	local iconState: State<ImageData> = _import(icon, DEFAULTS.NEW.ICON)
 	local onClickState = _import(onClick, DEFAULTS.NEW.ON_CLICK)

@@ -81,8 +81,8 @@ function newThemedComponent(
 		_Computed(function(s: Style): Color3
 			return s:GetColor(Enums.ColorRoleType.Shadow)
 		end, styleState),
-		_import(isEnabled, if themeDefaults.IS_ENABLED ~= nil then themeDefaults.IS_ENABLED else true),
-		_import(elevation, themeDefaults.ELEVATION or 0),
+		_import(isEnabled, themeDefaults.IS_ENABLED),
+		_import(elevation, themeDefaults.ELEVATION),
 		_Computed(function(s: Style): any
 			return s.SchemeType
 		end, styleState),

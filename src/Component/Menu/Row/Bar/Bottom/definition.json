@@ -91,7 +91,7 @@
                 {
                     "name": "elevation",
                     "type": "number?",
-                    "default": "nil"
+                    "default": "0"
                 }
             ]
         }

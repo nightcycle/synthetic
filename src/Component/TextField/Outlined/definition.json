@@ -136,7 +136,7 @@
                 {
                     "name": "onInput",
                     "type": "(((text: string?) -> string?)?)",
-                    "default": "nil"
+                    "default": "function(text: string?)\nreturn text\nend"
                 },
                 {
                     "name": "supportingText",
@@ -156,7 +156,7 @@
                 {
                     "name": "isError",
                     "type": "boolean?",
-                    "default": "nil"
+                    "default": "false"
                 },
                 {
                     "name": "elevation",
@@ -166,7 +166,7 @@
                 {
                     "name": "isEnabled",
                     "type": "boolean?",
-                    "default": "nil"
+                    "default": "true"
                 }
             ]
         }

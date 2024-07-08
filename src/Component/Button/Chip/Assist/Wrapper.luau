@@ -44,8 +44,8 @@ export type StyledAssistWrapperDefinition = {
 	OnClick: () -> (),
 	Text: string,
 	Icon: ImageData?,
-	IsEnabled: boolean?,
 	Elevation: number?,
+	IsEnabled: boolean?,
 }
 export type StyledAssistWrapper = Wrapper<GuiObject, StyledAssistWrapperDefinition, "StyledAssist">
 -- Constants
@@ -64,16 +64,16 @@ function Interface.primary(): StyledAssistWrapper
 		OnClick = _Value(function() end),
 		Text = _Value("Chip"),
 		Icon = _Value(nil),
-		IsEnabled = _Value(nil),
-		Elevation = _Value(nil),
+		Elevation = _Value(0),
+		IsEnabled = _Value(true),
 	}
 	local inst: GuiObject = Source.primary(
 		definition.Style,
 		definition.OnClick,
 		definition.Text,
 		definition.Icon,
-		definition.IsEnabled,
-		definition.Elevation
+		definition.Elevation,
+		definition.IsEnabled
 	)
 	maid:GiveTask(inst.Destroying:Connect(function()
 		maid:Destroy()
@@ -92,16 +92,16 @@ function Interface.secondary(): StyledAssistWrapper
 		OnClick = _Value(function() end),
 		Text = _Value("Chip"),
 		Icon = _Value(nil),
-		IsEnabled = _Value(nil),
-		Elevation = _Value(nil),
+		Elevation = _Value(0),
+		IsEnabled = _Value(true),
 	}
 	local inst: GuiObject = Source.secondary(
 		definition.Style,
 		definition.OnClick,
 		definition.Text,
 		definition.Icon,
-		definition.IsEnabled,
-		definition.Elevation
+		definition.Elevation,
+		definition.IsEnabled
 	)
 	maid:GiveTask(inst.Destroying:Connect(function()
 		maid:Destroy()
@@ -120,16 +120,16 @@ function Interface.tertiary(): StyledAssistWrapper
 		OnClick = _Value(function() end),
 		Text = _Value("Chip"),
 		Icon = _Value(nil),
-		IsEnabled = _Value(nil),
-		Elevation = _Value(nil),
+		Elevation = _Value(0),
+		IsEnabled = _Value(true),
 	}
 	local inst: GuiObject = Source.tertiary(
 		definition.Style,
 		definition.OnClick,
 		definition.Text,
 		definition.Icon,
-		definition.IsEnabled,
-		definition.Elevation
+		definition.Elevation,
+		definition.IsEnabled
 	)
 	maid:GiveTask(inst.Destroying:Connect(function()
 		maid:Destroy()

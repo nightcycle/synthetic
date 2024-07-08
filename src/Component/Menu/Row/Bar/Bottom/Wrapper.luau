@@ -62,7 +62,7 @@ function Interface.primary(): StyledBottomWrapper
 		Style = _Value(Style.new(1, Enum.Font.SourceSans, "Light", Color3.new(0, 0.4, 0.7))),
 		Buttons = _Value({}),
 		Fab = _Value(nil),
-		Elevation = _Value(nil),
+		Elevation = _Value(0),
 	}
 	local inst: GuiObject =
 		Source.primary(definition.Style, definition.Buttons, definition.Fab, definition.Elevation)
@@ -82,7 +82,7 @@ function Interface.secondary(): StyledBottomWrapper
 		Style = _Value(Style.new(1, Enum.Font.SourceSans, "Light", Color3.new(0, 0.4, 0.7))),
 		Buttons = _Value({}),
 		Fab = _Value(nil),
-		Elevation = _Value(nil),
+		Elevation = _Value(0),
 	}
 	local inst: GuiObject =
 		Source.secondary(definition.Style, definition.Buttons, definition.Fab, definition.Elevation)
@@ -102,7 +102,7 @@ function Interface.tertiary(): StyledBottomWrapper
 		Style = _Value(Style.new(1, Enum.Font.SourceSans, "Light", Color3.new(0, 0.4, 0.7))),
 		Buttons = _Value({}),
 		Fab = _Value(nil),
-		Elevation = _Value(nil),
+		Elevation = _Value(0),
 	}
 	local inst: GuiObject =
 		Source.tertiary(definition.Style, definition.Buttons, definition.Fab, definition.Elevation)

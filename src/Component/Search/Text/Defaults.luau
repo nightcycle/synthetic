@@ -48,7 +48,7 @@ return {
 			return {}
 		end,
 		OPTION_CONSTRUCTOR = nil :: ((key: string, onClick: (key: string) -> ()) -> GuiObject)?,
-		ELEVATION = nil :: number?,
+		ELEVATION = 0,
 	},
 	ON_SECONDARY = {
 		STYLE = Style.new(1, Enum.Font.SourceSans, "Light", Color3.new(0, 0.4, 0.7)),
@@ -60,7 +60,7 @@ return {
 			return {}
 		end,
 		OPTION_CONSTRUCTOR = nil :: ((key: string, onClick: (key: string) -> ()) -> GuiObject)?,
-		ELEVATION = nil :: number?,
+		ELEVATION = 0,
 	},
 	ON_TERTIARY = {
 		STYLE = Style.new(1, Enum.Font.SourceSans, "Light", Color3.new(0, 0.4, 0.7)),
@@ -72,7 +72,7 @@ return {
 			return {}
 		end,
 		OPTION_CONSTRUCTOR = nil :: ((key: string, onClick: (key: string) -> ()) -> GuiObject)?,
-		ELEVATION = nil :: number?,
+		ELEVATION = 0,
 	},
 	ON_PRIMARY_CONTAINER = {
 		STYLE = Style.new(1, Enum.Font.SourceSans, "Light", Color3.new(0, 0.4, 0.7)),
@@ -84,7 +84,7 @@ return {
 			return {}
 		end,
 		OPTION_CONSTRUCTOR = nil :: ((key: string, onClick: (key: string) -> ()) -> GuiObject)?,
-		ELEVATION = nil :: number?,
+		ELEVATION = 0,
 	},
 	ON_SECONDARY_CONTAINER = {
 		STYLE = Style.new(1, Enum.Font.SourceSans, "Light", Color3.new(0, 0.4, 0.7)),
@@ -96,7 +96,7 @@ return {
 			return {}
 		end,
 		OPTION_CONSTRUCTOR = nil :: ((key: string, onClick: (key: string) -> ()) -> GuiObject)?,
-		ELEVATION = nil :: number?,
+		ELEVATION = 0,
 	},
 	ON_TERTIARY_CONTAINER = {
 		STYLE = Style.new(1, Enum.Font.SourceSans, "Light", Color3.new(0, 0.4, 0.7)),
@@ -108,6 +108,6 @@ return {
 			return {}
 		end,
 		OPTION_CONSTRUCTOR = nil :: ((key: string, onClick: (key: string) -> ()) -> GuiObject)?,
-		ELEVATION = nil :: number?,
+		ELEVATION = 0,
 	},
 }

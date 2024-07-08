@@ -54,13 +54,15 @@ return {
 		end,
 		LABEL = "Label",
 		INITIAL_TEXT = nil :: string?,
-		ON_INPUT = nil :: ((text: string?) -> string?)?,
+		ON_INPUT = function(text: string?)
+			return text
+		end,
 		SUPPORTING_TEXT = nil :: string?,
 		ICON = nil :: ImageData?,
 		CHARACTER_LIMIT = nil :: number?,
-		IS_ERROR = nil :: boolean?,
-		ELEVATION = nil :: number?,
-		IS_ENABLED = nil :: boolean?,
+		IS_ERROR = false,
+		ELEVATION = 0,
+		IS_ENABLED = true,
 	},
 	SECONDARY = {
 		STYLE = Style.new(1, Enum.Font.SourceSans, "Light", Color3.new(0, 0.4, 0.7)),
@@ -69,13 +71,15 @@ return {
 		end,
 		LABEL = "Label",
 		INITIAL_TEXT = nil :: string?,
-		ON_INPUT = nil :: ((text: string?) -> string?)?,
+		ON_INPUT = function(text: string?)
+			return text
+		end,
 		SUPPORTING_TEXT = nil :: string?,
 		ICON = nil :: ImageData?,
 		CHARACTER_LIMIT = nil :: number?,
-		IS_ERROR = nil :: boolean?,
-		ELEVATION = nil :: number?,
-		IS_ENABLED = nil :: boolean?,
+		IS_ERROR = false,
+		ELEVATION = 0,
+		IS_ENABLED = true,
 	},
 	TERTIARY = {
 		STYLE = Style.new(1, Enum.Font.SourceSans, "Light", Color3.new(0, 0.4, 0.7)),
@@ -84,12 +88,14 @@ return {
 		end,
 		LABEL = "Label",
 		INITIAL_TEXT = nil :: string?,
-		ON_INPUT = nil :: ((text: string?) -> string?)?,
+		ON_INPUT = function(text: string?)
+			return text
+		end,
 		SUPPORTING_TEXT = nil :: string?,
 		ICON = nil :: ImageData?,
 		CHARACTER_LIMIT = nil :: number?,
-		IS_ERROR = nil :: boolean?,
-		ELEVATION = nil :: number?,
-		IS_ENABLED = nil :: boolean?,
+		IS_ERROR = false,
+		ELEVATION = 0,
+		IS_ENABLED = true,
 	},
 }

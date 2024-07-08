@@ -107,7 +107,7 @@ local onClick: () -> () = function() end
 local icon: ImageData = Types.ImageData.new("")
 local label: string? = nil
 local count: number? = nil
-local elevation: number? = nil
+local elevation: number? = 0
 
 local badge = Synthetic.Component.Button.Badge.Fusion.onPrimary()
 badge.Style = style
@@ -125,7 +125,7 @@ local onClick: () -> () = function() end
 local iconState: Fusion.Value<ImageData> = Value(Types.ImageData.new(""))
 local label: string? = nil
 local countState: Fusion.Value<number?> = Value(nil)
-local elevation: number? = nil
+local elevation: number? = 0
 
 local badge: GuiObject = Synthetic.Component.Button.Badge.Fusion.onPrimary(
 	styleState,

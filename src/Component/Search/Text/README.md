@@ -109,7 +109,7 @@ local optionSolver: (input: string) -> { string } = function(input: string)
 return {}
 end
 local optionConstructor: (((key: string, onClick: (key: string) -> ()) -> GuiObject)?) = nil
-local elevation: number? = nil
+local elevation: number? = 0
 
 local text = Synthetic.Component.Search.Text.Fusion.onPrimary()
 text.Style = style
@@ -131,7 +131,7 @@ local optionSolver: (input: string) -> { string } = function(input: string)
 return {}
 end
 local optionConstructorState: Fusion.Value<(((key: string, onClick: (key: string) -> ()) -> GuiObject)?)> = Value(nil)
-local elevation: number? = nil
+local elevation: number? = 0
 
 local text: GuiObject = Synthetic.Component.Search.Text.Fusion.onPrimary(
 	styleState,

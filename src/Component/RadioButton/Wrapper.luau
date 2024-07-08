@@ -67,8 +67,8 @@ function Interface.primary(): StyledRadioButtonWrapper
 		Style = _Value(Style.new(1, Enum.Font.SourceSans, "Light", Color3.new(0, 0.4, 0.7))),
 		OnSelect = _Value(function(isSelected: boolean) end),
 		InitialSelection = _Value(false),
-		Elevation = _Value(nil),
-		IsEnabled = _Value(nil),
+		Elevation = _Value(0),
+		IsEnabled = _Value(true),
 	}
 	local inst: GuiObject = Source.primary(
 		definition.Style,
@@ -93,8 +93,8 @@ function Interface.secondary(): StyledRadioButtonWrapper
 		Style = _Value(Style.new(1, Enum.Font.SourceSans, "Light", Color3.new(0, 0.4, 0.7))),
 		OnSelect = _Value(function(isSelected: boolean) end),
 		InitialSelection = _Value(false),
-		Elevation = _Value(nil),
-		IsEnabled = _Value(nil),
+		Elevation = _Value(0),
+		IsEnabled = _Value(true),
 	}
 	local inst: GuiObject = Source.secondary(
 		definition.Style,
@@ -119,8 +119,8 @@ function Interface.tertiary(): StyledRadioButtonWrapper
 		Style = _Value(Style.new(1, Enum.Font.SourceSans, "Light", Color3.new(0, 0.4, 0.7))),
 		OnSelect = _Value(function(isSelected: boolean) end),
 		InitialSelection = _Value(false),
-		Elevation = _Value(nil),
-		IsEnabled = _Value(nil),
+		Elevation = _Value(0),
+		IsEnabled = _Value(true),
 	}
 	local inst: GuiObject = Source.tertiary(
 		definition.Style,
@@ -145,8 +145,8 @@ function Interface.primaryContainer(): StyledRadioButtonWrapper
 		Style = _Value(Style.new(1, Enum.Font.SourceSans, "Light", Color3.new(0, 0.4, 0.7))),
 		OnSelect = _Value(function(isSelected: boolean) end),
 		InitialSelection = _Value(false),
-		Elevation = _Value(nil),
-		IsEnabled = _Value(nil),
+		Elevation = _Value(0),
+		IsEnabled = _Value(true),
 	}
 	local inst: GuiObject = Source.primaryContainer(
 		definition.Style,
@@ -171,8 +171,8 @@ function Interface.secondaryContainer(): StyledRadioButtonWrapper
 		Style = _Value(Style.new(1, Enum.Font.SourceSans, "Light", Color3.new(0, 0.4, 0.7))),
 		OnSelect = _Value(function(isSelected: boolean) end),
 		InitialSelection = _Value(false),
-		Elevation = _Value(nil),
-		IsEnabled = _Value(nil),
+		Elevation = _Value(0),
+		IsEnabled = _Value(true),
 	}
 	local inst: GuiObject = Source.secondaryContainer(
 		definition.Style,
@@ -197,8 +197,8 @@ function Interface.tertiaryContainer(): StyledRadioButtonWrapper
 		Style = _Value(Style.new(1, Enum.Font.SourceSans, "Light", Color3.new(0, 0.4, 0.7))),
 		OnSelect = _Value(function(isSelected: boolean) end),
 		InitialSelection = _Value(false),
-		Elevation = _Value(nil),
-		IsEnabled = _Value(nil),
+		Elevation = _Value(0),
+		IsEnabled = _Value(true),
 	}
 	local inst: GuiObject = Source.tertiaryContainer(
 		definition.Style,

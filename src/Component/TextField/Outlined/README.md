@@ -156,13 +156,15 @@ return text
 end
 local label: string = "Label"
 local initialText: string? = nil
-local onInput: (((text: string?) -> string?)?) = nil
+local onInput: (((text: string?) -> string?)?) = function(text: string?)
+return text
+end
 local supportingText: string? = nil
 local icon: ImageData? = nil
 local characterLimit: number? = nil
-local isError: boolean? = nil
-local elevation: number? = nil
-local isEnabled: boolean? = nil
+local isError: boolean? = false
+local elevation: number? = 0
+local isEnabled: boolean? = true
 
 local outlined = Synthetic.Component.TextField.Outlined.Fusion.primary()
 outlined.Style = style
@@ -186,13 +188,15 @@ return text
 end
 local labelState: Fusion.Value<string> = Value("Label")
 local initialText: string? = nil
-local onInputState: Fusion.Value<(((text: string?) -> string?)?)> = Value(nil)
+local onInputState: Fusion.Value<(((text: string?) -> string?)?)> = Value(function(text: string?)
+return text
+end)
 local supportingText: string? = nil
 local iconState: Fusion.Value<ImageData?> = Value(nil)
 local characterLimit: number? = nil
-local isErrorState: Fusion.Value<boolean?> = Value(nil)
-local elevation: number? = nil
-local isEnabledState: Fusion.Value<boolean?> = Value(nil)
+local isErrorState: Fusion.Value<boolean?> = Value(false)
+local elevation: number? = 0
+local isEnabledState: Fusion.Value<boolean?> = Value(true)
 
 local outlined: GuiObject = Synthetic.Component.TextField.Outlined.Fusion.primary(
 	styleState,

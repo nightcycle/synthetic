@@ -111,8 +111,8 @@ local style: Style = Style.new(1, Enum.Font.SourceSans, "Light", Color3.new(0, 0
 local onClick: (isSelected: boolean) -> () = function(isSelected: boolean) end
 local text: string = "Filter"
 local isInitiallySelected: boolean = false
-local isEnabled: boolean? = nil
-local elevation: number? = nil
+local isEnabled: boolean? = true
+local elevation: number? = 0
 
 local filter = Synthetic.Component.Button.Chip.Filter.Fusion.primary()
 filter.Style = style
@@ -129,8 +129,8 @@ local styleState: Fusion.Value<Style> = Value(Style.new(1, Enum.Font.SourceSans,
 local onClick: (isSelected: boolean) -> () = function(isSelected: boolean) end
 local textState: Fusion.Value<string> = Value("Filter")
 local isInitiallySelected: boolean = false
-local isEnabledState: Fusion.Value<boolean?> = Value(nil)
-local elevation: number? = nil
+local isEnabledState: Fusion.Value<boolean?> = Value(true)
+local elevation: number? = 0
 
 local filter: GuiObject = Synthetic.Component.Button.Chip.Filter.Fusion.primary(
 	styleState,

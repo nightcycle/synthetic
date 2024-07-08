@@ -28,7 +28,7 @@ This function is a native constructor, with verbosity allowing for control over 
 **No Framework**
 ```luau
 local text: string = ""
-local buttonText: string? = nil
+local buttonText: string? = "Action"
 local onButtonClick: ((() -> ())?) = nil
 local onCloseClick: ((() -> ())?) = nil
 local textColor: Color3 = Color3.new()
@@ -56,7 +56,7 @@ large.Scale = scale
 **Fusion**
 ```luau
 local textState: Fusion.Value<string> = Value("")
-local buttonText: string? = nil
+local buttonText: string? = "Action"
 local onButtonClickState: Fusion.Value<((() -> ())?)> = Value(nil)
 local onCloseClick: ((() -> ())?) = nil
 local textColorState: Fusion.Value<Color3> = Value(Color3.new())
@@ -99,10 +99,10 @@ This function is a style constructor, utilizing the "Style" type to reduce the n
 ```luau
 local style: Style = Style.new(1, Enum.Font.SourceSans, "Light", Color3.new(0, 0.4, 0.7))
 local text: string = ""
-local buttonText: string? = nil
+local buttonText: string? = "Action"
 local onButtonClick: ((() -> ())?) = nil
 local onCloseClick: ((() -> ())?) = nil
-local elevation: number? = nil
+local elevation: number? = 0
 
 local large = Synthetic.Component.Snackbar.Large.Fusion.surfaceContainer()
 large.Style = style
@@ -117,10 +117,10 @@ large.Elevation = elevation
 ```luau
 local styleState: Fusion.Value<Style> = Value(Style.new(1, Enum.Font.SourceSans, "Light", Color3.new(0, 0.4, 0.7)))
 local text: string = ""
-local buttonTextState: Fusion.Value<string?> = Value(nil)
+local buttonTextState: Fusion.Value<string?> = Value("Action")
 local onButtonClick: ((() -> ())?) = nil
 local onCloseClickState: Fusion.Value<((() -> ())?)> = Value(nil)
-local elevation: number? = nil
+local elevation: number? = 0
 
 local large: GuiObject = Synthetic.Component.Snackbar.Large.Fusion.surfaceContainer(
 	styleState,

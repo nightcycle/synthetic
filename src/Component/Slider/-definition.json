@@ -128,12 +128,12 @@
                 },
                 {
                     "name": "leftTextOrIcon",
-                    "type": "string | ImageData | nil",
+                    "type": "(string | ImageData)?",
                     "default": "nil"
                 },
                 {
                     "name": "rightTextOrIcon",
-                    "type": "string | ImageData | nil",
+                    "type": "(string | ImageData)?",
                     "default": "nil"
                 },
                 {

@@ -69,7 +69,7 @@ function Interface.primary(): StyledFilledWrapper
 			return {}
 		end),
 		OptionConstructor = _Value(nil),
-		Elevation = _Value(nil),
+		Elevation = _Value(0),
 	}
 	local inst: GuiObject = Source.primary(
 		definition.Style,
@@ -101,7 +101,7 @@ function Interface.secondary(): StyledFilledWrapper
 			return {}
 		end),
 		OptionConstructor = _Value(nil),
-		Elevation = _Value(nil),
+		Elevation = _Value(0),
 	}
 	local inst: GuiObject = Source.secondary(
 		definition.Style,
@@ -133,7 +133,7 @@ function Interface.tertiary(): StyledFilledWrapper
 			return {}
 		end),
 		OptionConstructor = _Value(nil),
-		Elevation = _Value(nil),
+		Elevation = _Value(0),
 	}
 	local inst: GuiObject = Source.tertiary(
 		definition.Style,
@@ -165,7 +165,7 @@ function Interface.primaryContainer(): StyledFilledWrapper
 			return {}
 		end),
 		OptionConstructor = _Value(nil),
-		Elevation = _Value(nil),
+		Elevation = _Value(0),
 	}
 	local inst: GuiObject = Source.primaryContainer(
 		definition.Style,
@@ -197,7 +197,7 @@ function Interface.secondaryContainer(): StyledFilledWrapper
 			return {}
 		end),
 		OptionConstructor = _Value(nil),
-		Elevation = _Value(nil),
+		Elevation = _Value(0),
 	}
 	local inst: GuiObject = Source.secondaryContainer(
 		definition.Style,
@@ -229,7 +229,7 @@ function Interface.tertiaryContainer(): StyledFilledWrapper
 			return {}
 		end),
 		OptionConstructor = _Value(nil),
-		Elevation = _Value(nil),
+		Elevation = _Value(0),
 	}
 	local inst: GuiObject = Source.tertiaryContainer(
 		definition.Style,

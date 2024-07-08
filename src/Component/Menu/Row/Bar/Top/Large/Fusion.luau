@@ -38,7 +38,7 @@ function Interface.new(
 	navigation: FusionCanBeState<ButtonData?>,
 	backgroundColor: FusionCanBeState<Color3>,
 	textColor: FusionCanBeState<Color3>,
-	elevation: FusionCanBeState<number?>,
+	elevation: FusionCanBeState<number>,
 	schemeType: FusionCanBeState<Enums.SchemeType>,
 	titleFontData: FusionCanBeState<FontData>,
 	subHeadingFontData: FusionCanBeState<FontData>,

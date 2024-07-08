@@ -15,8 +15,8 @@
                 },
                 {
                     "name": "isEnabled",
-                    "type": "boolean?",
-                    "default": "nil"
+                    "type": "boolean",
+                    "default": "true"
                 },
                 {
                     "name": "fillColor",
@@ -56,7 +56,7 @@
                 {
                     "name": "isEnabled",
                     "type": "boolean?",
-                    "default": "nil"
+                    "default": "true"
                 }
             ]
         }

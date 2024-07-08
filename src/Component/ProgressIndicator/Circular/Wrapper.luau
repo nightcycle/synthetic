@@ -27,7 +27,7 @@ type Wrapper<BaseInstance, Definition, ClassName> = Translators.Wrapper<BaseInst
 
 export type CircularWrapperDefinition = {
 	Progress: number?,
-	IsEnabled: boolean?,
+	IsEnabled: boolean,
 	FillColor: Color3,
 	EmptyColor: Color3,
 	Scale: number,
@@ -54,7 +54,7 @@ function Interface.primary(): StyledCircularWrapper
 	local definition = {
 		Style = _Value(Style.new(1, Enum.Font.SourceSans, "Light", Color3.new(0, 0.4, 0.7))),
 		Progress = _Value(nil),
-		IsEnabled = _Value(nil),
+		IsEnabled = _Value(true),
 	}
 	local inst: GuiObject = Source.primary(definition.Style, definition.Progress, definition.IsEnabled)
 	maid:GiveTask(inst.Destroying:Connect(function()
@@ -72,7 +72,7 @@ function Interface.secondary(): StyledCircularWrapper
 	local definition = {
 		Style = _Value(Style.new(1, Enum.Font.SourceSans, "Light", Color3.new(0, 0.4, 0.7))),
 		Progress = _Value(nil),
-		IsEnabled = _Value(nil),
+		IsEnabled = _Value(true),
 	}
 	local inst: GuiObject = Source.secondary(definition.Style, definition.Progress, definition.IsEnabled)
 	maid:GiveTask(inst.Destroying:Connect(function()
@@ -90,7 +90,7 @@ function Interface.tertiary(): StyledCircularWrapper
 	local definition = {
 		Style = _Value(Style.new(1, Enum.Font.SourceSans, "Light", Color3.new(0, 0.4, 0.7))),
 		Progress = _Value(nil),
-		IsEnabled = _Value(nil),
+		IsEnabled = _Value(true),
 	}
 	local inst: GuiObject = Source.tertiary(definition.Style, definition.Progress, definition.IsEnabled)
 	maid:GiveTask(inst.Destroying:Connect(function()

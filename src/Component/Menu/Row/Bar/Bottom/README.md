@@ -98,7 +98,7 @@ This function is a style constructor, utilizing the "Style" type to reduce the n
 local style: Style = Style.new(1, Enum.Font.SourceSans, "Light", Color3.new(0, 0.4, 0.7))
 local buttons: {ButtonData} = {}
 local fab: ButtonData? = nil
-local elevation: number? = nil
+local elevation: number? = 0
 
 local bottom = Synthetic.Component.Menu.Row.Bar.Bottom.Fusion.primary()
 bottom.Style = style
@@ -112,7 +112,7 @@ bottom.Elevation = elevation
 local styleState: Fusion.Value<Style> = Value(Style.new(1, Enum.Font.SourceSans, "Light", Color3.new(0, 0.4, 0.7)))
 local buttons: {ButtonData} = {}
 local fabState: Fusion.Value<ButtonData?> = Value(nil)
-local elevation: number? = nil
+local elevation: number? = 0
 
 local bottom: GuiObject = Synthetic.Component.Menu.Row.Bar.Bottom.Fusion.primary(
 	styleState,

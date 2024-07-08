@@ -78,8 +78,8 @@ function newThemedComponent(
 			return txt
 		end),
 		_import(initialText, themeDefaults.INITIAL_TEXT),
-		_import(isEnabled, if themeDefaults.IS_ENABLED ~= nil then themeDefaults.IS_ENABLED else true),
-		_import(isError, if themeDefaults.IS_ERROR ~= nil then themeDefaults.IS_ERROR else true),
+		_import(isEnabled, themeDefaults.IS_ENABLED),
+		_import(isError, themeDefaults.IS_ERROR),
 		_import(label, themeDefaults.LABEL or ""),
 		_import(characterLimit, themeDefaults.CHARACTER_LIMIT),
 		_import(supportingText, themeDefaults.SUPPORTING_TEXT),
@@ -102,7 +102,7 @@ function newThemedComponent(
 		_Computed(function(s: Style): Color3
 			return s:GetColor(labelColor)
 		end, styleState),
-		_import(elevation, themeDefaults.ELEVATION or 0),
+		_import(elevation, themeDefaults.ELEVATION),
 		_Computed(function(s: Style): any
 			return s.SchemeType
 		end, styleState),

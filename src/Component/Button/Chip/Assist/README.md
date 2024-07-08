@@ -84,8 +84,8 @@ This function is a style constructor, utilizing the "Style" type to reduce the n
 - **onClick**: () -> ()
 - **text**: string
 - **icon**: ImageData?
-- **isEnabled**: boolean?
 - **elevation**: number?
+- **isEnabled**: boolean?
 
 
 ### Usage
@@ -96,16 +96,16 @@ local style: Style = Style.new(1, Enum.Font.SourceSans, "Light", Color3.new(0, 0
 local onClick: () -> () = function() end
 local text: string = "Chip"
 local icon: ImageData? = nil
-local isEnabled: boolean? = nil
-local elevation: number? = nil
+local elevation: number? = 0
+local isEnabled: boolean? = true
 
 local assist = Synthetic.Component.Button.Chip.Assist.Fusion.primary()
 assist.Style = style
 assist.OnClick = onClick
 assist.Text = text
 assist.Icon = icon
-assist.IsEnabled = isEnabled
 assist.Elevation = elevation
+assist.IsEnabled = isEnabled
 ```
 
 **Fusion**
@@ -114,15 +114,15 @@ local styleState: Fusion.Value<Style> = Value(Style.new(1, Enum.Font.SourceSans,
 local onClick: () -> () = function() end
 local textState: Fusion.Value<string> = Value("Chip")
 local icon: ImageData? = nil
-local isEnabledState: Fusion.Value<boolean?> = Value(nil)
-local elevation: number? = nil
+local elevationState: Fusion.Value<number?> = Value(0)
+local isEnabled: boolean? = true
 
 local assist: GuiObject = Synthetic.Component.Button.Chip.Assist.Fusion.primary(
 	styleState,
 	onClick,
 	textState,
 	icon,
-	isEnabledState,
-	elevation
+	elevationState,
+	isEnabled
 )
 ```
