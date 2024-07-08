@@ -203,7 +203,7 @@ local typography = Synthetic.Typography.fromFont(font)
 ```
 
 If you want something more custom, you'll have to define all of the font-data manually
-```
+```luau
 local typography = Synthetic.Typography.new({
 	DisplayLarge = Synthetic.Types.FontData.new(
 		Font.fromEnum(Enum.Font.Arial),
