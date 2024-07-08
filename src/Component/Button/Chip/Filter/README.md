@@ -28,19 +28,19 @@ This function is a native constructor, with verbosity allowing for control over 
 **Vanilla**
 ```luau
 local filter = Synthetic.Component.Button.Chip.Filter.Fusion.new()
-filter.OnClick = function(isSelected: boolean) end
-filter.IsInitiallySelected = false
-filter.Text = "Filter"
-filter.TextColor = Color3.new()
-filter.DisabledTextColor = Color3.new()
-filter.FillTextColor = Color3.new()
-filter.DisabledFillTextColor = Color3.new()
-filter.DisabledFillColor = Color3.new()
-filter.IsEnabled = true
-filter.Elevation = 0
-filter.SchemeType = Enums.SchemeType.Light
-filter.FontData = Types.FontData.new(Font.fromEnum(Enum.Font.SourceSans), 14)
-filter.Scale = 1
+filter.OnClick = function(isSelected: boolean) end :: (isSelected: boolean) -> ()
+filter.IsInitiallySelected = false :: boolean
+filter.Text = "Filter" :: string
+filter.TextColor = Color3.new() :: Color3
+filter.DisabledTextColor = Color3.new() :: Color3
+filter.FillTextColor = Color3.new() :: Color3
+filter.DisabledFillTextColor = Color3.new() :: Color3
+filter.DisabledFillColor = Color3.new() :: Color3
+filter.IsEnabled = true :: boolean
+filter.Elevation = 0 :: number
+filter.SchemeType = Enums.SchemeType.Light :: Enums.SchemeType
+filter.FontData = Types.FontData.new(Font.fromEnum(Enum.Font.SourceSans), 14) :: FontData
+filter.Scale = 1 :: number
 ```
 
 **Fusion**
@@ -92,12 +92,12 @@ This function is a style constructor, utilizing the "Style" type to reduce the n
 **Vanilla**
 ```luau
 local filter = Synthetic.Component.Button.Chip.Filter.Fusion.primary()
-filter.Style = Style.new(1, Enum.Font.SourceSans, "Light", Color3.new(0, 0.4, 0.7))
-filter.OnClick = function(isSelected: boolean) end
-filter.Text = "Filter"
-filter.IsInitiallySelected = false
-filter.IsEnabled = nil
-filter.Elevation = nil
+filter.Style = Style.new(1, Enum.Font.SourceSans, "Light", Color3.new(0, 0.4, 0.7)) :: Style
+filter.OnClick = function(isSelected: boolean) end :: (isSelected: boolean) -> ()
+filter.Text = "Filter" :: string
+filter.IsInitiallySelected = false :: boolean
+filter.IsEnabled = nil :: boolean?
+filter.Elevation = nil :: number?
 ```
 
 **Fusion**

@@ -24,15 +24,15 @@ This function is a native constructor, with verbosity allowing for control over 
 **Vanilla**
 ```luau
 local outlinedIconButton = Synthetic.Component.Button.OutlinedIconButton.Fusion.new()
-outlinedIconButton.OnClick = function() end
-outlinedIconButton.Icon = Types.ImageData.new("")
-outlinedIconButton.TextColor = Color3.new()
-outlinedIconButton.DisabledTextColor = Color3.new()
-outlinedIconButton.IsEnabled = true
-outlinedIconButton.Elevation = 0
-outlinedIconButton.SchemeType = Enums.SchemeType.Light
-outlinedIconButton.FontData = Types.FontData.new(Font.fromEnum(Enum.Font.SourceSans), 14)
-outlinedIconButton.Scale = 1
+outlinedIconButton.OnClick = function() end :: () -> ()
+outlinedIconButton.Icon = Types.ImageData.new("") :: ImageData
+outlinedIconButton.TextColor = Color3.new() :: Color3
+outlinedIconButton.DisabledTextColor = Color3.new() :: Color3
+outlinedIconButton.IsEnabled = true :: boolean
+outlinedIconButton.Elevation = 0 :: number
+outlinedIconButton.SchemeType = Enums.SchemeType.Light :: Enums.SchemeType
+outlinedIconButton.FontData = Types.FontData.new(Font.fromEnum(Enum.Font.SourceSans), 14) :: FontData
+outlinedIconButton.Scale = 1 :: number
 ```
 
 **Fusion**
@@ -75,11 +75,11 @@ This function is a style constructor, utilizing the "Style" type to reduce the n
 **Vanilla**
 ```luau
 local outlinedIconButton = Synthetic.Component.Button.OutlinedIconButton.Fusion.primary()
-outlinedIconButton.Style = Style.new(1, Enum.Font.SourceSans, "Light", Color3.new(0, 0.4, 0.7))
-outlinedIconButton.OnClick = function() end
-outlinedIconButton.Icon = Types.ImageData.new("")
-outlinedIconButton.Elevation = 0
-outlinedIconButton.IsEnabled = true
+outlinedIconButton.Style = Style.new(1, Enum.Font.SourceSans, "Light", Color3.new(0, 0.4, 0.7)) :: Style
+outlinedIconButton.OnClick = function() end :: () -> ()
+outlinedIconButton.Icon = Types.ImageData.new("") :: ImageData
+outlinedIconButton.Elevation = 0 :: number
+outlinedIconButton.IsEnabled = true :: boolean
 ```
 
 **Fusion**

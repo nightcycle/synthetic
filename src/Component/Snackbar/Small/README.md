@@ -26,17 +26,17 @@ This function is a native constructor, with verbosity allowing for control over 
 **Vanilla**
 ```luau
 local small = Synthetic.Component.Snackbar.Small.Fusion.new()
-small.Text = ""
-small.ButtonText = nil
-small.OnButtonClick = nil
-small.OnCloseClick = nil
-small.TextColor = Color3.new()
-small.ButtonTextColor = Color3.new()
-small.BackgroundColor = Color3.new()
-small.Elevation = 0
-small.SchemeType = Enums.SchemeType.Light
-small.FontData = Types.FontData.new(Font.fromEnum(Enum.Font.SourceSans), 14)
-small.Scale = 1
+small.Text = "" :: string
+small.ButtonText = nil :: string?
+small.OnButtonClick = nil :: ((() -> ())?)
+small.OnCloseClick = nil :: ((() -> ())?)
+small.TextColor = Color3.new() :: Color3
+small.ButtonTextColor = Color3.new() :: Color3
+small.BackgroundColor = Color3.new() :: Color3
+small.Elevation = 0 :: number
+small.SchemeType = Enums.SchemeType.Light :: Enums.SchemeType
+small.FontData = Types.FontData.new(Font.fromEnum(Enum.Font.SourceSans), 14) :: FontData
+small.Scale = 1 :: number
 ```
 
 **Fusion**
@@ -84,12 +84,12 @@ This function is a style constructor, utilizing the "Style" type to reduce the n
 **Vanilla**
 ```luau
 local small = Synthetic.Component.Snackbar.Small.Fusion.surfaceContainer()
-small.Style = Style.new(1, Enum.Font.SourceSans, "Light", Color3.new(0, 0.4, 0.7))
-small.Text = ""
-small.ButtonText = nil
-small.OnButtonClick = nil
-small.OnCloseClick = nil
-small.Elevation = nil
+small.Style = Style.new(1, Enum.Font.SourceSans, "Light", Color3.new(0, 0.4, 0.7)) :: Style
+small.Text = "" :: string
+small.ButtonText = nil :: string?
+small.OnButtonClick = nil :: ((() -> ())?)
+small.OnCloseClick = nil :: ((() -> ())?)
+small.Elevation = nil :: number?
 ```
 
 **Fusion**

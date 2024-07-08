@@ -26,17 +26,17 @@ This function is a native constructor, with verbosity allowing for control over 
 **Vanilla**
 ```luau
 local checkbox = Synthetic.Component.Checkbox.Fusion.new()
-checkbox.OnSelect = function(isSelected: boolean?) end
-checkbox.InitialSelection = false
-checkbox.IsEnabled = true
-checkbox.OutlineColor = Color3.new()
-checkbox.FillColor = Color3.new()
-checkbox.IconColor = Color3.new()
-checkbox.DisabledColor = Color3.new()
-checkbox.Elevation = 0
-checkbox.SchemeType = Enums.SchemeType.Light
-checkbox.FontData = Types.FontData.new(Font.fromEnum(Enum.Font.SourceSans), 14)
-checkbox.Scale = 1
+checkbox.OnSelect = function(isSelected: boolean?) end :: (isSelected: boolean?) -> ()
+checkbox.InitialSelection = false :: boolean
+checkbox.IsEnabled = true :: boolean
+checkbox.OutlineColor = Color3.new() :: Color3
+checkbox.FillColor = Color3.new() :: Color3
+checkbox.IconColor = Color3.new() :: Color3
+checkbox.DisabledColor = Color3.new() :: Color3
+checkbox.Elevation = 0 :: number
+checkbox.SchemeType = Enums.SchemeType.Light :: Enums.SchemeType
+checkbox.FontData = Types.FontData.new(Font.fromEnum(Enum.Font.SourceSans), 14) :: FontData
+checkbox.Scale = 1 :: number
 ```
 
 **Fusion**
@@ -83,11 +83,11 @@ This function is a style constructor, utilizing the "Style" type to reduce the n
 **Vanilla**
 ```luau
 local checkbox = Synthetic.Component.Checkbox.Fusion.primary()
-checkbox.Style = Style.new(1, Enum.Font.SourceSans, "Light", Color3.new(0, 0.4, 0.7))
-checkbox.OnSelect = function(isSelected: boolean?) end
-checkbox.InitialSelection = false
-checkbox.Elevation = nil
-checkbox.IsEnabled = nil
+checkbox.Style = Style.new(1, Enum.Font.SourceSans, "Light", Color3.new(0, 0.4, 0.7)) :: Style
+checkbox.OnSelect = function(isSelected: boolean?) end :: (isSelected: boolean?) -> ()
+checkbox.InitialSelection = false :: boolean
+checkbox.Elevation = nil :: number?
+checkbox.IsEnabled = nil :: boolean?
 ```
 
 **Fusion**

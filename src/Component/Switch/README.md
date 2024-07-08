@@ -31,22 +31,22 @@ This function is a native constructor, with verbosity allowing for control over 
 **Vanilla**
 ```luau
 local switch = Synthetic.Component.Switch.Fusion.new()
-switch.OnSelect = function(isSelected: boolean) end
-switch.InitialSelection = false
-switch.IsEnabled = true
-switch.IncludeIconOnSelected = true
-switch.IncludeIconOnDeselected = true
-switch.BackgroundColor = Color3.new()
-switch.OnBackgroundColor = Color3.new()
-switch.FillColor = Color3.new()
-switch.ButtonColor = Color3.new()
-switch.OnButtonColor = Color3.new()
-switch.DisabledColor = Color3.new()
-switch.OnDisabledColor = Color3.new()
-switch.Elevation = 0
-switch.SchemeType = Enums.SchemeType.Light
-switch.FontData = Types.FontData.new(Font.fromEnum(Enum.Font.SourceSans), 14)
-switch.Scale = 1
+switch.OnSelect = function(isSelected: boolean) end :: (isSelected: boolean) -> ()
+switch.InitialSelection = false :: boolean
+switch.IsEnabled = true :: boolean
+switch.IncludeIconOnSelected = true :: boolean
+switch.IncludeIconOnDeselected = true :: boolean
+switch.BackgroundColor = Color3.new() :: Color3
+switch.OnBackgroundColor = Color3.new() :: Color3
+switch.FillColor = Color3.new() :: Color3
+switch.ButtonColor = Color3.new() :: Color3
+switch.OnButtonColor = Color3.new() :: Color3
+switch.DisabledColor = Color3.new() :: Color3
+switch.OnDisabledColor = Color3.new() :: Color3
+switch.Elevation = 0 :: number
+switch.SchemeType = Enums.SchemeType.Light :: Enums.SchemeType
+switch.FontData = Types.FontData.new(Font.fromEnum(Enum.Font.SourceSans), 14) :: FontData
+switch.Scale = 1 :: number
 ```
 
 **Fusion**
@@ -105,13 +105,13 @@ This function is a style constructor, utilizing the "Style" type to reduce the n
 **Vanilla**
 ```luau
 local switch = Synthetic.Component.Switch.Fusion.primary()
-switch.Style = Style.new(1, Enum.Font.SourceSans, "Light", Color3.new(0, 0.4, 0.7))
-switch.OnSelect = function(isSelected: boolean) end
-switch.InitialSelection = false
-switch.IncludeIconOnSelected = nil
-switch.IncludeIconOnDeselected = nil
-switch.Elevation = nil
-switch.IsEnabled = nil
+switch.Style = Style.new(1, Enum.Font.SourceSans, "Light", Color3.new(0, 0.4, 0.7)) :: Style
+switch.OnSelect = function(isSelected: boolean) end :: (isSelected: boolean) -> ()
+switch.InitialSelection = false :: boolean
+switch.IncludeIconOnSelected = nil :: boolean?
+switch.IncludeIconOnDeselected = nil :: boolean?
+switch.Elevation = nil :: number?
+switch.IsEnabled = nil :: boolean?
 ```
 
 **Fusion**

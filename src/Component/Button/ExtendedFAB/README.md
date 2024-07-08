@@ -28,19 +28,19 @@ This function is a native constructor, with verbosity allowing for control over 
 **Vanilla**
 ```luau
 local extendedFAB = Synthetic.Component.Button.ExtendedFAB.Fusion.new()
-extendedFAB.OnClick = function() end
-extendedFAB.Text = "Button"
-extendedFAB.Icon = Types.ImageData.new("")
-extendedFAB.TextColor = Color3.new()
-extendedFAB.SurfaceColor = Color3.new()
-extendedFAB.DisabledTextColor = Color3.new()
-extendedFAB.DisabledSurfaceColor = Color3.new()
-extendedFAB.ShadowColor = Color3.new()
-extendedFAB.IsEnabled = true
-extendedFAB.Elevation = 0
-extendedFAB.SchemeType = Enums.SchemeType.Light
-extendedFAB.FontData = Types.FontData.new(Font.fromEnum(Enum.Font.SourceSans), 14)
-extendedFAB.Scale = 1
+extendedFAB.OnClick = function() end :: () -> ()
+extendedFAB.Text = "Button" :: string
+extendedFAB.Icon = Types.ImageData.new("") :: ImageData
+extendedFAB.TextColor = Color3.new() :: Color3
+extendedFAB.SurfaceColor = Color3.new() :: Color3
+extendedFAB.DisabledTextColor = Color3.new() :: Color3
+extendedFAB.DisabledSurfaceColor = Color3.new() :: Color3
+extendedFAB.ShadowColor = Color3.new() :: Color3
+extendedFAB.IsEnabled = true :: boolean
+extendedFAB.Elevation = 0 :: number
+extendedFAB.SchemeType = Enums.SchemeType.Light :: Enums.SchemeType
+extendedFAB.FontData = Types.FontData.new(Font.fromEnum(Enum.Font.SourceSans), 14) :: FontData
+extendedFAB.Scale = 1 :: number
 ```
 
 **Fusion**
@@ -92,12 +92,12 @@ This function is a style constructor, utilizing the "Style" type to reduce the n
 **Vanilla**
 ```luau
 local extendedFAB = Synthetic.Component.Button.ExtendedFAB.Fusion.primary()
-extendedFAB.Style = Style.new(1, Enum.Font.SourceSans, "Light", Color3.new(0, 0.4, 0.7))
-extendedFAB.OnClick = function() end
-extendedFAB.Text = "Button"
-extendedFAB.Icon = Types.ImageData.new("")
-extendedFAB.Elevation = 0
-extendedFAB.IsEnabled = true
+extendedFAB.Style = Style.new(1, Enum.Font.SourceSans, "Light", Color3.new(0, 0.4, 0.7)) :: Style
+extendedFAB.OnClick = function() end :: () -> ()
+extendedFAB.Text = "Button" :: string
+extendedFAB.Icon = Types.ImageData.new("") :: ImageData
+extendedFAB.Elevation = 0 :: number
+extendedFAB.IsEnabled = true :: boolean
 ```
 
 **Fusion**

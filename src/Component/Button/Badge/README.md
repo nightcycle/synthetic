@@ -27,18 +27,18 @@ This function is a native constructor, with verbosity allowing for control over 
 **Vanilla**
 ```luau
 local badge = Synthetic.Component.Button.Badge.Fusion.new()
-badge.OnClick = function() end
-badge.Icon = Types.ImageData.new("")
-badge.Label = nil
-badge.Count = nil
-badge.TextColor = Color3.new()
-badge.HoverColor = Color3.new()
-badge.ErrorTextColor = Color3.new()
-badge.ErrorBackgroundColor = Color3.new()
-badge.Elevation = 0
-badge.SchemeType = Enums.SchemeType.Light
-badge.FontData = Types.FontData.new(Font.fromEnum(Enum.Font.SourceSans), 14)
-badge.Scale = 1
+badge.OnClick = function() end :: () -> ()
+badge.Icon = Types.ImageData.new("") :: ImageData
+badge.Label = nil :: string?
+badge.Count = nil :: number?
+badge.TextColor = Color3.new() :: Color3
+badge.HoverColor = Color3.new() :: Color3
+badge.ErrorTextColor = Color3.new() :: Color3
+badge.ErrorBackgroundColor = Color3.new() :: Color3
+badge.Elevation = 0 :: number
+badge.SchemeType = Enums.SchemeType.Light :: Enums.SchemeType
+badge.FontData = Types.FontData.new(Font.fromEnum(Enum.Font.SourceSans), 14) :: FontData
+badge.Scale = 1 :: number
 ```
 
 **Fusion**
@@ -88,12 +88,12 @@ This function is a style constructor, utilizing the "Style" type to reduce the n
 **Vanilla**
 ```luau
 local badge = Synthetic.Component.Button.Badge.Fusion.onPrimary()
-badge.Style = Style.new(1, Enum.Font.SourceSans, "Light", Color3.new(0, 0.4, 0.7))
-badge.OnClick = function() end
-badge.Icon = Types.ImageData.new("")
-badge.Label = nil
-badge.Count = nil
-badge.Elevation = nil
+badge.Style = Style.new(1, Enum.Font.SourceSans, "Light", Color3.new(0, 0.4, 0.7)) :: Style
+badge.OnClick = function() end :: () -> ()
+badge.Icon = Types.ImageData.new("") :: ImageData
+badge.Label = nil :: string?
+badge.Count = nil :: number?
+badge.Elevation = nil :: number?
 ```
 
 **Fusion**

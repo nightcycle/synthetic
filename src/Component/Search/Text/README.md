@@ -27,18 +27,18 @@ This function is a native constructor, with verbosity allowing for control over 
 local text = Synthetic.Component.Search.Text.Fusion.new()
 text.OnInputEntered = function(input: string)
 return input
-end
-text.Label = nil
+end :: (input: string) -> string
+text.Label = nil :: string?
 text.OptionSolver = function(input: string)
 return {}
-end
-text.OptionConstructor = nil
-text.TextColor = Color3.new()
-text.BackgroundColor = Color3.new()
-text.Elevation = 0
-text.SchemeType = Enums.SchemeType.Light
-text.FontData = Types.FontData.new(Font.fromEnum(Enum.Font.SourceSans), 14)
-text.Scale = 1
+end :: (input: string) -> { string }
+text.OptionConstructor = nil :: (((key: string, onClick: (key: string) -> ()) -> GuiObject)?)
+text.TextColor = Color3.new() :: Color3
+text.BackgroundColor = Color3.new() :: Color3
+text.Elevation = 0 :: number
+text.SchemeType = Enums.SchemeType.Light :: Enums.SchemeType
+text.FontData = Types.FontData.new(Font.fromEnum(Enum.Font.SourceSans), 14) :: FontData
+text.Scale = 1 :: number
 ```
 
 **Fusion**
@@ -88,16 +88,16 @@ This function is a style constructor, utilizing the "Style" type to reduce the n
 **Vanilla**
 ```luau
 local text = Synthetic.Component.Search.Text.Fusion.onPrimary()
-text.Style = Style.new(1, Enum.Font.SourceSans, "Light", Color3.new(0, 0.4, 0.7))
+text.Style = Style.new(1, Enum.Font.SourceSans, "Light", Color3.new(0, 0.4, 0.7)) :: Style
 text.OnInputEntered = function(input: string)
 return input
-end
-text.Label = nil
+end :: (input: string) -> string
+text.Label = nil :: string?
 text.OptionSolver = function(input: string)
 return {}
-end
-text.OptionConstructor = nil
-text.Elevation = nil
+end :: (input: string) -> { string }
+text.OptionConstructor = nil :: (((key: string, onClick: (key: string) -> ()) -> GuiObject)?)
+text.Elevation = nil :: number?
 ```
 
 **Fusion**

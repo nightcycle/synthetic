@@ -336,7 +336,7 @@ type CanBeState<V> = ColdFusion.CanBeState<V>"""
 
 			]
 			for param in func['parameters']:
-				vanilla_lines.append(f'{pascal_to_camel(self.name)}.{camel_to_pascal(param["name"])} = {param["default"]}')
+				vanilla_lines.append(f'{pascal_to_camel(self.name)}.{camel_to_pascal(param["name"])} = {param["default"]} :: {param["type"]}')
 
 			vanilla_lines += [
 				'```',

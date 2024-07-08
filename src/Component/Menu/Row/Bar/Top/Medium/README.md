@@ -26,17 +26,17 @@ This function is a native constructor, with verbosity allowing for control over 
 **Vanilla**
 ```luau
 local medium = Synthetic.Component.Menu.Row.Bar.Top.Medium.Fusion.new()
-medium.Title = "Title"
-medium.Buttons = {}
-medium.Navigation = nil
-medium.BackgroundColor = Color3.new()
-medium.TextColor = Color3.new()
-medium.Elevation = nil
-medium.SchemeType = Enums.SchemeType.Light
-medium.TitleFontData = Types.FontData.new(Font.fromEnum(Enum.Font.SourceSans), 14)
-medium.SubHeadingFontData = Types.FontData.new(Font.fromEnum(Enum.Font.SourceSans), 14)
-medium.ButtonFontData = Types.FontData.new(Font.fromEnum(Enum.Font.SourceSans), 14)
-medium.Scale = 1
+medium.Title = "Title" :: string
+medium.Buttons = {} :: {ButtonData}
+medium.Navigation = nil :: ButtonData?
+medium.BackgroundColor = Color3.new() :: Color3
+medium.TextColor = Color3.new() :: Color3
+medium.Elevation = nil :: number?
+medium.SchemeType = Enums.SchemeType.Light :: Enums.SchemeType
+medium.TitleFontData = Types.FontData.new(Font.fromEnum(Enum.Font.SourceSans), 14) :: FontData
+medium.SubHeadingFontData = Types.FontData.new(Font.fromEnum(Enum.Font.SourceSans), 14) :: FontData
+medium.ButtonFontData = Types.FontData.new(Font.fromEnum(Enum.Font.SourceSans), 14) :: FontData
+medium.Scale = 1 :: number
 ```
 
 **Fusion**
@@ -83,11 +83,11 @@ This function is a style constructor, utilizing the "Style" type to reduce the n
 **Vanilla**
 ```luau
 local medium = Synthetic.Component.Menu.Row.Bar.Top.Medium.Fusion.primary()
-medium.Style = Style.new(1, Enum.Font.SourceSans, "Light", Color3.new(0, 0.4, 0.7))
-medium.Title = "Title"
-medium.Buttons = {}
-medium.Navigation = nil
-medium.Elevation = nil
+medium.Style = Style.new(1, Enum.Font.SourceSans, "Light", Color3.new(0, 0.4, 0.7)) :: Style
+medium.Title = "Title" :: string
+medium.Buttons = {} :: {ButtonData}
+medium.Navigation = nil :: ButtonData?
+medium.Elevation = nil :: number?
 ```
 
 **Fusion**

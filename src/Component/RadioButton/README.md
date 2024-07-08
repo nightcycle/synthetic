@@ -26,17 +26,17 @@ This function is a native constructor, with verbosity allowing for control over 
 **Vanilla**
 ```luau
 local radioButton = Synthetic.Component.RadioButton.Fusion.new()
-radioButton.OnSelect = function(isSelected: boolean) end
-radioButton.InitialSelection = false
-radioButton.IsEnabled = true
-radioButton.OutlineColor = Color3.new()
-radioButton.FillColor = Color3.new()
-radioButton.IconColor = Color3.new()
-radioButton.DisabledColor = Color3.new()
-radioButton.Elevation = 0
-radioButton.SchemeType = Enums.SchemeType.Light
-radioButton.FontData = Types.FontData.new(Font.fromEnum(Enum.Font.SourceSans), 14)
-radioButton.Scale = 1
+radioButton.OnSelect = function(isSelected: boolean) end :: (isSelected: boolean) -> ()
+radioButton.InitialSelection = false :: boolean
+radioButton.IsEnabled = true :: boolean
+radioButton.OutlineColor = Color3.new() :: Color3
+radioButton.FillColor = Color3.new() :: Color3
+radioButton.IconColor = Color3.new() :: Color3
+radioButton.DisabledColor = Color3.new() :: Color3
+radioButton.Elevation = 0 :: number
+radioButton.SchemeType = Enums.SchemeType.Light :: Enums.SchemeType
+radioButton.FontData = Types.FontData.new(Font.fromEnum(Enum.Font.SourceSans), 14) :: FontData
+radioButton.Scale = 1 :: number
 ```
 
 **Fusion**
@@ -83,11 +83,11 @@ This function is a style constructor, utilizing the "Style" type to reduce the n
 **Vanilla**
 ```luau
 local radioButton = Synthetic.Component.RadioButton.Fusion.primary()
-radioButton.Style = Style.new(1, Enum.Font.SourceSans, "Light", Color3.new(0, 0.4, 0.7))
-radioButton.OnSelect = function(isSelected: boolean) end
-radioButton.InitialSelection = false
-radioButton.Elevation = nil
-radioButton.IsEnabled = nil
+radioButton.Style = Style.new(1, Enum.Font.SourceSans, "Light", Color3.new(0, 0.4, 0.7)) :: Style
+radioButton.OnSelect = function(isSelected: boolean) end :: (isSelected: boolean) -> ()
+radioButton.InitialSelection = false :: boolean
+radioButton.Elevation = nil :: number?
+radioButton.IsEnabled = nil :: boolean?
 ```
 
 **Fusion**

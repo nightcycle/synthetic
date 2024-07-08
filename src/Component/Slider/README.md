@@ -30,21 +30,21 @@ This function is a native constructor, with verbosity allowing for control over 
 **Vanilla**
 ```luau
 local slider = Synthetic.Component.Slider.Fusion.new()
-slider.OnChange = function(onChange: number) end
-slider.InitialValue = 50
-slider.Minimum = nil
-slider.Maximum = nil
-slider.Increment = nil
-slider.LeftTextOrIcon = 
-slider.RightTextOrIcon = 
-slider.OnBackgroundColor = Color3.new()
-slider.OnBackgroundTextColor = Color3.new()
-slider.FillColor = Color3.new()
-slider.FillContainerColor = Color3.new()
-slider.Elevation = 0
-slider.SchemeType = Enums.SchemeType.Light
-slider.FontData = Types.FontData.new(Font.fromEnum(Enum.Font.SourceSans), 14)
-slider.Scale = 1
+slider.OnChange = function(onChange: number) end :: (onChange: number) -> ()
+slider.InitialValue = 50 :: number
+slider.Minimum = nil :: number?
+slider.Maximum = nil :: number?
+slider.Increment = nil :: number?
+slider.LeftTextOrIcon =  :: string | ImageData | nil
+slider.RightTextOrIcon =  :: string | ImageData | nil
+slider.OnBackgroundColor = Color3.new() :: Color3
+slider.OnBackgroundTextColor = Color3.new() :: Color3
+slider.FillColor = Color3.new() :: Color3
+slider.FillContainerColor = Color3.new() :: Color3
+slider.Elevation = 0 :: number
+slider.SchemeType = Enums.SchemeType.Light :: Enums.SchemeType
+slider.FontData = Types.FontData.new(Font.fromEnum(Enum.Font.SourceSans), 14) :: FontData
+slider.Scale = 1 :: number
 ```
 
 **Fusion**
@@ -103,15 +103,15 @@ This function is a style constructor, utilizing the "Style" type to reduce the n
 **Vanilla**
 ```luau
 local slider = Synthetic.Component.Slider.Fusion.primary()
-slider.Style = Style.new(1, Enum.Font.SourceSans, "Light", Color3.new(0, 0.4, 0.7))
-slider.OnChange = function(onChange: number) end
-slider.InitialValue = 50
-slider.Minimum = nil
-slider.Maximum = nil
-slider.Increment = nil
-slider.LeftTextOrIcon = nil
-slider.RightTextOrIcon = nil
-slider.Elevation = 0
+slider.Style = Style.new(1, Enum.Font.SourceSans, "Light", Color3.new(0, 0.4, 0.7)) :: Style
+slider.OnChange = function(onChange: number) end :: (onChange: number) -> ()
+slider.InitialValue = 50 :: number
+slider.Minimum = nil :: number?
+slider.Maximum = nil :: number?
+slider.Increment = nil :: number?
+slider.LeftTextOrIcon = nil :: string | ImageData | nil
+slider.RightTextOrIcon = nil :: string | ImageData | nil
+slider.Elevation = 0 :: number
 ```
 
 **Fusion**

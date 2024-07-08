@@ -25,16 +25,16 @@ This function is a native constructor, with verbosity allowing for control over 
 **Vanilla**
 ```luau
 local outlinedButton = Synthetic.Component.Button.OutlinedButton.Fusion.new()
-outlinedButton.OnClick = function() end
-outlinedButton.Text = "Button"
-outlinedButton.Icon = nil
-outlinedButton.TextColor = Color3.new()
-outlinedButton.DisabledTextColor = Color3.new()
-outlinedButton.IsEnabled = true
-outlinedButton.Elevation = 0
-outlinedButton.SchemeType = Enums.SchemeType.Light
-outlinedButton.FontData = Types.FontData.new(Font.fromEnum(Enum.Font.SourceSans), 14)
-outlinedButton.Scale = 1
+outlinedButton.OnClick = function() end :: () -> ()
+outlinedButton.Text = "Button" :: string
+outlinedButton.Icon = nil :: ImageData?
+outlinedButton.TextColor = Color3.new() :: Color3
+outlinedButton.DisabledTextColor = Color3.new() :: Color3
+outlinedButton.IsEnabled = true :: boolean
+outlinedButton.Elevation = 0 :: number
+outlinedButton.SchemeType = Enums.SchemeType.Light :: Enums.SchemeType
+outlinedButton.FontData = Types.FontData.new(Font.fromEnum(Enum.Font.SourceSans), 14) :: FontData
+outlinedButton.Scale = 1 :: number
 ```
 
 **Fusion**
@@ -80,12 +80,12 @@ This function is a style constructor, utilizing the "Style" type to reduce the n
 **Vanilla**
 ```luau
 local outlinedButton = Synthetic.Component.Button.OutlinedButton.Fusion.primary()
-outlinedButton.Style = Style.new(1, Enum.Font.SourceSans, "Light", Color3.new(0, 0.4, 0.7))
-outlinedButton.OnClick = function() end
-outlinedButton.Text = "Button"
-outlinedButton.Icon = nil
-outlinedButton.Elevation = 0
-outlinedButton.IsEnabled = true
+outlinedButton.Style = Style.new(1, Enum.Font.SourceSans, "Light", Color3.new(0, 0.4, 0.7)) :: Style
+outlinedButton.OnClick = function() end :: () -> ()
+outlinedButton.Text = "Button" :: string
+outlinedButton.Icon = nil :: ImageData?
+outlinedButton.Elevation = 0 :: number
+outlinedButton.IsEnabled = true :: boolean
 ```
 
 **Fusion**

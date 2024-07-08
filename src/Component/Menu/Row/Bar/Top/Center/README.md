@@ -26,17 +26,17 @@ This function is a native constructor, with verbosity allowing for control over 
 **Vanilla**
 ```luau
 local center = Synthetic.Component.Menu.Row.Bar.Top.Center.Fusion.new()
-center.Title = "Title"
-center.Buttons = {}
-center.Navigation = nil
-center.BackgroundColor = Color3.new()
-center.TextColor = Color3.new()
-center.Elevation = nil
-center.SchemeType = Enums.SchemeType.Light
-center.TitleFontData = Types.FontData.new(Font.fromEnum(Enum.Font.SourceSans), 14)
-center.SubHeadingFontData = Types.FontData.new(Font.fromEnum(Enum.Font.SourceSans), 14)
-center.ButtonFontData = Types.FontData.new(Font.fromEnum(Enum.Font.SourceSans), 14)
-center.Scale = 1
+center.Title = "Title" :: string
+center.Buttons = {} :: {ButtonData}
+center.Navigation = nil :: ButtonData?
+center.BackgroundColor = Color3.new() :: Color3
+center.TextColor = Color3.new() :: Color3
+center.Elevation = nil :: number?
+center.SchemeType = Enums.SchemeType.Light :: Enums.SchemeType
+center.TitleFontData = Types.FontData.new(Font.fromEnum(Enum.Font.SourceSans), 14) :: FontData
+center.SubHeadingFontData = Types.FontData.new(Font.fromEnum(Enum.Font.SourceSans), 14) :: FontData
+center.ButtonFontData = Types.FontData.new(Font.fromEnum(Enum.Font.SourceSans), 14) :: FontData
+center.Scale = 1 :: number
 ```
 
 **Fusion**
@@ -83,11 +83,11 @@ This function is a style constructor, utilizing the "Style" type to reduce the n
 **Vanilla**
 ```luau
 local center = Synthetic.Component.Menu.Row.Bar.Top.Center.Fusion.primary()
-center.Style = Style.new(1, Enum.Font.SourceSans, "Light", Color3.new(0, 0.4, 0.7))
-center.Title = "Title"
-center.Buttons = {}
-center.Navigation = nil
-center.Elevation = nil
+center.Style = Style.new(1, Enum.Font.SourceSans, "Light", Color3.new(0, 0.4, 0.7)) :: Style
+center.Title = "Title" :: string
+center.Buttons = {} :: {ButtonData}
+center.Navigation = nil :: ButtonData?
+center.Elevation = nil :: number?
 ```
 
 **Fusion**

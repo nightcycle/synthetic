@@ -24,15 +24,15 @@ This function is a native constructor, with verbosity allowing for control over 
 **Vanilla**
 ```luau
 local iconButton = Synthetic.Component.Button.IconButton.Fusion.new()
-iconButton.OnClick = function() end
-iconButton.Icon = Types.ImageData.new("")
-iconButton.TextColor = Color3.new()
-iconButton.DisabledTextColor = Color3.new()
-iconButton.IsEnabled = true
-iconButton.Elevation = 0
-iconButton.SchemeType = Enums.SchemeType.Light
-iconButton.FontData = Types.FontData.new(Font.fromEnum(Enum.Font.SourceSans), 14)
-iconButton.Scale = 1
+iconButton.OnClick = function() end :: () -> ()
+iconButton.Icon = Types.ImageData.new("") :: ImageData
+iconButton.TextColor = Color3.new() :: Color3
+iconButton.DisabledTextColor = Color3.new() :: Color3
+iconButton.IsEnabled = true :: boolean
+iconButton.Elevation = 0 :: number
+iconButton.SchemeType = Enums.SchemeType.Light :: Enums.SchemeType
+iconButton.FontData = Types.FontData.new(Font.fromEnum(Enum.Font.SourceSans), 14) :: FontData
+iconButton.Scale = 1 :: number
 ```
 
 **Fusion**
@@ -75,11 +75,11 @@ This function is a style constructor, utilizing the "Style" type to reduce the n
 **Vanilla**
 ```luau
 local iconButton = Synthetic.Component.Button.IconButton.Fusion.primary()
-iconButton.Style = Style.new(1, Enum.Font.SourceSans, "Light", Color3.new(0, 0.4, 0.7))
-iconButton.OnClick = function() end
-iconButton.Icon = Types.ImageData.new("")
-iconButton.Elevation = 0
-iconButton.IsEnabled = true
+iconButton.Style = Style.new(1, Enum.Font.SourceSans, "Light", Color3.new(0, 0.4, 0.7)) :: Style
+iconButton.OnClick = function() end :: () -> ()
+iconButton.Icon = Types.ImageData.new("") :: ImageData
+iconButton.Elevation = 0 :: number
+iconButton.IsEnabled = true :: boolean
 ```
 
 **Fusion**

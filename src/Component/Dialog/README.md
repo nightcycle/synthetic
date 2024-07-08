@@ -30,21 +30,21 @@ This function is a native constructor, with verbosity allowing for control over 
 **Vanilla**
 ```luau
 local dialog = Synthetic.Component.Dialog.Fusion.new()
-dialog.Buttons = {}
-dialog.Icon = nil
-dialog.Headline = nil
-dialog.Description = nil
-dialog.SurfaceColor = Color3.new()
-dialog.ButtonTextColor = Color3.new()
-dialog.DisabledTextColor = Color3.new()
-dialog.HeadlineColor = Color3.new()
-dialog.DescriptionColor = Color3.new()
-dialog.ScrimColor = Color3.new()
-dialog.SchemeType = Enums.SchemeType.Light
-dialog.HeadlineFontData = Types.FontData.new(Font.fromEnum(Enum.Font.SourceSans), 14)
-dialog.BodyFontData = Types.FontData.new(Font.fromEnum(Enum.Font.SourceSans), 14)
-dialog.ButtonFontData = Types.FontData.new(Font.fromEnum(Enum.Font.SourceSans), 14)
-dialog.Scale = 1
+dialog.Buttons = {} :: { ButtonData }
+dialog.Icon = nil :: ImageData?
+dialog.Headline = nil :: string?
+dialog.Description = nil :: string?
+dialog.SurfaceColor = Color3.new() :: Color3
+dialog.ButtonTextColor = Color3.new() :: Color3
+dialog.DisabledTextColor = Color3.new() :: Color3
+dialog.HeadlineColor = Color3.new() :: Color3
+dialog.DescriptionColor = Color3.new() :: Color3
+dialog.ScrimColor = Color3.new() :: Color3
+dialog.SchemeType = Enums.SchemeType.Light :: Enums.SchemeType
+dialog.HeadlineFontData = Types.FontData.new(Font.fromEnum(Enum.Font.SourceSans), 14) :: FontData
+dialog.BodyFontData = Types.FontData.new(Font.fromEnum(Enum.Font.SourceSans), 14) :: FontData
+dialog.ButtonFontData = Types.FontData.new(Font.fromEnum(Enum.Font.SourceSans), 14) :: FontData
+dialog.Scale = 1 :: number
 ```
 
 **Fusion**
@@ -99,11 +99,11 @@ This function is a style constructor, utilizing the "Style" type to reduce the n
 **Vanilla**
 ```luau
 local dialog = Synthetic.Component.Dialog.Fusion.primary()
-dialog.Style = Style.new(1, Enum.Font.SourceSans, "Light", Color3.new(0, 0.4, 0.7))
-dialog.Buttons = {}
-dialog.Icon = nil
-dialog.Headline = nil
-dialog.Description = nil
+dialog.Style = Style.new(1, Enum.Font.SourceSans, "Light", Color3.new(0, 0.4, 0.7)) :: Style
+dialog.Buttons = {} :: { ButtonData }
+dialog.Icon = nil :: ImageData?
+dialog.Headline = nil :: string?
+dialog.Description = nil :: string?
 ```
 
 **Fusion**

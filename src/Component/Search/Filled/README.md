@@ -27,18 +27,18 @@ This function is a native constructor, with verbosity allowing for control over 
 local filled = Synthetic.Component.Search.Filled.Fusion.new()
 filled.OnInputEntered = function(input: string)
 return input
-end
-filled.Label = nil
+end :: (input: string) -> string
+filled.Label = nil :: string?
 filled.OptionSolver = function(input: string)
 return {}
-end
-filled.OptionConstructor = nil
-filled.TextColor = Color3.new()
-filled.BackgroundColor = Color3.new()
-filled.Elevation = 0
-filled.SchemeType = Enums.SchemeType.Light
-filled.FontData = Types.FontData.new(Font.fromEnum(Enum.Font.SourceSans), 14)
-filled.Scale = 1
+end :: (input: string) -> { string }
+filled.OptionConstructor = nil :: (((key: string, onClick: (key: string) -> ()) -> GuiObject)?)
+filled.TextColor = Color3.new() :: Color3
+filled.BackgroundColor = Color3.new() :: Color3
+filled.Elevation = 0 :: number
+filled.SchemeType = Enums.SchemeType.Light :: Enums.SchemeType
+filled.FontData = Types.FontData.new(Font.fromEnum(Enum.Font.SourceSans), 14) :: FontData
+filled.Scale = 1 :: number
 ```
 
 **Fusion**
@@ -88,16 +88,16 @@ This function is a style constructor, utilizing the "Style" type to reduce the n
 **Vanilla**
 ```luau
 local filled = Synthetic.Component.Search.Filled.Fusion.primary()
-filled.Style = Style.new(1, Enum.Font.SourceSans, "Light", Color3.new(0, 0.4, 0.7))
+filled.Style = Style.new(1, Enum.Font.SourceSans, "Light", Color3.new(0, 0.4, 0.7)) :: Style
 filled.OnInputEntered = function(input: string)
 return input
-end
-filled.Label = nil
+end :: (input: string) -> string
+filled.Label = nil :: string?
 filled.OptionSolver = function(input: string)
 return {}
-end
-filled.OptionConstructor = nil
-filled.Elevation = nil
+end :: (input: string) -> { string }
+filled.OptionConstructor = nil :: (((key: string, onClick: (key: string) -> ()) -> GuiObject)?)
+filled.Elevation = nil :: number?
 ```
 
 **Fusion**

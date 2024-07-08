@@ -36,27 +36,27 @@ This function is a native constructor, with verbosity allowing for control over 
 local outlined = Synthetic.Component.TextField.Outlined.Fusion.new()
 outlined.OnSubmit = function(text: string?)
 return text
-end
+end :: ((text: string?) -> string?)
 outlined.OnInput = function(text: string?)
 return text
-end
-outlined.InitialText = nil
-outlined.IsEnabled = true
-outlined.IsError = false
-outlined.Label = "Label"
-outlined.CharacterLimit = nil
-outlined.SupportingText = nil
-outlined.Icon = nil
-outlined.HightlightColor = Color3.new()
-outlined.ErrorColor = Color3.new()
-outlined.BorderColor = Color3.new()
-outlined.TextColor = Color3.new()
-outlined.LabelColor = Color3.new()
-outlined.Elevation = 0
-outlined.SchemeType = Enums.SchemeType.Light
-outlined.BodyFontData = Types.FontData.new(Font.fromEnum(Enum.Font.SourceSans), 14)
-outlined.SupportFontData = Types.FontData.new(Font.fromEnum(Enum.Font.SourceSans), 14)
-outlined.Scale = 1
+end :: ((text: string?) -> string?)
+outlined.InitialText = nil :: string?
+outlined.IsEnabled = true :: boolean
+outlined.IsError = false :: boolean
+outlined.Label = "Label" :: string
+outlined.CharacterLimit = nil :: number?
+outlined.SupportingText = nil :: string?
+outlined.Icon = nil :: ImageData?
+outlined.HightlightColor = Color3.new() :: Color3
+outlined.ErrorColor = Color3.new() :: Color3
+outlined.BorderColor = Color3.new() :: Color3
+outlined.TextColor = Color3.new() :: Color3
+outlined.LabelColor = Color3.new() :: Color3
+outlined.Elevation = 0 :: number
+outlined.SchemeType = Enums.SchemeType.Light :: Enums.SchemeType
+outlined.BodyFontData = Types.FontData.new(Font.fromEnum(Enum.Font.SourceSans), 14) :: FontData
+outlined.SupportFontData = Types.FontData.new(Font.fromEnum(Enum.Font.SourceSans), 14) :: FontData
+outlined.Scale = 1 :: number
 ```
 
 **Fusion**
@@ -129,19 +129,19 @@ This function is a style constructor, utilizing the "Style" type to reduce the n
 **Vanilla**
 ```luau
 local outlined = Synthetic.Component.TextField.Outlined.Fusion.primary()
-outlined.Style = Style.new(1, Enum.Font.SourceSans, "Light", Color3.new(0, 0.4, 0.7))
+outlined.Style = Style.new(1, Enum.Font.SourceSans, "Light", Color3.new(0, 0.4, 0.7)) :: Style
 outlined.OnSubmit = function(text: string?)
 return text
-end
-outlined.Label = "Label"
-outlined.InitialText = nil
-outlined.OnInput = nil
-outlined.SupportingText = nil
-outlined.Icon = nil
-outlined.CharacterLimit = nil
-outlined.IsError = nil
-outlined.Elevation = nil
-outlined.IsEnabled = nil
+end :: ((text: string?) -> string?)
+outlined.Label = "Label" :: string
+outlined.InitialText = nil :: string?
+outlined.OnInput = nil :: (((text: string?) -> string?)?)
+outlined.SupportingText = nil :: string?
+outlined.Icon = nil :: ImageData?
+outlined.CharacterLimit = nil :: number?
+outlined.IsError = nil :: boolean?
+outlined.Elevation = nil :: number?
+outlined.IsEnabled = nil :: boolean?
 ```
 
 **Fusion**

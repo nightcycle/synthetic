@@ -20,11 +20,11 @@ This function is a native constructor, with verbosity allowing for control over 
 **Vanilla**
 ```luau
 local circular = Synthetic.Component.ProgressIndicator.Circular.Fusion.new()
-circular.Progress = nil
-circular.IsEnabled = nil
-circular.FillColor = Color3.new()
-circular.EmptyColor = Color3.new()
-circular.Scale = 1
+circular.Progress = nil :: number?
+circular.IsEnabled = nil :: boolean?
+circular.FillColor = Color3.new() :: Color3
+circular.EmptyColor = Color3.new() :: Color3
+circular.Scale = 1 :: number
 ```
 
 **Fusion**
@@ -57,9 +57,9 @@ This function is a style constructor, utilizing the "Style" type to reduce the n
 **Vanilla**
 ```luau
 local circular = Synthetic.Component.ProgressIndicator.Circular.Fusion.primary()
-circular.Style = Style.new(1, Enum.Font.SourceSans, "Light", Color3.new(0, 0.4, 0.7))
-circular.Progress = nil
-circular.IsEnabled = nil
+circular.Style = Style.new(1, Enum.Font.SourceSans, "Light", Color3.new(0, 0.4, 0.7)) :: Style
+circular.Progress = nil :: number?
+circular.IsEnabled = nil :: boolean?
 ```
 
 **Fusion**

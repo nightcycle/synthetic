@@ -37,28 +37,28 @@ This function is a native constructor, with verbosity allowing for control over 
 local filled = Synthetic.Component.TextField.Filled.Fusion.new()
 filled.OnSubmit = function(text: string?)
 return text
-end
+end :: ((text: string?) -> string?)
 filled.OnInput = function(text: string?)
 return text
-end
-filled.InitialText = nil
-filled.IsEnabled = true
-filled.IsError = false
-filled.Label = "Label"
-filled.CharacterLimit = nil
-filled.SupportingText = nil
-filled.Icon = nil
-filled.BackgroundColor = Color3.new()
-filled.HightlightColor = Color3.new()
-filled.ErrorColor = Color3.new()
-filled.BorderColor = Color3.new()
-filled.TextColor = Color3.new()
-filled.LabelColor = Color3.new()
-filled.Elevation = 0
-filled.SchemeType = Enums.SchemeType.Light
-filled.BodyFontData = Types.FontData.new(Font.fromEnum(Enum.Font.SourceSans), 14)
-filled.SupportFontData = Types.FontData.new(Font.fromEnum(Enum.Font.SourceSans), 14)
-filled.Scale = 1
+end :: ((text: string?) -> string?)
+filled.InitialText = nil :: string?
+filled.IsEnabled = true :: boolean
+filled.IsError = false :: boolean
+filled.Label = "Label" :: string
+filled.CharacterLimit = nil :: number?
+filled.SupportingText = nil :: string?
+filled.Icon = nil :: ImageData?
+filled.BackgroundColor = Color3.new() :: Color3
+filled.HightlightColor = Color3.new() :: Color3
+filled.ErrorColor = Color3.new() :: Color3
+filled.BorderColor = Color3.new() :: Color3
+filled.TextColor = Color3.new() :: Color3
+filled.LabelColor = Color3.new() :: Color3
+filled.Elevation = 0 :: number
+filled.SchemeType = Enums.SchemeType.Light :: Enums.SchemeType
+filled.BodyFontData = Types.FontData.new(Font.fromEnum(Enum.Font.SourceSans), 14) :: FontData
+filled.SupportFontData = Types.FontData.new(Font.fromEnum(Enum.Font.SourceSans), 14) :: FontData
+filled.Scale = 1 :: number
 ```
 
 **Fusion**
@@ -133,19 +133,19 @@ This function is a style constructor, utilizing the "Style" type to reduce the n
 **Vanilla**
 ```luau
 local filled = Synthetic.Component.TextField.Filled.Fusion.primary()
-filled.Style = Style.new(1, Enum.Font.SourceSans, "Light", Color3.new(0, 0.4, 0.7))
+filled.Style = Style.new(1, Enum.Font.SourceSans, "Light", Color3.new(0, 0.4, 0.7)) :: Style
 filled.OnSubmit = function(text: string?)
 return text
-end
-filled.Label = "Label"
-filled.InitialText = nil
-filled.OnInput = nil
-filled.SupportingText = nil
-filled.Icon = nil
-filled.CharacterLimit = nil
-filled.IsError = nil
-filled.Elevation = nil
-filled.IsEnabled = nil
+end :: ((text: string?) -> string?)
+filled.Label = "Label" :: string
+filled.InitialText = nil :: string?
+filled.OnInput = nil :: (((text: string?) -> string?)?)
+filled.SupportingText = nil :: string?
+filled.Icon = nil :: ImageData?
+filled.CharacterLimit = nil :: number?
+filled.IsError = nil :: boolean?
+filled.Elevation = nil :: number?
+filled.IsEnabled = nil :: boolean?
 ```
 
 **Fusion**

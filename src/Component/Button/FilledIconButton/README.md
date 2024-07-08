@@ -26,17 +26,17 @@ This function is a native constructor, with verbosity allowing for control over 
 **Vanilla**
 ```luau
 local filledIconButton = Synthetic.Component.Button.FilledIconButton.Fusion.new()
-filledIconButton.OnClick = function() end
-filledIconButton.Icon = Types.ImageData.new("")
-filledIconButton.TextColor = Color3.new()
-filledIconButton.SurfaceColor = Color3.new()
-filledIconButton.DisabledTextColor = Color3.new()
-filledIconButton.DisabledSurfaceColor = Color3.new()
-filledIconButton.IsEnabled = true
-filledIconButton.Elevation = 0
-filledIconButton.SchemeType = Enums.SchemeType.Light
-filledIconButton.FontData = Types.FontData.new(Font.fromEnum(Enum.Font.SourceSans), 14)
-filledIconButton.Scale = 1
+filledIconButton.OnClick = function() end :: () -> ()
+filledIconButton.Icon = Types.ImageData.new("") :: ImageData
+filledIconButton.TextColor = Color3.new() :: Color3
+filledIconButton.SurfaceColor = Color3.new() :: Color3
+filledIconButton.DisabledTextColor = Color3.new() :: Color3
+filledIconButton.DisabledSurfaceColor = Color3.new() :: Color3
+filledIconButton.IsEnabled = true :: boolean
+filledIconButton.Elevation = 0 :: number
+filledIconButton.SchemeType = Enums.SchemeType.Light :: Enums.SchemeType
+filledIconButton.FontData = Types.FontData.new(Font.fromEnum(Enum.Font.SourceSans), 14) :: FontData
+filledIconButton.Scale = 1 :: number
 ```
 
 **Fusion**
@@ -83,11 +83,11 @@ This function is a style constructor, utilizing the "Style" type to reduce the n
 **Vanilla**
 ```luau
 local filledIconButton = Synthetic.Component.Button.FilledIconButton.Fusion.primary()
-filledIconButton.Style = Style.new(1, Enum.Font.SourceSans, "Light", Color3.new(0, 0.4, 0.7))
-filledIconButton.OnClick = function() end
-filledIconButton.Icon = Types.ImageData.new("")
-filledIconButton.Elevation = 0
-filledIconButton.IsEnabled = true
+filledIconButton.Style = Style.new(1, Enum.Font.SourceSans, "Light", Color3.new(0, 0.4, 0.7)) :: Style
+filledIconButton.OnClick = function() end :: () -> ()
+filledIconButton.Icon = Types.ImageData.new("") :: ImageData
+filledIconButton.Elevation = 0 :: number
+filledIconButton.IsEnabled = true :: boolean
 ```
 
 **Fusion**

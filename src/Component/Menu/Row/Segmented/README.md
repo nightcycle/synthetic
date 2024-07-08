@@ -26,17 +26,17 @@ This function is a native constructor, with verbosity allowing for control over 
 **Vanilla**
 ```luau
 local segmented = Synthetic.Component.Menu.Row.Segmented.Fusion.new()
-segmented.Options = {}
-segmented.Density = nil
-segmented.IsMultiSelect = nil
-segmented.TextColor = Color3.new()
-segmented.FillTextColor = Color3.new()
-segmented.FillBackgroundColor = Color3.new()
-segmented.OutlineColor = Color3.new()
-segmented.Elevation = nil
-segmented.SchemeType = Enums.SchemeType.Light
-segmented.FontData = Types.FontData.new(Font.fromEnum(Enum.Font.SourceSans), 14)
-segmented.Scale = nil
+segmented.Options = {} :: { OptionData }
+segmented.Density = nil :: number?
+segmented.IsMultiSelect = nil :: boolean?
+segmented.TextColor = Color3.new() :: Color3
+segmented.FillTextColor = Color3.new() :: Color3
+segmented.FillBackgroundColor = Color3.new() :: Color3
+segmented.OutlineColor = Color3.new() :: Color3
+segmented.Elevation = nil :: number?
+segmented.SchemeType = Enums.SchemeType.Light :: Enums.SchemeType
+segmented.FontData = Types.FontData.new(Font.fromEnum(Enum.Font.SourceSans), 14) :: FontData
+segmented.Scale = nil :: number?
 ```
 
 **Fusion**
@@ -83,11 +83,11 @@ This function is a style constructor, utilizing the "Style" type to reduce the n
 **Vanilla**
 ```luau
 local segmented = Synthetic.Component.Menu.Row.Segmented.Fusion.primaryContainer()
-segmented.Style = Style.new(1, Enum.Font.SourceSans, "Light", Color3.new(0, 0.4, 0.7))
-segmented.Options = {}
-segmented.Density = nil
-segmented.IsMultiSelect = nil
-segmented.Elevation = nil
+segmented.Style = Style.new(1, Enum.Font.SourceSans, "Light", Color3.new(0, 0.4, 0.7)) :: Style
+segmented.Options = {} :: { OptionData }
+segmented.Density = nil :: number?
+segmented.IsMultiSelect = nil :: boolean?
+segmented.Elevation = nil :: number?
 ```
 
 **Fusion**

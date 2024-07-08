@@ -27,18 +27,18 @@ This function is a native constructor, with verbosity allowing for control over 
 **Vanilla**
 ```luau
 local fAB = Synthetic.Component.Button.FAB.Fusion.new()
-fAB.OnClick = function() end
-fAB.Icon = Types.ImageData.new("")
-fAB.TextColor = Color3.new()
-fAB.SurfaceColor = Color3.new()
-fAB.DisabledTextColor = Color3.new()
-fAB.DisabledSurfaceColor = Color3.new()
-fAB.ShadowColor = Color3.new()
-fAB.IsEnabled = true
-fAB.Elevation = 0
-fAB.SchemeType = Enums.SchemeType.Light
-fAB.FontData = Types.FontData.new(Font.fromEnum(Enum.Font.SourceSans), 14)
-fAB.Scale = 1
+fAB.OnClick = function() end :: () -> ()
+fAB.Icon = Types.ImageData.new("") :: ImageData
+fAB.TextColor = Color3.new() :: Color3
+fAB.SurfaceColor = Color3.new() :: Color3
+fAB.DisabledTextColor = Color3.new() :: Color3
+fAB.DisabledSurfaceColor = Color3.new() :: Color3
+fAB.ShadowColor = Color3.new() :: Color3
+fAB.IsEnabled = true :: boolean
+fAB.Elevation = 0 :: number
+fAB.SchemeType = Enums.SchemeType.Light :: Enums.SchemeType
+fAB.FontData = Types.FontData.new(Font.fromEnum(Enum.Font.SourceSans), 14) :: FontData
+fAB.Scale = 1 :: number
 ```
 
 **Fusion**
@@ -87,11 +87,11 @@ This function is a style constructor, utilizing the "Style" type to reduce the n
 **Vanilla**
 ```luau
 local fAB = Synthetic.Component.Button.FAB.Fusion.primary()
-fAB.Style = Style.new(1, Enum.Font.SourceSans, "Light", Color3.new(0, 0.4, 0.7))
-fAB.OnClick = function() end
-fAB.Icon = Types.ImageData.new("")
-fAB.Elevation = 0
-fAB.IsEnabled = true
+fAB.Style = Style.new(1, Enum.Font.SourceSans, "Light", Color3.new(0, 0.4, 0.7)) :: Style
+fAB.OnClick = function() end :: () -> ()
+fAB.Icon = Types.ImageData.new("") :: ImageData
+fAB.Elevation = 0 :: number
+fAB.IsEnabled = true :: boolean
 ```
 
 **Fusion**

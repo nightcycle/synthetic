@@ -25,16 +25,16 @@ This function is a native constructor, with verbosity allowing for control over 
 **Vanilla**
 ```luau
 local assist = Synthetic.Component.Button.Chip.Assist.Fusion.new()
-assist.OnClick = function() end
-assist.Text = "Chip"
-assist.Icon = nil
-assist.TextColor = Color3.new()
-assist.DisabledTextColor = Color3.new()
-assist.IsEnabled = true
-assist.Elevation = 0
-assist.SchemeType = Enums.SchemeType.Light
-assist.FontData = Types.FontData.new(Font.fromEnum(Enum.Font.SourceSans), 14)
-assist.Scale = 1
+assist.OnClick = function() end :: () -> ()
+assist.Text = "Chip" :: string
+assist.Icon = nil :: ImageData?
+assist.TextColor = Color3.new() :: Color3
+assist.DisabledTextColor = Color3.new() :: Color3
+assist.IsEnabled = true :: boolean
+assist.Elevation = 0 :: number
+assist.SchemeType = Enums.SchemeType.Light :: Enums.SchemeType
+assist.FontData = Types.FontData.new(Font.fromEnum(Enum.Font.SourceSans), 14) :: FontData
+assist.Scale = 1 :: number
 ```
 
 **Fusion**
@@ -80,12 +80,12 @@ This function is a style constructor, utilizing the "Style" type to reduce the n
 **Vanilla**
 ```luau
 local assist = Synthetic.Component.Button.Chip.Assist.Fusion.primary()
-assist.Style = Style.new(1, Enum.Font.SourceSans, "Light", Color3.new(0, 0.4, 0.7))
-assist.OnClick = function() end
-assist.Text = "Chip"
-assist.Icon = nil
-assist.IsEnabled = nil
-assist.Elevation = nil
+assist.Style = Style.new(1, Enum.Font.SourceSans, "Light", Color3.new(0, 0.4, 0.7)) :: Style
+assist.OnClick = function() end :: () -> ()
+assist.Text = "Chip" :: string
+assist.Icon = nil :: ImageData?
+assist.IsEnabled = nil :: boolean?
+assist.Elevation = nil :: number?
 ```
 
 **Fusion**

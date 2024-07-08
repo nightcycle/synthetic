@@ -28,19 +28,19 @@ This function is a native constructor, with verbosity allowing for control over 
 **Vanilla**
 ```luau
 local elevatedButton = Synthetic.Component.Button.ElevatedButton.Fusion.new()
-elevatedButton.OnClick = function() end
-elevatedButton.Text = "Button"
-elevatedButton.Icon = Types.ImageData.new("")
-elevatedButton.TextColor = Color3.new()
-elevatedButton.SurfaceColor = Color3.new()
-elevatedButton.DisabledTextColor = Color3.new()
-elevatedButton.DisabledSurfaceColor = Color3.new()
-elevatedButton.ShadowColor = Color3.new()
-elevatedButton.IsEnabled = true
-elevatedButton.Elevation = 0
-elevatedButton.SchemeType = Enums.SchemeType.Light
-elevatedButton.FontData = Types.FontData.new(Font.fromEnum(Enum.Font.SourceSans), 14)
-elevatedButton.Scale = 1
+elevatedButton.OnClick = function() end :: () -> ()
+elevatedButton.Text = "Button" :: string
+elevatedButton.Icon = Types.ImageData.new("") :: ImageData
+elevatedButton.TextColor = Color3.new() :: Color3
+elevatedButton.SurfaceColor = Color3.new() :: Color3
+elevatedButton.DisabledTextColor = Color3.new() :: Color3
+elevatedButton.DisabledSurfaceColor = Color3.new() :: Color3
+elevatedButton.ShadowColor = Color3.new() :: Color3
+elevatedButton.IsEnabled = true :: boolean
+elevatedButton.Elevation = 0 :: number
+elevatedButton.SchemeType = Enums.SchemeType.Light :: Enums.SchemeType
+elevatedButton.FontData = Types.FontData.new(Font.fromEnum(Enum.Font.SourceSans), 14) :: FontData
+elevatedButton.Scale = 1 :: number
 ```
 
 **Fusion**
@@ -92,12 +92,12 @@ This function is a style constructor, utilizing the "Style" type to reduce the n
 **Vanilla**
 ```luau
 local elevatedButton = Synthetic.Component.Button.ElevatedButton.Fusion.primary()
-elevatedButton.Style = Style.new(1, Enum.Font.SourceSans, "Light", Color3.new(0, 0.4, 0.7))
-elevatedButton.OnClick = function() end
-elevatedButton.Text = "Button"
-elevatedButton.Icon = Types.ImageData.new("")
-elevatedButton.Elevation = 0
-elevatedButton.IsEnabled = true
+elevatedButton.Style = Style.new(1, Enum.Font.SourceSans, "Light", Color3.new(0, 0.4, 0.7)) :: Style
+elevatedButton.OnClick = function() end :: () -> ()
+elevatedButton.Text = "Button" :: string
+elevatedButton.Icon = Types.ImageData.new("") :: ImageData
+elevatedButton.Elevation = 0 :: number
+elevatedButton.IsEnabled = true :: boolean
 ```
 
 **Fusion**
