@@ -95,12 +95,12 @@ do
 			self._internalStates.fontData,
 			self._internalStates.scale
 		)
-		print("inst", self._instance)
+		-- print("inst", self._instance)
 	end
 
 	function NewCheckbox:render()
-		print("render")
-		print("self", self)
+		-- print("render")
+		-- print("self", self)
 		local props = {
 			target = self._instance,
 		}
@@ -110,15 +110,15 @@ do
 					if v == nil then
 						v = self.defaultProps[k]
 					end
-					print(`set internal state: {k} = {v}`)
+					-- print(`set internal state: {k} = {v}`)
 					self._internalStates[k]:Set(v)
 				else
 					props[k] = v
-					print(`apply to inst: {k} = {v}`)
+					-- print(`apply to inst: {k} = {v}`)
 				end
 			end
 		end
-		print("props param", props)
+		-- print("props param", props)
 		return Roact.createElement(Roact.Portal, props)
 	end
 
@@ -134,7 +134,7 @@ do
 			end
 		end
 
-		print("didMount", self)
+		-- print("didMount", self)
 	end
 
 	-- run on destruction
