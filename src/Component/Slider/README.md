@@ -113,7 +113,7 @@ This function is a style constructor, utilizing the "Style" type to reduce the n
 - **increment**: number?
 - **leftTextOrIcon**: ((string | ImageData)?)
 - **rightTextOrIcon**: ((string | ImageData)?)
-- **elevation**: number
+- **elevation**: number?
 
 
 ### Usage
@@ -128,7 +128,7 @@ local maximum: number? = 100
 local increment: number? = 10
 local leftTextOrIcon: ((string | ImageData)?) = nil
 local rightTextOrIcon: ((string | ImageData)?) = nil
-local elevation: number = 0
+local elevation: number? = 0
 
 local slider = Synthetic.Component.Slider.Fusion.primary()
 slider.Style = style
@@ -152,7 +152,7 @@ local maximumState: Fusion.Value<number?> = Value(100)
 local increment: number? = 10
 local leftTextOrIconState: Fusion.Value<((string | ImageData)?)> = Value(nil)
 local rightTextOrIcon: ((string | ImageData)?) = nil
-local elevationState: Fusion.Value<number> = Value(0)
+local elevationState: Fusion.Value<number?> = Value(0)
 
 local slider: GuiObject = Synthetic.Component.Slider.Fusion.primary(
 	styleState,

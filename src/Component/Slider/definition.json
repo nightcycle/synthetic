@@ -138,7 +138,7 @@
                 },
                 {
                     "name": "elevation",
-                    "type": "number",
+                    "type": "number?",
                     "default": "0"
                 }
             ]

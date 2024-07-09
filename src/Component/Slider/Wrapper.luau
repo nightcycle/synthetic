@@ -53,7 +53,7 @@ export type StyledSliderWrapperDefinition = {
 	Increment: number?,
 	LeftTextOrIcon: (string | ImageData)?,
 	RightTextOrIcon: (string | ImageData)?,
-	Elevation: number,
+	Elevation: number?,
 }
 export type StyledSliderWrapper = Wrapper<GuiObject, StyledSliderWrapperDefinition, "StyledSlider">
 -- Constants

@@ -87,7 +87,7 @@ function Interface.primary(
 	increment: FusionCanBeState<number?>,
 	leftTextOrIcon: FusionCanBeState<((string | ImageData)?)>,
 	rightTextOrIcon: FusionCanBeState<((string | ImageData)?)>,
-	elevation: FusionCanBeState<number>
+	elevation: FusionCanBeState<number?>
 ): GuiObject
 	local maid = Maid.new()
 	local _fuse = ColdFusion.fuse(maid)
@@ -120,7 +120,7 @@ function Interface.secondary(
 	increment: FusionCanBeState<number?>,
 	leftTextOrIcon: FusionCanBeState<((string | ImageData)?)>,
 	rightTextOrIcon: FusionCanBeState<((string | ImageData)?)>,
-	elevation: FusionCanBeState<number>
+	elevation: FusionCanBeState<number?>
 ): GuiObject
 	local maid = Maid.new()
 	local _fuse = ColdFusion.fuse(maid)
@@ -153,7 +153,7 @@ function Interface.tertiary(
 	increment: FusionCanBeState<number?>,
 	leftTextOrIcon: FusionCanBeState<((string | ImageData)?)>,
 	rightTextOrIcon: FusionCanBeState<((string | ImageData)?)>,
-	elevation: FusionCanBeState<number>
+	elevation: FusionCanBeState<number?>
 ): GuiObject
 	local maid = Maid.new()
 	local _fuse = ColdFusion.fuse(maid)
@@ -186,7 +186,7 @@ function Interface.onPrimary(
 	increment: FusionCanBeState<number?>,
 	leftTextOrIcon: FusionCanBeState<((string | ImageData)?)>,
 	rightTextOrIcon: FusionCanBeState<((string | ImageData)?)>,
-	elevation: FusionCanBeState<number>
+	elevation: FusionCanBeState<number?>
 ): GuiObject
 	local maid = Maid.new()
 	local _fuse = ColdFusion.fuse(maid)
@@ -219,7 +219,7 @@ function Interface.onSecondary(
 	increment: FusionCanBeState<number?>,
 	leftTextOrIcon: FusionCanBeState<((string | ImageData)?)>,
 	rightTextOrIcon: FusionCanBeState<((string | ImageData)?)>,
-	elevation: FusionCanBeState<number>
+	elevation: FusionCanBeState<number?>
 ): GuiObject
 	local maid = Maid.new()
 	local _fuse = ColdFusion.fuse(maid)
@@ -252,7 +252,7 @@ function Interface.onTertiary(
 	increment: FusionCanBeState<number?>,
 	leftTextOrIcon: FusionCanBeState<((string | ImageData)?)>,
 	rightTextOrIcon: FusionCanBeState<((string | ImageData)?)>,
-	elevation: FusionCanBeState<number>
+	elevation: FusionCanBeState<number?>
 ): GuiObject
 	local maid = Maid.new()
 	local _fuse = ColdFusion.fuse(maid)

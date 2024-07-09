@@ -120,7 +120,7 @@ function Interface.onTertiary(
 		_import(elevation, DEFAULTS.ON_TERTIARY.INITIAL_VALUE),
 		_import(elevation, DEFAULTS.ON_TERTIARY.MINIMUM),
 		_import(elevation, DEFAULTS.ON_TERTIARY.MAXIMUM),
-		_import(elevation, DEFAULTS.ON_TERTIARY.INCREMENT or 0),
+		_import(elevation, DEFAULTS.ON_TERTIARY.INCREMENT),
 		_import(leftTextOrIcon, DEFAULTS.ON_TERTIARY.LEFT_TEXT_OR_ICON),
 		_import(rightTextOrIcon, DEFAULTS.ON_TERTIARY.RIGHT_TEXT_OR_ICON),
 		_Computed(function(s: Style): Color3
@@ -383,7 +383,7 @@ function Interface.secondary(
 		_Computed(function(s: Style): Color3
 			return s:GetColor(Enums.ColorRoleType.SecondaryContainer)
 		end, styleState),
-		_import(elevation, DEFAULTS.SECONDARY.ELEVATION or 0),
+		_import(elevation, DEFAULTS.SECONDARY.ELEVATION),
 		_Computed(function(s: Style): any
 			return s.SchemeType
 		end, styleState),
