@@ -73,7 +73,7 @@ return function(frame: Frame)
 						40,
 						0,
 						100,
-						20,
+						nil,
 						"Low",
 						"High",
 						style:GetColor(Enums.ColorRoleType.OnSurface),
