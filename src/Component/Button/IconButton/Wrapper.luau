@@ -58,6 +58,51 @@ local DEFAULTS = require(script.Parent:WaitForChild("Defaults"))
 -- Interface
 local Interface = {}
 
+function Interface.new(): StyledIconButtonWrapper
+	local maid = Maid.new()
+	local _fuse = ColdFusion.fuse(maid)
+	local _Value = _fuse.Value
+	local definition = {
+		OnClick = _Value(function() end),
+		Icon = _Value(Types.ImageData.new("")),
+		TextColor = _Value(Color3.new()),
+		DisabledTextColor = _Value(Color3.new()),
+		IsEnabled = _Value(true),
+		Elevation = _Value(0),
+		SchemeType = _Value(Enums.SchemeType.Light),
+		FontData = _Value(Types.FontData.new(Font.fromEnum(Enum.Font.SourceSans), 14)),
+		Scale = _Value(1),
+	}
+	local defaults: { [string]: unknown? } = {
+		onClick = DEFAULTS.NEW.ON_CLICK,
+		icon = DEFAULTS.NEW.ICON,
+		textColor = DEFAULTS.NEW.TEXT_COLOR,
+		disabledTextColor = DEFAULTS.NEW.DISABLED_TEXT_COLOR,
+		isEnabled = DEFAULTS.NEW.IS_ENABLED,
+		elevation = DEFAULTS.NEW.ELEVATION,
+		schemeType = DEFAULTS.NEW.SCHEME_TYPE,
+		fontData = DEFAULTS.NEW.FONT_DATA,
+		scale = DEFAULTS.NEW.SCALE,
+	}
+	local inst: GuiObject = Source.new(
+		definition.OnClick,
+		definition.Icon,
+		definition.TextColor,
+		definition.DisabledTextColor,
+		definition.IsEnabled,
+		definition.Elevation,
+		definition.SchemeType,
+		definition.FontData,
+		definition.Scale
+	)
+	maid:GiveTask(inst.Destroying:Connect(function()
+		maid:Destroy()
+	end))
+	local wrapper, cleanUp = Translators.ColdFusion.toWrapper("StyledIconButton", inst, definition, defaults)
+	maid:GiveTask(cleanUp)
+	return wrapper
+end
+
 function Interface.primary(): StyledIconButtonWrapper
 	local maid = Maid.new()
 	local _fuse = ColdFusion.fuse(maid)

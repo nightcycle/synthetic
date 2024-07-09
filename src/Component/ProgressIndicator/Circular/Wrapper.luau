@@ -48,6 +48,39 @@ local DEFAULTS = require(script.Parent:WaitForChild("Defaults"))
 -- Interface
 local Interface = {}
 
+function Interface.new(): StyledCircularWrapper
+	local maid = Maid.new()
+	local _fuse = ColdFusion.fuse(maid)
+	local _Value = _fuse.Value
+	local definition = {
+		Progress = _Value(nil),
+		IsEnabled = _Value(true),
+		FillColor = _Value(Color3.new()),
+		EmptyColor = _Value(Color3.new()),
+		Scale = _Value(1),
+	}
+	local defaults: { [string]: unknown? } = {
+		progress = DEFAULTS.NEW.PROGRESS,
+		isEnabled = DEFAULTS.NEW.IS_ENABLED,
+		fillColor = DEFAULTS.NEW.FILL_COLOR,
+		emptyColor = DEFAULTS.NEW.EMPTY_COLOR,
+		scale = DEFAULTS.NEW.SCALE,
+	}
+	local inst: GuiObject = Source.new(
+		definition.Progress,
+		definition.IsEnabled,
+		definition.FillColor,
+		definition.EmptyColor,
+		definition.Scale
+	)
+	maid:GiveTask(inst.Destroying:Connect(function()
+		maid:Destroy()
+	end))
+	local wrapper, cleanUp = Translators.ColdFusion.toWrapper("StyledCircular", inst, definition, defaults)
+	maid:GiveTask(cleanUp)
+	return wrapper
+end
+
 function Interface.primary(): StyledCircularWrapper
 	local maid = Maid.new()
 	local _fuse = ColdFusion.fuse(maid)

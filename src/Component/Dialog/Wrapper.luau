@@ -60,6 +60,69 @@ local DEFAULTS = require(script.Parent:WaitForChild("Defaults"))
 -- Interface
 local Interface = {}
 
+function Interface.new(): StyledDialogWrapper
+	local maid = Maid.new()
+	local _fuse = ColdFusion.fuse(maid)
+	local _Value = _fuse.Value
+	local definition = {
+		Buttons = _Value({}),
+		Icon = _Value(nil),
+		Headline = _Value(""),
+		Description = _Value(""),
+		SurfaceColor = _Value(Color3.new()),
+		ButtonTextColor = _Value(Color3.new()),
+		DisabledTextColor = _Value(Color3.new()),
+		HeadlineColor = _Value(Color3.new()),
+		DescriptionColor = _Value(Color3.new()),
+		ScrimColor = _Value(Color3.new()),
+		SchemeType = _Value(Enums.SchemeType.Light),
+		HeadlineFontData = _Value(Types.FontData.new(Font.fromEnum(Enum.Font.SourceSans), 14)),
+		BodyFontData = _Value(Types.FontData.new(Font.fromEnum(Enum.Font.SourceSans), 14)),
+		ButtonFontData = _Value(Types.FontData.new(Font.fromEnum(Enum.Font.SourceSans), 14)),
+		Scale = _Value(1),
+	}
+	local defaults: { [string]: unknown? } = {
+		buttons = DEFAULTS.NEW.BUTTONS,
+		icon = DEFAULTS.NEW.ICON,
+		headline = DEFAULTS.NEW.HEADLINE,
+		description = DEFAULTS.NEW.DESCRIPTION,
+		surfaceColor = DEFAULTS.NEW.SURFACE_COLOR,
+		buttonTextColor = DEFAULTS.NEW.BUTTON_TEXT_COLOR,
+		disabledTextColor = DEFAULTS.NEW.DISABLED_TEXT_COLOR,
+		headlineColor = DEFAULTS.NEW.HEADLINE_COLOR,
+		descriptionColor = DEFAULTS.NEW.DESCRIPTION_COLOR,
+		scrimColor = DEFAULTS.NEW.SCRIM_COLOR,
+		schemeType = DEFAULTS.NEW.SCHEME_TYPE,
+		headlineFontData = DEFAULTS.NEW.HEADLINE_FONT_DATA,
+		bodyFontData = DEFAULTS.NEW.BODY_FONT_DATA,
+		buttonFontData = DEFAULTS.NEW.BUTTON_FONT_DATA,
+		scale = DEFAULTS.NEW.SCALE,
+	}
+	local inst: GuiObject = Source.new(
+		definition.Buttons,
+		definition.Icon,
+		definition.Headline,
+		definition.Description,
+		definition.SurfaceColor,
+		definition.ButtonTextColor,
+		definition.DisabledTextColor,
+		definition.HeadlineColor,
+		definition.DescriptionColor,
+		definition.ScrimColor,
+		definition.SchemeType,
+		definition.HeadlineFontData,
+		definition.BodyFontData,
+		definition.ButtonFontData,
+		definition.Scale
+	)
+	maid:GiveTask(inst.Destroying:Connect(function()
+		maid:Destroy()
+	end))
+	local wrapper, cleanUp = Translators.ColdFusion.toWrapper("StyledDialog", inst, definition, defaults)
+	maid:GiveTask(cleanUp)
+	return wrapper
+end
+
 function Interface.primary(): StyledDialogWrapper
 	local maid = Maid.new()
 	local _fuse = ColdFusion.fuse(maid)

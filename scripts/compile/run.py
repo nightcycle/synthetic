@@ -210,50 +210,50 @@ type CanBeState<V> = ColdFusion.CanBeState<V>"""
 		]
 
 		for func in self.functions:
-			key = func['key']
-			if key != "":
-				for name in func["names"]:
+			# key = func['key']
+			# if key != "":
+			for name in func["names"]:
 
-					lines += [
-						f'\nfunction Interface.{name}(): {camel_to_pascal(key)}{self.name}Wrapper',
-							'local maid = Maid.new()',
-							'local _fuse = ColdFusion.fuse(maid)',
-							'local _Value = _fuse.Value',
+				lines += [
+					f'\nfunction Interface.{name}(): {camel_to_pascal(key)}{self.name}Wrapper',
+						'local maid = Maid.new()',
+						'local _fuse = ColdFusion.fuse(maid)',
+						'local _Value = _fuse.Value',
 
-							'local definition = {',
-					]
-					for param in func["parameters"]:
-						lines.append(f'{camel_to_pascal(param["name"])} = _Value('+param["default"]+'),')
+						'local definition = {',
+				]
+				for param in func["parameters"]:
+					lines.append(f'{camel_to_pascal(param["name"])} = _Value('+param["default"]+'),')
 
-					lines += [
+				lines += [
+					'}',
+					'local defaults: {[string]: unknown?} = {'
+				]
+				for param in func["parameters"]:
+					lines.append(f'{param['name']} = DEFAULTS.{camel_to_upper_snake(name)}.{camel_to_upper_snake(param['name'])},')
+
+				lines += [
 						'}',
-						'local defaults: {[string]: unknown?} = {'
-					]
-					for param in func["parameters"]:
-						lines.append(f'{param['name']} = DEFAULTS.{camel_to_upper_snake(name)}.{camel_to_upper_snake(param['name'])},')
+						f'local inst: GuiObject = Source.{name}(',
+				]
+				def_params = []
+				for param in func["parameters"]:
+					def_params.append(f'definition.{camel_to_pascal(param["name"])}')
 
-					lines += [
-							'}',
-							f'local inst: GuiObject = Source.{name}(',
-					]
-					def_params = []
-					for param in func["parameters"]:
-						def_params.append(f'definition.{camel_to_pascal(param["name"])}')
+				lines += [
+						",".join(def_params),
+						')',
 
-					lines += [
-							",".join(def_params),
-							')',
+						'maid:GiveTask(inst.Destroying:Connect(function()',
+							'maid:Destroy()',
+						'end))',
 
-							'maid:GiveTask(inst.Destroying:Connect(function()',
-								'maid:Destroy()',
-							'end))',
+						f'local wrapper, cleanUp = Translators.ColdFusion.toWrapper("{camel_to_pascal(key)}{self.name}", inst, definition, defaults)',
+						'maid:GiveTask(cleanUp)',
 
-							f'local wrapper, cleanUp = Translators.ColdFusion.toWrapper("{camel_to_pascal(key)}{self.name}", inst, definition, defaults)',
-							'maid:GiveTask(cleanUp)',
-
-							'return wrapper',
-						'end',
-					]
+						'return wrapper',
+					'end',
+				]
 
 		lines += [
 			'\nreturn Interface',

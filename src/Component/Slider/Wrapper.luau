@@ -64,6 +64,69 @@ local DEFAULTS = require(script.Parent:WaitForChild("Defaults"))
 -- Interface
 local Interface = {}
 
+function Interface.new(): StyledSliderWrapper
+	local maid = Maid.new()
+	local _fuse = ColdFusion.fuse(maid)
+	local _Value = _fuse.Value
+	local definition = {
+		OnChange = _Value(function(onChange: number) end),
+		InitialValue = _Value(50),
+		Minimum = _Value(0),
+		Maximum = _Value(100),
+		Increment = _Value(nil),
+		LeftTextOrIcon = _Value(nil),
+		RightTextOrIcon = _Value(nil),
+		OnBackgroundColor = _Value(Color3.new()),
+		OnBackgroundTextColor = _Value(Color3.new()),
+		FillColor = _Value(Color3.new()),
+		FillContainerColor = _Value(Color3.new()),
+		Elevation = _Value(0),
+		SchemeType = _Value(Enums.SchemeType.Light),
+		FontData = _Value(Types.FontData.new(Font.fromEnum(Enum.Font.SourceSans), 14)),
+		Scale = _Value(1),
+	}
+	local defaults: { [string]: unknown? } = {
+		onChange = DEFAULTS.NEW.ON_CHANGE,
+		initialValue = DEFAULTS.NEW.INITIAL_VALUE,
+		minimum = DEFAULTS.NEW.MINIMUM,
+		maximum = DEFAULTS.NEW.MAXIMUM,
+		increment = DEFAULTS.NEW.INCREMENT,
+		leftTextOrIcon = DEFAULTS.NEW.LEFT_TEXT_OR_ICON,
+		rightTextOrIcon = DEFAULTS.NEW.RIGHT_TEXT_OR_ICON,
+		onBackgroundColor = DEFAULTS.NEW.ON_BACKGROUND_COLOR,
+		onBackgroundTextColor = DEFAULTS.NEW.ON_BACKGROUND_TEXT_COLOR,
+		fillColor = DEFAULTS.NEW.FILL_COLOR,
+		fillContainerColor = DEFAULTS.NEW.FILL_CONTAINER_COLOR,
+		elevation = DEFAULTS.NEW.ELEVATION,
+		schemeType = DEFAULTS.NEW.SCHEME_TYPE,
+		fontData = DEFAULTS.NEW.FONT_DATA,
+		scale = DEFAULTS.NEW.SCALE,
+	}
+	local inst: GuiObject = Source.new(
+		definition.OnChange,
+		definition.InitialValue,
+		definition.Minimum,
+		definition.Maximum,
+		definition.Increment,
+		definition.LeftTextOrIcon,
+		definition.RightTextOrIcon,
+		definition.OnBackgroundColor,
+		definition.OnBackgroundTextColor,
+		definition.FillColor,
+		definition.FillContainerColor,
+		definition.Elevation,
+		definition.SchemeType,
+		definition.FontData,
+		definition.Scale
+	)
+	maid:GiveTask(inst.Destroying:Connect(function()
+		maid:Destroy()
+	end))
+	local wrapper, cleanUp = Translators.ColdFusion.toWrapper("StyledSlider", inst, definition, defaults)
+	maid:GiveTask(cleanUp)
+	return wrapper
+end
+
 function Interface.primary(): StyledSliderWrapper
 	local maid = Maid.new()
 	local _fuse = ColdFusion.fuse(maid)

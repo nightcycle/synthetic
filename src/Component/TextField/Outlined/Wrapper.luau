@@ -70,6 +70,85 @@ local DEFAULTS = require(script.Parent:WaitForChild("Defaults"))
 -- Interface
 local Interface = {}
 
+function Interface.new(): StyledOutlinedWrapper
+	local maid = Maid.new()
+	local _fuse = ColdFusion.fuse(maid)
+	local _Value = _fuse.Value
+	local definition = {
+		OnSubmit = _Value(function(text: string?)
+			return text
+		end),
+		OnInput = _Value(function(text: string?)
+			return text
+		end),
+		InitialText = _Value(""),
+		IsEnabled = _Value(true),
+		IsError = _Value(false),
+		Label = _Value("Label"),
+		CharacterLimit = _Value(nil),
+		SupportingText = _Value(""),
+		Icon = _Value(nil),
+		HightlightColor = _Value(Color3.new()),
+		ErrorColor = _Value(Color3.new()),
+		BorderColor = _Value(Color3.new()),
+		TextColor = _Value(Color3.new()),
+		LabelColor = _Value(Color3.new()),
+		Elevation = _Value(0),
+		SchemeType = _Value(Enums.SchemeType.Light),
+		BodyFontData = _Value(Types.FontData.new(Font.fromEnum(Enum.Font.SourceSans), 14)),
+		SupportFontData = _Value(Types.FontData.new(Font.fromEnum(Enum.Font.SourceSans), 14)),
+		Scale = _Value(1),
+	}
+	local defaults: { [string]: unknown? } = {
+		onSubmit = DEFAULTS.NEW.ON_SUBMIT,
+		onInput = DEFAULTS.NEW.ON_INPUT,
+		initialText = DEFAULTS.NEW.INITIAL_TEXT,
+		isEnabled = DEFAULTS.NEW.IS_ENABLED,
+		isError = DEFAULTS.NEW.IS_ERROR,
+		label = DEFAULTS.NEW.LABEL,
+		characterLimit = DEFAULTS.NEW.CHARACTER_LIMIT,
+		supportingText = DEFAULTS.NEW.SUPPORTING_TEXT,
+		icon = DEFAULTS.NEW.ICON,
+		hightlightColor = DEFAULTS.NEW.HIGHTLIGHT_COLOR,
+		errorColor = DEFAULTS.NEW.ERROR_COLOR,
+		borderColor = DEFAULTS.NEW.BORDER_COLOR,
+		textColor = DEFAULTS.NEW.TEXT_COLOR,
+		labelColor = DEFAULTS.NEW.LABEL_COLOR,
+		elevation = DEFAULTS.NEW.ELEVATION,
+		schemeType = DEFAULTS.NEW.SCHEME_TYPE,
+		bodyFontData = DEFAULTS.NEW.BODY_FONT_DATA,
+		supportFontData = DEFAULTS.NEW.SUPPORT_FONT_DATA,
+		scale = DEFAULTS.NEW.SCALE,
+	}
+	local inst: GuiObject = Source.new(
+		definition.OnSubmit,
+		definition.OnInput,
+		definition.InitialText,
+		definition.IsEnabled,
+		definition.IsError,
+		definition.Label,
+		definition.CharacterLimit,
+		definition.SupportingText,
+		definition.Icon,
+		definition.HightlightColor,
+		definition.ErrorColor,
+		definition.BorderColor,
+		definition.TextColor,
+		definition.LabelColor,
+		definition.Elevation,
+		definition.SchemeType,
+		definition.BodyFontData,
+		definition.SupportFontData,
+		definition.Scale
+	)
+	maid:GiveTask(inst.Destroying:Connect(function()
+		maid:Destroy()
+	end))
+	local wrapper, cleanUp = Translators.ColdFusion.toWrapper("StyledOutlined", inst, definition, defaults)
+	maid:GiveTask(cleanUp)
+	return wrapper
+end
+
 function Interface.primary(): StyledOutlinedWrapper
 	local maid = Maid.new()
 	local _fuse = ColdFusion.fuse(maid)

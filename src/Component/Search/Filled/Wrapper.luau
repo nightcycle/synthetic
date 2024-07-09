@@ -56,6 +56,58 @@ local DEFAULTS = require(script.Parent:WaitForChild("Defaults"))
 -- Interface
 local Interface = {}
 
+function Interface.new(): StyledFilledWrapper
+	local maid = Maid.new()
+	local _fuse = ColdFusion.fuse(maid)
+	local _Value = _fuse.Value
+	local definition = {
+		OnInputEntered = _Value(function(input: string)
+			return input
+		end),
+		Label = _Value(""),
+		OptionSolver = _Value(function(input: string)
+			return {}
+		end),
+		OptionConstructor = _Value(nil),
+		TextColor = _Value(Color3.new()),
+		BackgroundColor = _Value(Color3.new()),
+		Elevation = _Value(0),
+		SchemeType = _Value(Enums.SchemeType.Light),
+		FontData = _Value(Types.FontData.new(Font.fromEnum(Enum.Font.SourceSans), 14)),
+		Scale = _Value(1),
+	}
+	local defaults: { [string]: unknown? } = {
+		onInputEntered = DEFAULTS.NEW.ON_INPUT_ENTERED,
+		label = DEFAULTS.NEW.LABEL,
+		optionSolver = DEFAULTS.NEW.OPTION_SOLVER,
+		optionConstructor = DEFAULTS.NEW.OPTION_CONSTRUCTOR,
+		textColor = DEFAULTS.NEW.TEXT_COLOR,
+		backgroundColor = DEFAULTS.NEW.BACKGROUND_COLOR,
+		elevation = DEFAULTS.NEW.ELEVATION,
+		schemeType = DEFAULTS.NEW.SCHEME_TYPE,
+		fontData = DEFAULTS.NEW.FONT_DATA,
+		scale = DEFAULTS.NEW.SCALE,
+	}
+	local inst: GuiObject = Source.new(
+		definition.OnInputEntered,
+		definition.Label,
+		definition.OptionSolver,
+		definition.OptionConstructor,
+		definition.TextColor,
+		definition.BackgroundColor,
+		definition.Elevation,
+		definition.SchemeType,
+		definition.FontData,
+		definition.Scale
+	)
+	maid:GiveTask(inst.Destroying:Connect(function()
+		maid:Destroy()
+	end))
+	local wrapper, cleanUp = Translators.ColdFusion.toWrapper("StyledFilled", inst, definition, defaults)
+	maid:GiveTask(cleanUp)
+	return wrapper
+end
+
 function Interface.primary(): StyledFilledWrapper
 	local maid = Maid.new()
 	local _fuse = ColdFusion.fuse(maid)

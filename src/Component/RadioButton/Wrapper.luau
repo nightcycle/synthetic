@@ -60,6 +60,57 @@ local DEFAULTS = require(script.Parent:WaitForChild("Defaults"))
 -- Interface
 local Interface = {}
 
+function Interface.new(): StyledRadioButtonWrapper
+	local maid = Maid.new()
+	local _fuse = ColdFusion.fuse(maid)
+	local _Value = _fuse.Value
+	local definition = {
+		OnSelect = _Value(function(isSelected: boolean) end),
+		InitialSelection = _Value(false),
+		IsEnabled = _Value(true),
+		OutlineColor = _Value(Color3.new()),
+		FillColor = _Value(Color3.new()),
+		IconColor = _Value(Color3.new()),
+		DisabledColor = _Value(Color3.new()),
+		Elevation = _Value(0),
+		SchemeType = _Value(Enums.SchemeType.Light),
+		FontData = _Value(Types.FontData.new(Font.fromEnum(Enum.Font.SourceSans), 14)),
+		Scale = _Value(1),
+	}
+	local defaults: { [string]: unknown? } = {
+		onSelect = DEFAULTS.NEW.ON_SELECT,
+		initialSelection = DEFAULTS.NEW.INITIAL_SELECTION,
+		isEnabled = DEFAULTS.NEW.IS_ENABLED,
+		outlineColor = DEFAULTS.NEW.OUTLINE_COLOR,
+		fillColor = DEFAULTS.NEW.FILL_COLOR,
+		iconColor = DEFAULTS.NEW.ICON_COLOR,
+		disabledColor = DEFAULTS.NEW.DISABLED_COLOR,
+		elevation = DEFAULTS.NEW.ELEVATION,
+		schemeType = DEFAULTS.NEW.SCHEME_TYPE,
+		fontData = DEFAULTS.NEW.FONT_DATA,
+		scale = DEFAULTS.NEW.SCALE,
+	}
+	local inst: GuiObject = Source.new(
+		definition.OnSelect,
+		definition.InitialSelection,
+		definition.IsEnabled,
+		definition.OutlineColor,
+		definition.FillColor,
+		definition.IconColor,
+		definition.DisabledColor,
+		definition.Elevation,
+		definition.SchemeType,
+		definition.FontData,
+		definition.Scale
+	)
+	maid:GiveTask(inst.Destroying:Connect(function()
+		maid:Destroy()
+	end))
+	local wrapper, cleanUp = Translators.ColdFusion.toWrapper("StyledRadioButton", inst, definition, defaults)
+	maid:GiveTask(cleanUp)
+	return wrapper
+end
+
 function Interface.primary(): StyledRadioButtonWrapper
 	local maid = Maid.new()
 	local _fuse = ColdFusion.fuse(maid)

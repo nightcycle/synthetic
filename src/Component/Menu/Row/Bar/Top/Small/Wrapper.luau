@@ -56,6 +56,57 @@ local DEFAULTS = require(script.Parent:WaitForChild("Defaults"))
 -- Interface
 local Interface = {}
 
+function Interface.new(): StyledSmallWrapper
+	local maid = Maid.new()
+	local _fuse = ColdFusion.fuse(maid)
+	local _Value = _fuse.Value
+	local definition = {
+		Title = _Value("Title"),
+		Buttons = _Value({}),
+		Navigation = _Value(nil),
+		BackgroundColor = _Value(Color3.new()),
+		TextColor = _Value(Color3.new()),
+		Elevation = _Value(0),
+		SchemeType = _Value(Enums.SchemeType.Light),
+		TitleFontData = _Value(Types.FontData.new(Font.fromEnum(Enum.Font.SourceSans), 14)),
+		SubHeadingFontData = _Value(Types.FontData.new(Font.fromEnum(Enum.Font.SourceSans), 14)),
+		ButtonFontData = _Value(Types.FontData.new(Font.fromEnum(Enum.Font.SourceSans), 14)),
+		Scale = _Value(1),
+	}
+	local defaults: { [string]: unknown? } = {
+		title = DEFAULTS.NEW.TITLE,
+		buttons = DEFAULTS.NEW.BUTTONS,
+		navigation = DEFAULTS.NEW.NAVIGATION,
+		backgroundColor = DEFAULTS.NEW.BACKGROUND_COLOR,
+		textColor = DEFAULTS.NEW.TEXT_COLOR,
+		elevation = DEFAULTS.NEW.ELEVATION,
+		schemeType = DEFAULTS.NEW.SCHEME_TYPE,
+		titleFontData = DEFAULTS.NEW.TITLE_FONT_DATA,
+		subHeadingFontData = DEFAULTS.NEW.SUB_HEADING_FONT_DATA,
+		buttonFontData = DEFAULTS.NEW.BUTTON_FONT_DATA,
+		scale = DEFAULTS.NEW.SCALE,
+	}
+	local inst: GuiObject = Source.new(
+		definition.Title,
+		definition.Buttons,
+		definition.Navigation,
+		definition.BackgroundColor,
+		definition.TextColor,
+		definition.Elevation,
+		definition.SchemeType,
+		definition.TitleFontData,
+		definition.SubHeadingFontData,
+		definition.ButtonFontData,
+		definition.Scale
+	)
+	maid:GiveTask(inst.Destroying:Connect(function()
+		maid:Destroy()
+	end))
+	local wrapper, cleanUp = Translators.ColdFusion.toWrapper("StyledSmall", inst, definition, defaults)
+	maid:GiveTask(cleanUp)
+	return wrapper
+end
+
 function Interface.primary(): StyledSmallWrapper
 	local maid = Maid.new()
 	local _fuse = ColdFusion.fuse(maid)

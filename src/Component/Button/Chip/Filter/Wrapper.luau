@@ -59,6 +59,63 @@ local DEFAULTS = require(script.Parent:WaitForChild("Defaults"))
 -- Interface
 local Interface = {}
 
+function Interface.new(): StyledFilterWrapper
+	local maid = Maid.new()
+	local _fuse = ColdFusion.fuse(maid)
+	local _Value = _fuse.Value
+	local definition = {
+		OnClick = _Value(function(isSelected: boolean) end),
+		IsInitiallySelected = _Value(false),
+		Text = _Value("Filter"),
+		TextColor = _Value(Color3.new()),
+		DisabledTextColor = _Value(Color3.new()),
+		FillTextColor = _Value(Color3.new()),
+		DisabledFillTextColor = _Value(Color3.new()),
+		DisabledFillColor = _Value(Color3.new()),
+		IsEnabled = _Value(true),
+		Elevation = _Value(0),
+		SchemeType = _Value(Enums.SchemeType.Light),
+		FontData = _Value(Types.FontData.new(Font.fromEnum(Enum.Font.SourceSans), 14)),
+		Scale = _Value(1),
+	}
+	local defaults: { [string]: unknown? } = {
+		onClick = DEFAULTS.NEW.ON_CLICK,
+		isInitiallySelected = DEFAULTS.NEW.IS_INITIALLY_SELECTED,
+		text = DEFAULTS.NEW.TEXT,
+		textColor = DEFAULTS.NEW.TEXT_COLOR,
+		disabledTextColor = DEFAULTS.NEW.DISABLED_TEXT_COLOR,
+		fillTextColor = DEFAULTS.NEW.FILL_TEXT_COLOR,
+		disabledFillTextColor = DEFAULTS.NEW.DISABLED_FILL_TEXT_COLOR,
+		disabledFillColor = DEFAULTS.NEW.DISABLED_FILL_COLOR,
+		isEnabled = DEFAULTS.NEW.IS_ENABLED,
+		elevation = DEFAULTS.NEW.ELEVATION,
+		schemeType = DEFAULTS.NEW.SCHEME_TYPE,
+		fontData = DEFAULTS.NEW.FONT_DATA,
+		scale = DEFAULTS.NEW.SCALE,
+	}
+	local inst: GuiObject = Source.new(
+		definition.OnClick,
+		definition.IsInitiallySelected,
+		definition.Text,
+		definition.TextColor,
+		definition.DisabledTextColor,
+		definition.FillTextColor,
+		definition.DisabledFillTextColor,
+		definition.DisabledFillColor,
+		definition.IsEnabled,
+		definition.Elevation,
+		definition.SchemeType,
+		definition.FontData,
+		definition.Scale
+	)
+	maid:GiveTask(inst.Destroying:Connect(function()
+		maid:Destroy()
+	end))
+	local wrapper, cleanUp = Translators.ColdFusion.toWrapper("StyledFilter", inst, definition, defaults)
+	maid:GiveTask(cleanUp)
+	return wrapper
+end
+
 function Interface.primary(): StyledFilterWrapper
 	local maid = Maid.new()
 	local _fuse = ColdFusion.fuse(maid)

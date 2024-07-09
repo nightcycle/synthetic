@@ -55,6 +55,57 @@ local DEFAULTS = require(script.Parent:WaitForChild("Defaults"))
 -- Interface
 local Interface = {}
 
+function Interface.new(): StyledBottomWrapper
+	local maid = Maid.new()
+	local _fuse = ColdFusion.fuse(maid)
+	local _Value = _fuse.Value
+	local definition = {
+		Buttons = _Value({}),
+		Fab = _Value(nil),
+		BackgroundColor = _Value(Color3.new()),
+		IconColor = _Value(Color3.new()),
+		FabColor = _Value(Color3.new()),
+		FabIconColor = _Value(Color3.new()),
+		FabShadowColor = _Value(Color3.new()),
+		Elevation = _Value(0),
+		SchemeType = _Value(Enums.SchemeType.Light),
+		FontData = _Value(Types.FontData.new(Font.fromEnum(Enum.Font.SourceSans), 14)),
+		Scale = _Value(1),
+	}
+	local defaults: { [string]: unknown? } = {
+		buttons = DEFAULTS.NEW.BUTTONS,
+		fab = DEFAULTS.NEW.FAB,
+		backgroundColor = DEFAULTS.NEW.BACKGROUND_COLOR,
+		iconColor = DEFAULTS.NEW.ICON_COLOR,
+		fabColor = DEFAULTS.NEW.FAB_COLOR,
+		fabIconColor = DEFAULTS.NEW.FAB_ICON_COLOR,
+		fabShadowColor = DEFAULTS.NEW.FAB_SHADOW_COLOR,
+		elevation = DEFAULTS.NEW.ELEVATION,
+		schemeType = DEFAULTS.NEW.SCHEME_TYPE,
+		fontData = DEFAULTS.NEW.FONT_DATA,
+		scale = DEFAULTS.NEW.SCALE,
+	}
+	local inst: GuiObject = Source.new(
+		definition.Buttons,
+		definition.Fab,
+		definition.BackgroundColor,
+		definition.IconColor,
+		definition.FabColor,
+		definition.FabIconColor,
+		definition.FabShadowColor,
+		definition.Elevation,
+		definition.SchemeType,
+		definition.FontData,
+		definition.Scale
+	)
+	maid:GiveTask(inst.Destroying:Connect(function()
+		maid:Destroy()
+	end))
+	local wrapper, cleanUp = Translators.ColdFusion.toWrapper("StyledBottom", inst, definition, defaults)
+	maid:GiveTask(cleanUp)
+	return wrapper
+end
+
 function Interface.primary(): StyledBottomWrapper
 	local maid = Maid.new()
 	local _fuse = ColdFusion.fuse(maid)
