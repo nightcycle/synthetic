@@ -100,7 +100,7 @@ function Interface.onTertiary(
 	increment: CanBeState<number?>,
 	leftTextOrIcon: CanBeState<string | ImageData | nil>,
 	rightTextOrIcon: CanBeState<string | ImageData | nil>,
-	elevation: CanBeState<number>
+	elevation: CanBeState<number?>
 ): GuiObject
 	local maid = Maid.new()
 	local _fuse = ColdFusion.fuse(maid)
@@ -162,7 +162,7 @@ function Interface.onSecondary(
 	increment: CanBeState<number?>,
 	leftTextOrIcon: CanBeState<string | ImageData | nil>,
 	rightTextOrIcon: CanBeState<string | ImageData | nil>,
-	elevation: CanBeState<number>
+	elevation: CanBeState<number?>
 ): GuiObject
 	local maid = Maid.new()
 	local _fuse = ColdFusion.fuse(maid)
@@ -224,7 +224,7 @@ function Interface.onPrimary(
 	increment: CanBeState<number?>,
 	leftTextOrIcon: CanBeState<string | ImageData | nil>,
 	rightTextOrIcon: CanBeState<string | ImageData | nil>,
-	elevation: CanBeState<number>
+	elevation: CanBeState<number?>
 ): GuiObject
 	local maid = Maid.new()
 	local _fuse = ColdFusion.fuse(maid)
@@ -286,7 +286,7 @@ function Interface.tertiary(
 	increment: CanBeState<number?>,
 	leftTextOrIcon: CanBeState<string | ImageData | nil>,
 	rightTextOrIcon: CanBeState<string | ImageData | nil>,
-	elevation: CanBeState<number>
+	elevation: CanBeState<number?>
 ): GuiObject
 	local maid = Maid.new()
 	local _fuse = ColdFusion.fuse(maid)
@@ -348,7 +348,7 @@ function Interface.secondary(
 	increment: CanBeState<number?>,
 	leftTextOrIcon: CanBeState<string | ImageData | nil>,
 	rightTextOrIcon: CanBeState<string | ImageData | nil>,
-	elevation: CanBeState<number>
+	elevation: CanBeState<number?>
 ): GuiObject
 	local maid = Maid.new()
 	local _fuse = ColdFusion.fuse(maid)
@@ -410,7 +410,7 @@ function Interface.primary(
 	increment: CanBeState<number?>,
 	leftTextOrIcon: CanBeState<string | ImageData | nil>,
 	rightTextOrIcon: CanBeState<string | ImageData | nil>,
-	elevation: CanBeState<number>
+	elevation: CanBeState<number?>
 ): GuiObject
 	local maid = Maid.new()
 	local _fuse = ColdFusion.fuse(maid)
