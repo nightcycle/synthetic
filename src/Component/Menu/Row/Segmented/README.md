@@ -96,7 +96,7 @@ local segmented = Roact.createElement(Module.Roact.New, {
 	schemeType = Enums.SchemeType.Light,
 	fontData = Types.FontData.new(Font.fromEnum(Enum.Font.SourceSans), 14),
 	scale = 1,
-}
+})
 
 Roact.mount(segmented, parent)
 ```
@@ -154,7 +154,7 @@ local segmented = Roact.createElement(Module.Roact.PrimaryContainer, {
 	density = 0,
 	isMultiSelect = false,
 	elevation = 0,
-}
+})
 
 Roact.mount(segmented, parent)
 ```

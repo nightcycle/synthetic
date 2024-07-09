@@ -60,7 +60,7 @@ local circular = Roact.createElement(Module.Roact.New, {
 	fillColor = Color3.new(),
 	emptyColor = Color3.new(),
 	scale = 1,
-}
+})
 
 Roact.mount(circular, parent)
 ```
@@ -106,7 +106,7 @@ local circular = Roact.createElement(Module.Roact.Primary, {
 	style = Style.new(1, Enum.Font.SourceSans, "Light", Color3.new(0, 0.4, 0.7)),
 	progress = nil,
 	isEnabled = true,
-}
+})
 
 Roact.mount(circular, parent)
 ```

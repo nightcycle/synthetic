@@ -96,7 +96,7 @@ local large = Roact.createElement(Module.Roact.New, {
 	subHeadingFontData = Types.FontData.new(Font.fromEnum(Enum.Font.SourceSans), 14),
 	buttonFontData = Types.FontData.new(Font.fromEnum(Enum.Font.SourceSans), 14),
 	scale = 1,
-}
+})
 
 Roact.mount(large, parent)
 ```
@@ -154,7 +154,7 @@ local large = Roact.createElement(Module.Roact.Primary, {
 	buttons = {},
 	navigation = nil,
 	elevation = 0,
-}
+})
 
 Roact.mount(large, parent)
 ```

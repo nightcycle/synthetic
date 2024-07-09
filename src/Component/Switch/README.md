@@ -126,7 +126,7 @@ local switch = Roact.createElement(Module.Roact.New, {
 	schemeType = Enums.SchemeType.Light,
 	fontData = Types.FontData.new(Font.fromEnum(Enum.Font.SourceSans), 14),
 	scale = 1,
-}
+})
 
 Roact.mount(switch, parent)
 ```
@@ -196,7 +196,7 @@ local switch = Roact.createElement(Module.Roact.Primary, {
 	includeIconOnDeselected = true,
 	elevation = 0,
 	isEnabled = true,
-}
+})
 
 Roact.mount(switch, parent)
 ```

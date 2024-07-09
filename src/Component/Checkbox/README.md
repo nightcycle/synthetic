@@ -96,7 +96,7 @@ local checkbox = Roact.createElement(Module.Roact.New, {
 	schemeType = Enums.SchemeType.Light,
 	fontData = Types.FontData.new(Font.fromEnum(Enum.Font.SourceSans), 14),
 	scale = 1,
-}
+})
 
 Roact.mount(checkbox, parent)
 ```
@@ -154,7 +154,7 @@ local checkbox = Roact.createElement(Module.Roact.Primary, {
 	initialSelection = nil,
 	elevation = 0,
 	isEnabled = true,
-}
+})
 
 Roact.mount(checkbox, parent)
 ```

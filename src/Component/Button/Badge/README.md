@@ -102,7 +102,7 @@ local badge = Roact.createElement(Module.Roact.New, {
 	schemeType = Enums.SchemeType.Light,
 	fontData = Types.FontData.new(Font.fromEnum(Enum.Font.SourceSans), 14),
 	scale = 1,
-}
+})
 
 Roact.mount(badge, parent)
 ```
@@ -166,7 +166,7 @@ local badge = Roact.createElement(Module.Roact.OnPrimary, {
 	label = "",
 	count = nil,
 	elevation = 0,
-}
+})
 
 Roact.mount(badge, parent)
 ```

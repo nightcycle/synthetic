@@ -84,7 +84,7 @@ local outlinedIconButton = Roact.createElement(Module.Roact.New, {
 	schemeType = Enums.SchemeType.Light,
 	fontData = Types.FontData.new(Font.fromEnum(Enum.Font.SourceSans), 14),
 	scale = 1,
-}
+})
 
 Roact.mount(outlinedIconButton, parent)
 ```
@@ -142,7 +142,7 @@ local outlinedIconButton = Roact.createElement(Module.Roact.OnPrimary, {
 	icon = Types.ImageData.new(""),
 	elevation = 0,
 	isEnabled = true,
-}
+})
 
 Roact.mount(outlinedIconButton, parent)
 ```

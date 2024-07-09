@@ -108,7 +108,7 @@ local extendedFAB = Roact.createElement(Module.Roact.New, {
 	schemeType = Enums.SchemeType.Light,
 	fontData = Types.FontData.new(Font.fromEnum(Enum.Font.SourceSans), 14),
 	scale = 1,
-}
+})
 
 Roact.mount(extendedFAB, parent)
 ```
@@ -172,7 +172,7 @@ local extendedFAB = Roact.createElement(Module.Roact.Primary, {
 	icon = nil,
 	elevation = 0,
 	isEnabled = true,
-}
+})
 
 Roact.mount(extendedFAB, parent)
 ```

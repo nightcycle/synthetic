@@ -480,7 +480,7 @@ type CanBeState<V> = ColdFusion.CanBeState<V>"""
 
 				roact_lines.append(f'\t{param["name"]} = {param["default"]},{comment}')
 			roact_lines += [
-				'}\n',
+				'})\n',
 				f'Roact.mount({pascal_to_camel(self.name)}, parent)',
 				'```'
 			]

@@ -96,7 +96,7 @@ local small = Roact.createElement(Module.Roact.New, {
 	schemeType = Enums.SchemeType.Light,
 	fontData = Types.FontData.new(Font.fromEnum(Enum.Font.SourceSans), 14),
 	scale = 1,
-}
+})
 
 Roact.mount(small, parent)
 ```
@@ -160,7 +160,7 @@ local small = Roact.createElement(Module.Roact.SurfaceContainer, {
 	onButtonClick = function() end,
 	onCloseClick = function() end,
 	elevation = 0,
-}
+})
 
 Roact.mount(small, parent)
 ```

@@ -120,7 +120,7 @@ local dialog = Roact.createElement(Module.Roact.New, {
 	bodyFontData = Types.FontData.new(Font.fromEnum(Enum.Font.SourceSans), 14),
 	buttonFontData = Types.FontData.new(Font.fromEnum(Enum.Font.SourceSans), 14),
 	scale = 1,
-}
+})
 
 Roact.mount(dialog, parent)
 ```
@@ -178,7 +178,7 @@ local dialog = Roact.createElement(Module.Roact.Primary, {
 	icon = nil,
 	headline = "",
 	description = "",
-}
+})
 
 Roact.mount(dialog, parent)
 ```

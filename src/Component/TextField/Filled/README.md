@@ -162,7 +162,7 @@ end,
 	bodyFontData = Types.FontData.new(Font.fromEnum(Enum.Font.SourceSans), 14),
 	supportFontData = Types.FontData.new(Font.fromEnum(Enum.Font.SourceSans), 14),
 	scale = 1,
-}
+})
 
 Roact.mount(filled, parent)
 ```
@@ -268,7 +268,7 @@ end,
 	isError = false,
 	elevation = 0,
 	isEnabled = true,
-}
+})
 
 Roact.mount(filled, parent)
 ```

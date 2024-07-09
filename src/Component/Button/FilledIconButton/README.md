@@ -96,7 +96,7 @@ local filledIconButton = Roact.createElement(Module.Roact.New, {
 	schemeType = Enums.SchemeType.Light,
 	fontData = Types.FontData.new(Font.fromEnum(Enum.Font.SourceSans), 14),
 	scale = 1,
-}
+})
 
 Roact.mount(filledIconButton, parent)
 ```
@@ -154,7 +154,7 @@ local filledIconButton = Roact.createElement(Module.Roact.Primary, {
 	icon = Types.ImageData.new(""),
 	elevation = 0,
 	isEnabled = true,
-}
+})
 
 Roact.mount(filledIconButton, parent)
 ```

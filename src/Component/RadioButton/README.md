@@ -96,7 +96,7 @@ local radioButton = Roact.createElement(Module.Roact.New, {
 	schemeType = Enums.SchemeType.Light,
 	fontData = Types.FontData.new(Font.fromEnum(Enum.Font.SourceSans), 14),
 	scale = 1,
-}
+})
 
 Roact.mount(radioButton, parent)
 ```
@@ -154,7 +154,7 @@ local radioButton = Roact.createElement(Module.Roact.Primary, {
 	initialSelection = false,
 	elevation = 0,
 	isEnabled = true,
-}
+})
 
 Roact.mount(radioButton, parent)
 ```

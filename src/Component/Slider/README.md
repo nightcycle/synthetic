@@ -120,7 +120,7 @@ local slider = Roact.createElement(Module.Roact.New, {
 	schemeType = Enums.SchemeType.Light,
 	fontData = Types.FontData.new(Font.fromEnum(Enum.Font.SourceSans), 14),
 	scale = 1,
-}
+})
 
 Roact.mount(slider, parent)
 ```
@@ -202,7 +202,7 @@ local slider = Roact.createElement(Module.Roact.Primary, {
 	leftTextOrIcon = nil,
 	rightTextOrIcon = nil,
 	elevation = 0,
-}
+})
 
 Roact.mount(slider, parent)
 ```
