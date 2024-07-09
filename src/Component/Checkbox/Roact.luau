@@ -36,7 +36,21 @@ local Interface = {}
 do
 	local NewCheckbox = Roact.Component:extend("NewCheckbox")
 
-	function NewCheckbox:init()
+	NewCheckbox.defaultProps = {
+		onSelect = (DEFAULTS.NEW.ON_SELECT),
+		initialSelection = (DEFAULTS.NEW.INITIAL_SELECTION),
+		isEnabled = (DEFAULTS.NEW.IS_ENABLED),
+		outlineColor = (DEFAULTS.NEW.OUTLINE_COLOR),
+		fillColor = (DEFAULTS.NEW.FILL_COLOR),
+		iconColor = (DEFAULTS.NEW.ICON_COLOR),
+		disabledColor = (DEFAULTS.NEW.DISABLED_COLOR),
+		elevation = (DEFAULTS.NEW.ELEVATION),
+		schemeType = (DEFAULTS.NEW.SCHEME_TYPE),
+		fontData = (DEFAULTS.NEW.FONT_DATA),
+		scale = (DEFAULTS.NEW.SCALE),
+	}
+
+	function NewCheckbox:init(initialProps: {[string]: unknown})
 		self._maid = Maid.new()
 		local _fuse = ColdFusion.fuse(self._maid)
 
@@ -49,57 +63,78 @@ do
 		local _Computed = _fuse.Computed
 
 		self._internalStates = {
-			onSelect = _Value(DEFAULTS.NEW.ON_SELECT),
-			initialSelection = _Value(DEFAULTS.NEW.INITIAL_SELECTION),
-			isEnabled = _Value(DEFAULTS.NEW.IS_ENABLED),
-			outlineColor = _Value(DEFAULTS.NEW.OUTLINE_COLOR),
-			fillColor = _Value(DEFAULTS.NEW.FILL_COLOR),
-			iconColor = _Value(DEFAULTS.NEW.ICON_COLOR),
-			disabledColor = _Value(DEFAULTS.NEW.DISABLED_COLOR),
-			elevation = _Value(DEFAULTS.NEW.ELEVATION),
-			schemeType = _Value(DEFAULTS.NEW.SCHEME_TYPE),
-			fontData = _Value(DEFAULTS.NEW.FONT_DATA),
-			scale = _Value(DEFAULTS.NEW.SCALE),
+			onSelect = _Value(self.defaultProps.onSelect),
+			initialSelection = _Value(self.defaultProps.initialSelection),
+			isEnabled = _Value(self.defaultProps.isEnabled),
+			outlineColor = _Value(self.defaultProps.outlineColor),
+			fillColor = _Value(self.defaultProps.fillColor),
+			iconColor = _Value(self.defaultProps.iconColor),
+			disabledColor = _Value(self.defaultProps.disabledColor),
+			elevation = _Value(self.defaultProps.elevation),
+			schemeType = _Value(self.defaultProps.schemeType),
+			fontData = _Value(self.defaultProps.fontData),
+			scale = _Value(self.defaultProps.scale),
 		}
+		table.freeze(self._internalStates)
+		for k, v in pairs(initialProps) do
+			if self._internalStates[k] then
+				self._internalStates[k]:Set(v)
+			end
+		end
 
 		self._instance = Source.new(
-			self._synthStates.onSelect,
-			self._synthStates.initialSelection,
-			self._synthStates.isEnabled,
-			self._synthStates.outlineColor,
-			self._synthStates.fillColor,
-			self._synthStates.iconColor,
-			self._synthStates.disabledColor,
-			self._synthStates.elevation,
-			self._synthStates.schemeType,
-			self._synthStates.fontData,
-			self._synthStates.scale
+			self._internalStates.onSelect,
+			self._internalStates.initialSelection,
+			self._internalStates.isEnabled,
+			self._internalStates.outlineColor,
+			self._internalStates.fillColor,
+			self._internalStates.iconColor,
+			self._internalStates.disabledColor,
+			self._internalStates.elevation,
+			self._internalStates.schemeType,
+			self._internalStates.fontData,
+			self._internalStates.scale
 		)
-
-
+		print("inst", self._instance)
 	end
 
 	function NewCheckbox:render()
-		return Roact.createElement(Roact.Portal,{
+		print("render")
+		print("self", self)
+		local props = {
 			target = self._instance,
-		})
-	end
-
-	function NewCheckbox:didUpdate(previousProps: {[string]: unknown}, previousState: {[string]: unknown})
-		for k, v in pairs(previousProps) do
+		}
+		for k, v in pairs(self.props) do
 			if self.props[k] ~= v then
 				if self._internalStates[k] then
-					self._internalStates[k]:Set(self.props[k])
-				else
-					local success, _msg = pcall(function()
-						self._instance[k] = self.props[k]
-					end)
-					if not success then
-						warn(`bad property "{k}" with value "{v}" of type {type(v)} in component {self.__componentName}`)
+					if v == nil then
+						v = self.defaultProps[k]
 					end
+					print(`set internal state: {k} = {v}`)
+					self._internalStates[k]:Set(v)
+				else
+					props[k] = v
+					print(`apply to inst: {k} = {v}`)
 				end
 			end
 		end
+		print("props param", props)
+		return Roact.createElement(Roact.Portal, props)
+	end
+
+	function NewCheckbox:didMount()
+		for k, v in pairs(self) do
+			if typeof(v) == "table" then
+				if v["virtualNode"] then
+					if self._instance.Parent ~= v["virtualNode"]["hostParent"] then
+						self._instance.Parent = v["virtualNode"]["hostParent"]
+					end
+					break
+				end
+			end
+		end
+
+		print("didMount", self)
 	end
 
 	-- run on destruction
@@ -108,7 +143,7 @@ do
 		self._instance:Destroy()
 	end
 
-	Interface.NewCheckbox = NewCheckbox
+	Interface.New = NewCheckbox
 end
 
 

@@ -420,6 +420,7 @@ function Interface.new(
 	)
 
 	local inst = _new("ImageButton")({
+		Name = "Checkbox",
 		Size = _Computed(function(sc: number): UDim2
 			return UDim2.fromOffset(sc * LAYER_SIZE_DP, sc * LAYER_SIZE_DP)
 		end, scaleState),
