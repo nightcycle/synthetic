@@ -65,7 +65,7 @@ function Interface.primary(): StyledFilledWrapper
 		OnInputEntered = _Value(function(input: string)
 			return input
 		end),
-		Label = _Value(nil),
+		Label = _Value(""),
 		OptionSolver = _Value(function(input: string)
 			return {}
 		end),
@@ -105,7 +105,7 @@ function Interface.secondary(): StyledFilledWrapper
 		OnInputEntered = _Value(function(input: string)
 			return input
 		end),
-		Label = _Value(nil),
+		Label = _Value(""),
 		OptionSolver = _Value(function(input: string)
 			return {}
 		end),
@@ -145,7 +145,7 @@ function Interface.tertiary(): StyledFilledWrapper
 		OnInputEntered = _Value(function(input: string)
 			return input
 		end),
-		Label = _Value(nil),
+		Label = _Value(""),
 		OptionSolver = _Value(function(input: string)
 			return {}
 		end),
@@ -185,7 +185,7 @@ function Interface.primaryContainer(): StyledFilledWrapper
 		OnInputEntered = _Value(function(input: string)
 			return input
 		end),
-		Label = _Value(nil),
+		Label = _Value(""),
 		OptionSolver = _Value(function(input: string)
 			return {}
 		end),
@@ -225,7 +225,7 @@ function Interface.secondaryContainer(): StyledFilledWrapper
 		OnInputEntered = _Value(function(input: string)
 			return input
 		end),
-		Label = _Value(nil),
+		Label = _Value(""),
 		OptionSolver = _Value(function(input: string)
 			return {}
 		end),
@@ -265,7 +265,7 @@ function Interface.tertiaryContainer(): StyledFilledWrapper
 		OnInputEntered = _Value(function(input: string)
 			return input
 		end),
-		Label = _Value(nil),
+		Label = _Value(""),
 		OptionSolver = _Value(function(input: string)
 			return {}
 		end),

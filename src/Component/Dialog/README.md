@@ -33,8 +33,8 @@ This function is a native constructor, with verbosity allowing for control over 
 ```luau
 local buttons: { ButtonData } = {}
 local icon: ImageData? = nil
-local headline: string? = nil
-local description: string? = nil
+local headline: string? = ""
+local description: string? = ""
 local surfaceColor: Color3 = Color3.new()
 local buttonTextColor: Color3 = Color3.new()
 local disabledTextColor: Color3 = Color3.new()
@@ -69,8 +69,8 @@ dialog.Scale = scale
 ```luau
 local buttonsState: Fusion.Value<{ ButtonData }> = Value({})
 local icon: ImageData? = nil
-local headlineState: Fusion.Value<string?> = Value(nil)
-local description: string? = nil
+local headlineState: Fusion.Value<string?> = Value("")
+local description: string? = ""
 local surfaceColorState: Fusion.Value<Color3> = Value(Color3.new())
 local buttonTextColor: Color3 = Color3.new()
 local disabledTextColorState: Fusion.Value<Color3> = Value(Color3.new())
@@ -119,8 +119,8 @@ This function is a style constructor, utilizing the "Style" type to reduce the n
 local style: Style = Style.new(1, Enum.Font.SourceSans, "Light", Color3.new(0, 0.4, 0.7))
 local buttons: { ButtonData } = {}
 local icon: ImageData? = nil
-local headline: string? = nil
-local description: string? = nil
+local headline: string? = ""
+local description: string? = ""
 
 local dialog = Synthetic.Component.Dialog.Fusion.primary()
 dialog.Style = style
@@ -135,8 +135,8 @@ dialog.Description = description
 local styleState: Fusion.Value<Style> = Value(Style.new(1, Enum.Font.SourceSans, "Light", Color3.new(0, 0.4, 0.7)))
 local buttons: { ButtonData } = {}
 local iconState: Fusion.Value<ImageData?> = Value(nil)
-local headline: string? = nil
-local descriptionState: Fusion.Value<string?> = Value(nil)
+local headline: string? = ""
+local descriptionState: Fusion.Value<string?> = Value("")
 
 local dialog: GuiObject = Synthetic.Component.Dialog.Fusion.primary(
 	styleState,

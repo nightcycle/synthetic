@@ -30,7 +30,7 @@ This function is a native constructor, with verbosity allowing for control over 
 ```luau
 local onClick: () -> () = function() end
 local icon: ImageData = Types.ImageData.new("")
-local label: string? = nil
+local label: string? = ""
 local count: number? = nil
 local textColor: Color3 = Color3.new()
 local hoverColor: Color3 = Color3.new()
@@ -60,7 +60,7 @@ badge.Scale = scale
 ```luau
 local onClickState: Fusion.Value<() -> ()> = Value(function() end)
 local icon: ImageData = Types.ImageData.new("")
-local labelState: Fusion.Value<string?> = Value(nil)
+local labelState: Fusion.Value<string?> = Value("")
 local count: number? = nil
 local textColorState: Fusion.Value<Color3> = Value(Color3.new())
 local hoverColor: Color3 = Color3.new()
@@ -105,7 +105,7 @@ This function is a style constructor, utilizing the "Style" type to reduce the n
 local style: Style = Style.new(1, Enum.Font.SourceSans, "Light", Color3.new(0, 0.4, 0.7))
 local onClick: () -> () = function() end
 local icon: ImageData = Types.ImageData.new("")
-local label: string? = nil
+local label: string? = ""
 local count: number? = nil
 local elevation: number? = 0
 
@@ -123,7 +123,7 @@ badge.Elevation = elevation
 local styleState: Fusion.Value<Style> = Value(Style.new(1, Enum.Font.SourceSans, "Light", Color3.new(0, 0.4, 0.7)))
 local onClick: () -> () = function() end
 local iconState: Fusion.Value<ImageData> = Value(Types.ImageData.new(""))
-local label: string? = nil
+local label: string? = ""
 local countState: Fusion.Value<number?> = Value(nil)
 local elevation: number? = 0
 

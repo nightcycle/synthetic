@@ -29,12 +29,12 @@ return {
 		ON_INPUT = function(text: string?)
 			return text
 		end,
-		INITIAL_TEXT = nil :: string?,
+		INITIAL_TEXT = "",
 		IS_ENABLED = true,
 		IS_ERROR = false,
 		LABEL = "Label",
 		CHARACTER_LIMIT = nil :: number?,
-		SUPPORTING_TEXT = nil :: string?,
+		SUPPORTING_TEXT = "",
 		ICON = nil :: ImageData?,
 		BACKGROUND_COLOR = Color3.new(),
 		HIGHTLIGHT_COLOR = Color3.new(),
@@ -54,11 +54,11 @@ return {
 			return text
 		end,
 		LABEL = "Label",
-		INITIAL_TEXT = nil :: string?,
+		INITIAL_TEXT = "",
 		ON_INPUT = function(text: string?)
 			return text
 		end,
-		SUPPORTING_TEXT = nil :: string?,
+		SUPPORTING_TEXT = "",
 		ICON = nil :: ImageData?,
 		CHARACTER_LIMIT = nil :: number?,
 		IS_ERROR = false,
@@ -71,11 +71,11 @@ return {
 			return text
 		end,
 		LABEL = "Label",
-		INITIAL_TEXT = nil :: string?,
+		INITIAL_TEXT = "",
 		ON_INPUT = function(text: string?)
 			return text
 		end,
-		SUPPORTING_TEXT = nil :: string?,
+		SUPPORTING_TEXT = "",
 		ICON = nil :: ImageData?,
 		CHARACTER_LIMIT = nil :: number?,
 		IS_ERROR = false,
@@ -88,11 +88,11 @@ return {
 			return text
 		end,
 		LABEL = "Label",
-		INITIAL_TEXT = nil :: string?,
+		INITIAL_TEXT = "",
 		ON_INPUT = function(text: string?)
 			return text
 		end,
-		SUPPORTING_TEXT = nil :: string?,
+		SUPPORTING_TEXT = "",
 		ICON = nil :: ImageData?,
 		CHARACTER_LIMIT = nil :: number?,
 		IS_ERROR = false,

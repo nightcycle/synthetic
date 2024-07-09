@@ -21,12 +21,12 @@
                 {
                     "name": "headline",
                     "type": "string?",
-                    "default": "nil"
+                    "default": "\"\""
                 },
                 {
                     "name": "description",
                     "type": "string?",
-                    "default": "nil"
+                    "default": "\"\""
                 },
                 {
                     "name": "surfaceColor",
@@ -111,12 +111,12 @@
                 {
                     "name": "headline",
                     "type": "string?",
-                    "default": "nil"
+                    "default": "\"\""
                 },
                 {
                     "name": "description",
                     "type": "string?",
-                    "default": "nil"
+                    "default": "\"\""
                 }
             ]
         }

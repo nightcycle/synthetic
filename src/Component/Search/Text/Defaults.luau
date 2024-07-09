@@ -26,7 +26,7 @@ return {
 		ON_INPUT_ENTERED = function(input: string)
 			return input
 		end,
-		LABEL = nil :: string?,
+		LABEL = "",
 		OPTION_SOLVER = function(input: string)
 			return {}
 		end,
@@ -43,7 +43,7 @@ return {
 		ON_INPUT_ENTERED = function(input: string)
 			return input
 		end,
-		LABEL = nil :: string?,
+		LABEL = "",
 		OPTION_SOLVER = function(input: string)
 			return {}
 		end,
@@ -55,7 +55,7 @@ return {
 		ON_INPUT_ENTERED = function(input: string)
 			return input
 		end,
-		LABEL = nil :: string?,
+		LABEL = "",
 		OPTION_SOLVER = function(input: string)
 			return {}
 		end,
@@ -67,7 +67,7 @@ return {
 		ON_INPUT_ENTERED = function(input: string)
 			return input
 		end,
-		LABEL = nil :: string?,
+		LABEL = "",
 		OPTION_SOLVER = function(input: string)
 			return {}
 		end,
@@ -79,7 +79,7 @@ return {
 		ON_INPUT_ENTERED = function(input: string)
 			return input
 		end,
-		LABEL = nil :: string?,
+		LABEL = "",
 		OPTION_SOLVER = function(input: string)
 			return {}
 		end,
@@ -91,7 +91,7 @@ return {
 		ON_INPUT_ENTERED = function(input: string)
 			return input
 		end,
-		LABEL = nil :: string?,
+		LABEL = "",
 		OPTION_SOLVER = function(input: string)
 			return {}
 		end,
@@ -103,7 +103,7 @@ return {
 		ON_INPUT_ENTERED = function(input: string)
 			return input
 		end,
-		LABEL = nil :: string?,
+		LABEL = "",
 		OPTION_SOLVER = function(input: string)
 			return {}
 		end,

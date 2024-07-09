@@ -42,12 +42,12 @@ end
 local onInput: ((text: string?) -> string?) = function(text: string?)
 return text
 end
-local initialText: string? = nil
+local initialText: string? = ""
 local isEnabled: boolean = true
 local isError: boolean = false
 local label: string = "Label"
 local characterLimit: number? = nil
-local supportingText: string? = nil
+local supportingText: string? = ""
 local icon: ImageData? = nil
 local backgroundColor: Color3 = Color3.new()
 local hightlightColor: Color3 = Color3.new()
@@ -92,12 +92,12 @@ end)
 local onInput: ((text: string?) -> string?) = function(text: string?)
 return text
 end
-local initialTextState: Fusion.Value<string?> = Value(nil)
+local initialTextState: Fusion.Value<string?> = Value("")
 local isEnabled: boolean = true
 local isErrorState: Fusion.Value<boolean> = Value(false)
 local label: string = "Label"
 local characterLimitState: Fusion.Value<number?> = Value(nil)
-local supportingText: string? = nil
+local supportingText: string? = ""
 local iconState: Fusion.Value<ImageData?> = Value(nil)
 local backgroundColor: Color3 = Color3.new()
 local hightlightColorState: Fusion.Value<Color3> = Value(Color3.new())
@@ -160,11 +160,11 @@ local onSubmit: ((text: string?) -> string?) = function(text: string?)
 return text
 end
 local label: string = "Label"
-local initialText: string? = nil
+local initialText: string? = ""
 local onInput: (((text: string?) -> string?)?) = function(text: string?)
 return text
 end
-local supportingText: string? = nil
+local supportingText: string? = ""
 local icon: ImageData? = nil
 local characterLimit: number? = nil
 local isError: boolean? = false
@@ -192,11 +192,11 @@ local onSubmit: ((text: string?) -> string?) = function(text: string?)
 return text
 end
 local labelState: Fusion.Value<string> = Value("Label")
-local initialText: string? = nil
+local initialText: string? = ""
 local onInputState: Fusion.Value<(((text: string?) -> string?)?)> = Value(function(text: string?)
 return text
 end)
-local supportingText: string? = nil
+local supportingText: string? = ""
 local iconState: Fusion.Value<ImageData?> = Value(nil)
 local characterLimit: number? = nil
 local isErrorState: Fusion.Value<boolean?> = Value(false)

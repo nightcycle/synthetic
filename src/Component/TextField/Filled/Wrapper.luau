@@ -81,11 +81,11 @@ function Interface.primary(): StyledFilledWrapper
 			return text
 		end),
 		Label = _Value("Label"),
-		InitialText = _Value(nil),
+		InitialText = _Value(""),
 		OnInput = _Value(function(text: string?)
 			return text
 		end),
-		SupportingText = _Value(nil),
+		SupportingText = _Value(""),
 		Icon = _Value(nil),
 		CharacterLimit = _Value(nil),
 		IsError = _Value(false),
@@ -136,11 +136,11 @@ function Interface.secondary(): StyledFilledWrapper
 			return text
 		end),
 		Label = _Value("Label"),
-		InitialText = _Value(nil),
+		InitialText = _Value(""),
 		OnInput = _Value(function(text: string?)
 			return text
 		end),
-		SupportingText = _Value(nil),
+		SupportingText = _Value(""),
 		Icon = _Value(nil),
 		CharacterLimit = _Value(nil),
 		IsError = _Value(false),
@@ -191,11 +191,11 @@ function Interface.tertiary(): StyledFilledWrapper
 			return text
 		end),
 		Label = _Value("Label"),
-		InitialText = _Value(nil),
+		InitialText = _Value(""),
 		OnInput = _Value(function(text: string?)
 			return text
 		end),
-		SupportingText = _Value(nil),
+		SupportingText = _Value(""),
 		Icon = _Value(nil),
 		CharacterLimit = _Value(nil),
 		IsError = _Value(false),

@@ -16,7 +16,7 @@
                 {
                     "name": "label",
                     "type": "string?",
-                    "default": "nil"
+                    "default": "\"\""
                 },
                 {
                     "name": "optionSolver",
@@ -84,7 +84,7 @@
                 {
                     "name": "label",
                     "type": "string?",
-                    "default": "nil"
+                    "default": "\"\""
                 },
                 {
                     "name": "optionSolver",

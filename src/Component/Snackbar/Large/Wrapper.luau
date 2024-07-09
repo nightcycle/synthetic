@@ -65,8 +65,8 @@ function Interface.surfaceContainer(): StyledLargeWrapper
 		Style = _Value(Style.new(1, Enum.Font.SourceSans, "Light", Color3.new(0, 0.4, 0.7))),
 		Text = _Value(""),
 		ButtonText = _Value("Action"),
-		OnButtonClick = _Value(nil),
-		OnCloseClick = _Value(nil),
+		OnButtonClick = _Value(function() end),
+		OnCloseClick = _Value(function() end),
 		Elevation = _Value(0),
 	}
 	local defaults: { [string]: unknown? } = {
@@ -101,8 +101,8 @@ function Interface.primaryContainer(): StyledLargeWrapper
 		Style = _Value(Style.new(1, Enum.Font.SourceSans, "Light", Color3.new(0, 0.4, 0.7))),
 		Text = _Value(""),
 		ButtonText = _Value("Action"),
-		OnButtonClick = _Value(nil),
-		OnCloseClick = _Value(nil),
+		OnButtonClick = _Value(function() end),
+		OnCloseClick = _Value(function() end),
 		Elevation = _Value(0),
 	}
 	local defaults: { [string]: unknown? } = {
@@ -137,8 +137,8 @@ function Interface.secondaryContainer(): StyledLargeWrapper
 		Style = _Value(Style.new(1, Enum.Font.SourceSans, "Light", Color3.new(0, 0.4, 0.7))),
 		Text = _Value(""),
 		ButtonText = _Value("Action"),
-		OnButtonClick = _Value(nil),
-		OnCloseClick = _Value(nil),
+		OnButtonClick = _Value(function() end),
+		OnCloseClick = _Value(function() end),
 		Elevation = _Value(0),
 	}
 	local defaults: { [string]: unknown? } = {
@@ -173,8 +173,8 @@ function Interface.tertiaryContainer(): StyledLargeWrapper
 		Style = _Value(Style.new(1, Enum.Font.SourceSans, "Light", Color3.new(0, 0.4, 0.7))),
 		Text = _Value(""),
 		ButtonText = _Value("Action"),
-		OnButtonClick = _Value(nil),
-		OnCloseClick = _Value(nil),
+		OnButtonClick = _Value(function() end),
+		OnCloseClick = _Value(function() end),
 		Elevation = _Value(0),
 	}
 	local defaults: { [string]: unknown? } = {

@@ -68,8 +68,8 @@ function Interface.primary(): StyledDialogWrapper
 		Style = _Value(Style.new(1, Enum.Font.SourceSans, "Light", Color3.new(0, 0.4, 0.7))),
 		Buttons = _Value({}),
 		Icon = _Value(nil),
-		Headline = _Value(nil),
-		Description = _Value(nil),
+		Headline = _Value(""),
+		Description = _Value(""),
 	}
 	local defaults: { [string]: unknown? } = {
 		style = DEFAULTS.PRIMARY.STYLE,
@@ -101,8 +101,8 @@ function Interface.secondary(): StyledDialogWrapper
 		Style = _Value(Style.new(1, Enum.Font.SourceSans, "Light", Color3.new(0, 0.4, 0.7))),
 		Buttons = _Value({}),
 		Icon = _Value(nil),
-		Headline = _Value(nil),
-		Description = _Value(nil),
+		Headline = _Value(""),
+		Description = _Value(""),
 	}
 	local defaults: { [string]: unknown? } = {
 		style = DEFAULTS.SECONDARY.STYLE,
@@ -134,8 +134,8 @@ function Interface.tertiary(): StyledDialogWrapper
 		Style = _Value(Style.new(1, Enum.Font.SourceSans, "Light", Color3.new(0, 0.4, 0.7))),
 		Buttons = _Value({}),
 		Icon = _Value(nil),
-		Headline = _Value(nil),
-		Description = _Value(nil),
+		Headline = _Value(""),
+		Description = _Value(""),
 	}
 	local defaults: { [string]: unknown? } = {
 		style = DEFAULTS.TERTIARY.STYLE,

@@ -21,7 +21,7 @@
                 {
                     "name": "initialText",
                     "type": "string?",
-                    "default": "nil"
+                    "default": "\"\""
                 },
                 {
                     "name": "isEnabled",
@@ -46,7 +46,7 @@
                 {
                     "name": "supportingText",
                     "type": "string?",
-                    "default": "nil"
+                    "default": "\"\""
                 },
                 {
                     "name": "icon",
@@ -131,7 +131,7 @@
                 {
                     "name": "initialText",
                     "type": "string?",
-                    "default": "nil"
+                    "default": "\"\""
                 },
                 {
                     "name": "onInput",
@@ -141,7 +141,7 @@
                 {
                     "name": "supportingText",
                     "type": "string?",
-                    "default": "nil"
+                    "default": "\"\""
                 },
                 {
                     "name": "icon",

@@ -29,8 +29,8 @@ This function is a native constructor, with verbosity allowing for control over 
 ```luau
 local text: string = ""
 local buttonText: string? = "Action"
-local onButtonClick: ((() -> ())?) = nil
-local onCloseClick: ((() -> ())?) = nil
+local onButtonClick: ((() -> ())?) = function() end
+local onCloseClick: ((() -> ())?) = function() end
 local textColor: Color3 = Color3.new()
 local buttonTextColor: Color3 = Color3.new()
 local backgroundColor: Color3 = Color3.new()
@@ -57,8 +57,8 @@ large.Scale = scale
 ```luau
 local textState: Fusion.Value<string> = Value("")
 local buttonText: string? = "Action"
-local onButtonClickState: Fusion.Value<((() -> ())?)> = Value(nil)
-local onCloseClick: ((() -> ())?) = nil
+local onButtonClickState: Fusion.Value<((() -> ())?)> = Value(function() end)
+local onCloseClick: ((() -> ())?) = function() end
 local textColorState: Fusion.Value<Color3> = Value(Color3.new())
 local buttonTextColor: Color3 = Color3.new()
 local backgroundColorState: Fusion.Value<Color3> = Value(Color3.new())
@@ -100,8 +100,8 @@ This function is a style constructor, utilizing the "Style" type to reduce the n
 local style: Style = Style.new(1, Enum.Font.SourceSans, "Light", Color3.new(0, 0.4, 0.7))
 local text: string = ""
 local buttonText: string? = "Action"
-local onButtonClick: ((() -> ())?) = nil
-local onCloseClick: ((() -> ())?) = nil
+local onButtonClick: ((() -> ())?) = function() end
+local onCloseClick: ((() -> ())?) = function() end
 local elevation: number? = 0
 
 local large = Synthetic.Component.Snackbar.Large.Fusion.surfaceContainer()
@@ -118,8 +118,8 @@ large.Elevation = elevation
 local styleState: Fusion.Value<Style> = Value(Style.new(1, Enum.Font.SourceSans, "Light", Color3.new(0, 0.4, 0.7)))
 local text: string = ""
 local buttonTextState: Fusion.Value<string?> = Value("Action")
-local onButtonClick: ((() -> ())?) = nil
-local onCloseClickState: Fusion.Value<((() -> ())?)> = Value(nil)
+local onButtonClick: ((() -> ())?) = function() end
+local onCloseClickState: Fusion.Value<((() -> ())?)> = Value(function() end)
 local elevation: number? = 0
 
 local large: GuiObject = Synthetic.Component.Snackbar.Large.Fusion.surfaceContainer(

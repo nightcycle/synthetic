@@ -66,7 +66,7 @@ function Interface.onPrimary(): StyledBadgeWrapper
 		Style = _Value(Style.new(1, Enum.Font.SourceSans, "Light", Color3.new(0, 0.4, 0.7))),
 		OnClick = _Value(function() end),
 		Icon = _Value(Types.ImageData.new("")),
-		Label = _Value(nil),
+		Label = _Value(""),
 		Count = _Value(nil),
 		Elevation = _Value(0),
 	}
@@ -102,7 +102,7 @@ function Interface.onSurface(): StyledBadgeWrapper
 		Style = _Value(Style.new(1, Enum.Font.SourceSans, "Light", Color3.new(0, 0.4, 0.7))),
 		OnClick = _Value(function() end),
 		Icon = _Value(Types.ImageData.new("")),
-		Label = _Value(nil),
+		Label = _Value(""),
 		Count = _Value(nil),
 		Elevation = _Value(0),
 	}

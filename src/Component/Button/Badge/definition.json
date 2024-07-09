@@ -21,7 +21,7 @@
                 {
                     "name": "label",
                     "type": "string?",
-                    "default": "nil"
+                    "default": "\"\""
                 },
                 {
                     "name": "count",
@@ -95,7 +95,7 @@
                 {
                     "name": "label",
                     "type": "string?",
-                    "default": "nil"
+                    "default": "\"\""
                 },
                 {
                     "name": "count",

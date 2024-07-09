@@ -29,7 +29,7 @@ This function is a native constructor, with verbosity allowing for control over 
 local onInputEntered: (input: string) -> string = function(input: string)
 return input
 end
-local label: string? = nil
+local label: string? = ""
 local optionSolver: (input: string) -> { string } = function(input: string)
 return {}
 end
@@ -59,7 +59,7 @@ filled.Scale = scale
 local onInputEnteredState: Fusion.Value<(input: string) -> string> = Value(function(input: string)
 return input
 end)
-local label: string? = nil
+local label: string? = ""
 local optionSolverState: Fusion.Value<(input: string) -> { string }> = Value(function(input: string)
 return {}
 end)
@@ -104,7 +104,7 @@ local style: Style = Style.new(1, Enum.Font.SourceSans, "Light", Color3.new(0, 0
 local onInputEntered: (input: string) -> string = function(input: string)
 return input
 end
-local label: string? = nil
+local label: string? = ""
 local optionSolver: (input: string) -> { string } = function(input: string)
 return {}
 end
@@ -126,7 +126,7 @@ local styleState: Fusion.Value<Style> = Value(Style.new(1, Enum.Font.SourceSans,
 local onInputEntered: (input: string) -> string = function(input: string)
 return input
 end
-local labelState: Fusion.Value<string?> = Value(nil)
+local labelState: Fusion.Value<string?> = Value("")
 local optionSolver: (input: string) -> { string } = function(input: string)
 return {}
 end
