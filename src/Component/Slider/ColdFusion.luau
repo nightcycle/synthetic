@@ -497,8 +497,10 @@ function Interface.new(
 	local fontDataState: State<FontData> = _import(fontData, DEFAULTS.NEW.FONT_DATA)
 
 	local onChangeState: State<(val: number) -> ()> = _import(onChange, DEFAULTS.NEW.ON_CHANGE)
-	local leftLabelState: State<string | ImageData | nil> = _import(leftTextOrIcon, nil :: ImageData?)
-	local rightLabelState: State<string | ImageData | nil> = _import(rightTextOrIcon, nil :: ImageData?)
+	local leftLabelState: State<string | ImageData | nil> =
+		_import(leftTextOrIcon, DEFAULTS.NEW.LEFT_TEXT_OR_ICON)
+	local rightLabelState: State<string | ImageData | nil> =
+		_import(rightTextOrIcon, DEFAULTS.NEW.RIGHT_TEXT_OR_ICON)
 	local initialValueState: State<number> = _import(initialValue, DEFAULTS.NEW.INITIAL_VALUE)
 
 	local minState: State<number> = _import(minimum, DEFAULTS.NEW.MINIMUM)
@@ -571,6 +573,7 @@ function Interface.new(
 	local incrementMaid = maid:GiveTask(Maid.new())
 
 	local leftBar = _new("ImageLabel")({
+		Name = "LeftBar",
 		LayoutOrder = 1,
 		Position = UDim2.fromScale(0, 0.5),
 		AnchorPoint = Vector2.new(0, 0.5),
@@ -582,11 +585,17 @@ function Interface.new(
 		SliceScale = 1,
 		ScaleType = Enum.ScaleType.Slice,
 		Size = _Computed(function(sc: number, fill: number, fullWidth: UDim): UDim2
-			return UDim2.new(math.max(fill - sc * 0.5, 0), -fullWidth.Offset * 0.5, 0, sc * BAR_HEIGHT_DP)
+			return UDim2.new(
+				math.max(fill - fullWidth.Scale * 0.5, 0),
+				-fullWidth.Offset * 0.5,
+				0,
+				sc * BAR_HEIGHT_DP
+			)
 		end, scaleState, fillState, cursorFullWidthState),
 	}) :: ImageLabel
 
 	local rightBar = _new("ImageLabel")({
+		Name = "RightBar",
 		LayoutOrder = 2,
 		Position = UDim2.fromScale(1, 0.5),
 		AnchorPoint = Vector2.new(1, 0.5),
@@ -608,6 +617,7 @@ function Interface.new(
 	}) :: ImageLabel
 
 	local cursor = _new("Frame")({
+		Name = "Cursor",
 		LayoutOrder = 1,
 		ZIndex = 10,
 		Position = _Computed(function(fill: number): UDim2
@@ -632,13 +642,14 @@ function Interface.new(
 		},
 	}) :: Frame
 	local dotContainer = _new("Frame")({
+		Name = "DotContainer",
 		ZIndex = 5,
 		Position = UDim2.fromScale(0.5, 0.5),
 		AnchorPoint = Vector2.new(0.5, 0.5),
 		AutomaticSize = Enum.AutomaticSize.None,
 		BackgroundTransparency = 1,
 		Size = _Computed(function(sc: number): UDim2
-			return UDim2.new(1, 0, sc * CURSOR_HEIGHT_DP, 0)
+			return UDim2.new(1, 0, 0, sc * CURSOR_HEIGHT_DP)
 		end, scaleState),
 		Children = {
 			maid:GiveTask(Util.Padding.ColdFusion.new(
@@ -698,6 +709,7 @@ function Interface.new(
 			)
 		)
 	)({
+		Name = "PopUp",
 		Visible = isSelectedState,
 		BackgroundTransparency = 0,
 		BackgroundColor3 = onBackgroundColorState,
@@ -746,6 +758,7 @@ function Interface.new(
 	end))
 
 	local button = _new("TextButton")({
+		Name = "Button",
 		LayoutOrder = 2,
 		BackgroundTransparency = 1,
 		AutomaticSize = Enum.AutomaticSize.XY,
@@ -793,13 +806,15 @@ function Interface.new(
 		end
 	end))
 	local inst = _new("Frame")({
-		AutomaticSize = Enum.AutomaticSize.None,
+		Name = "Slider",
+		AutomaticSize = Enum.AutomaticSize.X,
 		BackgroundTransparency = 1,
 		Size = _Computed(function(sc: number): UDim2
 			return UDim2.fromOffset(0, sc * CURSOR_HEIGHT_DP)
 		end, scaleState),
 		Children = {
 			_new("TextLabel")({
+				Name = "LeftLabel",
 				Text = _Computed(function(icon: ImageData | string | nil): string | nil
 					return if type(icon) == "string" then icon else ""
 				end, leftLabelState),
@@ -824,6 +839,7 @@ function Interface.new(
 				Size = UDim2.fromOffset(0, 0),
 			}),
 			_new("TextLabel")({
+				Name = "RightLabel",
 				Text = _Computed(function(icon: ImageData | string | nil): string | nil
 					return if type(icon) == "string" then icon else ""
 				end, rightLabelState),
@@ -858,6 +874,7 @@ function Interface.new(
 					)
 				)
 			)({
+				Name = "LeftIcon",
 				Visible = _Computed(function(icon: ImageData | string | nil): boolean
 					return type(icon) == "table"
 				end, leftLabelState),
@@ -875,6 +892,7 @@ function Interface.new(
 					)
 				)
 			)({
+				Name = "RightIcon",
 				Visible = _Computed(function(icon: ImageData | string | nil): boolean
 					return type(icon) == "table"
 				end, rightLabelState),
@@ -891,7 +909,7 @@ function Interface.new(
 						return UDim.new(0, sc * ICON_PADDING_DP)
 					end, scaleState),
 					Enum.UIFlexAlignment.Fill,
-					Enum.UIFlexAlignment.None,
+					Enum.UIFlexAlignment.Fill,
 					Enum.ItemLineAlignment.Center,
 					false
 				)

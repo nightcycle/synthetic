@@ -28,6 +28,8 @@ return {
 		MINIMUM = 0,
 		MAXIMUM = 100,
 		INCREMENT = 10,
+		LEFT_TEXT_OR_ICON = nil :: (string | ImageData)?,
+		RIGHT_TEXT_OR_ICON = nil :: (string | ImageData)?,
 		ON_BACKGROUND_COLOR = Color3.new(),
 		ON_BACKGROUND_TEXT_COLOR = Color3.new(),
 		FILL_COLOR = Color3.new(),

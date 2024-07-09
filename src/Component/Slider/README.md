@@ -1,5 +1,7 @@
 # Slider
 
+![Preview](preview.gif)
+
 A slider allows for the selection of a value within a range. Read more [here](https://m3.material.io/components/sliders/overview).
 # Constructors
 
@@ -13,8 +15,8 @@ This function is a native constructor, with verbosity allowing for control over 
 - **minimum**: number?
 - **maximum**: number?
 - **increment**: number?
-- **leftTextOrIcon**: string | ImageData | nil
-- **rightTextOrIcon**: string | ImageData | nil
+- **leftTextOrIcon**: ((string | ImageData)?)
+- **rightTextOrIcon**: ((string | ImageData)?)
 - **onBackgroundColor**: Color3
 - **onBackgroundTextColor**: Color3
 - **fillColor**: Color3
@@ -34,8 +36,8 @@ local initialValue: number = 50
 local minimum: number? = 0
 local maximum: number? = 100
 local increment: number? = 10
-local leftTextOrIcon: string | ImageData | nil = 
-local rightTextOrIcon: string | ImageData | nil = 
+local leftTextOrIcon: ((string | ImageData)?) = nil
+local rightTextOrIcon: ((string | ImageData)?) = nil
 local onBackgroundColor: Color3 = Color3.new()
 local onBackgroundTextColor: Color3 = Color3.new()
 local fillColor: Color3 = Color3.new()
@@ -70,8 +72,8 @@ local initialValue: number = 50
 local minimumState: Fusion.Value<number?> = Value(0)
 local maximum: number? = 100
 local incrementState: Fusion.Value<number?> = Value(10)
-local leftTextOrIcon: string | ImageData | nil = 
-local rightTextOrIconState: Fusion.Value<string | ImageData | nil> = Value()
+local leftTextOrIcon: ((string | ImageData)?) = nil
+local rightTextOrIconState: Fusion.Value<((string | ImageData)?)> = Value(nil)
 local onBackgroundColor: Color3 = Color3.new()
 local onBackgroundTextColorState: Fusion.Value<Color3> = Value(Color3.new())
 local fillColor: Color3 = Color3.new()
@@ -109,8 +111,8 @@ This function is a style constructor, utilizing the "Style" type to reduce the n
 - **minimum**: number?
 - **maximum**: number?
 - **increment**: number?
-- **leftTextOrIcon**: (string | ImageData)?
-- **rightTextOrIcon**: (string | ImageData)?
+- **leftTextOrIcon**: ((string | ImageData)?)
+- **rightTextOrIcon**: ((string | ImageData)?)
 - **elevation**: number
 
 
@@ -124,8 +126,8 @@ local initialValue: number = 50
 local minimum: number? = 0
 local maximum: number? = 100
 local increment: number? = 10
-local leftTextOrIcon: (string | ImageData)? = nil
-local rightTextOrIcon: (string | ImageData)? = nil
+local leftTextOrIcon: ((string | ImageData)?) = nil
+local rightTextOrIcon: ((string | ImageData)?) = nil
 local elevation: number = 0
 
 local slider = Synthetic.Component.Slider.Fusion.primary()
@@ -148,8 +150,8 @@ local initialValueState: Fusion.Value<number> = Value(50)
 local minimum: number? = 0
 local maximumState: Fusion.Value<number?> = Value(100)
 local increment: number? = 10
-local leftTextOrIconState: Fusion.Value<(string | ImageData)?> = Value(nil)
-local rightTextOrIcon: (string | ImageData)? = nil
+local leftTextOrIconState: Fusion.Value<((string | ImageData)?)> = Value(nil)
+local rightTextOrIcon: ((string | ImageData)?) = nil
 local elevationState: Fusion.Value<number> = Value(0)
 
 local slider: GuiObject = Synthetic.Component.Slider.Fusion.primary(

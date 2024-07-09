@@ -39,8 +39,8 @@ function Interface.new(
 	minimum: FusionCanBeState<number?>,
 	maximum: FusionCanBeState<number?>,
 	increment: FusionCanBeState<number?>,
-	leftTextOrIcon: FusionCanBeState<string | ImageData | nil>,
-	rightTextOrIcon: FusionCanBeState<string | ImageData | nil>,
+	leftTextOrIcon: FusionCanBeState<((string | ImageData)?)>,
+	rightTextOrIcon: FusionCanBeState<((string | ImageData)?)>,
 	onBackgroundColor: FusionCanBeState<Color3>,
 	onBackgroundTextColor: FusionCanBeState<Color3>,
 	fillColor: FusionCanBeState<Color3>,
@@ -85,8 +85,8 @@ function Interface.primary(
 	minimum: FusionCanBeState<number?>,
 	maximum: FusionCanBeState<number?>,
 	increment: FusionCanBeState<number?>,
-	leftTextOrIcon: FusionCanBeState<(string | ImageData)?>,
-	rightTextOrIcon: FusionCanBeState<(string | ImageData)?>,
+	leftTextOrIcon: FusionCanBeState<((string | ImageData)?)>,
+	rightTextOrIcon: FusionCanBeState<((string | ImageData)?)>,
 	elevation: FusionCanBeState<number>
 ): GuiObject
 	local maid = Maid.new()
@@ -118,8 +118,8 @@ function Interface.secondary(
 	minimum: FusionCanBeState<number?>,
 	maximum: FusionCanBeState<number?>,
 	increment: FusionCanBeState<number?>,
-	leftTextOrIcon: FusionCanBeState<(string | ImageData)?>,
-	rightTextOrIcon: FusionCanBeState<(string | ImageData)?>,
+	leftTextOrIcon: FusionCanBeState<((string | ImageData)?)>,
+	rightTextOrIcon: FusionCanBeState<((string | ImageData)?)>,
 	elevation: FusionCanBeState<number>
 ): GuiObject
 	local maid = Maid.new()
@@ -151,8 +151,8 @@ function Interface.tertiary(
 	minimum: FusionCanBeState<number?>,
 	maximum: FusionCanBeState<number?>,
 	increment: FusionCanBeState<number?>,
-	leftTextOrIcon: FusionCanBeState<(string | ImageData)?>,
-	rightTextOrIcon: FusionCanBeState<(string | ImageData)?>,
+	leftTextOrIcon: FusionCanBeState<((string | ImageData)?)>,
+	rightTextOrIcon: FusionCanBeState<((string | ImageData)?)>,
 	elevation: FusionCanBeState<number>
 ): GuiObject
 	local maid = Maid.new()
@@ -184,8 +184,8 @@ function Interface.onPrimary(
 	minimum: FusionCanBeState<number?>,
 	maximum: FusionCanBeState<number?>,
 	increment: FusionCanBeState<number?>,
-	leftTextOrIcon: FusionCanBeState<(string | ImageData)?>,
-	rightTextOrIcon: FusionCanBeState<(string | ImageData)?>,
+	leftTextOrIcon: FusionCanBeState<((string | ImageData)?)>,
+	rightTextOrIcon: FusionCanBeState<((string | ImageData)?)>,
 	elevation: FusionCanBeState<number>
 ): GuiObject
 	local maid = Maid.new()
@@ -217,8 +217,8 @@ function Interface.onSecondary(
 	minimum: FusionCanBeState<number?>,
 	maximum: FusionCanBeState<number?>,
 	increment: FusionCanBeState<number?>,
-	leftTextOrIcon: FusionCanBeState<(string | ImageData)?>,
-	rightTextOrIcon: FusionCanBeState<(string | ImageData)?>,
+	leftTextOrIcon: FusionCanBeState<((string | ImageData)?)>,
+	rightTextOrIcon: FusionCanBeState<((string | ImageData)?)>,
 	elevation: FusionCanBeState<number>
 ): GuiObject
 	local maid = Maid.new()
@@ -250,8 +250,8 @@ function Interface.onTertiary(
 	minimum: FusionCanBeState<number?>,
 	maximum: FusionCanBeState<number?>,
 	increment: FusionCanBeState<number?>,
-	leftTextOrIcon: FusionCanBeState<(string | ImageData)?>,
-	rightTextOrIcon: FusionCanBeState<(string | ImageData)?>,
+	leftTextOrIcon: FusionCanBeState<((string | ImageData)?)>,
+	rightTextOrIcon: FusionCanBeState<((string | ImageData)?)>,
 	elevation: FusionCanBeState<number>
 ): GuiObject
 	local maid = Maid.new()

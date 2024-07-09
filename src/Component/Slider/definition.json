@@ -35,13 +35,13 @@
                 },
                 {
                     "name": "leftTextOrIcon",
-                    "type": "string | ImageData | nil",
-                    "default": ""
+                    "type": "((string | ImageData)?)",
+                    "default": "nil"
                 },
                 {
                     "name": "rightTextOrIcon",
-                    "type": "string | ImageData | nil",
-                    "default": ""
+                    "type": "((string | ImageData)?)",
+                    "default": "nil"
                 },
                 {
                     "name": "onBackgroundColor",
@@ -128,12 +128,12 @@
                 },
                 {
                     "name": "leftTextOrIcon",
-                    "type": "(string | ImageData)?",
+                    "type": "((string | ImageData)?)",
                     "default": "nil"
                 },
                 {
                     "name": "rightTextOrIcon",
-                    "type": "(string | ImageData)?",
+                    "type": "((string | ImageData)?)",
                     "default": "nil"
                 },
                 {

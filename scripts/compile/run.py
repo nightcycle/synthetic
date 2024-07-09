@@ -99,6 +99,8 @@ type CanBeState<V> = ColdFusion.CanBeState<V>"""
 			for name in func["names"]:
 				def_param_values: list[str] = []
 				for param in func["parameters"]:
+					# print(param)
+					# print("\t" + self.name + ":" + name + ":" + param["name"] + " -> " + param["default"])
 					if param['default'] != '':
 						type_annotation = ""
 						if param['default'] == "nil":
