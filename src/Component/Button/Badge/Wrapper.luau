@@ -51,6 +51,7 @@ export type StyledBadgeWrapperDefinition = {
 }
 export type StyledBadgeWrapper = Wrapper<GuiObject, StyledBadgeWrapperDefinition, "StyledBadge">
 -- Constants
+local DEFAULTS = require(script.Parent:WaitForChild("Defaults"))
 -- Variables
 -- References
 -- Private Functions
@@ -69,6 +70,14 @@ function Interface.onPrimary(): StyledBadgeWrapper
 		Count = _Value(nil),
 		Elevation = _Value(0),
 	}
+	local defaults: { [string]: unknown? } = {
+		style = DEFAULTS.ON_PRIMARY.STYLE,
+		onClick = DEFAULTS.ON_PRIMARY.ON_CLICK,
+		icon = DEFAULTS.ON_PRIMARY.ICON,
+		label = DEFAULTS.ON_PRIMARY.LABEL,
+		count = DEFAULTS.ON_PRIMARY.COUNT,
+		elevation = DEFAULTS.ON_PRIMARY.ELEVATION,
+	}
 	local inst: GuiObject = Source.onPrimary(
 		definition.Style,
 		definition.OnClick,
@@ -80,7 +89,7 @@ function Interface.onPrimary(): StyledBadgeWrapper
 	maid:GiveTask(inst.Destroying:Connect(function()
 		maid:Destroy()
 	end))
-	local wrapper, cleanUp = Translators.ColdFusion.toWrapper("StyledBadge", inst, definition)
+	local wrapper, cleanUp = Translators.ColdFusion.toWrapper("StyledBadge", inst, definition, defaults)
 	maid:GiveTask(cleanUp)
 	return wrapper
 end
@@ -97,6 +106,14 @@ function Interface.onSurface(): StyledBadgeWrapper
 		Count = _Value(nil),
 		Elevation = _Value(0),
 	}
+	local defaults: { [string]: unknown? } = {
+		style = DEFAULTS.ON_SURFACE.STYLE,
+		onClick = DEFAULTS.ON_SURFACE.ON_CLICK,
+		icon = DEFAULTS.ON_SURFACE.ICON,
+		label = DEFAULTS.ON_SURFACE.LABEL,
+		count = DEFAULTS.ON_SURFACE.COUNT,
+		elevation = DEFAULTS.ON_SURFACE.ELEVATION,
+	}
 	local inst: GuiObject = Source.onSurface(
 		definition.Style,
 		definition.OnClick,
@@ -108,7 +125,7 @@ function Interface.onSurface(): StyledBadgeWrapper
 	maid:GiveTask(inst.Destroying:Connect(function()
 		maid:Destroy()
 	end))
-	local wrapper, cleanUp = Translators.ColdFusion.toWrapper("StyledBadge", inst, definition)
+	local wrapper, cleanUp = Translators.ColdFusion.toWrapper("StyledBadge", inst, definition, defaults)
 	maid:GiveTask(cleanUp)
 	return wrapper
 end

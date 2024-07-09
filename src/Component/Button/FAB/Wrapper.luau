@@ -50,6 +50,7 @@ export type StyledFABWrapperDefinition = {
 }
 export type StyledFABWrapper = Wrapper<GuiObject, StyledFABWrapperDefinition, "StyledFAB">
 -- Constants
+local DEFAULTS = require(script.Parent:WaitForChild("Defaults"))
 -- Variables
 -- References
 -- Private Functions
@@ -67,6 +68,13 @@ function Interface.primary(): StyledFABWrapper
 		Elevation = _Value(0),
 		IsEnabled = _Value(true),
 	}
+	local defaults: { [string]: unknown? } = {
+		style = DEFAULTS.PRIMARY.STYLE,
+		onClick = DEFAULTS.PRIMARY.ON_CLICK,
+		icon = DEFAULTS.PRIMARY.ICON,
+		elevation = DEFAULTS.PRIMARY.ELEVATION,
+		isEnabled = DEFAULTS.PRIMARY.IS_ENABLED,
+	}
 	local inst: GuiObject = Source.primary(
 		definition.Style,
 		definition.OnClick,
@@ -77,7 +85,7 @@ function Interface.primary(): StyledFABWrapper
 	maid:GiveTask(inst.Destroying:Connect(function()
 		maid:Destroy()
 	end))
-	local wrapper, cleanUp = Translators.ColdFusion.toWrapper("StyledFAB", inst, definition)
+	local wrapper, cleanUp = Translators.ColdFusion.toWrapper("StyledFAB", inst, definition, defaults)
 	maid:GiveTask(cleanUp)
 	return wrapper
 end
@@ -93,6 +101,13 @@ function Interface.secondary(): StyledFABWrapper
 		Elevation = _Value(0),
 		IsEnabled = _Value(true),
 	}
+	local defaults: { [string]: unknown? } = {
+		style = DEFAULTS.SECONDARY.STYLE,
+		onClick = DEFAULTS.SECONDARY.ON_CLICK,
+		icon = DEFAULTS.SECONDARY.ICON,
+		elevation = DEFAULTS.SECONDARY.ELEVATION,
+		isEnabled = DEFAULTS.SECONDARY.IS_ENABLED,
+	}
 	local inst: GuiObject = Source.secondary(
 		definition.Style,
 		definition.OnClick,
@@ -103,7 +118,7 @@ function Interface.secondary(): StyledFABWrapper
 	maid:GiveTask(inst.Destroying:Connect(function()
 		maid:Destroy()
 	end))
-	local wrapper, cleanUp = Translators.ColdFusion.toWrapper("StyledFAB", inst, definition)
+	local wrapper, cleanUp = Translators.ColdFusion.toWrapper("StyledFAB", inst, definition, defaults)
 	maid:GiveTask(cleanUp)
 	return wrapper
 end
@@ -119,6 +134,13 @@ function Interface.tertiary(): StyledFABWrapper
 		Elevation = _Value(0),
 		IsEnabled = _Value(true),
 	}
+	local defaults: { [string]: unknown? } = {
+		style = DEFAULTS.TERTIARY.STYLE,
+		onClick = DEFAULTS.TERTIARY.ON_CLICK,
+		icon = DEFAULTS.TERTIARY.ICON,
+		elevation = DEFAULTS.TERTIARY.ELEVATION,
+		isEnabled = DEFAULTS.TERTIARY.IS_ENABLED,
+	}
 	local inst: GuiObject = Source.tertiary(
 		definition.Style,
 		definition.OnClick,
@@ -129,7 +151,7 @@ function Interface.tertiary(): StyledFABWrapper
 	maid:GiveTask(inst.Destroying:Connect(function()
 		maid:Destroy()
 	end))
-	local wrapper, cleanUp = Translators.ColdFusion.toWrapper("StyledFAB", inst, definition)
+	local wrapper, cleanUp = Translators.ColdFusion.toWrapper("StyledFAB", inst, definition, defaults)
 	maid:GiveTask(cleanUp)
 	return wrapper
 end
@@ -145,6 +167,13 @@ function Interface.primaryContainer(): StyledFABWrapper
 		Elevation = _Value(0),
 		IsEnabled = _Value(true),
 	}
+	local defaults: { [string]: unknown? } = {
+		style = DEFAULTS.PRIMARY_CONTAINER.STYLE,
+		onClick = DEFAULTS.PRIMARY_CONTAINER.ON_CLICK,
+		icon = DEFAULTS.PRIMARY_CONTAINER.ICON,
+		elevation = DEFAULTS.PRIMARY_CONTAINER.ELEVATION,
+		isEnabled = DEFAULTS.PRIMARY_CONTAINER.IS_ENABLED,
+	}
 	local inst: GuiObject = Source.primaryContainer(
 		definition.Style,
 		definition.OnClick,
@@ -155,7 +184,7 @@ function Interface.primaryContainer(): StyledFABWrapper
 	maid:GiveTask(inst.Destroying:Connect(function()
 		maid:Destroy()
 	end))
-	local wrapper, cleanUp = Translators.ColdFusion.toWrapper("StyledFAB", inst, definition)
+	local wrapper, cleanUp = Translators.ColdFusion.toWrapper("StyledFAB", inst, definition, defaults)
 	maid:GiveTask(cleanUp)
 	return wrapper
 end
@@ -171,6 +200,13 @@ function Interface.secondaryContainer(): StyledFABWrapper
 		Elevation = _Value(0),
 		IsEnabled = _Value(true),
 	}
+	local defaults: { [string]: unknown? } = {
+		style = DEFAULTS.SECONDARY_CONTAINER.STYLE,
+		onClick = DEFAULTS.SECONDARY_CONTAINER.ON_CLICK,
+		icon = DEFAULTS.SECONDARY_CONTAINER.ICON,
+		elevation = DEFAULTS.SECONDARY_CONTAINER.ELEVATION,
+		isEnabled = DEFAULTS.SECONDARY_CONTAINER.IS_ENABLED,
+	}
 	local inst: GuiObject = Source.secondaryContainer(
 		definition.Style,
 		definition.OnClick,
@@ -181,7 +217,7 @@ function Interface.secondaryContainer(): StyledFABWrapper
 	maid:GiveTask(inst.Destroying:Connect(function()
 		maid:Destroy()
 	end))
-	local wrapper, cleanUp = Translators.ColdFusion.toWrapper("StyledFAB", inst, definition)
+	local wrapper, cleanUp = Translators.ColdFusion.toWrapper("StyledFAB", inst, definition, defaults)
 	maid:GiveTask(cleanUp)
 	return wrapper
 end
@@ -197,6 +233,13 @@ function Interface.tertiaryContainer(): StyledFABWrapper
 		Elevation = _Value(0),
 		IsEnabled = _Value(true),
 	}
+	local defaults: { [string]: unknown? } = {
+		style = DEFAULTS.TERTIARY_CONTAINER.STYLE,
+		onClick = DEFAULTS.TERTIARY_CONTAINER.ON_CLICK,
+		icon = DEFAULTS.TERTIARY_CONTAINER.ICON,
+		elevation = DEFAULTS.TERTIARY_CONTAINER.ELEVATION,
+		isEnabled = DEFAULTS.TERTIARY_CONTAINER.IS_ENABLED,
+	}
 	local inst: GuiObject = Source.tertiaryContainer(
 		definition.Style,
 		definition.OnClick,
@@ -207,7 +250,7 @@ function Interface.tertiaryContainer(): StyledFABWrapper
 	maid:GiveTask(inst.Destroying:Connect(function()
 		maid:Destroy()
 	end))
-	local wrapper, cleanUp = Translators.ColdFusion.toWrapper("StyledFAB", inst, definition)
+	local wrapper, cleanUp = Translators.ColdFusion.toWrapper("StyledFAB", inst, definition, defaults)
 	maid:GiveTask(cleanUp)
 	return wrapper
 end

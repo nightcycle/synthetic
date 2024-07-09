@@ -49,6 +49,7 @@ export type StyledSegmentedWrapperDefinition = {
 }
 export type StyledSegmentedWrapper = Wrapper<GuiObject, StyledSegmentedWrapperDefinition, "StyledSegmented">
 -- Constants
+local DEFAULTS = require(script.Parent:WaitForChild("Defaults"))
 -- Variables
 -- References
 -- Private Functions
@@ -66,6 +67,13 @@ function Interface.primaryContainer(): StyledSegmentedWrapper
 		IsMultiSelect = _Value(false),
 		Elevation = _Value(0),
 	}
+	local defaults: { [string]: unknown? } = {
+		style = DEFAULTS.PRIMARY_CONTAINER.STYLE,
+		options = DEFAULTS.PRIMARY_CONTAINER.OPTIONS,
+		density = DEFAULTS.PRIMARY_CONTAINER.DENSITY,
+		isMultiSelect = DEFAULTS.PRIMARY_CONTAINER.IS_MULTI_SELECT,
+		elevation = DEFAULTS.PRIMARY_CONTAINER.ELEVATION,
+	}
 	local inst: GuiObject = Source.primaryContainer(
 		definition.Style,
 		definition.Options,
@@ -76,7 +84,7 @@ function Interface.primaryContainer(): StyledSegmentedWrapper
 	maid:GiveTask(inst.Destroying:Connect(function()
 		maid:Destroy()
 	end))
-	local wrapper, cleanUp = Translators.ColdFusion.toWrapper("StyledSegmented", inst, definition)
+	local wrapper, cleanUp = Translators.ColdFusion.toWrapper("StyledSegmented", inst, definition, defaults)
 	maid:GiveTask(cleanUp)
 	return wrapper
 end
@@ -92,6 +100,13 @@ function Interface.secondaryContainer(): StyledSegmentedWrapper
 		IsMultiSelect = _Value(false),
 		Elevation = _Value(0),
 	}
+	local defaults: { [string]: unknown? } = {
+		style = DEFAULTS.SECONDARY_CONTAINER.STYLE,
+		options = DEFAULTS.SECONDARY_CONTAINER.OPTIONS,
+		density = DEFAULTS.SECONDARY_CONTAINER.DENSITY,
+		isMultiSelect = DEFAULTS.SECONDARY_CONTAINER.IS_MULTI_SELECT,
+		elevation = DEFAULTS.SECONDARY_CONTAINER.ELEVATION,
+	}
 	local inst: GuiObject = Source.secondaryContainer(
 		definition.Style,
 		definition.Options,
@@ -102,7 +117,7 @@ function Interface.secondaryContainer(): StyledSegmentedWrapper
 	maid:GiveTask(inst.Destroying:Connect(function()
 		maid:Destroy()
 	end))
-	local wrapper, cleanUp = Translators.ColdFusion.toWrapper("StyledSegmented", inst, definition)
+	local wrapper, cleanUp = Translators.ColdFusion.toWrapper("StyledSegmented", inst, definition, defaults)
 	maid:GiveTask(cleanUp)
 	return wrapper
 end
@@ -118,6 +133,13 @@ function Interface.tertiaryContainer(): StyledSegmentedWrapper
 		IsMultiSelect = _Value(false),
 		Elevation = _Value(0),
 	}
+	local defaults: { [string]: unknown? } = {
+		style = DEFAULTS.TERTIARY_CONTAINER.STYLE,
+		options = DEFAULTS.TERTIARY_CONTAINER.OPTIONS,
+		density = DEFAULTS.TERTIARY_CONTAINER.DENSITY,
+		isMultiSelect = DEFAULTS.TERTIARY_CONTAINER.IS_MULTI_SELECT,
+		elevation = DEFAULTS.TERTIARY_CONTAINER.ELEVATION,
+	}
 	local inst: GuiObject = Source.tertiaryContainer(
 		definition.Style,
 		definition.Options,
@@ -128,7 +150,7 @@ function Interface.tertiaryContainer(): StyledSegmentedWrapper
 	maid:GiveTask(inst.Destroying:Connect(function()
 		maid:Destroy()
 	end))
-	local wrapper, cleanUp = Translators.ColdFusion.toWrapper("StyledSegmented", inst, definition)
+	local wrapper, cleanUp = Translators.ColdFusion.toWrapper("StyledSegmented", inst, definition, defaults)
 	maid:GiveTask(cleanUp)
 	return wrapper
 end

@@ -26,6 +26,7 @@ type CanBeState<V> = ColdFusion.CanBeState<V>
 type FusionCanBeState<V> = Translators.FusionCanBeState<V>
 
 -- Constants
+local DEFAULTS = require(script.Parent:WaitForChild("Defaults"))
 -- Variables
 -- References
 -- Private Functions
@@ -41,15 +42,15 @@ function Interface.new(
 ): GuiObject
 	local maid = Maid.new()
 	local _fuse = ColdFusion.fuse(maid)
-	local function convert<V>(value: FusionCanBeState<V>): CanBeState<V>
-		return Translators.Fusion.toColdFusion(maid, _fuse, value)
+	local function convert<V>(value: FusionCanBeState<V>, default: V): CanBeState<V>
+		return Translators.Fusion.toColdFusion(maid, _fuse, value, default)
 	end
 	local inst = Source.new(
-		convert(progress),
-		convert(isEnabled),
-		convert(fillColor),
-		convert(emptyColor),
-		convert(scale)
+		convert(progress, DEFAULTS.NEW.PROGRESS),
+		convert(isEnabled, DEFAULTS.NEW.IS_ENABLED),
+		convert(fillColor, DEFAULTS.NEW.FILL_COLOR),
+		convert(emptyColor, DEFAULTS.NEW.EMPTY_COLOR),
+		convert(scale, DEFAULTS.NEW.SCALE)
 	)
 	maid:GiveTask(inst.Destroying:Connect(function()
 		maid:Destroy()
@@ -64,10 +65,14 @@ function Interface.primary(
 ): GuiObject
 	local maid = Maid.new()
 	local _fuse = ColdFusion.fuse(maid)
-	local function convert<V>(value: FusionCanBeState<V>): CanBeState<V>
-		return Translators.Fusion.toColdFusion(maid, _fuse, value)
+	local function convert<V>(value: FusionCanBeState<V>, default: V): CanBeState<V>
+		return Translators.Fusion.toColdFusion(maid, _fuse, value, default)
 	end
-	local inst = Source.primary(convert(style), convert(progress), convert(isEnabled))
+	local inst = Source.primary(
+		convert(style, DEFAULTS.PRIMARY.STYLE),
+		convert(progress, DEFAULTS.PRIMARY.PROGRESS),
+		convert(isEnabled, DEFAULTS.PRIMARY.IS_ENABLED)
+	)
 	maid:GiveTask(inst.Destroying:Connect(function()
 		maid:Destroy()
 	end))
@@ -81,10 +86,14 @@ function Interface.secondary(
 ): GuiObject
 	local maid = Maid.new()
 	local _fuse = ColdFusion.fuse(maid)
-	local function convert<V>(value: FusionCanBeState<V>): CanBeState<V>
-		return Translators.Fusion.toColdFusion(maid, _fuse, value)
+	local function convert<V>(value: FusionCanBeState<V>, default: V): CanBeState<V>
+		return Translators.Fusion.toColdFusion(maid, _fuse, value, default)
 	end
-	local inst = Source.secondary(convert(style), convert(progress), convert(isEnabled))
+	local inst = Source.secondary(
+		convert(style, DEFAULTS.SECONDARY.STYLE),
+		convert(progress, DEFAULTS.SECONDARY.PROGRESS),
+		convert(isEnabled, DEFAULTS.SECONDARY.IS_ENABLED)
+	)
 	maid:GiveTask(inst.Destroying:Connect(function()
 		maid:Destroy()
 	end))
@@ -98,10 +107,14 @@ function Interface.tertiary(
 ): GuiObject
 	local maid = Maid.new()
 	local _fuse = ColdFusion.fuse(maid)
-	local function convert<V>(value: FusionCanBeState<V>): CanBeState<V>
-		return Translators.Fusion.toColdFusion(maid, _fuse, value)
+	local function convert<V>(value: FusionCanBeState<V>, default: V): CanBeState<V>
+		return Translators.Fusion.toColdFusion(maid, _fuse, value, default)
 	end
-	local inst = Source.tertiary(convert(style), convert(progress), convert(isEnabled))
+	local inst = Source.tertiary(
+		convert(style, DEFAULTS.TERTIARY.STYLE),
+		convert(progress, DEFAULTS.TERTIARY.PROGRESS),
+		convert(isEnabled, DEFAULTS.TERTIARY.IS_ENABLED)
+	)
 	maid:GiveTask(inst.Destroying:Connect(function()
 		maid:Destroy()
 	end))

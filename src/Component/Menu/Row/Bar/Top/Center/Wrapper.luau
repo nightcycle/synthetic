@@ -49,6 +49,7 @@ export type StyledCenterWrapperDefinition = {
 }
 export type StyledCenterWrapper = Wrapper<GuiObject, StyledCenterWrapperDefinition, "StyledCenter">
 -- Constants
+local DEFAULTS = require(script.Parent:WaitForChild("Defaults"))
 -- Variables
 -- References
 -- Private Functions
@@ -66,6 +67,13 @@ function Interface.primary(): StyledCenterWrapper
 		Navigation = _Value(nil),
 		Elevation = _Value(0),
 	}
+	local defaults: { [string]: unknown? } = {
+		style = DEFAULTS.PRIMARY.STYLE,
+		title = DEFAULTS.PRIMARY.TITLE,
+		buttons = DEFAULTS.PRIMARY.BUTTONS,
+		navigation = DEFAULTS.PRIMARY.NAVIGATION,
+		elevation = DEFAULTS.PRIMARY.ELEVATION,
+	}
 	local inst: GuiObject = Source.primary(
 		definition.Style,
 		definition.Title,
@@ -76,7 +84,7 @@ function Interface.primary(): StyledCenterWrapper
 	maid:GiveTask(inst.Destroying:Connect(function()
 		maid:Destroy()
 	end))
-	local wrapper, cleanUp = Translators.ColdFusion.toWrapper("StyledCenter", inst, definition)
+	local wrapper, cleanUp = Translators.ColdFusion.toWrapper("StyledCenter", inst, definition, defaults)
 	maid:GiveTask(cleanUp)
 	return wrapper
 end
@@ -92,6 +100,13 @@ function Interface.secondary(): StyledCenterWrapper
 		Navigation = _Value(nil),
 		Elevation = _Value(0),
 	}
+	local defaults: { [string]: unknown? } = {
+		style = DEFAULTS.SECONDARY.STYLE,
+		title = DEFAULTS.SECONDARY.TITLE,
+		buttons = DEFAULTS.SECONDARY.BUTTONS,
+		navigation = DEFAULTS.SECONDARY.NAVIGATION,
+		elevation = DEFAULTS.SECONDARY.ELEVATION,
+	}
 	local inst: GuiObject = Source.secondary(
 		definition.Style,
 		definition.Title,
@@ -102,7 +117,7 @@ function Interface.secondary(): StyledCenterWrapper
 	maid:GiveTask(inst.Destroying:Connect(function()
 		maid:Destroy()
 	end))
-	local wrapper, cleanUp = Translators.ColdFusion.toWrapper("StyledCenter", inst, definition)
+	local wrapper, cleanUp = Translators.ColdFusion.toWrapper("StyledCenter", inst, definition, defaults)
 	maid:GiveTask(cleanUp)
 	return wrapper
 end
@@ -118,6 +133,13 @@ function Interface.tertiary(): StyledCenterWrapper
 		Navigation = _Value(nil),
 		Elevation = _Value(0),
 	}
+	local defaults: { [string]: unknown? } = {
+		style = DEFAULTS.TERTIARY.STYLE,
+		title = DEFAULTS.TERTIARY.TITLE,
+		buttons = DEFAULTS.TERTIARY.BUTTONS,
+		navigation = DEFAULTS.TERTIARY.NAVIGATION,
+		elevation = DEFAULTS.TERTIARY.ELEVATION,
+	}
 	local inst: GuiObject = Source.tertiary(
 		definition.Style,
 		definition.Title,
@@ -128,7 +150,7 @@ function Interface.tertiary(): StyledCenterWrapper
 	maid:GiveTask(inst.Destroying:Connect(function()
 		maid:Destroy()
 	end))
-	local wrapper, cleanUp = Translators.ColdFusion.toWrapper("StyledCenter", inst, definition)
+	local wrapper, cleanUp = Translators.ColdFusion.toWrapper("StyledCenter", inst, definition, defaults)
 	maid:GiveTask(cleanUp)
 	return wrapper
 end

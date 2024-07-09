@@ -26,6 +26,7 @@ type CanBeState<V> = ColdFusion.CanBeState<V>
 type FusionCanBeState<V> = Translators.FusionCanBeState<V>
 
 -- Constants
+local DEFAULTS = require(script.Parent:WaitForChild("Defaults"))
 -- Variables
 -- References
 -- Private Functions
@@ -46,20 +47,20 @@ function Interface.new(
 ): GuiObject
 	local maid = Maid.new()
 	local _fuse = ColdFusion.fuse(maid)
-	local function convert<V>(value: FusionCanBeState<V>): CanBeState<V>
-		return Translators.Fusion.toColdFusion(maid, _fuse, value)
+	local function convert<V>(value: FusionCanBeState<V>, default: V): CanBeState<V>
+		return Translators.Fusion.toColdFusion(maid, _fuse, value, default)
 	end
 	local inst = Source.new(
-		convert(onInputEntered),
-		convert(label),
-		convert(optionSolver),
-		convert(optionConstructor),
-		convert(textColor),
-		convert(backgroundColor),
-		convert(elevation),
-		convert(schemeType),
-		convert(fontData),
-		convert(scale)
+		convert(onInputEntered, DEFAULTS.NEW.ON_INPUT_ENTERED),
+		convert(label, DEFAULTS.NEW.LABEL),
+		convert(optionSolver, DEFAULTS.NEW.OPTION_SOLVER),
+		convert(optionConstructor, DEFAULTS.NEW.OPTION_CONSTRUCTOR),
+		convert(textColor, DEFAULTS.NEW.TEXT_COLOR),
+		convert(backgroundColor, DEFAULTS.NEW.BACKGROUND_COLOR),
+		convert(elevation, DEFAULTS.NEW.ELEVATION),
+		convert(schemeType, DEFAULTS.NEW.SCHEME_TYPE),
+		convert(fontData, DEFAULTS.NEW.FONT_DATA),
+		convert(scale, DEFAULTS.NEW.SCALE)
 	)
 	maid:GiveTask(inst.Destroying:Connect(function()
 		maid:Destroy()
@@ -79,16 +80,16 @@ function Interface.onPrimary(
 ): GuiObject
 	local maid = Maid.new()
 	local _fuse = ColdFusion.fuse(maid)
-	local function convert<V>(value: FusionCanBeState<V>): CanBeState<V>
-		return Translators.Fusion.toColdFusion(maid, _fuse, value)
+	local function convert<V>(value: FusionCanBeState<V>, default: V): CanBeState<V>
+		return Translators.Fusion.toColdFusion(maid, _fuse, value, default)
 	end
 	local inst = Source.onPrimary(
-		convert(style),
-		convert(onInputEntered),
-		convert(label),
-		convert(optionSolver),
-		convert(optionConstructor),
-		convert(elevation)
+		convert(style, DEFAULTS.ON_PRIMARY.STYLE),
+		convert(onInputEntered, DEFAULTS.ON_PRIMARY.ON_INPUT_ENTERED),
+		convert(label, DEFAULTS.ON_PRIMARY.LABEL),
+		convert(optionSolver, DEFAULTS.ON_PRIMARY.OPTION_SOLVER),
+		convert(optionConstructor, DEFAULTS.ON_PRIMARY.OPTION_CONSTRUCTOR),
+		convert(elevation, DEFAULTS.ON_PRIMARY.ELEVATION)
 	)
 	maid:GiveTask(inst.Destroying:Connect(function()
 		maid:Destroy()
@@ -108,16 +109,16 @@ function Interface.onSecondary(
 ): GuiObject
 	local maid = Maid.new()
 	local _fuse = ColdFusion.fuse(maid)
-	local function convert<V>(value: FusionCanBeState<V>): CanBeState<V>
-		return Translators.Fusion.toColdFusion(maid, _fuse, value)
+	local function convert<V>(value: FusionCanBeState<V>, default: V): CanBeState<V>
+		return Translators.Fusion.toColdFusion(maid, _fuse, value, default)
 	end
 	local inst = Source.onSecondary(
-		convert(style),
-		convert(onInputEntered),
-		convert(label),
-		convert(optionSolver),
-		convert(optionConstructor),
-		convert(elevation)
+		convert(style, DEFAULTS.ON_SECONDARY.STYLE),
+		convert(onInputEntered, DEFAULTS.ON_SECONDARY.ON_INPUT_ENTERED),
+		convert(label, DEFAULTS.ON_SECONDARY.LABEL),
+		convert(optionSolver, DEFAULTS.ON_SECONDARY.OPTION_SOLVER),
+		convert(optionConstructor, DEFAULTS.ON_SECONDARY.OPTION_CONSTRUCTOR),
+		convert(elevation, DEFAULTS.ON_SECONDARY.ELEVATION)
 	)
 	maid:GiveTask(inst.Destroying:Connect(function()
 		maid:Destroy()
@@ -137,16 +138,16 @@ function Interface.onTertiary(
 ): GuiObject
 	local maid = Maid.new()
 	local _fuse = ColdFusion.fuse(maid)
-	local function convert<V>(value: FusionCanBeState<V>): CanBeState<V>
-		return Translators.Fusion.toColdFusion(maid, _fuse, value)
+	local function convert<V>(value: FusionCanBeState<V>, default: V): CanBeState<V>
+		return Translators.Fusion.toColdFusion(maid, _fuse, value, default)
 	end
 	local inst = Source.onTertiary(
-		convert(style),
-		convert(onInputEntered),
-		convert(label),
-		convert(optionSolver),
-		convert(optionConstructor),
-		convert(elevation)
+		convert(style, DEFAULTS.ON_TERTIARY.STYLE),
+		convert(onInputEntered, DEFAULTS.ON_TERTIARY.ON_INPUT_ENTERED),
+		convert(label, DEFAULTS.ON_TERTIARY.LABEL),
+		convert(optionSolver, DEFAULTS.ON_TERTIARY.OPTION_SOLVER),
+		convert(optionConstructor, DEFAULTS.ON_TERTIARY.OPTION_CONSTRUCTOR),
+		convert(elevation, DEFAULTS.ON_TERTIARY.ELEVATION)
 	)
 	maid:GiveTask(inst.Destroying:Connect(function()
 		maid:Destroy()
@@ -166,16 +167,16 @@ function Interface.onPrimaryContainer(
 ): GuiObject
 	local maid = Maid.new()
 	local _fuse = ColdFusion.fuse(maid)
-	local function convert<V>(value: FusionCanBeState<V>): CanBeState<V>
-		return Translators.Fusion.toColdFusion(maid, _fuse, value)
+	local function convert<V>(value: FusionCanBeState<V>, default: V): CanBeState<V>
+		return Translators.Fusion.toColdFusion(maid, _fuse, value, default)
 	end
 	local inst = Source.onPrimaryContainer(
-		convert(style),
-		convert(onInputEntered),
-		convert(label),
-		convert(optionSolver),
-		convert(optionConstructor),
-		convert(elevation)
+		convert(style, DEFAULTS.ON_PRIMARY_CONTAINER.STYLE),
+		convert(onInputEntered, DEFAULTS.ON_PRIMARY_CONTAINER.ON_INPUT_ENTERED),
+		convert(label, DEFAULTS.ON_PRIMARY_CONTAINER.LABEL),
+		convert(optionSolver, DEFAULTS.ON_PRIMARY_CONTAINER.OPTION_SOLVER),
+		convert(optionConstructor, DEFAULTS.ON_PRIMARY_CONTAINER.OPTION_CONSTRUCTOR),
+		convert(elevation, DEFAULTS.ON_PRIMARY_CONTAINER.ELEVATION)
 	)
 	maid:GiveTask(inst.Destroying:Connect(function()
 		maid:Destroy()
@@ -195,16 +196,16 @@ function Interface.onSecondaryContainer(
 ): GuiObject
 	local maid = Maid.new()
 	local _fuse = ColdFusion.fuse(maid)
-	local function convert<V>(value: FusionCanBeState<V>): CanBeState<V>
-		return Translators.Fusion.toColdFusion(maid, _fuse, value)
+	local function convert<V>(value: FusionCanBeState<V>, default: V): CanBeState<V>
+		return Translators.Fusion.toColdFusion(maid, _fuse, value, default)
 	end
 	local inst = Source.onSecondaryContainer(
-		convert(style),
-		convert(onInputEntered),
-		convert(label),
-		convert(optionSolver),
-		convert(optionConstructor),
-		convert(elevation)
+		convert(style, DEFAULTS.ON_SECONDARY_CONTAINER.STYLE),
+		convert(onInputEntered, DEFAULTS.ON_SECONDARY_CONTAINER.ON_INPUT_ENTERED),
+		convert(label, DEFAULTS.ON_SECONDARY_CONTAINER.LABEL),
+		convert(optionSolver, DEFAULTS.ON_SECONDARY_CONTAINER.OPTION_SOLVER),
+		convert(optionConstructor, DEFAULTS.ON_SECONDARY_CONTAINER.OPTION_CONSTRUCTOR),
+		convert(elevation, DEFAULTS.ON_SECONDARY_CONTAINER.ELEVATION)
 	)
 	maid:GiveTask(inst.Destroying:Connect(function()
 		maid:Destroy()
@@ -224,16 +225,16 @@ function Interface.onTertiaryContainer(
 ): GuiObject
 	local maid = Maid.new()
 	local _fuse = ColdFusion.fuse(maid)
-	local function convert<V>(value: FusionCanBeState<V>): CanBeState<V>
-		return Translators.Fusion.toColdFusion(maid, _fuse, value)
+	local function convert<V>(value: FusionCanBeState<V>, default: V): CanBeState<V>
+		return Translators.Fusion.toColdFusion(maid, _fuse, value, default)
 	end
 	local inst = Source.onTertiaryContainer(
-		convert(style),
-		convert(onInputEntered),
-		convert(label),
-		convert(optionSolver),
-		convert(optionConstructor),
-		convert(elevation)
+		convert(style, DEFAULTS.ON_TERTIARY_CONTAINER.STYLE),
+		convert(onInputEntered, DEFAULTS.ON_TERTIARY_CONTAINER.ON_INPUT_ENTERED),
+		convert(label, DEFAULTS.ON_TERTIARY_CONTAINER.LABEL),
+		convert(optionSolver, DEFAULTS.ON_TERTIARY_CONTAINER.OPTION_SOLVER),
+		convert(optionConstructor, DEFAULTS.ON_TERTIARY_CONTAINER.OPTION_CONSTRUCTOR),
+		convert(elevation, DEFAULTS.ON_TERTIARY_CONTAINER.ELEVATION)
 	)
 	maid:GiveTask(inst.Destroying:Connect(function()
 		maid:Destroy()

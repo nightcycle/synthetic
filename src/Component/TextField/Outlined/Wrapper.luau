@@ -63,6 +63,7 @@ export type StyledOutlinedWrapperDefinition = {
 }
 export type StyledOutlinedWrapper = Wrapper<GuiObject, StyledOutlinedWrapperDefinition, "StyledOutlined">
 -- Constants
+local DEFAULTS = require(script.Parent:WaitForChild("Defaults"))
 -- Variables
 -- References
 -- Private Functions
@@ -90,6 +91,19 @@ function Interface.primary(): StyledOutlinedWrapper
 		Elevation = _Value(0),
 		IsEnabled = _Value(true),
 	}
+	local defaults: { [string]: unknown? } = {
+		style = DEFAULTS.PRIMARY.STYLE,
+		onSubmit = DEFAULTS.PRIMARY.ON_SUBMIT,
+		label = DEFAULTS.PRIMARY.LABEL,
+		initialText = DEFAULTS.PRIMARY.INITIAL_TEXT,
+		onInput = DEFAULTS.PRIMARY.ON_INPUT,
+		supportingText = DEFAULTS.PRIMARY.SUPPORTING_TEXT,
+		icon = DEFAULTS.PRIMARY.ICON,
+		characterLimit = DEFAULTS.PRIMARY.CHARACTER_LIMIT,
+		isError = DEFAULTS.PRIMARY.IS_ERROR,
+		elevation = DEFAULTS.PRIMARY.ELEVATION,
+		isEnabled = DEFAULTS.PRIMARY.IS_ENABLED,
+	}
 	local inst: GuiObject = Source.primary(
 		definition.Style,
 		definition.OnSubmit,
@@ -106,7 +120,7 @@ function Interface.primary(): StyledOutlinedWrapper
 	maid:GiveTask(inst.Destroying:Connect(function()
 		maid:Destroy()
 	end))
-	local wrapper, cleanUp = Translators.ColdFusion.toWrapper("StyledOutlined", inst, definition)
+	local wrapper, cleanUp = Translators.ColdFusion.toWrapper("StyledOutlined", inst, definition, defaults)
 	maid:GiveTask(cleanUp)
 	return wrapper
 end
@@ -132,6 +146,19 @@ function Interface.secondary(): StyledOutlinedWrapper
 		Elevation = _Value(0),
 		IsEnabled = _Value(true),
 	}
+	local defaults: { [string]: unknown? } = {
+		style = DEFAULTS.SECONDARY.STYLE,
+		onSubmit = DEFAULTS.SECONDARY.ON_SUBMIT,
+		label = DEFAULTS.SECONDARY.LABEL,
+		initialText = DEFAULTS.SECONDARY.INITIAL_TEXT,
+		onInput = DEFAULTS.SECONDARY.ON_INPUT,
+		supportingText = DEFAULTS.SECONDARY.SUPPORTING_TEXT,
+		icon = DEFAULTS.SECONDARY.ICON,
+		characterLimit = DEFAULTS.SECONDARY.CHARACTER_LIMIT,
+		isError = DEFAULTS.SECONDARY.IS_ERROR,
+		elevation = DEFAULTS.SECONDARY.ELEVATION,
+		isEnabled = DEFAULTS.SECONDARY.IS_ENABLED,
+	}
 	local inst: GuiObject = Source.secondary(
 		definition.Style,
 		definition.OnSubmit,
@@ -148,7 +175,7 @@ function Interface.secondary(): StyledOutlinedWrapper
 	maid:GiveTask(inst.Destroying:Connect(function()
 		maid:Destroy()
 	end))
-	local wrapper, cleanUp = Translators.ColdFusion.toWrapper("StyledOutlined", inst, definition)
+	local wrapper, cleanUp = Translators.ColdFusion.toWrapper("StyledOutlined", inst, definition, defaults)
 	maid:GiveTask(cleanUp)
 	return wrapper
 end
@@ -174,6 +201,19 @@ function Interface.tertiary(): StyledOutlinedWrapper
 		Elevation = _Value(0),
 		IsEnabled = _Value(true),
 	}
+	local defaults: { [string]: unknown? } = {
+		style = DEFAULTS.TERTIARY.STYLE,
+		onSubmit = DEFAULTS.TERTIARY.ON_SUBMIT,
+		label = DEFAULTS.TERTIARY.LABEL,
+		initialText = DEFAULTS.TERTIARY.INITIAL_TEXT,
+		onInput = DEFAULTS.TERTIARY.ON_INPUT,
+		supportingText = DEFAULTS.TERTIARY.SUPPORTING_TEXT,
+		icon = DEFAULTS.TERTIARY.ICON,
+		characterLimit = DEFAULTS.TERTIARY.CHARACTER_LIMIT,
+		isError = DEFAULTS.TERTIARY.IS_ERROR,
+		elevation = DEFAULTS.TERTIARY.ELEVATION,
+		isEnabled = DEFAULTS.TERTIARY.IS_ENABLED,
+	}
 	local inst: GuiObject = Source.tertiary(
 		definition.Style,
 		definition.OnSubmit,
@@ -190,7 +230,7 @@ function Interface.tertiary(): StyledOutlinedWrapper
 	maid:GiveTask(inst.Destroying:Connect(function()
 		maid:Destroy()
 	end))
-	local wrapper, cleanUp = Translators.ColdFusion.toWrapper("StyledOutlined", inst, definition)
+	local wrapper, cleanUp = Translators.ColdFusion.toWrapper("StyledOutlined", inst, definition, defaults)
 	maid:GiveTask(cleanUp)
 	return wrapper
 end

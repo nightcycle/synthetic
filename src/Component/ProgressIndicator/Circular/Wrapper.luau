@@ -41,6 +41,7 @@ export type StyledCircularWrapperDefinition = {
 }
 export type StyledCircularWrapper = Wrapper<GuiObject, StyledCircularWrapperDefinition, "StyledCircular">
 -- Constants
+local DEFAULTS = require(script.Parent:WaitForChild("Defaults"))
 -- Variables
 -- References
 -- Private Functions
@@ -56,11 +57,16 @@ function Interface.primary(): StyledCircularWrapper
 		Progress = _Value(nil),
 		IsEnabled = _Value(true),
 	}
+	local defaults: { [string]: unknown? } = {
+		style = DEFAULTS.PRIMARY.STYLE,
+		progress = DEFAULTS.PRIMARY.PROGRESS,
+		isEnabled = DEFAULTS.PRIMARY.IS_ENABLED,
+	}
 	local inst: GuiObject = Source.primary(definition.Style, definition.Progress, definition.IsEnabled)
 	maid:GiveTask(inst.Destroying:Connect(function()
 		maid:Destroy()
 	end))
-	local wrapper, cleanUp = Translators.ColdFusion.toWrapper("StyledCircular", inst, definition)
+	local wrapper, cleanUp = Translators.ColdFusion.toWrapper("StyledCircular", inst, definition, defaults)
 	maid:GiveTask(cleanUp)
 	return wrapper
 end
@@ -74,11 +80,16 @@ function Interface.secondary(): StyledCircularWrapper
 		Progress = _Value(nil),
 		IsEnabled = _Value(true),
 	}
+	local defaults: { [string]: unknown? } = {
+		style = DEFAULTS.SECONDARY.STYLE,
+		progress = DEFAULTS.SECONDARY.PROGRESS,
+		isEnabled = DEFAULTS.SECONDARY.IS_ENABLED,
+	}
 	local inst: GuiObject = Source.secondary(definition.Style, definition.Progress, definition.IsEnabled)
 	maid:GiveTask(inst.Destroying:Connect(function()
 		maid:Destroy()
 	end))
-	local wrapper, cleanUp = Translators.ColdFusion.toWrapper("StyledCircular", inst, definition)
+	local wrapper, cleanUp = Translators.ColdFusion.toWrapper("StyledCircular", inst, definition, defaults)
 	maid:GiveTask(cleanUp)
 	return wrapper
 end
@@ -92,11 +103,16 @@ function Interface.tertiary(): StyledCircularWrapper
 		Progress = _Value(nil),
 		IsEnabled = _Value(true),
 	}
+	local defaults: { [string]: unknown? } = {
+		style = DEFAULTS.TERTIARY.STYLE,
+		progress = DEFAULTS.TERTIARY.PROGRESS,
+		isEnabled = DEFAULTS.TERTIARY.IS_ENABLED,
+	}
 	local inst: GuiObject = Source.tertiary(definition.Style, definition.Progress, definition.IsEnabled)
 	maid:GiveTask(inst.Destroying:Connect(function()
 		maid:Destroy()
 	end))
-	local wrapper, cleanUp = Translators.ColdFusion.toWrapper("StyledCircular", inst, definition)
+	local wrapper, cleanUp = Translators.ColdFusion.toWrapper("StyledCircular", inst, definition, defaults)
 	maid:GiveTask(cleanUp)
 	return wrapper
 end

@@ -26,6 +26,7 @@ type CanBeState<V> = ColdFusion.CanBeState<V>
 type FusionCanBeState<V> = Translators.FusionCanBeState<V>
 
 -- Constants
+local DEFAULTS = require(script.Parent:WaitForChild("Defaults"))
 -- Variables
 -- References
 -- Private Functions
@@ -51,25 +52,25 @@ function Interface.new(
 ): GuiObject
 	local maid = Maid.new()
 	local _fuse = ColdFusion.fuse(maid)
-	local function convert<V>(value: FusionCanBeState<V>): CanBeState<V>
-		return Translators.Fusion.toColdFusion(maid, _fuse, value)
+	local function convert<V>(value: FusionCanBeState<V>, default: V): CanBeState<V>
+		return Translators.Fusion.toColdFusion(maid, _fuse, value, default)
 	end
 	local inst = Source.new(
-		convert(buttons),
-		convert(icon),
-		convert(headline),
-		convert(description),
-		convert(surfaceColor),
-		convert(buttonTextColor),
-		convert(disabledTextColor),
-		convert(headlineColor),
-		convert(descriptionColor),
-		convert(scrimColor),
-		convert(schemeType),
-		convert(headlineFontData),
-		convert(bodyFontData),
-		convert(buttonFontData),
-		convert(scale)
+		convert(buttons, DEFAULTS.NEW.BUTTONS),
+		convert(icon, DEFAULTS.NEW.ICON),
+		convert(headline, DEFAULTS.NEW.HEADLINE),
+		convert(description, DEFAULTS.NEW.DESCRIPTION),
+		convert(surfaceColor, DEFAULTS.NEW.SURFACE_COLOR),
+		convert(buttonTextColor, DEFAULTS.NEW.BUTTON_TEXT_COLOR),
+		convert(disabledTextColor, DEFAULTS.NEW.DISABLED_TEXT_COLOR),
+		convert(headlineColor, DEFAULTS.NEW.HEADLINE_COLOR),
+		convert(descriptionColor, DEFAULTS.NEW.DESCRIPTION_COLOR),
+		convert(scrimColor, DEFAULTS.NEW.SCRIM_COLOR),
+		convert(schemeType, DEFAULTS.NEW.SCHEME_TYPE),
+		convert(headlineFontData, DEFAULTS.NEW.HEADLINE_FONT_DATA),
+		convert(bodyFontData, DEFAULTS.NEW.BODY_FONT_DATA),
+		convert(buttonFontData, DEFAULTS.NEW.BUTTON_FONT_DATA),
+		convert(scale, DEFAULTS.NEW.SCALE)
 	)
 	maid:GiveTask(inst.Destroying:Connect(function()
 		maid:Destroy()
@@ -86,15 +87,15 @@ function Interface.primary(
 ): GuiObject
 	local maid = Maid.new()
 	local _fuse = ColdFusion.fuse(maid)
-	local function convert<V>(value: FusionCanBeState<V>): CanBeState<V>
-		return Translators.Fusion.toColdFusion(maid, _fuse, value)
+	local function convert<V>(value: FusionCanBeState<V>, default: V): CanBeState<V>
+		return Translators.Fusion.toColdFusion(maid, _fuse, value, default)
 	end
 	local inst = Source.primary(
-		convert(style),
-		convert(buttons),
-		convert(icon),
-		convert(headline),
-		convert(description)
+		convert(style, DEFAULTS.PRIMARY.STYLE),
+		convert(buttons, DEFAULTS.PRIMARY.BUTTONS),
+		convert(icon, DEFAULTS.PRIMARY.ICON),
+		convert(headline, DEFAULTS.PRIMARY.HEADLINE),
+		convert(description, DEFAULTS.PRIMARY.DESCRIPTION)
 	)
 	maid:GiveTask(inst.Destroying:Connect(function()
 		maid:Destroy()
@@ -111,15 +112,15 @@ function Interface.secondary(
 ): GuiObject
 	local maid = Maid.new()
 	local _fuse = ColdFusion.fuse(maid)
-	local function convert<V>(value: FusionCanBeState<V>): CanBeState<V>
-		return Translators.Fusion.toColdFusion(maid, _fuse, value)
+	local function convert<V>(value: FusionCanBeState<V>, default: V): CanBeState<V>
+		return Translators.Fusion.toColdFusion(maid, _fuse, value, default)
 	end
 	local inst = Source.secondary(
-		convert(style),
-		convert(buttons),
-		convert(icon),
-		convert(headline),
-		convert(description)
+		convert(style, DEFAULTS.SECONDARY.STYLE),
+		convert(buttons, DEFAULTS.SECONDARY.BUTTONS),
+		convert(icon, DEFAULTS.SECONDARY.ICON),
+		convert(headline, DEFAULTS.SECONDARY.HEADLINE),
+		convert(description, DEFAULTS.SECONDARY.DESCRIPTION)
 	)
 	maid:GiveTask(inst.Destroying:Connect(function()
 		maid:Destroy()
@@ -136,15 +137,15 @@ function Interface.tertiary(
 ): GuiObject
 	local maid = Maid.new()
 	local _fuse = ColdFusion.fuse(maid)
-	local function convert<V>(value: FusionCanBeState<V>): CanBeState<V>
-		return Translators.Fusion.toColdFusion(maid, _fuse, value)
+	local function convert<V>(value: FusionCanBeState<V>, default: V): CanBeState<V>
+		return Translators.Fusion.toColdFusion(maid, _fuse, value, default)
 	end
 	local inst = Source.tertiary(
-		convert(style),
-		convert(buttons),
-		convert(icon),
-		convert(headline),
-		convert(description)
+		convert(style, DEFAULTS.TERTIARY.STYLE),
+		convert(buttons, DEFAULTS.TERTIARY.BUTTONS),
+		convert(icon, DEFAULTS.TERTIARY.ICON),
+		convert(headline, DEFAULTS.TERTIARY.HEADLINE),
+		convert(description, DEFAULTS.TERTIARY.DESCRIPTION)
 	)
 	maid:GiveTask(inst.Destroying:Connect(function()
 		maid:Destroy()

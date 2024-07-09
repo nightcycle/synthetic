@@ -50,6 +50,7 @@ export type StyledLargeWrapperDefinition = {
 }
 export type StyledLargeWrapper = Wrapper<GuiObject, StyledLargeWrapperDefinition, "StyledLarge">
 -- Constants
+local DEFAULTS = require(script.Parent:WaitForChild("Defaults"))
 -- Variables
 -- References
 -- Private Functions
@@ -68,6 +69,14 @@ function Interface.surfaceContainer(): StyledLargeWrapper
 		OnCloseClick = _Value(nil),
 		Elevation = _Value(0),
 	}
+	local defaults: { [string]: unknown? } = {
+		style = DEFAULTS.SURFACE_CONTAINER.STYLE,
+		text = DEFAULTS.SURFACE_CONTAINER.TEXT,
+		buttonText = DEFAULTS.SURFACE_CONTAINER.BUTTON_TEXT,
+		onButtonClick = DEFAULTS.SURFACE_CONTAINER.ON_BUTTON_CLICK,
+		onCloseClick = DEFAULTS.SURFACE_CONTAINER.ON_CLOSE_CLICK,
+		elevation = DEFAULTS.SURFACE_CONTAINER.ELEVATION,
+	}
 	local inst: GuiObject = Source.surfaceContainer(
 		definition.Style,
 		definition.Text,
@@ -79,7 +88,7 @@ function Interface.surfaceContainer(): StyledLargeWrapper
 	maid:GiveTask(inst.Destroying:Connect(function()
 		maid:Destroy()
 	end))
-	local wrapper, cleanUp = Translators.ColdFusion.toWrapper("StyledLarge", inst, definition)
+	local wrapper, cleanUp = Translators.ColdFusion.toWrapper("StyledLarge", inst, definition, defaults)
 	maid:GiveTask(cleanUp)
 	return wrapper
 end
@@ -96,6 +105,14 @@ function Interface.primaryContainer(): StyledLargeWrapper
 		OnCloseClick = _Value(nil),
 		Elevation = _Value(0),
 	}
+	local defaults: { [string]: unknown? } = {
+		style = DEFAULTS.PRIMARY_CONTAINER.STYLE,
+		text = DEFAULTS.PRIMARY_CONTAINER.TEXT,
+		buttonText = DEFAULTS.PRIMARY_CONTAINER.BUTTON_TEXT,
+		onButtonClick = DEFAULTS.PRIMARY_CONTAINER.ON_BUTTON_CLICK,
+		onCloseClick = DEFAULTS.PRIMARY_CONTAINER.ON_CLOSE_CLICK,
+		elevation = DEFAULTS.PRIMARY_CONTAINER.ELEVATION,
+	}
 	local inst: GuiObject = Source.primaryContainer(
 		definition.Style,
 		definition.Text,
@@ -107,7 +124,7 @@ function Interface.primaryContainer(): StyledLargeWrapper
 	maid:GiveTask(inst.Destroying:Connect(function()
 		maid:Destroy()
 	end))
-	local wrapper, cleanUp = Translators.ColdFusion.toWrapper("StyledLarge", inst, definition)
+	local wrapper, cleanUp = Translators.ColdFusion.toWrapper("StyledLarge", inst, definition, defaults)
 	maid:GiveTask(cleanUp)
 	return wrapper
 end
@@ -124,6 +141,14 @@ function Interface.secondaryContainer(): StyledLargeWrapper
 		OnCloseClick = _Value(nil),
 		Elevation = _Value(0),
 	}
+	local defaults: { [string]: unknown? } = {
+		style = DEFAULTS.SECONDARY_CONTAINER.STYLE,
+		text = DEFAULTS.SECONDARY_CONTAINER.TEXT,
+		buttonText = DEFAULTS.SECONDARY_CONTAINER.BUTTON_TEXT,
+		onButtonClick = DEFAULTS.SECONDARY_CONTAINER.ON_BUTTON_CLICK,
+		onCloseClick = DEFAULTS.SECONDARY_CONTAINER.ON_CLOSE_CLICK,
+		elevation = DEFAULTS.SECONDARY_CONTAINER.ELEVATION,
+	}
 	local inst: GuiObject = Source.secondaryContainer(
 		definition.Style,
 		definition.Text,
@@ -135,7 +160,7 @@ function Interface.secondaryContainer(): StyledLargeWrapper
 	maid:GiveTask(inst.Destroying:Connect(function()
 		maid:Destroy()
 	end))
-	local wrapper, cleanUp = Translators.ColdFusion.toWrapper("StyledLarge", inst, definition)
+	local wrapper, cleanUp = Translators.ColdFusion.toWrapper("StyledLarge", inst, definition, defaults)
 	maid:GiveTask(cleanUp)
 	return wrapper
 end
@@ -152,6 +177,14 @@ function Interface.tertiaryContainer(): StyledLargeWrapper
 		OnCloseClick = _Value(nil),
 		Elevation = _Value(0),
 	}
+	local defaults: { [string]: unknown? } = {
+		style = DEFAULTS.TERTIARY_CONTAINER.STYLE,
+		text = DEFAULTS.TERTIARY_CONTAINER.TEXT,
+		buttonText = DEFAULTS.TERTIARY_CONTAINER.BUTTON_TEXT,
+		onButtonClick = DEFAULTS.TERTIARY_CONTAINER.ON_BUTTON_CLICK,
+		onCloseClick = DEFAULTS.TERTIARY_CONTAINER.ON_CLOSE_CLICK,
+		elevation = DEFAULTS.TERTIARY_CONTAINER.ELEVATION,
+	}
 	local inst: GuiObject = Source.tertiaryContainer(
 		definition.Style,
 		definition.Text,
@@ -163,7 +196,7 @@ function Interface.tertiaryContainer(): StyledLargeWrapper
 	maid:GiveTask(inst.Destroying:Connect(function()
 		maid:Destroy()
 	end))
-	local wrapper, cleanUp = Translators.ColdFusion.toWrapper("StyledLarge", inst, definition)
+	local wrapper, cleanUp = Translators.ColdFusion.toWrapper("StyledLarge", inst, definition, defaults)
 	maid:GiveTask(cleanUp)
 	return wrapper
 end

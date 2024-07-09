@@ -26,6 +26,7 @@ type CanBeState<V> = ColdFusion.CanBeState<V>
 type FusionCanBeState<V> = Translators.FusionCanBeState<V>
 
 -- Constants
+local DEFAULTS = require(script.Parent:WaitForChild("Defaults"))
 -- Variables
 -- References
 -- Private Functions
@@ -56,30 +57,30 @@ function Interface.new(
 ): GuiObject
 	local maid = Maid.new()
 	local _fuse = ColdFusion.fuse(maid)
-	local function convert<V>(value: FusionCanBeState<V>): CanBeState<V>
-		return Translators.Fusion.toColdFusion(maid, _fuse, value)
+	local function convert<V>(value: FusionCanBeState<V>, default: V): CanBeState<V>
+		return Translators.Fusion.toColdFusion(maid, _fuse, value, default)
 	end
 	local inst = Source.new(
-		convert(onSubmit),
-		convert(onInput),
-		convert(initialText),
-		convert(isEnabled),
-		convert(isError),
-		convert(label),
-		convert(characterLimit),
-		convert(supportingText),
-		convert(icon),
-		convert(backgroundColor),
-		convert(hightlightColor),
-		convert(errorColor),
-		convert(borderColor),
-		convert(textColor),
-		convert(labelColor),
-		convert(elevation),
-		convert(schemeType),
-		convert(bodyFontData),
-		convert(supportFontData),
-		convert(scale)
+		convert(onSubmit, DEFAULTS.NEW.ON_SUBMIT),
+		convert(onInput, DEFAULTS.NEW.ON_INPUT),
+		convert(initialText, DEFAULTS.NEW.INITIAL_TEXT),
+		convert(isEnabled, DEFAULTS.NEW.IS_ENABLED),
+		convert(isError, DEFAULTS.NEW.IS_ERROR),
+		convert(label, DEFAULTS.NEW.LABEL),
+		convert(characterLimit, DEFAULTS.NEW.CHARACTER_LIMIT),
+		convert(supportingText, DEFAULTS.NEW.SUPPORTING_TEXT),
+		convert(icon, DEFAULTS.NEW.ICON),
+		convert(backgroundColor, DEFAULTS.NEW.BACKGROUND_COLOR),
+		convert(hightlightColor, DEFAULTS.NEW.HIGHTLIGHT_COLOR),
+		convert(errorColor, DEFAULTS.NEW.ERROR_COLOR),
+		convert(borderColor, DEFAULTS.NEW.BORDER_COLOR),
+		convert(textColor, DEFAULTS.NEW.TEXT_COLOR),
+		convert(labelColor, DEFAULTS.NEW.LABEL_COLOR),
+		convert(elevation, DEFAULTS.NEW.ELEVATION),
+		convert(schemeType, DEFAULTS.NEW.SCHEME_TYPE),
+		convert(bodyFontData, DEFAULTS.NEW.BODY_FONT_DATA),
+		convert(supportFontData, DEFAULTS.NEW.SUPPORT_FONT_DATA),
+		convert(scale, DEFAULTS.NEW.SCALE)
 	)
 	maid:GiveTask(inst.Destroying:Connect(function()
 		maid:Destroy()
@@ -102,21 +103,21 @@ function Interface.primary(
 ): GuiObject
 	local maid = Maid.new()
 	local _fuse = ColdFusion.fuse(maid)
-	local function convert<V>(value: FusionCanBeState<V>): CanBeState<V>
-		return Translators.Fusion.toColdFusion(maid, _fuse, value)
+	local function convert<V>(value: FusionCanBeState<V>, default: V): CanBeState<V>
+		return Translators.Fusion.toColdFusion(maid, _fuse, value, default)
 	end
 	local inst = Source.primary(
-		convert(style),
-		convert(onSubmit),
-		convert(label),
-		convert(initialText),
-		convert(onInput),
-		convert(supportingText),
-		convert(icon),
-		convert(characterLimit),
-		convert(isError),
-		convert(elevation),
-		convert(isEnabled)
+		convert(style, DEFAULTS.PRIMARY.STYLE),
+		convert(onSubmit, DEFAULTS.PRIMARY.ON_SUBMIT),
+		convert(label, DEFAULTS.PRIMARY.LABEL),
+		convert(initialText, DEFAULTS.PRIMARY.INITIAL_TEXT),
+		convert(onInput, DEFAULTS.PRIMARY.ON_INPUT),
+		convert(supportingText, DEFAULTS.PRIMARY.SUPPORTING_TEXT),
+		convert(icon, DEFAULTS.PRIMARY.ICON),
+		convert(characterLimit, DEFAULTS.PRIMARY.CHARACTER_LIMIT),
+		convert(isError, DEFAULTS.PRIMARY.IS_ERROR),
+		convert(elevation, DEFAULTS.PRIMARY.ELEVATION),
+		convert(isEnabled, DEFAULTS.PRIMARY.IS_ENABLED)
 	)
 	maid:GiveTask(inst.Destroying:Connect(function()
 		maid:Destroy()
@@ -139,21 +140,21 @@ function Interface.secondary(
 ): GuiObject
 	local maid = Maid.new()
 	local _fuse = ColdFusion.fuse(maid)
-	local function convert<V>(value: FusionCanBeState<V>): CanBeState<V>
-		return Translators.Fusion.toColdFusion(maid, _fuse, value)
+	local function convert<V>(value: FusionCanBeState<V>, default: V): CanBeState<V>
+		return Translators.Fusion.toColdFusion(maid, _fuse, value, default)
 	end
 	local inst = Source.secondary(
-		convert(style),
-		convert(onSubmit),
-		convert(label),
-		convert(initialText),
-		convert(onInput),
-		convert(supportingText),
-		convert(icon),
-		convert(characterLimit),
-		convert(isError),
-		convert(elevation),
-		convert(isEnabled)
+		convert(style, DEFAULTS.SECONDARY.STYLE),
+		convert(onSubmit, DEFAULTS.SECONDARY.ON_SUBMIT),
+		convert(label, DEFAULTS.SECONDARY.LABEL),
+		convert(initialText, DEFAULTS.SECONDARY.INITIAL_TEXT),
+		convert(onInput, DEFAULTS.SECONDARY.ON_INPUT),
+		convert(supportingText, DEFAULTS.SECONDARY.SUPPORTING_TEXT),
+		convert(icon, DEFAULTS.SECONDARY.ICON),
+		convert(characterLimit, DEFAULTS.SECONDARY.CHARACTER_LIMIT),
+		convert(isError, DEFAULTS.SECONDARY.IS_ERROR),
+		convert(elevation, DEFAULTS.SECONDARY.ELEVATION),
+		convert(isEnabled, DEFAULTS.SECONDARY.IS_ENABLED)
 	)
 	maid:GiveTask(inst.Destroying:Connect(function()
 		maid:Destroy()
@@ -176,21 +177,21 @@ function Interface.tertiary(
 ): GuiObject
 	local maid = Maid.new()
 	local _fuse = ColdFusion.fuse(maid)
-	local function convert<V>(value: FusionCanBeState<V>): CanBeState<V>
-		return Translators.Fusion.toColdFusion(maid, _fuse, value)
+	local function convert<V>(value: FusionCanBeState<V>, default: V): CanBeState<V>
+		return Translators.Fusion.toColdFusion(maid, _fuse, value, default)
 	end
 	local inst = Source.tertiary(
-		convert(style),
-		convert(onSubmit),
-		convert(label),
-		convert(initialText),
-		convert(onInput),
-		convert(supportingText),
-		convert(icon),
-		convert(characterLimit),
-		convert(isError),
-		convert(elevation),
-		convert(isEnabled)
+		convert(style, DEFAULTS.TERTIARY.STYLE),
+		convert(onSubmit, DEFAULTS.TERTIARY.ON_SUBMIT),
+		convert(label, DEFAULTS.TERTIARY.LABEL),
+		convert(initialText, DEFAULTS.TERTIARY.INITIAL_TEXT),
+		convert(onInput, DEFAULTS.TERTIARY.ON_INPUT),
+		convert(supportingText, DEFAULTS.TERTIARY.SUPPORTING_TEXT),
+		convert(icon, DEFAULTS.TERTIARY.ICON),
+		convert(characterLimit, DEFAULTS.TERTIARY.CHARACTER_LIMIT),
+		convert(isError, DEFAULTS.TERTIARY.IS_ERROR),
+		convert(elevation, DEFAULTS.TERTIARY.ELEVATION),
+		convert(isEnabled, DEFAULTS.TERTIARY.IS_ENABLED)
 	)
 	maid:GiveTask(inst.Destroying:Connect(function()
 		maid:Destroy()

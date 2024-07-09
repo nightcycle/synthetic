@@ -49,6 +49,7 @@ export type StyledFilledWrapperDefinition = {
 }
 export type StyledFilledWrapper = Wrapper<GuiObject, StyledFilledWrapperDefinition, "StyledFilled">
 -- Constants
+local DEFAULTS = require(script.Parent:WaitForChild("Defaults"))
 -- Variables
 -- References
 -- Private Functions
@@ -71,6 +72,14 @@ function Interface.primary(): StyledFilledWrapper
 		OptionConstructor = _Value(nil),
 		Elevation = _Value(0),
 	}
+	local defaults: { [string]: unknown? } = {
+		style = DEFAULTS.PRIMARY.STYLE,
+		onInputEntered = DEFAULTS.PRIMARY.ON_INPUT_ENTERED,
+		label = DEFAULTS.PRIMARY.LABEL,
+		optionSolver = DEFAULTS.PRIMARY.OPTION_SOLVER,
+		optionConstructor = DEFAULTS.PRIMARY.OPTION_CONSTRUCTOR,
+		elevation = DEFAULTS.PRIMARY.ELEVATION,
+	}
 	local inst: GuiObject = Source.primary(
 		definition.Style,
 		definition.OnInputEntered,
@@ -82,7 +91,7 @@ function Interface.primary(): StyledFilledWrapper
 	maid:GiveTask(inst.Destroying:Connect(function()
 		maid:Destroy()
 	end))
-	local wrapper, cleanUp = Translators.ColdFusion.toWrapper("StyledFilled", inst, definition)
+	local wrapper, cleanUp = Translators.ColdFusion.toWrapper("StyledFilled", inst, definition, defaults)
 	maid:GiveTask(cleanUp)
 	return wrapper
 end
@@ -103,6 +112,14 @@ function Interface.secondary(): StyledFilledWrapper
 		OptionConstructor = _Value(nil),
 		Elevation = _Value(0),
 	}
+	local defaults: { [string]: unknown? } = {
+		style = DEFAULTS.SECONDARY.STYLE,
+		onInputEntered = DEFAULTS.SECONDARY.ON_INPUT_ENTERED,
+		label = DEFAULTS.SECONDARY.LABEL,
+		optionSolver = DEFAULTS.SECONDARY.OPTION_SOLVER,
+		optionConstructor = DEFAULTS.SECONDARY.OPTION_CONSTRUCTOR,
+		elevation = DEFAULTS.SECONDARY.ELEVATION,
+	}
 	local inst: GuiObject = Source.secondary(
 		definition.Style,
 		definition.OnInputEntered,
@@ -114,7 +131,7 @@ function Interface.secondary(): StyledFilledWrapper
 	maid:GiveTask(inst.Destroying:Connect(function()
 		maid:Destroy()
 	end))
-	local wrapper, cleanUp = Translators.ColdFusion.toWrapper("StyledFilled", inst, definition)
+	local wrapper, cleanUp = Translators.ColdFusion.toWrapper("StyledFilled", inst, definition, defaults)
 	maid:GiveTask(cleanUp)
 	return wrapper
 end
@@ -135,6 +152,14 @@ function Interface.tertiary(): StyledFilledWrapper
 		OptionConstructor = _Value(nil),
 		Elevation = _Value(0),
 	}
+	local defaults: { [string]: unknown? } = {
+		style = DEFAULTS.TERTIARY.STYLE,
+		onInputEntered = DEFAULTS.TERTIARY.ON_INPUT_ENTERED,
+		label = DEFAULTS.TERTIARY.LABEL,
+		optionSolver = DEFAULTS.TERTIARY.OPTION_SOLVER,
+		optionConstructor = DEFAULTS.TERTIARY.OPTION_CONSTRUCTOR,
+		elevation = DEFAULTS.TERTIARY.ELEVATION,
+	}
 	local inst: GuiObject = Source.tertiary(
 		definition.Style,
 		definition.OnInputEntered,
@@ -146,7 +171,7 @@ function Interface.tertiary(): StyledFilledWrapper
 	maid:GiveTask(inst.Destroying:Connect(function()
 		maid:Destroy()
 	end))
-	local wrapper, cleanUp = Translators.ColdFusion.toWrapper("StyledFilled", inst, definition)
+	local wrapper, cleanUp = Translators.ColdFusion.toWrapper("StyledFilled", inst, definition, defaults)
 	maid:GiveTask(cleanUp)
 	return wrapper
 end
@@ -167,6 +192,14 @@ function Interface.primaryContainer(): StyledFilledWrapper
 		OptionConstructor = _Value(nil),
 		Elevation = _Value(0),
 	}
+	local defaults: { [string]: unknown? } = {
+		style = DEFAULTS.PRIMARY_CONTAINER.STYLE,
+		onInputEntered = DEFAULTS.PRIMARY_CONTAINER.ON_INPUT_ENTERED,
+		label = DEFAULTS.PRIMARY_CONTAINER.LABEL,
+		optionSolver = DEFAULTS.PRIMARY_CONTAINER.OPTION_SOLVER,
+		optionConstructor = DEFAULTS.PRIMARY_CONTAINER.OPTION_CONSTRUCTOR,
+		elevation = DEFAULTS.PRIMARY_CONTAINER.ELEVATION,
+	}
 	local inst: GuiObject = Source.primaryContainer(
 		definition.Style,
 		definition.OnInputEntered,
@@ -178,7 +211,7 @@ function Interface.primaryContainer(): StyledFilledWrapper
 	maid:GiveTask(inst.Destroying:Connect(function()
 		maid:Destroy()
 	end))
-	local wrapper, cleanUp = Translators.ColdFusion.toWrapper("StyledFilled", inst, definition)
+	local wrapper, cleanUp = Translators.ColdFusion.toWrapper("StyledFilled", inst, definition, defaults)
 	maid:GiveTask(cleanUp)
 	return wrapper
 end
@@ -199,6 +232,14 @@ function Interface.secondaryContainer(): StyledFilledWrapper
 		OptionConstructor = _Value(nil),
 		Elevation = _Value(0),
 	}
+	local defaults: { [string]: unknown? } = {
+		style = DEFAULTS.SECONDARY_CONTAINER.STYLE,
+		onInputEntered = DEFAULTS.SECONDARY_CONTAINER.ON_INPUT_ENTERED,
+		label = DEFAULTS.SECONDARY_CONTAINER.LABEL,
+		optionSolver = DEFAULTS.SECONDARY_CONTAINER.OPTION_SOLVER,
+		optionConstructor = DEFAULTS.SECONDARY_CONTAINER.OPTION_CONSTRUCTOR,
+		elevation = DEFAULTS.SECONDARY_CONTAINER.ELEVATION,
+	}
 	local inst: GuiObject = Source.secondaryContainer(
 		definition.Style,
 		definition.OnInputEntered,
@@ -210,7 +251,7 @@ function Interface.secondaryContainer(): StyledFilledWrapper
 	maid:GiveTask(inst.Destroying:Connect(function()
 		maid:Destroy()
 	end))
-	local wrapper, cleanUp = Translators.ColdFusion.toWrapper("StyledFilled", inst, definition)
+	local wrapper, cleanUp = Translators.ColdFusion.toWrapper("StyledFilled", inst, definition, defaults)
 	maid:GiveTask(cleanUp)
 	return wrapper
 end
@@ -231,6 +272,14 @@ function Interface.tertiaryContainer(): StyledFilledWrapper
 		OptionConstructor = _Value(nil),
 		Elevation = _Value(0),
 	}
+	local defaults: { [string]: unknown? } = {
+		style = DEFAULTS.TERTIARY_CONTAINER.STYLE,
+		onInputEntered = DEFAULTS.TERTIARY_CONTAINER.ON_INPUT_ENTERED,
+		label = DEFAULTS.TERTIARY_CONTAINER.LABEL,
+		optionSolver = DEFAULTS.TERTIARY_CONTAINER.OPTION_SOLVER,
+		optionConstructor = DEFAULTS.TERTIARY_CONTAINER.OPTION_CONSTRUCTOR,
+		elevation = DEFAULTS.TERTIARY_CONTAINER.ELEVATION,
+	}
 	local inst: GuiObject = Source.tertiaryContainer(
 		definition.Style,
 		definition.OnInputEntered,
@@ -242,7 +291,7 @@ function Interface.tertiaryContainer(): StyledFilledWrapper
 	maid:GiveTask(inst.Destroying:Connect(function()
 		maid:Destroy()
 	end))
-	local wrapper, cleanUp = Translators.ColdFusion.toWrapper("StyledFilled", inst, definition)
+	local wrapper, cleanUp = Translators.ColdFusion.toWrapper("StyledFilled", inst, definition, defaults)
 	maid:GiveTask(cleanUp)
 	return wrapper
 end

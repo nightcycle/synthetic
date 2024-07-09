@@ -26,6 +26,7 @@ type CanBeState<V> = ColdFusion.CanBeState<V>
 type FusionCanBeState<V> = Translators.FusionCanBeState<V>
 
 -- Constants
+local DEFAULTS = require(script.Parent:WaitForChild("Defaults"))
 -- Variables
 -- References
 -- Private Functions
@@ -47,21 +48,21 @@ function Interface.new(
 ): GuiObject
 	local maid = Maid.new()
 	local _fuse = ColdFusion.fuse(maid)
-	local function convert<V>(value: FusionCanBeState<V>): CanBeState<V>
-		return Translators.Fusion.toColdFusion(maid, _fuse, value)
+	local function convert<V>(value: FusionCanBeState<V>, default: V): CanBeState<V>
+		return Translators.Fusion.toColdFusion(maid, _fuse, value, default)
 	end
 	local inst = Source.new(
-		convert(onClick),
-		convert(icon),
-		convert(textColor),
-		convert(surfaceColor),
-		convert(disabledTextColor),
-		convert(disabledSurfaceColor),
-		convert(isEnabled),
-		convert(elevation),
-		convert(schemeType),
-		convert(fontData),
-		convert(scale)
+		convert(onClick, DEFAULTS.NEW.ON_CLICK),
+		convert(icon, DEFAULTS.NEW.ICON),
+		convert(textColor, DEFAULTS.NEW.TEXT_COLOR),
+		convert(surfaceColor, DEFAULTS.NEW.SURFACE_COLOR),
+		convert(disabledTextColor, DEFAULTS.NEW.DISABLED_TEXT_COLOR),
+		convert(disabledSurfaceColor, DEFAULTS.NEW.DISABLED_SURFACE_COLOR),
+		convert(isEnabled, DEFAULTS.NEW.IS_ENABLED),
+		convert(elevation, DEFAULTS.NEW.ELEVATION),
+		convert(schemeType, DEFAULTS.NEW.SCHEME_TYPE),
+		convert(fontData, DEFAULTS.NEW.FONT_DATA),
+		convert(scale, DEFAULTS.NEW.SCALE)
 	)
 	maid:GiveTask(inst.Destroying:Connect(function()
 		maid:Destroy()
@@ -78,15 +79,15 @@ function Interface.primary(
 ): GuiObject
 	local maid = Maid.new()
 	local _fuse = ColdFusion.fuse(maid)
-	local function convert<V>(value: FusionCanBeState<V>): CanBeState<V>
-		return Translators.Fusion.toColdFusion(maid, _fuse, value)
+	local function convert<V>(value: FusionCanBeState<V>, default: V): CanBeState<V>
+		return Translators.Fusion.toColdFusion(maid, _fuse, value, default)
 	end
 	local inst = Source.primary(
-		convert(style),
-		convert(onClick),
-		convert(icon),
-		convert(elevation),
-		convert(isEnabled)
+		convert(style, DEFAULTS.PRIMARY.STYLE),
+		convert(onClick, DEFAULTS.PRIMARY.ON_CLICK),
+		convert(icon, DEFAULTS.PRIMARY.ICON),
+		convert(elevation, DEFAULTS.PRIMARY.ELEVATION),
+		convert(isEnabled, DEFAULTS.PRIMARY.IS_ENABLED)
 	)
 	maid:GiveTask(inst.Destroying:Connect(function()
 		maid:Destroy()
@@ -103,15 +104,15 @@ function Interface.secondary(
 ): GuiObject
 	local maid = Maid.new()
 	local _fuse = ColdFusion.fuse(maid)
-	local function convert<V>(value: FusionCanBeState<V>): CanBeState<V>
-		return Translators.Fusion.toColdFusion(maid, _fuse, value)
+	local function convert<V>(value: FusionCanBeState<V>, default: V): CanBeState<V>
+		return Translators.Fusion.toColdFusion(maid, _fuse, value, default)
 	end
 	local inst = Source.secondary(
-		convert(style),
-		convert(onClick),
-		convert(icon),
-		convert(elevation),
-		convert(isEnabled)
+		convert(style, DEFAULTS.SECONDARY.STYLE),
+		convert(onClick, DEFAULTS.SECONDARY.ON_CLICK),
+		convert(icon, DEFAULTS.SECONDARY.ICON),
+		convert(elevation, DEFAULTS.SECONDARY.ELEVATION),
+		convert(isEnabled, DEFAULTS.SECONDARY.IS_ENABLED)
 	)
 	maid:GiveTask(inst.Destroying:Connect(function()
 		maid:Destroy()
@@ -128,15 +129,15 @@ function Interface.tertiary(
 ): GuiObject
 	local maid = Maid.new()
 	local _fuse = ColdFusion.fuse(maid)
-	local function convert<V>(value: FusionCanBeState<V>): CanBeState<V>
-		return Translators.Fusion.toColdFusion(maid, _fuse, value)
+	local function convert<V>(value: FusionCanBeState<V>, default: V): CanBeState<V>
+		return Translators.Fusion.toColdFusion(maid, _fuse, value, default)
 	end
 	local inst = Source.tertiary(
-		convert(style),
-		convert(onClick),
-		convert(icon),
-		convert(elevation),
-		convert(isEnabled)
+		convert(style, DEFAULTS.TERTIARY.STYLE),
+		convert(onClick, DEFAULTS.TERTIARY.ON_CLICK),
+		convert(icon, DEFAULTS.TERTIARY.ICON),
+		convert(elevation, DEFAULTS.TERTIARY.ELEVATION),
+		convert(isEnabled, DEFAULTS.TERTIARY.IS_ENABLED)
 	)
 	maid:GiveTask(inst.Destroying:Connect(function()
 		maid:Destroy()
@@ -153,15 +154,15 @@ function Interface.primaryContainer(
 ): GuiObject
 	local maid = Maid.new()
 	local _fuse = ColdFusion.fuse(maid)
-	local function convert<V>(value: FusionCanBeState<V>): CanBeState<V>
-		return Translators.Fusion.toColdFusion(maid, _fuse, value)
+	local function convert<V>(value: FusionCanBeState<V>, default: V): CanBeState<V>
+		return Translators.Fusion.toColdFusion(maid, _fuse, value, default)
 	end
 	local inst = Source.primaryContainer(
-		convert(style),
-		convert(onClick),
-		convert(icon),
-		convert(elevation),
-		convert(isEnabled)
+		convert(style, DEFAULTS.PRIMARY_CONTAINER.STYLE),
+		convert(onClick, DEFAULTS.PRIMARY_CONTAINER.ON_CLICK),
+		convert(icon, DEFAULTS.PRIMARY_CONTAINER.ICON),
+		convert(elevation, DEFAULTS.PRIMARY_CONTAINER.ELEVATION),
+		convert(isEnabled, DEFAULTS.PRIMARY_CONTAINER.IS_ENABLED)
 	)
 	maid:GiveTask(inst.Destroying:Connect(function()
 		maid:Destroy()
@@ -178,15 +179,15 @@ function Interface.secondaryContainer(
 ): GuiObject
 	local maid = Maid.new()
 	local _fuse = ColdFusion.fuse(maid)
-	local function convert<V>(value: FusionCanBeState<V>): CanBeState<V>
-		return Translators.Fusion.toColdFusion(maid, _fuse, value)
+	local function convert<V>(value: FusionCanBeState<V>, default: V): CanBeState<V>
+		return Translators.Fusion.toColdFusion(maid, _fuse, value, default)
 	end
 	local inst = Source.secondaryContainer(
-		convert(style),
-		convert(onClick),
-		convert(icon),
-		convert(elevation),
-		convert(isEnabled)
+		convert(style, DEFAULTS.SECONDARY_CONTAINER.STYLE),
+		convert(onClick, DEFAULTS.SECONDARY_CONTAINER.ON_CLICK),
+		convert(icon, DEFAULTS.SECONDARY_CONTAINER.ICON),
+		convert(elevation, DEFAULTS.SECONDARY_CONTAINER.ELEVATION),
+		convert(isEnabled, DEFAULTS.SECONDARY_CONTAINER.IS_ENABLED)
 	)
 	maid:GiveTask(inst.Destroying:Connect(function()
 		maid:Destroy()
@@ -203,15 +204,15 @@ function Interface.tertiaryContainer(
 ): GuiObject
 	local maid = Maid.new()
 	local _fuse = ColdFusion.fuse(maid)
-	local function convert<V>(value: FusionCanBeState<V>): CanBeState<V>
-		return Translators.Fusion.toColdFusion(maid, _fuse, value)
+	local function convert<V>(value: FusionCanBeState<V>, default: V): CanBeState<V>
+		return Translators.Fusion.toColdFusion(maid, _fuse, value, default)
 	end
 	local inst = Source.tertiaryContainer(
-		convert(style),
-		convert(onClick),
-		convert(icon),
-		convert(elevation),
-		convert(isEnabled)
+		convert(style, DEFAULTS.TERTIARY_CONTAINER.STYLE),
+		convert(onClick, DEFAULTS.TERTIARY_CONTAINER.ON_CLICK),
+		convert(icon, DEFAULTS.TERTIARY_CONTAINER.ICON),
+		convert(elevation, DEFAULTS.TERTIARY_CONTAINER.ELEVATION),
+		convert(isEnabled, DEFAULTS.TERTIARY_CONTAINER.IS_ENABLED)
 	)
 	maid:GiveTask(inst.Destroying:Connect(function()
 		maid:Destroy()

@@ -26,6 +26,7 @@ type CanBeState<V> = ColdFusion.CanBeState<V>
 type FusionCanBeState<V> = Translators.FusionCanBeState<V>
 
 -- Constants
+local DEFAULTS = require(script.Parent:WaitForChild("Defaults"))
 -- Variables
 -- References
 -- Private Functions
@@ -47,21 +48,21 @@ function Interface.new(
 ): GuiObject
 	local maid = Maid.new()
 	local _fuse = ColdFusion.fuse(maid)
-	local function convert<V>(value: FusionCanBeState<V>): CanBeState<V>
-		return Translators.Fusion.toColdFusion(maid, _fuse, value)
+	local function convert<V>(value: FusionCanBeState<V>, default: V): CanBeState<V>
+		return Translators.Fusion.toColdFusion(maid, _fuse, value, default)
 	end
 	local inst = Source.new(
-		convert(options),
-		convert(density),
-		convert(isMultiSelect),
-		convert(textColor),
-		convert(fillTextColor),
-		convert(fillBackgroundColor),
-		convert(outlineColor),
-		convert(elevation),
-		convert(schemeType),
-		convert(fontData),
-		convert(scale)
+		convert(options, DEFAULTS.NEW.OPTIONS),
+		convert(density, DEFAULTS.NEW.DENSITY),
+		convert(isMultiSelect, DEFAULTS.NEW.IS_MULTI_SELECT),
+		convert(textColor, DEFAULTS.NEW.TEXT_COLOR),
+		convert(fillTextColor, DEFAULTS.NEW.FILL_TEXT_COLOR),
+		convert(fillBackgroundColor, DEFAULTS.NEW.FILL_BACKGROUND_COLOR),
+		convert(outlineColor, DEFAULTS.NEW.OUTLINE_COLOR),
+		convert(elevation, DEFAULTS.NEW.ELEVATION),
+		convert(schemeType, DEFAULTS.NEW.SCHEME_TYPE),
+		convert(fontData, DEFAULTS.NEW.FONT_DATA),
+		convert(scale, DEFAULTS.NEW.SCALE)
 	)
 	maid:GiveTask(inst.Destroying:Connect(function()
 		maid:Destroy()
@@ -78,15 +79,15 @@ function Interface.primaryContainer(
 ): GuiObject
 	local maid = Maid.new()
 	local _fuse = ColdFusion.fuse(maid)
-	local function convert<V>(value: FusionCanBeState<V>): CanBeState<V>
-		return Translators.Fusion.toColdFusion(maid, _fuse, value)
+	local function convert<V>(value: FusionCanBeState<V>, default: V): CanBeState<V>
+		return Translators.Fusion.toColdFusion(maid, _fuse, value, default)
 	end
 	local inst = Source.primaryContainer(
-		convert(style),
-		convert(options),
-		convert(density),
-		convert(isMultiSelect),
-		convert(elevation)
+		convert(style, DEFAULTS.PRIMARY_CONTAINER.STYLE),
+		convert(options, DEFAULTS.PRIMARY_CONTAINER.OPTIONS),
+		convert(density, DEFAULTS.PRIMARY_CONTAINER.DENSITY),
+		convert(isMultiSelect, DEFAULTS.PRIMARY_CONTAINER.IS_MULTI_SELECT),
+		convert(elevation, DEFAULTS.PRIMARY_CONTAINER.ELEVATION)
 	)
 	maid:GiveTask(inst.Destroying:Connect(function()
 		maid:Destroy()
@@ -103,15 +104,15 @@ function Interface.secondaryContainer(
 ): GuiObject
 	local maid = Maid.new()
 	local _fuse = ColdFusion.fuse(maid)
-	local function convert<V>(value: FusionCanBeState<V>): CanBeState<V>
-		return Translators.Fusion.toColdFusion(maid, _fuse, value)
+	local function convert<V>(value: FusionCanBeState<V>, default: V): CanBeState<V>
+		return Translators.Fusion.toColdFusion(maid, _fuse, value, default)
 	end
 	local inst = Source.secondaryContainer(
-		convert(style),
-		convert(options),
-		convert(density),
-		convert(isMultiSelect),
-		convert(elevation)
+		convert(style, DEFAULTS.SECONDARY_CONTAINER.STYLE),
+		convert(options, DEFAULTS.SECONDARY_CONTAINER.OPTIONS),
+		convert(density, DEFAULTS.SECONDARY_CONTAINER.DENSITY),
+		convert(isMultiSelect, DEFAULTS.SECONDARY_CONTAINER.IS_MULTI_SELECT),
+		convert(elevation, DEFAULTS.SECONDARY_CONTAINER.ELEVATION)
 	)
 	maid:GiveTask(inst.Destroying:Connect(function()
 		maid:Destroy()
@@ -128,15 +129,15 @@ function Interface.tertiaryContainer(
 ): GuiObject
 	local maid = Maid.new()
 	local _fuse = ColdFusion.fuse(maid)
-	local function convert<V>(value: FusionCanBeState<V>): CanBeState<V>
-		return Translators.Fusion.toColdFusion(maid, _fuse, value)
+	local function convert<V>(value: FusionCanBeState<V>, default: V): CanBeState<V>
+		return Translators.Fusion.toColdFusion(maid, _fuse, value, default)
 	end
 	local inst = Source.tertiaryContainer(
-		convert(style),
-		convert(options),
-		convert(density),
-		convert(isMultiSelect),
-		convert(elevation)
+		convert(style, DEFAULTS.TERTIARY_CONTAINER.STYLE),
+		convert(options, DEFAULTS.TERTIARY_CONTAINER.OPTIONS),
+		convert(density, DEFAULTS.TERTIARY_CONTAINER.DENSITY),
+		convert(isMultiSelect, DEFAULTS.TERTIARY_CONTAINER.IS_MULTI_SELECT),
+		convert(elevation, DEFAULTS.TERTIARY_CONTAINER.ELEVATION)
 	)
 	maid:GiveTask(inst.Destroying:Connect(function()
 		maid:Destroy()

@@ -53,6 +53,7 @@ export type StyledRadioButtonWrapper = Wrapper<
 	"StyledRadioButton"
 >
 -- Constants
+local DEFAULTS = require(script.Parent:WaitForChild("Defaults"))
 -- Variables
 -- References
 -- Private Functions
@@ -70,6 +71,13 @@ function Interface.primary(): StyledRadioButtonWrapper
 		Elevation = _Value(0),
 		IsEnabled = _Value(true),
 	}
+	local defaults: { [string]: unknown? } = {
+		style = DEFAULTS.PRIMARY.STYLE,
+		onSelect = DEFAULTS.PRIMARY.ON_SELECT,
+		initialSelection = DEFAULTS.PRIMARY.INITIAL_SELECTION,
+		elevation = DEFAULTS.PRIMARY.ELEVATION,
+		isEnabled = DEFAULTS.PRIMARY.IS_ENABLED,
+	}
 	local inst: GuiObject = Source.primary(
 		definition.Style,
 		definition.OnSelect,
@@ -80,7 +88,7 @@ function Interface.primary(): StyledRadioButtonWrapper
 	maid:GiveTask(inst.Destroying:Connect(function()
 		maid:Destroy()
 	end))
-	local wrapper, cleanUp = Translators.ColdFusion.toWrapper("StyledRadioButton", inst, definition)
+	local wrapper, cleanUp = Translators.ColdFusion.toWrapper("StyledRadioButton", inst, definition, defaults)
 	maid:GiveTask(cleanUp)
 	return wrapper
 end
@@ -96,6 +104,13 @@ function Interface.secondary(): StyledRadioButtonWrapper
 		Elevation = _Value(0),
 		IsEnabled = _Value(true),
 	}
+	local defaults: { [string]: unknown? } = {
+		style = DEFAULTS.SECONDARY.STYLE,
+		onSelect = DEFAULTS.SECONDARY.ON_SELECT,
+		initialSelection = DEFAULTS.SECONDARY.INITIAL_SELECTION,
+		elevation = DEFAULTS.SECONDARY.ELEVATION,
+		isEnabled = DEFAULTS.SECONDARY.IS_ENABLED,
+	}
 	local inst: GuiObject = Source.secondary(
 		definition.Style,
 		definition.OnSelect,
@@ -106,7 +121,7 @@ function Interface.secondary(): StyledRadioButtonWrapper
 	maid:GiveTask(inst.Destroying:Connect(function()
 		maid:Destroy()
 	end))
-	local wrapper, cleanUp = Translators.ColdFusion.toWrapper("StyledRadioButton", inst, definition)
+	local wrapper, cleanUp = Translators.ColdFusion.toWrapper("StyledRadioButton", inst, definition, defaults)
 	maid:GiveTask(cleanUp)
 	return wrapper
 end
@@ -122,6 +137,13 @@ function Interface.tertiary(): StyledRadioButtonWrapper
 		Elevation = _Value(0),
 		IsEnabled = _Value(true),
 	}
+	local defaults: { [string]: unknown? } = {
+		style = DEFAULTS.TERTIARY.STYLE,
+		onSelect = DEFAULTS.TERTIARY.ON_SELECT,
+		initialSelection = DEFAULTS.TERTIARY.INITIAL_SELECTION,
+		elevation = DEFAULTS.TERTIARY.ELEVATION,
+		isEnabled = DEFAULTS.TERTIARY.IS_ENABLED,
+	}
 	local inst: GuiObject = Source.tertiary(
 		definition.Style,
 		definition.OnSelect,
@@ -132,7 +154,7 @@ function Interface.tertiary(): StyledRadioButtonWrapper
 	maid:GiveTask(inst.Destroying:Connect(function()
 		maid:Destroy()
 	end))
-	local wrapper, cleanUp = Translators.ColdFusion.toWrapper("StyledRadioButton", inst, definition)
+	local wrapper, cleanUp = Translators.ColdFusion.toWrapper("StyledRadioButton", inst, definition, defaults)
 	maid:GiveTask(cleanUp)
 	return wrapper
 end
@@ -148,6 +170,13 @@ function Interface.primaryContainer(): StyledRadioButtonWrapper
 		Elevation = _Value(0),
 		IsEnabled = _Value(true),
 	}
+	local defaults: { [string]: unknown? } = {
+		style = DEFAULTS.PRIMARY_CONTAINER.STYLE,
+		onSelect = DEFAULTS.PRIMARY_CONTAINER.ON_SELECT,
+		initialSelection = DEFAULTS.PRIMARY_CONTAINER.INITIAL_SELECTION,
+		elevation = DEFAULTS.PRIMARY_CONTAINER.ELEVATION,
+		isEnabled = DEFAULTS.PRIMARY_CONTAINER.IS_ENABLED,
+	}
 	local inst: GuiObject = Source.primaryContainer(
 		definition.Style,
 		definition.OnSelect,
@@ -158,7 +187,7 @@ function Interface.primaryContainer(): StyledRadioButtonWrapper
 	maid:GiveTask(inst.Destroying:Connect(function()
 		maid:Destroy()
 	end))
-	local wrapper, cleanUp = Translators.ColdFusion.toWrapper("StyledRadioButton", inst, definition)
+	local wrapper, cleanUp = Translators.ColdFusion.toWrapper("StyledRadioButton", inst, definition, defaults)
 	maid:GiveTask(cleanUp)
 	return wrapper
 end
@@ -174,6 +203,13 @@ function Interface.secondaryContainer(): StyledRadioButtonWrapper
 		Elevation = _Value(0),
 		IsEnabled = _Value(true),
 	}
+	local defaults: { [string]: unknown? } = {
+		style = DEFAULTS.SECONDARY_CONTAINER.STYLE,
+		onSelect = DEFAULTS.SECONDARY_CONTAINER.ON_SELECT,
+		initialSelection = DEFAULTS.SECONDARY_CONTAINER.INITIAL_SELECTION,
+		elevation = DEFAULTS.SECONDARY_CONTAINER.ELEVATION,
+		isEnabled = DEFAULTS.SECONDARY_CONTAINER.IS_ENABLED,
+	}
 	local inst: GuiObject = Source.secondaryContainer(
 		definition.Style,
 		definition.OnSelect,
@@ -184,7 +220,7 @@ function Interface.secondaryContainer(): StyledRadioButtonWrapper
 	maid:GiveTask(inst.Destroying:Connect(function()
 		maid:Destroy()
 	end))
-	local wrapper, cleanUp = Translators.ColdFusion.toWrapper("StyledRadioButton", inst, definition)
+	local wrapper, cleanUp = Translators.ColdFusion.toWrapper("StyledRadioButton", inst, definition, defaults)
 	maid:GiveTask(cleanUp)
 	return wrapper
 end
@@ -200,6 +236,13 @@ function Interface.tertiaryContainer(): StyledRadioButtonWrapper
 		Elevation = _Value(0),
 		IsEnabled = _Value(true),
 	}
+	local defaults: { [string]: unknown? } = {
+		style = DEFAULTS.TERTIARY_CONTAINER.STYLE,
+		onSelect = DEFAULTS.TERTIARY_CONTAINER.ON_SELECT,
+		initialSelection = DEFAULTS.TERTIARY_CONTAINER.INITIAL_SELECTION,
+		elevation = DEFAULTS.TERTIARY_CONTAINER.ELEVATION,
+		isEnabled = DEFAULTS.TERTIARY_CONTAINER.IS_ENABLED,
+	}
 	local inst: GuiObject = Source.tertiaryContainer(
 		definition.Style,
 		definition.OnSelect,
@@ -210,7 +253,7 @@ function Interface.tertiaryContainer(): StyledRadioButtonWrapper
 	maid:GiveTask(inst.Destroying:Connect(function()
 		maid:Destroy()
 	end))
-	local wrapper, cleanUp = Translators.ColdFusion.toWrapper("StyledRadioButton", inst, definition)
+	local wrapper, cleanUp = Translators.ColdFusion.toWrapper("StyledRadioButton", inst, definition, defaults)
 	maid:GiveTask(cleanUp)
 	return wrapper
 end

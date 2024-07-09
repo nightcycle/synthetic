@@ -55,6 +55,7 @@ export type StyledOutlinedIconButtonWrapper = Wrapper<
 	"StyledOutlinedIconButton"
 >
 -- Constants
+local DEFAULTS = require(script.Parent:WaitForChild("Defaults"))
 -- Variables
 -- References
 -- Private Functions
@@ -72,6 +73,13 @@ function Interface.onPrimary(): StyledOutlinedIconButtonWrapper
 		Elevation = _Value(0),
 		IsEnabled = _Value(true),
 	}
+	local defaults: { [string]: unknown? } = {
+		style = DEFAULTS.ON_PRIMARY.STYLE,
+		onClick = DEFAULTS.ON_PRIMARY.ON_CLICK,
+		icon = DEFAULTS.ON_PRIMARY.ICON,
+		elevation = DEFAULTS.ON_PRIMARY.ELEVATION,
+		isEnabled = DEFAULTS.ON_PRIMARY.IS_ENABLED,
+	}
 	local inst: GuiObject = Source.onPrimary(
 		definition.Style,
 		definition.OnClick,
@@ -82,7 +90,8 @@ function Interface.onPrimary(): StyledOutlinedIconButtonWrapper
 	maid:GiveTask(inst.Destroying:Connect(function()
 		maid:Destroy()
 	end))
-	local wrapper, cleanUp = Translators.ColdFusion.toWrapper("StyledOutlinedIconButton", inst, definition)
+	local wrapper, cleanUp =
+		Translators.ColdFusion.toWrapper("StyledOutlinedIconButton", inst, definition, defaults)
 	maid:GiveTask(cleanUp)
 	return wrapper
 end
@@ -98,6 +107,13 @@ function Interface.onSecondary(): StyledOutlinedIconButtonWrapper
 		Elevation = _Value(0),
 		IsEnabled = _Value(true),
 	}
+	local defaults: { [string]: unknown? } = {
+		style = DEFAULTS.ON_SECONDARY.STYLE,
+		onClick = DEFAULTS.ON_SECONDARY.ON_CLICK,
+		icon = DEFAULTS.ON_SECONDARY.ICON,
+		elevation = DEFAULTS.ON_SECONDARY.ELEVATION,
+		isEnabled = DEFAULTS.ON_SECONDARY.IS_ENABLED,
+	}
 	local inst: GuiObject = Source.onSecondary(
 		definition.Style,
 		definition.OnClick,
@@ -108,7 +124,8 @@ function Interface.onSecondary(): StyledOutlinedIconButtonWrapper
 	maid:GiveTask(inst.Destroying:Connect(function()
 		maid:Destroy()
 	end))
-	local wrapper, cleanUp = Translators.ColdFusion.toWrapper("StyledOutlinedIconButton", inst, definition)
+	local wrapper, cleanUp =
+		Translators.ColdFusion.toWrapper("StyledOutlinedIconButton", inst, definition, defaults)
 	maid:GiveTask(cleanUp)
 	return wrapper
 end
@@ -124,6 +141,13 @@ function Interface.onTertiary(): StyledOutlinedIconButtonWrapper
 		Elevation = _Value(0),
 		IsEnabled = _Value(true),
 	}
+	local defaults: { [string]: unknown? } = {
+		style = DEFAULTS.ON_TERTIARY.STYLE,
+		onClick = DEFAULTS.ON_TERTIARY.ON_CLICK,
+		icon = DEFAULTS.ON_TERTIARY.ICON,
+		elevation = DEFAULTS.ON_TERTIARY.ELEVATION,
+		isEnabled = DEFAULTS.ON_TERTIARY.IS_ENABLED,
+	}
 	local inst: GuiObject = Source.onTertiary(
 		definition.Style,
 		definition.OnClick,
@@ -134,7 +158,8 @@ function Interface.onTertiary(): StyledOutlinedIconButtonWrapper
 	maid:GiveTask(inst.Destroying:Connect(function()
 		maid:Destroy()
 	end))
-	local wrapper, cleanUp = Translators.ColdFusion.toWrapper("StyledOutlinedIconButton", inst, definition)
+	local wrapper, cleanUp =
+		Translators.ColdFusion.toWrapper("StyledOutlinedIconButton", inst, definition, defaults)
 	maid:GiveTask(cleanUp)
 	return wrapper
 end
@@ -150,6 +175,13 @@ function Interface.onPrimaryContainer(): StyledOutlinedIconButtonWrapper
 		Elevation = _Value(0),
 		IsEnabled = _Value(true),
 	}
+	local defaults: { [string]: unknown? } = {
+		style = DEFAULTS.ON_PRIMARY_CONTAINER.STYLE,
+		onClick = DEFAULTS.ON_PRIMARY_CONTAINER.ON_CLICK,
+		icon = DEFAULTS.ON_PRIMARY_CONTAINER.ICON,
+		elevation = DEFAULTS.ON_PRIMARY_CONTAINER.ELEVATION,
+		isEnabled = DEFAULTS.ON_PRIMARY_CONTAINER.IS_ENABLED,
+	}
 	local inst: GuiObject = Source.onPrimaryContainer(
 		definition.Style,
 		definition.OnClick,
@@ -160,7 +192,8 @@ function Interface.onPrimaryContainer(): StyledOutlinedIconButtonWrapper
 	maid:GiveTask(inst.Destroying:Connect(function()
 		maid:Destroy()
 	end))
-	local wrapper, cleanUp = Translators.ColdFusion.toWrapper("StyledOutlinedIconButton", inst, definition)
+	local wrapper, cleanUp =
+		Translators.ColdFusion.toWrapper("StyledOutlinedIconButton", inst, definition, defaults)
 	maid:GiveTask(cleanUp)
 	return wrapper
 end
@@ -176,6 +209,13 @@ function Interface.onSecondaryContainer(): StyledOutlinedIconButtonWrapper
 		Elevation = _Value(0),
 		IsEnabled = _Value(true),
 	}
+	local defaults: { [string]: unknown? } = {
+		style = DEFAULTS.ON_SECONDARY_CONTAINER.STYLE,
+		onClick = DEFAULTS.ON_SECONDARY_CONTAINER.ON_CLICK,
+		icon = DEFAULTS.ON_SECONDARY_CONTAINER.ICON,
+		elevation = DEFAULTS.ON_SECONDARY_CONTAINER.ELEVATION,
+		isEnabled = DEFAULTS.ON_SECONDARY_CONTAINER.IS_ENABLED,
+	}
 	local inst: GuiObject = Source.onSecondaryContainer(
 		definition.Style,
 		definition.OnClick,
@@ -186,7 +226,8 @@ function Interface.onSecondaryContainer(): StyledOutlinedIconButtonWrapper
 	maid:GiveTask(inst.Destroying:Connect(function()
 		maid:Destroy()
 	end))
-	local wrapper, cleanUp = Translators.ColdFusion.toWrapper("StyledOutlinedIconButton", inst, definition)
+	local wrapper, cleanUp =
+		Translators.ColdFusion.toWrapper("StyledOutlinedIconButton", inst, definition, defaults)
 	maid:GiveTask(cleanUp)
 	return wrapper
 end
@@ -202,6 +243,13 @@ function Interface.onTertiaryContainer(): StyledOutlinedIconButtonWrapper
 		Elevation = _Value(0),
 		IsEnabled = _Value(true),
 	}
+	local defaults: { [string]: unknown? } = {
+		style = DEFAULTS.ON_TERTIARY_CONTAINER.STYLE,
+		onClick = DEFAULTS.ON_TERTIARY_CONTAINER.ON_CLICK,
+		icon = DEFAULTS.ON_TERTIARY_CONTAINER.ICON,
+		elevation = DEFAULTS.ON_TERTIARY_CONTAINER.ELEVATION,
+		isEnabled = DEFAULTS.ON_TERTIARY_CONTAINER.IS_ENABLED,
+	}
 	local inst: GuiObject = Source.onTertiaryContainer(
 		definition.Style,
 		definition.OnClick,
@@ -212,7 +260,8 @@ function Interface.onTertiaryContainer(): StyledOutlinedIconButtonWrapper
 	maid:GiveTask(inst.Destroying:Connect(function()
 		maid:Destroy()
 	end))
-	local wrapper, cleanUp = Translators.ColdFusion.toWrapper("StyledOutlinedIconButton", inst, definition)
+	local wrapper, cleanUp =
+		Translators.ColdFusion.toWrapper("StyledOutlinedIconButton", inst, definition, defaults)
 	maid:GiveTask(cleanUp)
 	return wrapper
 end

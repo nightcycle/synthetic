@@ -26,6 +26,7 @@ type CanBeState<V> = ColdFusion.CanBeState<V>
 type FusionCanBeState<V> = Translators.FusionCanBeState<V>
 
 -- Constants
+local DEFAULTS = require(script.Parent:WaitForChild("Defaults"))
 -- Variables
 -- References
 -- Private Functions
@@ -47,21 +48,21 @@ function Interface.new(
 ): GuiObject
 	local maid = Maid.new()
 	local _fuse = ColdFusion.fuse(maid)
-	local function convert<V>(value: FusionCanBeState<V>): CanBeState<V>
-		return Translators.Fusion.toColdFusion(maid, _fuse, value)
+	local function convert<V>(value: FusionCanBeState<V>, default: V): CanBeState<V>
+		return Translators.Fusion.toColdFusion(maid, _fuse, value, default)
 	end
 	local inst = Source.new(
-		convert(buttons),
-		convert(fab),
-		convert(backgroundColor),
-		convert(iconColor),
-		convert(fabColor),
-		convert(fabIconColor),
-		convert(fabShadowColor),
-		convert(elevation),
-		convert(schemeType),
-		convert(fontData),
-		convert(scale)
+		convert(buttons, DEFAULTS.NEW.BUTTONS),
+		convert(fab, DEFAULTS.NEW.FAB),
+		convert(backgroundColor, DEFAULTS.NEW.BACKGROUND_COLOR),
+		convert(iconColor, DEFAULTS.NEW.ICON_COLOR),
+		convert(fabColor, DEFAULTS.NEW.FAB_COLOR),
+		convert(fabIconColor, DEFAULTS.NEW.FAB_ICON_COLOR),
+		convert(fabShadowColor, DEFAULTS.NEW.FAB_SHADOW_COLOR),
+		convert(elevation, DEFAULTS.NEW.ELEVATION),
+		convert(schemeType, DEFAULTS.NEW.SCHEME_TYPE),
+		convert(fontData, DEFAULTS.NEW.FONT_DATA),
+		convert(scale, DEFAULTS.NEW.SCALE)
 	)
 	maid:GiveTask(inst.Destroying:Connect(function()
 		maid:Destroy()
@@ -77,10 +78,15 @@ function Interface.primary(
 ): GuiObject
 	local maid = Maid.new()
 	local _fuse = ColdFusion.fuse(maid)
-	local function convert<V>(value: FusionCanBeState<V>): CanBeState<V>
-		return Translators.Fusion.toColdFusion(maid, _fuse, value)
+	local function convert<V>(value: FusionCanBeState<V>, default: V): CanBeState<V>
+		return Translators.Fusion.toColdFusion(maid, _fuse, value, default)
 	end
-	local inst = Source.primary(convert(style), convert(buttons), convert(fab), convert(elevation))
+	local inst = Source.primary(
+		convert(style, DEFAULTS.PRIMARY.STYLE),
+		convert(buttons, DEFAULTS.PRIMARY.BUTTONS),
+		convert(fab, DEFAULTS.PRIMARY.FAB),
+		convert(elevation, DEFAULTS.PRIMARY.ELEVATION)
+	)
 	maid:GiveTask(inst.Destroying:Connect(function()
 		maid:Destroy()
 	end))
@@ -95,10 +101,15 @@ function Interface.secondary(
 ): GuiObject
 	local maid = Maid.new()
 	local _fuse = ColdFusion.fuse(maid)
-	local function convert<V>(value: FusionCanBeState<V>): CanBeState<V>
-		return Translators.Fusion.toColdFusion(maid, _fuse, value)
+	local function convert<V>(value: FusionCanBeState<V>, default: V): CanBeState<V>
+		return Translators.Fusion.toColdFusion(maid, _fuse, value, default)
 	end
-	local inst = Source.secondary(convert(style), convert(buttons), convert(fab), convert(elevation))
+	local inst = Source.secondary(
+		convert(style, DEFAULTS.SECONDARY.STYLE),
+		convert(buttons, DEFAULTS.SECONDARY.BUTTONS),
+		convert(fab, DEFAULTS.SECONDARY.FAB),
+		convert(elevation, DEFAULTS.SECONDARY.ELEVATION)
+	)
 	maid:GiveTask(inst.Destroying:Connect(function()
 		maid:Destroy()
 	end))
@@ -113,10 +124,15 @@ function Interface.tertiary(
 ): GuiObject
 	local maid = Maid.new()
 	local _fuse = ColdFusion.fuse(maid)
-	local function convert<V>(value: FusionCanBeState<V>): CanBeState<V>
-		return Translators.Fusion.toColdFusion(maid, _fuse, value)
+	local function convert<V>(value: FusionCanBeState<V>, default: V): CanBeState<V>
+		return Translators.Fusion.toColdFusion(maid, _fuse, value, default)
 	end
-	local inst = Source.tertiary(convert(style), convert(buttons), convert(fab), convert(elevation))
+	local inst = Source.tertiary(
+		convert(style, DEFAULTS.TERTIARY.STYLE),
+		convert(buttons, DEFAULTS.TERTIARY.BUTTONS),
+		convert(fab, DEFAULTS.TERTIARY.FAB),
+		convert(elevation, DEFAULTS.TERTIARY.ELEVATION)
+	)
 	maid:GiveTask(inst.Destroying:Connect(function()
 		maid:Destroy()
 	end))

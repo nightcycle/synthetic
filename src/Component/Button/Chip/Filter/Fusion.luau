@@ -26,6 +26,7 @@ type CanBeState<V> = ColdFusion.CanBeState<V>
 type FusionCanBeState<V> = Translators.FusionCanBeState<V>
 
 -- Constants
+local DEFAULTS = require(script.Parent:WaitForChild("Defaults"))
 -- Variables
 -- References
 -- Private Functions
@@ -49,23 +50,23 @@ function Interface.new(
 ): GuiObject
 	local maid = Maid.new()
 	local _fuse = ColdFusion.fuse(maid)
-	local function convert<V>(value: FusionCanBeState<V>): CanBeState<V>
-		return Translators.Fusion.toColdFusion(maid, _fuse, value)
+	local function convert<V>(value: FusionCanBeState<V>, default: V): CanBeState<V>
+		return Translators.Fusion.toColdFusion(maid, _fuse, value, default)
 	end
 	local inst = Source.new(
-		convert(onClick),
-		convert(isInitiallySelected),
-		convert(text),
-		convert(textColor),
-		convert(disabledTextColor),
-		convert(fillTextColor),
-		convert(disabledFillTextColor),
-		convert(disabledFillColor),
-		convert(isEnabled),
-		convert(elevation),
-		convert(schemeType),
-		convert(fontData),
-		convert(scale)
+		convert(onClick, DEFAULTS.NEW.ON_CLICK),
+		convert(isInitiallySelected, DEFAULTS.NEW.IS_INITIALLY_SELECTED),
+		convert(text, DEFAULTS.NEW.TEXT),
+		convert(textColor, DEFAULTS.NEW.TEXT_COLOR),
+		convert(disabledTextColor, DEFAULTS.NEW.DISABLED_TEXT_COLOR),
+		convert(fillTextColor, DEFAULTS.NEW.FILL_TEXT_COLOR),
+		convert(disabledFillTextColor, DEFAULTS.NEW.DISABLED_FILL_TEXT_COLOR),
+		convert(disabledFillColor, DEFAULTS.NEW.DISABLED_FILL_COLOR),
+		convert(isEnabled, DEFAULTS.NEW.IS_ENABLED),
+		convert(elevation, DEFAULTS.NEW.ELEVATION),
+		convert(schemeType, DEFAULTS.NEW.SCHEME_TYPE),
+		convert(fontData, DEFAULTS.NEW.FONT_DATA),
+		convert(scale, DEFAULTS.NEW.SCALE)
 	)
 	maid:GiveTask(inst.Destroying:Connect(function()
 		maid:Destroy()
@@ -83,16 +84,16 @@ function Interface.primary(
 ): GuiObject
 	local maid = Maid.new()
 	local _fuse = ColdFusion.fuse(maid)
-	local function convert<V>(value: FusionCanBeState<V>): CanBeState<V>
-		return Translators.Fusion.toColdFusion(maid, _fuse, value)
+	local function convert<V>(value: FusionCanBeState<V>, default: V): CanBeState<V>
+		return Translators.Fusion.toColdFusion(maid, _fuse, value, default)
 	end
 	local inst = Source.primary(
-		convert(style),
-		convert(onClick),
-		convert(text),
-		convert(isInitiallySelected),
-		convert(isEnabled),
-		convert(elevation)
+		convert(style, DEFAULTS.PRIMARY.STYLE),
+		convert(onClick, DEFAULTS.PRIMARY.ON_CLICK),
+		convert(text, DEFAULTS.PRIMARY.TEXT),
+		convert(isInitiallySelected, DEFAULTS.PRIMARY.IS_INITIALLY_SELECTED),
+		convert(isEnabled, DEFAULTS.PRIMARY.IS_ENABLED),
+		convert(elevation, DEFAULTS.PRIMARY.ELEVATION)
 	)
 	maid:GiveTask(inst.Destroying:Connect(function()
 		maid:Destroy()
@@ -110,16 +111,16 @@ function Interface.secondary(
 ): GuiObject
 	local maid = Maid.new()
 	local _fuse = ColdFusion.fuse(maid)
-	local function convert<V>(value: FusionCanBeState<V>): CanBeState<V>
-		return Translators.Fusion.toColdFusion(maid, _fuse, value)
+	local function convert<V>(value: FusionCanBeState<V>, default: V): CanBeState<V>
+		return Translators.Fusion.toColdFusion(maid, _fuse, value, default)
 	end
 	local inst = Source.secondary(
-		convert(style),
-		convert(onClick),
-		convert(text),
-		convert(isInitiallySelected),
-		convert(isEnabled),
-		convert(elevation)
+		convert(style, DEFAULTS.SECONDARY.STYLE),
+		convert(onClick, DEFAULTS.SECONDARY.ON_CLICK),
+		convert(text, DEFAULTS.SECONDARY.TEXT),
+		convert(isInitiallySelected, DEFAULTS.SECONDARY.IS_INITIALLY_SELECTED),
+		convert(isEnabled, DEFAULTS.SECONDARY.IS_ENABLED),
+		convert(elevation, DEFAULTS.SECONDARY.ELEVATION)
 	)
 	maid:GiveTask(inst.Destroying:Connect(function()
 		maid:Destroy()
@@ -137,16 +138,16 @@ function Interface.tertiary(
 ): GuiObject
 	local maid = Maid.new()
 	local _fuse = ColdFusion.fuse(maid)
-	local function convert<V>(value: FusionCanBeState<V>): CanBeState<V>
-		return Translators.Fusion.toColdFusion(maid, _fuse, value)
+	local function convert<V>(value: FusionCanBeState<V>, default: V): CanBeState<V>
+		return Translators.Fusion.toColdFusion(maid, _fuse, value, default)
 	end
 	local inst = Source.tertiary(
-		convert(style),
-		convert(onClick),
-		convert(text),
-		convert(isInitiallySelected),
-		convert(isEnabled),
-		convert(elevation)
+		convert(style, DEFAULTS.TERTIARY.STYLE),
+		convert(onClick, DEFAULTS.TERTIARY.ON_CLICK),
+		convert(text, DEFAULTS.TERTIARY.TEXT),
+		convert(isInitiallySelected, DEFAULTS.TERTIARY.IS_INITIALLY_SELECTED),
+		convert(isEnabled, DEFAULTS.TERTIARY.IS_ENABLED),
+		convert(elevation, DEFAULTS.TERTIARY.ELEVATION)
 	)
 	maid:GiveTask(inst.Destroying:Connect(function()
 		maid:Destroy()

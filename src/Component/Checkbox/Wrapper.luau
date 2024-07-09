@@ -49,6 +49,7 @@ export type StyledCheckboxWrapperDefinition = {
 }
 export type StyledCheckboxWrapper = Wrapper<GuiObject, StyledCheckboxWrapperDefinition, "StyledCheckbox">
 -- Constants
+local DEFAULTS = require(script.Parent:WaitForChild("Defaults"))
 -- Variables
 -- References
 -- Private Functions
@@ -66,6 +67,13 @@ function Interface.primary(): StyledCheckboxWrapper
 		Elevation = _Value(0),
 		IsEnabled = _Value(true),
 	}
+	local defaults: { [string]: unknown? } = {
+		style = DEFAULTS.PRIMARY.STYLE,
+		onSelect = DEFAULTS.PRIMARY.ON_SELECT,
+		initialSelection = DEFAULTS.PRIMARY.INITIAL_SELECTION,
+		elevation = DEFAULTS.PRIMARY.ELEVATION,
+		isEnabled = DEFAULTS.PRIMARY.IS_ENABLED,
+	}
 	local inst: GuiObject = Source.primary(
 		definition.Style,
 		definition.OnSelect,
@@ -76,7 +84,7 @@ function Interface.primary(): StyledCheckboxWrapper
 	maid:GiveTask(inst.Destroying:Connect(function()
 		maid:Destroy()
 	end))
-	local wrapper, cleanUp = Translators.ColdFusion.toWrapper("StyledCheckbox", inst, definition)
+	local wrapper, cleanUp = Translators.ColdFusion.toWrapper("StyledCheckbox", inst, definition, defaults)
 	maid:GiveTask(cleanUp)
 	return wrapper
 end
@@ -92,6 +100,13 @@ function Interface.secondary(): StyledCheckboxWrapper
 		Elevation = _Value(0),
 		IsEnabled = _Value(true),
 	}
+	local defaults: { [string]: unknown? } = {
+		style = DEFAULTS.SECONDARY.STYLE,
+		onSelect = DEFAULTS.SECONDARY.ON_SELECT,
+		initialSelection = DEFAULTS.SECONDARY.INITIAL_SELECTION,
+		elevation = DEFAULTS.SECONDARY.ELEVATION,
+		isEnabled = DEFAULTS.SECONDARY.IS_ENABLED,
+	}
 	local inst: GuiObject = Source.secondary(
 		definition.Style,
 		definition.OnSelect,
@@ -102,7 +117,7 @@ function Interface.secondary(): StyledCheckboxWrapper
 	maid:GiveTask(inst.Destroying:Connect(function()
 		maid:Destroy()
 	end))
-	local wrapper, cleanUp = Translators.ColdFusion.toWrapper("StyledCheckbox", inst, definition)
+	local wrapper, cleanUp = Translators.ColdFusion.toWrapper("StyledCheckbox", inst, definition, defaults)
 	maid:GiveTask(cleanUp)
 	return wrapper
 end
@@ -118,6 +133,13 @@ function Interface.tertiary(): StyledCheckboxWrapper
 		Elevation = _Value(0),
 		IsEnabled = _Value(true),
 	}
+	local defaults: { [string]: unknown? } = {
+		style = DEFAULTS.TERTIARY.STYLE,
+		onSelect = DEFAULTS.TERTIARY.ON_SELECT,
+		initialSelection = DEFAULTS.TERTIARY.INITIAL_SELECTION,
+		elevation = DEFAULTS.TERTIARY.ELEVATION,
+		isEnabled = DEFAULTS.TERTIARY.IS_ENABLED,
+	}
 	local inst: GuiObject = Source.tertiary(
 		definition.Style,
 		definition.OnSelect,
@@ -128,7 +150,7 @@ function Interface.tertiary(): StyledCheckboxWrapper
 	maid:GiveTask(inst.Destroying:Connect(function()
 		maid:Destroy()
 	end))
-	local wrapper, cleanUp = Translators.ColdFusion.toWrapper("StyledCheckbox", inst, definition)
+	local wrapper, cleanUp = Translators.ColdFusion.toWrapper("StyledCheckbox", inst, definition, defaults)
 	maid:GiveTask(cleanUp)
 	return wrapper
 end
@@ -144,6 +166,13 @@ function Interface.primaryContainer(): StyledCheckboxWrapper
 		Elevation = _Value(0),
 		IsEnabled = _Value(true),
 	}
+	local defaults: { [string]: unknown? } = {
+		style = DEFAULTS.PRIMARY_CONTAINER.STYLE,
+		onSelect = DEFAULTS.PRIMARY_CONTAINER.ON_SELECT,
+		initialSelection = DEFAULTS.PRIMARY_CONTAINER.INITIAL_SELECTION,
+		elevation = DEFAULTS.PRIMARY_CONTAINER.ELEVATION,
+		isEnabled = DEFAULTS.PRIMARY_CONTAINER.IS_ENABLED,
+	}
 	local inst: GuiObject = Source.primaryContainer(
 		definition.Style,
 		definition.OnSelect,
@@ -154,7 +183,7 @@ function Interface.primaryContainer(): StyledCheckboxWrapper
 	maid:GiveTask(inst.Destroying:Connect(function()
 		maid:Destroy()
 	end))
-	local wrapper, cleanUp = Translators.ColdFusion.toWrapper("StyledCheckbox", inst, definition)
+	local wrapper, cleanUp = Translators.ColdFusion.toWrapper("StyledCheckbox", inst, definition, defaults)
 	maid:GiveTask(cleanUp)
 	return wrapper
 end
@@ -170,6 +199,13 @@ function Interface.secondaryContainer(): StyledCheckboxWrapper
 		Elevation = _Value(0),
 		IsEnabled = _Value(true),
 	}
+	local defaults: { [string]: unknown? } = {
+		style = DEFAULTS.SECONDARY_CONTAINER.STYLE,
+		onSelect = DEFAULTS.SECONDARY_CONTAINER.ON_SELECT,
+		initialSelection = DEFAULTS.SECONDARY_CONTAINER.INITIAL_SELECTION,
+		elevation = DEFAULTS.SECONDARY_CONTAINER.ELEVATION,
+		isEnabled = DEFAULTS.SECONDARY_CONTAINER.IS_ENABLED,
+	}
 	local inst: GuiObject = Source.secondaryContainer(
 		definition.Style,
 		definition.OnSelect,
@@ -180,7 +216,7 @@ function Interface.secondaryContainer(): StyledCheckboxWrapper
 	maid:GiveTask(inst.Destroying:Connect(function()
 		maid:Destroy()
 	end))
-	local wrapper, cleanUp = Translators.ColdFusion.toWrapper("StyledCheckbox", inst, definition)
+	local wrapper, cleanUp = Translators.ColdFusion.toWrapper("StyledCheckbox", inst, definition, defaults)
 	maid:GiveTask(cleanUp)
 	return wrapper
 end
@@ -196,6 +232,13 @@ function Interface.tertiaryContainer(): StyledCheckboxWrapper
 		Elevation = _Value(0),
 		IsEnabled = _Value(true),
 	}
+	local defaults: { [string]: unknown? } = {
+		style = DEFAULTS.TERTIARY_CONTAINER.STYLE,
+		onSelect = DEFAULTS.TERTIARY_CONTAINER.ON_SELECT,
+		initialSelection = DEFAULTS.TERTIARY_CONTAINER.INITIAL_SELECTION,
+		elevation = DEFAULTS.TERTIARY_CONTAINER.ELEVATION,
+		isEnabled = DEFAULTS.TERTIARY_CONTAINER.IS_ENABLED,
+	}
 	local inst: GuiObject = Source.tertiaryContainer(
 		definition.Style,
 		definition.OnSelect,
@@ -206,7 +249,7 @@ function Interface.tertiaryContainer(): StyledCheckboxWrapper
 	maid:GiveTask(inst.Destroying:Connect(function()
 		maid:Destroy()
 	end))
-	local wrapper, cleanUp = Translators.ColdFusion.toWrapper("StyledCheckbox", inst, definition)
+	local wrapper, cleanUp = Translators.ColdFusion.toWrapper("StyledCheckbox", inst, definition, defaults)
 	maid:GiveTask(cleanUp)
 	return wrapper
 end

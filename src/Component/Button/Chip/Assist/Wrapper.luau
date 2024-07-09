@@ -49,6 +49,7 @@ export type StyledAssistWrapperDefinition = {
 }
 export type StyledAssistWrapper = Wrapper<GuiObject, StyledAssistWrapperDefinition, "StyledAssist">
 -- Constants
+local DEFAULTS = require(script.Parent:WaitForChild("Defaults"))
 -- Variables
 -- References
 -- Private Functions
@@ -67,6 +68,14 @@ function Interface.primary(): StyledAssistWrapper
 		Elevation = _Value(0),
 		IsEnabled = _Value(true),
 	}
+	local defaults: { [string]: unknown? } = {
+		style = DEFAULTS.PRIMARY.STYLE,
+		onClick = DEFAULTS.PRIMARY.ON_CLICK,
+		text = DEFAULTS.PRIMARY.TEXT,
+		icon = DEFAULTS.PRIMARY.ICON,
+		elevation = DEFAULTS.PRIMARY.ELEVATION,
+		isEnabled = DEFAULTS.PRIMARY.IS_ENABLED,
+	}
 	local inst: GuiObject = Source.primary(
 		definition.Style,
 		definition.OnClick,
@@ -78,7 +87,7 @@ function Interface.primary(): StyledAssistWrapper
 	maid:GiveTask(inst.Destroying:Connect(function()
 		maid:Destroy()
 	end))
-	local wrapper, cleanUp = Translators.ColdFusion.toWrapper("StyledAssist", inst, definition)
+	local wrapper, cleanUp = Translators.ColdFusion.toWrapper("StyledAssist", inst, definition, defaults)
 	maid:GiveTask(cleanUp)
 	return wrapper
 end
@@ -95,6 +104,14 @@ function Interface.secondary(): StyledAssistWrapper
 		Elevation = _Value(0),
 		IsEnabled = _Value(true),
 	}
+	local defaults: { [string]: unknown? } = {
+		style = DEFAULTS.SECONDARY.STYLE,
+		onClick = DEFAULTS.SECONDARY.ON_CLICK,
+		text = DEFAULTS.SECONDARY.TEXT,
+		icon = DEFAULTS.SECONDARY.ICON,
+		elevation = DEFAULTS.SECONDARY.ELEVATION,
+		isEnabled = DEFAULTS.SECONDARY.IS_ENABLED,
+	}
 	local inst: GuiObject = Source.secondary(
 		definition.Style,
 		definition.OnClick,
@@ -106,7 +123,7 @@ function Interface.secondary(): StyledAssistWrapper
 	maid:GiveTask(inst.Destroying:Connect(function()
 		maid:Destroy()
 	end))
-	local wrapper, cleanUp = Translators.ColdFusion.toWrapper("StyledAssist", inst, definition)
+	local wrapper, cleanUp = Translators.ColdFusion.toWrapper("StyledAssist", inst, definition, defaults)
 	maid:GiveTask(cleanUp)
 	return wrapper
 end
@@ -123,6 +140,14 @@ function Interface.tertiary(): StyledAssistWrapper
 		Elevation = _Value(0),
 		IsEnabled = _Value(true),
 	}
+	local defaults: { [string]: unknown? } = {
+		style = DEFAULTS.TERTIARY.STYLE,
+		onClick = DEFAULTS.TERTIARY.ON_CLICK,
+		text = DEFAULTS.TERTIARY.TEXT,
+		icon = DEFAULTS.TERTIARY.ICON,
+		elevation = DEFAULTS.TERTIARY.ELEVATION,
+		isEnabled = DEFAULTS.TERTIARY.IS_ENABLED,
+	}
 	local inst: GuiObject = Source.tertiary(
 		definition.Style,
 		definition.OnClick,
@@ -134,7 +159,7 @@ function Interface.tertiary(): StyledAssistWrapper
 	maid:GiveTask(inst.Destroying:Connect(function()
 		maid:Destroy()
 	end))
-	local wrapper, cleanUp = Translators.ColdFusion.toWrapper("StyledAssist", inst, definition)
+	local wrapper, cleanUp = Translators.ColdFusion.toWrapper("StyledAssist", inst, definition, defaults)
 	maid:GiveTask(cleanUp)
 	return wrapper
 end

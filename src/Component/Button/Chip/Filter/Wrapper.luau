@@ -52,6 +52,7 @@ export type StyledFilterWrapperDefinition = {
 }
 export type StyledFilterWrapper = Wrapper<GuiObject, StyledFilterWrapperDefinition, "StyledFilter">
 -- Constants
+local DEFAULTS = require(script.Parent:WaitForChild("Defaults"))
 -- Variables
 -- References
 -- Private Functions
@@ -70,6 +71,14 @@ function Interface.primary(): StyledFilterWrapper
 		IsEnabled = _Value(true),
 		Elevation = _Value(0),
 	}
+	local defaults: { [string]: unknown? } = {
+		style = DEFAULTS.PRIMARY.STYLE,
+		onClick = DEFAULTS.PRIMARY.ON_CLICK,
+		text = DEFAULTS.PRIMARY.TEXT,
+		isInitiallySelected = DEFAULTS.PRIMARY.IS_INITIALLY_SELECTED,
+		isEnabled = DEFAULTS.PRIMARY.IS_ENABLED,
+		elevation = DEFAULTS.PRIMARY.ELEVATION,
+	}
 	local inst: GuiObject = Source.primary(
 		definition.Style,
 		definition.OnClick,
@@ -81,7 +90,7 @@ function Interface.primary(): StyledFilterWrapper
 	maid:GiveTask(inst.Destroying:Connect(function()
 		maid:Destroy()
 	end))
-	local wrapper, cleanUp = Translators.ColdFusion.toWrapper("StyledFilter", inst, definition)
+	local wrapper, cleanUp = Translators.ColdFusion.toWrapper("StyledFilter", inst, definition, defaults)
 	maid:GiveTask(cleanUp)
 	return wrapper
 end
@@ -98,6 +107,14 @@ function Interface.secondary(): StyledFilterWrapper
 		IsEnabled = _Value(true),
 		Elevation = _Value(0),
 	}
+	local defaults: { [string]: unknown? } = {
+		style = DEFAULTS.SECONDARY.STYLE,
+		onClick = DEFAULTS.SECONDARY.ON_CLICK,
+		text = DEFAULTS.SECONDARY.TEXT,
+		isInitiallySelected = DEFAULTS.SECONDARY.IS_INITIALLY_SELECTED,
+		isEnabled = DEFAULTS.SECONDARY.IS_ENABLED,
+		elevation = DEFAULTS.SECONDARY.ELEVATION,
+	}
 	local inst: GuiObject = Source.secondary(
 		definition.Style,
 		definition.OnClick,
@@ -109,7 +126,7 @@ function Interface.secondary(): StyledFilterWrapper
 	maid:GiveTask(inst.Destroying:Connect(function()
 		maid:Destroy()
 	end))
-	local wrapper, cleanUp = Translators.ColdFusion.toWrapper("StyledFilter", inst, definition)
+	local wrapper, cleanUp = Translators.ColdFusion.toWrapper("StyledFilter", inst, definition, defaults)
 	maid:GiveTask(cleanUp)
 	return wrapper
 end
@@ -126,6 +143,14 @@ function Interface.tertiary(): StyledFilterWrapper
 		IsEnabled = _Value(true),
 		Elevation = _Value(0),
 	}
+	local defaults: { [string]: unknown? } = {
+		style = DEFAULTS.TERTIARY.STYLE,
+		onClick = DEFAULTS.TERTIARY.ON_CLICK,
+		text = DEFAULTS.TERTIARY.TEXT,
+		isInitiallySelected = DEFAULTS.TERTIARY.IS_INITIALLY_SELECTED,
+		isEnabled = DEFAULTS.TERTIARY.IS_ENABLED,
+		elevation = DEFAULTS.TERTIARY.ELEVATION,
+	}
 	local inst: GuiObject = Source.tertiary(
 		definition.Style,
 		definition.OnClick,
@@ -137,7 +162,7 @@ function Interface.tertiary(): StyledFilterWrapper
 	maid:GiveTask(inst.Destroying:Connect(function()
 		maid:Destroy()
 	end))
-	local wrapper, cleanUp = Translators.ColdFusion.toWrapper("StyledFilter", inst, definition)
+	local wrapper, cleanUp = Translators.ColdFusion.toWrapper("StyledFilter", inst, definition, defaults)
 	maid:GiveTask(cleanUp)
 	return wrapper
 end

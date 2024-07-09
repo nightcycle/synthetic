@@ -53,6 +53,7 @@ export type StyledDialogWrapperDefinition = {
 }
 export type StyledDialogWrapper = Wrapper<GuiObject, StyledDialogWrapperDefinition, "StyledDialog">
 -- Constants
+local DEFAULTS = require(script.Parent:WaitForChild("Defaults"))
 -- Variables
 -- References
 -- Private Functions
@@ -70,6 +71,13 @@ function Interface.primary(): StyledDialogWrapper
 		Headline = _Value(nil),
 		Description = _Value(nil),
 	}
+	local defaults: { [string]: unknown? } = {
+		style = DEFAULTS.PRIMARY.STYLE,
+		buttons = DEFAULTS.PRIMARY.BUTTONS,
+		icon = DEFAULTS.PRIMARY.ICON,
+		headline = DEFAULTS.PRIMARY.HEADLINE,
+		description = DEFAULTS.PRIMARY.DESCRIPTION,
+	}
 	local inst: GuiObject = Source.primary(
 		definition.Style,
 		definition.Buttons,
@@ -80,7 +88,7 @@ function Interface.primary(): StyledDialogWrapper
 	maid:GiveTask(inst.Destroying:Connect(function()
 		maid:Destroy()
 	end))
-	local wrapper, cleanUp = Translators.ColdFusion.toWrapper("StyledDialog", inst, definition)
+	local wrapper, cleanUp = Translators.ColdFusion.toWrapper("StyledDialog", inst, definition, defaults)
 	maid:GiveTask(cleanUp)
 	return wrapper
 end
@@ -96,6 +104,13 @@ function Interface.secondary(): StyledDialogWrapper
 		Headline = _Value(nil),
 		Description = _Value(nil),
 	}
+	local defaults: { [string]: unknown? } = {
+		style = DEFAULTS.SECONDARY.STYLE,
+		buttons = DEFAULTS.SECONDARY.BUTTONS,
+		icon = DEFAULTS.SECONDARY.ICON,
+		headline = DEFAULTS.SECONDARY.HEADLINE,
+		description = DEFAULTS.SECONDARY.DESCRIPTION,
+	}
 	local inst: GuiObject = Source.secondary(
 		definition.Style,
 		definition.Buttons,
@@ -106,7 +121,7 @@ function Interface.secondary(): StyledDialogWrapper
 	maid:GiveTask(inst.Destroying:Connect(function()
 		maid:Destroy()
 	end))
-	local wrapper, cleanUp = Translators.ColdFusion.toWrapper("StyledDialog", inst, definition)
+	local wrapper, cleanUp = Translators.ColdFusion.toWrapper("StyledDialog", inst, definition, defaults)
 	maid:GiveTask(cleanUp)
 	return wrapper
 end
@@ -122,6 +137,13 @@ function Interface.tertiary(): StyledDialogWrapper
 		Headline = _Value(nil),
 		Description = _Value(nil),
 	}
+	local defaults: { [string]: unknown? } = {
+		style = DEFAULTS.TERTIARY.STYLE,
+		buttons = DEFAULTS.TERTIARY.BUTTONS,
+		icon = DEFAULTS.TERTIARY.ICON,
+		headline = DEFAULTS.TERTIARY.HEADLINE,
+		description = DEFAULTS.TERTIARY.DESCRIPTION,
+	}
 	local inst: GuiObject = Source.tertiary(
 		definition.Style,
 		definition.Buttons,
@@ -132,7 +154,7 @@ function Interface.tertiary(): StyledDialogWrapper
 	maid:GiveTask(inst.Destroying:Connect(function()
 		maid:Destroy()
 	end))
-	local wrapper, cleanUp = Translators.ColdFusion.toWrapper("StyledDialog", inst, definition)
+	local wrapper, cleanUp = Translators.ColdFusion.toWrapper("StyledDialog", inst, definition, defaults)
 	maid:GiveTask(cleanUp)
 	return wrapper
 end

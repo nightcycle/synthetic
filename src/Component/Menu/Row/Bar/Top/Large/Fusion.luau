@@ -26,6 +26,7 @@ type CanBeState<V> = ColdFusion.CanBeState<V>
 type FusionCanBeState<V> = Translators.FusionCanBeState<V>
 
 -- Constants
+local DEFAULTS = require(script.Parent:WaitForChild("Defaults"))
 -- Variables
 -- References
 -- Private Functions
@@ -47,21 +48,21 @@ function Interface.new(
 ): GuiObject
 	local maid = Maid.new()
 	local _fuse = ColdFusion.fuse(maid)
-	local function convert<V>(value: FusionCanBeState<V>): CanBeState<V>
-		return Translators.Fusion.toColdFusion(maid, _fuse, value)
+	local function convert<V>(value: FusionCanBeState<V>, default: V): CanBeState<V>
+		return Translators.Fusion.toColdFusion(maid, _fuse, value, default)
 	end
 	local inst = Source.new(
-		convert(title),
-		convert(buttons),
-		convert(navigation),
-		convert(backgroundColor),
-		convert(textColor),
-		convert(elevation),
-		convert(schemeType),
-		convert(titleFontData),
-		convert(subHeadingFontData),
-		convert(buttonFontData),
-		convert(scale)
+		convert(title, DEFAULTS.NEW.TITLE),
+		convert(buttons, DEFAULTS.NEW.BUTTONS),
+		convert(navigation, DEFAULTS.NEW.NAVIGATION),
+		convert(backgroundColor, DEFAULTS.NEW.BACKGROUND_COLOR),
+		convert(textColor, DEFAULTS.NEW.TEXT_COLOR),
+		convert(elevation, DEFAULTS.NEW.ELEVATION),
+		convert(schemeType, DEFAULTS.NEW.SCHEME_TYPE),
+		convert(titleFontData, DEFAULTS.NEW.TITLE_FONT_DATA),
+		convert(subHeadingFontData, DEFAULTS.NEW.SUB_HEADING_FONT_DATA),
+		convert(buttonFontData, DEFAULTS.NEW.BUTTON_FONT_DATA),
+		convert(scale, DEFAULTS.NEW.SCALE)
 	)
 	maid:GiveTask(inst.Destroying:Connect(function()
 		maid:Destroy()
@@ -78,15 +79,15 @@ function Interface.primary(
 ): GuiObject
 	local maid = Maid.new()
 	local _fuse = ColdFusion.fuse(maid)
-	local function convert<V>(value: FusionCanBeState<V>): CanBeState<V>
-		return Translators.Fusion.toColdFusion(maid, _fuse, value)
+	local function convert<V>(value: FusionCanBeState<V>, default: V): CanBeState<V>
+		return Translators.Fusion.toColdFusion(maid, _fuse, value, default)
 	end
 	local inst = Source.primary(
-		convert(style),
-		convert(title),
-		convert(buttons),
-		convert(navigation),
-		convert(elevation)
+		convert(style, DEFAULTS.PRIMARY.STYLE),
+		convert(title, DEFAULTS.PRIMARY.TITLE),
+		convert(buttons, DEFAULTS.PRIMARY.BUTTONS),
+		convert(navigation, DEFAULTS.PRIMARY.NAVIGATION),
+		convert(elevation, DEFAULTS.PRIMARY.ELEVATION)
 	)
 	maid:GiveTask(inst.Destroying:Connect(function()
 		maid:Destroy()
@@ -103,15 +104,15 @@ function Interface.secondary(
 ): GuiObject
 	local maid = Maid.new()
 	local _fuse = ColdFusion.fuse(maid)
-	local function convert<V>(value: FusionCanBeState<V>): CanBeState<V>
-		return Translators.Fusion.toColdFusion(maid, _fuse, value)
+	local function convert<V>(value: FusionCanBeState<V>, default: V): CanBeState<V>
+		return Translators.Fusion.toColdFusion(maid, _fuse, value, default)
 	end
 	local inst = Source.secondary(
-		convert(style),
-		convert(title),
-		convert(buttons),
-		convert(navigation),
-		convert(elevation)
+		convert(style, DEFAULTS.SECONDARY.STYLE),
+		convert(title, DEFAULTS.SECONDARY.TITLE),
+		convert(buttons, DEFAULTS.SECONDARY.BUTTONS),
+		convert(navigation, DEFAULTS.SECONDARY.NAVIGATION),
+		convert(elevation, DEFAULTS.SECONDARY.ELEVATION)
 	)
 	maid:GiveTask(inst.Destroying:Connect(function()
 		maid:Destroy()
@@ -128,15 +129,15 @@ function Interface.tertiary(
 ): GuiObject
 	local maid = Maid.new()
 	local _fuse = ColdFusion.fuse(maid)
-	local function convert<V>(value: FusionCanBeState<V>): CanBeState<V>
-		return Translators.Fusion.toColdFusion(maid, _fuse, value)
+	local function convert<V>(value: FusionCanBeState<V>, default: V): CanBeState<V>
+		return Translators.Fusion.toColdFusion(maid, _fuse, value, default)
 	end
 	local inst = Source.tertiary(
-		convert(style),
-		convert(title),
-		convert(buttons),
-		convert(navigation),
-		convert(elevation)
+		convert(style, DEFAULTS.TERTIARY.STYLE),
+		convert(title, DEFAULTS.TERTIARY.TITLE),
+		convert(buttons, DEFAULTS.TERTIARY.BUTTONS),
+		convert(navigation, DEFAULTS.TERTIARY.NAVIGATION),
+		convert(elevation, DEFAULTS.TERTIARY.ELEVATION)
 	)
 	maid:GiveTask(inst.Destroying:Connect(function()
 		maid:Destroy()

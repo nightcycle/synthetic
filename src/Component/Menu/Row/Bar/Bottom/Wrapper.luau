@@ -48,6 +48,7 @@ export type StyledBottomWrapperDefinition = {
 }
 export type StyledBottomWrapper = Wrapper<GuiObject, StyledBottomWrapperDefinition, "StyledBottom">
 -- Constants
+local DEFAULTS = require(script.Parent:WaitForChild("Defaults"))
 -- Variables
 -- References
 -- Private Functions
@@ -64,12 +65,18 @@ function Interface.primary(): StyledBottomWrapper
 		Fab = _Value(nil),
 		Elevation = _Value(0),
 	}
+	local defaults: { [string]: unknown? } = {
+		style = DEFAULTS.PRIMARY.STYLE,
+		buttons = DEFAULTS.PRIMARY.BUTTONS,
+		fab = DEFAULTS.PRIMARY.FAB,
+		elevation = DEFAULTS.PRIMARY.ELEVATION,
+	}
 	local inst: GuiObject =
 		Source.primary(definition.Style, definition.Buttons, definition.Fab, definition.Elevation)
 	maid:GiveTask(inst.Destroying:Connect(function()
 		maid:Destroy()
 	end))
-	local wrapper, cleanUp = Translators.ColdFusion.toWrapper("StyledBottom", inst, definition)
+	local wrapper, cleanUp = Translators.ColdFusion.toWrapper("StyledBottom", inst, definition, defaults)
 	maid:GiveTask(cleanUp)
 	return wrapper
 end
@@ -84,12 +91,18 @@ function Interface.secondary(): StyledBottomWrapper
 		Fab = _Value(nil),
 		Elevation = _Value(0),
 	}
+	local defaults: { [string]: unknown? } = {
+		style = DEFAULTS.SECONDARY.STYLE,
+		buttons = DEFAULTS.SECONDARY.BUTTONS,
+		fab = DEFAULTS.SECONDARY.FAB,
+		elevation = DEFAULTS.SECONDARY.ELEVATION,
+	}
 	local inst: GuiObject =
 		Source.secondary(definition.Style, definition.Buttons, definition.Fab, definition.Elevation)
 	maid:GiveTask(inst.Destroying:Connect(function()
 		maid:Destroy()
 	end))
-	local wrapper, cleanUp = Translators.ColdFusion.toWrapper("StyledBottom", inst, definition)
+	local wrapper, cleanUp = Translators.ColdFusion.toWrapper("StyledBottom", inst, definition, defaults)
 	maid:GiveTask(cleanUp)
 	return wrapper
 end
@@ -104,12 +117,18 @@ function Interface.tertiary(): StyledBottomWrapper
 		Fab = _Value(nil),
 		Elevation = _Value(0),
 	}
+	local defaults: { [string]: unknown? } = {
+		style = DEFAULTS.TERTIARY.STYLE,
+		buttons = DEFAULTS.TERTIARY.BUTTONS,
+		fab = DEFAULTS.TERTIARY.FAB,
+		elevation = DEFAULTS.TERTIARY.ELEVATION,
+	}
 	local inst: GuiObject =
 		Source.tertiary(definition.Style, definition.Buttons, definition.Fab, definition.Elevation)
 	maid:GiveTask(inst.Destroying:Connect(function()
 		maid:Destroy()
 	end))
-	local wrapper, cleanUp = Translators.ColdFusion.toWrapper("StyledBottom", inst, definition)
+	local wrapper, cleanUp = Translators.ColdFusion.toWrapper("StyledBottom", inst, definition, defaults)
 	maid:GiveTask(cleanUp)
 	return wrapper
 end

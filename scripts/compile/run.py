@@ -124,6 +124,7 @@ type CanBeState<V> = ColdFusion.CanBeState<V>"""
 			self.get_header(),
 			'type FusionCanBeState<V> = Translators.FusionCanBeState<V>\n',
 			'-- Constants',
+			'local DEFAULTS = require(script.Parent:WaitForChild("Defaults"))',
 			'-- Variables',
 			'-- References',
 			'-- Private Functions',
@@ -133,21 +134,23 @@ type CanBeState<V> = ColdFusion.CanBeState<V>"""
 
 		for func in self.functions:
 			inner_params: list[str] = []
-			passed_params: list[str] = []
 
 			for param in func["parameters"]:
 				inner_params.append(param["name"]+': FusionCanBeState<'+param["type"]+'>')
-				passed_params.append("convert("+param["name"]+")")
 
 			for name in func["names"]:
+				passed_params: list[str] = []
+				for param in func["parameters"]:
+					passed_params.append("convert("+param["name"]+", DEFAULTS."+camel_to_upper_snake(name)+"."+camel_to_upper_snake(param["name"])+")")
+
 				function_lines = [
 					f'\nfunction Interface.{name}(',
 						",".join(inner_params),
 						'): GuiObject',
 						'local maid = Maid.new()',
 						'local _fuse = ColdFusion.fuse(maid)',
-						'local function convert<V>(value: FusionCanBeState<V>): CanBeState<V>',
-							'return Translators.Fusion.toColdFusion(maid, _fuse, value)',
+						'local function convert<V>(value: FusionCanBeState<V>, default: V): CanBeState<V>',
+							'return Translators.Fusion.toColdFusion(maid, _fuse, value, default)',
 						'end',
 						f'local inst = Source.{name}(',
 						",".join(passed_params),
@@ -173,7 +176,6 @@ type CanBeState<V> = ColdFusion.CanBeState<V>"""
 		lines: list[str] = [
 			self.get_header(),
 			'type Wrapper<BaseInstance, Definition, ClassName> = Translators.Wrapper<BaseInstance, Definition, ClassName>\n',
-
 		]
 
 		for func in self.functions:
@@ -197,6 +199,7 @@ type CanBeState<V> = ColdFusion.CanBeState<V>"""
 
 		lines += [
 			'-- Constants',
+			'local DEFAULTS = require(script.Parent:WaitForChild("Defaults"))',
 			'-- Variables',
 			'-- References',
 			'-- Private Functions',
@@ -221,8 +224,14 @@ type CanBeState<V> = ColdFusion.CanBeState<V>"""
 						lines.append(f'{camel_to_pascal(param["name"])} = _Value('+param["default"]+'),')
 
 					lines += [
-							'}',
+						'}',
+						'local defaults: {[string]: unknown?} = {'
+					]
+					for param in func["parameters"]:
+						lines.append(f'{param['name']} = DEFAULTS.{camel_to_upper_snake(name)}.{camel_to_upper_snake(param['name'])},')
 
+					lines += [
+							'}',
 							f'local inst: GuiObject = Source.{name}(',
 					]
 					def_params = []
@@ -237,7 +246,7 @@ type CanBeState<V> = ColdFusion.CanBeState<V>"""
 								'maid:Destroy()',
 							'end))',
 
-							f'local wrapper, cleanUp = Translators.ColdFusion.toWrapper("{camel_to_pascal(key)}{self.name}", inst, definition)',
+							f'local wrapper, cleanUp = Translators.ColdFusion.toWrapper("{camel_to_pascal(key)}{self.name}", inst, definition, defaults)',
 							'maid:GiveTask(cleanUp)',
 
 							'return wrapper',

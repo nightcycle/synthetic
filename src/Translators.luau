@@ -93,7 +93,8 @@ Translators.Roact = {}
 function Translators.Fusion.toColdFusion<V>(
 	maid: Maid,
 	fuse: CFuse,
-	value: FusionCanBeState<V>
+	value: FusionCanBeState<V>,
+	default: V
 ): CFusionCanBeState<V>
 	if typeof(value) == "table" then
 		local valueTable: { [unknown]: unknown? } = value :: any
@@ -106,7 +107,8 @@ function Translators.Fusion.toColdFusion<V>(
 			local state = fuse.Value(stateObject:get(false))
 			local observer = Fusion.Observer(stateObject)
 			maid:GiveTask(observer:onChange(function()
-				state:Set(stateObject:get(false))
+				local val = stateObject:get(false)
+				state:Set(if val == nil then default else val)
 			end))
 
 			return state
@@ -123,6 +125,9 @@ function Translators.ColdFusion.toWrapper<BaseInstance, Definition, ClassName>(
 	inst: BaseInstance & Instance,
 	states: {
 		[unknown]: CFusionValueState<unknown?>,
+	},
+	defaults: {
+		[unknown]: unknown?,
 	}
 ): (Wrapper<
 	Instance,
@@ -150,7 +155,11 @@ function Translators.ColdFusion.toWrapper<BaseInstance, Definition, ClassName>(
 		if rawget(self, k) ~= nil then
 			rawset(self, k, v)
 		elseif states[k] then
-			states[k]:Set(v)
+			if v == nil then
+				states[k]:Set(defaults[k])
+			else
+				states[k]:Set(v)
+			end
 		elseif v ~= nil then
 			local anyInst: any = inst
 			anyInst[k] = v

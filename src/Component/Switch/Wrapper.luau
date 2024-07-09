@@ -56,6 +56,7 @@ export type StyledSwitchWrapperDefinition = {
 }
 export type StyledSwitchWrapper = Wrapper<GuiObject, StyledSwitchWrapperDefinition, "StyledSwitch">
 -- Constants
+local DEFAULTS = require(script.Parent:WaitForChild("Defaults"))
 -- Variables
 -- References
 -- Private Functions
@@ -75,6 +76,15 @@ function Interface.primary(): StyledSwitchWrapper
 		Elevation = _Value(0),
 		IsEnabled = _Value(true),
 	}
+	local defaults: { [string]: unknown? } = {
+		style = DEFAULTS.PRIMARY.STYLE,
+		onSelect = DEFAULTS.PRIMARY.ON_SELECT,
+		initialSelection = DEFAULTS.PRIMARY.INITIAL_SELECTION,
+		includeIconOnSelected = DEFAULTS.PRIMARY.INCLUDE_ICON_ON_SELECTED,
+		includeIconOnDeselected = DEFAULTS.PRIMARY.INCLUDE_ICON_ON_DESELECTED,
+		elevation = DEFAULTS.PRIMARY.ELEVATION,
+		isEnabled = DEFAULTS.PRIMARY.IS_ENABLED,
+	}
 	local inst: GuiObject = Source.primary(
 		definition.Style,
 		definition.OnSelect,
@@ -87,7 +97,7 @@ function Interface.primary(): StyledSwitchWrapper
 	maid:GiveTask(inst.Destroying:Connect(function()
 		maid:Destroy()
 	end))
-	local wrapper, cleanUp = Translators.ColdFusion.toWrapper("StyledSwitch", inst, definition)
+	local wrapper, cleanUp = Translators.ColdFusion.toWrapper("StyledSwitch", inst, definition, defaults)
 	maid:GiveTask(cleanUp)
 	return wrapper
 end
@@ -105,6 +115,15 @@ function Interface.secondary(): StyledSwitchWrapper
 		Elevation = _Value(0),
 		IsEnabled = _Value(true),
 	}
+	local defaults: { [string]: unknown? } = {
+		style = DEFAULTS.SECONDARY.STYLE,
+		onSelect = DEFAULTS.SECONDARY.ON_SELECT,
+		initialSelection = DEFAULTS.SECONDARY.INITIAL_SELECTION,
+		includeIconOnSelected = DEFAULTS.SECONDARY.INCLUDE_ICON_ON_SELECTED,
+		includeIconOnDeselected = DEFAULTS.SECONDARY.INCLUDE_ICON_ON_DESELECTED,
+		elevation = DEFAULTS.SECONDARY.ELEVATION,
+		isEnabled = DEFAULTS.SECONDARY.IS_ENABLED,
+	}
 	local inst: GuiObject = Source.secondary(
 		definition.Style,
 		definition.OnSelect,
@@ -117,7 +136,7 @@ function Interface.secondary(): StyledSwitchWrapper
 	maid:GiveTask(inst.Destroying:Connect(function()
 		maid:Destroy()
 	end))
-	local wrapper, cleanUp = Translators.ColdFusion.toWrapper("StyledSwitch", inst, definition)
+	local wrapper, cleanUp = Translators.ColdFusion.toWrapper("StyledSwitch", inst, definition, defaults)
 	maid:GiveTask(cleanUp)
 	return wrapper
 end
@@ -135,6 +154,15 @@ function Interface.tertiary(): StyledSwitchWrapper
 		Elevation = _Value(0),
 		IsEnabled = _Value(true),
 	}
+	local defaults: { [string]: unknown? } = {
+		style = DEFAULTS.TERTIARY.STYLE,
+		onSelect = DEFAULTS.TERTIARY.ON_SELECT,
+		initialSelection = DEFAULTS.TERTIARY.INITIAL_SELECTION,
+		includeIconOnSelected = DEFAULTS.TERTIARY.INCLUDE_ICON_ON_SELECTED,
+		includeIconOnDeselected = DEFAULTS.TERTIARY.INCLUDE_ICON_ON_DESELECTED,
+		elevation = DEFAULTS.TERTIARY.ELEVATION,
+		isEnabled = DEFAULTS.TERTIARY.IS_ENABLED,
+	}
 	local inst: GuiObject = Source.tertiary(
 		definition.Style,
 		definition.OnSelect,
@@ -147,7 +175,7 @@ function Interface.tertiary(): StyledSwitchWrapper
 	maid:GiveTask(inst.Destroying:Connect(function()
 		maid:Destroy()
 	end))
-	local wrapper, cleanUp = Translators.ColdFusion.toWrapper("StyledSwitch", inst, definition)
+	local wrapper, cleanUp = Translators.ColdFusion.toWrapper("StyledSwitch", inst, definition, defaults)
 	maid:GiveTask(cleanUp)
 	return wrapper
 end
