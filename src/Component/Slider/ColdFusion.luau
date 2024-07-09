@@ -466,8 +466,8 @@ end
 function Interface.new(
 	onChange: CanBeState<(onChange: number) -> ()>,
 	initialValue: CanBeState<number>,
-	minimum: CanBeState<number?>,
-	maximum: CanBeState<number?>,
+	minimum: CanBeState<number>,
+	maximum: CanBeState<number>,
 	increment: CanBeState<number?>,
 	leftTextOrIcon: CanBeState<string | ImageData | nil>,
 	rightTextOrIcon: CanBeState<string | ImageData | nil>,

@@ -113,12 +113,12 @@
                 },
                 {
                     "name": "minimum",
-                    "type": "number?",
+                    "type": "number",
                     "default": "0"
                 },
                 {
                     "name": "maximum",
-                    "type": "number?",
+                    "type": "number",
                     "default": "100"
                 },
                 {

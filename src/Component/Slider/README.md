@@ -108,8 +108,8 @@ This function is a style constructor, utilizing the "Style" type to reduce the n
 - **style**: Style
 - **onChange**: (onChange: number) -> ()
 - **initialValue**: number
-- **minimum**: number?
-- **maximum**: number?
+- **minimum**: number
+- **maximum**: number
 - **increment**: number?
 - **leftTextOrIcon**: ((string | ImageData)?)
 - **rightTextOrIcon**: ((string | ImageData)?)
@@ -123,8 +123,8 @@ This function is a style constructor, utilizing the "Style" type to reduce the n
 local style: Style = Style.new(1, Enum.Font.SourceSans, "Light", Color3.new(0, 0.4, 0.7))
 local onChange: (onChange: number) -> () = function(onChange: number) end
 local initialValue: number = 50
-local minimum: number? = 0
-local maximum: number? = 100
+local minimum: number = 0
+local maximum: number = 100
 local increment: number? = nil
 local leftTextOrIcon: ((string | ImageData)?) = nil
 local rightTextOrIcon: ((string | ImageData)?) = nil
@@ -147,8 +147,8 @@ slider.Elevation = elevation
 local styleState: Fusion.Value<Style> = Value(Style.new(1, Enum.Font.SourceSans, "Light", Color3.new(0, 0.4, 0.7)))
 local onChange: (onChange: number) -> () = function(onChange: number) end
 local initialValueState: Fusion.Value<number> = Value(50)
-local minimum: number? = 0
-local maximumState: Fusion.Value<number?> = Value(100)
+local minimum: number = 0
+local maximumState: Fusion.Value<number> = Value(100)
 local increment: number? = nil
 local leftTextOrIconState: Fusion.Value<((string | ImageData)?)> = Value(nil)
 local rightTextOrIcon: ((string | ImageData)?) = nil
