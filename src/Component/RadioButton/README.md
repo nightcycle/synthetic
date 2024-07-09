@@ -81,6 +81,25 @@ local radioButton: GuiObject = Synthetic.Component.RadioButton.Fusion.new(
 	scaleState
 )
 ```
+
+**Roact**
+```luau
+local radioButton = Roact.createElement(Module.Roact.New, {
+	onSelect = function(isSelected: boolean) end,
+	initialSelection = false,
+	isEnabled = true,
+	outlineColor = Color3.new(),
+	fillColor = Color3.new(),
+	iconColor = Color3.new(),
+	disabledColor = Color3.new(),
+	elevation = 0,
+	schemeType = Enums.SchemeType.Light,
+	fontData = Types.FontData.new(Font.fromEnum(Enum.Font.SourceSans), 14),
+	scale = 1,
+}
+
+Roact.mount(radioButton, parent)
+```
 ## primary / secondary / tertiary / primaryContainer / secondaryContainer / tertiaryContainer
 This function is a style constructor, utilizing the "Style" type to reduce the number of parameters required for implementation.
 
@@ -125,4 +144,17 @@ local radioButton: GuiObject = Synthetic.Component.RadioButton.Fusion.primary(
 	elevation,
 	isEnabledState
 )
+```
+
+**Roact**
+```luau
+local radioButton = Roact.createElement(Module.Roact.Primary, {
+	style = Style.new(1, Enum.Font.SourceSans, "Light", Color3.new(0, 0.4, 0.7)),
+	onSelect = function(isSelected: boolean) end,
+	initialSelection = false,
+	elevation = 0,
+	isEnabled = true,
+}
+
+Roact.mount(radioButton, parent)
 ```

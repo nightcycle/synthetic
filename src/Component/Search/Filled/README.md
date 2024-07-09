@@ -84,6 +84,28 @@ local filled: GuiObject = Synthetic.Component.Search.Filled.Fusion.new(
 	scale
 )
 ```
+
+**Roact**
+```luau
+local filled = Roact.createElement(Module.Roact.New, {
+	onInputEntered = function(input: string)
+return input
+end,
+	label = "",
+	optionSolver = function(input: string)
+return {}
+end,
+	optionConstructor = nil,
+	textColor = Color3.new(),
+	backgroundColor = Color3.new(),
+	elevation = 0,
+	schemeType = Enums.SchemeType.Light,
+	fontData = Types.FontData.new(Font.fromEnum(Enum.Font.SourceSans), 14),
+	scale = 1,
+}
+
+Roact.mount(filled, parent)
+```
 ## primary / secondary / tertiary / primaryContainer / secondaryContainer / tertiaryContainer
 This function is a style constructor, utilizing the "Style" type to reduce the number of parameters required for implementation.
 
@@ -141,4 +163,22 @@ local filled: GuiObject = Synthetic.Component.Search.Filled.Fusion.primary(
 	optionConstructorState,
 	elevation
 )
+```
+
+**Roact**
+```luau
+local filled = Roact.createElement(Module.Roact.Primary, {
+	style = Style.new(1, Enum.Font.SourceSans, "Light", Color3.new(0, 0.4, 0.7)),
+	onInputEntered = function(input: string)
+return input
+end,
+	label = "",
+	optionSolver = function(input: string)
+return {}
+end,
+	optionConstructor = nil,
+	elevation = 0,
+}
+
+Roact.mount(filled, parent)
 ```

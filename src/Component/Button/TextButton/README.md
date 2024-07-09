@@ -76,6 +76,24 @@ local textButton: GuiObject = Synthetic.Component.Button.TextButton.Fusion.new(
 	scale
 )
 ```
+
+**Roact**
+```luau
+local textButton = Roact.createElement(Module.Roact.New, {
+	onClick = function() end,
+	text = "Button",
+	icon = nil,
+	textColor = Color3.new(),
+	disabledTextColor = Color3.new(),
+	isEnabled = true,
+	elevation = 0,
+	schemeType = Enums.SchemeType.Light,
+	fontData = Types.FontData.new(Font.fromEnum(Enum.Font.SourceSans), 14),
+	scale = 1,
+}
+
+Roact.mount(textButton, parent)
+```
 ## onPrimary / onSecondary / onTertiary / onPrimaryContainer / onSecondaryContainer / onTertiaryContainer
 This function is a style constructor, utilizing the "Style" type to reduce the number of parameters required for implementation.
 
@@ -125,4 +143,18 @@ local textButton: GuiObject = Synthetic.Component.Button.TextButton.Fusion.onPri
 	elevationState,
 	isEnabled
 )
+```
+
+**Roact**
+```luau
+local textButton = Roact.createElement(Module.Roact.OnPrimary, {
+	style = Style.new(1, Enum.Font.SourceSans, "Light", Color3.new(0, 0.4, 0.7)),
+	onClick = function() end,
+	text = "Button",
+	icon = nil,
+	elevation = 0,
+	isEnabled = true,
+}
+
+Roact.mount(textButton, parent)
 ```

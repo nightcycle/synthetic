@@ -86,6 +86,26 @@ local badge: GuiObject = Synthetic.Component.Button.Badge.Fusion.new(
 	scale
 )
 ```
+
+**Roact**
+```luau
+local badge = Roact.createElement(Module.Roact.New, {
+	onClick = function() end,
+	icon = Types.ImageData.new(""),
+	label = "",
+	count = nil,
+	textColor = Color3.new(),
+	hoverColor = Color3.new(),
+	errorTextColor = Color3.new(),
+	errorBackgroundColor = Color3.new(),
+	elevation = 0,
+	schemeType = Enums.SchemeType.Light,
+	fontData = Types.FontData.new(Font.fromEnum(Enum.Font.SourceSans), 14),
+	scale = 1,
+}
+
+Roact.mount(badge, parent)
+```
 ## onPrimary / onSurface
 This function is a style constructor, utilizing the "Style" type to reduce the number of parameters required for implementation.
 
@@ -135,4 +155,18 @@ local badge: GuiObject = Synthetic.Component.Button.Badge.Fusion.onPrimary(
 	countState,
 	elevation
 )
+```
+
+**Roact**
+```luau
+local badge = Roact.createElement(Module.Roact.OnPrimary, {
+	style = Style.new(1, Enum.Font.SourceSans, "Light", Color3.new(0, 0.4, 0.7)),
+	onClick = function() end,
+	icon = Types.ImageData.new(""),
+	label = "",
+	count = nil,
+	elevation = 0,
+}
+
+Roact.mount(badge, parent)
 ```

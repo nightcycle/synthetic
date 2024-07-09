@@ -41,56 +41,27 @@ return function(frame: Frame)
 			local Module = require(script.Parent)
 
 			do
-				-- local checkbox = Roact.createElement(Module.Roact.New, {
-				-- 	onSelect = function(isSelected: boolean?)
-				-- 		print("is selected", isSelected)
-				-- 	end,
-				-- 	initialSelection = nil,
-				-- 	isEnabled = true,
-				-- 	outlineColor = style:GetColor(Enums.ColorRoleType.OnSurfaceVariant),
-				-- 	fillColor = style:GetColor(Enums.ColorRoleType.Primary),
-				-- 	iconColor = style:GetColor(Enums.ColorRoleType.OnPrimary),
-				-- 	disabledColor = style:GetColor(Enums.ColorRoleType.OnSurface),
-				-- 	elevation = 0,
-				-- 	schemeType = style.SchemeType,
-				-- 	fontData = style:GetFontData(Enums.FontType.LabelLarge),
-				-- 	scale = style.Scale,
-				-- })
-				-- print("A", checkbox)
-
-
-				local interface = Roact.createElement("Frame",{
-					Name = "Interface";
-				},{
-					Label = Roact.createElement("TextLabel",{
-						Text = "Hello, Roact!";
-						Size = UDim2.new(0,200,0,50);
-					}, {
-						Checkbox = Roact.createElement(Module.Roact.New, {
-							onSelect = function(isSelected: boolean?)
-								print("is selected", isSelected)
-							end,
-							initialSelection = nil,
-							isEnabled = true,
-							outlineColor = style:GetColor(Enums.ColorRoleType.OnSurfaceVariant),
-							fillColor = style:GetColor(Enums.ColorRoleType.Primary),
-							iconColor = style:GetColor(Enums.ColorRoleType.OnPrimary),
-							disabledColor = style:GetColor(Enums.ColorRoleType.OnSurface),
-							elevation = 0,
-							schemeType = style.SchemeType,
-							fontData = style:GetFontData(Enums.FontType.LabelLarge),
-							scale = style.Scale,
-						}),
-					}),
-
+				local checkbox = Roact.createElement(Module.Roact.New, {
+					onSelect = function(isSelected: boolean?)
+						print("is selected", isSelected)
+					end,
+					initialSelection = nil,
+					isEnabled = true,
+					outlineColor = style:GetColor(Enums.ColorRoleType.OnSurfaceVariant),
+					fillColor = style:GetColor(Enums.ColorRoleType.Primary),
+					iconColor = style:GetColor(Enums.ColorRoleType.OnPrimary),
+					disabledColor = style:GetColor(Enums.ColorRoleType.OnSurface),
+					elevation = 0,
+					schemeType = style.SchemeType,
+					fontData = style:GetFontData(Enums.FontType.LabelLarge),
+					scale = style.Scale,
 				})
-
-				local tree = Roact.mount(interface, halfFrame)
+				print("A", checkbox)
+				local tree = Roact.mount(checkbox, halfFrame)
 				-- print("B", checkbox)
 				maid:GiveTask(function()
 					Roact.unmount(tree)
 				end)
-
 			end
 
 			-- -- do

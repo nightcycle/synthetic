@@ -101,6 +101,29 @@ local dialog: GuiObject = Synthetic.Component.Dialog.Fusion.new(
 	scaleState
 )
 ```
+
+**Roact**
+```luau
+local dialog = Roact.createElement(Module.Roact.New, {
+	buttons = {},
+	icon = nil,
+	headline = "",
+	description = "",
+	surfaceColor = Color3.new(),
+	buttonTextColor = Color3.new(),
+	disabledTextColor = Color3.new(),
+	headlineColor = Color3.new(),
+	descriptionColor = Color3.new(),
+	scrimColor = Color3.new(),
+	schemeType = Enums.SchemeType.Light,
+	headlineFontData = Types.FontData.new(Font.fromEnum(Enum.Font.SourceSans), 14),
+	bodyFontData = Types.FontData.new(Font.fromEnum(Enum.Font.SourceSans), 14),
+	buttonFontData = Types.FontData.new(Font.fromEnum(Enum.Font.SourceSans), 14),
+	scale = 1,
+}
+
+Roact.mount(dialog, parent)
+```
 ## primary / secondary / tertiary
 This function is a style constructor, utilizing the "Style" type to reduce the number of parameters required for implementation.
 
@@ -145,4 +168,17 @@ local dialog: GuiObject = Synthetic.Component.Dialog.Fusion.primary(
 	headline,
 	descriptionState
 )
+```
+
+**Roact**
+```luau
+local dialog = Roact.createElement(Module.Roact.Primary, {
+	style = Style.new(1, Enum.Font.SourceSans, "Light", Color3.new(0, 0.4, 0.7)),
+	buttons = {},
+	icon = nil,
+	headline = "",
+	description = "",
+}
+
+Roact.mount(dialog, parent)
 ```

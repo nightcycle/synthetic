@@ -51,6 +51,19 @@ local circular: GuiObject = Synthetic.Component.ProgressIndicator.Circular.Fusio
 	scaleState
 )
 ```
+
+**Roact**
+```luau
+local circular = Roact.createElement(Module.Roact.New, {
+	progress = nil,
+	isEnabled = true,
+	fillColor = Color3.new(),
+	emptyColor = Color3.new(),
+	scale = 1,
+}
+
+Roact.mount(circular, parent)
+```
 ## primary / secondary / tertiary
 This function is a style constructor, utilizing the "Style" type to reduce the number of parameters required for implementation.
 
@@ -85,4 +98,15 @@ local circular: GuiObject = Synthetic.Component.ProgressIndicator.Circular.Fusio
 	progress,
 	isEnabledState
 )
+```
+
+**Roact**
+```luau
+local circular = Roact.createElement(Module.Roact.Primary, {
+	style = Style.new(1, Enum.Font.SourceSans, "Light", Color3.new(0, 0.4, 0.7)),
+	progress = nil,
+	isEnabled = true,
+}
+
+Roact.mount(circular, parent)
 ```

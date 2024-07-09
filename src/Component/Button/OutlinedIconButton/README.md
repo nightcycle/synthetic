@@ -71,6 +71,23 @@ local outlinedIconButton: GuiObject = Synthetic.Component.Button.OutlinedIconBut
 	scaleState
 )
 ```
+
+**Roact**
+```luau
+local outlinedIconButton = Roact.createElement(Module.Roact.New, {
+	onClick = function() end,
+	icon = Types.ImageData.new(""),
+	textColor = Color3.new(),
+	disabledTextColor = Color3.new(),
+	isEnabled = true,
+	elevation = 0,
+	schemeType = Enums.SchemeType.Light,
+	fontData = Types.FontData.new(Font.fromEnum(Enum.Font.SourceSans), 14),
+	scale = 1,
+}
+
+Roact.mount(outlinedIconButton, parent)
+```
 ## onPrimary / onSecondary / onTertiary / onPrimaryContainer / onSecondaryContainer / onTertiaryContainer
 This function is a style constructor, utilizing the "Style" type to reduce the number of parameters required for implementation.
 
@@ -115,4 +132,17 @@ local outlinedIconButton: GuiObject = Synthetic.Component.Button.OutlinedIconBut
 	elevation,
 	isEnabledState
 )
+```
+
+**Roact**
+```luau
+local outlinedIconButton = Roact.createElement(Module.Roact.OnPrimary, {
+	style = Style.new(1, Enum.Font.SourceSans, "Light", Color3.new(0, 0.4, 0.7)),
+	onClick = function() end,
+	icon = Types.ImageData.new(""),
+	elevation = 0,
+	isEnabled = true,
+}
+
+Roact.mount(outlinedIconButton, parent)
 ```

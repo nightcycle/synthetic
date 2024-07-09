@@ -101,6 +101,29 @@ local slider: GuiObject = Synthetic.Component.Slider.Fusion.new(
 	scaleState
 )
 ```
+
+**Roact**
+```luau
+local slider = Roact.createElement(Module.Roact.New, {
+	onChange = function(onChange: number) end,
+	initialValue = 50,
+	minimum = 0,
+	maximum = 100,
+	increment = nil,
+	leftTextOrIcon = nil,
+	rightTextOrIcon = nil,
+	onBackgroundColor = Color3.new(),
+	onBackgroundTextColor = Color3.new(),
+	fillColor = Color3.new(),
+	fillContainerColor = Color3.new(),
+	elevation = 0,
+	schemeType = Enums.SchemeType.Light,
+	fontData = Types.FontData.new(Font.fromEnum(Enum.Font.SourceSans), 14),
+	scale = 1,
+}
+
+Roact.mount(slider, parent)
+```
 ## primary / secondary / tertiary / onPrimary / onSecondary / onTertiary
 This function is a style constructor, utilizing the "Style" type to reduce the number of parameters required for implementation.
 
@@ -165,4 +188,21 @@ local slider: GuiObject = Synthetic.Component.Slider.Fusion.primary(
 	rightTextOrIcon,
 	elevationState
 )
+```
+
+**Roact**
+```luau
+local slider = Roact.createElement(Module.Roact.Primary, {
+	style = Style.new(1, Enum.Font.SourceSans, "Light", Color3.new(0, 0.4, 0.7)),
+	onChange = function(onChange: number) end,
+	initialValue = 50,
+	minimum = 0,
+	maximum = 100,
+	increment = nil,
+	leftTextOrIcon = nil,
+	rightTextOrIcon = nil,
+	elevation = 0,
+}
+
+Roact.mount(slider, parent)
 ```

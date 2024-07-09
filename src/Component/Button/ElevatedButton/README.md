@@ -91,6 +91,27 @@ local elevatedButton: GuiObject = Synthetic.Component.Button.ElevatedButton.Fusi
 	scaleState
 )
 ```
+
+**Roact**
+```luau
+local elevatedButton = Roact.createElement(Module.Roact.New, {
+	onClick = function() end,
+	text = "Button",
+	icon = nil,
+	textColor = Color3.new(),
+	surfaceColor = Color3.new(),
+	disabledTextColor = Color3.new(),
+	disabledSurfaceColor = Color3.new(),
+	shadowColor = Color3.new(),
+	isEnabled = true,
+	elevation = 0,
+	schemeType = Enums.SchemeType.Light,
+	fontData = Types.FontData.new(Font.fromEnum(Enum.Font.SourceSans), 14),
+	scale = 1,
+}
+
+Roact.mount(elevatedButton, parent)
+```
 ## primary / secondary / tertiary / primaryContainer / secondaryContainer / tertiaryContainer
 This function is a style constructor, utilizing the "Style" type to reduce the number of parameters required for implementation.
 
@@ -140,4 +161,18 @@ local elevatedButton: GuiObject = Synthetic.Component.Button.ElevatedButton.Fusi
 	elevationState,
 	isEnabled
 )
+```
+
+**Roact**
+```luau
+local elevatedButton = Roact.createElement(Module.Roact.Primary, {
+	style = Style.new(1, Enum.Font.SourceSans, "Light", Color3.new(0, 0.4, 0.7)),
+	onClick = function() end,
+	text = "Button",
+	icon = nil,
+	elevation = 0,
+	isEnabled = true,
+}
+
+Roact.mount(elevatedButton, parent)
 ```

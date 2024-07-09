@@ -91,6 +91,27 @@ local filter: GuiObject = Synthetic.Component.Button.Chip.Filter.Fusion.new(
 	scaleState
 )
 ```
+
+**Roact**
+```luau
+local filter = Roact.createElement(Module.Roact.New, {
+	onClick = function(isSelected: boolean) end,
+	isInitiallySelected = false,
+	text = "Filter",
+	textColor = Color3.new(),
+	disabledTextColor = Color3.new(),
+	fillTextColor = Color3.new(),
+	disabledFillTextColor = Color3.new(),
+	disabledFillColor = Color3.new(),
+	isEnabled = true,
+	elevation = 0,
+	schemeType = Enums.SchemeType.Light,
+	fontData = Types.FontData.new(Font.fromEnum(Enum.Font.SourceSans), 14),
+	scale = 1,
+}
+
+Roact.mount(filter, parent)
+```
 ## primary / secondary / tertiary
 This function is a style constructor, utilizing the "Style" type to reduce the number of parameters required for implementation.
 
@@ -140,4 +161,18 @@ local filter: GuiObject = Synthetic.Component.Button.Chip.Filter.Fusion.primary(
 	isEnabledState,
 	elevation
 )
+```
+
+**Roact**
+```luau
+local filter = Roact.createElement(Module.Roact.Primary, {
+	style = Style.new(1, Enum.Font.SourceSans, "Light", Color3.new(0, 0.4, 0.7)),
+	onClick = function(isSelected: boolean) end,
+	text = "Filter",
+	isInitiallySelected = false,
+	isEnabled = true,
+	elevation = 0,
+}
+
+Roact.mount(filter, parent)
 ```

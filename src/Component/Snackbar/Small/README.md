@@ -81,6 +81,25 @@ local small: GuiObject = Synthetic.Component.Snackbar.Small.Fusion.new(
 	scaleState
 )
 ```
+
+**Roact**
+```luau
+local small = Roact.createElement(Module.Roact.New, {
+	text = "",
+	buttonText = "Action",
+	onButtonClick = function() end,
+	onCloseClick = function() end,
+	textColor = Color3.new(),
+	buttonTextColor = Color3.new(),
+	backgroundColor = Color3.new(),
+	elevation = 0,
+	schemeType = Enums.SchemeType.Light,
+	fontData = Types.FontData.new(Font.fromEnum(Enum.Font.SourceSans), 14),
+	scale = 1,
+}
+
+Roact.mount(small, parent)
+```
 ## surfaceContainer / primaryContainer / secondaryContainer / tertiaryContainer
 This function is a style constructor, utilizing the "Style" type to reduce the number of parameters required for implementation.
 
@@ -130,4 +149,18 @@ local small: GuiObject = Synthetic.Component.Snackbar.Small.Fusion.surfaceContai
 	onCloseClickState,
 	elevation
 )
+```
+
+**Roact**
+```luau
+local small = Roact.createElement(Module.Roact.SurfaceContainer, {
+	style = Style.new(1, Enum.Font.SourceSans, "Light", Color3.new(0, 0.4, 0.7)),
+	text = "",
+	buttonText = "Action",
+	onButtonClick = function() end,
+	onCloseClick = function() end,
+	elevation = 0,
+}
+
+Roact.mount(small, parent)
 ```

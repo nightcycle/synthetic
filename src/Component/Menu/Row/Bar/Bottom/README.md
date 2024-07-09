@@ -81,6 +81,25 @@ local bottom: GuiObject = Synthetic.Component.Menu.Row.Bar.Bottom.Fusion.new(
 	scaleState
 )
 ```
+
+**Roact**
+```luau
+local bottom = Roact.createElement(Module.Roact.New, {
+	buttons = {},
+	fab = nil,
+	backgroundColor = Color3.new(),
+	iconColor = Color3.new(),
+	fabColor = Color3.new(),
+	fabIconColor = Color3.new(),
+	fabShadowColor = Color3.new(),
+	elevation = 0,
+	schemeType = Enums.SchemeType.Light,
+	fontData = Types.FontData.new(Font.fromEnum(Enum.Font.SourceSans), 14),
+	scale = 1,
+}
+
+Roact.mount(bottom, parent)
+```
 ## primary / secondary / tertiary
 This function is a style constructor, utilizing the "Style" type to reduce the number of parameters required for implementation.
 
@@ -120,4 +139,16 @@ local bottom: GuiObject = Synthetic.Component.Menu.Row.Bar.Bottom.Fusion.primary
 	fabState,
 	elevation
 )
+```
+
+**Roact**
+```luau
+local bottom = Roact.createElement(Module.Roact.Primary, {
+	style = Style.new(1, Enum.Font.SourceSans, "Light", Color3.new(0, 0.4, 0.7)),
+	buttons = {},
+	fab = nil,
+	elevation = 0,
+}
+
+Roact.mount(bottom, parent)
 ```

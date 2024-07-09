@@ -71,6 +71,23 @@ local iconButton: GuiObject = Synthetic.Component.Button.IconButton.Fusion.new(
 	scaleState
 )
 ```
+
+**Roact**
+```luau
+local iconButton = Roact.createElement(Module.Roact.New, {
+	onClick = function() end,
+	icon = Types.ImageData.new(""),
+	textColor = Color3.new(),
+	disabledTextColor = Color3.new(),
+	isEnabled = true,
+	elevation = 0,
+	schemeType = Enums.SchemeType.Light,
+	fontData = Types.FontData.new(Font.fromEnum(Enum.Font.SourceSans), 14),
+	scale = 1,
+}
+
+Roact.mount(iconButton, parent)
+```
 ## primary / secondary / tertiary / primaryContainer / secondaryContainer / tertiaryContainer
 This function is a style constructor, utilizing the "Style" type to reduce the number of parameters required for implementation.
 
@@ -115,4 +132,17 @@ local iconButton: GuiObject = Synthetic.Component.Button.IconButton.Fusion.prima
 	elevation,
 	isEnabledState
 )
+```
+
+**Roact**
+```luau
+local iconButton = Roact.createElement(Module.Roact.Primary, {
+	style = Style.new(1, Enum.Font.SourceSans, "Light", Color3.new(0, 0.4, 0.7)),
+	onClick = function() end,
+	icon = Types.ImageData.new(""),
+	elevation = 0,
+	isEnabled = true,
+}
+
+Roact.mount(iconButton, parent)
 ```

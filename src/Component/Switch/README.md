@@ -106,6 +106,30 @@ local switch: GuiObject = Synthetic.Component.Switch.Fusion.new(
 	scale
 )
 ```
+
+**Roact**
+```luau
+local switch = Roact.createElement(Module.Roact.New, {
+	onSelect = function(isSelected: boolean) end,
+	initialSelection = false,
+	isEnabled = true,
+	includeIconOnSelected = true,
+	includeIconOnDeselected = true,
+	backgroundColor = Color3.new(),
+	onBackgroundColor = Color3.new(),
+	fillColor = Color3.new(),
+	buttonColor = Color3.new(),
+	onButtonColor = Color3.new(),
+	disabledColor = Color3.new(),
+	onDisabledColor = Color3.new(),
+	elevation = 0,
+	schemeType = Enums.SchemeType.Light,
+	fontData = Types.FontData.new(Font.fromEnum(Enum.Font.SourceSans), 14),
+	scale = 1,
+}
+
+Roact.mount(switch, parent)
+```
 ## primary / secondary / tertiary
 This function is a style constructor, utilizing the "Style" type to reduce the number of parameters required for implementation.
 
@@ -160,4 +184,19 @@ local switch: GuiObject = Synthetic.Component.Switch.Fusion.primary(
 	elevation,
 	isEnabledState
 )
+```
+
+**Roact**
+```luau
+local switch = Roact.createElement(Module.Roact.Primary, {
+	style = Style.new(1, Enum.Font.SourceSans, "Light", Color3.new(0, 0.4, 0.7)),
+	onSelect = function(isSelected: boolean) end,
+	initialSelection = false,
+	includeIconOnSelected = true,
+	includeIconOnDeselected = true,
+	elevation = 0,
+	isEnabled = true,
+}
+
+Roact.mount(switch, parent)
 ```

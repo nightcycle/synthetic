@@ -52,7 +52,7 @@ class ComponentDefinition:
 			self.description = data["description"]
 			self.functions = data["functions"]
 
-	def get_header(self, include_source=True, include_translators=True) -> str:
+	def get_header(self, include_source=True, include_translators=True, include_enums=True, include_roact=False) -> str:
 		# get number of steps in the path
 		steps = len(self.path.split(os.path.sep))
 		# repeat the string "Parent" steps time, putting a . in between each one
@@ -62,9 +62,17 @@ class ComponentDefinition:
 		if not include_source:
 			source_req = ""
 
+		enum_req = 'local Enums = require(_Package:WaitForChild("Enums"))\n'
+		if not include_enums:
+			enum_req = ""
+
 		trans_req = 'local Translators = require(_Package:WaitForChild("Translators"))\n'
 		if not include_translators:
 			trans_req = ""
+
+		roact_rec = 'local Roact = require(_Packages:WaitForChild("Roact"))'
+		if not include_roact:
+			roact_rec = ""
 		return f"""--!strict
 {HEADER_WARNING}
 local _Package = script.{package_req_path}
@@ -73,11 +81,12 @@ local _Packages = _Package.Parent
 -- Packages
 local Maid = require(_Packages:WaitForChild("Maid"))
 local ColdFusion = require(_Packages:WaitForChild("ColdFusion"))
+{roact_rec}
 
 -- Modules
 local Types = require(_Package:WaitForChild("Types"))
 local Style = require(_Package:WaitForChild("Style"))
-local Enums = require(_Package:WaitForChild("Enums"))
+{enum_req}
 {trans_req}
 {source_req}
 -- Types
@@ -171,6 +180,107 @@ type CanBeState<V> = ColdFusion.CanBeState<V>"""
 		]
 
 		out_path = self.path + "/Fusion.luau"
+		with open(out_path, "w") as file:
+			file.write("\n".join(lines))
+
+	def write_roact(self) -> None:
+		lines: list[str] = [
+			self.get_header(include_roact=True, include_translators=False, include_enums=False),
+			'-- Constants',
+			'local DEFAULTS = require(script.Parent:WaitForChild("Defaults"))',
+			'-- Variables',
+			'-- References',
+			'-- Private Functions',
+			'-- Class',
+			'local Interface = {}\n',
+		]
+
+		for func in self.functions:
+			for name in func["names"]:
+				component_name = camel_to_pascal(name)+camel_to_pascal(self.path.replace("\\", "").replace("srcComponent", ""))
+
+				lines += [
+					"\ndo",
+					f'local {component_name} = Roact.Component:extend("component_name")',
+					component_name + ".defaultProps = {",
+				]
+				for param in func["parameters"]:
+					lines.append(f'{param["name"]} = DEFAULTS.{camel_to_upper_snake(name)}.{camel_to_upper_snake(param["name"])},')
+				lines += [
+					'}',
+					'function '+component_name+':init(initialProps: {[string]: unknown})',
+						'self._maid = Maid.new()',
+						'local _fuse = ColdFusion.fuse(self._maid)',
+						'local _Value = _fuse.Value',
+						'self._internalStates = {',
+				]
+
+				for param in func["parameters"]:
+					lines.append(f'{param["name"]} = _Value(self.defaultProps.{param["name"]}),')
+				lines += [
+					'}',
+					'table.freeze(self._internalStates)',
+
+					'for k, v in pairs(initialProps) do',
+						'if self._internalStates[k] then',
+							'self._internalStates[k]:Set(v)',
+						'end',
+					'end',
+
+					f'self._instance = Source.{name}(',
+				]
+
+				param_lines: list[str] = []
+				for param in func["parameters"]:
+					param_lines.append(f'self._internalStates.{param["name"]}')
+
+				lines += [
+					",".join(param_lines),
+					')',
+				'end',
+				'\nfunction '+component_name+':render()',
+					'local props = {',
+						'target = self._instance',
+					'}',
+					'for k, v in pairs(self.props) do',
+						'if self.props[k] ~= v then',
+							'if self._internalStates[k] then',
+								'if v == nil then',
+									'v = self.defaultProps[k]',
+								'end',
+								'self._internalStates[k]:Set(v)',
+							'else',
+								'props[k] = v',
+							'end',
+						'end',
+					'end',
+					'return Roact.createElement(Roact.Portal, props)',
+				'end',
+
+				'function '+component_name+':didMount()',
+					'for k, v in pairs(self) do',
+						'if typeof(v) == "table" then',
+							'if v["virtualNode"] then',
+								'if self._instance.Parent ~= v["virtualNode"]["hostParent"] then',
+									'self._instance.Parent = v["virtualNode"]["hostParent"]',
+								'end',
+								'break',
+							'end',
+						'end',
+					'end',
+				'end',
+
+				'function '+component_name+':willUnmount()',
+					'self._maid:Destroy()',
+					'self._instance:Destroy()',
+				'end',
+
+				'Interface.'+camel_to_pascal(name)+' = '+component_name,
+				'end',
+			]
+
+		lines.append('\nreturn Interface')
+		out_path = self.path + "/Roact.luau"
 		with open(out_path, "w") as file:
 			file.write("\n".join(lines))
 
@@ -271,6 +381,7 @@ type CanBeState<V> = ColdFusion.CanBeState<V>"""
 				'ColdFusion = require(script:WaitForChild("ColdFusion")),',
 				'Fusion = require(script:WaitForChild("Fusion")),',
 				'Wrapper = require(script:WaitForChild("Wrapper")),',
+				'Roact = require(script:WaitForChild("Roact")),',
 			'}'
 		]
 
@@ -357,8 +468,26 @@ type CanBeState<V> = ColdFusion.CanBeState<V>"""
 				'```',
 			]
 
+			roact_lines: list[str] = [
+				'\n**Roact**',
+				'```luau',
+				f'local {pascal_to_camel(self.name)} = Roact.createElement(Module.Roact.{camel_to_pascal(func["names"][0])}, '+'{'
+			]
+			for param in func['parameters']:
+				comment = ""
+				if "comment" in param:
+					comment = f" -- {param['comment']}"
+
+				roact_lines.append(f'\t{param["name"]} = {param["default"]},{comment}')
+			roact_lines += [
+				'}\n',
+				f'Roact.mount({pascal_to_camel(self.name)}, parent)',
+				'```'
+			]
+
 			lines += vanilla_lines
 			lines += fusion_lines
+			lines += roact_lines
 
 
 		out_path = self.path + "/README.md"
@@ -368,6 +497,7 @@ type CanBeState<V> = ColdFusion.CanBeState<V>"""
 	def write_all(self) -> None:
 		self.write_defaults()
 		self.write_fusion()
+		self.write_roact()
 		self.write_wrapper()
 		self.write_init()
 		self.write_md()

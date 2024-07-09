@@ -76,6 +76,24 @@ local assist: GuiObject = Synthetic.Component.Button.Chip.Assist.Fusion.new(
 	scale
 )
 ```
+
+**Roact**
+```luau
+local assist = Roact.createElement(Module.Roact.New, {
+	onClick = function() end,
+	text = "Chip",
+	icon = nil,
+	textColor = Color3.new(),
+	disabledTextColor = Color3.new(),
+	isEnabled = true,
+	elevation = 0,
+	schemeType = Enums.SchemeType.Light,
+	fontData = Types.FontData.new(Font.fromEnum(Enum.Font.SourceSans), 14),
+	scale = 1,
+}
+
+Roact.mount(assist, parent)
+```
 ## primary / secondary / tertiary
 This function is a style constructor, utilizing the "Style" type to reduce the number of parameters required for implementation.
 
@@ -125,4 +143,18 @@ local assist: GuiObject = Synthetic.Component.Button.Chip.Assist.Fusion.primary(
 	elevationState,
 	isEnabled
 )
+```
+
+**Roact**
+```luau
+local assist = Roact.createElement(Module.Roact.Primary, {
+	style = Style.new(1, Enum.Font.SourceSans, "Light", Color3.new(0, 0.4, 0.7)),
+	onClick = function() end,
+	text = "Chip",
+	icon = nil,
+	elevation = 0,
+	isEnabled = true,
+}
+
+Roact.mount(assist, parent)
 ```

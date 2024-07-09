@@ -134,6 +134,38 @@ local filled: GuiObject = Synthetic.Component.TextField.Filled.Fusion.new(
 	scale
 )
 ```
+
+**Roact**
+```luau
+local filled = Roact.createElement(Module.Roact.New, {
+	onSubmit = function(text: string?)
+return text
+end,
+	onInput = function(text: string?)
+return text
+end,
+	initialText = "",
+	isEnabled = true,
+	isError = false,
+	label = "Label",
+	characterLimit = nil,
+	supportingText = "",
+	icon = nil,
+	backgroundColor = Color3.new(),
+	hightlightColor = Color3.new(),
+	errorColor = Color3.new(),
+	borderColor = Color3.new(),
+	textColor = Color3.new(),
+	labelColor = Color3.new(),
+	elevation = 0,
+	schemeType = Enums.SchemeType.Light,
+	bodyFontData = Types.FontData.new(Font.fromEnum(Enum.Font.SourceSans), 14),
+	supportFontData = Types.FontData.new(Font.fromEnum(Enum.Font.SourceSans), 14),
+	scale = 1,
+}
+
+Roact.mount(filled, parent)
+```
 ## primary / secondary / tertiary
 This function is a style constructor, utilizing the "Style" type to reduce the number of parameters required for implementation.
 
@@ -216,4 +248,27 @@ local filled: GuiObject = Synthetic.Component.TextField.Filled.Fusion.primary(
 	elevation,
 	isEnabledState
 )
+```
+
+**Roact**
+```luau
+local filled = Roact.createElement(Module.Roact.Primary, {
+	style = Style.new(1, Enum.Font.SourceSans, "Light", Color3.new(0, 0.4, 0.7)),
+	onSubmit = function(text: string?)
+return text
+end,
+	label = "Label",
+	initialText = "",
+	onInput = function(text: string?)
+return text
+end,
+	supportingText = "",
+	icon = nil,
+	characterLimit = nil,
+	isError = false,
+	elevation = 0,
+	isEnabled = true,
+}
+
+Roact.mount(filled, parent)
 ```

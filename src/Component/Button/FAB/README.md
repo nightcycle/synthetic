@@ -86,6 +86,26 @@ local fAB: GuiObject = Synthetic.Component.Button.FAB.Fusion.new(
 	scale
 )
 ```
+
+**Roact**
+```luau
+local fAB = Roact.createElement(Module.Roact.New, {
+	onClick = function() end,
+	icon = Types.ImageData.new(""),
+	textColor = Color3.new(),
+	surfaceColor = Color3.new(),
+	disabledTextColor = Color3.new(),
+	disabledSurfaceColor = Color3.new(),
+	shadowColor = Color3.new(),
+	isEnabled = true,
+	elevation = 0,
+	schemeType = Enums.SchemeType.Light,
+	fontData = Types.FontData.new(Font.fromEnum(Enum.Font.SourceSans), 14),
+	scale = 1,
+}
+
+Roact.mount(fAB, parent)
+```
 ## primary / secondary / tertiary / primaryContainer / secondaryContainer / tertiaryContainer
 This function is a style constructor, utilizing the "Style" type to reduce the number of parameters required for implementation.
 
@@ -130,4 +150,17 @@ local fAB: GuiObject = Synthetic.Component.Button.FAB.Fusion.primary(
 	elevation,
 	isEnabledState
 )
+```
+
+**Roact**
+```luau
+local fAB = Roact.createElement(Module.Roact.Primary, {
+	style = Style.new(1, Enum.Font.SourceSans, "Light", Color3.new(0, 0.4, 0.7)),
+	onClick = function() end,
+	icon = Types.ImageData.new(""),
+	elevation = 0,
+	isEnabled = true,
+}
+
+Roact.mount(fAB, parent)
 ```

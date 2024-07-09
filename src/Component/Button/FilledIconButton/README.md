@@ -81,6 +81,25 @@ local filledIconButton: GuiObject = Synthetic.Component.Button.FilledIconButton.
 	scaleState
 )
 ```
+
+**Roact**
+```luau
+local filledIconButton = Roact.createElement(Module.Roact.New, {
+	onClick = function() end,
+	icon = Types.ImageData.new(""),
+	textColor = Color3.new(),
+	surfaceColor = Color3.new(),
+	disabledTextColor = Color3.new(),
+	disabledSurfaceColor = Color3.new(),
+	isEnabled = true,
+	elevation = 0,
+	schemeType = Enums.SchemeType.Light,
+	fontData = Types.FontData.new(Font.fromEnum(Enum.Font.SourceSans), 14),
+	scale = 1,
+}
+
+Roact.mount(filledIconButton, parent)
+```
 ## primary / secondary / tertiary / primaryContainer / secondaryContainer / tertiaryContainer
 This function is a style constructor, utilizing the "Style" type to reduce the number of parameters required for implementation.
 
@@ -125,4 +144,17 @@ local filledIconButton: GuiObject = Synthetic.Component.Button.FilledIconButton.
 	elevation,
 	isEnabledState
 )
+```
+
+**Roact**
+```luau
+local filledIconButton = Roact.createElement(Module.Roact.Primary, {
+	style = Style.new(1, Enum.Font.SourceSans, "Light", Color3.new(0, 0.4, 0.7)),
+	onClick = function() end,
+	icon = Types.ImageData.new(""),
+	elevation = 0,
+	isEnabled = true,
+}
+
+Roact.mount(filledIconButton, parent)
 ```

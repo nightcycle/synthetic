@@ -4,4 +4,5 @@ return {
 	ColdFusion = require(script:WaitForChild("ColdFusion")),
 	Fusion = require(script:WaitForChild("Fusion")),
 	Wrapper = require(script:WaitForChild("Wrapper")),
+	Roact = require(script:WaitForChild("Roact")),
 }
