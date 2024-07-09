@@ -98,7 +98,7 @@ I've gone and used parameter dense functions for constructors, relying on the pa
 - [Checkbox](./src/Component/Checkbox/README.md)
 - [Radio Button](./src/Component/RadioButton/README.md)
 - [Switch](./src/Component/Switch/README.md)
-<!-- - [Slider](./src/Component/Slider) -->
+- [Slider](./src/Component/Slider)
 
 
 # Style

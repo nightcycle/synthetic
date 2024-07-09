@@ -31,9 +31,9 @@ This function is a native constructor, with verbosity allowing for control over 
 ```luau
 local onChange: (onChange: number) -> () = function(onChange: number) end
 local initialValue: number = 50
-local minimum: number? = nil
-local maximum: number? = nil
-local increment: number? = nil
+local minimum: number? = 0
+local maximum: number? = 100
+local increment: number? = 10
 local leftTextOrIcon: string | ImageData | nil = 
 local rightTextOrIcon: string | ImageData | nil = 
 local onBackgroundColor: Color3 = Color3.new()
@@ -67,9 +67,9 @@ slider.Scale = scale
 ```luau
 local onChangeState: Fusion.Value<(onChange: number) -> ()> = Value(function(onChange: number) end)
 local initialValue: number = 50
-local minimumState: Fusion.Value<number?> = Value(nil)
-local maximum: number? = nil
-local incrementState: Fusion.Value<number?> = Value(nil)
+local minimumState: Fusion.Value<number?> = Value(0)
+local maximum: number? = 100
+local incrementState: Fusion.Value<number?> = Value(10)
 local leftTextOrIcon: string | ImageData | nil = 
 local rightTextOrIconState: Fusion.Value<string | ImageData | nil> = Value()
 local onBackgroundColor: Color3 = Color3.new()
@@ -109,8 +109,8 @@ This function is a style constructor, utilizing the "Style" type to reduce the n
 - **minimum**: number?
 - **maximum**: number?
 - **increment**: number?
-- **leftTextOrIcon**: string | ImageData | nil
-- **rightTextOrIcon**: string | ImageData | nil
+- **leftTextOrIcon**: (string | ImageData)?
+- **rightTextOrIcon**: (string | ImageData)?
 - **elevation**: number
 
 
@@ -121,11 +121,11 @@ This function is a style constructor, utilizing the "Style" type to reduce the n
 local style: Style = Style.new(1, Enum.Font.SourceSans, "Light", Color3.new(0, 0.4, 0.7))
 local onChange: (onChange: number) -> () = function(onChange: number) end
 local initialValue: number = 50
-local minimum: number? = nil
-local maximum: number? = nil
-local increment: number? = nil
-local leftTextOrIcon: string | ImageData | nil = nil
-local rightTextOrIcon: string | ImageData | nil = nil
+local minimum: number? = 0
+local maximum: number? = 100
+local increment: number? = 10
+local leftTextOrIcon: (string | ImageData)? = nil
+local rightTextOrIcon: (string | ImageData)? = nil
 local elevation: number = 0
 
 local slider = Synthetic.Component.Slider.Fusion.primary()
@@ -145,11 +145,11 @@ slider.Elevation = elevation
 local styleState: Fusion.Value<Style> = Value(Style.new(1, Enum.Font.SourceSans, "Light", Color3.new(0, 0.4, 0.7)))
 local onChange: (onChange: number) -> () = function(onChange: number) end
 local initialValueState: Fusion.Value<number> = Value(50)
-local minimum: number? = nil
-local maximumState: Fusion.Value<number?> = Value(nil)
-local increment: number? = nil
-local leftTextOrIconState: Fusion.Value<string | ImageData | nil> = Value(nil)
-local rightTextOrIcon: string | ImageData | nil = nil
+local minimum: number? = 0
+local maximumState: Fusion.Value<number?> = Value(100)
+local increment: number? = 10
+local leftTextOrIconState: Fusion.Value<(string | ImageData)?> = Value(nil)
+local rightTextOrIcon: (string | ImageData)? = nil
 local elevationState: Fusion.Value<number> = Value(0)
 
 local slider: GuiObject = Synthetic.Component.Slider.Fusion.primary(

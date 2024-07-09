@@ -51,12 +51,13 @@ export type StyledSliderWrapperDefinition = {
 	Minimum: number?,
 	Maximum: number?,
 	Increment: number?,
-	LeftTextOrIcon: string | ImageData | nil,
-	RightTextOrIcon: string | ImageData | nil,
+	LeftTextOrIcon: (string | ImageData)?,
+	RightTextOrIcon: (string | ImageData)?,
 	Elevation: number,
 }
 export type StyledSliderWrapper = Wrapper<GuiObject, StyledSliderWrapperDefinition, "StyledSlider">
 -- Constants
+local DEFAULTS = require(script.Parent:WaitForChild("Defaults"))
 -- Variables
 -- References
 -- Private Functions
@@ -71,12 +72,23 @@ function Interface.primary(): StyledSliderWrapper
 		Style = _Value(Style.new(1, Enum.Font.SourceSans, "Light", Color3.new(0, 0.4, 0.7))),
 		OnChange = _Value(function(onChange: number) end),
 		InitialValue = _Value(50),
-		Minimum = _Value(nil),
-		Maximum = _Value(nil),
-		Increment = _Value(nil),
+		Minimum = _Value(0),
+		Maximum = _Value(100),
+		Increment = _Value(10),
 		LeftTextOrIcon = _Value(nil),
 		RightTextOrIcon = _Value(nil),
 		Elevation = _Value(0),
+	}
+	local defaults: { [string]: unknown? } = {
+		style = DEFAULTS.PRIMARY.STYLE,
+		onChange = DEFAULTS.PRIMARY.ON_CHANGE,
+		initialValue = DEFAULTS.PRIMARY.INITIAL_VALUE,
+		minimum = DEFAULTS.PRIMARY.MINIMUM,
+		maximum = DEFAULTS.PRIMARY.MAXIMUM,
+		increment = DEFAULTS.PRIMARY.INCREMENT,
+		leftTextOrIcon = DEFAULTS.PRIMARY.LEFT_TEXT_OR_ICON,
+		rightTextOrIcon = DEFAULTS.PRIMARY.RIGHT_TEXT_OR_ICON,
+		elevation = DEFAULTS.PRIMARY.ELEVATION,
 	}
 	local inst: GuiObject = Source.primary(
 		definition.Style,
@@ -92,7 +104,7 @@ function Interface.primary(): StyledSliderWrapper
 	maid:GiveTask(inst.Destroying:Connect(function()
 		maid:Destroy()
 	end))
-	local wrapper, cleanUp = Translators.ColdFusion.toWrapper("StyledSlider", inst, definition)
+	local wrapper, cleanUp = Translators.ColdFusion.toWrapper("StyledSlider", inst, definition, defaults)
 	maid:GiveTask(cleanUp)
 	return wrapper
 end
@@ -105,12 +117,23 @@ function Interface.secondary(): StyledSliderWrapper
 		Style = _Value(Style.new(1, Enum.Font.SourceSans, "Light", Color3.new(0, 0.4, 0.7))),
 		OnChange = _Value(function(onChange: number) end),
 		InitialValue = _Value(50),
-		Minimum = _Value(nil),
-		Maximum = _Value(nil),
-		Increment = _Value(nil),
+		Minimum = _Value(0),
+		Maximum = _Value(100),
+		Increment = _Value(10),
 		LeftTextOrIcon = _Value(nil),
 		RightTextOrIcon = _Value(nil),
 		Elevation = _Value(0),
+	}
+	local defaults: { [string]: unknown? } = {
+		style = DEFAULTS.SECONDARY.STYLE,
+		onChange = DEFAULTS.SECONDARY.ON_CHANGE,
+		initialValue = DEFAULTS.SECONDARY.INITIAL_VALUE,
+		minimum = DEFAULTS.SECONDARY.MINIMUM,
+		maximum = DEFAULTS.SECONDARY.MAXIMUM,
+		increment = DEFAULTS.SECONDARY.INCREMENT,
+		leftTextOrIcon = DEFAULTS.SECONDARY.LEFT_TEXT_OR_ICON,
+		rightTextOrIcon = DEFAULTS.SECONDARY.RIGHT_TEXT_OR_ICON,
+		elevation = DEFAULTS.SECONDARY.ELEVATION,
 	}
 	local inst: GuiObject = Source.secondary(
 		definition.Style,
@@ -126,7 +149,7 @@ function Interface.secondary(): StyledSliderWrapper
 	maid:GiveTask(inst.Destroying:Connect(function()
 		maid:Destroy()
 	end))
-	local wrapper, cleanUp = Translators.ColdFusion.toWrapper("StyledSlider", inst, definition)
+	local wrapper, cleanUp = Translators.ColdFusion.toWrapper("StyledSlider", inst, definition, defaults)
 	maid:GiveTask(cleanUp)
 	return wrapper
 end
@@ -139,12 +162,23 @@ function Interface.tertiary(): StyledSliderWrapper
 		Style = _Value(Style.new(1, Enum.Font.SourceSans, "Light", Color3.new(0, 0.4, 0.7))),
 		OnChange = _Value(function(onChange: number) end),
 		InitialValue = _Value(50),
-		Minimum = _Value(nil),
-		Maximum = _Value(nil),
-		Increment = _Value(nil),
+		Minimum = _Value(0),
+		Maximum = _Value(100),
+		Increment = _Value(10),
 		LeftTextOrIcon = _Value(nil),
 		RightTextOrIcon = _Value(nil),
 		Elevation = _Value(0),
+	}
+	local defaults: { [string]: unknown? } = {
+		style = DEFAULTS.TERTIARY.STYLE,
+		onChange = DEFAULTS.TERTIARY.ON_CHANGE,
+		initialValue = DEFAULTS.TERTIARY.INITIAL_VALUE,
+		minimum = DEFAULTS.TERTIARY.MINIMUM,
+		maximum = DEFAULTS.TERTIARY.MAXIMUM,
+		increment = DEFAULTS.TERTIARY.INCREMENT,
+		leftTextOrIcon = DEFAULTS.TERTIARY.LEFT_TEXT_OR_ICON,
+		rightTextOrIcon = DEFAULTS.TERTIARY.RIGHT_TEXT_OR_ICON,
+		elevation = DEFAULTS.TERTIARY.ELEVATION,
 	}
 	local inst: GuiObject = Source.tertiary(
 		definition.Style,
@@ -160,7 +194,7 @@ function Interface.tertiary(): StyledSliderWrapper
 	maid:GiveTask(inst.Destroying:Connect(function()
 		maid:Destroy()
 	end))
-	local wrapper, cleanUp = Translators.ColdFusion.toWrapper("StyledSlider", inst, definition)
+	local wrapper, cleanUp = Translators.ColdFusion.toWrapper("StyledSlider", inst, definition, defaults)
 	maid:GiveTask(cleanUp)
 	return wrapper
 end
@@ -173,12 +207,23 @@ function Interface.onPrimary(): StyledSliderWrapper
 		Style = _Value(Style.new(1, Enum.Font.SourceSans, "Light", Color3.new(0, 0.4, 0.7))),
 		OnChange = _Value(function(onChange: number) end),
 		InitialValue = _Value(50),
-		Minimum = _Value(nil),
-		Maximum = _Value(nil),
-		Increment = _Value(nil),
+		Minimum = _Value(0),
+		Maximum = _Value(100),
+		Increment = _Value(10),
 		LeftTextOrIcon = _Value(nil),
 		RightTextOrIcon = _Value(nil),
 		Elevation = _Value(0),
+	}
+	local defaults: { [string]: unknown? } = {
+		style = DEFAULTS.ON_PRIMARY.STYLE,
+		onChange = DEFAULTS.ON_PRIMARY.ON_CHANGE,
+		initialValue = DEFAULTS.ON_PRIMARY.INITIAL_VALUE,
+		minimum = DEFAULTS.ON_PRIMARY.MINIMUM,
+		maximum = DEFAULTS.ON_PRIMARY.MAXIMUM,
+		increment = DEFAULTS.ON_PRIMARY.INCREMENT,
+		leftTextOrIcon = DEFAULTS.ON_PRIMARY.LEFT_TEXT_OR_ICON,
+		rightTextOrIcon = DEFAULTS.ON_PRIMARY.RIGHT_TEXT_OR_ICON,
+		elevation = DEFAULTS.ON_PRIMARY.ELEVATION,
 	}
 	local inst: GuiObject = Source.onPrimary(
 		definition.Style,
@@ -194,7 +239,7 @@ function Interface.onPrimary(): StyledSliderWrapper
 	maid:GiveTask(inst.Destroying:Connect(function()
 		maid:Destroy()
 	end))
-	local wrapper, cleanUp = Translators.ColdFusion.toWrapper("StyledSlider", inst, definition)
+	local wrapper, cleanUp = Translators.ColdFusion.toWrapper("StyledSlider", inst, definition, defaults)
 	maid:GiveTask(cleanUp)
 	return wrapper
 end
@@ -207,12 +252,23 @@ function Interface.onSecondary(): StyledSliderWrapper
 		Style = _Value(Style.new(1, Enum.Font.SourceSans, "Light", Color3.new(0, 0.4, 0.7))),
 		OnChange = _Value(function(onChange: number) end),
 		InitialValue = _Value(50),
-		Minimum = _Value(nil),
-		Maximum = _Value(nil),
-		Increment = _Value(nil),
+		Minimum = _Value(0),
+		Maximum = _Value(100),
+		Increment = _Value(10),
 		LeftTextOrIcon = _Value(nil),
 		RightTextOrIcon = _Value(nil),
 		Elevation = _Value(0),
+	}
+	local defaults: { [string]: unknown? } = {
+		style = DEFAULTS.ON_SECONDARY.STYLE,
+		onChange = DEFAULTS.ON_SECONDARY.ON_CHANGE,
+		initialValue = DEFAULTS.ON_SECONDARY.INITIAL_VALUE,
+		minimum = DEFAULTS.ON_SECONDARY.MINIMUM,
+		maximum = DEFAULTS.ON_SECONDARY.MAXIMUM,
+		increment = DEFAULTS.ON_SECONDARY.INCREMENT,
+		leftTextOrIcon = DEFAULTS.ON_SECONDARY.LEFT_TEXT_OR_ICON,
+		rightTextOrIcon = DEFAULTS.ON_SECONDARY.RIGHT_TEXT_OR_ICON,
+		elevation = DEFAULTS.ON_SECONDARY.ELEVATION,
 	}
 	local inst: GuiObject = Source.onSecondary(
 		definition.Style,
@@ -228,7 +284,7 @@ function Interface.onSecondary(): StyledSliderWrapper
 	maid:GiveTask(inst.Destroying:Connect(function()
 		maid:Destroy()
 	end))
-	local wrapper, cleanUp = Translators.ColdFusion.toWrapper("StyledSlider", inst, definition)
+	local wrapper, cleanUp = Translators.ColdFusion.toWrapper("StyledSlider", inst, definition, defaults)
 	maid:GiveTask(cleanUp)
 	return wrapper
 end
@@ -241,12 +297,23 @@ function Interface.onTertiary(): StyledSliderWrapper
 		Style = _Value(Style.new(1, Enum.Font.SourceSans, "Light", Color3.new(0, 0.4, 0.7))),
 		OnChange = _Value(function(onChange: number) end),
 		InitialValue = _Value(50),
-		Minimum = _Value(nil),
-		Maximum = _Value(nil),
-		Increment = _Value(nil),
+		Minimum = _Value(0),
+		Maximum = _Value(100),
+		Increment = _Value(10),
 		LeftTextOrIcon = _Value(nil),
 		RightTextOrIcon = _Value(nil),
 		Elevation = _Value(0),
+	}
+	local defaults: { [string]: unknown? } = {
+		style = DEFAULTS.ON_TERTIARY.STYLE,
+		onChange = DEFAULTS.ON_TERTIARY.ON_CHANGE,
+		initialValue = DEFAULTS.ON_TERTIARY.INITIAL_VALUE,
+		minimum = DEFAULTS.ON_TERTIARY.MINIMUM,
+		maximum = DEFAULTS.ON_TERTIARY.MAXIMUM,
+		increment = DEFAULTS.ON_TERTIARY.INCREMENT,
+		leftTextOrIcon = DEFAULTS.ON_TERTIARY.LEFT_TEXT_OR_ICON,
+		rightTextOrIcon = DEFAULTS.ON_TERTIARY.RIGHT_TEXT_OR_ICON,
+		elevation = DEFAULTS.ON_TERTIARY.ELEVATION,
 	}
 	local inst: GuiObject = Source.onTertiary(
 		definition.Style,
@@ -262,7 +329,7 @@ function Interface.onTertiary(): StyledSliderWrapper
 	maid:GiveTask(inst.Destroying:Connect(function()
 		maid:Destroy()
 	end))
-	local wrapper, cleanUp = Translators.ColdFusion.toWrapper("StyledSlider", inst, definition)
+	local wrapper, cleanUp = Translators.ColdFusion.toWrapper("StyledSlider", inst, definition, defaults)
 	maid:GiveTask(cleanUp)
 	return wrapper
 end

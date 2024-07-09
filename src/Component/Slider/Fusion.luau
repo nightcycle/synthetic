@@ -26,6 +26,7 @@ type CanBeState<V> = ColdFusion.CanBeState<V>
 type FusionCanBeState<V> = Translators.FusionCanBeState<V>
 
 -- Constants
+local DEFAULTS = require(script.Parent:WaitForChild("Defaults"))
 -- Variables
 -- References
 -- Private Functions
@@ -51,25 +52,25 @@ function Interface.new(
 ): GuiObject
 	local maid = Maid.new()
 	local _fuse = ColdFusion.fuse(maid)
-	local function convert<V>(value: FusionCanBeState<V>): CanBeState<V>
-		return Translators.Fusion.toColdFusion(maid, _fuse, value)
+	local function convert<V>(value: FusionCanBeState<V>, default: V): CanBeState<V>
+		return Translators.Fusion.toColdFusion(maid, _fuse, value, default)
 	end
 	local inst = Source.new(
-		convert(onChange),
-		convert(initialValue),
-		convert(minimum),
-		convert(maximum),
-		convert(increment),
-		convert(leftTextOrIcon),
-		convert(rightTextOrIcon),
-		convert(onBackgroundColor),
-		convert(onBackgroundTextColor),
-		convert(fillColor),
-		convert(fillContainerColor),
-		convert(elevation),
-		convert(schemeType),
-		convert(fontData),
-		convert(scale)
+		convert(onChange, DEFAULTS.NEW.ON_CHANGE),
+		convert(initialValue, DEFAULTS.NEW.INITIAL_VALUE),
+		convert(minimum, DEFAULTS.NEW.MINIMUM),
+		convert(maximum, DEFAULTS.NEW.MAXIMUM),
+		convert(increment, DEFAULTS.NEW.INCREMENT),
+		convert(leftTextOrIcon, DEFAULTS.NEW.LEFT_TEXT_OR_ICON),
+		convert(rightTextOrIcon, DEFAULTS.NEW.RIGHT_TEXT_OR_ICON),
+		convert(onBackgroundColor, DEFAULTS.NEW.ON_BACKGROUND_COLOR),
+		convert(onBackgroundTextColor, DEFAULTS.NEW.ON_BACKGROUND_TEXT_COLOR),
+		convert(fillColor, DEFAULTS.NEW.FILL_COLOR),
+		convert(fillContainerColor, DEFAULTS.NEW.FILL_CONTAINER_COLOR),
+		convert(elevation, DEFAULTS.NEW.ELEVATION),
+		convert(schemeType, DEFAULTS.NEW.SCHEME_TYPE),
+		convert(fontData, DEFAULTS.NEW.FONT_DATA),
+		convert(scale, DEFAULTS.NEW.SCALE)
 	)
 	maid:GiveTask(inst.Destroying:Connect(function()
 		maid:Destroy()
@@ -84,25 +85,25 @@ function Interface.primary(
 	minimum: FusionCanBeState<number?>,
 	maximum: FusionCanBeState<number?>,
 	increment: FusionCanBeState<number?>,
-	leftTextOrIcon: FusionCanBeState<string | ImageData | nil>,
-	rightTextOrIcon: FusionCanBeState<string | ImageData | nil>,
+	leftTextOrIcon: FusionCanBeState<(string | ImageData)?>,
+	rightTextOrIcon: FusionCanBeState<(string | ImageData)?>,
 	elevation: FusionCanBeState<number>
 ): GuiObject
 	local maid = Maid.new()
 	local _fuse = ColdFusion.fuse(maid)
-	local function convert<V>(value: FusionCanBeState<V>): CanBeState<V>
-		return Translators.Fusion.toColdFusion(maid, _fuse, value)
+	local function convert<V>(value: FusionCanBeState<V>, default: V): CanBeState<V>
+		return Translators.Fusion.toColdFusion(maid, _fuse, value, default)
 	end
 	local inst = Source.primary(
-		convert(style),
-		convert(onChange),
-		convert(initialValue),
-		convert(minimum),
-		convert(maximum),
-		convert(increment),
-		convert(leftTextOrIcon),
-		convert(rightTextOrIcon),
-		convert(elevation)
+		convert(style, DEFAULTS.PRIMARY.STYLE),
+		convert(onChange, DEFAULTS.PRIMARY.ON_CHANGE),
+		convert(initialValue, DEFAULTS.PRIMARY.INITIAL_VALUE),
+		convert(minimum, DEFAULTS.PRIMARY.MINIMUM),
+		convert(maximum, DEFAULTS.PRIMARY.MAXIMUM),
+		convert(increment, DEFAULTS.PRIMARY.INCREMENT),
+		convert(leftTextOrIcon, DEFAULTS.PRIMARY.LEFT_TEXT_OR_ICON),
+		convert(rightTextOrIcon, DEFAULTS.PRIMARY.RIGHT_TEXT_OR_ICON),
+		convert(elevation, DEFAULTS.PRIMARY.ELEVATION)
 	)
 	maid:GiveTask(inst.Destroying:Connect(function()
 		maid:Destroy()
@@ -117,25 +118,25 @@ function Interface.secondary(
 	minimum: FusionCanBeState<number?>,
 	maximum: FusionCanBeState<number?>,
 	increment: FusionCanBeState<number?>,
-	leftTextOrIcon: FusionCanBeState<string | ImageData | nil>,
-	rightTextOrIcon: FusionCanBeState<string | ImageData | nil>,
+	leftTextOrIcon: FusionCanBeState<(string | ImageData)?>,
+	rightTextOrIcon: FusionCanBeState<(string | ImageData)?>,
 	elevation: FusionCanBeState<number>
 ): GuiObject
 	local maid = Maid.new()
 	local _fuse = ColdFusion.fuse(maid)
-	local function convert<V>(value: FusionCanBeState<V>): CanBeState<V>
-		return Translators.Fusion.toColdFusion(maid, _fuse, value)
+	local function convert<V>(value: FusionCanBeState<V>, default: V): CanBeState<V>
+		return Translators.Fusion.toColdFusion(maid, _fuse, value, default)
 	end
 	local inst = Source.secondary(
-		convert(style),
-		convert(onChange),
-		convert(initialValue),
-		convert(minimum),
-		convert(maximum),
-		convert(increment),
-		convert(leftTextOrIcon),
-		convert(rightTextOrIcon),
-		convert(elevation)
+		convert(style, DEFAULTS.SECONDARY.STYLE),
+		convert(onChange, DEFAULTS.SECONDARY.ON_CHANGE),
+		convert(initialValue, DEFAULTS.SECONDARY.INITIAL_VALUE),
+		convert(minimum, DEFAULTS.SECONDARY.MINIMUM),
+		convert(maximum, DEFAULTS.SECONDARY.MAXIMUM),
+		convert(increment, DEFAULTS.SECONDARY.INCREMENT),
+		convert(leftTextOrIcon, DEFAULTS.SECONDARY.LEFT_TEXT_OR_ICON),
+		convert(rightTextOrIcon, DEFAULTS.SECONDARY.RIGHT_TEXT_OR_ICON),
+		convert(elevation, DEFAULTS.SECONDARY.ELEVATION)
 	)
 	maid:GiveTask(inst.Destroying:Connect(function()
 		maid:Destroy()
@@ -150,25 +151,25 @@ function Interface.tertiary(
 	minimum: FusionCanBeState<number?>,
 	maximum: FusionCanBeState<number?>,
 	increment: FusionCanBeState<number?>,
-	leftTextOrIcon: FusionCanBeState<string | ImageData | nil>,
-	rightTextOrIcon: FusionCanBeState<string | ImageData | nil>,
+	leftTextOrIcon: FusionCanBeState<(string | ImageData)?>,
+	rightTextOrIcon: FusionCanBeState<(string | ImageData)?>,
 	elevation: FusionCanBeState<number>
 ): GuiObject
 	local maid = Maid.new()
 	local _fuse = ColdFusion.fuse(maid)
-	local function convert<V>(value: FusionCanBeState<V>): CanBeState<V>
-		return Translators.Fusion.toColdFusion(maid, _fuse, value)
+	local function convert<V>(value: FusionCanBeState<V>, default: V): CanBeState<V>
+		return Translators.Fusion.toColdFusion(maid, _fuse, value, default)
 	end
 	local inst = Source.tertiary(
-		convert(style),
-		convert(onChange),
-		convert(initialValue),
-		convert(minimum),
-		convert(maximum),
-		convert(increment),
-		convert(leftTextOrIcon),
-		convert(rightTextOrIcon),
-		convert(elevation)
+		convert(style, DEFAULTS.TERTIARY.STYLE),
+		convert(onChange, DEFAULTS.TERTIARY.ON_CHANGE),
+		convert(initialValue, DEFAULTS.TERTIARY.INITIAL_VALUE),
+		convert(minimum, DEFAULTS.TERTIARY.MINIMUM),
+		convert(maximum, DEFAULTS.TERTIARY.MAXIMUM),
+		convert(increment, DEFAULTS.TERTIARY.INCREMENT),
+		convert(leftTextOrIcon, DEFAULTS.TERTIARY.LEFT_TEXT_OR_ICON),
+		convert(rightTextOrIcon, DEFAULTS.TERTIARY.RIGHT_TEXT_OR_ICON),
+		convert(elevation, DEFAULTS.TERTIARY.ELEVATION)
 	)
 	maid:GiveTask(inst.Destroying:Connect(function()
 		maid:Destroy()
@@ -183,25 +184,25 @@ function Interface.onPrimary(
 	minimum: FusionCanBeState<number?>,
 	maximum: FusionCanBeState<number?>,
 	increment: FusionCanBeState<number?>,
-	leftTextOrIcon: FusionCanBeState<string | ImageData | nil>,
-	rightTextOrIcon: FusionCanBeState<string | ImageData | nil>,
+	leftTextOrIcon: FusionCanBeState<(string | ImageData)?>,
+	rightTextOrIcon: FusionCanBeState<(string | ImageData)?>,
 	elevation: FusionCanBeState<number>
 ): GuiObject
 	local maid = Maid.new()
 	local _fuse = ColdFusion.fuse(maid)
-	local function convert<V>(value: FusionCanBeState<V>): CanBeState<V>
-		return Translators.Fusion.toColdFusion(maid, _fuse, value)
+	local function convert<V>(value: FusionCanBeState<V>, default: V): CanBeState<V>
+		return Translators.Fusion.toColdFusion(maid, _fuse, value, default)
 	end
 	local inst = Source.onPrimary(
-		convert(style),
-		convert(onChange),
-		convert(initialValue),
-		convert(minimum),
-		convert(maximum),
-		convert(increment),
-		convert(leftTextOrIcon),
-		convert(rightTextOrIcon),
-		convert(elevation)
+		convert(style, DEFAULTS.ON_PRIMARY.STYLE),
+		convert(onChange, DEFAULTS.ON_PRIMARY.ON_CHANGE),
+		convert(initialValue, DEFAULTS.ON_PRIMARY.INITIAL_VALUE),
+		convert(minimum, DEFAULTS.ON_PRIMARY.MINIMUM),
+		convert(maximum, DEFAULTS.ON_PRIMARY.MAXIMUM),
+		convert(increment, DEFAULTS.ON_PRIMARY.INCREMENT),
+		convert(leftTextOrIcon, DEFAULTS.ON_PRIMARY.LEFT_TEXT_OR_ICON),
+		convert(rightTextOrIcon, DEFAULTS.ON_PRIMARY.RIGHT_TEXT_OR_ICON),
+		convert(elevation, DEFAULTS.ON_PRIMARY.ELEVATION)
 	)
 	maid:GiveTask(inst.Destroying:Connect(function()
 		maid:Destroy()
@@ -216,25 +217,25 @@ function Interface.onSecondary(
 	minimum: FusionCanBeState<number?>,
 	maximum: FusionCanBeState<number?>,
 	increment: FusionCanBeState<number?>,
-	leftTextOrIcon: FusionCanBeState<string | ImageData | nil>,
-	rightTextOrIcon: FusionCanBeState<string | ImageData | nil>,
+	leftTextOrIcon: FusionCanBeState<(string | ImageData)?>,
+	rightTextOrIcon: FusionCanBeState<(string | ImageData)?>,
 	elevation: FusionCanBeState<number>
 ): GuiObject
 	local maid = Maid.new()
 	local _fuse = ColdFusion.fuse(maid)
-	local function convert<V>(value: FusionCanBeState<V>): CanBeState<V>
-		return Translators.Fusion.toColdFusion(maid, _fuse, value)
+	local function convert<V>(value: FusionCanBeState<V>, default: V): CanBeState<V>
+		return Translators.Fusion.toColdFusion(maid, _fuse, value, default)
 	end
 	local inst = Source.onSecondary(
-		convert(style),
-		convert(onChange),
-		convert(initialValue),
-		convert(minimum),
-		convert(maximum),
-		convert(increment),
-		convert(leftTextOrIcon),
-		convert(rightTextOrIcon),
-		convert(elevation)
+		convert(style, DEFAULTS.ON_SECONDARY.STYLE),
+		convert(onChange, DEFAULTS.ON_SECONDARY.ON_CHANGE),
+		convert(initialValue, DEFAULTS.ON_SECONDARY.INITIAL_VALUE),
+		convert(minimum, DEFAULTS.ON_SECONDARY.MINIMUM),
+		convert(maximum, DEFAULTS.ON_SECONDARY.MAXIMUM),
+		convert(increment, DEFAULTS.ON_SECONDARY.INCREMENT),
+		convert(leftTextOrIcon, DEFAULTS.ON_SECONDARY.LEFT_TEXT_OR_ICON),
+		convert(rightTextOrIcon, DEFAULTS.ON_SECONDARY.RIGHT_TEXT_OR_ICON),
+		convert(elevation, DEFAULTS.ON_SECONDARY.ELEVATION)
 	)
 	maid:GiveTask(inst.Destroying:Connect(function()
 		maid:Destroy()
@@ -249,25 +250,25 @@ function Interface.onTertiary(
 	minimum: FusionCanBeState<number?>,
 	maximum: FusionCanBeState<number?>,
 	increment: FusionCanBeState<number?>,
-	leftTextOrIcon: FusionCanBeState<string | ImageData | nil>,
-	rightTextOrIcon: FusionCanBeState<string | ImageData | nil>,
+	leftTextOrIcon: FusionCanBeState<(string | ImageData)?>,
+	rightTextOrIcon: FusionCanBeState<(string | ImageData)?>,
 	elevation: FusionCanBeState<number>
 ): GuiObject
 	local maid = Maid.new()
 	local _fuse = ColdFusion.fuse(maid)
-	local function convert<V>(value: FusionCanBeState<V>): CanBeState<V>
-		return Translators.Fusion.toColdFusion(maid, _fuse, value)
+	local function convert<V>(value: FusionCanBeState<V>, default: V): CanBeState<V>
+		return Translators.Fusion.toColdFusion(maid, _fuse, value, default)
 	end
 	local inst = Source.onTertiary(
-		convert(style),
-		convert(onChange),
-		convert(initialValue),
-		convert(minimum),
-		convert(maximum),
-		convert(increment),
-		convert(leftTextOrIcon),
-		convert(rightTextOrIcon),
-		convert(elevation)
+		convert(style, DEFAULTS.ON_TERTIARY.STYLE),
+		convert(onChange, DEFAULTS.ON_TERTIARY.ON_CHANGE),
+		convert(initialValue, DEFAULTS.ON_TERTIARY.INITIAL_VALUE),
+		convert(minimum, DEFAULTS.ON_TERTIARY.MINIMUM),
+		convert(maximum, DEFAULTS.ON_TERTIARY.MAXIMUM),
+		convert(increment, DEFAULTS.ON_TERTIARY.INCREMENT),
+		convert(leftTextOrIcon, DEFAULTS.ON_TERTIARY.LEFT_TEXT_OR_ICON),
+		convert(rightTextOrIcon, DEFAULTS.ON_TERTIARY.RIGHT_TEXT_OR_ICON),
+		convert(elevation, DEFAULTS.ON_TERTIARY.ELEVATION)
 	)
 	maid:GiveTask(inst.Destroying:Connect(function()
 		maid:Destroy()
