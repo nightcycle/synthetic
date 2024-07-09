@@ -46,8 +46,9 @@ function Translators.Fusion.toColdFusion<V>(
 ): CFusionCanBeState<V>
 	if typeof(value) == "table" then
 		local valueTable: { [unknown]: unknown? } = value :: any
+		-- print("state=", valueTable["State"],  valueTable)
 		if
-			valueTable["State"] == "State"
+			valueTable["type"] == "State"
 			and typeof(valueTable["kind"]) == "string"
 			and typeof(valueTable["get"]) == "function"
 		then
@@ -60,9 +61,10 @@ function Translators.Fusion.toColdFusion<V>(
 			end))
 
 			return state
-		else
-			return value :: any
 		end
+	end
+	if value == nil then
+		return default
 	else
 		return value :: any
 	end
@@ -88,6 +90,18 @@ function Translators.ColdFusion.toWrapper<BaseInstance, Definition, ClassName>(
 	wrapper.Instance = inst
 
 	local meta = {}
+
+	local function cleanUp()
+
+		table.clear(wrapper)
+		-- setmetatable(wrapper, nil)
+		table.clear(meta)
+	end
+
+	function meta:Destroy()
+		inst:Destroy()
+		cleanUp()
+	end
 
 	function meta:__index(k: unknown): unknown?
 		if rawget(self, k) then
@@ -116,12 +130,7 @@ function Translators.ColdFusion.toWrapper<BaseInstance, Definition, ClassName>(
 
 	setmetatable(wrapper :: any, meta)
 	table.freeze(wrapper)
-	return wrapper :: any,
-		function(): ()
-			table.clear(wrapper)
-			setmetatable(wrapper, nil)
-			table.clear(meta)
-		end
+	return wrapper :: any, cleanUp
 end
 
 return Translators
