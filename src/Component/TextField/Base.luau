@@ -33,16 +33,16 @@ type SwitchRenderData = {
 type FontData = Types.FontData
 
 -- Constants
-local CONTAINER_HEIGHT_DP = 56
-local LEFT_RIGHT_NO_ICONS_PADDING_DP = 16
-local LEFT_RIGHT_YES_ICONS_PADDING_DP = 12
-local TEXT_AND_ICON_PADDING_DP = 16
+local CONTAINER_HEIGHT_DP = 42
+local LEFT_RIGHT_NO_ICONS_PADDING_DP = 14
+local LEFT_RIGHT_YES_ICONS_PADDING_DP = 10
+local TEXT_AND_ICON_PADDING_DP = 14
 local SUPPORTING_TEXT_PADDING_DP = 4
-local MIN_WIDTH_DP = CONTAINER_HEIGHT_DP * 1.5
+local MIN_WIDTH_DP = math.round(CONTAINER_HEIGHT_DP * 1.5)
 local DEFAULT_OUTLINE_THICKNESS_DP = 1
 local FOCUSED_OUTLINE_THICKNESS_DP = 2
 local RADIUS_DP = 4
-local ICON_WIDTH_DP = 24
+local ICON_WIDTH_DP = 18
 local DISABLED_TEXT_TRANSPARENCY = 1 - 0.38
 local DISABLED_OUTLINE_TRANSPARENCY = 1 - 0.12
 local DISABLED_BACKGROUND_TRANSPARENCY = 1 - 0.04
@@ -303,6 +303,7 @@ function Interface.new(
 	end, scaleState, isFocusedState)
 
 	local inst = _bind(maid:GiveTask(Util.Container.ColdFusion.new()))({
+		Name = "TextField",
 		Children = {
 			maid:GiveTask(
 				Util.List.ColdFusion.new(
@@ -320,6 +321,7 @@ function Interface.new(
 			) :: Instance,
 			_bind(maid:GiveTask(Util.Container.ColdFusion.new()))({
 				LayoutOrder = 1,
+				Name = "UpperLabelContainer",
 				Children = {
 					maid:GiveTask(
 						Util.List.ColdFusion.new(
@@ -379,13 +381,15 @@ function Interface.new(
 								nil
 							)
 						)
-					)({}),
+					)({
+						Name = "Label",
+					}),
 				},
 			}),
 			_new("TextButton")({
 				LayoutOrder = 2,
 				Size = _Computed(function(sc: number): UDim2
-					return UDim2.fromOffset(0, sc * CONTAINER_HEIGHT_DP)
+					return UDim2.fromOffset(0, math.round(sc * CONTAINER_HEIGHT_DP))
 				end, scaleState),
 				Text = "",
 				BackgroundColor3 = backgroundColorState,
@@ -623,6 +627,7 @@ function Interface.new(
 				},
 			}) :: Instance,
 			_bind(maid:GiveTask(Util.Container.ColdFusion.new()))({
+				Name = "SupportingTextContainer",
 				LayoutOrder = 3,
 				Children = {
 					maid:GiveTask(

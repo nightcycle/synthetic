@@ -288,7 +288,7 @@ Util.new = function(
 								PaddingBottom = shadowSizeState,
 							}),
 							_new("TextButton")({
-								Name = "TextButton",
+								Name = "Button",
 								Text = "",
 								BackgroundTransparency = _Computed(function(renderData: RenderData): number
 									if renderData.Shadow then
