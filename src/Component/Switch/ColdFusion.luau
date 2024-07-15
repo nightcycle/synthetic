@@ -42,7 +42,7 @@ local KNOB_YES_ICON_SIZE_DP = 28
 local KNOB_NO_ICON_SELECTED_SIZE_DP = 24
 local KNOB_NO_ICON_UNSELECTED_SIZE_DP = 16
 local ICON_SIZE_DP = 16
-local OUTLINE_WIDTH_DP = 2
+local OUTLINE_THICKNESS_DP = 2
 -- Variables
 -- References
 -- Private Functions
@@ -489,179 +489,231 @@ function Interface.new(
 
 	local switchSizeState = _Computed(function(sc: number): UDim2
 		return UDim2.fromOffset(
-			math.round(sc * SWITCH_WIDTH_DP - (OUTLINE_WIDTH_DP * 2)),
-			math.round(sc * SWITCH_HEIGHT_DP - (OUTLINE_WIDTH_DP * 2))
+			math.round(sc * SWITCH_WIDTH_DP - (OUTLINE_THICKNESS_DP * 2)),
+			math.round(sc * SWITCH_HEIGHT_DP - (OUTLINE_THICKNESS_DP * 2))
 		)
 	end, scaleState)
 
+	local outlineThicknessState = _Computed(function(sc: number): number
+		return math.round(sc * OUTLINE_THICKNESS_DP)
+	end, scaleState)
+
+	local useStrokeState = _Computed(function(data: SwitchRenderData): boolean
+		return data.Background.Color3 ~= data.Outline.Color3
+			or data.Background.Transparency ~= data.Background.Transparency
+	end, renderDataState)
+
 	local inst = _new("ImageButton")({
 		Name = "Switch",
-		Size = switchSizeState,
+		Size = _Computed(function(size: UDim2, thickness: number, useStroke: boolean): UDim2
+			return UDim2.fromOffset(size.X.Offset + thickness * 2, size.Y.Offset + thickness * 2)
+		end, switchSizeState, outlineThicknessState, useStrokeState),
 		BackgroundColor3 = _Computed(function(data: SwitchRenderData): Color3
 			return data.Background.Color3
 		end, renderDataState),
-		BackgroundTransparency = _Computed(function(data: SwitchRenderData): number
-			return data.Background.Transparency
-		end, renderDataState),
-		Events = {
-			Activated = function()
-				if isEnabledState:Get() == false then
-					return
-				end
-				local onClick = onSelectState:Get()
-
-				local count = clickCountState:Get() + 1
-				clickCountState:Set(count)
-
-				do
-					local sound = Instance.new("Sound")
-					sound.Volume = 1
-					if valueState:Get() == true then
-						sound.SoundId = Sounds.Library[Enums.SoundType.navigation_forward_selection_minimal]
-					else
-						sound.SoundId = Sounds.Library[Enums.SoundType.navigation_backward_selection_minimal]
-					end
-					SoundService:PlayLocalSound(sound)
-					sound:Destroy()
-				end
-
-				onClick(valueState:Get())
-			end,
-			MouseButton1Down = function()
-				if isEnabledState:Get() == false then
-					return
-				end
-				isPressedState:Set(true)
-			end,
-			MouseButton1Up = function()
-				if isEnabledState:Get() == false then
-					return
-				end
-				isPressedState:Set(false)
-			end,
-			MouseEnter = function()
-				isHoveredState:Set(true)
-			end,
-			MouseLeave = function()
-				isHoveredState:Set(false)
-			end,
-			SelectionGained = function()
-				isFocusedState:Set(true)
-			end,
-			SelectionLost = function()
-				isFocusedState:Set(false)
-			end,
-		},
+		BackgroundTransparency = _Computed(function(useStroke: boolean, data: SwitchRenderData): number
+			return if useStroke then 1 else data.Background.Transparency
+		end, useStrokeState, renderDataState),
 		Children = {
-			_new("UIStroke")({
-				ApplyStrokeMode = Enum.ApplyStrokeMode.Border,
-				Color = _Computed(function(renderData: SwitchRenderData): Color3
-					return renderData.Outline.Color3
-				end, renderDataState),
-				LineJoinMode = Enum.LineJoinMode.Round,
-				Thickness = _Computed(function(sc: number): number
-					return math.round(sc * OUTLINE_WIDTH_DP)
-				end, scaleState),
-				Transparency = _Computed(function(renderData: SwitchRenderData): number
-					return renderData.Outline.Transparency
-				end, renderDataState),
-			}),
 			_new("UICorner")({
-				CornerRadius = UDim.new(0.5, 0),
+				CornerRadius = _Computed(function(sc: number): UDim
+					return UDim.new(0, math.round(sc * SWITCH_HEIGHT_DP / 2))
+				end, scaleState),
 			}),
-			(function(): Instance
-				local widthPaddingState = _Computed(
-					function(sc: number, buttonSize: number, switchSize: UDim2, icon: ImageData?): UDim
-						local size = sc * (SWITCH_HEIGHT_DP - (OUTLINE_WIDTH_DP * 2) - buttonSize)
-						if icon then
-							size += math.max(0, math.round((switchSize.Y.Offset - buttonSize * sc)))
-						end
-						return UDim.new(0, math.round(size / 2))
-					end,
-					scaleState,
-					buttonSizeState,
-					switchSizeState,
-					iconState
-				)
-				local heightPaddingState = _Computed(function(sc: number, buttonSize: number): UDim
-					local size = SWITCH_HEIGHT_DP - (OUTLINE_WIDTH_DP * 2) - buttonSize
-					return UDim.new(0, math.round(sc * size / 2))
-				end, scaleState, buttonSizeState)
-				return _new("UIPadding")({
-					PaddingTop = heightPaddingState,
-					PaddingBottom = heightPaddingState,
-					PaddingLeft = widthPaddingState,
-					PaddingRight = widthPaddingState,
-				})
-			end)(),
-			_new("Frame")({
-				Name = "Knob",
-				Size = _Computed(function(sc: number, size: number): UDim2
-					return UDim2.fromOffset(math.round(sc * size), math.round(sc * size))
-				end, scaleState, buttonSizeState),
-				Position = _Computed(function(v: boolean): UDim2
-					return if v then UDim2.fromScale(1, 0.5) else UDim2.fromScale(0, 0.5)
-				end, valueState),
-				AnchorPoint = _Computed(function(v: boolean): Vector2
-					return if v then Vector2.new(1, 0.5) else Vector2.new(0, 0.5)
-				end, valueState),
+			_new("ImageButton")({
+				Name = "InnerSwitch",
+				Size = switchSizeState,
+				Position = _Computed(function(outlineThickness: number): UDim2
+					return UDim2.fromOffset(outlineThickness, outlineThickness)
+				end, outlineThicknessState),
+				BackgroundColor3 = _Computed(function(data: SwitchRenderData): Color3
+					return data.Background.Color3
+				end, renderDataState),
 				BackgroundTransparency = _Computed(
-					function(renderData: SwitchRenderData, v: boolean?): number
-						return renderData.Button.Transparency
+					function(data: SwitchRenderData, useStroke: boolean): number
+						return if useStroke then data.Background.Transparency else 1
 					end,
 					renderDataState,
-					valueState
+					useStrokeState
 				),
-				BorderSizePixel = 0,
-				BackgroundColor3 = _Computed(function(renderData: SwitchRenderData, v: boolean?): Color3
-					return renderData.Button.Color3
-				end, renderDataState, valueState),
+				Events = {
+					Activated = function()
+						if isEnabledState:Get() == false then
+							return
+						end
+						local onClick = onSelectState:Get()
+
+						local count = clickCountState:Get() + 1
+						clickCountState:Set(count)
+
+						do
+							local sound = Instance.new("Sound")
+							sound.Volume = 1
+							if valueState:Get() == true then
+								sound.SoundId =
+									Sounds.Library[Enums.SoundType.navigation_forward_selection_minimal]
+							else
+								sound.SoundId =
+									Sounds.Library[Enums.SoundType.navigation_backward_selection_minimal]
+							end
+							SoundService:PlayLocalSound(sound)
+							sound:Destroy()
+						end
+
+						onClick(valueState:Get())
+					end,
+					MouseButton1Down = function()
+						if isEnabledState:Get() == false then
+							return
+						end
+						isPressedState:Set(true)
+					end,
+					MouseButton1Up = function()
+						if isEnabledState:Get() == false then
+							return
+						end
+						isPressedState:Set(false)
+					end,
+					MouseEnter = function()
+						isHoveredState:Set(true)
+					end,
+					MouseLeave = function()
+						isHoveredState:Set(false)
+					end,
+					SelectionGained = function()
+						isFocusedState:Set(true)
+					end,
+					SelectionLost = function()
+						isFocusedState:Set(false)
+					end,
+				},
 				Children = {
-					_new("UIListLayout")({
-						Padding = UDim.new(0, 0),
-						SortOrder = Enum.SortOrder.LayoutOrder,
-						FillDirection = Enum.FillDirection.Horizontal,
-						ItemLineAlignment = Enum.ItemLineAlignment.Center,
-						VerticalAlignment = Enum.VerticalAlignment.Center,
-						HorizontalAlignment = Enum.HorizontalAlignment.Center,
+					_new("UIStroke")({
+						ApplyStrokeMode = Enum.ApplyStrokeMode.Border,
+						Color = _Computed(function(renderData: SwitchRenderData): Color3
+							return renderData.Outline.Color3
+						end, renderDataState),
+						LineJoinMode = Enum.LineJoinMode.Round,
+						Thickness = outlineThicknessState,
+						Enabled = useStrokeState,
+						Transparency = _Computed(function(renderData: SwitchRenderData): number
+							return renderData.Outline.Transparency
+						end, renderDataState),
 					}),
 					_new("UICorner")({
-						CornerRadius = UDim.new(0.5, 0),
-					}),
-					_new("ImageLabel")({
-						Name = "Icon",
-						Size = _Computed(function(sc: number, i: ImageData?): UDim2
-							return UDim2.fromOffset(
-								math.round(sc * ICON_SIZE_DP),
-								math.round(sc * ICON_SIZE_DP)
+						CornerRadius = _Computed(function(sc: number): UDim
+							return UDim.new(
+								0,
+								math.round(sc * (SWITCH_HEIGHT_DP - OUTLINE_THICKNESS_DP * 2) / 2)
 							)
-						end, scaleState, iconState),
-						BackgroundTransparency = 1,
-						ImageTransparency = _Computed(function(renderData: SwitchRenderData): number
-							return renderData.Text.Transparency
-						end, renderDataState),
-						Visible = _Computed(function(i: ImageData?): boolean
-							return i ~= nil
-						end, iconState),
-						ImageColor3 = _Computed(function(renderData: SwitchRenderData): Color3
-							return renderData.Text.Color3
-						end, renderDataState),
-						Image = _Computed(function(i: ImageData?): string
-							if i then
-								return i.Image
-							else
-								return ""
-							end
-						end, iconState),
-						ImageRectOffset = _Computed(function(i: ImageData?): Vector2
-							return if i then i.ImageRectOffset else Vector2.zero
-						end, iconState),
-						ImageRectSize = _Computed(function(i: ImageData?): Vector2
-							return if i then i.ImageRectSize else Vector2.zero
-						end, iconState),
+						end, scaleState),
+					}),
+					(function(): Instance
+						local widthPaddingState = _Computed(
+							function(
+								sc: number,
+								buttonSize: number,
+								switchSize: UDim2,
+								icon: ImageData?
+							): UDim
+								local size = sc * (SWITCH_HEIGHT_DP - (OUTLINE_THICKNESS_DP * 2) - buttonSize)
+								if icon then
+									size += math.max(0, math.round((switchSize.Y.Offset - buttonSize * sc)))
+								end
+								return UDim.new(0, math.round(size / 2))
+							end,
+							scaleState,
+							buttonSizeState,
+							switchSizeState,
+							iconState
+						)
+						local heightPaddingState = _Computed(function(sc: number, buttonSize: number): UDim
+							local size = SWITCH_HEIGHT_DP - (OUTLINE_THICKNESS_DP * 2) - buttonSize
+							return UDim.new(0, math.round(sc * size / 2))
+						end, scaleState, buttonSizeState)
+						return _new("UIPadding")({
+							PaddingTop = heightPaddingState,
+							PaddingBottom = heightPaddingState,
+							PaddingLeft = widthPaddingState,
+							PaddingRight = widthPaddingState,
+						})
+					end)(),
+					_new("Frame")({
+						Name = "Knob",
+						Size = _Computed(function(sc: number, size: number): UDim2
+							return UDim2.fromOffset(math.round(sc * size), math.round(sc * size))
+						end, scaleState, buttonSizeState),
+						Position = _Computed(function(v: boolean): UDim2
+							return if v then UDim2.fromScale(1, 0.5) else UDim2.fromScale(0, 0.5)
+						end, valueState),
+						AnchorPoint = _Computed(function(v: boolean): Vector2
+							return if v then Vector2.new(1, 0.5) else Vector2.new(0, 0.5)
+						end, valueState),
+						BackgroundTransparency = _Computed(
+							function(renderData: SwitchRenderData, v: boolean?): number
+								return renderData.Button.Transparency
+							end,
+							renderDataState,
+							valueState
+						),
+						BorderSizePixel = 0,
+						BackgroundColor3 = _Computed(
+							function(renderData: SwitchRenderData, v: boolean?): Color3
+								return renderData.Button.Color3
+							end,
+							renderDataState,
+							valueState
+						),
 						Children = {
+							_new("UIListLayout")({
+								Padding = UDim.new(0, 0),
+								SortOrder = Enum.SortOrder.LayoutOrder,
+								FillDirection = Enum.FillDirection.Horizontal,
+								ItemLineAlignment = Enum.ItemLineAlignment.Center,
+								VerticalAlignment = Enum.VerticalAlignment.Center,
+								HorizontalAlignment = Enum.HorizontalAlignment.Center,
+							}),
 							_new("UICorner")({
-								CornerRadius = UDim.new(0.5, 0),
+								CornerRadius = _Computed(function(sc: number, size: number): UDim
+									return UDim.new(0, math.round(sc * size / 2))
+								end, scaleState, buttonSizeState),
+							}),
+							_new("ImageLabel")({
+								Name = "Icon",
+								Size = _Computed(function(sc: number, i: ImageData?): UDim2
+									return UDim2.fromOffset(
+										math.round(sc * ICON_SIZE_DP),
+										math.round(sc * ICON_SIZE_DP)
+									)
+								end, scaleState, iconState),
+								BackgroundTransparency = 1,
+								ImageTransparency = _Computed(function(renderData: SwitchRenderData): number
+									return renderData.Text.Transparency
+								end, renderDataState),
+								Visible = _Computed(function(i: ImageData?): boolean
+									return i ~= nil
+								end, iconState),
+								ImageColor3 = _Computed(function(renderData: SwitchRenderData): Color3
+									return renderData.Text.Color3
+								end, renderDataState),
+								Image = _Computed(function(i: ImageData?): string
+									if i then
+										return i.Image
+									else
+										return ""
+									end
+								end, iconState),
+								ImageRectOffset = _Computed(function(i: ImageData?): Vector2
+									return if i then i.ImageRectOffset else Vector2.zero
+								end, iconState),
+								ImageRectSize = _Computed(function(i: ImageData?): Vector2
+									return if i then i.ImageRectSize else Vector2.zero
+								end, iconState),
+								Children = {
+									_new("UICorner")({
+										CornerRadius = UDim.new(0.5, 0),
+									}),
+								},
 							}),
 						},
 					}),

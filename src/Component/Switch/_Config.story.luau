@@ -20,7 +20,7 @@ return function(frame: Frame)
 	task.spawn(function()
 		local function makeHalfFrame(isDarkMode: boolean, color: Color3): Frame
 			local style = Style.new(
-				2,
+				1.5,
 				Enum.Font.SourceSans,
 				if isDarkMode then Enums.SchemeType.Dark else Enums.SchemeType.Light,
 				color
