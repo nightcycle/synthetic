@@ -415,7 +415,9 @@ function Interface.new(
 						HorizontalAlignment = Enum.HorizontalAlignment.Center,
 					}),
 					_new("UICorner")({
-						CornerRadius = UDim.new(0.5, 0),
+						CornerRadius = _Computed(function(s: number): UDim
+							return UDim.new(0, math.floor(s * ICON_SIZE_DP * 0.5))
+						end, scaleState),
 					}),
 					_new("ImageLabel")({
 						Name = "Icon",
