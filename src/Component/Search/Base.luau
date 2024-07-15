@@ -150,6 +150,7 @@ function newPanel(
 			scaleState
 		)
 	)({
+		Name = "BackButton",
 		LayoutOrder = 1,
 	}) :: GuiObject
 
@@ -169,6 +170,7 @@ function newPanel(
 			scaleState
 		)
 	)({
+		Name = "ClearButton",
 		LayoutOrder = 3,
 	}) :: GuiObject
 
@@ -227,6 +229,7 @@ function newPanel(
 	end)
 
 	local inst = _bind(Util.PopUp.ColdFusion.new(absolutePositionState, Vector2.zero))({
+		Name = "SearchMenu",
 		BackgroundColor3 = _Computed(function(st: Enums.SchemeType, bC: Color3, e: number): Color3
 			return Theme.getElevatedColor(bC, e, st)
 		end, schemeTypeState, backgroundColorState, elevationState),
@@ -235,10 +238,11 @@ function newPanel(
 		Children = {
 			_new("UICorner")({
 				CornerRadius = _Computed(function(sc: number): UDim
-					return UDim.new(0, sc * CORNER_DP)
+					return UDim.new(0, math.round(sc * CORNER_DP))
 				end, scaleState),
 			}),
 			_new("Frame")({
+				Name = "InputContainer",
 				LayoutOrder = 1,
 				BackgroundTransparency = 1,
 				AutomaticSize = Enum.AutomaticSize.None,
@@ -268,6 +272,7 @@ function newPanel(
 						)
 					),
 					_bind(maid:GiveTask(Util.Container.ColdFusion.new()))({
+						Name = "BackButtonContainer",
 						LayoutOrder = 1,
 						Children = {
 							_new("UIScale")({
@@ -279,6 +284,7 @@ function newPanel(
 					}),
 					-- backButton,
 					_bind(maid:GiveTask(Util.Container.ColdFusion.new()))({
+						Name = "ClearButtonContainer",
 						LayoutOrder = 2,
 						Children = {
 							_new("UIScale")({
@@ -321,7 +327,7 @@ end
 -- Class
 local Base = {}
 
-function Base.newBar(
+function Base.new(
 	isFilled: boolean,
 	onInputEntered: CanBeState<(input: string) -> string>,
 	label: CanBeState<string?>,
@@ -363,7 +369,7 @@ function Base.newBar(
 	end, elevationState)
 	local backgroundColorState: State<Color3> = _import(backgroundColor, Color3.new())
 
-	local function newLabel(key: string, onClick: (key: string) -> ()): GuiObject
+	local function newDefaultOption(key: string, onClick: (key: string) -> ()): GuiObject
 		local labelMaid = Maid.new()
 		local fuse = ColdFusion.fuse(labelMaid)
 
@@ -386,6 +392,7 @@ function Base.newBar(
 		local isHoveredState = fuse.Value(false)
 
 		local out = fuse.new("TextButton")({
+			Name = "OptionButton",
 			Text = key,
 			AutomaticSize = Enum.AutomaticSize.Y,
 			TextXAlignment = Enum.TextXAlignment.Left,
@@ -427,9 +434,14 @@ function Base.newBar(
 						return UDim.new(0, sc * PADDING_DP)
 					end, scaleState),
 					_Computed(function(sc: number): UDim
-						return UDim.new(0, sc * PADDING_DP * 0.25)
+						return UDim.new(0, sc * PADDING_DP * 0.75)
 					end, scaleState)
-				)),
+				)) :: Instance,
+				_new("UICorner")({
+					CornerRadius = _Computed(function(sc: number): UDim
+						return UDim.new(0, math.round(sc * CORNER_DP))
+					end, scaleState),
+				}),
 			},
 		}) :: TextButton
 
@@ -443,7 +455,7 @@ function Base.newBar(
 	local optionSolverState = _import(optionSolver, function(input: string): { string }
 		return {}
 	end)
-	local optionConstructorState: State<OptionConstructor> = _import(optionConstructor, newLabel)
+	local optionConstructorState: State<OptionConstructor> = _import(optionConstructor, newDefaultOption)
 	local labelState: State<string> = _import(label, "Search")
 	local inputState = _Value("")
 	local buttonTextState = _Computed(function(l: string, i: string): string
@@ -708,7 +720,7 @@ function Base.newBar(
 	end)
 
 	button = _new("TextButton")({
-		Name = "TextButton",
+		Name = "Search",
 		Text = "",
 		BackgroundTransparency = _Computed(function(renderData: RenderData): number
 			if renderData.Shadow then

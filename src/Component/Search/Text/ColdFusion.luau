@@ -59,7 +59,7 @@ function Interface.onTertiaryContainer(
 	local styleState: State<Style> = _import(style, DEFAULTS.ON_TERTIARY_CONTAINER.STYLE)
 	local elevationState = _import(elevation, DEFAULTS.ON_TERTIARY_CONTAINER.ELEVATION or 0)
 
-	local out = Base.newBar(
+	local out = Base.new(
 		false,
 		_import(onInputEntered, DEFAULTS.ON_TERTIARY_CONTAINER.ON_INPUT_ENTERED),
 		_import(label, DEFAULTS.ON_TERTIARY_CONTAINER.LABEL),
@@ -111,7 +111,7 @@ function Interface.onTertiary(
 	local styleState: State<Style> = _import(style, DEFAULTS.ON_TERTIARY.STYLE)
 	local elevationState = _import(elevation, DEFAULTS.ON_TERTIARY.ELEVATION)
 
-	local out = Base.newBar(
+	local out = Base.new(
 		false,
 		_import(onInputEntered, DEFAULTS.ON_TERTIARY.ON_INPUT_ENTERED),
 		_import(label, DEFAULTS.ON_TERTIARY.LABEL),
@@ -163,7 +163,7 @@ function Interface.onSecondaryContainer(
 	local styleState: State<Style> = _import(style, DEFAULTS.ON_SECONDARY_CONTAINER.STYLE)
 	local elevationState = _import(elevation, DEFAULTS.ON_SECONDARY_CONTAINER.ELEVATION)
 
-	local out = Base.newBar(
+	local out = Base.new(
 		false,
 		_import(onInputEntered, DEFAULTS.ON_SECONDARY_CONTAINER.ON_INPUT_ENTERED),
 		_import(label, DEFAULTS.ON_SECONDARY_CONTAINER.LABEL),
@@ -215,7 +215,7 @@ function Interface.onSecondary(
 	local styleState: State<Style> = _import(style, DEFAULTS.ON_SECONDARY.STYLE)
 	local elevationState = _import(elevation, DEFAULTS.ON_SECONDARY.ELEVATION)
 
-	local out = Base.newBar(
+	local out = Base.new(
 		false,
 		_import(onInputEntered, DEFAULTS.ON_SECONDARY.ON_INPUT_ENTERED),
 		_import(label, DEFAULTS.ON_SECONDARY.LABEL),
@@ -266,7 +266,7 @@ function Interface.onPrimaryContainer(
 	local styleState: State<Style> = _import(style, DEFAULTS.ON_PRIMARY_CONTAINER.STYLE)
 	local elevationState = _import(elevation, DEFAULTS.ON_PRIMARY_CONTAINER.ELEVATION)
 
-	local out = Base.newBar(
+	local out = Base.new(
 		false,
 		_import(onInputEntered, DEFAULTS.ON_PRIMARY_CONTAINER.ON_INPUT_ENTERED),
 		_import(label, DEFAULTS.ON_PRIMARY_CONTAINER.LABEL),
@@ -318,7 +318,7 @@ function Interface.onPrimary(
 	local styleState: State<Style> = _import(style, DEFAULTS.ON_PRIMARY.STYLE)
 	local elevationState = _import(elevation, DEFAULTS.ON_PRIMARY.ELEVATION)
 
-	local out = Base.newBar(
+	local out = Base.new(
 		false,
 		_import(onInputEntered, DEFAULTS.ON_PRIMARY.ON_INPUT_ENTERED),
 		_import(label, DEFAULTS.ON_PRIMARY.LABEL),
@@ -360,7 +360,7 @@ function Interface.new(
 	fontData: CanBeState<FontData>,
 	scale: CanBeState<number>
 ): GuiObject
-	return Base.newBar(
+	return Base.new(
 		false,
 		if onInputEntered ~= nil then onInputEntered else DEFAULTS.NEW.ON_INPUT_ENTERED,
 		if label ~= nil then label else DEFAULTS.NEW.LABEL,
