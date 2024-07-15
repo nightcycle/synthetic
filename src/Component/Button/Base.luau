@@ -209,7 +209,7 @@ Util.new = function(
 	end, scaleState, currentRenderDataState)
 
 	local borderThicknessState = _Computed(function(s: number): number
-		return math.max(s * 1, 1)
+		return math.max(math.round(s * 1), 1)
 	end, scaleState)
 
 	inst = _new("Frame")({
@@ -230,36 +230,21 @@ Util.new = function(
 					return 0
 				end, currentRenderDataState),
 				Children = {
-					_new("UIPadding")({
-						PaddingTop = _Computed(function(renderData: RenderData, thickness: number): UDim
-							if renderData.Border.Transparency >= 1 then
-								return UDim.new(0, 0)
-							else
+					(function(): Instance
+						local padState = _Computed(function(renderData: RenderData, thickness: number): UDim
+							if renderData.Border.Transparency < 1 and thickness > 0 then
 								return UDim.new(0, thickness)
-							end
-						end, currentRenderDataState, borderThicknessState),
-						PaddingBottom = _Computed(function(renderData: RenderData, thickness: number): UDim
-							if renderData.Border.Transparency >= 1 then
-								return UDim.new(0, 0)
 							else
-								return UDim.new(0, thickness)
-							end
-						end, currentRenderDataState, borderThicknessState),
-						PaddingLeft = _Computed(function(renderData: RenderData, thickness: number): UDim
-							if renderData.Border.Transparency >= 1 then
 								return UDim.new(0, 0)
-							else
-								return UDim.new(0, thickness)
 							end
-						end, currentRenderDataState, borderThicknessState),
-						PaddingRight = _Computed(function(renderData: RenderData, thickness: number): UDim
-							if renderData.Border.Transparency >= 1 then
-								return UDim.new(0, 0)
-							else
-								return UDim.new(0, thickness)
-							end
-						end, currentRenderDataState, borderThicknessState),
-					}),
+						end, currentRenderDataState, borderThicknessState)
+						return _new("UIPadding")({
+							PaddingTop = padState,
+							PaddingBottom = padState,
+							PaddingLeft = padState,
+							PaddingRight = padState,
+						})
+					end)(),
 					_new("UIListLayout")({
 						Padding = UDim.new(0, 0),
 						SortOrder = Enum.SortOrder.LayoutOrder,
