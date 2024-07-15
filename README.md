@@ -3,6 +3,8 @@ Synthetic = Fusion created Material
 
 This UI library is powered by a Fusion framework variant, and has the the goal of porting the Google Material Design framework / philosophy to Roblox.
 
+**Disclaimer:** Should not be used in a live game until Roblox releases [Flex functionality](https://devforum.roblox.com/t/new-uilistlayout-flex-features-beta/2694081)
+
 Currently Supports:
 - Vanilla / No Framework
 - [Fusion](https://github.com/dphfox/Fusion)
@@ -20,7 +22,7 @@ It has been iterated heavily upon since it began in 2020, with its mission state
 ## Components Should Be Decoupled
 Stylesheet solutions are inevitable, however until we have one that everyone can agree upon (so likely never), the components in this framework shouldn't require the developer buy into a whole ecosystem. If you just need a switch, or a slider, or whatever - you should be able to just take it.
 
-That being said, stylesheet solutions exist for a reason. In the case of Synthetic the compromise was to have all root constructors (aka `.new(...)`) use only native Roblox parameters with the exception of a few simple mutable datatypes that can be created with a single function call.
+That being said, stylesheet solutions exist for a reason. In the case of Synthetic the compromise was to have all root constructors (aka `.new(...)`) use only native Roblox parameters with the exception of a few simple immutable datatypes that can be created with a single function call.
 
 From there, quality-of-life functions that have far fewer parameters would all fully embrace the framework's styling solution. If this solution ever evolves / gets swapped out with a standardized solution, the base components shouldn't need much refactoring.
 
