@@ -45,12 +45,16 @@ return function(frame: Frame)
 
 		container:SetAttribute(ANCHOR_POINT_KEY, anchorPointState:Get())
 		maid:GiveTask(container:GetAttributeChangedSignal(ANCHOR_POINT_KEY):Connect(function()
-			anchorPointState:Set(container:GetAttribute(ANCHOR_POINT_KEY :: any))
+			local anchorPoint = container:GetAttribute(ANCHOR_POINT_KEY)
+			assert(typeof(anchorPoint) == "Vector2", `{ANCHOR_POINT_KEY} must be a Vector2`)
+			anchorPointState:Set(anchorPoint)
 		end))
 
 		container:SetAttribute(HINT_ANCHOR_POINT_KEY, hintAnchorPointState:Get())
 		maid:GiveTask(container:GetAttributeChangedSignal(HINT_ANCHOR_POINT_KEY):Connect(function()
-			hintAnchorPointState:Set(container:GetAttribute(HINT_ANCHOR_POINT_KEY :: any))
+			local hintAnchorPoint = container:GetAttribute(HINT_ANCHOR_POINT_KEY)
+			assert(typeof(hintAnchorPoint) == "Vector2", `{HINT_ANCHOR_POINT_KEY} must be a Vector2`)
+			hintAnchorPointState:Set(hintAnchorPoint)
 		end))
 
 		local uiLayout = maid:GiveTask(Instance.new("UIListLayout"))
