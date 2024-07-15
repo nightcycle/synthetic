@@ -351,7 +351,7 @@ Util.new = function(
 								Children = {
 									_new("UICorner")({
 										CornerRadius = _Computed(function(s: number, cornerRad: number): UDim
-											return UDim.new(0, s * cornerRad)
+											return UDim.new(0, math.round(s * cornerRad))
 										end, scaleState, cornerRadiusState),
 									}),
 									_new("UIGradient")({
@@ -474,16 +474,23 @@ Util.new = function(
 													if txt:len() > 0 then
 														return UDim.new(
 															0,
-															padScale * LEFT_PADDING_WITH_ICON_DP * s
+															math.round(
+																padScale * LEFT_PADDING_WITH_ICON_DP * s
+															)
 														)
 													else
 														return UDim.new(
 															0,
-															padScale * s * (HEIGHT_DP - ICON_SIZE_DP) / 2
+															math.round(
+																padScale * s * (HEIGHT_DP - ICON_SIZE_DP) / 2
+															)
 														)
 													end
 												else
-													return UDim.new(0, padScale * LEFT_RIGHT_PADDING_DP * s)
+													return UDim.new(
+														0,
+														math.round(padScale * LEFT_RIGHT_PADDING_DP * s)
+													)
 												end
 											end,
 											scaleState,
@@ -502,16 +509,23 @@ Util.new = function(
 													if txt:len() > 0 then
 														return UDim.new(
 															0,
-															padScale * RIGHT_PADDING_WITH_ICON_DP * s
+															math.round(
+																padScale * RIGHT_PADDING_WITH_ICON_DP * s
+															)
 														)
 													else
 														return UDim.new(
 															0,
-															padScale * s * (HEIGHT_DP - ICON_SIZE_DP) / 2
+															math.round(
+																padScale * s * (HEIGHT_DP - ICON_SIZE_DP) / 2
+															)
 														)
 													end
 												else
-													return UDim.new(0, padScale * LEFT_RIGHT_PADDING_DP * s)
+													return UDim.new(
+														0,
+														math.round(padScale * LEFT_RIGHT_PADDING_DP * s)
+													)
 												end
 											end,
 											scaleState,
@@ -520,17 +534,23 @@ Util.new = function(
 											paddingScaleState
 										),
 										PaddingTop = _Computed(function(s: number, padScale: number): UDim
-											return UDim.new(0, padScale * s * (HEIGHT_DP - ICON_SIZE_DP) / 2)
+											return UDim.new(
+												0,
+												math.round(padScale * s * (HEIGHT_DP - ICON_SIZE_DP) / 2)
+											)
 										end, scaleState, paddingScaleState),
 										PaddingBottom = _Computed(function(s: number, padScale: number): UDim
-											return UDim.new(0, padScale * s * (HEIGHT_DP - ICON_SIZE_DP) / 2)
+											return UDim.new(
+												0,
+												math.round(padScale * s * (HEIGHT_DP - ICON_SIZE_DP) / 2)
+											)
 										end, scaleState, paddingScaleState),
 									}),
 									_new("UISizeConstraint")({
 										MaxSize = Vector2.new(math.huge, math.huge),
 										MinSize = _Computed(function(s: number, hasMin: boolean): Vector2
 											if hasMin then
-												return Vector2.new(s * CONTAINER_WIDTH_MIN_DP, 0)
+												return Vector2.new(math.round(s * CONTAINER_WIDTH_MIN_DP), 0)
 											else
 												return Vector2.new(0, 0)
 											end
