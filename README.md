@@ -60,7 +60,7 @@ I've gone and used parameter dense functions for constructors, relying on the pa
 
 ### FAB
 - [FAB](./src/Component/Button/FAB/README.md)
-- [Extended FAB](./src/Component/Button/FAB/README.md)
+- [Extended FAB](./src/Component/Button/ExtendedFAB/README.md)
 
 ### Chips
 - [Assist Chip](./src/Component/Button/Chip/Assist/README.md)
