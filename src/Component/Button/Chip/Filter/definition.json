@@ -11,7 +11,9 @@
                 {
                     "name": "onClick",
                     "type": "(isSelected: boolean) -> ()",
-                    "default": "function(isSelected: boolean) end"
+                    "default": "function(isSelected: boolean) end",
+				"comment": "calls function on click",
+				"description": "This function is called on click."
                 },
                 {
                     "name": "isInitiallySelected",
@@ -91,7 +93,9 @@
                 {
                     "name": "onClick",
                     "type": "(isSelected: boolean) -> ()",
-                    "default": "function(isSelected: boolean) end"
+                    "default": "function(isSelected: boolean) end",
+				"comment": "calls function on click",
+				"description": "This function is called on click."
                 },
                 {
                     "name": "text",

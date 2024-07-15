@@ -11,7 +11,9 @@
                 {
                     "name": "onClick",
                     "type": "() -> ()",
-                    "default": "function() end"
+                    "default": "function() end",
+				"comment": "calls function on click",
+				"description": "This function is called on click."
                 },
                 {
                     "name": "text",
@@ -79,7 +81,9 @@
                 {
                     "name": "onClick",
                     "type": "() -> ()",
-                    "default": "function() end"
+                    "default": "function() end",
+				"comment": "calls function on click",
+				"description": "This function is called on click."
                 },
                 {
                     "name": "text",
