@@ -34,7 +34,7 @@ return function(frame: Frame)
 
 		local progressState: ColdFusion.ValueState<number?> = _Value(nil :: number?)
 		maid:GiveTask(frame:GetAttributeChangedSignal(KEY):Connect(function()
-			progressState:Set(frame:GetAttribute(KEY))
+			progressState:Set(frame:GetAttribute(KEY) :: any)
 		end))
 		frame:SetAttribute(KEY, math.random())
 
