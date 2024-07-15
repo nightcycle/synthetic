@@ -3,7 +3,7 @@ Synthetic = Fusion created Material
 
 This UI library is powered by a Fusion framework variant, and has the the goal of porting the Google Material Design framework / philosophy to Roblox.
 
-**Should not be used in a live game until Roblox releases [Flex functionality](https://devforum.roblox.com/t/new-uilistlayout-flex-features-beta/2694081)**
+**Disclaimer:** Should not be used in a live game until Roblox releases [Flex functionality](https://devforum.roblox.com/t/new-uilistlayout-flex-features-beta/2694081)
 
 Currently Supports:
 - Vanilla / No Framework
