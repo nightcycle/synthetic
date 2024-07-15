@@ -38,9 +38,9 @@ local DEFAULTS = require(script.Parent:WaitForChild("Defaults"))
 local ICONS = MaterialIcons.default.dp_48.scale_1
 local SWITCH_HEIGHT_DP = 32
 local SWITCH_WIDTH_DP = 52
-local INNER_BUTTON_YES_ICON_SIZE_DP = 28
-local INNER_BUTTON_NO_ICON_SELECTED_SIZE_DP = 24
-local INNER_BUTTON_NO_ICON_UNSELECTED_SIZE_DP = 16
+local KNOB_YES_ICON_SIZE_DP = 28
+local KNOB_NO_ICON_SELECTED_SIZE_DP = 24
+local KNOB_NO_ICON_UNSELECTED_SIZE_DP = 16
 local ICON_SIZE_DP = 16
 local OUTLINE_WIDTH_DP = 2
 -- Variables
@@ -482,20 +482,21 @@ function Interface.new(
 
 	local buttonSizeState = _Computed(function(i: ImageData?, v: boolean): number
 		local size = if i
-			then INNER_BUTTON_YES_ICON_SIZE_DP
-			else if v
-				then INNER_BUTTON_NO_ICON_SELECTED_SIZE_DP
-				else INNER_BUTTON_NO_ICON_UNSELECTED_SIZE_DP
+			then KNOB_YES_ICON_SIZE_DP
+			else if v then KNOB_NO_ICON_SELECTED_SIZE_DP else KNOB_NO_ICON_UNSELECTED_SIZE_DP
 		return size
 	end, iconState, valueState)
 
+	local switchSizeState = _Computed(function(sc: number): UDim2
+		return UDim2.fromOffset(
+			math.round(sc * SWITCH_WIDTH_DP - (OUTLINE_WIDTH_DP * 2)),
+			math.round(sc * SWITCH_HEIGHT_DP - (OUTLINE_WIDTH_DP * 2))
+		)
+	end, scaleState)
+
 	local inst = _new("ImageButton")({
-		Size = _Computed(function(sc: number): UDim2
-			return UDim2.fromOffset(
-				sc * SWITCH_WIDTH_DP - (OUTLINE_WIDTH_DP * 2),
-				sc * SWITCH_HEIGHT_DP - (OUTLINE_WIDTH_DP * 2)
-			)
-		end, scaleState),
+		Name = "Switch",
+		Size = switchSizeState,
 		BackgroundColor3 = _Computed(function(data: SwitchRenderData): Color3
 			return data.Background.Color3
 		end, renderDataState),
@@ -559,7 +560,7 @@ function Interface.new(
 				end, renderDataState),
 				LineJoinMode = Enum.LineJoinMode.Round,
 				Thickness = _Computed(function(sc: number): number
-					return sc * OUTLINE_WIDTH_DP
+					return math.round(sc * OUTLINE_WIDTH_DP)
 				end, scaleState),
 				Transparency = _Computed(function(renderData: SwitchRenderData): number
 					return renderData.Outline.Transparency
@@ -568,27 +569,35 @@ function Interface.new(
 			_new("UICorner")({
 				CornerRadius = UDim.new(0.5, 0),
 			}),
-			_new("UIPadding")({
-				PaddingTop = _Computed(function(sc: number, buttonSize: number): UDim
+			(function(): Instance
+				local widthPaddingState = _Computed(
+					function(sc: number, buttonSize: number, switchSize: UDim2, icon: ImageData?): UDim
+						local size = sc * (SWITCH_HEIGHT_DP - (OUTLINE_WIDTH_DP * 2) - buttonSize)
+						if icon then
+							size += math.max(0, math.round((switchSize.Y.Offset - buttonSize * sc)))
+						end
+						return UDim.new(0, math.round(size / 2))
+					end,
+					scaleState,
+					buttonSizeState,
+					switchSizeState,
+					iconState
+				)
+				local heightPaddingState = _Computed(function(sc: number, buttonSize: number): UDim
 					local size = SWITCH_HEIGHT_DP - (OUTLINE_WIDTH_DP * 2) - buttonSize
-					return UDim.new(0, sc * size / 2)
-				end, scaleState, buttonSizeState),
-				PaddingBottom = _Computed(function(sc: number, buttonSize: number): UDim
-					local size = SWITCH_HEIGHT_DP - (OUTLINE_WIDTH_DP * 2) - buttonSize
-					return UDim.new(0, sc * size / 2)
-				end, scaleState, buttonSizeState),
-				PaddingLeft = _Computed(function(sc: number, buttonSize: number): UDim
-					local size = SWITCH_HEIGHT_DP - (OUTLINE_WIDTH_DP * 2) - buttonSize
-					return UDim.new(0, sc * size / 2)
-				end, scaleState, buttonSizeState),
-				PaddingRight = _Computed(function(sc: number, buttonSize: number): UDim
-					local size = SWITCH_HEIGHT_DP - (OUTLINE_WIDTH_DP * 2) - buttonSize
-					return UDim.new(0, sc * size / 2)
-				end, scaleState, buttonSizeState),
-			}),
+					return UDim.new(0, math.round(sc * size / 2))
+				end, scaleState, buttonSizeState)
+				return _new("UIPadding")({
+					PaddingTop = heightPaddingState,
+					PaddingBottom = heightPaddingState,
+					PaddingLeft = widthPaddingState,
+					PaddingRight = widthPaddingState,
+				})
+			end)(),
 			_new("Frame")({
+				Name = "Knob",
 				Size = _Computed(function(sc: number, size: number): UDim2
-					return UDim2.fromOffset(sc * size, sc * size)
+					return UDim2.fromOffset(math.round(sc * size), math.round(sc * size))
 				end, scaleState, buttonSizeState),
 				Position = _Computed(function(v: boolean): UDim2
 					return if v then UDim2.fromScale(1, 0.5) else UDim2.fromScale(0, 0.5)
@@ -620,8 +629,12 @@ function Interface.new(
 						CornerRadius = UDim.new(0.5, 0),
 					}),
 					_new("ImageLabel")({
+						Name = "Icon",
 						Size = _Computed(function(sc: number, i: ImageData?): UDim2
-							return UDim2.fromOffset(sc * ICON_SIZE_DP, sc * ICON_SIZE_DP)
+							return UDim2.fromOffset(
+								math.round(sc * ICON_SIZE_DP),
+								math.round(sc * ICON_SIZE_DP)
+							)
 						end, scaleState, iconState),
 						BackgroundTransparency = 1,
 						ImageTransparency = _Computed(function(renderData: SwitchRenderData): number
