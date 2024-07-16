@@ -92,7 +92,6 @@ function Translators.ColdFusion.toWrapper<BaseInstance, Definition, ClassName>(
 	local meta = {}
 
 	local function cleanUp()
-
 		table.clear(wrapper)
 		-- setmetatable(wrapper, nil)
 		table.clear(meta)

@@ -41,14 +41,16 @@ return function(frame: Frame)
 
 			do
 				print("build")
-				local checkbox = maid:GiveTask(Module.Fusion.primary(
-					Fusion.Value(style),
-					Fusion.Value(function(isSelected: boolean?)
-						print("fuse is select", isSelected)
-					end),
-					true,
-					nil
-				))
+				local checkbox = maid:GiveTask(
+					Module.Fusion.primary(
+						Fusion.Value(style),
+						Fusion.Value(function(isSelected: boolean?)
+							print("fuse is select", isSelected)
+						end),
+						true,
+						nil
+					)
+				)
 				checkbox.Parent = halfFrame
 			end
 
@@ -156,8 +158,6 @@ return function(frame: Frame)
 			dark.Size = UDim2.fromScale(width, 0.5)
 			dark.Position = UDim2.fromScale(x, 0.5)
 			dark.Parent = frame
-
-
 		end
 	end)
 	return function()

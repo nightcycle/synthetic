@@ -59,7 +59,7 @@ local bodyFontData: FontData = Types.FontData.new(Font.fromEnum(Enum.Font.Source
 local supportFontData: FontData = Types.FontData.new(Font.fromEnum(Enum.Font.SourceSans), 14)
 local scale: number = 1
 
-local outlined = Synthetic.Component.TextField.Outlined.Fusion.new()
+local outlined = Synthetic.Component.TextField.Outlined.Wrapper.new()
 outlined.OnSubmit = onSubmit
 outlined.OnInput = onInput
 outlined.InitialText = initialText
@@ -197,7 +197,7 @@ local isError: boolean? = false
 local elevation: number? = 0
 local isEnabled: boolean? = true
 
-local outlined = Synthetic.Component.TextField.Outlined.Fusion.primary()
+local outlined = Synthetic.Component.TextField.Outlined.Wrapper.primary()
 outlined.Style = style
 outlined.OnSubmit = onSubmit
 outlined.Label = label

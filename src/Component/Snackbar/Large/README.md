@@ -39,7 +39,7 @@ local schemeType: Enums.SchemeType = Enums.SchemeType.Light
 local fontData: FontData = Types.FontData.new(Font.fromEnum(Enum.Font.SourceSans), 14)
 local scale: number = 1
 
-local large = Synthetic.Component.Snackbar.Large.Fusion.new()
+local large = Synthetic.Component.Snackbar.Large.Wrapper.new()
 large.Text = text
 large.ButtonText = buttonText
 large.OnButtonClick = onButtonClick
@@ -123,7 +123,7 @@ local onButtonClick: ((() -> ())?) = function() end
 local onCloseClick: ((() -> ())?) = function() end
 local elevation: number? = 0
 
-local large = Synthetic.Component.Snackbar.Large.Fusion.surfaceContainer()
+local large = Synthetic.Component.Snackbar.Large.Wrapper.surfaceContainer()
 large.Style = style
 large.Text = text
 large.ButtonText = buttonText

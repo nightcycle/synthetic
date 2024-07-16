@@ -39,7 +39,7 @@ local schemeType: Enums.SchemeType = Enums.SchemeType.Light
 local fontData: FontData = Types.FontData.new(Font.fromEnum(Enum.Font.SourceSans), 14)
 local scale: number = 1
 
-local radioButton = Synthetic.Component.RadioButton.Fusion.new()
+local radioButton = Synthetic.Component.RadioButton.Wrapper.new()
 radioButton.OnSelect = onSelect
 radioButton.InitialSelection = initialSelection
 radioButton.IsEnabled = isEnabled
@@ -121,7 +121,7 @@ local initialSelection: boolean = false
 local elevation: number? = 0
 local isEnabled: boolean? = true
 
-local radioButton = Synthetic.Component.RadioButton.Fusion.primary()
+local radioButton = Synthetic.Component.RadioButton.Wrapper.primary()
 radioButton.Style = style
 radioButton.OnSelect = onSelect
 radioButton.InitialSelection = initialSelection

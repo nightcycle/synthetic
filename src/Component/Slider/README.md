@@ -47,7 +47,7 @@ local schemeType: Enums.SchemeType = Enums.SchemeType.Light
 local fontData: FontData = Types.FontData.new(Font.fromEnum(Enum.Font.SourceSans), 14)
 local scale: number = 1
 
-local slider = Synthetic.Component.Slider.Fusion.new()
+local slider = Synthetic.Component.Slider.Wrapper.new()
 slider.OnChange = onChange
 slider.InitialValue = initialValue
 slider.Minimum = minimum
@@ -153,7 +153,7 @@ local leftTextOrIcon: ((string | ImageData)?) = nil
 local rightTextOrIcon: ((string | ImageData)?) = nil
 local elevation: number? = 0
 
-local slider = Synthetic.Component.Slider.Fusion.primary()
+local slider = Synthetic.Component.Slider.Wrapper.primary()
 slider.Style = style
 slider.OnChange = onChange
 slider.InitialValue = initialValue

@@ -10,7 +10,7 @@ A assist chip is a small button that allows for contextual action input. Read mo
 This function is a native constructor, with verbosity allowing for control over every configurable property at the cost of a less convenient calling.
 
 ### Parameters
-- **onClick**: () -> ()
+- **onClick**: () -> () = This function is called on click.
 - **text**: string
 - **icon**: ImageData?
 - **textColor**: Color3
@@ -26,7 +26,7 @@ This function is a native constructor, with verbosity allowing for control over 
 
 **No Framework**
 ```luau
-local onClick: () -> () = function() end
+local onClick: () -> () = function() end -- calls function on click
 local text: string = "Chip"
 local icon: ImageData? = nil
 local textColor: Color3 = Color3.new()
@@ -37,7 +37,7 @@ local schemeType: Enums.SchemeType = Enums.SchemeType.Light
 local fontData: FontData = Types.FontData.new(Font.fromEnum(Enum.Font.SourceSans), 14)
 local scale: number = 1
 
-local assist = Synthetic.Component.Button.Chip.Assist.Fusion.new()
+local assist = Synthetic.Component.Button.Chip.Assist.Wrapper.new()
 assist.OnClick = onClick
 assist.Text = text
 assist.Icon = icon
@@ -52,7 +52,7 @@ assist.Scale = scale
 
 **Fusion**
 ```luau
-local onClickState: Fusion.Value<() -> ()> = Value(function() end)
+local onClickState: Fusion.Value<() -> ()> = Value(function() end) -- calls function on click
 local text: string = "Chip"
 local iconState: Fusion.Value<ImageData?> = Value(nil)
 local textColor: Color3 = Color3.new()
@@ -80,7 +80,7 @@ local assist: GuiObject = Synthetic.Component.Button.Chip.Assist.Fusion.new(
 **Roact**
 ```luau
 local assist = Roact.createElement(Module.Roact.New, {
-	onClick = function() end,
+	onClick = function() end, -- calls function on click
 	text = "Chip",
 	icon = nil,
 	textColor = Color3.new(),
@@ -99,7 +99,7 @@ This function is a style constructor, utilizing the "Style" type to reduce the n
 
 ### Parameters
 - **style**: Style
-- **onClick**: () -> ()
+- **onClick**: () -> () = This function is called on click.
 - **text**: string
 - **icon**: ImageData?
 - **elevation**: number?
@@ -111,13 +111,13 @@ This function is a style constructor, utilizing the "Style" type to reduce the n
 **No Framework**
 ```luau
 local style: Style = Style.new(1, Enum.Font.SourceSans, "Light", Color3.new(0, 0.4, 0.7))
-local onClick: () -> () = function() end
+local onClick: () -> () = function() end -- calls function on click
 local text: string = "Chip"
 local icon: ImageData? = nil
 local elevation: number? = 0
 local isEnabled: boolean? = true
 
-local assist = Synthetic.Component.Button.Chip.Assist.Fusion.primary()
+local assist = Synthetic.Component.Button.Chip.Assist.Wrapper.primary()
 assist.Style = style
 assist.OnClick = onClick
 assist.Text = text
@@ -129,7 +129,7 @@ assist.IsEnabled = isEnabled
 **Fusion**
 ```luau
 local styleState: Fusion.Value<Style> = Value(Style.new(1, Enum.Font.SourceSans, "Light", Color3.new(0, 0.4, 0.7)))
-local onClick: () -> () = function() end
+local onClick: () -> () = function() end -- calls function on click
 local textState: Fusion.Value<string> = Value("Chip")
 local icon: ImageData? = nil
 local elevationState: Fusion.Value<number?> = Value(0)
@@ -149,7 +149,7 @@ local assist: GuiObject = Synthetic.Component.Button.Chip.Assist.Fusion.primary(
 ```luau
 local assist = Roact.createElement(Module.Roact.Primary, {
 	style = Style.new(1, Enum.Font.SourceSans, "Light", Color3.new(0, 0.4, 0.7)),
-	onClick = function() end,
+	onClick = function() end, -- calls function on click
 	text = "Chip",
 	icon = nil,
 	elevation = 0,

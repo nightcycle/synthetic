@@ -49,7 +49,7 @@ local schemeType: Enums.SchemeType = Enums.SchemeType.Light
 local fontData: FontData = Types.FontData.new(Font.fromEnum(Enum.Font.SourceSans), 14)
 local scale: number = 1
 
-local switch = Synthetic.Component.Switch.Fusion.new()
+local switch = Synthetic.Component.Switch.Wrapper.new()
 switch.OnSelect = onSelect
 switch.InitialSelection = initialSelection
 switch.IsEnabled = isEnabled
@@ -155,7 +155,7 @@ local includeIconOnDeselected: boolean? = true
 local elevation: number? = 0
 local isEnabled: boolean? = true
 
-local switch = Synthetic.Component.Switch.Fusion.primary()
+local switch = Synthetic.Component.Switch.Wrapper.primary()
 switch.Style = style
 switch.OnSelect = onSelect
 switch.InitialSelection = initialSelection

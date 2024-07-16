@@ -10,7 +10,7 @@ A filter chip is a small switch that allows for hiding / revealing of elements. 
 This function is a native constructor, with verbosity allowing for control over every configurable property at the cost of a less convenient calling.
 
 ### Parameters
-- **onClick**: (isSelected: boolean) -> ()
+- **onClick**: (isSelected: boolean) -> () = This function is called on click.
 - **isInitiallySelected**: boolean
 - **text**: string
 - **textColor**: Color3
@@ -29,7 +29,7 @@ This function is a native constructor, with verbosity allowing for control over 
 
 **No Framework**
 ```luau
-local onClick: (isSelected: boolean) -> () = function(isSelected: boolean) end
+local onClick: (isSelected: boolean) -> () = function(isSelected: boolean) end -- calls function on click
 local isInitiallySelected: boolean = false
 local text: string = "Filter"
 local textColor: Color3 = Color3.new()
@@ -43,7 +43,7 @@ local schemeType: Enums.SchemeType = Enums.SchemeType.Light
 local fontData: FontData = Types.FontData.new(Font.fromEnum(Enum.Font.SourceSans), 14)
 local scale: number = 1
 
-local filter = Synthetic.Component.Button.Chip.Filter.Fusion.new()
+local filter = Synthetic.Component.Button.Chip.Filter.Wrapper.new()
 filter.OnClick = onClick
 filter.IsInitiallySelected = isInitiallySelected
 filter.Text = text
@@ -61,7 +61,7 @@ filter.Scale = scale
 
 **Fusion**
 ```luau
-local onClickState: Fusion.Value<(isSelected: boolean) -> ()> = Value(function(isSelected: boolean) end)
+local onClickState: Fusion.Value<(isSelected: boolean) -> ()> = Value(function(isSelected: boolean) end) -- calls function on click
 local isInitiallySelected: boolean = false
 local textState: Fusion.Value<string> = Value("Filter")
 local textColor: Color3 = Color3.new()
@@ -95,7 +95,7 @@ local filter: GuiObject = Synthetic.Component.Button.Chip.Filter.Fusion.new(
 **Roact**
 ```luau
 local filter = Roact.createElement(Module.Roact.New, {
-	onClick = function(isSelected: boolean) end,
+	onClick = function(isSelected: boolean) end, -- calls function on click
 	isInitiallySelected = false,
 	text = "Filter",
 	textColor = Color3.new(),
@@ -117,7 +117,7 @@ This function is a style constructor, utilizing the "Style" type to reduce the n
 
 ### Parameters
 - **style**: Style
-- **onClick**: (isSelected: boolean) -> ()
+- **onClick**: (isSelected: boolean) -> () = This function is called on click.
 - **text**: string
 - **isInitiallySelected**: boolean
 - **isEnabled**: boolean?
@@ -129,13 +129,13 @@ This function is a style constructor, utilizing the "Style" type to reduce the n
 **No Framework**
 ```luau
 local style: Style = Style.new(1, Enum.Font.SourceSans, "Light", Color3.new(0, 0.4, 0.7))
-local onClick: (isSelected: boolean) -> () = function(isSelected: boolean) end
+local onClick: (isSelected: boolean) -> () = function(isSelected: boolean) end -- calls function on click
 local text: string = "Filter"
 local isInitiallySelected: boolean = false
 local isEnabled: boolean? = true
 local elevation: number? = 0
 
-local filter = Synthetic.Component.Button.Chip.Filter.Fusion.primary()
+local filter = Synthetic.Component.Button.Chip.Filter.Wrapper.primary()
 filter.Style = style
 filter.OnClick = onClick
 filter.Text = text
@@ -147,7 +147,7 @@ filter.Elevation = elevation
 **Fusion**
 ```luau
 local styleState: Fusion.Value<Style> = Value(Style.new(1, Enum.Font.SourceSans, "Light", Color3.new(0, 0.4, 0.7)))
-local onClick: (isSelected: boolean) -> () = function(isSelected: boolean) end
+local onClick: (isSelected: boolean) -> () = function(isSelected: boolean) end -- calls function on click
 local textState: Fusion.Value<string> = Value("Filter")
 local isInitiallySelected: boolean = false
 local isEnabledState: Fusion.Value<boolean?> = Value(true)
@@ -167,7 +167,7 @@ local filter: GuiObject = Synthetic.Component.Button.Chip.Filter.Fusion.primary(
 ```luau
 local filter = Roact.createElement(Module.Roact.Primary, {
 	style = Style.new(1, Enum.Font.SourceSans, "Light", Color3.new(0, 0.4, 0.7)),
-	onClick = function(isSelected: boolean) end,
+	onClick = function(isSelected: boolean) end, -- calls function on click
 	text = "Filter",
 	isInitiallySelected = false,
 	isEnabled = true,

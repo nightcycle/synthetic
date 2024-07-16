@@ -10,7 +10,7 @@ A Filled Icon Button is an icon in a clickable container. Read more [here](https
 This function is a native constructor, with verbosity allowing for control over every configurable property at the cost of a less convenient calling.
 
 ### Parameters
-- **onClick**: () -> ()
+- **onClick**: () -> () = This function is called on click.
 - **icon**: ImageData
 - **textColor**: Color3
 - **surfaceColor**: Color3
@@ -27,7 +27,7 @@ This function is a native constructor, with verbosity allowing for control over 
 
 **No Framework**
 ```luau
-local onClick: () -> () = function() end
+local onClick: () -> () = function() end -- calls function on click
 local icon: ImageData = Types.ImageData.new("")
 local textColor: Color3 = Color3.new()
 local surfaceColor: Color3 = Color3.new()
@@ -39,7 +39,7 @@ local schemeType: Enums.SchemeType = Enums.SchemeType.Light
 local fontData: FontData = Types.FontData.new(Font.fromEnum(Enum.Font.SourceSans), 14)
 local scale: number = 1
 
-local filledIconButton = Synthetic.Component.Button.FilledIconButton.Fusion.new()
+local filledIconButton = Synthetic.Component.Button.FilledIconButton.Wrapper.new()
 filledIconButton.OnClick = onClick
 filledIconButton.Icon = icon
 filledIconButton.TextColor = textColor
@@ -55,7 +55,7 @@ filledIconButton.Scale = scale
 
 **Fusion**
 ```luau
-local onClickState: Fusion.Value<() -> ()> = Value(function() end)
+local onClickState: Fusion.Value<() -> ()> = Value(function() end) -- calls function on click
 local icon: ImageData = Types.ImageData.new("")
 local textColorState: Fusion.Value<Color3> = Value(Color3.new())
 local surfaceColor: Color3 = Color3.new()
@@ -85,7 +85,7 @@ local filledIconButton: GuiObject = Synthetic.Component.Button.FilledIconButton.
 **Roact**
 ```luau
 local filledIconButton = Roact.createElement(Module.Roact.New, {
-	onClick = function() end,
+	onClick = function() end, -- calls function on click
 	icon = Types.ImageData.new(""),
 	textColor = Color3.new(),
 	surfaceColor = Color3.new(),
@@ -105,7 +105,7 @@ This function is a style constructor, utilizing the "Style" type to reduce the n
 
 ### Parameters
 - **style**: Style
-- **onClick**: () -> ()
+- **onClick**: () -> () = This function is called on click.
 - **icon**: ImageData
 - **elevation**: number
 - **isEnabled**: boolean
@@ -116,12 +116,12 @@ This function is a style constructor, utilizing the "Style" type to reduce the n
 **No Framework**
 ```luau
 local style: Style = Style.new(1, Enum.Font.SourceSans, "Light", Color3.new(0, 0.4, 0.7))
-local onClick: () -> () = function() end
+local onClick: () -> () = function() end -- calls function on click
 local icon: ImageData = Types.ImageData.new("")
 local elevation: number = 0
 local isEnabled: boolean = true
 
-local filledIconButton = Synthetic.Component.Button.FilledIconButton.Fusion.primary()
+local filledIconButton = Synthetic.Component.Button.FilledIconButton.Wrapper.primary()
 filledIconButton.Style = style
 filledIconButton.OnClick = onClick
 filledIconButton.Icon = icon
@@ -132,7 +132,7 @@ filledIconButton.IsEnabled = isEnabled
 **Fusion**
 ```luau
 local styleState: Fusion.Value<Style> = Value(Style.new(1, Enum.Font.SourceSans, "Light", Color3.new(0, 0.4, 0.7)))
-local onClick: () -> () = function() end
+local onClick: () -> () = function() end -- calls function on click
 local iconState: Fusion.Value<ImageData> = Value(Types.ImageData.new(""))
 local elevation: number = 0
 local isEnabledState: Fusion.Value<boolean> = Value(true)
@@ -150,7 +150,7 @@ local filledIconButton: GuiObject = Synthetic.Component.Button.FilledIconButton.
 ```luau
 local filledIconButton = Roact.createElement(Module.Roact.Primary, {
 	style = Style.new(1, Enum.Font.SourceSans, "Light", Color3.new(0, 0.4, 0.7)),
-	onClick = function() end,
+	onClick = function() end, -- calls function on click
 	icon = Types.ImageData.new(""),
 	elevation = 0,
 	isEnabled = true,

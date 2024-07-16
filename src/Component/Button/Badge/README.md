@@ -10,7 +10,7 @@ A [badge](https://m3.material.io/components/badges/overview) is a small status i
 This function is a native constructor, with verbosity allowing for control over every configurable property at the cost of a less convenient calling.
 
 ### Parameters
-- **onClick**: () -> ()
+- **onClick**: () -> () = This function is called on click.
 - **icon**: ImageData
 - **label**: string?
 - **count**: number?
@@ -28,7 +28,7 @@ This function is a native constructor, with verbosity allowing for control over 
 
 **No Framework**
 ```luau
-local onClick: () -> () = function() end
+local onClick: () -> () = function() end -- calls function on click
 local icon: ImageData = Types.ImageData.new("")
 local label: string? = ""
 local count: number? = nil
@@ -41,7 +41,7 @@ local schemeType: Enums.SchemeType = Enums.SchemeType.Light
 local fontData: FontData = Types.FontData.new(Font.fromEnum(Enum.Font.SourceSans), 14)
 local scale: number = 1
 
-local badge = Synthetic.Component.Button.Badge.Fusion.new()
+local badge = Synthetic.Component.Button.Badge.Wrapper.new()
 badge.OnClick = onClick
 badge.Icon = icon
 badge.Label = label
@@ -58,7 +58,7 @@ badge.Scale = scale
 
 **Fusion**
 ```luau
-local onClickState: Fusion.Value<() -> ()> = Value(function() end)
+local onClickState: Fusion.Value<() -> ()> = Value(function() end) -- calls function on click
 local icon: ImageData = Types.ImageData.new("")
 local labelState: Fusion.Value<string?> = Value("")
 local count: number? = nil
@@ -90,7 +90,7 @@ local badge: GuiObject = Synthetic.Component.Button.Badge.Fusion.new(
 **Roact**
 ```luau
 local badge = Roact.createElement(Module.Roact.New, {
-	onClick = function() end,
+	onClick = function() end, -- calls function on click
 	icon = Types.ImageData.new(""),
 	label = "",
 	count = nil,
@@ -111,7 +111,7 @@ This function is a style constructor, utilizing the "Style" type to reduce the n
 
 ### Parameters
 - **style**: Style
-- **onClick**: () -> ()
+- **onClick**: () -> () = This function is called on click.
 - **icon**: ImageData
 - **label**: string?
 - **count**: number?
@@ -123,13 +123,13 @@ This function is a style constructor, utilizing the "Style" type to reduce the n
 **No Framework**
 ```luau
 local style: Style = Style.new(1, Enum.Font.SourceSans, "Light", Color3.new(0, 0.4, 0.7))
-local onClick: () -> () = function() end
+local onClick: () -> () = function() end -- calls function on click
 local icon: ImageData = Types.ImageData.new("")
 local label: string? = ""
 local count: number? = nil
 local elevation: number? = 0
 
-local badge = Synthetic.Component.Button.Badge.Fusion.onPrimary()
+local badge = Synthetic.Component.Button.Badge.Wrapper.onPrimary()
 badge.Style = style
 badge.OnClick = onClick
 badge.Icon = icon
@@ -141,7 +141,7 @@ badge.Elevation = elevation
 **Fusion**
 ```luau
 local styleState: Fusion.Value<Style> = Value(Style.new(1, Enum.Font.SourceSans, "Light", Color3.new(0, 0.4, 0.7)))
-local onClick: () -> () = function() end
+local onClick: () -> () = function() end -- calls function on click
 local iconState: Fusion.Value<ImageData> = Value(Types.ImageData.new(""))
 local label: string? = ""
 local countState: Fusion.Value<number?> = Value(nil)
@@ -161,7 +161,7 @@ local badge: GuiObject = Synthetic.Component.Button.Badge.Fusion.onPrimary(
 ```luau
 local badge = Roact.createElement(Module.Roact.OnPrimary, {
 	style = Style.new(1, Enum.Font.SourceSans, "Light", Color3.new(0, 0.4, 0.7)),
-	onClick = function() end,
+	onClick = function() end, -- calls function on click
 	icon = Types.ImageData.new(""),
 	label = "",
 	count = nil,

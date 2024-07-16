@@ -41,7 +41,7 @@ local schemeType: Enums.SchemeType = Enums.SchemeType.Light
 local fontData: FontData = Types.FontData.new(Font.fromEnum(Enum.Font.SourceSans), 14)
 local scale: number = 1
 
-local text = Synthetic.Component.Search.Text.Fusion.new()
+local text = Synthetic.Component.Search.Text.Wrapper.new()
 text.OnInputEntered = onInputEntered
 text.Label = label
 text.OptionSolver = optionSolver
@@ -133,7 +133,7 @@ end
 local optionConstructor: (((key: string, onClick: (key: string) -> ()) -> GuiObject)?) = nil
 local elevation: number? = 0
 
-local text = Synthetic.Component.Search.Text.Fusion.onPrimary()
+local text = Synthetic.Component.Search.Text.Wrapper.onPrimary()
 text.Style = style
 text.OnInputEntered = onInputEntered
 text.Label = label

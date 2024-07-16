@@ -39,7 +39,7 @@ local schemeType: Enums.SchemeType = Enums.SchemeType.Light
 local fontData: FontData = Types.FontData.new(Font.fromEnum(Enum.Font.SourceSans), 14)
 local scale: number = 1
 
-local bottom = Synthetic.Component.Menu.Row.Bar.Bottom.Fusion.new()
+local bottom = Synthetic.Component.Menu.Row.Bar.Bottom.Wrapper.new()
 bottom.Buttons = buttons
 bottom.Fab = fab
 bottom.BackgroundColor = backgroundColor
@@ -119,7 +119,7 @@ local buttons: {ButtonData} = {}
 local fab: ButtonData? = nil
 local elevation: number? = 0
 
-local bottom = Synthetic.Component.Menu.Row.Bar.Bottom.Fusion.primary()
+local bottom = Synthetic.Component.Menu.Row.Bar.Bottom.Wrapper.primary()
 bottom.Style = style
 bottom.Buttons = buttons
 bottom.Fab = fab

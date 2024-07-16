@@ -39,7 +39,7 @@ local schemeType: Enums.SchemeType = Enums.SchemeType.Light
 local fontData: FontData = Types.FontData.new(Font.fromEnum(Enum.Font.SourceSans), 14)
 local scale: number = 1
 
-local checkbox = Synthetic.Component.Checkbox.Fusion.new()
+local checkbox = Synthetic.Component.Checkbox.Wrapper.new()
 checkbox.OnSelect = onSelect
 checkbox.InitialSelection = initialSelection
 checkbox.IsEnabled = isEnabled
@@ -121,7 +121,7 @@ local initialSelection: boolean? = nil
 local elevation: number? = 0
 local isEnabled: boolean? = true
 
-local checkbox = Synthetic.Component.Checkbox.Fusion.primary()
+local checkbox = Synthetic.Component.Checkbox.Wrapper.primary()
 checkbox.Style = style
 checkbox.OnSelect = onSelect
 checkbox.InitialSelection = initialSelection

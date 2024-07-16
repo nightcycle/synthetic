@@ -27,7 +27,7 @@ local fillColor: Color3 = Color3.new()
 local emptyColor: Color3 = Color3.new()
 local scale: number = 1
 
-local circular = Synthetic.Component.ProgressIndicator.Circular.Fusion.new()
+local circular = Synthetic.Component.ProgressIndicator.Circular.Wrapper.new()
 circular.Progress = progress
 circular.IsEnabled = isEnabled
 circular.FillColor = fillColor
@@ -81,7 +81,7 @@ local style: Style = Style.new(1, Enum.Font.SourceSans, "Light", Color3.new(0, 0
 local progress: number? = nil
 local isEnabled: boolean? = true
 
-local circular = Synthetic.Component.ProgressIndicator.Circular.Fusion.primary()
+local circular = Synthetic.Component.ProgressIndicator.Circular.Wrapper.primary()
 circular.Style = style
 circular.Progress = progress
 circular.IsEnabled = isEnabled

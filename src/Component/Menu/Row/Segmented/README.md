@@ -39,7 +39,7 @@ local schemeType: Enums.SchemeType = Enums.SchemeType.Light
 local fontData: FontData = Types.FontData.new(Font.fromEnum(Enum.Font.SourceSans), 14)
 local scale: number = 1
 
-local segmented = Synthetic.Component.Menu.Row.Segmented.Fusion.new()
+local segmented = Synthetic.Component.Menu.Row.Segmented.Wrapper.new()
 segmented.Options = options
 segmented.Density = density
 segmented.IsMultiSelect = isMultiSelect
@@ -121,7 +121,7 @@ local density: number? = 0
 local isMultiSelect: boolean? = false
 local elevation: number? = 0
 
-local segmented = Synthetic.Component.Menu.Row.Segmented.Fusion.primaryContainer()
+local segmented = Synthetic.Component.Menu.Row.Segmented.Wrapper.primaryContainer()
 segmented.Style = style
 segmented.Options = options
 segmented.Density = density

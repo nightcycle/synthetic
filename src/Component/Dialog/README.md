@@ -47,7 +47,7 @@ local bodyFontData: FontData = Types.FontData.new(Font.fromEnum(Enum.Font.Source
 local buttonFontData: FontData = Types.FontData.new(Font.fromEnum(Enum.Font.SourceSans), 14)
 local scale: number = 1
 
-local dialog = Synthetic.Component.Dialog.Fusion.new()
+local dialog = Synthetic.Component.Dialog.Wrapper.new()
 dialog.Buttons = buttons
 dialog.Icon = icon
 dialog.Headline = headline
@@ -145,7 +145,7 @@ local icon: ImageData? = nil
 local headline: string? = ""
 local description: string? = ""
 
-local dialog = Synthetic.Component.Dialog.Fusion.primary()
+local dialog = Synthetic.Component.Dialog.Wrapper.primary()
 dialog.Style = style
 dialog.Buttons = buttons
 dialog.Icon = icon

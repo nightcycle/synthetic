@@ -39,7 +39,7 @@ local subHeadingFontData: FontData = Types.FontData.new(Font.fromEnum(Enum.Font.
 local buttonFontData: FontData = Types.FontData.new(Font.fromEnum(Enum.Font.SourceSans), 14)
 local scale: number = 1
 
-local large = Synthetic.Component.Menu.Row.Bar.Top.Large.Fusion.new()
+local large = Synthetic.Component.Menu.Row.Bar.Top.Large.Wrapper.new()
 large.Title = title
 large.Buttons = buttons
 large.Navigation = navigation
@@ -121,7 +121,7 @@ local buttons: {ButtonData} = {}
 local navigation: ButtonData? = nil
 local elevation: number? = 0
 
-local large = Synthetic.Component.Menu.Row.Bar.Top.Large.Fusion.primary()
+local large = Synthetic.Component.Menu.Row.Bar.Top.Large.Wrapper.primary()
 large.Style = style
 large.Title = title
 large.Buttons = buttons
