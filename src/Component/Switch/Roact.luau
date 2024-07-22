@@ -31,7 +31,7 @@ local DEFAULTS = require(script.Parent:WaitForChild("Defaults"))
 local Interface = {}
 
 do
-	local NewSwitch = Roact.Component:extend("component_name")
+	local NewSwitch = Roact.Component:extend("NewSwitch")
 	NewSwitch.defaultProps = {
 		onSelect = DEFAULTS.NEW.ON_SELECT,
 		initialSelection = DEFAULTS.NEW.INITIAL_SELECTION,
@@ -136,7 +136,7 @@ do
 end
 
 do
-	local PrimarySwitch = Roact.Component:extend("component_name")
+	local PrimarySwitch = Roact.Component:extend("PrimarySwitch")
 	PrimarySwitch.defaultProps = {
 		style = DEFAULTS.PRIMARY.STYLE,
 		onSelect = DEFAULTS.PRIMARY.ON_SELECT,
@@ -214,7 +214,7 @@ do
 end
 
 do
-	local SecondarySwitch = Roact.Component:extend("component_name")
+	local SecondarySwitch = Roact.Component:extend("SecondarySwitch")
 	SecondarySwitch.defaultProps = {
 		style = DEFAULTS.SECONDARY.STYLE,
 		onSelect = DEFAULTS.SECONDARY.ON_SELECT,
@@ -292,7 +292,7 @@ do
 end
 
 do
-	local TertiarySwitch = Roact.Component:extend("component_name")
+	local TertiarySwitch = Roact.Component:extend("TertiarySwitch")
 	TertiarySwitch.defaultProps = {
 		style = DEFAULTS.TERTIARY.STYLE,
 		onSelect = DEFAULTS.TERTIARY.ON_SELECT,

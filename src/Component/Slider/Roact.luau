@@ -31,7 +31,7 @@ local DEFAULTS = require(script.Parent:WaitForChild("Defaults"))
 local Interface = {}
 
 do
-	local NewSlider = Roact.Component:extend("component_name")
+	local NewSlider = Roact.Component:extend("NewSlider")
 	NewSlider.defaultProps = {
 		onChange = DEFAULTS.NEW.ON_CHANGE,
 		initialValue = DEFAULTS.NEW.INITIAL_VALUE,
@@ -133,7 +133,7 @@ do
 end
 
 do
-	local PrimarySlider = Roact.Component:extend("component_name")
+	local PrimarySlider = Roact.Component:extend("PrimarySlider")
 	PrimarySlider.defaultProps = {
 		style = DEFAULTS.PRIMARY.STYLE,
 		onChange = DEFAULTS.PRIMARY.ON_CHANGE,
@@ -217,7 +217,7 @@ do
 end
 
 do
-	local SecondarySlider = Roact.Component:extend("component_name")
+	local SecondarySlider = Roact.Component:extend("SecondarySlider")
 	SecondarySlider.defaultProps = {
 		style = DEFAULTS.SECONDARY.STYLE,
 		onChange = DEFAULTS.SECONDARY.ON_CHANGE,
@@ -301,7 +301,7 @@ do
 end
 
 do
-	local TertiarySlider = Roact.Component:extend("component_name")
+	local TertiarySlider = Roact.Component:extend("TertiarySlider")
 	TertiarySlider.defaultProps = {
 		style = DEFAULTS.TERTIARY.STYLE,
 		onChange = DEFAULTS.TERTIARY.ON_CHANGE,
@@ -385,7 +385,7 @@ do
 end
 
 do
-	local OnPrimarySlider = Roact.Component:extend("component_name")
+	local OnPrimarySlider = Roact.Component:extend("OnPrimarySlider")
 	OnPrimarySlider.defaultProps = {
 		style = DEFAULTS.ON_PRIMARY.STYLE,
 		onChange = DEFAULTS.ON_PRIMARY.ON_CHANGE,
@@ -469,7 +469,7 @@ do
 end
 
 do
-	local OnSecondarySlider = Roact.Component:extend("component_name")
+	local OnSecondarySlider = Roact.Component:extend("OnSecondarySlider")
 	OnSecondarySlider.defaultProps = {
 		style = DEFAULTS.ON_SECONDARY.STYLE,
 		onChange = DEFAULTS.ON_SECONDARY.ON_CHANGE,
@@ -553,7 +553,7 @@ do
 end
 
 do
-	local OnTertiarySlider = Roact.Component:extend("component_name")
+	local OnTertiarySlider = Roact.Component:extend("OnTertiarySlider")
 	OnTertiarySlider.defaultProps = {
 		style = DEFAULTS.ON_TERTIARY.STYLE,
 		onChange = DEFAULTS.ON_TERTIARY.ON_CHANGE,

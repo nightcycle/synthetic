@@ -31,7 +31,7 @@ local DEFAULTS = require(script.Parent:WaitForChild("Defaults"))
 local Interface = {}
 
 do
-	local NewButtonExtendedFAB = Roact.Component:extend("component_name")
+	local NewButtonExtendedFAB = Roact.Component:extend("NewButtonExtendedFAB")
 	NewButtonExtendedFAB.defaultProps = {
 		onClick = DEFAULTS.NEW.ON_CLICK,
 		text = DEFAULTS.NEW.TEXT,
@@ -127,7 +127,7 @@ do
 end
 
 do
-	local PrimaryButtonExtendedFAB = Roact.Component:extend("component_name")
+	local PrimaryButtonExtendedFAB = Roact.Component:extend("PrimaryButtonExtendedFAB")
 	PrimaryButtonExtendedFAB.defaultProps = {
 		style = DEFAULTS.PRIMARY.STYLE,
 		onClick = DEFAULTS.PRIMARY.ON_CLICK,
@@ -202,7 +202,7 @@ do
 end
 
 do
-	local SecondaryButtonExtendedFAB = Roact.Component:extend("component_name")
+	local SecondaryButtonExtendedFAB = Roact.Component:extend("SecondaryButtonExtendedFAB")
 	SecondaryButtonExtendedFAB.defaultProps = {
 		style = DEFAULTS.SECONDARY.STYLE,
 		onClick = DEFAULTS.SECONDARY.ON_CLICK,
@@ -277,7 +277,7 @@ do
 end
 
 do
-	local TertiaryButtonExtendedFAB = Roact.Component:extend("component_name")
+	local TertiaryButtonExtendedFAB = Roact.Component:extend("TertiaryButtonExtendedFAB")
 	TertiaryButtonExtendedFAB.defaultProps = {
 		style = DEFAULTS.TERTIARY.STYLE,
 		onClick = DEFAULTS.TERTIARY.ON_CLICK,
@@ -352,7 +352,7 @@ do
 end
 
 do
-	local PrimaryContainerButtonExtendedFAB = Roact.Component:extend("component_name")
+	local PrimaryContainerButtonExtendedFAB = Roact.Component:extend("PrimaryContainerButtonExtendedFAB")
 	PrimaryContainerButtonExtendedFAB.defaultProps = {
 		style = DEFAULTS.PRIMARY_CONTAINER.STYLE,
 		onClick = DEFAULTS.PRIMARY_CONTAINER.ON_CLICK,
@@ -427,7 +427,7 @@ do
 end
 
 do
-	local SecondaryContainerButtonExtendedFAB = Roact.Component:extend("component_name")
+	local SecondaryContainerButtonExtendedFAB = Roact.Component:extend("SecondaryContainerButtonExtendedFAB")
 	SecondaryContainerButtonExtendedFAB.defaultProps = {
 		style = DEFAULTS.SECONDARY_CONTAINER.STYLE,
 		onClick = DEFAULTS.SECONDARY_CONTAINER.ON_CLICK,
@@ -502,7 +502,7 @@ do
 end
 
 do
-	local TertiaryContainerButtonExtendedFAB = Roact.Component:extend("component_name")
+	local TertiaryContainerButtonExtendedFAB = Roact.Component:extend("TertiaryContainerButtonExtendedFAB")
 	TertiaryContainerButtonExtendedFAB.defaultProps = {
 		style = DEFAULTS.TERTIARY_CONTAINER.STYLE,
 		onClick = DEFAULTS.TERTIARY_CONTAINER.ON_CLICK,

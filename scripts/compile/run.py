@@ -201,7 +201,7 @@ type CanBeState<V> = ColdFusion.CanBeState<V>"""
 
 				lines += [
 					"\ndo",
-					f'local {component_name} = Roact.Component:extend("component_name")',
+					f'local {component_name} = Roact.Component:extend("{component_name}")',
 					component_name + ".defaultProps = {",
 				]
 				for param in func["parameters"]:

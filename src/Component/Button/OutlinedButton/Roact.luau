@@ -31,7 +31,7 @@ local DEFAULTS = require(script.Parent:WaitForChild("Defaults"))
 local Interface = {}
 
 do
-	local NewButtonOutlinedButton = Roact.Component:extend("component_name")
+	local NewButtonOutlinedButton = Roact.Component:extend("NewButtonOutlinedButton")
 	NewButtonOutlinedButton.defaultProps = {
 		onClick = DEFAULTS.NEW.ON_CLICK,
 		text = DEFAULTS.NEW.TEXT,
@@ -118,7 +118,7 @@ do
 end
 
 do
-	local OnPrimaryButtonOutlinedButton = Roact.Component:extend("component_name")
+	local OnPrimaryButtonOutlinedButton = Roact.Component:extend("OnPrimaryButtonOutlinedButton")
 	OnPrimaryButtonOutlinedButton.defaultProps = {
 		style = DEFAULTS.ON_PRIMARY.STYLE,
 		onClick = DEFAULTS.ON_PRIMARY.ON_CLICK,
@@ -193,7 +193,7 @@ do
 end
 
 do
-	local OnSecondaryButtonOutlinedButton = Roact.Component:extend("component_name")
+	local OnSecondaryButtonOutlinedButton = Roact.Component:extend("OnSecondaryButtonOutlinedButton")
 	OnSecondaryButtonOutlinedButton.defaultProps = {
 		style = DEFAULTS.ON_SECONDARY.STYLE,
 		onClick = DEFAULTS.ON_SECONDARY.ON_CLICK,
@@ -268,7 +268,7 @@ do
 end
 
 do
-	local OnTertiaryButtonOutlinedButton = Roact.Component:extend("component_name")
+	local OnTertiaryButtonOutlinedButton = Roact.Component:extend("OnTertiaryButtonOutlinedButton")
 	OnTertiaryButtonOutlinedButton.defaultProps = {
 		style = DEFAULTS.ON_TERTIARY.STYLE,
 		onClick = DEFAULTS.ON_TERTIARY.ON_CLICK,
@@ -343,7 +343,8 @@ do
 end
 
 do
-	local OnPrimaryContainerButtonOutlinedButton = Roact.Component:extend("component_name")
+	local OnPrimaryContainerButtonOutlinedButton =
+		Roact.Component:extend("OnPrimaryContainerButtonOutlinedButton")
 	OnPrimaryContainerButtonOutlinedButton.defaultProps = {
 		style = DEFAULTS.ON_PRIMARY_CONTAINER.STYLE,
 		onClick = DEFAULTS.ON_PRIMARY_CONTAINER.ON_CLICK,
@@ -418,7 +419,8 @@ do
 end
 
 do
-	local OnSecondaryContainerButtonOutlinedButton = Roact.Component:extend("component_name")
+	local OnSecondaryContainerButtonOutlinedButton =
+		Roact.Component:extend("OnSecondaryContainerButtonOutlinedButton")
 	OnSecondaryContainerButtonOutlinedButton.defaultProps = {
 		style = DEFAULTS.ON_SECONDARY_CONTAINER.STYLE,
 		onClick = DEFAULTS.ON_SECONDARY_CONTAINER.ON_CLICK,
@@ -493,7 +495,8 @@ do
 end
 
 do
-	local OnTertiaryContainerButtonOutlinedButton = Roact.Component:extend("component_name")
+	local OnTertiaryContainerButtonOutlinedButton =
+		Roact.Component:extend("OnTertiaryContainerButtonOutlinedButton")
 	OnTertiaryContainerButtonOutlinedButton.defaultProps = {
 		style = DEFAULTS.ON_TERTIARY_CONTAINER.STYLE,
 		onClick = DEFAULTS.ON_TERTIARY_CONTAINER.ON_CLICK,

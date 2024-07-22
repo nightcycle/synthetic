@@ -31,7 +31,7 @@ local DEFAULTS = require(script.Parent:WaitForChild("Defaults"))
 local Interface = {}
 
 do
-	local NewButtonElevatedButton = Roact.Component:extend("component_name")
+	local NewButtonElevatedButton = Roact.Component:extend("NewButtonElevatedButton")
 	NewButtonElevatedButton.defaultProps = {
 		onClick = DEFAULTS.NEW.ON_CLICK,
 		text = DEFAULTS.NEW.TEXT,
@@ -127,7 +127,7 @@ do
 end
 
 do
-	local PrimaryButtonElevatedButton = Roact.Component:extend("component_name")
+	local PrimaryButtonElevatedButton = Roact.Component:extend("PrimaryButtonElevatedButton")
 	PrimaryButtonElevatedButton.defaultProps = {
 		style = DEFAULTS.PRIMARY.STYLE,
 		onClick = DEFAULTS.PRIMARY.ON_CLICK,
@@ -202,7 +202,7 @@ do
 end
 
 do
-	local SecondaryButtonElevatedButton = Roact.Component:extend("component_name")
+	local SecondaryButtonElevatedButton = Roact.Component:extend("SecondaryButtonElevatedButton")
 	SecondaryButtonElevatedButton.defaultProps = {
 		style = DEFAULTS.SECONDARY.STYLE,
 		onClick = DEFAULTS.SECONDARY.ON_CLICK,
@@ -277,7 +277,7 @@ do
 end
 
 do
-	local TertiaryButtonElevatedButton = Roact.Component:extend("component_name")
+	local TertiaryButtonElevatedButton = Roact.Component:extend("TertiaryButtonElevatedButton")
 	TertiaryButtonElevatedButton.defaultProps = {
 		style = DEFAULTS.TERTIARY.STYLE,
 		onClick = DEFAULTS.TERTIARY.ON_CLICK,
@@ -352,7 +352,8 @@ do
 end
 
 do
-	local PrimaryContainerButtonElevatedButton = Roact.Component:extend("component_name")
+	local PrimaryContainerButtonElevatedButton =
+		Roact.Component:extend("PrimaryContainerButtonElevatedButton")
 	PrimaryContainerButtonElevatedButton.defaultProps = {
 		style = DEFAULTS.PRIMARY_CONTAINER.STYLE,
 		onClick = DEFAULTS.PRIMARY_CONTAINER.ON_CLICK,
@@ -427,7 +428,8 @@ do
 end
 
 do
-	local SecondaryContainerButtonElevatedButton = Roact.Component:extend("component_name")
+	local SecondaryContainerButtonElevatedButton =
+		Roact.Component:extend("SecondaryContainerButtonElevatedButton")
 	SecondaryContainerButtonElevatedButton.defaultProps = {
 		style = DEFAULTS.SECONDARY_CONTAINER.STYLE,
 		onClick = DEFAULTS.SECONDARY_CONTAINER.ON_CLICK,
@@ -502,7 +504,8 @@ do
 end
 
 do
-	local TertiaryContainerButtonElevatedButton = Roact.Component:extend("component_name")
+	local TertiaryContainerButtonElevatedButton =
+		Roact.Component:extend("TertiaryContainerButtonElevatedButton")
 	TertiaryContainerButtonElevatedButton.defaultProps = {
 		style = DEFAULTS.TERTIARY_CONTAINER.STYLE,
 		onClick = DEFAULTS.TERTIARY_CONTAINER.ON_CLICK,

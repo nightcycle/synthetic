@@ -31,7 +31,7 @@ local DEFAULTS = require(script.Parent:WaitForChild("Defaults"))
 local Interface = {}
 
 do
-	local NewButtonFAB = Roact.Component:extend("component_name")
+	local NewButtonFAB = Roact.Component:extend("NewButtonFAB")
 	NewButtonFAB.defaultProps = {
 		onClick = DEFAULTS.NEW.ON_CLICK,
 		icon = DEFAULTS.NEW.ICON,
@@ -124,7 +124,7 @@ do
 end
 
 do
-	local PrimaryButtonFAB = Roact.Component:extend("component_name")
+	local PrimaryButtonFAB = Roact.Component:extend("PrimaryButtonFAB")
 	PrimaryButtonFAB.defaultProps = {
 		style = DEFAULTS.PRIMARY.STYLE,
 		onClick = DEFAULTS.PRIMARY.ON_CLICK,
@@ -196,7 +196,7 @@ do
 end
 
 do
-	local SecondaryButtonFAB = Roact.Component:extend("component_name")
+	local SecondaryButtonFAB = Roact.Component:extend("SecondaryButtonFAB")
 	SecondaryButtonFAB.defaultProps = {
 		style = DEFAULTS.SECONDARY.STYLE,
 		onClick = DEFAULTS.SECONDARY.ON_CLICK,
@@ -268,7 +268,7 @@ do
 end
 
 do
-	local TertiaryButtonFAB = Roact.Component:extend("component_name")
+	local TertiaryButtonFAB = Roact.Component:extend("TertiaryButtonFAB")
 	TertiaryButtonFAB.defaultProps = {
 		style = DEFAULTS.TERTIARY.STYLE,
 		onClick = DEFAULTS.TERTIARY.ON_CLICK,
@@ -340,7 +340,7 @@ do
 end
 
 do
-	local PrimaryContainerButtonFAB = Roact.Component:extend("component_name")
+	local PrimaryContainerButtonFAB = Roact.Component:extend("PrimaryContainerButtonFAB")
 	PrimaryContainerButtonFAB.defaultProps = {
 		style = DEFAULTS.PRIMARY_CONTAINER.STYLE,
 		onClick = DEFAULTS.PRIMARY_CONTAINER.ON_CLICK,
@@ -412,7 +412,7 @@ do
 end
 
 do
-	local SecondaryContainerButtonFAB = Roact.Component:extend("component_name")
+	local SecondaryContainerButtonFAB = Roact.Component:extend("SecondaryContainerButtonFAB")
 	SecondaryContainerButtonFAB.defaultProps = {
 		style = DEFAULTS.SECONDARY_CONTAINER.STYLE,
 		onClick = DEFAULTS.SECONDARY_CONTAINER.ON_CLICK,
@@ -484,7 +484,7 @@ do
 end
 
 do
-	local TertiaryContainerButtonFAB = Roact.Component:extend("component_name")
+	local TertiaryContainerButtonFAB = Roact.Component:extend("TertiaryContainerButtonFAB")
 	TertiaryContainerButtonFAB.defaultProps = {
 		style = DEFAULTS.TERTIARY_CONTAINER.STYLE,
 		onClick = DEFAULTS.TERTIARY_CONTAINER.ON_CLICK,

@@ -31,7 +31,7 @@ local DEFAULTS = require(script.Parent:WaitForChild("Defaults"))
 local Interface = {}
 
 do
-	local NewButtonFilledButton = Roact.Component:extend("component_name")
+	local NewButtonFilledButton = Roact.Component:extend("NewButtonFilledButton")
 	NewButtonFilledButton.defaultProps = {
 		onClick = DEFAULTS.NEW.ON_CLICK,
 		text = DEFAULTS.NEW.TEXT,
@@ -124,7 +124,7 @@ do
 end
 
 do
-	local PrimaryButtonFilledButton = Roact.Component:extend("component_name")
+	local PrimaryButtonFilledButton = Roact.Component:extend("PrimaryButtonFilledButton")
 	PrimaryButtonFilledButton.defaultProps = {
 		style = DEFAULTS.PRIMARY.STYLE,
 		onClick = DEFAULTS.PRIMARY.ON_CLICK,
@@ -199,7 +199,7 @@ do
 end
 
 do
-	local SecondaryButtonFilledButton = Roact.Component:extend("component_name")
+	local SecondaryButtonFilledButton = Roact.Component:extend("SecondaryButtonFilledButton")
 	SecondaryButtonFilledButton.defaultProps = {
 		style = DEFAULTS.SECONDARY.STYLE,
 		onClick = DEFAULTS.SECONDARY.ON_CLICK,
@@ -274,7 +274,7 @@ do
 end
 
 do
-	local TertiaryButtonFilledButton = Roact.Component:extend("component_name")
+	local TertiaryButtonFilledButton = Roact.Component:extend("TertiaryButtonFilledButton")
 	TertiaryButtonFilledButton.defaultProps = {
 		style = DEFAULTS.TERTIARY.STYLE,
 		onClick = DEFAULTS.TERTIARY.ON_CLICK,
@@ -349,7 +349,7 @@ do
 end
 
 do
-	local PrimaryContainerButtonFilledButton = Roact.Component:extend("component_name")
+	local PrimaryContainerButtonFilledButton = Roact.Component:extend("PrimaryContainerButtonFilledButton")
 	PrimaryContainerButtonFilledButton.defaultProps = {
 		style = DEFAULTS.PRIMARY_CONTAINER.STYLE,
 		onClick = DEFAULTS.PRIMARY_CONTAINER.ON_CLICK,
@@ -424,7 +424,8 @@ do
 end
 
 do
-	local SecondaryContainerButtonFilledButton = Roact.Component:extend("component_name")
+	local SecondaryContainerButtonFilledButton =
+		Roact.Component:extend("SecondaryContainerButtonFilledButton")
 	SecondaryContainerButtonFilledButton.defaultProps = {
 		style = DEFAULTS.SECONDARY_CONTAINER.STYLE,
 		onClick = DEFAULTS.SECONDARY_CONTAINER.ON_CLICK,
@@ -499,7 +500,7 @@ do
 end
 
 do
-	local TertiaryContainerButtonFilledButton = Roact.Component:extend("component_name")
+	local TertiaryContainerButtonFilledButton = Roact.Component:extend("TertiaryContainerButtonFilledButton")
 	TertiaryContainerButtonFilledButton.defaultProps = {
 		style = DEFAULTS.TERTIARY_CONTAINER.STYLE,
 		onClick = DEFAULTS.TERTIARY_CONTAINER.ON_CLICK,

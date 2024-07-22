@@ -31,7 +31,7 @@ local DEFAULTS = require(script.Parent:WaitForChild("Defaults"))
 local Interface = {}
 
 do
-	local NewSearchText = Roact.Component:extend("component_name")
+	local NewSearchText = Roact.Component:extend("NewSearchText")
 	NewSearchText.defaultProps = {
 		onInputEntered = DEFAULTS.NEW.ON_INPUT_ENTERED,
 		label = DEFAULTS.NEW.LABEL,
@@ -118,7 +118,7 @@ do
 end
 
 do
-	local OnPrimarySearchText = Roact.Component:extend("component_name")
+	local OnPrimarySearchText = Roact.Component:extend("OnPrimarySearchText")
 	OnPrimarySearchText.defaultProps = {
 		style = DEFAULTS.ON_PRIMARY.STYLE,
 		onInputEntered = DEFAULTS.ON_PRIMARY.ON_INPUT_ENTERED,
@@ -193,7 +193,7 @@ do
 end
 
 do
-	local OnSecondarySearchText = Roact.Component:extend("component_name")
+	local OnSecondarySearchText = Roact.Component:extend("OnSecondarySearchText")
 	OnSecondarySearchText.defaultProps = {
 		style = DEFAULTS.ON_SECONDARY.STYLE,
 		onInputEntered = DEFAULTS.ON_SECONDARY.ON_INPUT_ENTERED,
@@ -268,7 +268,7 @@ do
 end
 
 do
-	local OnTertiarySearchText = Roact.Component:extend("component_name")
+	local OnTertiarySearchText = Roact.Component:extend("OnTertiarySearchText")
 	OnTertiarySearchText.defaultProps = {
 		style = DEFAULTS.ON_TERTIARY.STYLE,
 		onInputEntered = DEFAULTS.ON_TERTIARY.ON_INPUT_ENTERED,
@@ -343,7 +343,7 @@ do
 end
 
 do
-	local OnPrimaryContainerSearchText = Roact.Component:extend("component_name")
+	local OnPrimaryContainerSearchText = Roact.Component:extend("OnPrimaryContainerSearchText")
 	OnPrimaryContainerSearchText.defaultProps = {
 		style = DEFAULTS.ON_PRIMARY_CONTAINER.STYLE,
 		onInputEntered = DEFAULTS.ON_PRIMARY_CONTAINER.ON_INPUT_ENTERED,
@@ -418,7 +418,7 @@ do
 end
 
 do
-	local OnSecondaryContainerSearchText = Roact.Component:extend("component_name")
+	local OnSecondaryContainerSearchText = Roact.Component:extend("OnSecondaryContainerSearchText")
 	OnSecondaryContainerSearchText.defaultProps = {
 		style = DEFAULTS.ON_SECONDARY_CONTAINER.STYLE,
 		onInputEntered = DEFAULTS.ON_SECONDARY_CONTAINER.ON_INPUT_ENTERED,
@@ -493,7 +493,7 @@ do
 end
 
 do
-	local OnTertiaryContainerSearchText = Roact.Component:extend("component_name")
+	local OnTertiaryContainerSearchText = Roact.Component:extend("OnTertiaryContainerSearchText")
 	OnTertiaryContainerSearchText.defaultProps = {
 		style = DEFAULTS.ON_TERTIARY_CONTAINER.STYLE,
 		onInputEntered = DEFAULTS.ON_TERTIARY_CONTAINER.ON_INPUT_ENTERED,

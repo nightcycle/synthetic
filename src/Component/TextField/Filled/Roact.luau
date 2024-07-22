@@ -31,7 +31,7 @@ local DEFAULTS = require(script.Parent:WaitForChild("Defaults"))
 local Interface = {}
 
 do
-	local NewTextFieldFilled = Roact.Component:extend("component_name")
+	local NewTextFieldFilled = Roact.Component:extend("NewTextFieldFilled")
 	NewTextFieldFilled.defaultProps = {
 		onSubmit = DEFAULTS.NEW.ON_SUBMIT,
 		onInput = DEFAULTS.NEW.ON_INPUT,
@@ -148,7 +148,7 @@ do
 end
 
 do
-	local PrimaryTextFieldFilled = Roact.Component:extend("component_name")
+	local PrimaryTextFieldFilled = Roact.Component:extend("PrimaryTextFieldFilled")
 	PrimaryTextFieldFilled.defaultProps = {
 		style = DEFAULTS.PRIMARY.STYLE,
 		onSubmit = DEFAULTS.PRIMARY.ON_SUBMIT,
@@ -238,7 +238,7 @@ do
 end
 
 do
-	local SecondaryTextFieldFilled = Roact.Component:extend("component_name")
+	local SecondaryTextFieldFilled = Roact.Component:extend("SecondaryTextFieldFilled")
 	SecondaryTextFieldFilled.defaultProps = {
 		style = DEFAULTS.SECONDARY.STYLE,
 		onSubmit = DEFAULTS.SECONDARY.ON_SUBMIT,
@@ -328,7 +328,7 @@ do
 end
 
 do
-	local TertiaryTextFieldFilled = Roact.Component:extend("component_name")
+	local TertiaryTextFieldFilled = Roact.Component:extend("TertiaryTextFieldFilled")
 	TertiaryTextFieldFilled.defaultProps = {
 		style = DEFAULTS.TERTIARY.STYLE,
 		onSubmit = DEFAULTS.TERTIARY.ON_SUBMIT,

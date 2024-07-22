@@ -31,7 +31,7 @@ local DEFAULTS = require(script.Parent:WaitForChild("Defaults"))
 local Interface = {}
 
 do
-	local NewDialog = Roact.Component:extend("component_name")
+	local NewDialog = Roact.Component:extend("NewDialog")
 	NewDialog.defaultProps = {
 		buttons = DEFAULTS.NEW.BUTTONS,
 		icon = DEFAULTS.NEW.ICON,
@@ -133,7 +133,7 @@ do
 end
 
 do
-	local PrimaryDialog = Roact.Component:extend("component_name")
+	local PrimaryDialog = Roact.Component:extend("PrimaryDialog")
 	PrimaryDialog.defaultProps = {
 		style = DEFAULTS.PRIMARY.STYLE,
 		buttons = DEFAULTS.PRIMARY.BUTTONS,
@@ -205,7 +205,7 @@ do
 end
 
 do
-	local SecondaryDialog = Roact.Component:extend("component_name")
+	local SecondaryDialog = Roact.Component:extend("SecondaryDialog")
 	SecondaryDialog.defaultProps = {
 		style = DEFAULTS.SECONDARY.STYLE,
 		buttons = DEFAULTS.SECONDARY.BUTTONS,
@@ -277,7 +277,7 @@ do
 end
 
 do
-	local TertiaryDialog = Roact.Component:extend("component_name")
+	local TertiaryDialog = Roact.Component:extend("TertiaryDialog")
 	TertiaryDialog.defaultProps = {
 		style = DEFAULTS.TERTIARY.STYLE,
 		buttons = DEFAULTS.TERTIARY.BUTTONS,

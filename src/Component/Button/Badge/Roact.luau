@@ -31,7 +31,7 @@ local DEFAULTS = require(script.Parent:WaitForChild("Defaults"))
 local Interface = {}
 
 do
-	local NewButtonBadge = Roact.Component:extend("component_name")
+	local NewButtonBadge = Roact.Component:extend("NewButtonBadge")
 	NewButtonBadge.defaultProps = {
 		onClick = DEFAULTS.NEW.ON_CLICK,
 		icon = DEFAULTS.NEW.ICON,
@@ -124,7 +124,7 @@ do
 end
 
 do
-	local OnPrimaryButtonBadge = Roact.Component:extend("component_name")
+	local OnPrimaryButtonBadge = Roact.Component:extend("OnPrimaryButtonBadge")
 	OnPrimaryButtonBadge.defaultProps = {
 		style = DEFAULTS.ON_PRIMARY.STYLE,
 		onClick = DEFAULTS.ON_PRIMARY.ON_CLICK,
@@ -199,7 +199,7 @@ do
 end
 
 do
-	local OnSurfaceButtonBadge = Roact.Component:extend("component_name")
+	local OnSurfaceButtonBadge = Roact.Component:extend("OnSurfaceButtonBadge")
 	OnSurfaceButtonBadge.defaultProps = {
 		style = DEFAULTS.ON_SURFACE.STYLE,
 		onClick = DEFAULTS.ON_SURFACE.ON_CLICK,

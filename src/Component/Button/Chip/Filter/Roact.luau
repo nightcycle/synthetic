@@ -31,7 +31,7 @@ local DEFAULTS = require(script.Parent:WaitForChild("Defaults"))
 local Interface = {}
 
 do
-	local NewButtonChipFilter = Roact.Component:extend("component_name")
+	local NewButtonChipFilter = Roact.Component:extend("NewButtonChipFilter")
 	NewButtonChipFilter.defaultProps = {
 		onClick = DEFAULTS.NEW.ON_CLICK,
 		isInitiallySelected = DEFAULTS.NEW.IS_INITIALLY_SELECTED,
@@ -127,7 +127,7 @@ do
 end
 
 do
-	local PrimaryButtonChipFilter = Roact.Component:extend("component_name")
+	local PrimaryButtonChipFilter = Roact.Component:extend("PrimaryButtonChipFilter")
 	PrimaryButtonChipFilter.defaultProps = {
 		style = DEFAULTS.PRIMARY.STYLE,
 		onClick = DEFAULTS.PRIMARY.ON_CLICK,
@@ -202,7 +202,7 @@ do
 end
 
 do
-	local SecondaryButtonChipFilter = Roact.Component:extend("component_name")
+	local SecondaryButtonChipFilter = Roact.Component:extend("SecondaryButtonChipFilter")
 	SecondaryButtonChipFilter.defaultProps = {
 		style = DEFAULTS.SECONDARY.STYLE,
 		onClick = DEFAULTS.SECONDARY.ON_CLICK,
@@ -277,7 +277,7 @@ do
 end
 
 do
-	local TertiaryButtonChipFilter = Roact.Component:extend("component_name")
+	local TertiaryButtonChipFilter = Roact.Component:extend("TertiaryButtonChipFilter")
 	TertiaryButtonChipFilter.defaultProps = {
 		style = DEFAULTS.TERTIARY.STYLE,
 		onClick = DEFAULTS.TERTIARY.ON_CLICK,

@@ -31,7 +31,7 @@ local DEFAULTS = require(script.Parent:WaitForChild("Defaults"))
 local Interface = {}
 
 do
-	local NewRadioButton = Roact.Component:extend("component_name")
+	local NewRadioButton = Roact.Component:extend("NewRadioButton")
 	NewRadioButton.defaultProps = {
 		onSelect = DEFAULTS.NEW.ON_SELECT,
 		initialSelection = DEFAULTS.NEW.INITIAL_SELECTION,
@@ -121,7 +121,7 @@ do
 end
 
 do
-	local PrimaryRadioButton = Roact.Component:extend("component_name")
+	local PrimaryRadioButton = Roact.Component:extend("PrimaryRadioButton")
 	PrimaryRadioButton.defaultProps = {
 		style = DEFAULTS.PRIMARY.STYLE,
 		onSelect = DEFAULTS.PRIMARY.ON_SELECT,
@@ -193,7 +193,7 @@ do
 end
 
 do
-	local SecondaryRadioButton = Roact.Component:extend("component_name")
+	local SecondaryRadioButton = Roact.Component:extend("SecondaryRadioButton")
 	SecondaryRadioButton.defaultProps = {
 		style = DEFAULTS.SECONDARY.STYLE,
 		onSelect = DEFAULTS.SECONDARY.ON_SELECT,
@@ -265,7 +265,7 @@ do
 end
 
 do
-	local TertiaryRadioButton = Roact.Component:extend("component_name")
+	local TertiaryRadioButton = Roact.Component:extend("TertiaryRadioButton")
 	TertiaryRadioButton.defaultProps = {
 		style = DEFAULTS.TERTIARY.STYLE,
 		onSelect = DEFAULTS.TERTIARY.ON_SELECT,
@@ -337,7 +337,7 @@ do
 end
 
 do
-	local PrimaryContainerRadioButton = Roact.Component:extend("component_name")
+	local PrimaryContainerRadioButton = Roact.Component:extend("PrimaryContainerRadioButton")
 	PrimaryContainerRadioButton.defaultProps = {
 		style = DEFAULTS.PRIMARY_CONTAINER.STYLE,
 		onSelect = DEFAULTS.PRIMARY_CONTAINER.ON_SELECT,
@@ -409,7 +409,7 @@ do
 end
 
 do
-	local SecondaryContainerRadioButton = Roact.Component:extend("component_name")
+	local SecondaryContainerRadioButton = Roact.Component:extend("SecondaryContainerRadioButton")
 	SecondaryContainerRadioButton.defaultProps = {
 		style = DEFAULTS.SECONDARY_CONTAINER.STYLE,
 		onSelect = DEFAULTS.SECONDARY_CONTAINER.ON_SELECT,
@@ -481,7 +481,7 @@ do
 end
 
 do
-	local TertiaryContainerRadioButton = Roact.Component:extend("component_name")
+	local TertiaryContainerRadioButton = Roact.Component:extend("TertiaryContainerRadioButton")
 	TertiaryContainerRadioButton.defaultProps = {
 		style = DEFAULTS.TERTIARY_CONTAINER.STYLE,
 		onSelect = DEFAULTS.TERTIARY_CONTAINER.ON_SELECT,

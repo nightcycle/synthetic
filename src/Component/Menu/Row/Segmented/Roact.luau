@@ -31,7 +31,7 @@ local DEFAULTS = require(script.Parent:WaitForChild("Defaults"))
 local Interface = {}
 
 do
-	local NewMenuRowSegmented = Roact.Component:extend("component_name")
+	local NewMenuRowSegmented = Roact.Component:extend("NewMenuRowSegmented")
 	NewMenuRowSegmented.defaultProps = {
 		options = DEFAULTS.NEW.OPTIONS,
 		density = DEFAULTS.NEW.DENSITY,
@@ -121,7 +121,7 @@ do
 end
 
 do
-	local PrimaryContainerMenuRowSegmented = Roact.Component:extend("component_name")
+	local PrimaryContainerMenuRowSegmented = Roact.Component:extend("PrimaryContainerMenuRowSegmented")
 	PrimaryContainerMenuRowSegmented.defaultProps = {
 		style = DEFAULTS.PRIMARY_CONTAINER.STYLE,
 		options = DEFAULTS.PRIMARY_CONTAINER.OPTIONS,
@@ -193,7 +193,7 @@ do
 end
 
 do
-	local SecondaryContainerMenuRowSegmented = Roact.Component:extend("component_name")
+	local SecondaryContainerMenuRowSegmented = Roact.Component:extend("SecondaryContainerMenuRowSegmented")
 	SecondaryContainerMenuRowSegmented.defaultProps = {
 		style = DEFAULTS.SECONDARY_CONTAINER.STYLE,
 		options = DEFAULTS.SECONDARY_CONTAINER.OPTIONS,
@@ -265,7 +265,7 @@ do
 end
 
 do
-	local TertiaryContainerMenuRowSegmented = Roact.Component:extend("component_name")
+	local TertiaryContainerMenuRowSegmented = Roact.Component:extend("TertiaryContainerMenuRowSegmented")
 	TertiaryContainerMenuRowSegmented.defaultProps = {
 		style = DEFAULTS.TERTIARY_CONTAINER.STYLE,
 		options = DEFAULTS.TERTIARY_CONTAINER.OPTIONS,

@@ -31,7 +31,7 @@ local DEFAULTS = require(script.Parent:WaitForChild("Defaults"))
 local Interface = {}
 
 do
-	local NewProgressIndicatorCircular = Roact.Component:extend("component_name")
+	local NewProgressIndicatorCircular = Roact.Component:extend("NewProgressIndicatorCircular")
 	NewProgressIndicatorCircular.defaultProps = {
 		progress = DEFAULTS.NEW.PROGRESS,
 		isEnabled = DEFAULTS.NEW.IS_ENABLED,
@@ -103,7 +103,7 @@ do
 end
 
 do
-	local PrimaryProgressIndicatorCircular = Roact.Component:extend("component_name")
+	local PrimaryProgressIndicatorCircular = Roact.Component:extend("PrimaryProgressIndicatorCircular")
 	PrimaryProgressIndicatorCircular.defaultProps = {
 		style = DEFAULTS.PRIMARY.STYLE,
 		progress = DEFAULTS.PRIMARY.PROGRESS,
@@ -169,7 +169,7 @@ do
 end
 
 do
-	local SecondaryProgressIndicatorCircular = Roact.Component:extend("component_name")
+	local SecondaryProgressIndicatorCircular = Roact.Component:extend("SecondaryProgressIndicatorCircular")
 	SecondaryProgressIndicatorCircular.defaultProps = {
 		style = DEFAULTS.SECONDARY.STYLE,
 		progress = DEFAULTS.SECONDARY.PROGRESS,
@@ -235,7 +235,7 @@ do
 end
 
 do
-	local TertiaryProgressIndicatorCircular = Roact.Component:extend("component_name")
+	local TertiaryProgressIndicatorCircular = Roact.Component:extend("TertiaryProgressIndicatorCircular")
 	TertiaryProgressIndicatorCircular.defaultProps = {
 		style = DEFAULTS.TERTIARY.STYLE,
 		progress = DEFAULTS.TERTIARY.PROGRESS,

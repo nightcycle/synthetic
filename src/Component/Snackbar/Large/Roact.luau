@@ -31,7 +31,7 @@ local DEFAULTS = require(script.Parent:WaitForChild("Defaults"))
 local Interface = {}
 
 do
-	local NewSnackbarLarge = Roact.Component:extend("component_name")
+	local NewSnackbarLarge = Roact.Component:extend("NewSnackbarLarge")
 	NewSnackbarLarge.defaultProps = {
 		text = DEFAULTS.NEW.TEXT,
 		buttonText = DEFAULTS.NEW.BUTTON_TEXT,
@@ -121,7 +121,7 @@ do
 end
 
 do
-	local SurfaceContainerSnackbarLarge = Roact.Component:extend("component_name")
+	local SurfaceContainerSnackbarLarge = Roact.Component:extend("SurfaceContainerSnackbarLarge")
 	SurfaceContainerSnackbarLarge.defaultProps = {
 		style = DEFAULTS.SURFACE_CONTAINER.STYLE,
 		text = DEFAULTS.SURFACE_CONTAINER.TEXT,
@@ -196,7 +196,7 @@ do
 end
 
 do
-	local PrimaryContainerSnackbarLarge = Roact.Component:extend("component_name")
+	local PrimaryContainerSnackbarLarge = Roact.Component:extend("PrimaryContainerSnackbarLarge")
 	PrimaryContainerSnackbarLarge.defaultProps = {
 		style = DEFAULTS.PRIMARY_CONTAINER.STYLE,
 		text = DEFAULTS.PRIMARY_CONTAINER.TEXT,
@@ -271,7 +271,7 @@ do
 end
 
 do
-	local SecondaryContainerSnackbarLarge = Roact.Component:extend("component_name")
+	local SecondaryContainerSnackbarLarge = Roact.Component:extend("SecondaryContainerSnackbarLarge")
 	SecondaryContainerSnackbarLarge.defaultProps = {
 		style = DEFAULTS.SECONDARY_CONTAINER.STYLE,
 		text = DEFAULTS.SECONDARY_CONTAINER.TEXT,
@@ -346,7 +346,7 @@ do
 end
 
 do
-	local TertiaryContainerSnackbarLarge = Roact.Component:extend("component_name")
+	local TertiaryContainerSnackbarLarge = Roact.Component:extend("TertiaryContainerSnackbarLarge")
 	TertiaryContainerSnackbarLarge.defaultProps = {
 		style = DEFAULTS.TERTIARY_CONTAINER.STYLE,
 		text = DEFAULTS.TERTIARY_CONTAINER.TEXT,

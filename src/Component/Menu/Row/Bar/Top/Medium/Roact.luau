@@ -31,7 +31,7 @@ local DEFAULTS = require(script.Parent:WaitForChild("Defaults"))
 local Interface = {}
 
 do
-	local NewMenuRowBarTopMedium = Roact.Component:extend("component_name")
+	local NewMenuRowBarTopMedium = Roact.Component:extend("NewMenuRowBarTopMedium")
 	NewMenuRowBarTopMedium.defaultProps = {
 		title = DEFAULTS.NEW.TITLE,
 		buttons = DEFAULTS.NEW.BUTTONS,
@@ -121,7 +121,7 @@ do
 end
 
 do
-	local PrimaryMenuRowBarTopMedium = Roact.Component:extend("component_name")
+	local PrimaryMenuRowBarTopMedium = Roact.Component:extend("PrimaryMenuRowBarTopMedium")
 	PrimaryMenuRowBarTopMedium.defaultProps = {
 		style = DEFAULTS.PRIMARY.STYLE,
 		title = DEFAULTS.PRIMARY.TITLE,
@@ -193,7 +193,7 @@ do
 end
 
 do
-	local SecondaryMenuRowBarTopMedium = Roact.Component:extend("component_name")
+	local SecondaryMenuRowBarTopMedium = Roact.Component:extend("SecondaryMenuRowBarTopMedium")
 	SecondaryMenuRowBarTopMedium.defaultProps = {
 		style = DEFAULTS.SECONDARY.STYLE,
 		title = DEFAULTS.SECONDARY.TITLE,
@@ -265,7 +265,7 @@ do
 end
 
 do
-	local TertiaryMenuRowBarTopMedium = Roact.Component:extend("component_name")
+	local TertiaryMenuRowBarTopMedium = Roact.Component:extend("TertiaryMenuRowBarTopMedium")
 	TertiaryMenuRowBarTopMedium.defaultProps = {
 		style = DEFAULTS.TERTIARY.STYLE,
 		title = DEFAULTS.TERTIARY.TITLE,

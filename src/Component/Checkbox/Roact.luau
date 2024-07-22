@@ -31,7 +31,7 @@ local DEFAULTS = require(script.Parent:WaitForChild("Defaults"))
 local Interface = {}
 
 do
-	local NewCheckbox = Roact.Component:extend("component_name")
+	local NewCheckbox = Roact.Component:extend("NewCheckbox")
 	NewCheckbox.defaultProps = {
 		onSelect = DEFAULTS.NEW.ON_SELECT,
 		initialSelection = DEFAULTS.NEW.INITIAL_SELECTION,
@@ -121,7 +121,7 @@ do
 end
 
 do
-	local PrimaryCheckbox = Roact.Component:extend("component_name")
+	local PrimaryCheckbox = Roact.Component:extend("PrimaryCheckbox")
 	PrimaryCheckbox.defaultProps = {
 		style = DEFAULTS.PRIMARY.STYLE,
 		onSelect = DEFAULTS.PRIMARY.ON_SELECT,
@@ -193,7 +193,7 @@ do
 end
 
 do
-	local SecondaryCheckbox = Roact.Component:extend("component_name")
+	local SecondaryCheckbox = Roact.Component:extend("SecondaryCheckbox")
 	SecondaryCheckbox.defaultProps = {
 		style = DEFAULTS.SECONDARY.STYLE,
 		onSelect = DEFAULTS.SECONDARY.ON_SELECT,
@@ -265,7 +265,7 @@ do
 end
 
 do
-	local TertiaryCheckbox = Roact.Component:extend("component_name")
+	local TertiaryCheckbox = Roact.Component:extend("TertiaryCheckbox")
 	TertiaryCheckbox.defaultProps = {
 		style = DEFAULTS.TERTIARY.STYLE,
 		onSelect = DEFAULTS.TERTIARY.ON_SELECT,
@@ -337,7 +337,7 @@ do
 end
 
 do
-	local PrimaryContainerCheckbox = Roact.Component:extend("component_name")
+	local PrimaryContainerCheckbox = Roact.Component:extend("PrimaryContainerCheckbox")
 	PrimaryContainerCheckbox.defaultProps = {
 		style = DEFAULTS.PRIMARY_CONTAINER.STYLE,
 		onSelect = DEFAULTS.PRIMARY_CONTAINER.ON_SELECT,
@@ -409,7 +409,7 @@ do
 end
 
 do
-	local SecondaryContainerCheckbox = Roact.Component:extend("component_name")
+	local SecondaryContainerCheckbox = Roact.Component:extend("SecondaryContainerCheckbox")
 	SecondaryContainerCheckbox.defaultProps = {
 		style = DEFAULTS.SECONDARY_CONTAINER.STYLE,
 		onSelect = DEFAULTS.SECONDARY_CONTAINER.ON_SELECT,
@@ -481,7 +481,7 @@ do
 end
 
 do
-	local TertiaryContainerCheckbox = Roact.Component:extend("component_name")
+	local TertiaryContainerCheckbox = Roact.Component:extend("TertiaryContainerCheckbox")
 	TertiaryContainerCheckbox.defaultProps = {
 		style = DEFAULTS.TERTIARY_CONTAINER.STYLE,
 		onSelect = DEFAULTS.TERTIARY_CONTAINER.ON_SELECT,

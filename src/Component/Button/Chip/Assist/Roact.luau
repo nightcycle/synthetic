@@ -31,7 +31,7 @@ local DEFAULTS = require(script.Parent:WaitForChild("Defaults"))
 local Interface = {}
 
 do
-	local NewButtonChipAssist = Roact.Component:extend("component_name")
+	local NewButtonChipAssist = Roact.Component:extend("NewButtonChipAssist")
 	NewButtonChipAssist.defaultProps = {
 		onClick = DEFAULTS.NEW.ON_CLICK,
 		text = DEFAULTS.NEW.TEXT,
@@ -118,7 +118,7 @@ do
 end
 
 do
-	local PrimaryButtonChipAssist = Roact.Component:extend("component_name")
+	local PrimaryButtonChipAssist = Roact.Component:extend("PrimaryButtonChipAssist")
 	PrimaryButtonChipAssist.defaultProps = {
 		style = DEFAULTS.PRIMARY.STYLE,
 		onClick = DEFAULTS.PRIMARY.ON_CLICK,
@@ -193,7 +193,7 @@ do
 end
 
 do
-	local SecondaryButtonChipAssist = Roact.Component:extend("component_name")
+	local SecondaryButtonChipAssist = Roact.Component:extend("SecondaryButtonChipAssist")
 	SecondaryButtonChipAssist.defaultProps = {
 		style = DEFAULTS.SECONDARY.STYLE,
 		onClick = DEFAULTS.SECONDARY.ON_CLICK,
@@ -268,7 +268,7 @@ do
 end
 
 do
-	local TertiaryButtonChipAssist = Roact.Component:extend("component_name")
+	local TertiaryButtonChipAssist = Roact.Component:extend("TertiaryButtonChipAssist")
 	TertiaryButtonChipAssist.defaultProps = {
 		style = DEFAULTS.TERTIARY.STYLE,
 		onClick = DEFAULTS.TERTIARY.ON_CLICK,

@@ -31,7 +31,7 @@ local DEFAULTS = require(script.Parent:WaitForChild("Defaults"))
 local Interface = {}
 
 do
-	local NewTextFieldOutlined = Roact.Component:extend("component_name")
+	local NewTextFieldOutlined = Roact.Component:extend("NewTextFieldOutlined")
 	NewTextFieldOutlined.defaultProps = {
 		onSubmit = DEFAULTS.NEW.ON_SUBMIT,
 		onInput = DEFAULTS.NEW.ON_INPUT,
@@ -145,7 +145,7 @@ do
 end
 
 do
-	local PrimaryTextFieldOutlined = Roact.Component:extend("component_name")
+	local PrimaryTextFieldOutlined = Roact.Component:extend("PrimaryTextFieldOutlined")
 	PrimaryTextFieldOutlined.defaultProps = {
 		style = DEFAULTS.PRIMARY.STYLE,
 		onSubmit = DEFAULTS.PRIMARY.ON_SUBMIT,
@@ -235,7 +235,7 @@ do
 end
 
 do
-	local SecondaryTextFieldOutlined = Roact.Component:extend("component_name")
+	local SecondaryTextFieldOutlined = Roact.Component:extend("SecondaryTextFieldOutlined")
 	SecondaryTextFieldOutlined.defaultProps = {
 		style = DEFAULTS.SECONDARY.STYLE,
 		onSubmit = DEFAULTS.SECONDARY.ON_SUBMIT,
@@ -325,7 +325,7 @@ do
 end
 
 do
-	local TertiaryTextFieldOutlined = Roact.Component:extend("component_name")
+	local TertiaryTextFieldOutlined = Roact.Component:extend("TertiaryTextFieldOutlined")
 	TertiaryTextFieldOutlined.defaultProps = {
 		style = DEFAULTS.TERTIARY.STYLE,
 		onSubmit = DEFAULTS.TERTIARY.ON_SUBMIT,
