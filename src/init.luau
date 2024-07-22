@@ -6,7 +6,7 @@ local _Packages = _Package.Parent
 -- Modules
 local Types = require(_Package:WaitForChild("Types"))
 local Style = require(_Package:WaitForChild("Style"))
-
+local Enums = require(_Package:WaitForChild("Enums"))
 -- Types
 export type ImageData = Types.ImageData
 export type OptionData = Types.OptionData
@@ -15,6 +15,16 @@ export type FontData = Types.FontData
 export type Style = Style.Style
 export type Typography = Style.Typography
 export type Theme = Style.Theme
+export type SoundType = Enums.SoundType
+export type FontType = Enums.FontType
+export type ButtonStateType = Enums.ButtonStateType 
+export type SchemeType = Enums.SchemeType
+export type CustomColorType = Enums.CustomColorType
+export type SelectionState = Enums.SelectionState 
+export type ColorRoleType = Enums.ColorRoleType
+export type PaletteType = Enums.PaletteType
+export type TransitionType = Enums.TransitionType
+
 -- Constants
 -- Variables
 -- References
@@ -23,7 +33,7 @@ local Component = _Package:WaitForChild("Component")
 -- Class
 local Synthetic = {}
 
-Synthetic.Enums = require(_Package:WaitForChild("Enums"))
+Synthetic.Enums = Enums
 Synthetic.Sounds = require(_Package:WaitForChild("Sounds"))
 Synthetic.Util = require(_Package:WaitForChild("Util"))
 Synthetic.Transition = require(_Package:WaitForChild("Transition"))
