@@ -5,4 +5,5 @@ return {
 	Fusion = require(script:WaitForChild("Fusion")),
 	Wrapper = require(script:WaitForChild("Wrapper")),
 	Roact = require(script:WaitForChild("Roact")),
+	React = require(script:WaitForChild("React")),
 }

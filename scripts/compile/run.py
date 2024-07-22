@@ -52,7 +52,7 @@ class ComponentDefinition:
 			self.description = data["description"]
 			self.functions = data["functions"]
 
-	def get_header(self, include_source=True, include_translators=True, include_enums=True, include_roact=False) -> str:
+	def get_header(self, include_source=True, include_translators=True, include_enums=True, include_roact=False, include_react=False) -> str:
 		# get number of steps in the path
 		steps = len(self.path.split(os.path.sep))
 		# repeat the string "Parent" steps time, putting a . in between each one
@@ -73,6 +73,12 @@ class ComponentDefinition:
 		roact_rec = 'local Roact = require(_Packages:WaitForChild("Roact"))'
 		if not include_roact:
 			roact_rec = ""
+
+
+		react_lua_rec = 'local React = require(_Packages:WaitForChild("React"))\nlocal ReactRoblox = require(_Packages:WaitForChild("ReactRoblox"))'
+		if not include_react:
+			react_lua_rec = ""
+
 		return f"""--!strict
 {HEADER_WARNING}
 local _Package = script.{package_req_path}
@@ -82,6 +88,7 @@ local _Packages = _Package.Parent
 local Maid = require(_Packages:WaitForChild("Maid"))
 local ColdFusion = require(_Packages:WaitForChild("ColdFusion"))
 {roact_rec}
+{react_lua_rec}
 
 -- Modules
 local Types = require(_Package:WaitForChild("Types"))
@@ -183,9 +190,9 @@ type CanBeState<V> = ColdFusion.CanBeState<V>"""
 		with open(out_path, "w") as file:
 			file.write("\n".join(lines))
 
-	def write_roact(self) -> None:
+	def write_roact(self, is_react_lua: bool=False) -> None:
 		lines: list[str] = [
-			self.get_header(include_roact=True, include_translators=False, include_enums=False),
+			self.get_header(include_roact=not is_react_lua, include_react=is_react_lua, include_translators=False, include_enums=False),
 			'-- Constants',
 			'local DEFAULTS = require(script.Parent:WaitForChild("Defaults"))',
 			'-- Variables',
@@ -195,13 +202,22 @@ type CanBeState<V> = ColdFusion.CanBeState<V>"""
 			'local Interface = {}\n',
 		]
 
+		framework_name = "Roact"
+		secondary_framework_name = "Roact"
+		mount_func_name = "didMount"
+		portal_ref = "Roact.Portal"
+		if is_react_lua:
+			framework_name = "React"
+			mount_func_name = "componentDidMount"
+			portal_ref = "ReactRoblox.createPortal"
+		
 		for func in self.functions:
 			for name in func["names"]:
 				component_name = camel_to_pascal(name)+camel_to_pascal(self.path.replace("\\", "").replace("srcComponent", ""))
 
 				lines += [
 					"\ndo",
-					f'local {component_name} = Roact.Component:extend("{component_name}")',
+					f'local {component_name} = {framework_name}.Component:extend("{component_name}")',
 					component_name + ".defaultProps = {",
 				]
 				for param in func["parameters"]:
@@ -254,10 +270,10 @@ type CanBeState<V> = ColdFusion.CanBeState<V>"""
 							'end',
 						'end',
 					'end',
-					'return Roact.createElement(Roact.Portal, props)',
+					f'return {framework_name}.createElement({portal_ref}, props)',
 				'end',
 
-				'function '+component_name+':didMount()',
+				'function '+component_name+f':{mount_func_name}()',
 					'for k, v in pairs(self) do',
 						'if typeof(v) == "table" then',
 							'if v["virtualNode"] then',
@@ -280,7 +296,8 @@ type CanBeState<V> = ColdFusion.CanBeState<V>"""
 			]
 
 		lines.append('\nreturn Interface')
-		out_path = self.path + "/Roact.luau"
+		out_path = self.path + f"/{framework_name}.luau"
+		
 		with open(out_path, "w") as file:
 			file.write("\n".join(lines))
 
@@ -382,6 +399,7 @@ type CanBeState<V> = ColdFusion.CanBeState<V>"""
 				'Fusion = require(script:WaitForChild("Fusion")),',
 				'Wrapper = require(script:WaitForChild("Wrapper")),',
 				'Roact = require(script:WaitForChild("Roact")),',
+				'React = require(script:WaitForChild("React")),',
 			'}'
 		]
 
@@ -468,26 +486,41 @@ type CanBeState<V> = ColdFusion.CanBeState<V>"""
 				'```',
 			]
 
-			roact_lines: list[str] = [
-				'\n**Roact**',
-				'```luau',
-				f'local {pascal_to_camel(self.name)} = Roact.createElement(Module.Roact.{camel_to_pascal(func["names"][0])}, '+'{'
-			]
-			for param in func['parameters']:
-				comment = ""
-				if "comment" in param:
-					comment = f" -- {param['comment']}"
+			def write_roact_md(is_react_lua: bool=False) -> None:
+				package_name = "Roact"
+				if is_react_lua:
+					package_name = "React"
+				roact_lines: list[str] = [
+					f'\n**{package_name}**',
+					'```luau',
+					f'local {pascal_to_camel(self.name)} = {package_name}.createElement(Module.{package_name}.{camel_to_pascal(func["names"][0])}, '+'{'
+				]
+				for param in func['parameters']:
+					comment = ""
+					if "comment" in param:
+						comment = f" -- {param['comment']}"
 
-				roact_lines.append(f'\t{param["name"]} = {param["default"]},{comment}')
-			roact_lines += [
-				'})\n',
-				f'Roact.mount({pascal_to_camel(self.name)}, parent)',
-				'```'
-			]
+					roact_lines.append(f'\t{param["name"]} = {param["default"]},{comment}')
+				
+				if is_react_lua:
+					roact_lines += [
+						'})\n',
+						f'local root = {package_name}Roblox.createRoot(parent)',
+						f'root:render({pascal_to_camel(self.name)})',
+						'```'
+					]
+				else:
+					roact_lines += [
+						'})\n',
+						f'{package_name}.mount({pascal_to_camel(self.name)}, parent)',
+						'```'
+					]
+				return roact_lines
 
 			lines += vanilla_lines
 			lines += fusion_lines
-			lines += roact_lines
+			lines += write_roact_md(is_react_lua=False)
+			# lines += write_roact_md(is_react_lua=True)
 
 
 		out_path = self.path + "/README.md"
@@ -498,6 +531,7 @@ type CanBeState<V> = ColdFusion.CanBeState<V>"""
 		self.write_defaults()
 		self.write_fusion()
 		self.write_roact()
+		self.write_roact(is_react_lua=True)
 		self.write_wrapper()
 		self.write_init()
 		self.write_md()

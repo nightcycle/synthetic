@@ -10,7 +10,7 @@ Currently Supports:
 - [Fusion](https://github.com/dphfox/Fusion)
 - [Cold-Fusion](https://github.com/nightcycle/cold-fusion)
 - [Roact](https://github.com/Roblox/roact/)
-
+<!-- - [React-Lua](https://github.com/Roblox/react-lua) -->
 https://github.com/nightcycle/synthetic/assets/77173389/42044196-0b4a-4e76-9276-88edaf60ef55
 
 All components can be previewed with the [Hoarcecat](https://github.com/Kampfkarren/hoarcekat) plugin. Anything named "_Config" showcases the different ways a component can be configured. Anything named "_Theme" showcases how the component looks when made with the more portable theme constructors.
