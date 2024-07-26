@@ -13,7 +13,7 @@ local Maid = require(_Packages:WaitForChild("Maid"))
 return function(frame: Frame)
 	local maid = Maid.new()
 	task.spawn(function()
-		local Module = require(script.Parent:WaitForChild("ColdFusion")
+		local Module = require(script.Parent:WaitForChild("ColdFusion"))
 
 		local container = maid:GiveTask(Instance.new("Frame"))
 		container.AnchorPoint = Vector2.one * 0.5
