@@ -22,25 +22,25 @@ type ImageData = Types.ImageData
 local Util = {}
 
 Util.Container = {
-	ColdFusion = require(script:WaitForChild("Container")),
+	ColdFusion = require(script:WaitForChild("Container"):WaitForChild("ColdFusion")),
 }
 Util.List = {
-	ColdFusion = require(script:WaitForChild("List")),
+	ColdFusion = require(script:WaitForChild("List"):WaitForChild("ColdFusion")),
 }
 Util.Padding = {
-	ColdFusion = require(script:WaitForChild("Padding")),
+	ColdFusion = require(script:WaitForChild("Padding"):WaitForChild("ColdFusion")),
 }
 Util.TextLabel = {
-	ColdFusion = require(script:WaitForChild("TextLabel")),
+	ColdFusion = require(script:WaitForChild("TextLabel"):WaitForChild("ColdFusion")),
 }
 Util.ImageLabel = {
-	ColdFusion = require(script:WaitForChild("ImageLabel")),
+	ColdFusion = require(script:WaitForChild("ImageLabel"):WaitForChild("ColdFusion")),
 }
 Util.PopUp = {
-	ColdFusion = require(script:WaitForChild("PopUp")),
+	ColdFusion = require(script:WaitForChild("PopUp"):WaitForChild("ColdFusion")),
 }
 Util.ScrollingContainer = {
-	ColdFusion = require(script:WaitForChild("ScrollingContainer")),
+	ColdFusion = require(script:WaitForChild("ScrollingContainer"):WaitForChild("ColdFusion")),
 }
 
 return Util
