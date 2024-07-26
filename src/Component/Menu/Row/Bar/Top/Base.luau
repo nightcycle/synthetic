@@ -31,7 +31,7 @@ type FontData = Types.FontData
 export type BarVariant = "Center" | "Small" | "Medium" | "Large"
 -- Constants
 local MAX_BUTTONS = 3
-local ERROR_ICON = ICONS.error
+local ERROR_ICON = Icons.error
 local BUTTON_SEPARATION_DP = 10
 local BAR_TOP_BOTTOM_PADDING_DP = 12
 local BAR_LEFT_RIGHT_PADDING_DP = 10
