@@ -37,12 +37,12 @@ return function(frame: Frame)
 			listLayout.HorizontalAlignment = Enum.HorizontalAlignment.Center
 			listLayout.Parent = halfFrame
 
-			local Module = require(script.Parent:WaitForChild("ColdFusion"))
+			local Module = require(script.Parent:WaitForChild("Fusion"))
 
 			do
 				print("build")
 				local checkbox = maid:GiveTask(
-					Module.Fusion.primary(
+					Module.primary(
 						Fusion.Value(style),
 						Fusion.Value(function(isSelected: boolean?)
 							print("fuse is select", isSelected)

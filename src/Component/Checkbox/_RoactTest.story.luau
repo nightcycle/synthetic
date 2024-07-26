@@ -38,10 +38,10 @@ return function(frame: Frame)
 			listLayout.HorizontalAlignment = Enum.HorizontalAlignment.Center
 			listLayout.Parent = halfFrame
 
-			local Module = require(script.Parent:WaitForChild("ColdFusion"))
+			local Module = require(script.Parent:WaitForChild("Roact"))
 
 			do
-				local checkbox = Roact.createElement(Module.Roact.New, {
+				local checkbox = Roact.createElement(Module.New, {
 					onSelect = function(isSelected: boolean?)
 						print("is selected", isSelected)
 					end,

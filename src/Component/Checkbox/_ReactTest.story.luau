@@ -40,10 +40,10 @@ return function(frame: Frame)
 			listLayout.HorizontalAlignment = Enum.HorizontalAlignment.Center
 			listLayout.Parent = halfFrame
 
-			local Module = require(script.Parent:WaitForChild("ColdFusion"))
+			local Module = require(script.Parent:WaitForChild("React"))
 
 			do
-				local checkbox = React.createElement(Module.React.New, {
+				local checkbox = React.createElement(Module.New, {
 					onSelect = function(isSelected: boolean?)
 						print("is selected", isSelected)
 					end,
