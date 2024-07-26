@@ -113,8 +113,8 @@ version = "2.0.0"
 dependencies = []
 
 [[package]]
-name = "nightcycle/material-icons"
-version = "1.0.1"
+name = "nightcycle/material-icons-default-dp18-1x"
+version = "1.0.3"
 dependencies = []
 
 [[package]]
@@ -135,7 +135,7 @@ dependencies = []
 [[package]]
 name = "nightcycle/synthetic"
 version = "5.0.0"
-dependencies = [["ColdFusion", "nightcycle/cold-fusion@9.1.1"], ["CurveUtil", "nightcycle/curve-util@1.0.0"], ["Fusion", "elttob/fusion@0.2.0"], ["HashUtil", "boatbomber/hashlib@1.0.0"], ["Maid", "nightcycle/maid@2.0.0"], ["MaterialIcons", "nightcycle/material-icons@1.0.1"], ["React", "jsdotlua/react@17.1.0"], ["ReactRoblox", "jsdotlua/react-roblox@17.1.0"], ["Roact", "roblox/roact@1.4.4"], ["Signal", "nightcycle/signal@1.0.2"], ["Spring", "nightcycle/spring@1.0.0"], ["TableUtil", "nightcycle/table-util@2.0.0"]]
+dependencies = [["ColdFusion", "nightcycle/cold-fusion@9.1.1"], ["CurveUtil", "nightcycle/curve-util@1.0.0"], ["Fusion", "elttob/fusion@0.2.0"], ["HashUtil", "boatbomber/hashlib@1.0.0"], ["Maid", "nightcycle/maid@2.0.0"], ["MaterialIcons", "nightcycle/material-icons-default-dp18-1x@1.0.3"], ["React", "jsdotlua/react@17.1.0"], ["ReactRoblox", "jsdotlua/react-roblox@17.1.0"], ["Roact", "roblox/roact@1.4.4"], ["Signal", "nightcycle/signal@1.0.2"], ["Spring", "nightcycle/spring@1.0.0"], ["TableUtil", "nightcycle/table-util@2.0.0"]]
 
 [[package]]
 name = "nightcycle/table-util"
