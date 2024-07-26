@@ -16,7 +16,7 @@ local HINT_ANCHOR_POINT_KEY = "HintAnchorPoint"
 return function(frame: Frame)
 	local maid = Maid.new()
 	task.spawn(function()
-		local module = require(script.Parent)
+		local Module = require(script.Parent:WaitForChild("ColdFusion"))
 
 		local textLabel = maid:GiveTask(Instance.new("TextLabel"))
 		textLabel.Size = UDim2.fromOffset(200, 50)
@@ -41,7 +41,7 @@ return function(frame: Frame)
 		local hintAnchorPointState = _Value(Vector2.zero)
 
 		local container =
-			maid:GiveTask(module.ColdFusion.fromGuiObject(textLabel, anchorPointState, hintAnchorPointState))
+			maid:GiveTask(Module.fromGuiObject(textLabel, anchorPointState, hintAnchorPointState))
 
 		container:SetAttribute(ANCHOR_POINT_KEY, anchorPointState:Get())
 		maid:GiveTask(container:GetAttributeChangedSignal(ANCHOR_POINT_KEY):Connect(function()
