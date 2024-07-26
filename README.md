@@ -6,7 +6,7 @@ This UI library is powered by a Fusion framework variant, and has the the goal o
 **Disclaimer:** Should not be used in a live game until Roblox releases [Flex functionality](https://devforum.roblox.com/t/new-uilistlayout-flex-features-beta/2694081)
 
 Currently Supports:
-- Vanilla / No Framework
+- Wrapper / No-Framework
 - [Fusion](https://github.com/dphfox/Fusion)
 - [Cold-Fusion](https://github.com/nightcycle/cold-fusion)
 - [Roact](https://github.com/Roblox/roact/)
@@ -14,6 +14,15 @@ Currently Supports:
 https://github.com/nightcycle/synthetic/assets/77173389/42044196-0b4a-4e76-9276-88edaf60ef55
 
 All components can be previewed with the [Hoarcecat](https://github.com/Kampfkarren/hoarcekat) plugin. Anything named "_Config" showcases the different ways a component can be configured. Anything named "_Theme" showcases how the component looks when made with the more portable theme constructors.
+
+# Install
+Depending on the workflow you're using, you'll want to install a specific wally package:
+- [No Framework](https://wally.run/package/nightcycle/synthetic-wrapper)
+- [Roact](https://wally.run/package/nightcycle/synthetic-roact)
+- [Fusion](https://wally.run/package/nightcycle/synthetic-fusion)
+- [Cold-Fusion](https://wally.run/package/nightcycle/synthetic-cold-fusion)
+
+If you plan to use multiple frameworks, you can install one containing all [here](https://wally.run/package/nightcycle/synthetic-roact). The one containing all the frameworks is what's used in most documentation.
 
 # Goals
 

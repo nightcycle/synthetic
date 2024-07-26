@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
-package_suffix="cold-fusion"
-build_focus="ColdFusion"
+package_suffix=$1
+build_focus=$2
 
 for init_file in $(find "src/Util" -name "init.luau"); do
 	# if the file is src/Util/init.luau continue
@@ -22,3 +22,4 @@ done
 package_full_name="nightcycle/synthetic-$package_suffix"
 sed -i "s#name = \".*\"#name = \"$package_full_name\"#" wally.toml
 
+wally publish

@@ -10,7 +10,7 @@ local UserInputService = game:GetService("UserInputService")
 -- Packages
 local Maid = require(_Packages:WaitForChild("Maid"))
 local ColdFusion = require(_Packages:WaitForChild("ColdFusion"))
-local MaterialIcons = require(_Packages:WaitForChild("MaterialIcons"))
+local Icons = require(_Packages:WaitForChild("MaterialIcons"))
 
 -- Modules
 local IconButton =
@@ -47,7 +47,6 @@ local PADDING_BETWEEN_ELEMENTS_DP = 8
 
 -- Variables
 -- References
-local Icons = MaterialIcons.default.dp_48.scale_1
 
 -- Private Functions
 

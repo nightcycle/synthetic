@@ -5,7 +5,7 @@ local _Packages = _Package.Parent
 -- Packages
 local Maid = require(_Packages:WaitForChild("Maid"))
 local ColdFusion = require(_Packages:WaitForChild("ColdFusion"))
-local MaterialIcons = require(_Packages:WaitForChild("MaterialIcons"))
+local Icons = require(_Packages:WaitForChild("MaterialIcons"))
 
 -- Modules
 local IconButton =
@@ -38,7 +38,6 @@ local CORNER_DP = 4
 
 -- Variables
 -- References
-local Icons = MaterialIcons.default.dp_48.scale_1
 
 -- Private Functions
 

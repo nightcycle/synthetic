@@ -4,7 +4,7 @@ local _Packages = _Package.Parent
 -- Services
 -- Packages
 local Maid = require(_Packages:WaitForChild("Maid"))
-local MaterialIcons = require(_Packages:WaitForChild("MaterialIcons"))
+local Icons = require(_Packages:WaitForChild("MaterialIcons"))
 
 -- Modules
 local Style = require(_Package:WaitForChild("Style"))
@@ -13,7 +13,6 @@ local Types = require(_Package:WaitForChild("Types"))
 
 -- Types
 -- Constants
-local Icons = MaterialIcons.default.dp_48.scale_2
 -- Variables
 -- References
 

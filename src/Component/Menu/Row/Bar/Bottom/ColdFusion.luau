@@ -5,7 +5,7 @@ local _Packages = _Package.Parent
 -- Packages
 local Maid = require(_Packages:WaitForChild("Maid"))
 local ColdFusion = require(_Packages:WaitForChild("ColdFusion"))
-local MaterialIcons = require(_Packages:WaitForChild("MaterialIcons"))
+local Icons = require(_Packages:WaitForChild("MaterialIcons"))
 
 -- Modules
 local Types = require(_Package:WaitForChild("Types"))
@@ -31,8 +31,7 @@ type FontData = Types.FontData
 -- Constants
 local DEFAULTS = require(script.Parent:WaitForChild("Defaults"))
 local MAX_BUTTONS = 4
-local ICONS = MaterialIcons.default.dp_48.scale_1
-local ERROR_ICON = ICONS.error
+local ERROR_ICON = Icons.error
 local BUTTON_SEPARATION_DP = 10
 local BAR_TOP_BOTTOM_PADDING_DP = 6
 local BAR_LEFT_RIGHT_PADDING_DP = 10

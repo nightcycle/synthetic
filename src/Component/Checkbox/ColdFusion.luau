@@ -6,7 +6,7 @@ local SoundService = game:GetService("SoundService")
 -- Packages
 local Maid = require(_Packages:WaitForChild("Maid"))
 local ColdFusion = require(_Packages:WaitForChild("ColdFusion"))
-local MaterialIcons = require(_Packages:WaitForChild("MaterialIcons"))
+local Icons = require(_Packages:WaitForChild("MaterialIcons"))
 
 -- Modules
 local Types = require(_Package:WaitForChild("Types"))
@@ -29,9 +29,8 @@ type FontData = Types.FontData
 
 -- Constants
 local DEFAULTS = require(script.Parent:WaitForChild("Defaults"))
-local ICONS = MaterialIcons.default.dp_48.scale_1
-local CHECK_ICON = ICONS.check
-local DASH_ICON = ICONS.remove
+local CHECK_ICON = Icons.check
+local DASH_ICON = Icons.remove
 local LAYER_SIZE_DP = 40
 local CHECKBOX_SIZE_DP = 18
 local CHECKBOX_SHAPE_DP = 2

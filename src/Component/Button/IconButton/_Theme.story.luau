@@ -4,7 +4,7 @@ local _Packages = _Package.Parent
 -- Services
 -- Packages
 local Maid = require(_Packages:WaitForChild("Maid"))
-local MaterialIcons = require(_Packages:WaitForChild("MaterialIcons"))
+local Icons = require(_Packages:WaitForChild("MaterialIcons"))
 
 -- Modules
 local Style = require(_Package:WaitForChild("Style"))
@@ -14,7 +14,6 @@ local Enums = require(_Package:WaitForChild("Enums"))
 -- Constants
 -- Variables
 -- References
-local Icons = MaterialIcons.default.dp_18.scale_1
 
 -- Class
 return function(frame: Frame)

@@ -6,7 +6,7 @@ local SoundService = game:GetService("SoundService")
 -- Packages
 local Maid = require(_Packages:WaitForChild("Maid"))
 local ColdFusion = require(_Packages:WaitForChild("ColdFusion"))
-local MaterialIcons = require(_Packages:WaitForChild("MaterialIcons"))
+local Icons = require(_Packages:WaitForChild("MaterialIcons"))
 
 -- Modules
 local Types = require(_Package:WaitForChild("Types"))
@@ -35,7 +35,6 @@ type FontData = Types.FontData
 
 -- Constants
 local DEFAULTS = require(script.Parent:WaitForChild("Defaults"))
-local ICONS = MaterialIcons.default.dp_48.scale_1
 local SWITCH_HEIGHT_DP = 32
 local SWITCH_WIDTH_DP = 52
 local KNOB_YES_ICON_SIZE_DP = 28
@@ -292,11 +291,11 @@ function Interface.new(
 		function(includeSel: boolean, includeDes: boolean, isSelected: boolean?): ImageData?
 			if isSelected == true then
 				if includeSel then
-					return ICONS.check
+					return Icons.check
 				end
 			elseif isSelected == false then
 				if includeDes then
-					return ICONS.close
+					return Icons.close
 				end
 			end
 			return nil

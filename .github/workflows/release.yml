@@ -164,3 +164,7 @@ jobs:
         run: |
           wally login --token "${{secrets.WALLY_TOKEN}}"
           wally publish
+          sh scripts/compile/release-edit.sh "cold-fusion" "ColdFusion"
+          sh scripts/compile/release-edit.sh "fusion" "Fusion"
+          sh scripts/compile/release-edit.sh "wrapper" "Wrapper"
+          sh scripts/compile/release-edit.sh "roact" "Roact"

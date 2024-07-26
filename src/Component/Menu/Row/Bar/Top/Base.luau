@@ -6,7 +6,7 @@ local _Packages = _Package.Parent
 local Maid = require(_Packages:WaitForChild("Maid"))
 local ColdFusion = require(_Packages:WaitForChild("ColdFusion"))
 local Signal = require(_Packages:WaitForChild("Signal"))
-local MaterialIcons = require(_Packages:WaitForChild("MaterialIcons"))
+local Icons = require(_Packages:WaitForChild("MaterialIcons"))
 
 -- Modules
 local Types = require(_Package:WaitForChild("Types"))
@@ -31,7 +31,6 @@ type FontData = Types.FontData
 export type BarVariant = "Center" | "Small" | "Medium" | "Large"
 -- Constants
 local MAX_BUTTONS = 3
-local ICONS = MaterialIcons.default.dp_48.scale_1
 local ERROR_ICON = ICONS.error
 local BUTTON_SEPARATION_DP = 10
 local BAR_TOP_BOTTOM_PADDING_DP = 12

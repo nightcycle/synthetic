@@ -5,7 +5,8 @@ local _Packages = _Package.Parent
 -- Packages
 local Maid = require(_Packages:WaitForChild("Maid"))
 local ColdFusion = require(_Packages:WaitForChild("ColdFusion"))
-local MaterialIcons = require(_Packages:WaitForChild("MaterialIcons"))
+local Icons = require(_Packages:WaitForChild("MaterialIcons"))
+local OutlinedIcons = require(_Packages:WaitForChild("OutlinedMaterialIcons"))
 
 -- Modules
 local Types = require(_Package:WaitForChild("Types"))
@@ -49,8 +50,6 @@ local DISABLED_BACKGROUND_TRANSPARENCY = 1 - 0.04
 
 -- Variables
 -- References
-local Icons = MaterialIcons.default.dp_48.scale_1
-local OutlineIcons = MaterialIcons.outlined.dp_48.scale_1
 
 -- Private Functions
 
