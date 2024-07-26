@@ -159,12 +159,29 @@ jobs:
           asset_name: Package.rbxl
           asset_content_type: application/octet-stream
 
-      - name: Publish release to Wally
+
+      - name: build packages
         shell: bash
         run: |
           wally login --token "${{secrets.WALLY_TOKEN}}"
           wally publish
+          
           sh scripts/compile/release-edit.sh "cold-fusion" "ColdFusion"
+          selene src
+          luau-lsp analyze --sourcemap="sourcemap.json" --ignore="Packages/**" --ignore="**/Packages/**" --ignore="*.spec.luau" --ignore="out/**" --flag:LuauTypeInferIterationLimit=0 --flag:LuauCheckRecursionLimit=0 --flag:LuauTypeInferRecursionLimit=0 --flag:LuauTarjanChildLimit=0 --flag:LuauTypeInferTypePackLoopLimit=0 --flag:LuauVisitRecursionLimit=0 --definitions=types/globalTypes.d.lua src
+          wally publish
+
           sh scripts/compile/release-edit.sh "fusion" "Fusion"
+          selene src
+          luau-lsp analyze --sourcemap="sourcemap.json" --ignore="Packages/**" --ignore="**/Packages/**" --ignore="*.spec.luau" --ignore="out/**" --flag:LuauTypeInferIterationLimit=0 --flag:LuauCheckRecursionLimit=0 --flag:LuauTypeInferRecursionLimit=0 --flag:LuauTarjanChildLimit=0 --flag:LuauTypeInferTypePackLoopLimit=0 --flag:LuauVisitRecursionLimit=0 --definitions=types/globalTypes.d.lua src
+          wally publish
+          
           sh scripts/compile/release-edit.sh "wrapper" "Wrapper"
+          selene src
+          luau-lsp analyze --sourcemap="sourcemap.json" --ignore="Packages/**" --ignore="**/Packages/**" --ignore="*.spec.luau" --ignore="out/**" --flag:LuauTypeInferIterationLimit=0 --flag:LuauCheckRecursionLimit=0 --flag:LuauTypeInferRecursionLimit=0 --flag:LuauTarjanChildLimit=0 --flag:LuauTypeInferTypePackLoopLimit=0 --flag:LuauVisitRecursionLimit=0 --definitions=types/globalTypes.d.lua src
+          wally publish
+
           sh scripts/compile/release-edit.sh "roact" "Roact"
+          selene src
+          luau-lsp analyze --sourcemap="sourcemap.json" --ignore="Packages/**" --ignore="**/Packages/**" --ignore="*.spec.luau" --ignore="out/**" --flag:LuauTypeInferIterationLimit=0 --flag:LuauCheckRecursionLimit=0 --flag:LuauTypeInferRecursionLimit=0 --flag:LuauTarjanChildLimit=0 --flag:LuauTypeInferTypePackLoopLimit=0 --flag:LuauVisitRecursionLimit=0 --definitions=types/globalTypes.d.lua src
+          wally publish
