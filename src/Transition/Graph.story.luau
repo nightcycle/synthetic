@@ -27,7 +27,7 @@ local DURATION = 0.75
 return function(frame: Frame)
 	local maid = Maid.new()
 	task.spawn(function()
-		local Module = require(script.Parent)
+		local Module = require(script.Parent:WaitForChild("ColdFusion")
 		local style = Style.new(
 			1,
 			Enum.Font.SourceSans,

@@ -37,11 +37,11 @@ return function(frame: Frame)
 			listLayout.HorizontalAlignment = Enum.HorizontalAlignment.Center
 			listLayout.Parent = halfFrame
 
-			local Module = require(script.Parent)
+			local Module = require(script.Parent:WaitForChild("ColdFusion")
 
 			do
 				local button =
-					maid:GiveTask(Module.ColdFusion.onPrimaryContainer(
+					maid:GiveTask(Module.onPrimaryContainer(
 						style,
 						function(input: string): string
 							print(`entered: {input}`)
@@ -62,7 +62,7 @@ return function(frame: Frame)
 			end
 			do
 				local button = maid:GiveTask(
-					Module.ColdFusion.onSecondaryContainer(
+					Module.onSecondaryContainer(
 						style,
 						function(input: string): string
 							print(`entered: {input}`)
@@ -84,7 +84,7 @@ return function(frame: Frame)
 			end
 			do
 				local button =
-					maid:GiveTask(Module.ColdFusion.onTertiaryContainer(
+					maid:GiveTask(Module.onTertiaryContainer(
 						style,
 						function(input: string): string
 							print(`entered: {input}`)
@@ -105,7 +105,7 @@ return function(frame: Frame)
 			end
 			do
 				local button =
-					maid:GiveTask(Module.ColdFusion.onPrimary(
+					maid:GiveTask(Module.onPrimary(
 						style,
 						function(input: string): string
 							print(`entered: {input}`)
@@ -126,7 +126,7 @@ return function(frame: Frame)
 			end
 			do
 				local button =
-					maid:GiveTask(Module.ColdFusion.onSecondary(
+					maid:GiveTask(Module.onSecondary(
 						style,
 						function(input: string): string
 							print(`entered: {input}`)
@@ -147,7 +147,7 @@ return function(frame: Frame)
 			end
 			do
 				local button =
-					maid:GiveTask(Module.ColdFusion.onTertiary(
+					maid:GiveTask(Module.onTertiary(
 						style,
 						function(input: string): string
 							print(`entered: {input}`)

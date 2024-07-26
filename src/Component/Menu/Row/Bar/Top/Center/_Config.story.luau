@@ -20,7 +20,7 @@ local Enums = require(_Package:WaitForChild("Enums"))
 return function(frame: Frame)
 	local maid = Maid.new()
 	task.spawn(function()
-		local Module = require(script.Parent)
+		local Module = require(script.Parent:WaitForChild("ColdFusion")
 
 		local listLayout = maid:GiveTask(Instance.new("UIListLayout"))
 		listLayout.FillDirection = Enum.FillDirection.Vertical
@@ -38,7 +38,7 @@ return function(frame: Frame)
 			)
 
 			local out = maid:GiveTask(
-				Module.ColdFusion.new(
+				Module.new(
 					"Title",
 					{
 						Types.ButtonData.new(function()

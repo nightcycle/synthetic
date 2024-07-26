@@ -35,40 +35,40 @@ return function(frame: Frame)
 			listLayout.HorizontalAlignment = Enum.HorizontalAlignment.Center
 			listLayout.Parent = halfFrame
 
-			local Module = require(script.Parent)
+			local Module = require(script.Parent:WaitForChild("ColdFusion")
 
 			do
-				local button = maid:GiveTask(Module.ColdFusion.primary(style, function(val: number)
+				local button = maid:GiveTask(Module.primary(style, function(val: number)
 					print(`value={val}`)
 				end, 50, 0, 100, 25))
 				button.Parent = halfFrame
 			end
 			-- do
-			-- 	local button = maid:GiveTask(Module.ColdFusion.secondary(style, function(val: number)
+			-- 	local button = maid:GiveTask(Module.secondary(style, function(val: number)
 			-- 		print(`value={val}`)
 			-- 	end, 50, 0, 100, 25, nil, nil, 1))
 			-- 	button.Parent = halfFrame
 			-- end
 			-- do
-			-- 	local button = maid:GiveTask(Module.ColdFusion.tertiary(style, function(val: number)
+			-- 	local button = maid:GiveTask(Module.tertiary(style, function(val: number)
 			-- 		print(`value={val}`)
 			-- 	end, 50, 0, 100, 25, nil, nil, 1))
 			-- 	button.Parent = halfFrame
 			-- end
 			-- do
-			-- 	local button = maid:GiveTask(Module.ColdFusion.onPrimary(style, function(val: number)
+			-- 	local button = maid:GiveTask(Module.onPrimary(style, function(val: number)
 			-- 		print(`value={val}`)
 			-- 	end, 50, 0, 100, 25, nil, nil, 1))
 			-- 	button.Parent = halfFrame
 			-- end
 			-- do
-			-- 	local button = maid:GiveTask(Module.ColdFusion.onSecondary(style, function(val: number)
+			-- 	local button = maid:GiveTask(Module.onSecondary(style, function(val: number)
 			-- 		print(`value={val}`)
 			-- 	end, 50, 0, 100, 25, nil, nil, 1))
 			-- 	button.Parent = halfFrame
 			-- end
 			-- do
-			-- 	local button = maid:GiveTask(Module.ColdFusion.onTertiary(style, function(val: number)
+			-- 	local button = maid:GiveTask(Module.onTertiary(style, function(val: number)
 			-- 		print(`value={val}`)
 			-- 	end, 50, 0, 100, 25, nil, nil, 1))
 			-- 	button.Parent = halfFrame

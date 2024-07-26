@@ -36,24 +36,24 @@ return function(frame: Frame)
 			listLayout.HorizontalAlignment = Enum.HorizontalAlignment.Center
 			listLayout.Parent = halfFrame
 
-			local Module = require(script.Parent)
+			local Module = require(script.Parent:WaitForChild("ColdFusion")
 
 			do
-				local button = maid:GiveTask(Module.ColdFusion.primary(style, function(isSelected: boolean?)
+				local button = maid:GiveTask(Module.primary(style, function(isSelected: boolean?)
 					print("is selected", isSelected)
 				end, true))
 				button.Parent = halfFrame
 			end
 
 			do
-				local button = maid:GiveTask(Module.ColdFusion.secondary(style, function(isSelected: boolean?)
+				local button = maid:GiveTask(Module.secondary(style, function(isSelected: boolean?)
 					print("is selected", isSelected)
 				end, true))
 				button.Parent = halfFrame
 			end
 
 			do
-				local button = maid:GiveTask(Module.ColdFusion.tertiary(style, function(isSelected: boolean?)
+				local button = maid:GiveTask(Module.tertiary(style, function(isSelected: boolean?)
 					print("is selected", isSelected)
 				end, true))
 				button.Parent = halfFrame
@@ -61,7 +61,7 @@ return function(frame: Frame)
 
 			do
 				local button =
-					maid:GiveTask(Module.ColdFusion.primaryContainer(style, function(isSelected: boolean?)
+					maid:GiveTask(Module.primaryContainer(style, function(isSelected: boolean?)
 						print("is selected", isSelected)
 					end, true))
 				button.Parent = halfFrame
@@ -69,7 +69,7 @@ return function(frame: Frame)
 
 			do
 				local button =
-					maid:GiveTask(Module.ColdFusion.secondaryContainer(style, function(isSelected: boolean?)
+					maid:GiveTask(Module.secondaryContainer(style, function(isSelected: boolean?)
 						print("is selected", isSelected)
 					end, true))
 				button.Parent = halfFrame
@@ -77,7 +77,7 @@ return function(frame: Frame)
 
 			do
 				local button =
-					maid:GiveTask(Module.ColdFusion.tertiaryContainer(style, function(isSelected: boolean?)
+					maid:GiveTask(Module.tertiaryContainer(style, function(isSelected: boolean?)
 						print("is selected", isSelected)
 					end, true))
 				button.Parent = halfFrame

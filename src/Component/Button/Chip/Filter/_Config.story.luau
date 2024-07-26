@@ -36,11 +36,11 @@ return function(frame: Frame)
 			listLayout.HorizontalAlignment = Enum.HorizontalAlignment.Center
 			listLayout.Parent = halfFrame
 
-			local Module = require(script.Parent)
+			local Module = require(script.Parent:WaitForChild("ColdFusion")
 
 			do
 				local button = maid:GiveTask(
-					Module.ColdFusion.new(
+					Module.new(
 						function(isSel: boolean)
 							print(`is selected 1: {isSel}`)
 						end,
@@ -63,7 +63,7 @@ return function(frame: Frame)
 
 			do
 				local button = maid:GiveTask(
-					Module.ColdFusion.new(
+					Module.new(
 						function(isSel: boolean)
 							print(`is selected 2: {isSel}`)
 						end,
@@ -86,7 +86,7 @@ return function(frame: Frame)
 
 			do
 				local button = maid:GiveTask(
-					Module.ColdFusion.new(
+					Module.new(
 						function(isSel: boolean)
 							print(`is selected 3: {isSel}`)
 						end,

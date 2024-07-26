@@ -37,11 +37,11 @@ return function(frame: Frame)
 			listLayout.HorizontalAlignment = Enum.HorizontalAlignment.Center
 			listLayout.Parent = halfFrame
 
-			local Module = require(script.Parent)
+			local Module = require(script.Parent:WaitForChild("ColdFusion")
 
 			do
 				local snackbar = maid:GiveTask(
-					Module.ColdFusion.surfaceContainer(
+					Module.surfaceContainer(
 						style,
 						"Wow what cool text abc 123 abc 123 abc 123 abc 123 uhhh well ya know need to get the full lines lorem ipsum or something",
 						"Button",
@@ -60,7 +60,7 @@ return function(frame: Frame)
 			end
 			do
 				local snackbar = maid:GiveTask(
-					Module.ColdFusion.primaryContainer(
+					Module.primaryContainer(
 						style,
 						"Wow what cool text abc 123 abc 123 abc 123 abc 123 uhhh well ya know need to get the full lines lorem ipsum or something",
 						"Button",
@@ -79,7 +79,7 @@ return function(frame: Frame)
 			end
 			do
 				local snackbar = maid:GiveTask(
-					Module.ColdFusion.secondaryContainer(
+					Module.secondaryContainer(
 						style,
 						"Wow what cool text abc 123 abc 123 abc 123 abc 123 uhhh well ya know need to get the full lines lorem ipsum or something",
 						"Button",
@@ -98,7 +98,7 @@ return function(frame: Frame)
 			end
 			do
 				local snackbar = maid:GiveTask(
-					Module.ColdFusion.tertiaryContainer(
+					Module.tertiaryContainer(
 						style,
 						"Wow what cool text abc 123 abc 123 abc 123 abc 123 uhhh well ya know need to get the full lines lorem ipsum or something",
 						"Button",

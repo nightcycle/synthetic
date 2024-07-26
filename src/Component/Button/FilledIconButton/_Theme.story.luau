@@ -37,45 +37,45 @@ return function(frame: Frame)
 			listLayout.HorizontalAlignment = Enum.HorizontalAlignment.Center
 			listLayout.Parent = halfFrame
 
-			local Module = require(script.Parent)
+			local Module = require(script.Parent:WaitForChild("ColdFusion")
 
 			do
-				local button = maid:GiveTask(Module.ColdFusion.primary(style, function()
+				local button = maid:GiveTask(Module.primary(style, function()
 					print("click")
 				end, Icons["1k"]))
 				button.Parent = halfFrame
 			end
 
 			do
-				local button = maid:GiveTask(Module.ColdFusion.secondary(style, function()
+				local button = maid:GiveTask(Module.secondary(style, function()
 					print("click")
 				end, Icons["2k"]))
 				button.Parent = halfFrame
 			end
 
 			do
-				local button = maid:GiveTask(Module.ColdFusion.tertiary(style, function()
+				local button = maid:GiveTask(Module.tertiary(style, function()
 					print("click")
 				end, Icons["3k"]))
 				button.Parent = halfFrame
 			end
 
 			do
-				local button = maid:GiveTask(Module.ColdFusion.primaryContainer(style, function()
+				local button = maid:GiveTask(Module.primaryContainer(style, function()
 					print("click")
 				end, Icons["1k_plus"]))
 				button.Parent = halfFrame
 			end
 
 			do
-				local button = maid:GiveTask(Module.ColdFusion.secondaryContainer(style, function()
+				local button = maid:GiveTask(Module.secondaryContainer(style, function()
 					print("click")
 				end, Icons["2k_plus"]))
 				button.Parent = halfFrame
 			end
 
 			do
-				local button = maid:GiveTask(Module.ColdFusion.tertiaryContainer(style, function()
+				local button = maid:GiveTask(Module.tertiaryContainer(style, function()
 					print("click")
 				end, Icons["3k_plus"]))
 				button.Parent = halfFrame

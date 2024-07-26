@@ -38,11 +38,11 @@ return function(frame: Frame)
 			listLayout.HorizontalAlignment = Enum.HorizontalAlignment.Center
 			listLayout.Parent = halfFrame
 
-			local Module = require(script.Parent)
+			local Module = require(script.Parent:WaitForChild("ColdFusion")
 
 			do
 				local snackbar = maid:GiveTask(
-					Module.ColdFusion.surfaceContainer(style, "Wow what cool text", "Button", function()
+					Module.surfaceContainer(style, "Wow what cool text", "Button", function()
 						print("button click")
 					end, function()
 						print("close click")
@@ -55,7 +55,7 @@ return function(frame: Frame)
 
 			do
 				local snackbar = maid:GiveTask(
-					Module.ColdFusion.surfaceContainer(style, "Wow what cool text", nil, nil, function()
+					Module.surfaceContainer(style, "Wow what cool text", nil, nil, function()
 						print("close click")
 					end, 0)
 				)
@@ -65,7 +65,7 @@ return function(frame: Frame)
 			end
 			-- do
 			-- 	local snackbar = maid:GiveTask(
-			-- 		Module.ColdFusion.surfaceContainer(style, "Wow what cool text", "Button", function()
+			-- 		Module.surfaceContainer(style, "Wow what cool text", "Button", function()
 			-- 			print("button click")
 			-- 		end, nil, 0)
 			-- 	)

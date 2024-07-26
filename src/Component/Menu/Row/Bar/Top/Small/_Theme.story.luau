@@ -20,7 +20,7 @@ local Enums = require(_Package:WaitForChild("Enums"))
 return function(frame: Frame)
 	local maid = Maid.new()
 	task.spawn(function()
-		local Module = require(script.Parent)
+		local Module = require(script.Parent:WaitForChild("ColdFusion")
 
 		local listLayout = maid:GiveTask(Instance.new("UIListLayout"))
 		listLayout.FillDirection = Enum.FillDirection.Vertical
@@ -38,7 +38,7 @@ return function(frame: Frame)
 			)
 
 			do
-				local out = maid:GiveTask(Module.ColdFusion.primary(
+				local out = maid:GiveTask(Module.primary(
 					style,
 					"Primary",
 					{
@@ -61,7 +61,7 @@ return function(frame: Frame)
 			end
 
 			do
-				local out = maid:GiveTask(Module.ColdFusion.secondary(
+				local out = maid:GiveTask(Module.secondary(
 					style,
 					"Secondary",
 					{
@@ -84,7 +84,7 @@ return function(frame: Frame)
 			end
 
 			do
-				local out = maid:GiveTask(Module.ColdFusion.tertiary(
+				local out = maid:GiveTask(Module.tertiary(
 					style,
 					"Tertiary",
 					{

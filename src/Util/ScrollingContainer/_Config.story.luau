@@ -13,7 +13,7 @@ local Maid = require(_Packages:WaitForChild("Maid"))
 return function(frame: Frame)
 	local maid = Maid.new()
 	task.spawn(function()
-		local Module = require(script.Parent)
+		local Module = require(script.Parent:WaitForChild("ColdFusion")
 
 		local container = maid:GiveTask(Instance.new("Frame"))
 		container.AnchorPoint = Vector2.one * 0.5
@@ -25,7 +25,7 @@ return function(frame: Frame)
 		local uiListLayout = maid:GiveTask(Instance.new("UIListLayout"))
 		uiListLayout.Parent = container
 
-		local out = maid:GiveTask(Module.ColdFusion.new())
+		local out = maid:GiveTask(Module.new())
 		out.Size = UDim2.fromScale(1, 1)
 		out.Parent = container
 	end)
