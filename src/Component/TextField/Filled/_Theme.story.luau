@@ -38,32 +38,29 @@ return function(frame: Frame)
 			listLayout.HorizontalAlignment = Enum.HorizontalAlignment.Center
 			listLayout.Parent = halfFrame
 
-			local Module = require(script.Parent:WaitForChild("ColdFusion")
+			local Module = require(script.Parent:WaitForChild("ColdFusion"))
 
 			do
-				local button =
-					maid:GiveTask(Module.primary(style, function(input: string?): string?
-						print(`submit: {input}`)
-						return input
-					end, "primary"))
+				local button = maid:GiveTask(Module.primary(style, function(input: string?): string?
+					print(`submit: {input}`)
+					return input
+				end, "primary"))
 				button.Parent = halfFrame
 			end
 
 			do
-				local button =
-					maid:GiveTask(Module.secondary(style, function(input: string?): string?
-						print(`submit: {input}`)
-						return input
-					end, "secondary"))
+				local button = maid:GiveTask(Module.secondary(style, function(input: string?): string?
+					print(`submit: {input}`)
+					return input
+				end, "secondary"))
 				button.Parent = halfFrame
 			end
 
 			do
-				local button =
-					maid:GiveTask(Module.tertiary(style, function(input: string?): string?
-						print(`submit: {input}`)
-						return input
-					end, "tertiary"))
+				local button = maid:GiveTask(Module.tertiary(style, function(input: string?): string?
+					print(`submit: {input}`)
+					return input
+				end, "tertiary"))
 				button.Parent = halfFrame
 			end
 

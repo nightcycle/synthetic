@@ -37,69 +37,66 @@ return function(frame: Frame)
 			listLayout.HorizontalAlignment = Enum.HorizontalAlignment.Center
 			listLayout.Parent = halfFrame
 
-			local Module = require(script.Parent:WaitForChild("ColdFusion")
+			local Module = require(script.Parent:WaitForChild("ColdFusion"))
 
 			do
-				local button =
-					maid:GiveTask(Module.primaryContainer(
-						style,
-						function(input: string): string
-							print(`entered: {input}`)
-							return input
-						end,
-						"Primary container search",
-						function(input: string): { [number]: string }
-							local options: { [number]: string } = {}
-							for i = 1, math.random(12) do
-								options[i] = string.rep(input, math.random(5))
-							end
-							return options
-						end,
-						nil,
-						0
-					))
+				local button = maid:GiveTask(Module.primaryContainer(
+					style,
+					function(input: string): string
+						print(`entered: {input}`)
+						return input
+					end,
+					"Primary container search",
+					function(input: string): { [number]: string }
+						local options: { [number]: string } = {}
+						for i = 1, math.random(12) do
+							options[i] = string.rep(input, math.random(5))
+						end
+						return options
+					end,
+					nil,
+					0
+				))
 				button.Parent = halfFrame
 			end
 			do
-				local button =
-					maid:GiveTask(Module.secondaryContainer(
-						style,
-						function(input: string): string
-							print(`entered: {input}`)
-							return input
-						end,
-						"Secondary container search",
-						function(input: string): { [number]: string }
-							local options: { [number]: string } = {}
-							for i = 1, math.random(12) do
-								options[i] = string.rep(input, math.random(5))
-							end
-							return options
-						end,
-						nil,
-						0
-					))
+				local button = maid:GiveTask(Module.secondaryContainer(
+					style,
+					function(input: string): string
+						print(`entered: {input}`)
+						return input
+					end,
+					"Secondary container search",
+					function(input: string): { [number]: string }
+						local options: { [number]: string } = {}
+						for i = 1, math.random(12) do
+							options[i] = string.rep(input, math.random(5))
+						end
+						return options
+					end,
+					nil,
+					0
+				))
 				button.Parent = halfFrame
 			end
 			do
-				local button =
-					maid:GiveTask(Module.tertiaryContainer(
-						style,
-						function(input: string): string
-							print(`entered: {input}`)
-							return input
-						end,
-						"Tertiary container search",
-						function(input: string): { [number]: string }
-							local options: { [number]: string } = {}
-							for i = 1, math.random(12) do
-								options[i] = string.rep(input, math.random(5))
-							end
-							return options
-						end,
-						nil,
-						0
-					))
+				local button = maid:GiveTask(Module.tertiaryContainer(
+					style,
+					function(input: string): string
+						print(`entered: {input}`)
+						return input
+					end,
+					"Tertiary container search",
+					function(input: string): { [number]: string }
+						local options: { [number]: string } = {}
+						for i = 1, math.random(12) do
+							options[i] = string.rep(input, math.random(5))
+						end
+						return options
+					end,
+					nil,
+					0
+				))
 				button.Parent = halfFrame
 			end
 			do
@@ -123,24 +120,23 @@ return function(frame: Frame)
 				button.Parent = halfFrame
 			end
 			do
-				local button =
-					maid:GiveTask(Module.secondary(
-						style,
-						function(input: string): string
-							print(`entered: {input}`)
-							return input
-						end,
-						"Secondary search",
-						function(input: string): { [number]: string }
-							local options: { [number]: string } = {}
-							for i = 1, math.random(12) do
-								options[i] = string.rep(input, math.random(5))
-							end
-							return options
-						end,
-						nil,
-						0
-					))
+				local button = maid:GiveTask(Module.secondary(
+					style,
+					function(input: string): string
+						print(`entered: {input}`)
+						return input
+					end,
+					"Secondary search",
+					function(input: string): { [number]: string }
+						local options: { [number]: string } = {}
+						for i = 1, math.random(12) do
+							options[i] = string.rep(input, math.random(5))
+						end
+						return options
+					end,
+					nil,
+					0
+				))
 				button.Parent = halfFrame
 			end
 			do

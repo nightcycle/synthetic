@@ -37,7 +37,7 @@ return function(frame: Frame)
 			listLayout.HorizontalAlignment = Enum.HorizontalAlignment.Center
 			listLayout.Parent = halfFrame
 
-			local Module = require(script.Parent:WaitForChild("ColdFusion")
+			local Module = require(script.Parent:WaitForChild("ColdFusion"))
 
 			do
 				print("build")

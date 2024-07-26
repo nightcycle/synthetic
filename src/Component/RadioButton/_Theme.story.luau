@@ -36,7 +36,7 @@ return function(frame: Frame)
 			listLayout.HorizontalAlignment = Enum.HorizontalAlignment.Center
 			listLayout.Parent = halfFrame
 
-			local Module = require(script.Parent:WaitForChild("ColdFusion")
+			local Module = require(script.Parent:WaitForChild("ColdFusion"))
 
 			do
 				local button = maid:GiveTask(Module.primary(style, function(isSelected: boolean)
@@ -60,26 +60,23 @@ return function(frame: Frame)
 			end
 
 			do
-				local button =
-					maid:GiveTask(Module.primaryContainer(style, function(isSelected: boolean)
-						print("is selected", isSelected)
-					end, true))
+				local button = maid:GiveTask(Module.primaryContainer(style, function(isSelected: boolean)
+					print("is selected", isSelected)
+				end, true))
 				button.Parent = halfFrame
 			end
 
 			do
-				local button =
-					maid:GiveTask(Module.secondaryContainer(style, function(isSelected: boolean)
-						print("is selected", isSelected)
-					end, true))
+				local button = maid:GiveTask(Module.secondaryContainer(style, function(isSelected: boolean)
+					print("is selected", isSelected)
+				end, true))
 				button.Parent = halfFrame
 			end
 
 			do
-				local button =
-					maid:GiveTask(Module.tertiaryContainer(style, function(isSelected: boolean)
-						print("is selected", isSelected)
-					end, true))
+				local button = maid:GiveTask(Module.tertiaryContainer(style, function(isSelected: boolean)
+					print("is selected", isSelected)
+				end, true))
 				button.Parent = halfFrame
 			end
 			return halfFrame

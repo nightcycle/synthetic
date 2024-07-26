@@ -37,52 +37,48 @@ return function(frame: Frame)
 			listLayout.HorizontalAlignment = Enum.HorizontalAlignment.Center
 			listLayout.Parent = halfFrame
 
-			local Module = require(script.Parent:WaitForChild("ColdFusion")
+			local Module = require(script.Parent:WaitForChild("ColdFusion"))
 
 			do
-				local snackbar = maid:GiveTask(
-					Module.surfaceContainer(style, "Wow what cool text", "Button", function()
+				local snackbar =
+					maid:GiveTask(Module.surfaceContainer(style, "Wow what cool text", "Button", function()
 						print("button click")
 					end, function()
 						print("close click")
-					end, 1)
-				)
+					end, 1))
 				snackbar.AutomaticSize = Enum.AutomaticSize.Y
 				snackbar.Size = UDim2.fromScale(0.9, 0)
 				snackbar.Parent = halfFrame
 			end
 			do
-				local snackbar = maid:GiveTask(
-					Module.primaryContainer(style, "Wow what cool text", "Button", function()
+				local snackbar =
+					maid:GiveTask(Module.primaryContainer(style, "Wow what cool text", "Button", function()
 						print("button click")
 					end, function()
 						print("close click")
-					end, 1)
-				)
+					end, 1))
 				snackbar.AutomaticSize = Enum.AutomaticSize.Y
 				snackbar.Size = UDim2.fromScale(0.9, 0)
 				snackbar.Parent = halfFrame
 			end
 			do
-				local snackbar = maid:GiveTask(
-					Module.secondaryContainer(style, "Wow what cool text", "Button", function()
+				local snackbar =
+					maid:GiveTask(Module.secondaryContainer(style, "Wow what cool text", "Button", function()
 						print("button click")
 					end, function()
 						print("close click")
-					end, 1)
-				)
+					end, 1))
 				snackbar.AutomaticSize = Enum.AutomaticSize.Y
 				snackbar.Size = UDim2.fromScale(0.9, 0)
 				snackbar.Parent = halfFrame
 			end
 			do
-				local snackbar = maid:GiveTask(
-					Module.tertiaryContainer(style, "Wow what cool text", "Button", function()
+				local snackbar =
+					maid:GiveTask(Module.tertiaryContainer(style, "Wow what cool text", "Button", function()
 						print("button click")
 					end, function()
 						print("close click")
-					end, 1)
-				)
+					end, 1))
 				snackbar.AutomaticSize = Enum.AutomaticSize.Y
 				snackbar.Size = UDim2.fromScale(0.9, 0)
 				snackbar.Parent = halfFrame

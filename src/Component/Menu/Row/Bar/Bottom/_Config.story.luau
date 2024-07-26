@@ -41,7 +41,7 @@ return function(frame: Frame)
 			listLayout.HorizontalFlex = Enum.UIFlexAlignment.Fill
 			listLayout.Parent = halfFrame
 
-			local Module = require(script.Parent:WaitForChild("ColdFusion")
+			local Module = require(script.Parent:WaitForChild("ColdFusion"))
 
 			do
 				local button = maid:GiveTask(
