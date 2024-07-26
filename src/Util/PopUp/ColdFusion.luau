@@ -25,8 +25,6 @@ type ImageData = Types.ImageData
 -- Class
 local Util = {}
 
-Util = {}
-
 function Util.new(absolutePosition: CanBeState<Vector2>, anchorPoint: CanBeState<Vector2>): Frame
 	local maid = Maid.new()
 	local _fuse = ColdFusion.fuse(maid)

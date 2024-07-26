@@ -22,7 +22,6 @@ type ImageData = Types.ImageData
 -- Class
 local Util = {}
 
-Util = {}
 function Util.new(
 	icon: CanBeState<ImageData?>,
 	color: CanBeState<Color3?>,

@@ -6,7 +6,7 @@ local _Packages = _Package.Parent
 local Maid = require(_Packages:WaitForChild("Maid"))
 local ColdFusion = require(_Packages:WaitForChild("ColdFusion"))
 local Icons = require(_Packages:WaitForChild("MaterialIcons"))
-local OutlinedIcons = require(_Packages:WaitForChild("OutlinedMaterialIcons"))
+local OutlineIcons = require(_Packages:WaitForChild("OutlinedMaterialIcons"))
 
 -- Modules
 local Types = require(_Package:WaitForChild("Types"))

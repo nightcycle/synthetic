@@ -22,8 +22,6 @@ type ImageData = Types.ImageData
 -- Class
 local Util = {}
 
-Util = {}
-
 function Util.new(leftRight: CanBeState<UDim>, topBottom: CanBeState<UDim>): UIPadding
 	local maid = Maid.new()
 

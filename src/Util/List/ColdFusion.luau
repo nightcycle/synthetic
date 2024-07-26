@@ -22,8 +22,6 @@ type ImageData = Types.ImageData
 -- Class
 local Util = {}
 
-Util = {}
-
 function Util.new(
 	verticalAlignment: CanBeState<Enum.VerticalAlignment>,
 	horizontalAlignment: CanBeState<Enum.HorizontalAlignment>,
