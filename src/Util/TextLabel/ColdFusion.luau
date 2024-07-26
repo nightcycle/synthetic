@@ -9,7 +9,7 @@ local Maid = require(_Packages:WaitForChild("Maid"))
 local Types = require(_Package:WaitForChild("Types"))
 local Style = require(_Package:WaitForChild("Style"))
 local Enums = require(_Package:WaitForChild("Enums"))
-local Container = require(_Package:WaitForChild("Util"):WaitForChild("Container"))
+local Container = require(_Package:WaitForChild("Util"):WaitForChild("Container"):WaitForChild("ColdFusion"))
 local Typography = require(_Package:WaitForChild("Typography"))
 
 -- Types
@@ -125,7 +125,7 @@ function Util.new(
 		return UDim2.fromOffset(dp, dp)
 	end, fontDataState, ignoreLineHeightState, scaleState)
 
-	local out = _bind(maid:GiveTask(Container.ColdFusion.new()))({
+	local out = _bind(maid:GiveTask(Container.new()))({
 		Name = "TextLabel",
 		Children = {
 			_new("UIListLayout")({

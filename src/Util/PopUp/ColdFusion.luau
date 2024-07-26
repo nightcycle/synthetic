@@ -10,7 +10,7 @@ local Maid = require(_Packages:WaitForChild("Maid"))
 -- Modules
 local Types = require(_Package:WaitForChild("Types"))
 local Style = require(_Package:WaitForChild("Style"))
-local Container = require(_Package:WaitForChild("Util"):WaitForChild("Container"))
+local Container = require(_Package:WaitForChild("Util"):WaitForChild("Container"):WaitForChild("ColdFusion"))
 
 -- Types
 type State<V> = ColdFusion.State<V>
@@ -49,7 +49,7 @@ function Util.new(absolutePosition: CanBeState<Vector2>, anchorPoint: CanBeState
 			else game:GetService("CoreGui"),
 	})) :: Frame
 
-	local out = _bind(Container.ColdFusion.new())({
+	local out = _bind(Container.new())({
 		Parent = screenGui,
 		Position = _Computed(function(pos: Vector2): UDim2
 			return UDim2.fromOffset(pos.X, pos.Y)
