@@ -11,7 +11,13 @@ local ColdFusion = require(_Packages:WaitForChild("ColdFusion"))
 local Types = require(_Package:WaitForChild("Types"))
 local Style = require(_Package:WaitForChild("Style"))
 local Enums = require(_Package:WaitForChild("Enums"))
-local Button = require(_Package:WaitForChild("Component"):WaitForChild("Button"):WaitForChild("TextButton"))
+local Button = require(
+	_Package
+		:WaitForChild("Component")
+		:WaitForChild("Button")
+		:WaitForChild("TextButton")
+		:WaitForChild("ColdFusion")
+)
 local Util = require(_Package:WaitForChild("Util"))
 local Typography = require(_Package:WaitForChild("Typography"))
 
@@ -397,7 +403,7 @@ function Interface.new(
 			return bList[i]
 		end, buttonsState)
 
-		_bind(maid:GiveTask(Button.ColdFusion.new(
+		_bind(maid:GiveTask(Button.new(
 			_Computed(function(bData: ButtonData?): () -> ()
 				return if bData then bData.OnClick else function() end
 			end, buttonDataState),

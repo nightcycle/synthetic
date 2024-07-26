@@ -9,9 +9,16 @@ local Icons = require(_Packages:WaitForChild("MaterialIcons"))
 
 -- Modules
 local Types = require(_Package:WaitForChild("Types"))
-local IconButton =
-	require(_Package:WaitForChild("Component"):WaitForChild("Button"):WaitForChild("IconButton"))
-local FAB = require(_Package:WaitForChild("Component"):WaitForChild("Button"):WaitForChild("FAB"))
+local IconButton = require(
+	_Package
+		:WaitForChild("Component")
+		:WaitForChild("Button")
+		:WaitForChild("IconButton")
+		:WaitForChild("ColdFusion")
+)
+local FAB = require(
+	_Package:WaitForChild("Component"):WaitForChild("Button"):WaitForChild("FAB"):WaitForChild("ColdFusion")
+)
 local Style = require(_Package:WaitForChild("Style"))
 local Enums = require(_Package:WaitForChild("Enums"))
 local Theme = require(_Package:WaitForChild("Theme"))
@@ -251,7 +258,7 @@ function Interface.new(
 				VerticalAlignment = Enum.VerticalAlignment.Center,
 				HorizontalAlignment = Enum.HorizontalAlignment.Right,
 			}),
-			_bind(FAB.ColdFusion.new(
+			_bind(FAB.new(
 				_Computed(function(fData: ButtonData?)
 					return if fData then fData.OnClick else function() end
 				end, fabState),
@@ -305,7 +312,7 @@ function Interface.new(
 			return bs[i]
 		end, buttonsState)
 
-		_bind(IconButton.ColdFusion.new(
+		_bind(IconButton.new(
 			_Computed(function(bData: ButtonData?)
 				return if bData then bData.OnClick else function() end
 			end, buttonData),

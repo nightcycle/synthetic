@@ -10,8 +10,13 @@ local Icons = require(_Packages:WaitForChild("MaterialIcons"))
 
 -- Modules
 local Types = require(_Package:WaitForChild("Types"))
-local IconButton =
-	require(_Package:WaitForChild("Component"):WaitForChild("Button"):WaitForChild("IconButton"))
+local IconButton = require(
+	_Package
+		:WaitForChild("Component")
+		:WaitForChild("Button")
+		:WaitForChild("IconButton")
+		:WaitForChild("ColdFusion")
+)
 local Style = require(_Package:WaitForChild("Style"))
 local Enums = require(_Package:WaitForChild("Enums"))
 local Theme = require(_Package:WaitForChild("Theme"))
@@ -237,7 +242,7 @@ function Interface.new(
 							return f.Font
 						end, titleFontDataState),
 					}),
-					_bind(IconButton.ColdFusion.new(
+					_bind(IconButton.new(
 						_Computed(function(nData: ButtonData?)
 							return if nData then nData.OnClick else function() end
 						end, navState),
@@ -288,7 +293,7 @@ function Interface.new(
 			return bs[i]
 		end, buttonsState)
 
-		_bind(IconButton.ColdFusion.new(
+		_bind(IconButton.new(
 			_Computed(function(nData: ButtonData?)
 				return if nData then nData.OnClick else function() end
 			end, buttonData),

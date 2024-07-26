@@ -8,10 +8,20 @@ local ColdFusion = require(_Packages:WaitForChild("ColdFusion"))
 local Icons = require(_Packages:WaitForChild("MaterialIcons"))
 
 -- Modules
-local IconButton =
-	require(_Package:WaitForChild("Component"):WaitForChild("Button"):WaitForChild("IconButton"))
-local TextButton =
-	require(_Package:WaitForChild("Component"):WaitForChild("Button"):WaitForChild("TextButton"))
+local IconButton = require(
+	_Package
+		:WaitForChild("Component")
+		:WaitForChild("Button")
+		:WaitForChild("IconButton")
+		:WaitForChild("ColdFusion")
+)
+local TextButton = require(
+	_Package
+		:WaitForChild("Component")
+		:WaitForChild("Button")
+		:WaitForChild("TextButton")
+		:WaitForChild("ColdFusion")
+)
 local Util = require(_Package:WaitForChild("Util"))
 local Types = require(_Package:WaitForChild("Types"))
 local Style = require(_Package:WaitForChild("Style"))
@@ -400,7 +410,7 @@ function Interface.new(
 						Children = {
 							maid:GiveTask(Util.List.ColdFusion.center()) :: Instance,
 							maid:GiveTask(
-								TextButton.ColdFusion.new(
+								TextButton.new(
 									_Computed(function(onClick: Method?): Method
 										return onClick or function() end
 									end, onButtonClickState),
@@ -428,7 +438,7 @@ function Interface.new(
 						Children = {
 							maid:GiveTask(Util.List.ColdFusion.center()) :: Instance,
 							maid:GiveTask(
-								IconButton.ColdFusion.new(
+								IconButton.new(
 									_Computed(function(onClick: Method?): Method
 										return onClick or function() end
 									end, onCloseClickState),

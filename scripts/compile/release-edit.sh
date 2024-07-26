@@ -19,6 +19,8 @@ for init_file in $(find "src/Component" -name "init.luau"); do
 	echo 'return require(script:WaitForChild("'${build_focus}'"))' > "$init_file"
 done
 
+luau-lsp analyze --sourcemap="sourcemap.json" --ignore="Packages/**" --ignore="**/Packages/**" --ignore="*.spec.luau" --ignore="out/**" --flag:LuauTypeInferIterationLimit=0 --flag:LuauCheckRecursionLimit=0 --flag:LuauTypeInferRecursionLimit=0 --flag:LuauTarjanChildLimit=0 --flag:LuauTypeInferTypePackLoopLimit=0 --flag:LuauVisitRecursionLimit=0 --definitions=types/globalTypes.d.lua src
+
 package_full_name="nightcycle/synthetic-$package_suffix"
 sed -i "s#name = \".*\"#name = \"$package_full_name\"#" wally.toml
 

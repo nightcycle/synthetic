@@ -13,8 +13,13 @@ local ColdFusion = require(_Packages:WaitForChild("ColdFusion"))
 local Icons = require(_Packages:WaitForChild("MaterialIcons"))
 
 -- Modules
-local IconButton =
-	require(_Package:WaitForChild("Component"):WaitForChild("Button"):WaitForChild("IconButton"))
+local IconButton = require(
+	_Package
+		:WaitForChild("Component")
+		:WaitForChild("Button")
+		:WaitForChild("IconButton")
+		:WaitForChild("ColdFusion")
+)
 
 local Util = require(_Package:WaitForChild("Util"))
 local Types = require(_Package:WaitForChild("Types"))
@@ -135,7 +140,7 @@ function newPanel(
 	-- end))
 
 	local backButton = _bind(
-		IconButton.ColdFusion.new(
+		IconButton.new(
 			function()
 				onClick(textBox.Text)
 			end,
@@ -154,7 +159,7 @@ function newPanel(
 	}) :: GuiObject
 
 	local clearButton = _bind(
-		IconButton.ColdFusion.new(
+		IconButton.new(
 			function()
 				textBox.Text = ""
 				textBox:CaptureFocus()
