@@ -797,12 +797,22 @@ function Interface.new(
 			inputObject.UserInputType == Enum.UserInputType.MouseButton1
 			or inputObject.UserInputType == Enum.UserInputType.Touch
 		then
-			inputState:Set(100 * (inputObject.Position.X - button.AbsolutePosition.X) / button.AbsoluteSize.X)
+			inputState:Set(
+				minState:Get()
+					+ (maxState:Get() - minState:Get())
+						* (inputObject.Position.X - button.AbsolutePosition.X)
+						/ button.AbsoluteSize.X
+			)
 		end
 	end))
 	maid:GiveTask(button.InputChanged:Connect(function(inputObject: InputObject)
 		if inputObject.UserInputType == Enum.UserInputType.MouseMovement and isSelectedState:Get() then
-			inputState:Set(100 * (inputObject.Position.X - button.AbsolutePosition.X) / button.AbsoluteSize.X)
+			inputState:Set(
+				minState:Get()
+					+ (maxState:Get() - minState:Get())
+						* (inputObject.Position.X - button.AbsolutePosition.X)
+						/ button.AbsoluteSize.X
+			)
 		end
 	end))
 	local inst = _new("Frame")({
