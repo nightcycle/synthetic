@@ -34,7 +34,7 @@ local DIAMETER_DP = 36 --48
 local RING_ASSET_URL = "rbxassetid://3587367081"
 local ROTATION_OFFSET = 180
 local BUFFER = 10
-local USE_EDITABLE_IMAGE = RunService:IsStudio()
+local USE_EDITABLE_IMAGE = false -- RunService:IsStudio()
 local EDIT_IMG_WIDTH = 48
 local DEBUG_ENABLED = false
 -- Variables
