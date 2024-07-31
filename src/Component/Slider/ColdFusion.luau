@@ -549,7 +549,7 @@ function Interface.new(
 		function(initial: number, input: number?, min: number, max: number, inc: number?): number
 			local rawVal = math.clamp(input or initial, min, max)
 			if inc then
-				return min + math.round(rawVal - min / inc) * inc
+				return min + math.round((rawVal - min) / inc) * inc
 			else
 				return rawVal
 			end
