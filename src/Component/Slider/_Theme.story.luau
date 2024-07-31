@@ -40,7 +40,7 @@ return function(frame: Frame)
 			do
 				local button = maid:GiveTask(Module.primary(style, function(val: number)
 					print(`value={val}`)
-				end, 50, 0, 100, 25))
+				end, 50, 50, 150, 25))
 				button.Parent = halfFrame
 			end
 			-- do

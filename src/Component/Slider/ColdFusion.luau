@@ -116,11 +116,11 @@ function Interface.onTertiary(
 	local styleState: State<Style> = _import(style, DEFAULTS.ON_TERTIARY.STYLE)
 
 	local out = Interface.new(
-		_import(elevation, DEFAULTS.ON_TERTIARY.ON_CHANGE),
-		_import(elevation, DEFAULTS.ON_TERTIARY.INITIAL_VALUE),
-		_import(elevation, DEFAULTS.ON_TERTIARY.MINIMUM),
-		_import(elevation, DEFAULTS.ON_TERTIARY.MAXIMUM),
-		_import(elevation, DEFAULTS.ON_TERTIARY.INCREMENT),
+		_import(onChange, DEFAULTS.PRIMARY.ON_CHANGE),
+		_import(initialValue, DEFAULTS.PRIMARY.INITIAL_VALUE),
+		_import(minimum, DEFAULTS.PRIMARY.MINIMUM),
+		_import(maximum, DEFAULTS.PRIMARY.MAXIMUM),
+		_import(increment, DEFAULTS.PRIMARY.INCREMENT),
 		_import(leftTextOrIcon, DEFAULTS.ON_TERTIARY.LEFT_TEXT_OR_ICON),
 		_import(rightTextOrIcon, DEFAULTS.ON_TERTIARY.RIGHT_TEXT_OR_ICON),
 		_Computed(function(s: Style): Color3
@@ -178,11 +178,11 @@ function Interface.onSecondary(
 	local styleState: State<Style> = _import(style, DEFAULTS.SECONDARY.STYLE)
 
 	local out = Interface.new(
-		_import(elevation, DEFAULTS.ON_SECONDARY.ON_CHANGE),
-		_import(elevation, DEFAULTS.ON_SECONDARY.INITIAL_VALUE),
-		_import(elevation, DEFAULTS.ON_SECONDARY.MINIMUM),
-		_import(elevation, DEFAULTS.ON_SECONDARY.MAXIMUM),
-		_import(elevation, DEFAULTS.ON_SECONDARY.INCREMENT),
+		_import(onChange, DEFAULTS.PRIMARY.ON_CHANGE),
+		_import(initialValue, DEFAULTS.PRIMARY.INITIAL_VALUE),
+		_import(minimum, DEFAULTS.PRIMARY.MINIMUM),
+		_import(maximum, DEFAULTS.PRIMARY.MAXIMUM),
+		_import(increment, DEFAULTS.PRIMARY.INCREMENT),
 		_import(leftTextOrIcon, DEFAULTS.ON_SECONDARY.LEFT_TEXT_OR_ICON),
 		_import(rightTextOrIcon, DEFAULTS.ON_SECONDARY.RIGHT_TEXT_OR_ICON),
 		_Computed(function(s: Style): Color3
@@ -240,11 +240,11 @@ function Interface.onPrimary(
 	local styleState: State<Style> = _import(style, DEFAULTS.ON_PRIMARY.STYLE)
 
 	local out = Interface.new(
-		_import(elevation, DEFAULTS.ON_PRIMARY.ON_CHANGE),
-		_import(elevation, DEFAULTS.ON_PRIMARY.INITIAL_VALUE),
-		_import(elevation, DEFAULTS.ON_PRIMARY.MINIMUM),
-		_import(elevation, DEFAULTS.ON_PRIMARY.MAXIMUM),
-		_import(elevation, DEFAULTS.ON_PRIMARY.INCREMENT),
+		_import(onChange, DEFAULTS.PRIMARY.ON_CHANGE),
+		_import(initialValue, DEFAULTS.PRIMARY.INITIAL_VALUE),
+		_import(minimum, DEFAULTS.PRIMARY.MINIMUM),
+		_import(maximum, DEFAULTS.PRIMARY.MAXIMUM),
+		_import(increment, DEFAULTS.PRIMARY.INCREMENT),
 		_import(leftTextOrIcon, DEFAULTS.ON_PRIMARY.LEFT_TEXT_OR_ICON),
 		_import(rightTextOrIcon, DEFAULTS.ON_PRIMARY.RIGHT_TEXT_OR_ICON),
 		_Computed(function(s: Style): Color3
@@ -302,11 +302,11 @@ function Interface.tertiary(
 	local styleState: State<Style> = _import(style, DEFAULTS.TERTIARY.STYLE)
 
 	local out = Interface.new(
-		_import(elevation, DEFAULTS.TERTIARY.ON_CHANGE),
-		_import(elevation, DEFAULTS.TERTIARY.INITIAL_VALUE),
-		_import(elevation, DEFAULTS.TERTIARY.MINIMUM),
-		_import(elevation, DEFAULTS.TERTIARY.MAXIMUM),
-		_import(elevation, DEFAULTS.TERTIARY.INCREMENT),
+		_import(onChange, DEFAULTS.PRIMARY.ON_CHANGE),
+		_import(initialValue, DEFAULTS.PRIMARY.INITIAL_VALUE),
+		_import(minimum, DEFAULTS.PRIMARY.MINIMUM),
+		_import(maximum, DEFAULTS.PRIMARY.MAXIMUM),
+		_import(increment, DEFAULTS.PRIMARY.INCREMENT),
 		_import(leftTextOrIcon, DEFAULTS.TERTIARY.LEFT_TEXT_OR_ICON),
 		_import(rightTextOrIcon, DEFAULTS.TERTIARY.RIGHT_TEXT_OR_ICON),
 		_Computed(function(s: Style): Color3
@@ -364,11 +364,11 @@ function Interface.secondary(
 	local styleState: State<Style> = _import(style, DEFAULTS.SECONDARY.STYLE)
 
 	local out = Interface.new(
-		_import(elevation, DEFAULTS.SECONDARY.ON_CHANGE),
-		_import(elevation, DEFAULTS.SECONDARY.INITIAL_VALUE),
-		_import(elevation, DEFAULTS.SECONDARY.MINIMUM),
-		_import(elevation, DEFAULTS.SECONDARY.MAXIMUM),
-		_import(elevation, DEFAULTS.SECONDARY.INCREMENT),
+		_import(onChange, DEFAULTS.PRIMARY.ON_CHANGE),
+		_import(initialValue, DEFAULTS.PRIMARY.INITIAL_VALUE),
+		_import(minimum, DEFAULTS.PRIMARY.MINIMUM),
+		_import(maximum, DEFAULTS.PRIMARY.MAXIMUM),
+		_import(increment, DEFAULTS.PRIMARY.INCREMENT),
 		_import(leftTextOrIcon, DEFAULTS.SECONDARY.LEFT_TEXT_OR_ICON),
 		_import(rightTextOrIcon, DEFAULTS.SECONDARY.RIGHT_TEXT_OR_ICON),
 		_Computed(function(s: Style): Color3
@@ -426,11 +426,11 @@ function Interface.primary(
 	local styleState: State<Style> = _import(style, DEFAULTS.PRIMARY.STYLE)
 
 	local out = Interface.new(
-		_import(elevation, DEFAULTS.PRIMARY.ON_CHANGE),
-		_import(elevation, DEFAULTS.PRIMARY.INITIAL_VALUE),
-		_import(elevation, DEFAULTS.PRIMARY.MINIMUM),
-		_import(elevation, DEFAULTS.PRIMARY.MAXIMUM),
-		_import(elevation, DEFAULTS.PRIMARY.INCREMENT),
+		_import(onChange, DEFAULTS.PRIMARY.ON_CHANGE),
+		_import(initialValue, DEFAULTS.PRIMARY.INITIAL_VALUE),
+		_import(minimum, DEFAULTS.PRIMARY.MINIMUM),
+		_import(maximum, DEFAULTS.PRIMARY.MAXIMUM),
+		_import(increment, DEFAULTS.PRIMARY.INCREMENT),
 		_import(leftTextOrIcon, DEFAULTS.PRIMARY.LEFT_TEXT_OR_ICON),
 		_import(rightTextOrIcon, DEFAULTS.PRIMARY.RIGHT_TEXT_OR_ICON),
 		_Computed(function(s: Style): Color3
@@ -549,7 +549,7 @@ function Interface.new(
 		function(initial: number, input: number?, min: number, max: number, inc: number?): number
 			local rawVal = math.clamp(input or initial, min, max)
 			if inc then
-				return min + math.round((rawVal - min) / inc) * inc
+				return math.round(rawVal / inc) * inc
 			else
 				return rawVal
 			end
@@ -562,7 +562,7 @@ function Interface.new(
 	)
 
 	local fillState = _Computed(function(point: number, min: number, max: number, inc: number?): number
-		local rawVal = math.clamp(point, min, max) / math.max(max - min, 1)
+		local rawVal = (math.clamp(point, min, max) - min) / math.max(max - min, 1)
 		if inc then
 			return math.round(rawVal * inc) / inc
 		else
