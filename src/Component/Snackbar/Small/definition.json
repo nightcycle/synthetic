@@ -21,12 +21,12 @@
                 {
                     "name": "onButtonClick",
                     "type": "((() -> ())?)",
-                    "default": "function() end"
+                    "default": "nil"
                 },
                 {
                     "name": "onCloseClick",
                     "type": "((() -> ())?)",
-                    "default": "function() end"
+                    "default": "nil"
                 },
                 {
                     "name": "textColor",
@@ -92,12 +92,12 @@
                 {
                     "name": "onButtonClick",
                     "type": "((() -> ())?)",
-                    "default": "function() end"
+                    "default": "nil"
                 },
                 {
                     "name": "onCloseClick",
                     "type": "((() -> ())?)",
-                    "default": "function() end"
+                    "default": "nil"
                 },
                 {
                     "name": "elevation",
