@@ -16,7 +16,7 @@
                 {
                     "name": "buttonText",
                     "type": "string?",
-                    "default": "\"Action\""
+                    "default": "nil"
                 },
                 {
                     "name": "onButtonClick",
@@ -87,7 +87,7 @@
                 {
                     "name": "buttonText",
                     "type": "string?",
-                    "default": "\"Action\""
+                    "default": "nil"
                 },
                 {
                     "name": "onButtonClick",
