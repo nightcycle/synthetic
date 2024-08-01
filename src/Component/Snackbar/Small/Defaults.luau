@@ -24,7 +24,7 @@ type CanBeState<V> = ColdFusion.CanBeState<V>
 return {
 	NEW = {
 		TEXT = "",
-		BUTTON_TEXT = "Action",
+		BUTTON_TEXT = nil,
 		ON_BUTTON_CLICK = nil,
 		ON_CLOSE_CLICK = nil,
 		TEXT_COLOR = Color3.new(),
@@ -38,7 +38,7 @@ return {
 	SURFACE_CONTAINER = {
 		STYLE = Style.new(1, Enum.Font.SourceSans, "Light", Color3.new(0, 0.4, 0.7)),
 		TEXT = "",
-		BUTTON_TEXT = "Action",
+		BUTTON_TEXT = nil,
 		ON_BUTTON_CLICK = nil,
 		ON_CLOSE_CLICK = nil,
 		ELEVATION = 0,
@@ -46,7 +46,7 @@ return {
 	PRIMARY_CONTAINER = {
 		STYLE = Style.new(1, Enum.Font.SourceSans, "Light", Color3.new(0, 0.4, 0.7)),
 		TEXT = "",
-		BUTTON_TEXT = "Action",
+		BUTTON_TEXT = nil,
 		ON_BUTTON_CLICK = nil,
 		ON_CLOSE_CLICK = nil,
 		ELEVATION = 0,
@@ -54,7 +54,7 @@ return {
 	SECONDARY_CONTAINER = {
 		STYLE = Style.new(1, Enum.Font.SourceSans, "Light", Color3.new(0, 0.4, 0.7)),
 		TEXT = "",
-		BUTTON_TEXT = "Action",
+		BUTTON_TEXT = nil,
 		ON_BUTTON_CLICK = nil,
 		ON_CLOSE_CLICK = nil,
 		ELEVATION = 0,
@@ -62,7 +62,7 @@ return {
 	TERTIARY_CONTAINER = {
 		STYLE = Style.new(1, Enum.Font.SourceSans, "Light", Color3.new(0, 0.4, 0.7)),
 		TEXT = "",
-		BUTTON_TEXT = "Action",
+		BUTTON_TEXT = nil,
 		ON_BUTTON_CLICK = nil,
 		ON_CLOSE_CLICK = nil,
 		ELEVATION = 0,
